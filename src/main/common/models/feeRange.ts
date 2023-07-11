@@ -1,22 +1,13 @@
 import 'reflect-metadata';
 import {Expose, Type} from 'class-transformer';
 import {TableItem} from 'models/tableItem';
+import {t} from 'i18next';
 
 export class FeeRanges {
   value: FeeRange[];
 
   constructor(value: FeeRange[]) {
-    this.value = [...value].sort(this.compare).filter((element: FeeRange, i : number) => !element.equals(value[i-1]));
-  }
-
-  compare(element1: FeeRange, element2: FeeRange) {
-    if (element1.maxRange < element2.maxRange) {
-      return -1;
-    }
-    if (element1.maxRange > element2.maxRange) {
-      return 1;
-    }
-    return 0;
+    this.value = [...value].filter((element: FeeRange, i : number) => !element.equals(value[i-1]));
   }
 }
 
@@ -35,15 +26,28 @@ export class FeeRange {
     this.currentVersion = currentVersion;
   }
 
-  formatFeeRangeToTableItem(): TableItem[] {
-    if (this.minRange && this.maxRange && this.currentVersion?.flatAmount?.amount) {
-      return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`}];
-    }
-  }
-
   equals(feeRange: FeeRange) {
     return this.minRange === feeRange?.minRange && this.maxRange === feeRange?.maxRange;
   }
+
+  formatFeeRangeToTableItem(lang: string): TableItem[] {
+    const minRange = this.maxRange ? `£${this.minRange?.toLocaleString()}` : ` > £${this.minRange?.toLocaleString()}`;
+    const maxRange = this.maxRange ? ` to £${this.maxRange?.toLocaleString()}` : '';
+
+    let feeAmount;
+    if (this.currentVersion?.percentageAmount?.percentage) {
+      const percentage = this.currentVersion?.percentageAmount?.percentage?.toLocaleString();
+      feeAmount = {
+        text: `${t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_FEE', {percentage, lng: lang})}`,
+      };
+    } else {
+      feeAmount = {
+        text: `£${this.currentVersion?.flatAmount?.amount.toLocaleString()}`,
+      };
+    }
+    return [{text: minRange + maxRange}, feeAmount];
+  }
+
 }
 
 export class CurrentVersion {
@@ -55,15 +59,27 @@ export class CurrentVersion {
   @Expose({name: 'flat_amount'})
   @Type(() => FlatAmount)
   readonly flatAmount: FlatAmount;
+  @Expose({name: 'percentage_amount'})
+  @Type(() => PercentageAmount)
+  readonly percentageAmount: PercentageAmount;
 
-  constructor(version: number, description: string, status: string, validTo: string, flatAmount: FlatAmount) {
+  constructor(version: number, description: string, status: string, validTo: string, flatAmount: FlatAmount, percentageAmount: PercentageAmount) {
     this.version = version;
     this.description = description;
     this.status = status;
     this.validTo = validTo;
     this.flatAmount = flatAmount;
+    this.percentageAmount = percentageAmount;
   }
 
+}
+
+export class PercentageAmount {
+  readonly percentage: number;
+
+  constructor(percentage: number) {
+    this.percentage = percentage;
+  }
 }
 
 export class FlatAmount {
