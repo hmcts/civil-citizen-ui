@@ -3,6 +3,7 @@ import {CCDDebtDetails, CCDDebtDetailsList, CCDDebtType} from 'models/ccdRespons
 import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
 import {ExpenseType} from 'form/models/statementOfMeans/expensesAndIncome/expenseType';
 import {toCUIPaymentFrequency} from 'services/translation/convertToCUI/convertToCUIPaymentFrequency';
+import {convertToPoundInStringFormat} from 'services/translation/claim/moneyConversation';
 
 export const toCUIPriorityDebts = (priorityDebts: CCDDebtDetails): PriorityDebts => {
   if (priorityDebts) return new PriorityDebts(toCUIPriorityDebtsList(priorityDebts.debtDetails));
@@ -43,7 +44,7 @@ const toCUIPriorityDebtsList = (priorityDebtsItems: CCDDebtDetailsList[]) : Prio
 const toCUIPriorityDebtsItem = (ccdPriorityDebts: CCDDebtDetailsList, expenseType: ExpenseType): Transaction => {
   return Transaction.buildPopulatedForm(
     expenseType,
-    ccdPriorityDebts?.value?.paymentAmount?.toString(),
-    toCUIPaymentFrequency(ccdPriorityDebts?.value?.paymentFrequency),
+    convertToPoundInStringFormat(ccdPriorityDebts.value.paymentAmount),
+    toCUIPaymentFrequency(ccdPriorityDebts.value.paymentFrequency),
   );
 };
