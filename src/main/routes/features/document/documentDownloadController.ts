@@ -13,10 +13,9 @@ const documentDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
-
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claim: Claim = await getClaimById(req.params.id, <AppRequest>req);
+    const claim: Claim = await getClaimById(req.params.id, req);
     const documentType = convertToDocumentType(req.params.documentType);
     const documentDetails = claim.getDocumentDetails(DocumentType[documentType]);
     const pdfDocument: Buffer = await civilServiceClientForDocRetrieve.retrieveDocument(documentDetails, <AppRequest>req);
@@ -26,5 +25,4 @@ documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, 
     next(error);
   }
 });
-
 export default documentDownloadController;
