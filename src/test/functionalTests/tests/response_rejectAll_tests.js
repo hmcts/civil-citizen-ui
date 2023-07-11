@@ -1,5 +1,6 @@
 const config =  require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const LoginSteps =  require('../features/home/steps/login');
 
 const rejectAll = 'rejectAll';
@@ -9,7 +10,6 @@ let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 Feature('Response with RejectAll');
 
@@ -17,18 +17,16 @@ Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = caseData.legacyCaseReference;
-  securityCode = caseData.respondent1PinToPostLRspec.accessCode;
-  await delay(10000);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  } else {
-    console.log('claimRef has not been Created');
-  }
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -50,7 +48,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @test', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

@@ -9,7 +9,7 @@ class AssignCasePinInPost {
 
   async open(claimNumber, securityCode) {
     await I.amOnPage('/first-contact/claim-reference/');
-    await I.see('Enter your claim number');
+    await I.waitForText('Enter your claim number');
     await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
