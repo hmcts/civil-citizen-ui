@@ -1,5 +1,5 @@
 import {NextFunction, Router} from 'express';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL} from 'routes/urls';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
@@ -16,7 +16,8 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     if (!claim.isEmpty()) {
       const readyForTrialOrHearing = false; // TODO: retrieve the actual value that is selected in CIV-9126
       const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, getLng(lang), readyForTrialOrHearing);
-      res.render('features/caseProgression/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent});
+      const latestUpdateUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
+      res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});
     }
   } catch (error) {
     next(error);
