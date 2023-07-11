@@ -98,11 +98,7 @@
       "WEB_CHAT": "Web chat",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
-      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later.",
-      "ASK_A_QUESTION": "Ask a question or get help in your language.",
-      "OPENING_HOURS_TRIAL": "Monday to Friday, 9am to 5pm.",
-      "ENGLAND_AND_WALES": " (England & Wales)",
-      "SCOTLAND": " (Scotland)"
+      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
     "COOKIE_BANNER": {
       "ACCEPT_BUTTON": "Accept additional cookies",
@@ -407,7 +403,7 @@
       "CCJ_INSTALMENTS_OF": "Instalments of",
       "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",   
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
