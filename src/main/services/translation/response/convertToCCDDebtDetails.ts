@@ -6,6 +6,7 @@ import {
 } from 'models/ccdResponse/ccdDebtDetails';
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
+import {convertToPence} from 'services/translation/claim/moneyConversation';
 
 export const toCCDDebtDetails = (priorityDebts: PriorityDebts): CCDDebtDetails => {
   if (!priorityDebts) return undefined;
@@ -44,7 +45,7 @@ const toCCDDebtDetailsItem = (transactionSource: TransactionSource, debtType: CC
   const ccdDebtDetails: CCDDebtDetailsList = {
     value: {
       debtType: debtType,
-      paymentAmount: transactionSource?.amount,
+      paymentAmount: convertToPence(transactionSource?.amount),
       paymentFrequency: toCCDPaymentFrequency(transactionSource?.schedule),
     },
   };
