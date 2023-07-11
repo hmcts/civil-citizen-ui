@@ -1367,7 +1367,10 @@
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial or hearing",
         "RETURN_TO_CASE_DETAILS": "Return to case details",
         "WHAT_HAPPENS_NEXT": "What happens next",
-        "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the hearing date you will need to call 0300 123 7050."
+        "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the hearing date you will need to call 0300 123 7050.",
+        "NOTICES_AND_ORDERS": "Notices and orders",
+        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under '",
+        "IN_THE_CASE_DETAILS": "' in the case details."
       }
     },
     "FINANCIAL_DETAILS": {
