@@ -83,10 +83,10 @@ module.exports = {
         ],
         sdoOrderDocument: {
           documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/a0f3285f-6f83-4f21-b9e6-26400be50aee',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/a0f3285f-6f83-4f21-b9e6-26400be50aee/binary',
+            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/edf6972d-670c-4e86-8967-cf351eb5e0d3',
+            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/edf6972d-670c-4e86-8967-cf351eb5e0d3/binary',
             document_filename: 'small_claims_sdo_000MC037.pdf',
-            document_hash: 'd3c32d0a8a03951a59b52c708d6c2a81faf19efa88b7c83c019c26d700676083',
+            document_hash: '371dfa9cf0a2e63e40ab45a4fcc2b4b02934349c8e62e6cb94b2bd57a7af932',
             category_id: 'sdo',
           },
           documentName: 'small_claims_sdo_000MC037.pdf',
