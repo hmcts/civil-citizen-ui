@@ -2041,7 +2041,8 @@
         "STREET": "21-27 St. Katharine`s Street",
         "TITLE": "Hawliadau am Arian yn y Llys Sifil"
       },
-      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen."
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen.",
+      "CLAIM_FEE": "% of claim value"
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "Naddo, nid wyf wedi’u cael eto",
