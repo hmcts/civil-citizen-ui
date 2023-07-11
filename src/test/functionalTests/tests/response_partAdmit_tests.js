@@ -14,6 +14,7 @@ let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 Feature('Response with PartAdmit');
 
@@ -23,6 +24,7 @@ Before(async ({api}) => {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
   securityCode = caseData.respondent1PinToPostLRspec.accessCode;
+  await delay(10000);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   if (claimRef) {
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
