@@ -15,6 +15,7 @@ import {AllResponseTasksCompletedGuard} from 'routes/guards/allResponseTasksComp
 import {submitResponse} from 'services/features/response/submission/submitResponse';
 import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
+import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();
@@ -29,7 +30,8 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 }
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
-  AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
+  [AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
+    isFirstTimeInPCQ],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
