@@ -2,10 +2,10 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% from "../../macro/page-title.njk" import setPageTitle %}}
-{% from "../dashboard/item-content.njk" import itemContent %}
-{% from "../../macro/external-link.njk" import externalLink %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/external-link.njk" import externalLink %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.PAGE_TITLE') }}
@@ -32,7 +32,7 @@
       <div class="form-group">
         {{ govukButton({
           text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.RETURN_TO_CASE_DETAILS'),
-          href: '/dashboard'
+          href: latestUpdateUrl
         }) }}
       </div>
     </div>
