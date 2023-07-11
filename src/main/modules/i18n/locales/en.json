@@ -2041,7 +2041,8 @@
         "STREET": "21-27 St. Katharine`s Street",
         "TITLE": "Civil Money Claims"
       },
-      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this."
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this.",
+      "CLAIM_FEE": "{{percentage}}% of claim value"
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
