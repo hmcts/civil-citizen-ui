@@ -42,8 +42,25 @@ describe('translate repayment plan to ccd', ()=> {
     const ccdRepaymentPlan = toCCDRepaymentPlan(repaymentPlan);
     //Then
     expect(ccdRepaymentPlan.firstRepaymentDate).toBe(repaymentPlan.firstRepaymentDate);
-    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount);
+    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount*100);
   });
+  it('should translate undefined when input is undefined', ()=>{
+    //When
+    const ccdRepaymentPlan = toCCDRepaymentPlan(undefined);
+    //Then
+    expect(ccdRepaymentPlan).toBe(undefined);
+  });
+  it('should translate undefined when input values is undefined', ()=>{
+    //Given
+    const repaymentPlan = getRepaymentPlanUndefined();
+    //When
+    const ccdRepaymentPlan = toCCDRepaymentPlan(repaymentPlan);
+    //Then
+    expect(ccdRepaymentPlan.paymentAmount).toBe(undefined);
+    expect(ccdRepaymentPlan.repaymentFrequency).toBe(undefined);
+    expect(ccdRepaymentPlan.firstRepaymentDate).toBe(undefined);
+  });
+
 });
 
 const getRepaymentPlan = (frequency: string) : RepaymentPlan => {
@@ -53,3 +70,12 @@ const getRepaymentPlan = (frequency: string) : RepaymentPlan => {
     repaymentFrequency: frequency,
   };
 };
+
+const getRepaymentPlanUndefined = () : RepaymentPlan => {
+  return {
+    paymentAmount: undefined,
+    firstRepaymentDate: undefined,
+    repaymentFrequency: undefined,
+  };
+};
+
