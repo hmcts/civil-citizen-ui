@@ -155,10 +155,8 @@ describe('translate Statement Of Means to CUI model', () => {
   it('should return data if field children study has value', () => {
     //Given
     const input : CCDClaim = {
-      respondent1LiPResponse: {
-        respondent1LiPFinancialDetails : {
-          childrenEducationLiP : '1',
-        },
+      respondent1LiPFinancialDetails : {
+        childrenEducationLiP : '1',
       },
     };
     //When
@@ -172,10 +170,8 @@ describe('translate Statement Of Means to CUI model', () => {
   it('should return undefined if field children study is undefined', () => {
     //Given
     const input : CCDClaim = {
-      respondent1LiPResponse: {
-        respondent1LiPFinancialDetails : {
-          childrenEducationLiP : undefined,
-        },
+      respondent1LiPFinancialDetails : {
+        childrenEducationLiP : undefined,
       },
     };
     //When
@@ -188,9 +184,7 @@ describe('translate Statement Of Means to CUI model', () => {
   it('should return undefined if field financial details is undefined', () => {
     //Given
     const input : CCDClaim = {
-      respondent1LiPResponse: {
-        respondent1LiPFinancialDetails : undefined,
-      },
+      respondent1LiPFinancialDetails : undefined,
     };
     //When
     const output = toCUIStatementOfMeans(input);

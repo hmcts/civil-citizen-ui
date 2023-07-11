@@ -30,7 +30,8 @@ services:
     serviceAuthTokenGeneratorUrl: SERVICE_AUTH_TOKEN_GENERATOR_URL
   cmc:
     url: OCMC_URL
-
+  pcq:
+    url: PCQ_URL
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
