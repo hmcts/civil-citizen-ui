@@ -1,10 +1,11 @@
-import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
+  buildNextStepsSection,
   getNextStepsTitle,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsConfirmationBuilder';
 
-export const getTrialArrangementsConfirmationContent = (claimId: string, claim: Claim, lang: string, readyForTrialOrHearing: boolean): ClaimSummarySection[] => {
+export const getTrialArrangementsConfirmationContent = (readyForTrialOrHearing: boolean, lang: string): ClaimSummarySection[] => {
   const nextStepsTitle = getNextStepsTitle(lang);
-  return [nextStepsTitle].flat();
+  const nextStepsSection = buildNextStepsSection(readyForTrialOrHearing, lang);
+  return [nextStepsTitle, nextStepsSection].flat();
 };
