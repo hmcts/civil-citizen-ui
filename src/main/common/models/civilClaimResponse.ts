@@ -51,8 +51,12 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
+<<<<<<< HEAD
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+=======
+import {HearingDuration} from 'models/caseProgression/HearingDuration';
+>>>>>>> bbc4fd27a (CIV-9198 - Added page for hearing duration and other information in trial arrangements)
 
 export class CivilClaimResponse {
   id: string;
@@ -173,6 +177,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];

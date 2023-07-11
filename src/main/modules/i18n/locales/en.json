@@ -33,6 +33,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
     "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
@@ -122,6 +123,17 @@
       "MY_ACCOUNT": "My account",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
+    },
+    "HEARING_DURATION": {
+      "MINUTES_30": "30 minutes",
+      "MINUTES_60": "1 hour",
+      "MINUTES_90": "1 and a half hours",
+      "MINUTES_120": "2 hour",
+      "MINUTES_150": "2 and a half hour",
+      "MINUTES_180": "3 hours",
+      "MINUTES_240": "4 hours",
+      "DAY_1": "1 day",
+      "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps bellow.",
@@ -2290,6 +2302,16 @@
       "TITLE": "What is the total interest for your claim?",
       "TOTAL_AMOUNT": "Total interest amount"
     },
+    "TRIAL_ARRANGEMENTS": {
+      "TITLE": "Finalise your trial or hearing arrangements",
+      "HEARING_DURATION_TITLE": "Hearing duration",
+      "HEARING_DURATION_PARAGRAPH": "The hearing duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the hearing, you will need to liaise with the other party and make an application</span> </br> </br> The time allocated for the hearing or trial will not be increased until an application is received, the fee paid, and an order made.",
+      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Is there anything else the court needs to know (optional)?</span>",
+      "OTHER_INFORMATION_INPUT_HINT": "For example, a witness needs to leave the court by 3pm due to caring responsibilities."
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
       "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
@@ -2483,7 +2505,6 @@
       "PAGE_TITLE": "Upload your documents",
       "TITLE": "Upload your documents",
       "CASE_REFERENCE": "Case reference: {{ claimId }}",
-      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
       "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
       "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.",

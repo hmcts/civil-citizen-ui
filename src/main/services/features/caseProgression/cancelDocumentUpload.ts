@@ -7,7 +7,7 @@ export const getCancelYourUpload = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
     .addMainTitle('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE')
     .addLeadParagraph('PAGES.EVIDENCE_UPLOAD_CANCEL.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
-    .addLeadParagraph('PAGES.EVIDENCE_UPLOAD_CANCEL.PARTIES', {
+    .addLeadParagraph('COMMON.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),
     })

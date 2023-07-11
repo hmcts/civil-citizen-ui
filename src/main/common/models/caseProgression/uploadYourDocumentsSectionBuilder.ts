@@ -53,6 +53,18 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
+  addTextArea(label: string, hintText?: string) {
+    const textArea = ({
+      type: ClaimSummaryType.INPUT,
+      data: {
+        text: label,
+        hint: hintText,
+      },
+    });
+    this._claimSummarySections.push(textArea);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }
