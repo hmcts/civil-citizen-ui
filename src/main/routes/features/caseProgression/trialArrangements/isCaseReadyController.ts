@@ -7,18 +7,18 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getIsCaseReady} from 'services/features/caseProgression/trialArrangements/isCaseReady';
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
+import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
+const dqPropertyName = 'isCaseReadyTrialOrHearing';
 
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     const form = new GenericForm(new IsCaseReadyForm());
-    // const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     await renderView(res, claimId, claim, form);
-    // res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), latestUpdatesUrl});
   } catch (error) {
     next(error);
   }
@@ -34,6 +34,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await renderView(res, claimId, claim, form);
     } else {
+      await saveCaseProgression(claimId, form.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
     }
   } catch (error) {

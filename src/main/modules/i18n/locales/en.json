@@ -2362,7 +2362,10 @@
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "IS_CASE_READY": "Is the case ready for trial or hearing?",
-      "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties"
+      "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
+      "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
+      "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial or hearing.",
+      "THE_TRIAL_OR": "The trial or hearing will go ahead as planned on the specified date unless a judge makes an order changing the date of the hearing. If you want the date of the hearing to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
