@@ -403,7 +403,7 @@
       "CCJ_INSTALMENTS_OF": "Instalments of",
       "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
       "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
-      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",   
+      "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
@@ -1051,9 +1051,8 @@
         "CLAIM_ENDED": "This claim has ended",
         "CLAIM_SENT_TO_CLAIMANT": "We've sent your offer to the claimant. You have rejected the claim.",
         "CLAIM_SETTLED": "This claim is settled.",
-        "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
-        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of £{{ amount }}",
-         "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
+        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of {{ amount }}",
+        "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
         "CLAIMANT_REJECT_OFFER": "The claimant has rejected you offer. You have rejected the claim.",
@@ -2052,7 +2051,8 @@
         "STREET": "21-27 St. Katharine`s Street",
         "TITLE": "Civil Money Claims"
       },
-      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this."
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "We must receive your completed form before <span class=\"govuk-body govuk-!-font-weight-bold\">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this.",
+      "CLAIM_FEE": "{{percentage}}% of claim value"
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",

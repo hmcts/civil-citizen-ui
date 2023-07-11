@@ -1051,8 +1051,7 @@
         "CLAIM_ENDED": "This claim has ended",
         "CLAIM_SENT_TO_CLAIMANT": "We've sent your offer to the claimant. You have rejected the claim.",
         "CLAIM_SETTLED": "This claim is settled.",
-        "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
-        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of £{{ amount }}",
+        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of {{ amount }}",
         "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
@@ -2052,7 +2051,8 @@
         "STREET": "21-27 St. Katharine`s Street",
         "TITLE": "Hawliadau am Arian yn y Llys Sifil"
       },
-      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen."
+      "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen.",
+      "CLAIM_FEE": "% of claim value"
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "Naddo, nid wyf wedi’u cael eto",
