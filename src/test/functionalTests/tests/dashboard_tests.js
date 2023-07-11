@@ -8,7 +8,7 @@ Before(async () => {
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Verify the content in the Dashboard page @citizenUI @smoketest @regression', async () => {
+Scenario('Verify the content in the Dashboard page @citizenUI', async () => {
   await DashboardSteps.DashboardPage();
 });
 
