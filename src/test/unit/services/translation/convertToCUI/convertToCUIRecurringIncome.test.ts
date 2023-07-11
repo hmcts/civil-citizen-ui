@@ -83,13 +83,71 @@ describe('translate Recurring Income to CUI model', () => {
     };
     expect(output).toEqual(expected);
   });
+
+  it('should return data if Recurring Income details value undefined', () => {
+    //Given
+    const input : CCDRecurringIncome[] = [
+      { value : undefined },
+    ];
+    //When
+    const output = toCUIRecurringIncome(input);
+    //Then
+    const expected : RegularIncome = {
+      job: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB)),
+      universalCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.UNIVERSAL_CREDIT)),
+      jobseekerAllowanceIncome: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED)),
+      jobseekerAllowanceContribution: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED)),
+      incomeSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.INCOME_SUPPORT)),
+      workingTaxCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.WORKING_TAX_CREDIT)),
+      childTaxCredit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_TAX_CREDIT)),
+      childBenefit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
+      councilTaxSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
+      pension: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.PENSION)),
+      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined(IncomeType.OTHER)]),
+    };
+    expect(output).toEqual(expected);
+  });
+
+  it('should return data if Recurring Income details data exist', () => {
+    //Given
+    const input : CCDRecurringIncome[] = [
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.JOB)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.UNIVERSAL_CREDIT)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.JOBSEEKER_ALLOWANCE_INCOME)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.JOBSEEKER_ALLOWANCE_CONTRIBUTION)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.INCOME_SUPPORT)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.WORKING_TAX_CREDIT)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.CHILD_TAX)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.CHILD_BENEFIT)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.COUNCIL_TAX_SUPPORT)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.PENSION)},
+      { value : setUpCcdRecurringIncomeValueUndefined(CCDIncomeType.OTHER)},
+    ];
+    //When
+    const output = toCUIRecurringIncome(input);
+    //Then
+    const expected : RegularIncome = {
+      job: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.JOB)),
+      universalCredit: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.UNIVERSAL_CREDIT)),
+      jobseekerAllowanceIncome: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED)),
+      jobseekerAllowanceContribution: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED)),
+      incomeSupport: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.INCOME_SUPPORT)),
+      workingTaxCredit: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.WORKING_TAX_CREDIT)),
+      childTaxCredit: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.CHILD_TAX_CREDIT)),
+      childBenefit: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
+      councilTaxSupport: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
+      pension: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.PENSION)),
+      other: new OtherTransaction(true, [setUpTransactionSourceOtherValueUndefined(IncomeType.OTHER)]),
+    };
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpCcdRecurringIncome = (incomeType : CCDIncomeType) : CCDRecurringIncomeItem => {
   return {
     type: incomeType,
     typeOtherDetails: undefined,
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };
@@ -98,7 +156,7 @@ const setUpCcdRecurringOtherIncome = (incomeType : CCDIncomeType) : CCDRecurring
   return {
     type: incomeType,
     typeOtherDetails: 'test',
-    amount: 100,
+    amount: 10000,
     frequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };
@@ -106,6 +164,15 @@ const setUpCcdRecurringOtherIncome = (incomeType : CCDIncomeType) : CCDRecurring
 const setUpCcdRecurringIncomeUndefined = () : CCDRecurringIncomeItem => {
   return {
     type: undefined,
+    typeOtherDetails: undefined,
+    amount: undefined,
+    frequency: undefined,
+  };
+};
+
+const setUpCcdRecurringIncomeValueUndefined = (incomeType : CCDIncomeType) : CCDRecurringIncomeItem => {
+  return {
+    type: incomeType,
     typeOtherDetails: undefined,
     amount: undefined,
     frequency: undefined,
@@ -156,6 +223,18 @@ const setUpTransactionSourceOtherUndefined = (incomeType : IncomeType) : Transac
       schedule : undefined,
       isIncome : true,
       nameRequired : undefined,
+    },
+  );
+};
+
+const setUpTransactionSourceOtherValueUndefined = (incomeType : IncomeType) : TransactionSource => {
+  return new TransactionSource(
+    {
+      name : undefined,
+      amount : undefined,
+      schedule : undefined,
+      isIncome : true,
+      nameRequired : true,
     },
   );
 };

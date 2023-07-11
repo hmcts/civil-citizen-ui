@@ -125,12 +125,36 @@ describe('translate Priority Debts to CUI model', () => {
     };
     expect(output).toEqual(expected);
   });
+
+  it('should return undefined if Priority Debts value undefined', () => {
+    //Given
+    const input : CCDDebtDetails = {
+      debtDetails: [
+        {
+          value : undefined,
+        },
+      ],
+    };
+    //When
+    const output = toCUIPriorityDebts(input);
+    //Then
+    const expected : PriorityDebts = {
+      councilTax: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.COUNCIL_TAX_OR_COMMUNITY_CHARGE)),
+      electricity: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.ELECTRICITY_DEBT)),
+      gas: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.GAS_DEBT)),
+      maintenance: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MAINTENANCE_PAYMENTS_DEBT)),
+      mortgage: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.MORTGAGE_DEBT)),
+      rent: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.RENT_DEBT)),
+      water: new Transaction(undefined, setUpTransactionSourceUndefined(ExpenseType.WATER_DEBT)),
+    };
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpCcdPriorityDebts = (debtType : CCDDebtType) : CCDDebtDetailsItem => {
   return {
     debtType: debtType,
-    paymentAmount: 100,
+    paymentAmount: 10000,
     paymentFrequency: CCDPaymentFrequency.ONCE_ONE_WEEK,
   };
 };
