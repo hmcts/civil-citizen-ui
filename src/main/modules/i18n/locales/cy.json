@@ -1369,8 +1369,12 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the hearing date you will need to call 0300 123 7050.",
         "NOTICES_AND_ORDERS": "Notices and orders",
-        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under '",
-        "IN_THE_CASE_DETAILS": "' in the case details."
+        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under ‘",
+        "IN_THE_CASE_DETAILS": "’ in the case details.",
+        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "The trial or hearing will go ahead as planned on the specified date unless a judge makes an order changing the date of the hearing.",
+        "MAKE_AN_APPLICATION": "make an application",
+        "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "If you want the date of the hearing to be changed (or any other order to make the case ready for trial) you will need to",
+        "TO_THE_COURT_AND_PAY": "to the court and pay the appropriate fee."
       }
     },
     "FINANCIAL_DETAILS": {
