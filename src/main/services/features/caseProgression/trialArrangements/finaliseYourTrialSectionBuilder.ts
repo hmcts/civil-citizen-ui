@@ -1,8 +1,10 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
-export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+
+export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,
@@ -27,6 +29,18 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
+  addParagraphWithHTML(text: string, variables?: any) {
+    const paragraphSection = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: '<p class="govuk-body">'+text+'</p>',
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
   addInsetText(text: string, variables?: unknown) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
@@ -36,20 +50,6 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(insetSection);
-    return this;
-  }
-
-  addStartButton(title: string, href: string) {
-    const startButtonSection = ({
-      type: ClaimSummaryType.BUTTON,
-      data: {
-        text: title,
-        //TODO: (href) in the future we should add in here the document url (it is in development)
-        href: href,
-        isStartButton: true,
-      },
-    });
-    this._claimSummarySections.push(startButtonSection);
     return this;
   }
 

@@ -228,3 +228,4 @@ export const CP_CHECK_ANSWERS_URL = `${BASE_CASE_PROGRESSION_URL}/check-and-send
 export const CP_EVIDENCE_UPLOAD_SUBMISSION_URL = `${BASE_CASE_PROGRESSION_URL}/documents-uploaded`;
 export const CP_UPLOAD_FILE = '/upload-file';
 export const TRIAL_ARRANGEMENTS_HEARING_DURATION= `${BASE_CASE_PROGRESSION_URL}/hearing-duration-other-info`;
+export const TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS= `${BASE_CASE_PROGRESSION_URL}/check-trial-arrangements`;

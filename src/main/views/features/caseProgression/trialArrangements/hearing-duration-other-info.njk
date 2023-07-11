@@ -7,6 +7,10 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.TRIAL_ARRANGEMENTS.TITLE') }}
+{% endblock %}
+
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
@@ -31,10 +35,9 @@
                   text: t('PAGES.TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_HINT')
                 }
               }) }}
-              {{govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE'),
-                href: cyaURL
-              })}}
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
               <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </form>
           </div>

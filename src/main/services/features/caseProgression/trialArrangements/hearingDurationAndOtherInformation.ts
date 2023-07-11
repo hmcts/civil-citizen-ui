@@ -1,9 +1,11 @@
 import {Claim} from 'models/claim';
-import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {t} from 'i18next';
+import {
+  FinaliseYourTrialSectionBuilder,
+} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 
 export const getHearingDurationAndOtherInformation = (claim: Claim, caseIdPrettified?: string) => {
-  return new UploadYourDocumentsSectionBuilder()
+  return new FinaliseYourTrialSectionBuilder()
     .addMainTitle(t('PAGES.TRIAL_ARRANGEMENTS.TITLE'))
     .addLeadParagraph(t('COMMON.CLAIM_NUMBER')+': {{claimId}}', {claimId: caseIdPrettified})
     .addLeadParagraph('COMMON.PARTIES', {
