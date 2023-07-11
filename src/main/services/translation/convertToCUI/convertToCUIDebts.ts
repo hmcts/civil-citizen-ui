@@ -3,6 +3,7 @@ import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {CCDLoanCredit} from 'models/ccdResponse/ccdLoanCredit';
 import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
 import {toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
+import {convertToPoundInStringFormat} from 'services/translation/claim/moneyConversation';
 
 export const toCUIDebts = (debtDeclared: YesNoUpperCamelCase, debtItems: CCDLoanCredit[]): Debts => {
   if (debtDeclared) {
@@ -18,8 +19,9 @@ const toCUIDebtsList = (ccdDebtItems: CCDLoanCredit[]): DebtItems[] => {
     return ccdDebtItems.map((ccdDebtItem: CCDLoanCredit) => {
       return new DebtItems(
         ccdDebtItem.value?.loanCardDebtDetail,
-        ccdDebtItem.value?.totalOwed?.toString(),
-        ccdDebtItem.value?.monthlyPayment?.toString());
+        convertToPoundInStringFormat(ccdDebtItem.value?.totalOwed),
+        convertToPoundInStringFormat(ccdDebtItem.value?.monthlyPayment),
+      );
     });
   }
 };
