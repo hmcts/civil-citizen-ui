@@ -15,7 +15,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     const claim = await getClaimById(claimId, req);
     if (!claim.isEmpty()) {
       const readyForTrialOrHearing = false; // TODO: retrieve the actual value that is selected in CIV-9126
-      const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(readyForTrialOrHearing, getLng(lang));
+      const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, getLng(lang), readyForTrialOrHearing);
       res.render('features/caseProgression/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent});
     }
   } catch (error) {
