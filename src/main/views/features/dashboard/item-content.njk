@@ -7,6 +7,7 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 
 {% macro itemContent(content) %}
   {% if content.type === ClaimSummaryType.HTML %}
@@ -144,32 +145,7 @@
            hint: {
              text: t(content.data.hint)
            },
-           attributes: {
-             'data-name': content.data.category+'[%index%]['+content.data.field+']',
-             'data-id': content.data.category+'[%index%]['+content.data.field+']'
-           }
-        }) }}
-      </fieldset>
-     </div>
-  {% endif %}
-
-  {% if content.type === ClaimSummaryType.INPUT_ARRAY_ERROR %}
-     <div>
-      <fieldset class="govuk-fieldset">
-        {{ govukInput({
-           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           value: content.data.value,
-           classes: 'govuk-!-width-three-half '+content.data.classes,
-           label: {
-             html: '<strong>'+ t(content.data.text)+'</strong>'
-           },
-           hint: {
-             text: t(content.data.hint)
-           },
-           errorMessage: {
-             text: t(content.data.error)
-           },
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
            attributes: {
              'data-name': content.data.category+'[%index%]['+content.data.field+']',
              'data-id': content.data.category+'[%index%]['+content.data.field+']'
@@ -297,19 +273,27 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SELECT %}
-    <div class="govuk-form-group {{ content.data.classes }}">
-      <label class="govuk-label" for="subject">
-        <strong>{{ t(content.data.text) }}</strong>
-      </label>
-      <div id="subject-hint" class="govuk-hint">
-        {{ t(content.data.hint) }}
-      </div>
-      <select class="govuk-select govuk-!-width-full" id={{ content.data.category+'[0]'+content.data.field }} name={{ content.data.category+'[0]'+content.data.field }} aria-describedby="subject-hint">
-        <option value={{ form.model.name }} selected>{{ t(content.data.choose) }}</option>
-        {% for item in content.data.items %}
-          <option value={{ item }}>{{ item }}</option>
-        {% endfor %}
-      </select>
+    <div>
+      <fieldset class="govuk-fieldset">
+        {{ govukSelect({
+          id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+          name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+          value: content.data.value,
+          classes: 'govuk-!-width-three-half '+content.data.classes,
+          hint: {
+            text: t(content.data.hint)
+          },
+          errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
+          label: {
+            html: '<strong>'+ t(content.data.text)+'</strong>'
+          },
+          items: content.data.items,
+          attributes: {
+            'data-name': content.data.category+'[%index%]['+content.data.field+']',
+            'data-id': content.data.category+'[%index%]['+content.data.field+']'
+          }
+        }) }}
+      </fieldset>
     </div>
   {% endif %}
 {% endmacro %}
