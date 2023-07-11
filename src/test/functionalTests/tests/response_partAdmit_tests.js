@@ -1,6 +1,7 @@
 const config =  require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
@@ -14,26 +15,23 @@ let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claimRef has been created Successfully for Part Admit Tests   <===>  '  , claimRef);
+  console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = caseData.legacyCaseReference;
-  securityCode = caseData.respondent1PinToPostLRspec.accessCode;
-  await delay(10000);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  } else {
-    console.log('claimRef has not been Created');
-  }
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -57,6 +55,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -81,6 +80,7 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
 });
 
 Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -107,6 +107,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
 });
 
 Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

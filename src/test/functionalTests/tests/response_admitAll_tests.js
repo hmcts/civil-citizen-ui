@@ -14,26 +14,23 @@ let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 Feature('Response with AdmitAll @regression');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+  console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = caseData.legacyCaseReference;
-  securityCode = caseData.respondent1PinToPostLRspec.accessCode;
-  await delay(10000);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  } else {
-    console.log('claimRef has not been Created');
-  }
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smoketest @regression', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smoketest', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await DashboardSteps.DashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -50,6 +47,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smo
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -67,6 +65,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

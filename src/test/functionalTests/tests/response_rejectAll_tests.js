@@ -15,7 +15,7 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+  console.log('claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -48,7 +48,8 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', 
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @test', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
