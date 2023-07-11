@@ -1,6 +1,7 @@
 import {CCDCourtOrders} from 'models/ccdResponse/ccdCourtOrders';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
+import {convertToPence} from 'services/translation/claim/moneyConversation';
 
 export const toCCDCourtOrders = (courtOrders: CourtOrders): CCDCourtOrders[] => {
   if (!courtOrders?.rows) return undefined;
@@ -8,8 +9,8 @@ export const toCCDCourtOrders = (courtOrders: CourtOrders): CCDCourtOrders[] => 
     return {
       value: {
         claimNumberText: courtOrder.claimNumber,
-        amountOwed: courtOrder.amount,
-        monthlyInstalmentAmount: courtOrder.instalmentAmount,
+        amountOwed: convertToPence(courtOrder.amount),
+        monthlyInstalmentAmount: convertToPence(courtOrder.instalmentAmount),
       },
     };
   });
