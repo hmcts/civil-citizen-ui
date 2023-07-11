@@ -11,7 +11,6 @@ describe('translate CCDMediation to CUI Mediation model', () => {
   it('should return undefined if CCDmediation doesnt exist', () => {
     const respondent1LiPResponse : CCDRespondentLiPResponse = {
       respondent1MediationLiPResponse : undefined,
-      respondent1LiPFinancialDetails: undefined,
     };
     const mediationCUI = toCUIMediation(respondent1LiPResponse.respondent1MediationLiPResponse);
     expect(mediationCUI).toBe(undefined);
