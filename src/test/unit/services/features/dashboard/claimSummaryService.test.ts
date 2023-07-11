@@ -14,16 +14,16 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
-  
+
     // When
     const result = getDocumentsContent(new Claim(), claimId, lang);
-      
+
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(1);
-  
+    expect(result[0].contentSections).toHaveLength(2);
+
     const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
-  
+
     expect(result[0].contentSections[0]).toEqual(downloadClaimSection);
   });
 });
