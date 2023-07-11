@@ -207,7 +207,7 @@ describe('translate partial admission to cui model', () => {
       const ccdClaim: CCDClaim = {
         defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.REPAYMENT_PLAN,
         respondent1RepaymentPlan: <CCDRepaymentPlan>{
-          paymentAmount: 55,
+          paymentAmount: 5500,
           repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
           firstRepaymentDate: new Date('2022-03-25'),
         },
@@ -271,7 +271,7 @@ describe('translate partial admission to cui model', () => {
     });
     it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with paymentAmount field', () => {
       // Given
-      const ccdRepaymentPlan = {paymentAmount: 55} as CCDRepaymentPlan;
+      const ccdRepaymentPlan = {paymentAmount: 5500} as CCDRepaymentPlan;
       // When
       const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan);
       // Then
@@ -302,7 +302,7 @@ describe('translate partial admission to cui model', () => {
     it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with all fields', () => {
       // Given
       const ccdRepaymentPlan = {
-        paymentAmount: 55,
+        paymentAmount: 5500,
         firstRepaymentDate: new Date('2022-03-25'),
         repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
       } as CCDRepaymentPlan;
