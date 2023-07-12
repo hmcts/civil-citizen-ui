@@ -1,4 +1,3 @@
-/*
 function createLoading(event) {
   const eventId = event.target.id;
   const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
@@ -37,44 +36,49 @@ function removeErrors(newRow) {
 
 // Event listener for 'change' event
 async function handleChange(event) {
-  // Handle the change event
-  const objectId = event.target.id; // Get the object identifier
-  const target = event.target;
-  createLoading(event);
-  removeErrors(event);
-  const csrfToken = document.getElementsByName('_csrf')[0].value;
-  const formData = new FormData();
-  formData.append('file', target.files[0]);
+  try{
+// Handle the change event
+    const objectId = event.target.id; // Get the object identifier
+    const target = event.target;
+    createLoading(event);
+    removeErrors(event);
+    const csrfToken = document.getElementsByName('_csrf')[0].value;
+    const formData = new FormData();
+    formData.append('file', target.files[0]);
 
-  const options = {
-    method: 'POST',
-    headers: {
-      'CSRF-Token': csrfToken,
-    },
-    body: formData,
-  };
+    const options = {
+      method: 'POST',
+      headers: {
+        'CSRF-Token': csrfToken,
+      },
+      body: formData,
+    };
 
-  const response = await fetch('/upload-file', options);
-  const parsed = await response.json();
-  if (response.status === 400) {
-    removeLoading(event);
-    target.value = '';
-    const formGroup = target.closest('div');
-    formGroup.classList.add('govuk-form-group--error');
+    const response = await fetch('/upload-file', options);
+    const parsed = await response.json();
+    if (response.status === 400) {
+      removeLoading(event);
+      target.value = '';
+      const formGroup = target.closest('div');
+      formGroup.classList.add('govuk-form-group--error');
 
-    parsed.errors.forEach((item) => {
-      const errorMessage = document.createElement('p');
-      errorMessage.id = `${objectId}-error`;
-      errorMessage.classList.add('govuk-error-message');
-      errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
-      target.parentNode.insertBefore(errorMessage, target);
-    });
-    target.classList.add('govuk-file-upload--error');
-    target.setAttribute('aria-describedby', `${objectId}-error`);
+      parsed.errors.forEach((item) => {
+        const errorMessage = document.createElement('p');
+        errorMessage.id = `${objectId}-error`;
+        errorMessage.classList.add('govuk-error-message');
+        errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
+        target.parentNode.insertBefore(errorMessage, target);
+      });
+      target.classList.add('govuk-file-upload--error');
+      target.setAttribute('aria-describedby', `${objectId}-error`);
+    }
+    if (response.status === 200) {
+      removeLoading(event);
+    }
+  } catch (error) {
+    console.log(error);
   }
-  if (response.status === 200) {
-    removeLoading(event);
-  }
+
 }
 
 function createObservable() {
@@ -120,4 +124,3 @@ if (window.location.href.includes('upload-documents')) {
 
 }
 
-*/
