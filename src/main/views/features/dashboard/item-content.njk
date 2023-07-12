@@ -19,8 +19,12 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.TITLE %}
+ -  {% set object = '' %}
     {% if content.data.classes %}
       <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+    {% elif  content.data.variables %}
+       {% set object = content.data.variables %}
+       <h3 class="govuk-heading-m">{{ t(content.data.text,object) }}</h3>
     {% else %}
       <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
     {% endif %}
@@ -31,22 +35,22 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
-      {% set object = '' %}
-      {% if content.data.variables %}
-          {% set object = content.data.variables %}
-          <p class="govuk-body-l">{{ t(content.data.text,object)}}</p>
-      {% else %}
-          <p class="govuk-body-l">{{ t(content.data.text)}}</p>
-      {% endif %}
+    {% set object = '' %}
+    {% if content.data.variables %}
+      {% set object = content.data.variables %}
+      <p class="govuk-body-l">{{ t(content.data.text,object) }}</p>
+    {% else %}
+      <p class="govuk-body-l">{{ t(content.data.text) }}</p>
+    {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
     {% if content.data.variables %}
-        {% set object = content.data.variables %}
-        <p class="govuk-body">{{ t(content.data.text,object)}}</p>
+      {% set object = content.data.variables %}
+      <p class="govuk-body">{{ t(content.data.text,object) }}</p>
     {% else %}
-        <p class="govuk-body">{{ t(content.data.text)}}</p>
+      <p class="govuk-body">{{ t(content.data.text) }}</p>
     {% endif %}
   {% endif %}
 
@@ -77,12 +81,14 @@
   {% if content.type === ClaimSummaryType.LINK %}
     <p class="govuk-body govuk-!-margin-bottom-1">{{ t(content.data.textBefore) }}
       {% set object = '' %}
-        {% if content.data.variables %}
-          {% set object = content.data.variables %}
-          <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
-        {% else %}
-          <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
-        {% endif %}
+      {% if content.data.variables %}
+        {% set object = content.data.variables %}
+        <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
+      {% elif  content.data.externalLink %}
+         <a class="govuk-link" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
+      {% else %}
+        <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+      {% endif %}
       {{ t(content.data.textAfter) }}
     </p>
     <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
@@ -109,7 +115,7 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INPUT %}
-     <div>
+    <div>
       {{ govukInput({
          id: "name",
          name: "name",
@@ -122,7 +128,7 @@
              text: t(content.data.hint)
          }
       }) }}
-     </div>
+    </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
@@ -209,7 +215,7 @@
              }
            ]
         }) }}
-     </div>
+    </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
@@ -232,8 +238,8 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD %}
-     <div class="govuk-inset-text">
-        {{ govukFileUpload({
+    <div class="govuk-inset-text">
+      {{ govukFileUpload({
            id: content.data.id,
            name: content.data.name,
            label: {
@@ -244,8 +250,8 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE %}
-     <div>
-        {{ govukDateInput({
+    <div>
+      {{ govukDateInput({
            id: content.data.id,
            namePrefix: content.data.name,
            fieldset: {
@@ -259,7 +265,7 @@
             text: t(content.data.hint)
            }
         }) }}
-     </div>
+    </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.WARNING %}
@@ -267,13 +273,13 @@
       <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
       <strong class="govuk-warning-text__text">
         <span class="govuk-warning-text__assistive">Warning</span>
-          {% set object = '' %}
-          {% if content.data.variables %}
-            {% set object = content.data.variables %}
-            {{ t(content.data.text,object)}}
-          {% else %}
-            {{ t(content.data.text)}}
-          {% endif %}
+        {% set object = '' %}
+        {% if content.data.variables %}
+          {% set object = content.data.variables %}
+          {{ t(content.data.text,object) }}
+        {% else %}
+          {{ t(content.data.text) }}
+        {% endif %}
       </strong>
     </div>
   {% endif %}
