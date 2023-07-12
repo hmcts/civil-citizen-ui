@@ -9,9 +9,9 @@ import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
-import {Mediation} from "models/mediation/mediation";
-import {GenericYesNo} from "form/models/genericYesNo";
-import {NoMediationReason} from "form/models/mediation/noMediationReason";
+import {Mediation} from 'models/mediation/mediation';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {NoMediationReason} from 'form/models/mediation/noMediationReason';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
