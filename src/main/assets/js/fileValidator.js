@@ -37,7 +37,7 @@ function removeErrors(newRow) {
 // Event listener for 'change' event
 async function handleChange(event) {
   try{
-// Handle the change event
+    // Handle the change event
     const objectId = event.target.id; // Get the object identifier
     const target = event.target;
     createLoading(event);
