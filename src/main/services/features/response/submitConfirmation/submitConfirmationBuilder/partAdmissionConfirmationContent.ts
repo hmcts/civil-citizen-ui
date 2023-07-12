@@ -89,7 +89,7 @@ const getSubtitleIfClaimantAccepstOffer = (claimantName: string, lang: string) =
 
 export const getPAPayImmediatelyStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -106,7 +106,7 @@ export const getPAPayImmediatelyStatus = (claim: Claim, lang: string): ClaimSumm
 
 export const getPAPayByDateStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const paymentDate = formatDateToFullDate(claim.partialAdmission?.paymentIntention?.paymentDate, lang);
 
   return [
@@ -132,7 +132,7 @@ export const getPAPayByDateStatus = (claim: Claim, lang: string): ClaimSummarySe
 
 export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
 
   return [
     {
@@ -156,7 +156,7 @@ export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSum
 
 export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const claimAmount = claim.totalClaimAmount;
 
   return [
@@ -202,7 +202,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
 
 export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const paymentDate = formatDateToFullDate(claim.partialAdmission?.paymentIntention?.paymentDate, lang);
   const claimAmount = claim.totalClaimAmount;
 
@@ -255,7 +255,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
   const claimAmount = claim.totalClaimAmount;
   const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
   const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
-  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount.toFixed(2);
+  const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
 
   return [
     {
