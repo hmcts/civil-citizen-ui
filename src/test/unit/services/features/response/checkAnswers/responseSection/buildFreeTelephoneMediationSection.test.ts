@@ -48,7 +48,7 @@ describe('Free Telephone Mediation Section', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NAME);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('userTest');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('contactTest');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].value.html).toBe('123456');
   });

@@ -9,17 +9,29 @@ import {
   CAN_WE_USE_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
 } from '../../../../../routes/urls';
-import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
+import {YesNo, YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
-    return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
+    if (claim.mediation?.companyTelephoneNumber.option === YesNo.YES) {
+      return claim.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation;
+    } else {
+      return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
+    }
   } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
     return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
     return claim.respondent1?.partyPhone?.phone;
+  }
+};
+
+const getContactName = (claim: Claim) => {
+  if (claim.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
+    return claim.mediation.companyTelephoneNumber.mediationContactPerson;
+  } else {
+    return claim.respondent1.partyDetails.contactPerson;
   }
 };
 
@@ -39,7 +51,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = getContactNumber(claim);
-  const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.partyDetails.contactPerson;
+  const contactName = getContactName(claim);
   const canWeUse = getCanWeUse(claim);
 
   let freeTelephoneMediationSection: SummarySection = null;
