@@ -3,7 +3,7 @@ import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL,
-  IS_CASE_READY_URL
+  IS_CASE_READY_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
