@@ -14,6 +14,7 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {toCUIGenericYesNo} from './convertToCUIYesNo';
 import {addFiveDaysBefore4pm} from 'common/utils/dateUtils';
+import {convertToPound} from 'services/translation/claim/moneyConversation';
 
 export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
   const partialAdmission = new PartialAdmission();
@@ -68,7 +69,8 @@ export function toCUIPaymentOption(paymentOption: CCDPaymentOption): PaymentOpti
 
 export function toCUIRepaymentPlan(respondentRepaymentPlan: CCDRepaymentPlan): RepaymentPlan {
   return {
-    ...respondentRepaymentPlan,
+    paymentAmount: convertToPound(respondentRepaymentPlan?.paymentAmount),
+    firstRepaymentDate: respondentRepaymentPlan?.firstRepaymentDate,
     repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency),
   } as RepaymentPlan;
 }
