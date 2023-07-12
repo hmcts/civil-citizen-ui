@@ -7,6 +7,10 @@ class DashboardPage {
 
   async verifyClaimNumberOnDashboard(claimNumber){
     await I.waitForText('Claims made against you');
+    await I.waitForText('Claim number');
+    await I.waitForText('Claimant name');
+    await I.waitForText('Claim amount');
+    await I.waitForText('Status');
     await I.see(claimNumber);
   }
 

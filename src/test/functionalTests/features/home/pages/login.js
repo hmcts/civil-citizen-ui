@@ -22,6 +22,7 @@ class LoginPage  {
   }
 
   async login (email, password) {
+    await I.waitForText('Email address');
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
