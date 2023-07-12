@@ -1,7 +1,7 @@
 import {
   mockCivilClaim,
 } from '../../../../../utils/mockDraftStore';
-import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -19,7 +19,7 @@ const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
-describe('Cancel document upload - On GET', () => {
+describe('Is case ready - On GET', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -60,7 +60,7 @@ describe('Cancel document upload - On GET', () => {
   });
 });
 
-describe('Cancel document upload - on POST', () => {
+describe('Is case ready - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
@@ -82,7 +82,7 @@ describe('Cancel document upload - on POST', () => {
       });
   });
 
-  it('should redirect to upload-documents page', async () => {
+  it('should redirect to Has anything changed page', async () => {
 
     //Given
     nock(civilServiceUrl)
