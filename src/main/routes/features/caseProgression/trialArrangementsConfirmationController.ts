@@ -14,7 +14,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req);
     if (!claim.isEmpty()) {
-      const readyForTrialOrHearing = false; // TODO: retrieve the actual value that is selected in CIV-9126
+      const readyForTrialOrHearing = true; // TODO: retrieve the actual value that is selected in CIV-9126
       const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, getLng(lang), readyForTrialOrHearing);
       const latestUpdateUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
       res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});
