@@ -33,17 +33,9 @@
       {% set object = '' %}
       {% if content.data.variables %}
         {% set object = content.data.variables %}
-        {% if content.data.classes %}
           <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
-        {% else %}
-          <p class="govuk-body-l">{{ t(content.data.text,object)}}</p>
-        {% endif %}
       {% else %}
-        {% if content.data.classes %}
           <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
-        {% else %}
-          <p class="govuk-body-l">{{ t(content.data.text)}}</p>
-        {% endif %}
       {% endif %}
   {% endif %}
 
