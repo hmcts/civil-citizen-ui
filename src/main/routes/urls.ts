@@ -225,3 +225,4 @@ export const TYPES_OF_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/type-of-docu
 export const UPLOAD_YOUR_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/upload-your-documents`;
 export const CP_EVIDENCE_UPLOAD_SUBMISSION_URL = `${BASE_CASE_PROGRESSION_URL}/documents-uploaded`;
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/finalise-trial-arrangements`;
+export const IS_CASE_READY_URL = `${BASE_CASE_PROGRESSION_URL}/is-case-ready`;
