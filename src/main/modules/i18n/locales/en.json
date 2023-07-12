@@ -1549,7 +1549,7 @@
       "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
       "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
       "TELEPHONE": "Telephone: 0300 123 7050",
-      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm.",
       "THE_COURT_ENDED_THE_CLAIM": "The court ended the claim",
       "THE_COURT_WILL_REVIEW_THE_CASE": "The court will review the case. We’ll email you if we set a hearing date to tell you how to prepare.",
       "THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM": "They accept that you’ve paid them {{ partAmount }}, but believe you owe the full {{ fullAmount}} claimed.",
