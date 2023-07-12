@@ -2376,6 +2376,9 @@
       },
       "YEAR": "Year"
     },
+    "HAS_ANYTHING_CHANGED": {
+      "PAGE_TITLE": "Has anything changed to the support"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
       "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",

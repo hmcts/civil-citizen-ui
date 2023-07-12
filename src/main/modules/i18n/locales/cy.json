@@ -2376,6 +2376,9 @@
       },
       "YEAR": "Year"
     },
+    "HAS_ANYTHING_CHANGED": {
+      "PAGE_TITLE": "Has anything changed to the support"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Cwestiynau bregusrwydd",
       "QUESTION_1": "Diffinnir hyn fel rhywun sydd wedi dioddef camdriniaeth ddomestig neu ryw fath arall o gamdriniaeth, rhywun sydd ag anabledd dysgu, anabledd corfforol, salwch meddyliol neu ddiffyg galluedd meddyliol.  Bydd y llys yn ystyried pa addasiadau neu gymorth y bydd yr unigolyn ei angen",

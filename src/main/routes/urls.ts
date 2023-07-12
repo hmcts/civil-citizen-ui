@@ -224,3 +224,4 @@ export const CP_EVIDENCE_UPLOAD_CANCEL = `${BASE_CASE_PROGRESSION_URL}/cancel-do
 export const TYPES_OF_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/type-of-documents`;
 export const UPLOAD_YOUR_DOCUMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/upload-your-documents`;
 export const CP_EVIDENCE_UPLOAD_SUBMISSION_URL = `${BASE_CASE_PROGRESSION_URL}/documents-uploaded`;
+export const HAS_ANYTHING_CHANGED_URL = `${BASE_CASE_PROGRESSION_URL}/has-anything-changed`;
