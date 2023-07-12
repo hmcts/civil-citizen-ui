@@ -5,7 +5,7 @@ const config = require('../../config');
 Feature('Verify Dashboard page');
 
 Before(async () => {
-  await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
 Scenario('Verify the content in the Dashboard page @citizenUI @smoketest @regression', async () => {

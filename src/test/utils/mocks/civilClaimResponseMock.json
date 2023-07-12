@@ -7,6 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "pcqId":"123",
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
       "code": "FEE0204",
@@ -284,13 +285,21 @@
           "trial": [
             {"documentType": "CASE_SUMMARY", "selected": true},
             {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       },
       "defendantUploadDocuments":{
           "trial": [
             {"documentType": "CASE_SUMMARY", "selected": true},
             {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       }
     }
   }

@@ -87,7 +87,7 @@
                               value: 'summary',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
                                                           hint: {
-                                                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT')
+                                                                html: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') + "<a href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>" + t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') + "</a>"
                                                           },
                               checked: true if form.model.witness[1].selected
                             },
@@ -131,7 +131,7 @@
                                 value: 'report',
                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT'),
                                 hint: {
-                                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT_HINT')
+                                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERTS_REPORT_HINT')
                                 },
                                 checked: true if form.model.expert[0].selected
                               }
@@ -142,7 +142,7 @@
                                 value: 'statement',
                                 text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS'),
                                 hint: {
-                                     text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_REFERRED_TO_STATEMENT_HINT')
+                                     text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS_HINT')
                                 },
                                 checked: true if form.model.expert[1].selected
                               },
