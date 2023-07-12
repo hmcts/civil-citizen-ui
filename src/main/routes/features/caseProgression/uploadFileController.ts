@@ -4,6 +4,8 @@ import {GenericForm} from 'form/models/genericForm';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {EvidenceUploadWitness} from 'models/document/documentType';
 import {t} from 'i18next';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadFileController');
 
 const multer = require('multer');
 const fileSize = Infinity;
@@ -24,8 +26,12 @@ const upload = multer({
 const uploadFileController = Router();
 
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
+  logger.info('uploadFileController ' + req);
+
   try {
     const uploadDocumentsForm = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+    logger.info('after mapToSingleFile ' + req);
+
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const form = new GenericForm(uploadDocumentsForm);
@@ -54,6 +60,8 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
       });
     }
   } catch (error) {
+    logger.info('catch error ' + error);
+
     res.status(500).json({
       errors: error.message,
     });
