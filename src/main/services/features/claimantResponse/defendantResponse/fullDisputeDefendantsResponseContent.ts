@@ -229,3 +229,12 @@ export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: strin
     ...getDisagreementStatementWithEvidence(claim),
   ];
 };
+
+export const buildFullDisputePaidFullResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  return [
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
+    ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
+    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
+  ];
+};
+
