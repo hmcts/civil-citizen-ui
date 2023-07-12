@@ -14,7 +14,7 @@ export function getNextStepsTitle(lang: string): ClaimSummarySection[] {
   ];
 }
 
-export function buildNextStepsSection(claimId: string, claim: Claim, lng: string, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
+export function getNextStepsSection(claimId: string, claim: Claim, lng: string, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
   if (readyForTrialOrHearing) {
     // TODO: build next steps section for CIV-9204
   } else {
