@@ -7,7 +7,7 @@ class LoginSteps  {
     await LoginPage.acceptCookies();
   }
 
-  async EnterUserCredentials(username, password) {    
+  async EnterUserCredentials(username, password) {
     await LoginPage.open();
     await this.AcceptCookies();
     await LoginPage.login(username, password);
