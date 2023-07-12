@@ -33,6 +33,7 @@ export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('server.timeout', 300000);
 
 app.locals.ENV = env;
 I18Next.enableFor(app);
