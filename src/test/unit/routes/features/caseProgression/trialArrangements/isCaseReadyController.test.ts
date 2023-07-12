@@ -78,7 +78,7 @@ describe('Is case ready - on POST', () => {
       });
   });
 
-  it('should redirect to Has anything changed page when one option is selected', async () => {
+  it('should redirect to "Has anything changed" page when one option is selected', async () => {
 
     //Given
     nock(civilServiceUrl)
