@@ -16,7 +16,32 @@ export function getNextStepsTitle(lang: string): ClaimSummarySection[] {
 
 export function getNextStepsSection(claimId: string, claim: Claim, lng: string, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
   if (readyForTrialOrHearing) {
-    // TODO: build next steps section for CIV-9204
+    return [
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS', {lng}),
+          href: DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+          textBefore: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS', {lng}),
+          textAfter: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS', {lng}),
+        },
+      },
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION', {lng}),
+          href: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1087082/N244.pdf',
+          textBefore: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS', {lng}),
+          textAfter: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.AS_SOON_AS_POSSIBLE_AND_PAY', {lng}),
+        },
+      },
+      {
+        type: ClaimSummaryType.PARAGRAPH,
+        data: {
+          text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_PHONE', {lng}),
+        },
+      },
+    ];
   } else {
     return [
       {
