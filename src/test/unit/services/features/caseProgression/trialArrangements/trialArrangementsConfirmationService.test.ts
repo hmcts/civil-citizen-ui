@@ -10,6 +10,31 @@ jest.mock('i18next', () => ({
 }));
 
 describe('Trial arrangements confirmation service', () => {
+  it('should return trial arrangements confirmation content if claim is ready for trial or hearing', () => {
+    //Given
+    const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
+    const claimId = mockClaim.id;
+    const lang = 'en';
+    const readyForTrialOrHearing = true;
+    //When
+    const readyTrialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, mockClaim, lang, readyForTrialOrHearing);
+    //Then
+    expect(readyTrialArrangementsConfirmationContent.length).toEqual(4);
+    expect(readyTrialArrangementsConfirmationContent[0].type).toEqual(ClaimSummaryType.TITLE);
+    expect(readyTrialArrangementsConfirmationContent[0].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(readyTrialArrangementsConfirmationContent[1].type).toEqual(ClaimSummaryType.LINK);
+    expect(readyTrialArrangementsConfirmationContent[1].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS');
+    expect(readyTrialArrangementsConfirmationContent[1].data.href).toEqual(`/dashboard/${claimId}/defendant#documents`);
+    expect(readyTrialArrangementsConfirmationContent[1].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS');
+    expect(readyTrialArrangementsConfirmationContent[1].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS');
+    expect(readyTrialArrangementsConfirmationContent[2].type).toEqual(ClaimSummaryType.LINK);
+    expect(readyTrialArrangementsConfirmationContent[2].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION');
+    expect(readyTrialArrangementsConfirmationContent[2].data.href).toEqual('https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1087082/N244.pdf');
+    expect(readyTrialArrangementsConfirmationContent[2].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS');
+    expect(readyTrialArrangementsConfirmationContent[2].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.AS_SOON_AS_POSSIBLE_AND_PAY');
+    expect(readyTrialArrangementsConfirmationContent[3].type).toEqual(ClaimSummaryType.PARAGRAPH);
+    expect(readyTrialArrangementsConfirmationContent[3].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_PHONE');
+  });
   it('should return trial arrangements confirmation content if claim is not ready for trial or hearing', () => {
     //Given
     const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
