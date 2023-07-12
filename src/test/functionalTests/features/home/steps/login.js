@@ -9,19 +9,10 @@ class LoginSteps  {
   }
 
   async EnterUserCredentials(username, password) {
+    await I.wait(30);
     await LoginPage.open();
     await this.AcceptCookies();
     await LoginPage.login(username, password);
-  }
-
-  async EnterUserCredentialsAndVerifyClaimNumber(username, password, claimNumber){
-    // eslint-disable-next-line no-undef
-    await retryTo(() => {
-      LoginPage.open();
-      this.AcceptCookies();
-      LoginPage.login(username, password);
-      I.see(claimNumber);
-    }, 3);
   }
 }
 

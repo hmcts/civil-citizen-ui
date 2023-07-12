@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-//Not added regression tag due to CIV-9181
+//Not added regression tag due to CIV-9218
 Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll', async () => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);

@@ -15,17 +15,16 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claim has been created Successfully    <===>  ', claimRef);
+  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
-  await LoginSteps.EnterUserCredentialsAndVerifyClaimNumber(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

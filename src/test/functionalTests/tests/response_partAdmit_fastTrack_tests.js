@@ -16,13 +16,12 @@ Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
-  console.log('Claim has been created Successfully for Part Admit Tests   <===>  ', claimRef);
+  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 

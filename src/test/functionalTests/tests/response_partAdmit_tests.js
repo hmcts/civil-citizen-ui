@@ -20,13 +20,12 @@ Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('Claim has been created Successfully    <===>  ', claimRef);
+  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
@@ -54,7 +53,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
   }
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression', async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
