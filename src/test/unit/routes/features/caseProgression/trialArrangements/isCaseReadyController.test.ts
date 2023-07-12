@@ -1,5 +1,5 @@
 import {
-  mockCivilClaim,
+  mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -31,24 +31,20 @@ describe('Is case ready - On GET', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId)
-      .reply(200, claim);
+    app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', claimId))
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE'));
+        expect(res.text).toContain(t('PAGES.IS_CASE_READY.PAGE_TITLE'));
       });
   });
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(404, null);
+    app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', '1111'))
@@ -94,7 +90,7 @@ describe('Is case ready - on POST', () => {
       .post(IS_CASE_READY_URL.replace(':id', '1111'))
       .send({option: YesNo.NO})
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}}) => {
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'));
       });
