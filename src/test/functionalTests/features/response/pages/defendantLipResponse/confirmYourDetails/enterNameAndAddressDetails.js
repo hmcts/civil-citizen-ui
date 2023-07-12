@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   addressLine1: 'input[id="primaryAddress[addressLine1]"]',
@@ -18,6 +19,7 @@ const fields = {
 class NameAndAddressDetailsPage {
   async enterNameAndAddressDetails () {
     await I.click('Confirm your details');
+    await I.waitForElement(fields.addressLine1, config.WaitForText);
     await I.fillField(fields.addressLine1, 'Test AddressLine1');
     await I.fillField(fields.addressLine2, 'Test AddressLine2');
     await I.fillField(fields.addressLine3, 'Test AddressLine3');

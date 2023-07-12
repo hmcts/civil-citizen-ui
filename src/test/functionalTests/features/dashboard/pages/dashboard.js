@@ -1,17 +1,22 @@
+const config = require('../../../../config');
 const I = actor();
 
 class DashboardPage {
   async open () {
     await I.amOnPage('/dashboard');
   }
-  
-  async verifyDashboardPageContent () {
-    await I.see('Your money claims account');
-    await I.see('Claims you\'ve made');
-    await I.see('To view or progress your claim click on your claim number. Most recently created claims are listed first.');
+
+  async verifyClaimNumberOnDashboard(claimNumber){
+    await I.waitForText('Claims made against you', config.WaitForText);
     await I.see('Claim number');
-    await I.see('Defendant name');
+    await I.see('Claimant name');
     await I.see('Claim amount');
+    await I.see('Status');
+    await I.see(claimNumber);
+  }
+
+  async verifyDashboardPageContent () {
+    await I.waitForText('Your money claims account', config.WaitForText);
     await I.see('Claims made against you');
     await I.see('To view or progress your claim click on your claim number. Most recently created claims are listed first.');
     await I.see('Claim number');

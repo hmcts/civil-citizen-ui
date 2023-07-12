@@ -15,7 +15,7 @@ const {expect, assert} = chai;
 const {
   waitForFinishedBusinessProcess, checkToggleEnabled,
 } = require('./testingSupport');
-const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
+const {addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
@@ -103,12 +103,16 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    await assignSpecCase(caseId, multipartyScenario);
     await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  retrieveCaseData: async(user, caseId) => {
+    const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
+    return case_data;
   },
 
   createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
@@ -354,7 +358,3 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
   // eslint-disable-next-line no-unused-vars
   return dynamicElements.map(({code, ...item}) => item);
 }
-
-const assignSpecCase = async (caseId) => {
-  await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantCitizenUser);
-};

@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   firstName: 'input[id="items[0][firstName]"]',
@@ -14,7 +14,7 @@ const fields ={
 class ExpertDetails {
 
   async EnterExpertDetails() {
-    await I.see('Enter the expert’s details', 'h1');
+    await I.waitForText('Enter the expert’s details', config.WaitForText);
     await I.fillField(fields.firstName, 'Test ExpertFName');
     await I.fillField(fields.lastName, 'Test ExpertLName');
     await I.fillField(fields.emailAddress, 'test@test.com');
