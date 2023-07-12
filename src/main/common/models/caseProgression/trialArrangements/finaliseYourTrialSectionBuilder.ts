@@ -4,12 +4,13 @@ import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYo
 export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addLeadParagraphWithNoBottomMargin(text: string, variables?: unknown) {
+  addLeadParagraph(text: string, variables?: unknown, classes?: string) {
     const leadParagraphSectionWithNoMargin = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
       data: {
         text: text,
         variables: variables,
+        classes: classes,
       },
     });
     this._claimSummarySections.push(leadParagraphSectionWithNoMargin);

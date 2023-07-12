@@ -9,7 +9,7 @@ import {DocumentUri} from 'models/document/documentType';
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
-    .addLeadParagraphWithNoBottomMargin('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
+    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),

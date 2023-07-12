@@ -82,16 +82,17 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
   it('should add leadParagraph with no bottom margin', ()=> {
     //Given
     const leadParaWithNoMarginExpected = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN,
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
       data: {
         text: 'text',
         variables: 'variables',
+        classes: 'classes'
       },
     });
 
     //When
     const leadParagraphBuilt = new FinaliseYourTrialSectionBuilder()
-      .addLeadParagraphWithNoBottomMargin(leadParaWithNoMarginExpected.data.text,leadParaWithNoMarginExpected.data.variables)
+      .addLeadParagraph(leadParaWithNoMarginExpected.data.text,leadParaWithNoMarginExpected.data.variables,leadParaWithNoMarginExpected.data.classes)
       .build();
 
     //Then

@@ -33,9 +33,9 @@
       {% set object = '' %}
       {% if content.data.variables %}
           {% set object = content.data.variables %}
-          <p class="govuk-body-l">{{ t(content.data.text,object)}}</p>
+          <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
       {% else %}
-          <p class="govuk-body-l">{{ t(content.data.text)}}</p>
+          <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
       {% endif %}
   {% endif %}
 
@@ -305,16 +305,6 @@
         {% endfor %}
       </select>
     </div>
-  {% endif %}
-
-  {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH_WITH_NO_BOTTOM_MARGIN %}
-    {% set object = '' %}
-    {% if content.data.variables %}
-      {% set object = content.data.variables %}
-      <p class="govuk-body-l govuk-!-margin-bottom-1">{{ t(content.data.text,object)}}</p>
-    {% else %}
-      <p class="govuk-body-l govuk-!-margin-bottom-1">{{ t(content.data.text)}}</p>
-    {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.BUTTON_WITH_CANCEL_LINK %}
