@@ -212,20 +212,6 @@ module.exports = {
         },
         disposalHearingNotes: null,
         disposalHearingFinalDisposalHearing: null,
-        sdoOrderDocument: {
-          documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/53072400-0d2d-405e-a9eb-8dfd47b2063f',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/53072400-0d2d-405e-a9eb-8dfd47b2063f/binary',
-            document_filename: 'disposal_hearing_sdo_000MC038.pdf',
-            document_hash: '17ef9c12243cf5533dc3c3cfcdbf843e64fa0a94f16c334546c6cf3a973eb417',
-            category_id: 'sdo',
-          },
-          documentName: 'disposal_hearing_sdo_000MC038.pdf',
-          documentType: 'SDO_ORDER',
-          documentSize: '83696',
-          createdDatetime: '2023-06-28T14:13:51',
-          createdBy: 'Civil',
-        },
       },
     };
   },
