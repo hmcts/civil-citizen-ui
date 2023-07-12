@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../config');
+const LoginSteps =  require('../../../home/steps/login');
 
 const fields = {
   claimNumber: 'input[id="claimReferenceValue"]',
@@ -20,8 +21,8 @@ class AssignCasePinInPost {
     await I.click('Save and continue');
     await this.verifyClaimSummaryPageContent(claimNumber);
     await I.click('Respond to claim');
-    // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
-    await I.wait(60);
+    await LoginSteps.EnterUserCredentialsToLinkClaim(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.click('Sign out');
   }
 
   async verifyClaimSummaryPageContent(claimNumber) {

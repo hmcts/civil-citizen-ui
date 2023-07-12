@@ -22,10 +22,10 @@ Before(async ({api}) => {
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @test', async ({api}) => {
-  await LoginSteps.EnterUserCredentialsAndVerifyClaimNumber(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

@@ -14,14 +14,9 @@ class LoginSteps  {
     await LoginPage.login(username, password);
   }
 
-  async EnterUserCredentialsAndVerifyClaimNumber(username, password, claimNumber){
-    // eslint-disable-next-line no-undef
-    await retryTo(() => {
-      LoginPage.open();
-      this.AcceptCookies();
-      LoginPage.login(username, password);
-      I.see(claimNumber);
-    }, 3);
+  async EnterUserCredentialsToLinkClaim(username, password){
+    await LoginPage.open();
+    await LoginPage.login(username, password);
   }
 }
 
