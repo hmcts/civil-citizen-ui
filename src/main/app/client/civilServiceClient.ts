@@ -33,6 +33,7 @@ const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
+  claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
 
