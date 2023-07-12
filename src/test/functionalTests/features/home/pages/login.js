@@ -1,4 +1,5 @@
 const I= actor();
+const config = require('../../../../config');
 
 const fields = {
   username: 'input[id="username"]',
@@ -22,7 +23,7 @@ class LoginPage  {
   }
 
   async login (email, password) {
-    await I.waitForText('Email address');
+    await I.waitForText('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);

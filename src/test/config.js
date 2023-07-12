@@ -15,6 +15,7 @@ module.exports = {
   TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
+  WaitForText: 60,
   helpers: {
     Playwright: {
       url: testUrl,

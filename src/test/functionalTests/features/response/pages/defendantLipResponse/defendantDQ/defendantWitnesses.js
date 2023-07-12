@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -14,7 +14,7 @@ const fields ={
 class DefendantWitnesses {
 
   async enterDefendantWitnesses() {
-    await I.see('Do you have other witnesses?', 'h1');
+    await I.waitForText('Do you have other witnesses?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.firstWitnessFirstName, 'WitnessFName');
     await I.fillField(fields.firstWitnessLastName, 'WitnessLName');

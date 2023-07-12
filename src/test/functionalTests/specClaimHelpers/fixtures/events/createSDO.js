@@ -81,20 +81,6 @@ module.exports = {
             id: 'ce85c060-23ce-4858-be42-9243e98977d5',
           },
         ],
-        sdoOrderDocument: {
-          documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/edf6972d-670c-4e86-8967-cf351eb5e0d3',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/edf6972d-670c-4e86-8967-cf351eb5e0d3/binary',
-            document_filename: 'small_claims_sdo_000MC037.pdf',
-            document_hash: '371dfa9cf0a2e63e40ab45a4fcc2b4b02934349c8e62e6cb94b2bd57a7af932',
-            category_id: 'sdo',
-          },
-          documentName: 'small_claims_sdo_000MC037.pdf',
-          documentType: 'SDO_ORDER',
-          documentSize: '62174',
-          createdDatetime: '2023-06-28T14:05:25',
-          createdBy: 'Civil',
-        },
       },
     };
   },

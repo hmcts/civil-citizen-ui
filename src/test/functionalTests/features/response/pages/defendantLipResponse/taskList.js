@@ -1,8 +1,9 @@
 const I = actor();
+const config = require('../../../../../config');
 
 class TaskListPage {
   verifyResponsePageContent() {
-    I.see('Respond to a money claim');
+    I.waitForText('Respond to a money claim', config.WaitForText);
   }
 }
 

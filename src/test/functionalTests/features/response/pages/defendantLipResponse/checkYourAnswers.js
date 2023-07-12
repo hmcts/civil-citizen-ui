@@ -19,7 +19,7 @@ class CheckYourAnswersPage {
       await I.amOnPage('/case/'+claimRef+'/response/task-list');
       await I.click('Check and submit your response');
     }
-    await I.see('Check your answers', 'h1');
+    await I.waitForText('Check your answers', config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
     if (responseType == 'partial-admission' || responseType == 'rejectAll') {
@@ -35,7 +35,7 @@ class CheckYourAnswersPage {
     if((config.TestUrl).includes('preview')  ){
       await I.click(buttons.submit);
       await I.amOnPage('/case/'+claimRef+'/response/confirmation');
-      await I.see('You\'ve submitted your response','h1');
+      await I.waitForText('You\'ve submitted your response',config.WaitForText);
       await I.see('What happens next');
     }
   }
