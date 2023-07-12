@@ -13,8 +13,7 @@
 
 {% set titleTextContent %}
   {% if readyForTrialOrHearing %}
-    {# TODO: add a text for the happy path - covered in CIV-9204 #}
-    {{ t('') }}
+    {{ t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING') }}
   {% else %}
     {{ t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING') }}
   {% endif %}
@@ -29,7 +28,7 @@
       {% for item in trialArrangementsConfirmationContent %}
         {{ itemContent(item,t) }}
       {% endfor %}
-      <div class="form-group">
+      <div class="govuk-form-group">
         {{ govukButton({
           text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.RETURN_TO_CASE_DETAILS'),
           href: latestUpdateUrl
