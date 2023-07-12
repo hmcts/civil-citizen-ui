@@ -20,7 +20,7 @@ class AssignCasePinInPost {
     await this.verifyClaimSummaryPageContent(claimNumber);
     await I.click('Respond to claim');
     // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
-    await I.wait(30);
+    await I.wait(10);
   }
 
   async verifyClaimSummaryPageContent(claimNumber) {
