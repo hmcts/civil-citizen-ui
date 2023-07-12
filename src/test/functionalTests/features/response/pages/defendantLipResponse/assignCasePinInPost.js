@@ -22,6 +22,7 @@ class AssignCasePinInPost {
     await this.verifyClaimSummaryPageContent(claimNumber);
     await I.click('Respond to claim');
     await LoginSteps.EnterUserCredentialsToLinkClaim(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.wait(60);
     await I.click('Sign out');
   }
 
