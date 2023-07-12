@@ -74,11 +74,11 @@ describe('Is case ready - on POST', () => {
     //Then
       .expect((res: {status: unknown, text: unknown}) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_NAC_YDW'));
+        expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_IS_CASE_READY'));
       });
   });
 
-  it('should redirect to Has anything changed page', async () => {
+  it('should redirect to Has anything changed page when one option is selected', async () => {
 
     //Given
     nock(civilServiceUrl)
