@@ -86,7 +86,7 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         variables: 'variables',
-        classes: 'classes'
+        classes: 'classes',
       },
     });
 

@@ -39,9 +39,9 @@
     {% if content.data.variables %}
       {% set object = content.data.variables %}
       <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
-      {% else %}
+    {% else %}
       <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
-      {% endif %}
+    {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
