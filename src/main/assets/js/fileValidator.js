@@ -50,7 +50,6 @@ async function handleChange(event) {
       method: 'POST',
       headers: {
         'CSRF-Token': csrfToken,
-        'Content-Type': 'multipart/form-data',
       },
       body: formData,
     };
