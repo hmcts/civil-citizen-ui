@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
 import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -8,7 +8,7 @@ import {
 
 const trialArrangementsConfirmationController = Router();
 
-trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -22,6 +22,6 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default trialArrangementsConfirmationController;
