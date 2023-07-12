@@ -1,5 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  DEFENDANT_SUMMARY_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL
+} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -44,6 +49,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
 
 async function renderView(res: Response, claimId: string, claim: Claim, form: GenericForm<IsCaseReadyForm>) {
   const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-  res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), latestUpdatesUrl});
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_URL);
+  res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), latestUpdatesUrl, backLinkUrl});
 }
 export default isCaseReadyController;

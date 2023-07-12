@@ -11,6 +11,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% set noHtml %}
   <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.IS_CASE_READY.YOU_WILL_STILL') }}</p>
@@ -27,6 +28,11 @@
 {% endblock %}
 
 {% block content %}
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: backLinkUrl,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% if form.hasErrors() %}
