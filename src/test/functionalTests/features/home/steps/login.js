@@ -1,6 +1,5 @@
 
 const LoginPage = require('../pages/login');
-const I= actor();
 
 class LoginSteps  {
 
