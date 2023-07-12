@@ -27,7 +27,7 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(paragraphSection);
     return this;
   }
-  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -36,6 +36,7 @@ export class PageSectionBuilder {
         textBefore: textBefore,
         textAfter: textAfter,
         variables: variables,
+        externalLink,
       },
     });
     this._claimSummarySections.push(linkSection);

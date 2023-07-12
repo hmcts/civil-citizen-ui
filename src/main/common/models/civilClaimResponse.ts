@@ -52,6 +52,7 @@ import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 
 export class CivilClaimResponse {
   id: string;
@@ -151,6 +152,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPFinancialDetails?: CCDFinancialDetailsLiP,
   respondent1DQLanguage?: CCDWelshLanguageRequirements;
   respondent1DQVulnerabilityQuestions?: CCDVulnerability;
   respondent1DQRequestedCourt?: CCDSpecificCourtLocations;

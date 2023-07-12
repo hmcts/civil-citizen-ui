@@ -4,6 +4,7 @@ import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/re
 import {TransactionSource} from 'form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {CCDExpensesType, CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {toCCDPaymentFrequency} from 'services/translation/response/convertToCCDPaymentFrequency';
+import {convertToPence} from 'services/translation/claim/moneyConversation';
 
 export const toCCDRecurringExpensesField = (claim: Claim, responseType: ResponseType): CCDRecurringExpenses[] => {
   if (claim.respondent1?.responseType === responseType) {
@@ -67,7 +68,7 @@ const toCCDRecurringExpensesItem = (transactionSource: TransactionSource, expens
   const ccdRecurringExpenses: CCDRecurringExpenses = {
     value :{
       type: expensesType,
-      amount: transactionSource?.amount,
+      amount: convertToPence(transactionSource?.amount),
       frequency: toCCDPaymentFrequency(transactionSource?.schedule),
     },
   };

@@ -9,7 +9,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {ResponseType} from 'form/models/responseType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {FullAdmission} from 'models/fullAdmission';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { addDaysToDate, formatDateToFullDate } from 'common/utils/dateUtils';
 import {
   getAmount,
   getFirstRepaymentDate,
@@ -77,6 +77,27 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
   return claim;
 };
 
+const getClaimDetails = (partyType: PartyType, responseType: ResponseType) => {
+  const claim = new Claim();
+  claim.id = '1';
+  claim.totalClaimAmount = 1000;
+  claim.respondent1 = {
+    responseType: responseType,
+    type: partyType,
+  };
+  claim.applicant1 = {
+    type: partyType,
+    responseType: responseType,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      individualTitle: 'Mr.',
+      individualFirstName: 'TestName',
+      individualLastName: 'TestLastName',
+    },
+  };
+  return claim;
+};
+
 const getClaimWithSdoDocument = () =>  {
   const claim = new Claim();
   claim.id = '001';
@@ -137,7 +158,7 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
 
-    it('should have deadlline extended title when defendant extended response deadline', () => {
+    it('should have deadline extended title when defendant extended response deadline', () => {
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
       //When
@@ -350,7 +371,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it('Part Admit Pay Instalments - Defendant IS Org or Company', () => {
+      it('Part Admit Pay Installments - Defendant IS Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
@@ -373,7 +394,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it('Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
+      it('Part Admit Pay Installments - Defendant IS NOT Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
@@ -391,6 +412,152 @@ describe('Latest Update Content Builder', () => {
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
 
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Already Paid - Claimant accepted already paid and settled', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
+        claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
+        claim.partAdmitPaidValuePounds = 500;
+        claim.respondent1PaymentDateToStringSpec = new Date(0);
+        const claimId = claim.id;
+        const claimantFullName = claim.getClaimantFullName();
+        const amount = claim?.partAdmitPaidValuePounds;
+        const moneyReceivedOn = formatDateToFullDate(claim.respondent1PaymentDateToStringSpec, lng);
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_SETTLED`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_YOU_PAID`, { claimantName: claimantFullName, amount, moneyReceivedOn })
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Already Paid - Claimant accepted already paid and not settled', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
+        claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+        claim.partAdmitPaidValuePounds = 500;
+        const claimId = claim.id;
+        const partAmount = claim.partAdmitPaidValuePounds;
+        const fullAmount = claim.totalClaimAmount;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM`, { partAmount, fullAmount })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Already Paid - Claimant rejected already paid', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
+        claim.partAdmitPaidValuePounds = 500;
+        const claimId = claim.id;
+        const partAmount = claim.partAdmitPaidValuePounds;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_SAID_YOU_DIDN'T_PAY_THEM`, { partAmount })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant accepted the amount', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1AcceptAdmitAmountPaidSpec = 'Yes';
+        const claimantFullName = claim.getClaimantFullName();
+        const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
+        const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lng);
+        const claimId = claim.id;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT`, {
+            amount: currencyFormat(getAmount(claim)),
+            claimantName: claimantFullName,
+          })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MUST_PAY_THEM_BY_PAYMENT_DATE`, { paymentDate: immediatePaymentDeadline })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_MONEY_NOT_RECEIVED_COUNTY_COURT_JUDGEMENT_AGAINST_YOU`)
+          .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claimId, { claimantName: claimantFullName }, `${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_NEED_THEIR_PAYMENT_DETAILS_GET_RECEIPTS_FOR_ANY_PAYMENTS`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant passed deadline to respond', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1AcceptAdmitAmountPaidSpec = 'Yes';
+        claim.applicant1ResponseDeadline = new Date('2023-07-01T16:00:00');
+        const claimantName = claim.getClaimantFullName();
+        const deadline = formatDateToFullDate(claim.applicant1ResponseDeadline);
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_ENDED_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE`, { claimantName, deadline })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_WANT_TO_RESTART_THE_CLAIM_THEY_NEED_TO_ASK_FOR_PERMISSION_FROM_THE_COURT`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claim in mediation', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.ccdState = CaseState.IN_MEDIATION;
+        const claimantName = claim.getClaimantFullName();
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}.MORE_INFO_ABOUT_MEDIATION_WORKS`, 'https://www.gov.uk/guidance/small-claims-mediation-service', '', '', '', true)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant opted out of mediation', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1ClaimMediationSpecRequiredLip = {
+          hasAgreedFreeMediation: 'No',
+        };
+        const claimantName = claim.getClaimantFullName();
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.NO_TO_TRYING_MEDIATION`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_WILL_REVIEW_THE_CASE`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });

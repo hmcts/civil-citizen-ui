@@ -11,7 +11,7 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
 Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
@@ -35,7 +35,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @test', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
