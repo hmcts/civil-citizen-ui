@@ -127,7 +127,7 @@ describe('Latest Update Content Builder', () => {
       partyName: partyName,
     },
   };
-  const claimId = '5129';
+  const claimId = '1';
   const bilingualLanguagePreferencetUrl = BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId);
   const lng = 'en';
 
