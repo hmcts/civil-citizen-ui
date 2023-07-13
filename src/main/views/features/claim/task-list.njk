@@ -15,11 +15,9 @@
           </legend>
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-
-          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') }}</h2>
-          <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS') }}</p>
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ title }}</h2>
+          <p class="govuk-body govuk-!-margin-bottom-2">{{ description }}</p>
           <p class="govuk-body govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.AFTER_COMPLETE') }}</p>
-          
           {% for taskList in taskLists %}
             <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
               <h2 class="app-task-list__section">
@@ -41,7 +39,6 @@
               </ol>
             </div>
           {% endfor %}
-          
         </div>
       </div>
     </main>
