@@ -156,6 +156,9 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
+    {% if (content.data.invalidDateError !== undefined and content.data.invalidDateError != '') or (content.data.invalidDayError !== undefined and content.data.invalidDayError != '') or (content.data.invalidMonthError !== undefined and content.data.invalidMonthError != '') or (content.data.invalidYearError !== undefined and content.data.invalidYearError != '') %}
+       {% set isDateError = 'true' %}
+    {% endif %}
      <div>
         {{ govukDateInput({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -170,38 +173,44 @@
            hint: {
             text: t(content.data.hint)
            },
+           errorMessage: {
+            html: '<p class="govuk-error-message">' + t(content.data.invalidDateError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidDayError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidMonthError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidYearError) + '</p>'
+           } if (isDateError == 'true'),
            items: [
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'-day]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'-day]',
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'Day]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'Day]',
                label: "Day",
                value: content.data.dayValue,
-               classes: "govuk-input--width-2",
+               classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'-day]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'-day]'
+                 'data-name': content.data.category+'[%index%]['+content.data.field+'Day]',
+                 'data-id': content.data.category+'[%index%]['+content.data.field+'Day]'
                }
              },
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'-month]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'-month]',
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'Month]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'Month]',
                label: "Month",
                value: content.data.monthValue,
-               classes: "govuk-input--width-2",
+               classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidMonthError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'-month]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'-month]'
+                 'data-name': content.data.category+'[%index%]['+content.data.field+'Month]',
+                 'data-id': content.data.category+'[%index%]['+content.data.field+'Month]'
                }
              },
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'-year]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'-year]',
+               id: content.data.category+'['+content.data.index+']['+content.data.field+'Year]',
+               name: content.data.category+'['+content.data.index+']['+content.data.field+'Year]',
                label: "Year",
                value: content.data.yearValue,
-               classes: "govuk-input--width-3",
+               classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'-year]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'-year]'
+                 'data-name': content.data.category+'[%index%]['+content.data.field+'Year]',
+                 'data-id': content.data.category+'[%index%]['+content.data.field+'Year]'
                }
              }
            ]
@@ -211,15 +220,18 @@
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
      <div class="govuk-inset-text">
-        {{ govukFileUpload({
+       {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
+           value: content.data.value,
            label: {
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
            },
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
-             'data-name': content.data.category+'[%index%]['+content.data.field+']',
-             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+              'data-name': content.data.category+'[%index%]['+content.data.field+']',
+              'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
     </div>
