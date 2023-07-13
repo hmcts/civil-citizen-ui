@@ -300,13 +300,21 @@
           "trial": [
             {"documentType": "CASE_SUMMARY", "selected": true},
             {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       },
       "defendantUploadDocuments":{
           "trial": [
             {"documentType": "CASE_SUMMARY", "selected": true},
             {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       }
     }
   }

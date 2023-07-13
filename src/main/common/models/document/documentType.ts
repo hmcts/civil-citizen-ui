@@ -9,7 +9,21 @@ export enum DocumentType {
   CLAIMANT_DEFENCE = 'CLAIMANT_DEFENCE',
   CLAIMANT_DRAFT_DIRECTIONS = 'CLAIMANT_DRAFT_DIRECTIONS',
   SDO_ORDER = 'SDO_ORDER',
-  HEARING_FORM = 'HEARING_FORM'
+  HEARING_FORM = 'HEARING_FORM',
+  MEDIATION_AGREEMENT = 'MEDIATION_AGREEMENT'
+}
+export enum DocumentUri {
+  SEALED_CLAIM = 'sealed-claim',
+  ACKNOWLEDGEMENT_OF_CLAIM = 'acknowledgement-of-claim',
+  ACKNOWLEDGEMENT_OF_SERVICE = 'acknowledgement-of-service',
+  DIRECTIONS_QUESTIONNAIRE = 'directions-questionnaire',
+  DEFENDANT_DEFENCE = 'defendant-defence',
+  DEFENDANT_DRAFT_DIRECTIONS = 'defendant-draft-directions',
+  DEFAULT_JUDGMENT = 'default-judgement',
+  CLAIMANT_DEFENCE = 'claimant-defence',
+  CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
+  SDO_ORDER = 'sdo-order',
+  MEDIATION_AGREEMENT = 'mediation_agreement',
 }
 
 export enum EvidenceUploadWitness {

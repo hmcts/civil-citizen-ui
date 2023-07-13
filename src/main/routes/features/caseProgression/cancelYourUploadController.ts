@@ -3,7 +3,7 @@ import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_UR
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {getCancelYourUpload} from 'services/features/caseProgression/cancelDocumentUpload';
+import {cancelDocumentUpload, getCancelYourUpload} from 'services/features/caseProgression/cancelDocumentUpload';
 import {GenericForm} from 'form/models/genericForm';
 import {CancelDocuments} from 'models/caseProgression/cancelDocuments';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -38,8 +38,9 @@ cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, n
     } else if(form.model.option === YesNo.NO) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
     } else {
-      //Part of CIV-8019
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DEFENDANT_SUMMARY_URL));
+      const claimId = req.params.id;
+      await cancelDocumentUpload(claimId);
+      res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     }
   } catch (error) {
     next(error);
