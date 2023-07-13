@@ -1679,7 +1679,7 @@
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
-      "PAGE_TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?",
+      "PAGE_TITLE": "A oes unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu'ch tystion fynd i wrandawiad?",
       "TITLE": "A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?",
       "UNAVAILABLE_DATES": "Dyddiadau pan nad ydych ar gael",
       "WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS": "Pam nad ydych chi, eich arbenigwyr neu'ch tyst ar gael am {{days}} diwrnod?"
