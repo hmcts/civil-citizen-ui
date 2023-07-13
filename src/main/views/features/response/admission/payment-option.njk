@@ -11,7 +11,7 @@
 {% set pageTitle = pageTitleForClaimant if isClaimantResponse else pageTitleForDefendant %}
 
 {% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
-{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount else t('PAGES.PAYMENT_OPTION.TITLE')%}
+{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2)}) if amount else t('PAGES.PAYMENT_OPTION.TITLE')%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
 
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
