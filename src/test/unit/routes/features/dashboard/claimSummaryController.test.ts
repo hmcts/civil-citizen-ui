@@ -22,6 +22,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
 }));
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
+jest.mock('services/features/dashboard/claimSummaryService');
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -81,6 +82,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('Upload documents');
+          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
@@ -116,6 +118,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('Upload documents');
+          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
@@ -139,6 +142,7 @@ describe('Claim Summary Controller Defendant', () => {
     it('should show case progression hearing latest Update', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
+
       const claimWithHeringDocs = {
         ...claim,
         state: CaseState.AWAITING_APPLICANT_INTENTION,
@@ -166,6 +170,5 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain('A hearing has been scheduled for your case');
         });
     });
-
   });
 });
