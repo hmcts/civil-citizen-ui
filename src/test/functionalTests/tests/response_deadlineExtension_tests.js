@@ -25,10 +25,11 @@ Before(async ({api}) => {
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-//Not added regression tag due to CIV-9218
-Scenario('No response submitted, date agreed upon request time  @citizenUI @admitAll', async () => {
+Scenario('No response submitted, date agreed upon request time  @citizenUI @regression', async () => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
-  await ResponseSteps.DefendantSummaryPage(claimRef);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await ResponseSteps.DefendantSummaryPage(claimRef);
+  }
 });
