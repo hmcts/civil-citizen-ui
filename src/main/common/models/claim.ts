@@ -61,6 +61,7 @@ import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 
 export class Claim {
+  resolvingDispute: boolean;
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
