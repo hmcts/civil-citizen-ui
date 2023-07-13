@@ -7,6 +7,14 @@ import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter
 import {t} from 'i18next';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
+const buildDownloadSealedClaimSectionTitle = (): ClaimSummarySection => {
+  return {type: ClaimSummaryType.TITLE,
+    data:{
+      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS'),
+    },
+  };
+};
+
 const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
   const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_CLAIM';
@@ -25,4 +33,5 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
 
 export {
   buildDownloadSealedClaimSection,
+  buildDownloadSealedClaimSectionTitle,
 };
