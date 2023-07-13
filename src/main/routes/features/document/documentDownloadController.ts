@@ -12,7 +12,7 @@ import {getClaimById} from 'modules/utilityService';
 const documentDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
-const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim: Claim = await getClaimById(req.params.id, req);
