@@ -10,54 +10,19 @@ import {
   UploadDocuments,
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
-  UploadEvidenceElementCCD,
   UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {
+  createCCDClaimForEvidenceUpload, mockExpertDocument,
+  mockTypeDocument, mockUUID, mockWitnessDocument,
+} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
   setLanguage: jest.fn(),
 }));
-
-const witnessDocument = {
-  witnessOptionName: 'witness name',
-  witnessOptionUploadDate: new Date(0),
-  witnessOptionDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'witness_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDateTime: new Date(0),
-};
-
-const expertDocument = {
-  expertOptionName: 'expert name',
-  expertOptionExpertise: 'expertise',
-  expertOptionExpertises: 'expertises',
-  expertOptionOtherParty: 'other party',
-  expertDocumentQuestion: 'document question',
-  expertDocumentAnswer: 'document answer',
-  expertOptionUploadDate: new Date(0),
-  expertDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'expert_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDateTime: new Date(0),
-};
-
-const typeDocument = {
-  typeOfDocument: 'type',
-  documentIssuedDate: new Date(0),
-  documentUpload: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'document_type.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDateTime: new Date(0),
-};
 
 const documentForWitness = {
   document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
@@ -77,16 +42,14 @@ const documentForType = {
   document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
 };
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
-const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
-const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise', 'expertises', 'other party', 'document question', 'document answer', new Date(0),documentForExpert, new Date(0));
-
-const uuid = '1221';
+const documentTypeAsParameter = new UploadEvidenceDocumentType(documentForType, new Date(0),'type', new Date(0));
+const witnessAsParameter = new UploadEvidenceWitness(documentForWitness, new Date(0),'witness name', new Date(0));
+const expertAsParameter = new UploadEvidenceExpert(documentForExpert, new Date(0),'expert name', 'expertise', 'expertises', 'other party', 'document question', 'document answer', new Date(0));
 
 describe('toCUIEvidenceUpload', () => {
   it('should convert CCDClaim to CaseProgression', () => {
 
-    const ccdClaim: CCDClaim = createCCDClaim();
+    const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
     const expectedOutput = createCUIClaim();
 
     const actualOutput = toCUICaseProgression(ccdClaim);
@@ -144,15 +107,15 @@ describe('toCUIEvidenceUpload', () => {
 
   it('should handle partially filled + multiples of same type', () => {
     const ccdClaim: CCDClaim = {
-      documentDisclosureList: [{id: 'Claimant', value: typeDocument}, {id: 'Claimant', value: typeDocument}],
-      documentWitnessStatement: [{id: 'Claimant', value: witnessDocument}],
-      documentExpertReport: [{id: 'Claimant', value: expertDocument}],
-      documentCosts: [{id: 'Claimant', value: typeDocument}],
+      documentDisclosureList: [{id: 'Claimant', value: mockTypeDocument}, {id: 'Claimant', value: mockTypeDocument}],
+      documentWitnessStatement: [{id: 'Claimant', value: mockWitnessDocument}],
+      documentExpertReport: [{id: 'Claimant', value: mockExpertDocument}],
+      documentCosts: [{id: 'Claimant', value: mockTypeDocument}],
       documentEvidenceForTrial: undefined,
-      documentForDisclosureRes: [{id: 'Defendant', value: typeDocument}],
+      documentForDisclosureRes: [{id: 'Defendant', value: mockTypeDocument}],
       documentWitnessStatementRes: undefined,
-      documentWitnessSummaryRes: [{id: 'Defendant', value: witnessDocument}],
-      documentAuthoritiesRes: [{id: 'Defendant', value: typeDocument}],
+      documentWitnessSummaryRes: [{id: 'Defendant', value: mockWitnessDocument}],
+      documentAuthoritiesRes: [{id: 'Defendant', value: mockTypeDocument}],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
@@ -173,77 +136,6 @@ describe('toCUIEvidenceUpload', () => {
   });
 });
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)
-  : UploadEvidenceElementCCD[] {
-
-  const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
-  uploadEvidenceElementCCD.id = uuid;
-
-  switch(documentType)
-  {
-    case EvidenceUploadWitness.WITNESS_STATEMENT:
-    case EvidenceUploadWitness.WITNESS_SUMMARY:
-    case EvidenceUploadWitness.NOTICE_OF_INTENTION:
-      uploadEvidenceElementCCD.value = witnessDocument;
-      break;
-    case EvidenceUploadExpert.EXPERT_REPORT:
-    case EvidenceUploadExpert.STATEMENT:
-    case EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS:
-    case EvidenceUploadExpert.ANSWERS_FOR_EXPERTS:
-      uploadEvidenceElementCCD.value = expertDocument;
-      break;
-    case EvidenceUploadWitness.DOCUMENTS_REFERRED:
-    case EvidenceUploadDisclosure.DISCLOSURE_LIST:
-    case EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE:
-    case EvidenceUploadTrial.CASE_SUMMARY:
-    case EvidenceUploadTrial.SKELETON_ARGUMENT:
-    case EvidenceUploadTrial.AUTHORITIES:
-    case EvidenceUploadTrial.COSTS:
-    case EvidenceUploadTrial.DOCUMENTARY:
-      uploadEvidenceElementCCD.value = typeDocument;
-      break;
-  }
-
-  return [uploadEvidenceElementCCD];
-}
-
-function createCCDClaim(): CCDClaim {
-  return {
-    documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
-    documentForDisclosure: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
-    documentWitnessStatement: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
-    documentWitnessSummary: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
-    documentHearsayNotice: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
-    documentReferredInStatement: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
-    documentExpertReport: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
-    documentJointStatement: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
-    documentQuestions: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
-    documentAnswers: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
-    documentCaseSummary: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
-    documentSkeletonArgument: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
-    documentAuthorities: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
-    documentCosts: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
-    documentEvidenceForTrial: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
-    caseDocumentUploadDate: new Date(0),
-    documentDisclosureListRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
-    documentForDisclosureRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
-    documentWitnessStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
-    documentWitnessSummaryRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
-    documentHearsayNoticeRes: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
-    documentReferredInStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
-    documentExpertReportRes: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
-    documentJointStatementRes: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
-    documentQuestionsRes: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
-    documentAnswersRes: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
-    documentCaseSummaryRes: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
-    documentSkeletonArgumentRes: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
-    documentAuthoritiesRes: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
-    documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
-    documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
-    caseDocumentUploadDateRes: new Date(0),
-  };
-}
-
 function createCUIClaim(): CaseProgression {
   return {
     claimantUploadDocuments:
@@ -260,55 +152,55 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
   switch(documentCategory) {
     case 'disclosure':
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, mockUUID),
       );
       break;
     case 'witness':
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_STATEMENT, uuid),
+        new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_STATEMENT, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_SUMMARY, uuid),
+        new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_SUMMARY, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false,witnessAsParameter,  EvidenceUploadWitness.NOTICE_OF_INTENTION, uuid),
+        new UploadDocumentTypes(false,witnessAsParameter,  EvidenceUploadWitness.NOTICE_OF_INTENTION, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, mockUUID),
       );
       break;
     case 'expert':
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.EXPERT_REPORT, uuid),
+        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.EXPERT_REPORT, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.STATEMENT, uuid),
+        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.STATEMENT, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, uuid),
+        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS, uuid),
+        new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS, mockUUID),
       );
       break;
     case 'trial':
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.CASE_SUMMARY, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.CASE_SUMMARY, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.SKELETON_ARGUMENT, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.SKELETON_ARGUMENT, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.COSTS, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.COSTS, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.DOCUMENTARY, uuid),
+        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.DOCUMENTARY, mockUUID),
       );
       break;
   }
