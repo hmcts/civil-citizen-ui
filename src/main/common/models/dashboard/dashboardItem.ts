@@ -54,7 +54,7 @@ export class DashboardDefendantItem extends DashboardItem {
   admittedAmount?: number;
   createdDate?: Date;
   respondToAdmittedClaimOwingAmountPounds?:number;
-  
+
   constructor() {
     super();
     this.url = '/dashboard/:claimId/defendant';
@@ -142,6 +142,3 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   }
   return t(translationKey, {lng:getLng(lang)} );
 };
-
-export { t };
-
