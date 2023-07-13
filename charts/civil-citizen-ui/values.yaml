@@ -26,7 +26,7 @@ nodejs:
   aadIdentityName: civil
   keyVaults:
     civil-cui:
-      resourceGroup: civil-cui
+      resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
