@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  buildEvidenceUploadSection, buildFinaliseTrialArrangements, buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
@@ -9,6 +9,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
     sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+    sectionContent.push(getFinaliseTrialArrangementContent(claim));
   }
   return getClaimSummaryContent(sectionContent.flat());
 };
@@ -26,4 +27,8 @@ export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : Claim
     contentSections: sectionContent,
     hasDivider: index < section.length - 1,
   }));
+};
+
+export const getFinaliseTrialArrangementContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildFinaliseTrialArrangements(claim);
 };

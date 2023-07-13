@@ -1524,6 +1524,12 @@
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        },
+        "FINALISE_TRIAL_ARRANGEMENTS": {
+          "TITLE": "Finalise your trial arrangements for your upcoming trial or hearing (optional)",
+          "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
+          "DUE_BY": "Due by: Midnight,",
+          "IF_THERE_ARE_CHANGES": "<p class=\"govuk-body\">If there are changes to your trial or hearing arrangements, you should let us know by <span class=\"govuk-body govuk-!-font-weight-bold\">midnight, {{ finalisingTrialArrangementsDeadline }}</span>.</p>"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
