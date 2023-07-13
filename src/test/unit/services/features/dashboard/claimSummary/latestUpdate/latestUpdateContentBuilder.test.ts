@@ -1,6 +1,8 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
-import {buildResponseToClaimSection} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {
+  buildResponseToClaimSection
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -9,18 +11,19 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {ResponseType} from 'form/models/responseType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {FullAdmission} from 'models/fullAdmission';
-import { addDaysToDate, formatDateToFullDate } from 'common/utils/dateUtils';
+import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
 import {
   getAmount,
   getFirstRepaymentDate,
   getPaymentAmount,
-  getPaymentDate, getRepaymentFrequency,
+  getPaymentDate,
+  getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
 import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
-import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {DocumentType} from 'models/document/documentType';
 import {YesNo} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
@@ -400,6 +403,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
+
       it('Part Admit Pay Installments - Defendant IS NOT Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
@@ -424,7 +428,7 @@ describe('Latest Update Content Builder', () => {
 
       it('Part Admit Pay Already Paid - Claimant accepted already paid and settled', () => {
         // Given
-        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         claim.partialAdmission = {
           alreadyPaid: {
             option: 'yes',
@@ -434,14 +438,13 @@ describe('Latest Update Content Builder', () => {
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
         claim.partAdmitPaidValuePounds = 500;
         claim.respondent1PaymentDateToStringSpec = new Date(0);
-        const claimId = claim.id;
         const claimantFullName = claim.getClaimantFullName();
         const amount = claim?.partAdmitPaidValuePounds;
         const moneyReceivedOn = formatDateToFullDate(claim.respondent1PaymentDateToStringSpec, lng);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_SETTLED`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_YOU_PAID`, { claimantName: claimantFullName, amount, moneyReceivedOn })
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -450,7 +453,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Part Admit Pay Already Paid - Claimant accepted already paid and not settled', () => {
         // Given
-        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         claim.partialAdmission = {
           alreadyPaid: {
             option: 'yes',
@@ -459,14 +462,13 @@ describe('Latest Update Content Builder', () => {
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
-        const claimId = claim.id;
         const partAmount = claim.partAdmitPaidValuePounds;
         const fullAmount = claim.totalClaimAmount;
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM`, { partAmount, fullAmount })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -475,7 +477,7 @@ describe('Latest Update Content Builder', () => {
       });
       it('Part Admit Pay Already Paid - Claimant rejected already paid', () => {
         // Given
-        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
         claim.partialAdmission = {
           alreadyPaid: {
             option: 'yes',
@@ -489,7 +491,7 @@ describe('Latest Update Content Builder', () => {
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_SAID_YOU_DIDN'T_PAY_THEM`, { partAmount })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
-          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, docId)
           .build();
         // When
         const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
