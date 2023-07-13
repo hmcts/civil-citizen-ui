@@ -51,20 +51,25 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CCDExpert} from './ccdResponse/ccdExpert';
 import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 
 export class CivilClaimResponse {
   id: string;
   case_data: CCDClaim;
   state: CaseState;
+  last_modified: Date;
 
   constructor(
     id?: string,
     case_data?: CCDClaim,
     state?: CaseState,
+    last_modified?: Date,
   ) {
     this.id = id;
     this.case_data = case_data;
     this.state = state;
+    this.last_modified = last_modified;
   }
 }
 
@@ -147,6 +152,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPFinancialDetails?: CCDFinancialDetailsLiP,
   respondent1DQLanguage?: CCDWelshLanguageRequirements;
   respondent1DQVulnerabilityQuestions?: CCDVulnerability;
   respondent1DQRequestedCourt?: CCDSpecificCourtLocations;
@@ -200,6 +206,12 @@ export interface CCDClaim extends ClaimUpdate {
   documentCostsRes?: UploadEvidenceElementCCD[];
   documentEvidenceForTrialRes?: UploadEvidenceElementCCD[];
   caseDocumentUploadDateRes?: Date;
+  takenOfflineDate?: Date;
+  mediationAgreement?: MediationAgreement;
+  unsuccessfulMediationReason?: string;
+  ccjJudgmentStatement?:string;
+  defaultJudgmentDocuments?: CaseDocument;
+  lastModifiedDate?: Date;
 }
 
 export interface ClaimFeeData {

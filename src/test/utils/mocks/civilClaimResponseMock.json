@@ -426,7 +426,11 @@
                 "createdDatetime": "2022-02-20T13:20"
               },
               "selected": true}
-          ]
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       },
       "defendantUploadDocuments":{
         "disclosure": [
@@ -573,6 +577,10 @@
               "createdDatetime": "2022-02-20T13:20"
             },
             "selected": true}
+        ],
+        "checkboxGrp": [
+          true,
+          true
         ]
       }
     }
