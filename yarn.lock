@@ -9281,8 +9281,8 @@ __metadata:
   linkType: hard
 
 "launchdarkly-node-server-sdk@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "launchdarkly-node-server-sdk@npm:7.0.1"
+  version: 7.0.2
+  resolution: "launchdarkly-node-server-sdk@npm:7.0.2"
   dependencies:
     async: ^3.2.4
     launchdarkly-eventsource: 1.4.4
@@ -9291,7 +9291,7 @@ __metadata:
     semver: ^7.3.0
     tunnel: 0.0.6
     uuid: ^8.3.2
-  checksum: 83a24c6157088c19dbe31c7e3369a852a9cc24336778790f173869a0a3f29ed74e6babe9f31e7672ef6a374b5f7880c3c4dc6d9d1eefbf67239d15747491ea2e
+  checksum: 7abbc4f0cf04f07cef272e0d3a88464ca105cbfb36d21a2897015c25a663e1cbf56ac4a69453ade34d00dca142241e07032488b19e3d976e80fe4b91a5ee2416
   languageName: node
   linkType: hard
 
