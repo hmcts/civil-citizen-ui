@@ -81,11 +81,11 @@
       {% set object = '' %}
       {% if content.data.variables %}
         {% set object = content.data.variables %}
-        <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
       {% elif  content.data.externalLink %}
-         <a class="govuk-link" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
+         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
       {% else %}
-        <a class="govuk-link" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
       {% endif %}
       {{ t(content.data.textAfter) }}
     </p>
@@ -144,32 +144,6 @@
              text: t(content.data.hint)
            },
           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
-           attributes: {
-             'data-name': content.data.category+'[%index%]['+content.data.field+']',
-             'data-id': content.data.category+'[%index%]['+content.data.field+']'
-           }
-        }) }}
-      </fieldset>
-     </div>
-  {% endif %}
-
-  {% if content.type === ClaimSummaryType.INPUT_ARRAY_ERROR %}
-     <div>
-      <fieldset class="govuk-fieldset">
-        {{ govukInput({
-           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           value: content.data.value,
-           classes: 'govuk-!-width-three-half '+content.data.classes,
-           label: {
-             html: '<strong>'+ t(content.data.text)+'</strong>'
-           },
-           hint: {
-             text: t(content.data.hint)
-           },
-           errorMessage: {
-             text: t(content.data.error)
-           },
            attributes: {
              'data-name': content.data.category+'[%index%]['+content.data.field+']',
              'data-id': content.data.category+'[%index%]['+content.data.field+']'
