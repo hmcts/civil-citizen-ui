@@ -85,27 +85,6 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
   return claim;
 };
 
-const getClaimDetails = (partyType: PartyType, responseType: ResponseType) => {
-  const claim = new Claim();
-  claim.id = '1';
-  claim.totalClaimAmount = 1000;
-  claim.respondent1 = {
-    responseType: responseType,
-    type: partyType,
-  };
-  claim.applicant1 = {
-    type: partyType,
-    responseType: responseType,
-    partyDetails: {
-      partyName: PARTY_NAME,
-      individualTitle: 'Mr.',
-      individualFirstName: 'TestName',
-      individualLastName: 'TestLastName',
-    },
-  };
-  return claim;
-};
-
 const getClaimWithSdoDocument = () =>  {
   const claim = new Claim();
   claim.id = '001';
