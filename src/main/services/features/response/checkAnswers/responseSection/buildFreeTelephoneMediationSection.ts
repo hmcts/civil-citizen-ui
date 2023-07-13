@@ -10,16 +10,13 @@ import {
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
 } from '../../../../../routes/urls';
 import {YesNo, YesNoUpperCase} from '../../../../../common/form/models/yesNo';
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
-    if (claim.mediation?.companyTelephoneNumber.option === YesNo.YES) {
-      return claim.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation;
-    } else {
-      return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
-    }
+    getMediationContactNumber(claim.mediation.companyTelephoneNumber);
   } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
     return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
@@ -27,12 +24,16 @@ const getContactNumber = (claim: Claim) => {
   }
 };
 
+const getMediationContactNumber = (companyTelephoneNumber : CompanyTelephoneNumber) => {
+  return companyTelephoneNumber.option === YesNo.YES ?
+    companyTelephoneNumber.mediationPhoneNumberConfirmation :
+    companyTelephoneNumber.mediationPhoneNumber;
+};
+
 const getContactName = (claim: Claim) => {
-  if (claim.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-    return claim.mediation.companyTelephoneNumber.mediationContactPerson;
-  } else {
-    return claim.respondent1.partyDetails.contactPerson;
-  }
+  return claim.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
+    claim.mediation.companyTelephoneNumber.mediationContactPerson :
+    claim.respondent1.partyDetails.contactPerson;
 };
 
 const getCanWeUse = (claim: Claim) => {
