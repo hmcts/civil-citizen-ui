@@ -5,7 +5,7 @@ variable "product" {
 }
 variable "component" {
   type        = string
-  default     = "citizen-ui"
+  default     = "cui"
   description = "The Resource"
 }
 
