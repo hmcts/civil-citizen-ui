@@ -1,17 +1,13 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 
 let claimRef;
-let caseData;
-let claimNumber;
-let securityCode;
 
 Feature('Case progression journey - Defendant & Claimant Response with RejectAll');
 
 Before(async ({api}) => {
-if (['preview', 'demo'  ].includes(config.runningEnv)) {
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', 'FastTrack');
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'FastTrack');
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll,'JUDICIAL_REFERRAL');
