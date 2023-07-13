@@ -172,6 +172,19 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string) {
     .build();
 }
 
+function getStatusPaid(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`,{lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_HAVE_EMAILED`, {lng}), {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .build();
+}
+
 function getPartAdmitPaidPayImmediatelyAccepted(claim: Claim, lng: string) {
   const claimId = claim.id;
   const claimantFullName = claim.getClaimantFullName();
@@ -231,6 +244,9 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPartAdmitPaidPayByDate(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPartAdmitPayInstallmentItems(claim, lng),
+    [ClaimResponseStatus.PA_ALREADY_PAID]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_PAID_FULL]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_PAID_LESS]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED]: getPartAdmitPaidPayImmediatelyAccepted(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),
@@ -247,6 +263,95 @@ const getLastUpdateSdoDocument = (claimId: string) => {
     .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId,  DocumentUri.SDO_ORDER, null,`${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
     .build();
 };
+
+function generateClaimEndedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimTakenOffline = claim.takenOfflineDate;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_ENDED_TITLE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_ENDED_MESSAGE`, {lng}), {
+      claimantName: claimantFullName,
+      acceptFullDefenseDate: formatDateToFullDate(claimTakenOffline, lng),
+    })
+    .build();
+}
+
+function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM_TITLE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM`, {lng}), {
+      claimantName: claimantFullName,
+    })
+    .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName},
+      t(`${PAGES_LATEST_UPDATE_CONTENT}.THEIR_PAYMENT_DETAILS`, {lng}))
+    .build();
+}
+
+function generateMediationUnSuccessfulLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_TITLE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_MSG1`, {lng}), {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_UNSUCCESSFUL_MSG2`, {lng}))
+    .build();
+}
+
+function generateDefaultJudgmentSubmittedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const styleClass = 'govuk-body govuk-!-margin-bottom-0';
+  const emailId= 'mailto:contactocmc@justice.gov.uk';
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_SUBMITTED_TITLE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG1`, {lng}), {
+      claimantName: claimantFullName,
+    })
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG2`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.DEFAULT_JUDGMENT_MSG3`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT_INFO`, {lng}))
+    .addLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.EMAIL_ID`, {lng}),emailId, t(`${PAGES_LATEST_UPDATE_CONTENT}.EMAIL`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.TELEPHONE`, {lng}),undefined, styleClass)
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WORKING_HOURS`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_POST_COPY`, {lng}), {
+      claimantName: claimantFullName,
+    })
+    .build();
+}
+
+function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  const certificateLink = 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation';
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_TITLE`, {lng}), {
+      claimantName: claimantFullName})
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG1`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG2`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG3`, {lng}),{
+      claimantName: claimantFullName,
+    })
+    .addLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CERTIFICATE_LINK`,{lng}), certificateLink,
+      t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG4`, {lng}),
+      t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG5`, {lng}))
+    .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName})
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.SEALED_CLAIM)
+    .build();
+}
+
+export function generateClaimSettledLatestUpdate(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED', {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_SETTLED_CLAIM`, {lng}), {
+      claimantName: claimantFullName,
+      settlementDate: formatDateToFullDate(claim.lastModifiedDate, lng),
+    })
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, DocumentUri.SEALED_CLAIM)
+    .build();
+}
 
 const getLastUpdateForClaimDismissed = (claim: Claim) => {
   const claimantName = claim.getClaimantFullName();
@@ -297,6 +402,18 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId));
+  } else if (claim.hasClaimTakenOffline()) {
+    sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
+  } else if (claim.hasMediationSuccessful()) {
+    sectionContent.push(generateMediationSuccessfulLatestUpdate(claim, lng));
+  } else if (claim.hasMediationUnSuccessful() && !claim.hasSdoOrderDocument()) {
+    sectionContent.push(generateMediationUnSuccessfulLatestUpdate(claim, lng));
+  } else if (claim.hasDefaultJudgmentSubmitted() && !claim.isClaimSettled()) {
+    sectionContent.push(generateDefaultJudgmentSubmittedLatestUpdate(claim, lng));
+  } else if(claim.hasClaimantRequestedCCJ() && !claim.isClaimSettled()) {
+    sectionContent.push(generateCCJRequestedLatestUpdate(claim, lng));
+  } else if (claim.isClaimSettled()) {
+    sectionContent.push(generateClaimSettledLatestUpdate(claim, lng));
   } else if (claim.hasApplicant1DeadlinePassed()) {
     sectionContent.push(getLastUpdateForClaimDismissed(claim));
   } else if (claim.hasClaimInMediation()) {
