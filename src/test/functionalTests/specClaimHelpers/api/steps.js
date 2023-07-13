@@ -55,10 +55,17 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId) => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims') => {
     console.log('This is inside performCitizenResponse : ' + caseId);
-    eventName = 'DEFENDANT_RESPONSE_CUI';
-    const payload = defendantResponse.createDefendantResponse();
+    let eventName = 'DEFENDANT_RESPONSE_CUI';
+    let payload = {};
+    if (claimType === 'FastTrack'){
+      console.log('FastTrack claim...');
+      payload = defendantResponse.createDefendantResponse('15000');
+    } else {
+      console.log('SmallClaim...');
+      payload = defendantResponse.createDefendantResponse('1500');
+    }
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);

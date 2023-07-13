@@ -11,6 +11,7 @@ import {
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
+import {languagePreferenceGuard} from 'routes/guards/languagePreferenceGuard';
 
 const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-preference';
 const bilingualLangPreferenceController = Router();
@@ -19,14 +20,20 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(bilingualLangPreferenceViewPath, {form});
 }
 
-bilingualLangPreferenceController.get(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req, res, next: NextFunction) => {
-  try {
-    const form: GenericYesNo = await getBilingualLangPreference(req.params.id, req);
-    renderView(new GenericForm<GenericYesNo>(form), res);
-  } catch (error) {
-    next(error);
-  }
-});
+bilingualLangPreferenceController.get(
+  BILINGUAL_LANGUAGE_PREFERENCE_URL,
+  languagePreferenceGuard,
+  (req: Request, res: Response, next: NextFunction) => {
+    (async () => {
+      try {
+        const form: GenericYesNo = await getBilingualLangPreference(req.params.id, req);
+        renderView(new GenericForm<GenericYesNo>(form), res);
+      } catch (error) {
+        next(error);
+      }
+    })();
+  },
+);
 
 bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
