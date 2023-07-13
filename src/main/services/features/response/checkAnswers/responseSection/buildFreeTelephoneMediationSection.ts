@@ -16,7 +16,7 @@ const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE
 
 const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
-    getMediationContactNumber(claim.mediation.companyTelephoneNumber);
+    return getMediationContactNumber(claim.mediation.companyTelephoneNumber);
   } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
     return claim.mediation.canWeUse.mediationPhoneNumber;
   } else {
