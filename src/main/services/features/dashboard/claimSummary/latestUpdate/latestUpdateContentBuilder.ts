@@ -85,7 +85,7 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
     .build();
 }
 
-function getPartAdmitPaidPayImmediately(claim: Claim) {
+function getPartAdmitPaidPayImmediately(claim: Claim, lng: string) {
   return new LatestUpdateSectionBuilder()
     .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY`, {lng}), {
@@ -241,7 +241,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
     [ClaimResponseStatus.FA_PAY_BY_DATE]: getFullAdmitPayByDate(claim, lng),
     [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: getFullAdmitPayInstallments(claim, lng),
-    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE]: getPartAdmitPaidPayByDate(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS]: getPartAdmitPayInstallmentItems(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID]: getStatusPaid(claim, lng),
