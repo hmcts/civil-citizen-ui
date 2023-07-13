@@ -143,7 +143,7 @@ describe('translate recurring expense to CCD model', () => {
     expect(output).toEqual(expected);
   });
 
-  it('should return empty if all are declared', () => {
+  it('should return empty if all are declared undefined', () => {
     //Given
     const expenseParams : ExpenseParams = {
       mortgage: undefined,
@@ -172,11 +172,103 @@ describe('translate recurring expense to CCD model', () => {
     //Then
     expect(output).toEqual(undefined);
   });
+
+  it('should return empty if all values are undefined', () => {
+    //Given
+    const expenseParams : ExpenseParams = {
+      mortgage: setUpTransactionInputUndefined(),
+      rent: setUpTransactionInputUndefined(),
+      councilTax: setUpTransactionInputUndefined(),
+      gas: setUpTransactionInputUndefined(),
+      electricity: setUpTransactionInputUndefined(),
+      water: setUpTransactionInputUndefined(),
+      travel: setUpTransactionInputUndefined(),
+      schoolCosts: setUpTransactionInputUndefined(),
+      foodAndHousekeeping: setUpTransactionInputUndefined(),
+      tvAndBroadband: setUpTransactionInputUndefined(),
+      hirePurchase: setUpTransactionInputUndefined(),
+      mobilePhone: setUpTransactionInputUndefined(),
+      maintenance: setUpTransactionInputUndefined(),
+      other: setUpOtherTransactionInputUndefined(),
+    };
+    const input = new Claim();
+    input.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+    };
+    input.statementOfMeans = new StatementOfMeans();
+    input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
+    const expected : CCDRecurringExpenses[] = [
+      setUpRecurringOutputUndefined(CCDExpensesType.MORTGAGE),
+      setUpRecurringOutputUndefined(CCDExpensesType.RENT),
+      setUpRecurringOutputUndefined(CCDExpensesType.COUNCIL_TAX),
+      setUpRecurringOutputUndefined(CCDExpensesType.GAS),
+      setUpRecurringOutputUndefined(CCDExpensesType.ELECTRICITY),
+      setUpRecurringOutputUndefined(CCDExpensesType.WATER),
+      setUpRecurringOutputUndefined(CCDExpensesType.TRAVEL),
+      setUpRecurringOutputUndefined(CCDExpensesType.SCHOOL),
+      setUpRecurringOutputUndefined(CCDExpensesType.FOOD),
+      setUpRecurringOutputUndefined(CCDExpensesType.TV),
+      setUpRecurringOutputUndefined(CCDExpensesType.HIRE_PURCHASE),
+      setUpRecurringOutputUndefined(CCDExpensesType.MOBILE_PHONE),
+      setUpRecurringOutputUndefined(CCDExpensesType.MAINTENANCE),
+      undefined,
+    ];
+    //When
+    const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
+    expect(output).toEqual(expected);
+  });
+
+  it('should return empty if all values content are undefined', () => {
+    //Given
+    const expenseParams : ExpenseParams = {
+      mortgage: setUpTransactionInputContentUndefined(),
+      rent: setUpTransactionInputContentUndefined(),
+      councilTax: setUpTransactionInputContentUndefined(),
+      gas: setUpTransactionInputContentUndefined(),
+      electricity: setUpTransactionInputContentUndefined(),
+      water: setUpTransactionInputContentUndefined(),
+      travel: setUpTransactionInputContentUndefined(),
+      schoolCosts: setUpTransactionInputContentUndefined(),
+      foodAndHousekeeping: setUpTransactionInputContentUndefined(),
+      tvAndBroadband: setUpTransactionInputContentUndefined(),
+      hirePurchase: setUpTransactionInputContentUndefined(),
+      mobilePhone: setUpTransactionInputContentUndefined(),
+      maintenance: setUpTransactionInputContentUndefined(),
+      other: setUpOtherTransactionInputContentUndefined(),
+    };
+    const input = new Claim();
+    input.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+    };
+    input.statementOfMeans = new StatementOfMeans();
+    input.statementOfMeans.regularExpenses = new RegularExpenses(expenseParams);
+    const expected : CCDRecurringExpenses[] = [
+      setUpRecurringOutputUndefined(CCDExpensesType.MORTGAGE),
+      setUpRecurringOutputUndefined(CCDExpensesType.RENT),
+      setUpRecurringOutputUndefined(CCDExpensesType.COUNCIL_TAX),
+      setUpRecurringOutputUndefined(CCDExpensesType.GAS),
+      setUpRecurringOutputUndefined(CCDExpensesType.ELECTRICITY),
+      setUpRecurringOutputUndefined(CCDExpensesType.WATER),
+      setUpRecurringOutputUndefined(CCDExpensesType.TRAVEL),
+      setUpRecurringOutputUndefined(CCDExpensesType.SCHOOL),
+      setUpRecurringOutputUndefined(CCDExpensesType.FOOD),
+      setUpRecurringOutputUndefined(CCDExpensesType.TV),
+      setUpRecurringOutputUndefined(CCDExpensesType.HIRE_PURCHASE),
+      setUpRecurringOutputUndefined(CCDExpensesType.MOBILE_PHONE),
+      setUpRecurringOutputUndefined(CCDExpensesType.MAINTENANCE),
+      setUpOtherRecurringOutputUndefined(CCDExpensesType.OTHER),
+    ];
+    //When
+    const output = toCCDRecurringExpensesField(input, ResponseType.FULL_ADMISSION);
+    //Then
+    expect(output).toEqual(expected);
+  });
 });
 
 const setUpTransactionInput = (declared : boolean): Transaction => {
   const transactionSourceParams : TransactionSourceParams = {
-    isIncome: true,
+    isIncome: false,
     nameRequired: true,
     name: 'test',
     amount: Number(1),
@@ -203,12 +295,53 @@ const setUpOtherTransactionInput = (declared : boolean): OtherTransaction => {
   return otherTransaction;
 };
 
+const setUpTransactionInputUndefined = (): Transaction => {
+  const transaction = new Transaction(true, undefined);
+
+  return transaction;
+};
+
+const setUpOtherTransactionInputUndefined = (): OtherTransaction => {
+  const otherTransaction = new OtherTransaction(true, undefined);
+
+  return otherTransaction;
+};
+
+const setUpTransactionInputContentUndefined = (): Transaction => {
+  const transactionSourceParams : TransactionSourceParams = {
+    isIncome: false,
+    nameRequired: true,
+    name: 'test',
+    amount: undefined,
+    schedule: undefined,
+  };
+  const transactionSource = new TransactionSource(transactionSourceParams);
+  const transaction = new Transaction(true, transactionSource);
+
+  return transaction;
+};
+
+const setUpOtherTransactionInputContentUndefined = (): OtherTransaction => {
+  const transactionSourceParams : TransactionSourceParams = {
+    isIncome: false,
+    nameRequired: true,
+    name: undefined,
+    amount: undefined,
+    schedule: undefined,
+  };
+  const transactionSource = new TransactionSource(transactionSourceParams);
+  const transactionSourceList : TransactionSource[] = [transactionSource];
+  const otherTransaction = new OtherTransaction(true, transactionSourceList);
+
+  return otherTransaction;
+};
+
 const setUpRecurringOutput = (type: CCDExpensesType, frequency :CCDPaymentFrequency): CCDRecurringExpenses => {
   return {
     value: {
       type: type,
       typeOtherDetails: undefined,
-      amount: Number(1),
+      amount: Number(100),
       frequency: frequency,
     },
   };
@@ -219,8 +352,30 @@ const setUpOtherRecurringOutput = (type: CCDExpensesType, frequency :CCDPaymentF
     value: {
       type: type,
       typeOtherDetails: 'test',
-      amount: Number(1),
+      amount: Number(100),
       frequency: frequency,
+    },
+  };
+};
+
+const setUpRecurringOutputUndefined = (type: CCDExpensesType): CCDRecurringExpenses => {
+  return {
+    value: {
+      type: type,
+      typeOtherDetails: undefined,
+      amount: undefined,
+      frequency: undefined,
+    },
+  };
+};
+
+const setUpOtherRecurringOutputUndefined = (type: CCDExpensesType): CCDRecurringExpenses => {
+  return {
+    value: {
+      type: type,
+      typeOtherDetails: undefined,
+      amount: undefined,
+      frequency: undefined,
     },
   };
 };

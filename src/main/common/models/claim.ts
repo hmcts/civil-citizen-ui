@@ -17,11 +17,12 @@ import {
   CaseState,
   ClaimAmountBreakup,
   ClaimFee,
+  ClaimantMediationLip,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo} from 'form/models/yesNo';
+import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -58,6 +59,7 @@ import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
   legacyCaseReference: string;
@@ -93,10 +95,25 @@ export class Claim {
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
+  pcqId: string;
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
+  takenOfflineDate?: Date;
+  mediationAgreement?: MediationAgreement;
+  unsuccessfulMediationReason?: string;
+  defaultJudgmentDocuments?: CaseDocument[];
+  ccjJudgmentStatement?: string;
+  lastModifiedDate?: Date;
+  applicant1AcceptAdmitAmountPaidSpec?: string;
+  applicant1PartAdmitConfirmAmountPaidSpec?: string;
+  applicant1PartAdmitIntentionToSettleClaimSpec?: string;
+  partAdmitPaidValuePounds?: number;
+  respondent1PaymentDateToStringSpec?: Date;
+  applicant1ResponseDeadline?: Date;
+  applicant1ResponseDate?: Date;
+  applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -122,10 +139,22 @@ export class Claim {
     }
 
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES) {
+        return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED;
+      }
+      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.NO) {
+        return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED;
+      }
+      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.NO) {
+        return ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED;
+      }
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
     if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
+      if (this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES) {
+        return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED;
+      }
       return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
     }
 
@@ -493,6 +522,19 @@ export class Claim {
     return !!this.sdoOrderDocument;
   }
 
+  hasClaimInMediation(): boolean {
+    return this.ccdState === CaseState.IN_MEDIATION;
+  }
+
+  hasClaimantNotAgreedToMediation(): boolean {
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
+  }
+  hasApplicant1DeadlinePassed(): boolean {
+    const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
+    const now = new Date();
+    return applicant1ResponseDeadline <= now.getTime() && !this?.applicant1ResponseDate;
+  }
+
   hasCaseProgressionHearingDocuments(): boolean{
     return !!this.caseProgressionHearing?.hearingDocuments;
   }
@@ -502,6 +544,30 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  hasClaimTakenOffline() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
+  }
+
+  hasMediationSuccessful() {
+    return  this.ccdState === CaseState.CASE_STAYED && !!this.mediationAgreement;
+  }
+
+  hasMediationUnSuccessful() {
+    return !!this.unsuccessfulMediationReason;
+  }
+
+  hasDefaultJudgmentSubmitted() {
+    return !!this.defaultJudgmentDocuments;
+  }
+
+  hasClaimantRequestedCCJ() {
+    return !!this.ccjJudgmentStatement;
+  }
+
+  isClaimSettled() {
+    return this.ccdState === CaseState.CASE_SETTLED;
   }
 }
 

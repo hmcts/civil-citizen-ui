@@ -18,7 +18,7 @@ Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully for Part Admit Tests   <===>  '  , claimRef);
   if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   } else {
     console.log('claimRef has not been Created');
   }
@@ -88,8 +88,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
-    //State should be moved to offline but there is a bug at the moment. CIV-9430
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.AWAITING_APPLICANT_INTENTION);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
     //Bug CIV-9440
     //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes);
   }
@@ -114,8 +113,7 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await api.enterBreathingSpace(config.applicantSolicitorUser);
     await api.liftBreathingSpace(config.applicantSolicitorUser);
-    //State should be moved to offline but there is a bug at the moment. CIV-9430
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.AWAITING_APPLICANT_INTENTION);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
     //Bug CIV-9440
     //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes);
   }
