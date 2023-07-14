@@ -2,7 +2,6 @@ import {NextFunction, Router} from 'express';
 import config from 'config';
 import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
 import {CONFIRMATION_URL} from '../../urls';
-import {getClaimById} from '../../../modules/utilityService';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';
@@ -17,10 +16,9 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, asyn
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req);
-    const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!claim.isEmpty()) {
-      claim.respondent1ResponseDate = !submittedClaim.isEmpty() ? submittedClaim.respondent1ResponseDate : undefined;
+      claim.respondent1ResponseDate = !claim.isEmpty() ? claim.respondent1ResponseDate : undefined;
       const confirmationContent = getSubmitConfirmationContent(claimId, claim, getLng(lang));
       const claimNumber = claim.legacyCaseReference;
       const responseSubmitDate = formatDateToFullDate(claim?.respondent1ResponseDate, getLng(lang));

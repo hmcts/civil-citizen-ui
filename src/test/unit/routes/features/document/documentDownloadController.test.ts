@@ -20,28 +20,48 @@ describe('Document download controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-
   });
 
   describe('on Get', () => {
-    it('should download the pdf successfully', async () => {
-
+    it('should download the claim pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+      const mockResponse = '<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>';
 
       nock('http://localhost:4000')
-        .get('/cases/:id')
+        .get('/cases/12345')
         .reply(200, civilClaimResponseMock);
 
       nock('http://localhost:4000')
         .post('/case/document/downloadSealedDoc/')
-        .reply(200, civilClaimResponseMock);
+        .reply(200, mockResponse);
 
       await request(app)
-        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', DocumentUri.SEALED_CLAIM))
+        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '12345').replace(':documentType', DocumentUri.SEALED_CLAIM))
         .expect((res) => {
-          expect(res.status).toBe(200);
           expect(mockDownloadPDFDocument).toBeCalled();
+          expect(res.status).toEqual(200);
+        });
+    });
+
+    it('should download the response pdf successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
+      const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+      const mockResponse = '<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>';
+
+      nock('http://localhost:4000')
+        .get('/cases/12345')
+        .reply(200, civilClaimResponseMock);
+
+      nock('http://localhost:4000')
+        .post('/case/document/downloadSealedDoc/')
+        .reply(200, mockResponse);
+
+      await request(app)
+        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '12345').replace(':documentType', DocumentUri.DEFENDANT_DEFENCE))
+        .expect((res) => {
+          expect(mockDownloadPDFDocument).toBeCalled();
+          expect(res.status).toEqual(200);
         });
     });
 
