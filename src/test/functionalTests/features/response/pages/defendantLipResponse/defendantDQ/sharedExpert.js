@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -9,7 +9,7 @@ const fields ={
 class SharedExpert {
 
   async SelectOptionForSharedExpert() {
-    await I.see('Do you want to share an expert with the other party?', 'h1');
+    await I.waitForText('Do you want to share an expert with the other party?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click('Save and continue');
   }
