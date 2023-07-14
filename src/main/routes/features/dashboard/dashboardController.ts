@@ -3,7 +3,7 @@ import {Response, Router} from 'express';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
-import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {buildPaginationData} from 'services/features/dashboard/claimPaginationService';
 import {createDraftClaimUrl, getDraftClaim} from 'services/dashboard/draftClaimService';
