@@ -200,6 +200,8 @@ import uploadDocumentsController from './features/caseProgression/uploadDocument
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
+import uploadFileController from 'routes/features/caseProgression/uploadFileController';
+import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangementsConfirmationController';
 
@@ -390,5 +392,7 @@ export default [
   uploadYourDocumentsController,
   documentsUploadedController,
   cancelYourUploadController,
+  uploadFileController,
+  documentUploadCheckAnswerController,
   trialArrangementsConfirmationController,
 ];

@@ -7,6 +7,9 @@ class DashboardSteps {
   async DashboardPage () {
     await DashboardPage.verifyDashboardPageContent();
   }
+  async VerifyClaimOnDashboard(claimNumber)  {
+    await DashboardPage.verifyClaimNumberOnDashboard(claimNumber);
+  }
 }
 
 module.exports = new DashboardSteps();
