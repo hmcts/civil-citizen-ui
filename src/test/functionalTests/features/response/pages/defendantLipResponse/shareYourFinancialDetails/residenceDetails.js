@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   ownHome: 'input[id="residenceType"]',
@@ -14,7 +15,7 @@ const buttons = {
 class ResidenceDetails {
 
   async selectResidenceType(residenceType) {
-    await I.see('Where do you live?', 'h1');
+    await I.waitForText('Where do you live?', config.WaitForText);
     switch (residenceType){
       case 'ownHome':{
         await I.click(fields.ownHome);
