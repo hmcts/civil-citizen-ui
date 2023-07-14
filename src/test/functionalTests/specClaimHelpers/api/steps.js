@@ -55,10 +55,17 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId) => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims') => {
     console.log('This is inside performCitizenResponse : ' + caseId);
-    eventName = 'DEFENDANT_RESPONSE_CUI';
-    const payload = defendantResponse.createDefendantResponse();
+    let eventName = 'DEFENDANT_RESPONSE_CUI';
+    let payload = {};
+    if (claimType === 'FastTrack'){
+      console.log('FastTrack claim...');
+      payload = defendantResponse.createDefendantResponse('15000');
+    } else {
+      console.log('SmallClaim...');
+      payload = defendantResponse.createDefendantResponse('1500');
+    }
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -96,12 +103,19 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    await assignSpecCase(caseId, multipartyScenario);
+    if(claimType !== 'pinInPost'){
+      await assignSpecCase(caseId, multipartyScenario);
+    }
     await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  retrieveCaseData: async(user, caseId) => {
+    const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
+    return case_data;
   },
 
   createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
@@ -349,5 +363,5 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 }
 
 const assignSpecCase = async (caseId) => {
-  await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantCitizenUser);
+  await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
 };

@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   yesButton: 'input[id="option"]',
@@ -11,13 +11,13 @@ class FreeTelephoneMediation {
 
   async selectMediation(claimRef) {
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    await I.see('Free telephone mediation', 'h1');
+    await I.waitForText('Free telephone mediation', config.WaitForText);
     await I.click('Continue');
   }
 
   async selectNoMediation(claimRef){
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    await I.see('Free telephone mediation', 'h1');
+    await I.waitForText('Free telephone mediation', config.WaitForText);
     await I.click('I do not agree to free mediation');
     await I.see('The claim will continue and you may have to go to a hearing.');
     await I.see('Advantages of free mediation');

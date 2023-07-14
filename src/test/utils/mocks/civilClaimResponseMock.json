@@ -282,16 +282,306 @@
     },
     "caseProgression": {
       "claimantUploadDocuments":{
+        "disclosure": [
+          {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DISCLOSURE_LIST",
+          "caseDocument": {
+            "documentUpload": {
+              "document_url": "1234",
+              "document_filename": "testfile.txt",
+              "document_binary_url":"1244-binary"
+            },
+            "createdDatetime": "2022-02-20T13:20"
+          },
+          "selected": true}],
+        "witness": [
+          {"documentType": "WITNESS_STATEMENT",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "WITNESS_SUMMARY",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "NOTICE_OF_INTENTION",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTS_REFERRED",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "expert": [
+          {"documentType": "EXPERT_REPORT",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "QUESTIONS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "ANSWERS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
           "trial": [
-            {"documentType": "CASE_SUMMARY", "selected": true},
-            {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+            {"documentType": "CASE_SUMMARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "SKELETON_ARGUMENT",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "AUTHORITIES",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "COSTS",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "DOCUMENTARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true}
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       },
       "defendantUploadDocuments":{
-          "trial": [
-            {"documentType": "CASE_SUMMARY", "selected": true},
-            {"documentType": "DOCUMENTARY", "selected": true}
-          ]
+        "disclosure": [
+          {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DISCLOSURE_LIST",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "witness": [
+          {"documentType": "WITNESS_STATEMENT",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "WITNESS_SUMMARY",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "NOTICE_OF_INTENTION",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTS_REFERRED",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "expert": [
+          {"documentType": "EXPERT_REPORT",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "QUESTIONS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "ANSWERS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "trial": [
+          {"documentType": "CASE_SUMMARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "SKELETON_ARGUMENT",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "AUTHORITIES",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "COSTS",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}
+        ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
       }
     }
   }
