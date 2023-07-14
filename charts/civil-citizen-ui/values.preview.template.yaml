@@ -4,8 +4,8 @@ nodejs:
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil-cui:
-      resourceGroup: civil-cui
+    civil-citizen-ui:
+      resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
