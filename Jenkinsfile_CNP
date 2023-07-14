@@ -6,7 +6,7 @@ import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
 def product = "civil"
-def component = "cui"
+def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
