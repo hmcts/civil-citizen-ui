@@ -10,13 +10,13 @@ module.exports = {
         claimsTrack: null,
         drawDirectionsOrderSmallClaims: 'Yes',
         drawDirectionsOrderSmallClaimsAdditionalDirections: [
-          
+
         ],
         smallClaims: [
-          
+
         ],
         fastClaims: [
-          
+
         ],
         setSmallClaimsFlag: null,
         smallClaimsOrderAndHearingDetails: null,
@@ -81,22 +81,8 @@ module.exports = {
             id: 'ce85c060-23ce-4858-be42-9243e98977d5',
           },
         ],
-        sdoOrderDocument: {
-          documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/a0f3285f-6f83-4f21-b9e6-26400be50aee',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/a0f3285f-6f83-4f21-b9e6-26400be50aee/binary',
-            document_filename: 'small_claims_sdo_000MC037.pdf',
-            document_hash: 'd3c32d0a8a03951a59b52c708d6c2a81faf19efa88b7c83c019c26d700676083',
-            category_id: 'sdo',
-          },
-          documentName: 'small_claims_sdo_000MC037.pdf',
-          documentType: 'SDO_ORDER',
-          documentSize: '62174',
-          createdDatetime: '2023-06-28T14:05:25',
-          createdBy: 'Civil',
-        },
       },
-    };  
+    };
   },
 
   judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing: () => {
@@ -110,17 +96,17 @@ module.exports = {
           judgementSum: '10.0',
         },
         drawDirectionsOrderSmallClaimsAdditionalDirections: [
-          
+
         ],
         smallClaims: [
-          
+
         ],
         fastClaims: [
-          
+
         ],
         orderType: 'DISPOSAL',
         orderTypeTrialAdditionalDirections: [
-          
+
         ],
         disposalHearingOrderAndHearingDetails: null,
         disposalHearingJudgesRecital: {
@@ -226,20 +212,6 @@ module.exports = {
         },
         disposalHearingNotes: null,
         disposalHearingFinalDisposalHearing: null,
-        sdoOrderDocument: {
-          documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/53072400-0d2d-405e-a9eb-8dfd47b2063f',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/53072400-0d2d-405e-a9eb-8dfd47b2063f/binary',
-            document_filename: 'disposal_hearing_sdo_000MC038.pdf',
-            document_hash: '17ef9c12243cf5533dc3c3cfcdbf843e64fa0a94f16c334546c6cf3a973eb417',
-            category_id: 'sdo',
-          },
-          documentName: 'disposal_hearing_sdo_000MC038.pdf',
-          documentType: 'SDO_ORDER',
-          documentSize: '83696',
-          createdDatetime: '2023-06-28T14:13:51',
-          createdBy: 'Civil',
-        },
       },
     };
   },

@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   paymentAmount: 'input[id="paymentAmount"]',
@@ -20,7 +21,7 @@ const year = currentDate.getFullYear() + 1;
 class RepaymentPlan {
   async enterRepaymentPlan(claimRef) {
     await I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
-    await I.see('Your repayment plan', 'h1');
+    await I.waitForText('Your repayment plan', config.WaitForText);
     await I.fillField(fields.paymentAmount,'100');
     await I.click(fields.rePaymentFrequency);
     await I.fillField(fields.day, day.toString());
