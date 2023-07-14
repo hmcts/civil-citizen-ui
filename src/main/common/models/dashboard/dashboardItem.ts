@@ -145,17 +145,17 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
 };
 
 export const toDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
-  if(claim) {
-    const draftClaim = new DashboardClaimantItem();
-    draftClaim.claimId = 'draft';
-    draftClaim.draft = true;
-    draftClaim.ocmc = false;
-    draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
-    draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
-    draftClaim.claimantName = claim.getClaimantFullName();
-    draftClaim.defendantName = claim.getDefendantFullName();
-    return draftClaim;
+  if(claim == undefined || claim?.isEmpty()) {
+    return undefined;
   }
-  return undefined;
-}
+  const draftClaim = new DashboardClaimantItem();
+  draftClaim.claimId = 'draft';
+  draftClaim.draft = true;
+  draftClaim.ocmc = false;
+  draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
+  draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
+  draftClaim.claimantName = claim.getClaimantFullName();
+  draftClaim.defendantName = claim.getDefendantFullName();
+  return draftClaim;
+};
 
