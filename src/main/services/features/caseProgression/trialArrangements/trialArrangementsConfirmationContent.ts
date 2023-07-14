@@ -37,6 +37,7 @@ export function getNextStepsSection(claimId: string, claim: Claim, lng: string, 
           href: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1087082/N244.pdf',
           textBefore: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_YOU_WANT_THE_DATE_OF_THE_HEARING', {lng}),
           textAfter: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TO_THE_COURT_AND_PAY', {lng}),
+          externalLink: true,
         },
       },
       {
