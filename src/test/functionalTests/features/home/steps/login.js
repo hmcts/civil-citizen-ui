@@ -1,5 +1,6 @@
 
 const LoginPage = require('../pages/login');
+const I= actor();
 
 class LoginSteps  {
 
@@ -7,7 +8,8 @@ class LoginSteps  {
     await LoginPage.acceptCookies();
   }
 
-  async EnterUserCredentials(username, password) {    
+  async EnterUserCredentials(username, password) {
+    await I.wait(30);
     await LoginPage.open();
     await this.AcceptCookies();
     await LoginPage.login(username, password);
