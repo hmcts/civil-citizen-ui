@@ -21,13 +21,11 @@
       {% endset %}
 
       {% set documents %}
-      <h1 class="govuk-heading-m govuk-!-margin-0">{{ t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS') }}</h1>
-
-      {% for documentsSection in documentsContent %}
-        {{ claimSummaryContent({
-          contentSections: documentsSection.contentSections
-        },t) }}
-      {% endfor %}
+        {% for documentsSection in documentsContent %}
+          {{ claimSummaryContent({
+            contentSections: documentsSection.contentSections
+          },t) }}
+        {% endfor %}
       {% endset %}
 
       <div class="govuk-grid-row govuk-!-margin-top-0">
