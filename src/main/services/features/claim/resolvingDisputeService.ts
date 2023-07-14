@@ -1,7 +1,7 @@
 import {
   getCaseDataFromStore,
   saveDraftClaim,
-} from "modules/draft-store/draftStoreService";
+} from 'modules/draft-store/draftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('saveResolvingDisputeService');

@@ -29,7 +29,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
 
   const taskList: TaskList = {
     title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS'),
-    tasks: [considerOtherOptionsTask]
+    tasks: [considerOtherOptionsTask],
   };
 
   return taskList;
