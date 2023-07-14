@@ -13,10 +13,11 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {
+  ExpertSection,
   FileOnlySection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+  WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -111,6 +112,17 @@ export const getTypeDocumentForm = (req: Request): UploadDocuments => {
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm => {
   const documentsForDisclosure = getFormSection<TypeOfDocumentSection>(req.body.documentsForDisclosure, bindRequestToTypeOfDocumentSectionObj);
   const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
+
+  const witnessStatement = getFormSection<WitnessSection>(req.body.witnessStatement, bindRequestToWitnessSectionObj);
+  const witnessSummary = getFormSection<WitnessSection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
+  const noticeOfIntention = getFormSection<WitnessSection>(req.body.noticeOfIntention, bindRequestToWitnessSectionObj);
+  const documentsReferred = getFormSection<TypeOfDocumentSection>(req.body.documentsReferred, bindRequestToTypeOfDocumentSectionObj);
+
+  const expertReport = getFormSection<ExpertSection>(req.body.expertReport, bindRequestToExpertSectionObj);
+  const expertStatement = getFormSection<ExpertSection>(req.body.expertStatement, bindRequestToExpertSectionObj);
+  const questionsForExperts = getFormSection<ExpertSection>(req.body.questionsForExperts, bindRequestToExpertSectionObj);
+  const answersForExperts = getFormSection<ExpertSection>(req.body.answersForExperts, bindRequestToExpertSectionObj);
+
   const trialCaseSummary = getFormSection<FileOnlySection>(req.body.trialCaseSummary, bindRequestToFileOnlySectionObj);
   const trialSkeletonArgument = getFormSection<FileOnlySection>(req.body.trialSkeletonArgument, bindRequestToFileOnlySectionObj);
   const trialAuthorities = getFormSection<FileOnlySection>(req.body.trialAuthorities, bindRequestToFileOnlySectionObj);
@@ -120,6 +132,14 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   return new UploadDocumentsUserForm(
     documentsForDisclosure,
     documentsList,
+    witnessStatement,
+    witnessSummary,
+    noticeOfIntention,
+    documentsReferred,
+    expertReport,
+    expertStatement,
+    questionsForExperts,
+    answersForExperts,
     trialCaseSummary,
     trialSkeletonArgument,
     trialAuthorities,
@@ -137,17 +157,37 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection();
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  formObj.dateDay = request['date-day'];
-  formObj.dateMonth = request['date-month'];
-  formObj.dateYear = request['date-year'];
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  formObj.fileUpload = request['fileUpload'];
+  return formObj;
+};
+
+const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
+  const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  formObj.witnessName = request['witnessName'].trim();
+  //TODO we should get the file from dm-store
+  formObj.fileUpload = request['fileUpload'];
+  return formObj;
+};
+
+const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
+  const formObj: ExpertSection = new ExpertSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  formObj.expertName = request['expertName'] != null ? request['expertName'].trim() : null;
+  formObj.multipleExpertsName = request['multipleExpertsName'] != null ? request['multipleExpertsName'].trim() : null;
+  formObj.fieldOfExpertise = request['fieldOfExpertise'] != null ? request['fieldOfExpertise'].trim() : null;
+  formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
+  formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
+  formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
+  //TODO we should get the file from dm-store
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  formObj.fileUpload = request['file_upload'];
+  //TODO we should get the file from dm-store
+  formObj.fileUpload = request['fileUpload'];
   return formObj;
 };

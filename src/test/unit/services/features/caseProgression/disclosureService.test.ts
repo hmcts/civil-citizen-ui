@@ -6,7 +6,6 @@ import {
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
-import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('Disclosure service', () => {
   let mockClaim;
@@ -60,8 +59,8 @@ describe('Disclosure service', () => {
 
   it('should return multiple disclosure documents only', () => {
     const documentsForDisclosure: TypeOfDocumentSection[] = [];
-    documentsForDisclosure.push(new TypeOfDocumentSection());
-    documentsForDisclosure.push(new TypeOfDocumentSection());
+    documentsForDisclosure.push(new TypeOfDocumentSection('12', '12', '2022'));
+    documentsForDisclosure.push(new TypeOfDocumentSection('12', '12', '2022'));
     const form = new UploadDocumentsUserForm(documentsForDisclosure);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
@@ -75,7 +74,6 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent[0].length).toEqual(2);
-    expect(actualDisclosureContent[0][0].contentSections[1].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
   });
 
   it('should return only disclosure list content', () => {

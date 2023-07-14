@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../config');
 
 class DefendantLatestUpdate {
 
@@ -10,11 +11,11 @@ class DefendantLatestUpdate {
 
   async openSummaryPage(claimRef) {
     await I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    await I.see('More time requested');
+    await I.waitForText('More time requested', config.WaitForText);
   }
 
   async verifyDefendantUpdatePageContent() {
-    await I.waitForText('You haven\'t responded to this claim');
+    await I.waitForText('You haven\'t responded to this claim', config.WaitForText);
     await I.see('Claim number: ');
     await I.see('You need to respond before');
     //exact days to be updated based on logic

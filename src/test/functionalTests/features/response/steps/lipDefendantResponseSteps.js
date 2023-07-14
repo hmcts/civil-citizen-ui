@@ -63,6 +63,7 @@ const ExpertEvidence = require('../pages/defendantLipResponse/defendantDQ/expert
 const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sentExpertReports');
 const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
 const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
+const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -130,8 +131,12 @@ const expertEvidence = new ExpertEvidence();
 const sentExpertReports = new SentExpertReports();
 const sharedExpert = new SharedExpert();
 const expertDetails = new ExpertDetails();
+const assignCaseToLip = new AssignCaseToLip();
 
 class ResponseSteps {
+  async AssignCaseToLip(claimNumber, securityCode){
+    await assignCaseToLip.open(claimNumber, securityCode);
+  }
   async RespondToClaim(claimRef){
     await defendantLatestUpdate.open(claimRef);
     await bilingualLanguagePreference.verifyContent();
