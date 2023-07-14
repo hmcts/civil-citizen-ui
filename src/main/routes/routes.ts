@@ -202,6 +202,7 @@ import documentsUploadedController from 'routes/features/caseProgression/documen
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
+import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
 
 export default [
   homeController,
@@ -392,4 +393,5 @@ export default [
   cancelYourUploadController,
   uploadFileController,
   documentUploadCheckAnswerController,
+  hasAnythingChangedController,
 ];

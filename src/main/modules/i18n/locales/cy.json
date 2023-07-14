@@ -2404,7 +2404,15 @@
       "YEAR": "Year"
     },
     "HAS_ANYTHING_CHANGED": {
-      "PAGE_TITLE": "Has anything changed to the support"
+      "PAGE_TITLE": "Has anything changed to the support",
+      "FINALISE": "Finalise your trial or hearing arrangements",
+      "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
+      "YOU_CAN": "You can check your previous answers in the ",
+      "DIRECTIONS": "directions questionnaire.",
+      "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
+      "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Cwestiynau bregusrwydd",
