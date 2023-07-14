@@ -46,9 +46,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body">{{ t(content.data.text,object) }}</p>
+      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
     {% else %}
-      <p class="govuk-body">{{ t(content.data.text) }}</p>
+      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}
   {% endif %}
 
@@ -143,7 +143,7 @@
            hint: {
              text: t(content.data.hint)
            },
-          errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
            attributes: {
              'data-name': content.data.category+'[%index%]['+content.data.field+']',
              'data-id': content.data.category+'[%index%]['+content.data.field+']'
