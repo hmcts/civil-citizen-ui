@@ -9,7 +9,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
     sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
-    sectionContent.push(getFinaliseTrialArrangementContent(claim));
+    sectionContent.push(getFinaliseTrialArrangementsContent(claim));
   }
   return getClaimSummaryContent(sectionContent.flat());
 };
@@ -29,6 +29,6 @@ export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : Claim
   }));
 };
 
-export const getFinaliseTrialArrangementContent = (claim: Claim): ClaimSummarySection[][] => {
+export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummarySection[][] => {
   return buildFinaliseTrialArrangements(claim);
 };
