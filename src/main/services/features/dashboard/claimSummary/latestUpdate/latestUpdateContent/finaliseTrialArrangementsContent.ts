@@ -20,7 +20,7 @@ export const getFinaliseTrialArrangements = (claim: Claim) => {
     .addWarning(`${FINALISE_TRIAL_ARRANGEMENTS}.DUE_BY`, {finalisingTrialArrangementsDeadline: deadline})
     .addRawHtml(htmlText)
     .addLink(linkText, linkHref, linkTextBefore, linkTextAfter)
-    .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, 'href');
+    .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, 'href'); //TODO: provide an actual href once CIV-9124 is merged into master
 
   return latestUpdateSectionBuilder.build();
 };
