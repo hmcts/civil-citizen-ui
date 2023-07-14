@@ -10,7 +10,7 @@ resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, async (req: Requ
   res.render(resolvingThisDisputePath);
 });
 
-resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userId = req.session?.user?.id;
     await saveResolvingDispute(userId);
