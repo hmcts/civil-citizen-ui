@@ -14,19 +14,24 @@ let securityCode;
 Feature('Extended Response Time');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('Claim has been created Successfully    <===>  ', claimRef);
-  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-  console.log('claim number', claimNumber);
-  console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+    console.log('Claim has been created Successfully    <===>  ', claimRef);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('claim number', claimNumber);
+    console.log('Security code', securityCode);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  }else{
+    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
+    console.log('Claim has been created Successfully    <===>  ', claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
+  }
 });
 
 Scenario('No response submitted, date agreed upon request time  @citizenUI @regression', async () => {
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {

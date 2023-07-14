@@ -15,19 +15,25 @@ let securityCode;
 Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
-  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-  console.log('claim number', claimNumber);
-  console.log('Security code', securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('claim number', claimNumber);
+    console.log('Security code', securityCode);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  }else{
+    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser, null, claimType);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
+  }
 });
 
 // Add a regression tag once the defect https://tools.hmcts.net/jira/browse/CIV-9366 is fixed
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit', async () => {
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

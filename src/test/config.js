@@ -54,6 +54,11 @@ module.exports = {
     email: 'citizen1.user@gmail.com',
     type: 'defendant',
   },
+  defendantLRCitizenUser:{
+    password: defaultPassword,
+    email: 'cuiuser@gmail.com',
+    type: 'defendant',
+  },
   adminUser: {
     password: defaultPassword,
     email: 'civil-admin@mailnesia.com',
