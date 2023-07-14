@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import {Router, Response, NextFunction} from 'express';
 import {CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
@@ -10,7 +10,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, async (req: AppRequest, res, next) => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
