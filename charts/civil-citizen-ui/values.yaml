@@ -25,7 +25,7 @@ nodejs:
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
   keyVaults:
-    civil-cui:
+    civil-citizen-ui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
