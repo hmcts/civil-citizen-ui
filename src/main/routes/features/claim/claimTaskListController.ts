@@ -5,7 +5,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
 import {t} from 'i18next';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -13,7 +13,6 @@ const claimTaskListController = Router();
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {
     const userId = req.session?.user?.id;
-    // req.session.claimId = userId;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getCaseDataFromStore(userId);
     const taskLists = getTaskLists(caseData, userId, lang);
