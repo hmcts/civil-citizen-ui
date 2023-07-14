@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -9,7 +9,7 @@ const fields ={
 class ExpertEvidence {
 
   async SelectOptionForExpertEvidence() {
-    await I.see('Do you want to use expert evidence?', 'h1');
+    await I.waitForText('Do you want to use expert evidence?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click('Save and continue');
   }

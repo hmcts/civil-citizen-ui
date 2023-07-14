@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   contactPerson: 'input[id="contactPerson"]',
@@ -19,6 +20,7 @@ const fields = {
 class EnterCompanyDetails {
   async enterCompanyDetails () {
     await I.click('Confirm your details');
+    await I.waitForElement(fields.contactPerson, config.WaitForText);
     await I.fillField(fields.contactPerson, 'TestPerson');
     await I.fillField(fields.addressLine1, 'Test AddressLine1');
     await I.fillField(fields.addressLine2, 'Test AddressLine2');

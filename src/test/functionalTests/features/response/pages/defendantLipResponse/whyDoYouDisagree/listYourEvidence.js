@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   firstSelection: '[id="evidenceItem[0][type]"]',
@@ -9,7 +9,7 @@ const fields ={
 class ListYourEvidence {
 
   async selectEvidenceFromDropDown() {
-    await I.see('List your evidence', 'h1');
+    await I.waitForText('List your evidence', config.WaitForText);
     await I.selectOption(fields.firstSelection, 'Contracts and agreements');
     await I.fillField(fields.firstEvidenceItem, 'TestEvidence');
     await I.click('Save and continue');

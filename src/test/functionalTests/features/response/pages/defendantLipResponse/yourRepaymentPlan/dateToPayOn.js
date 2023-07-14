@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   day: 'input[id="day"]',
@@ -17,7 +17,7 @@ const year = currentDate.getFullYear() + 1;
 
 class DateToPayOn {
   async enterDateToPayOn () {
-    await I.see('What date will you pay on?', 'h1');
+    await I.waitForText('What date will you pay on?', config.WaitForText);
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, year.toString());
