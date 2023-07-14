@@ -16,12 +16,12 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, asyn
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (!claim.isEmpty()) {
-      claim.respondent1ResponseDate = !claim.isEmpty() ? claim.respondent1ResponseDate : undefined;
-      const confirmationContent = getSubmitConfirmationContent(claimId, claim, getLng(lang));
-      const claimNumber = claim.legacyCaseReference;
-      const responseSubmitDate = formatDateToFullDate(claim?.respondent1ResponseDate, getLng(lang));
+    const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    if (!submittedClaim.isEmpty()) {
+      submittedClaim.respondent1ResponseDate = !submittedClaim.isEmpty() ? submittedClaim.respondent1ResponseDate : undefined;
+      const confirmationContent = getSubmitConfirmationContent(claimId, submittedClaim, getLng(lang));
+      const claimNumber = submittedClaim.legacyCaseReference;
+      const responseSubmitDate = formatDateToFullDate(submittedClaim?.respondent1ResponseDate, getLng(lang));
       res.render('features/response/submit-confirmation', {claimNumber, confirmationContent, responseSubmitDate});
     }
   } catch (error) {
