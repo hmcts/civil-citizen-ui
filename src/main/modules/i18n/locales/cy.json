@@ -1523,9 +1523,7 @@
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
-          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice",
-          "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
-          "UNDER_NOTICES_AND_ORDERS": "under 'Notices and orders' prior to finalising your trial arrangements."
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         },
         "FINALISE_TRIAL_ARRANGEMENTS": {
           "TITLE": "Finalise your trial arrangements for your upcoming trial or hearing (optional)",
