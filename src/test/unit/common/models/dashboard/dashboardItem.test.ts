@@ -1,6 +1,11 @@
-import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem, toDashboardItem} from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyDetails} from 'form/models/partyDetails';
+import {PartyType} from 'models/partyType';
+
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 jest.mock('../../../../../main/modules/i18n');
@@ -34,6 +39,31 @@ describe('Dashboard Items', ()=> {
       const href = ccdClaimantClaim.getHref();
       //Then
       expect(href).toEqual( '/dashboard/1/claimant');
+    });
+    it('should translate claim to dashboard item when claim is not empty', () => {
+      //Given
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.type = PartyType.COMPANY;
+      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Party Name'});
+      //When
+      const item = toDashboardItem(claim);
+      //Then
+      expect(item).not.toBeUndefined();
+    });
+    it('should return undefined when claim is empty', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const item = toDashboardItem(claim);
+      //Then
+      expect(item).toBeUndefined();
+    });
+    it('should return undefined when claim is undefined', () => {
+      //When
+      const item = toDashboardItem(undefined);
+      //Then
+      expect(item).toBeUndefined();
     });
   });
   describe('Dashboard defendant item', ()=>{
