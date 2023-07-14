@@ -22,14 +22,18 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addDateArray(title: string, hint: string, category: string, dayValue: string = null, monthValue: string = null, yearValue: string = null, index = 0) {
+  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
         category: category,
-        field: 'date',
+        field: field,
         text: title,
         hint: hint,
+        invalidDayError: invalidDateErrors.invalidDayError,
+        invalidMonthError: invalidDateErrors.invalidMonthError,
+        invalidYearError: invalidDateErrors.invalidYearError,
+        invalidDateError: invalidDateErrors.invalidDateError,
         dayValue: dayValue,
         monthValue: monthValue,
         yearValue: yearValue,
@@ -40,15 +44,17 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addUploadArray(title: string, html: string, category: string, field: string, index = 0) {
+  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string) {
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
         category: category,
+        classes: classes,
         field: field,
         text: title,
         html: html,
         index: index,
+        errorMessage: errorMessage,
       },
     });
     this._claimSummarySections.push(section);
