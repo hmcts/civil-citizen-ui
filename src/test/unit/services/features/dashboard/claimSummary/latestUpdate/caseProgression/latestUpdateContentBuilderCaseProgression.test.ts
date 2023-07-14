@@ -2,14 +2,15 @@ import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {DocumentUri} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  buildEvidenceUploadSection, buildFinaliseTrialArrangements, buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {FAST_TRACK_CLAIM_AMOUNT, SMALL_CLAIM_AMOUNT} from 'form/models/claimType';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {t} from 'i18next';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -86,6 +87,32 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       // Then
       expect(evidenceUploadSection).toEqual([lastedContentBuilderExpected]);
+    });
+  });
+
+  describe('test buildFinaliseTrialArrangements', () => {
+    const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS';
+
+    it('should have trial arrangements content', () => {
+      //Given
+      const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
+        .addTitle(`${FINALISE_TRIAL_ARRANGEMENTS}.TITLE`)
+        .addWarning(`${FINALISE_TRIAL_ARRANGEMENTS}.DUE_BY`, {finalisingTrialArrangementsDeadline: claim.finalisingTrialArrangementsDeadline})
+        .addRawHtml(`<p class="govuk-body">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`)}
+                                <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: claim.finalisingTrialArrangementsDeadline})}</span>.
+                              </p>`)
+        .addLink(`${FINALISE_TRIAL_ARRANGEMENTS}.DIRECTIONS_QUESTIONNAIRE`,
+          DEFENDANT_DOCUMENTS_URL.replace(':id', claim.id),
+          `${FINALISE_TRIAL_ARRANGEMENTS}.YOU_MAY_WISH_TO_REVIEW`,
+          `${FINALISE_TRIAL_ARRANGEMENTS}.UNDER_NOTICES_AND_ORDERS`)
+        .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, 'href')
+        .build();
+
+      //When
+      const finaliseTrialArrangementsSection = buildFinaliseTrialArrangements(claim);
+
+      //Then
+      expect(finaliseTrialArrangementsSection).toEqual([lastedContentBuilderExpected]);
     });
   });
 
