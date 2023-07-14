@@ -9,7 +9,7 @@ import {t} from 'i18next';
 
 export const getWhenWillYouPayTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const whenWillYouPayTask: Task = {
-    description: t('TASK_LIST.RESPOND_TO_CLAIM.WHEN_WILL_YOU_PAY', {amount: caseData.partialAdmission?.howMuchDoYouOwe?.amount, lng: getLng(lang) }),
+    description: t('TASK_LIST.RESPOND_TO_CLAIM.WHEN_WILL_YOU_PAY', {amount: caseData.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2), lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
