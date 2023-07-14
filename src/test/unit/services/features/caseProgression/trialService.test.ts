@@ -351,7 +351,7 @@ describe('Trial service', () => {
 
 const getMockSectionArray = () => {
   const sectionArray: TypeOfDocumentSection[] = [];
-  sectionArray.push(new TypeOfDocumentSection());
-  sectionArray.push(new TypeOfDocumentSection());
+  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
+  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
   return sectionArray;
 };

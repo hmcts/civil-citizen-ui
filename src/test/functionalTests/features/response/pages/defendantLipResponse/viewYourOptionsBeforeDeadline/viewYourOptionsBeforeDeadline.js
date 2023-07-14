@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesIWantMoretime: 'input[id="option"]',
@@ -24,7 +25,7 @@ class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptions(claimRef, deadlineOption) {
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
-    await I.see('Requesting extra time','h1');
+    await I.waitForText('Requesting extra time',config.WaitForText);
     await I.see('How much extra time can you request?','h3');
     await I.click(buttons.continue);
     await I.see('Response deadline');

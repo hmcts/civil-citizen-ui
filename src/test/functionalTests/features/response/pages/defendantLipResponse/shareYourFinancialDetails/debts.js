@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="debtsRadio"]',
@@ -22,7 +23,7 @@ const buttons = {
 class Debts {
 
   async clickYesButton() {
-    await I.see('Do you have loans or credit card debts?', 'h1');
+    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.debtItem1, 'HSBC Credit card'),
     await I.fillField(fields.debtOwned1, '1200'),
@@ -36,9 +37,9 @@ class Debts {
     await I.fillField(fields.monthlyPayments3, '400'),
     await I.click(buttons.saveAndContinue);
   }
-  
+
   async clickNoButton() {
-    await I.see('Do you have loans or credit card debts?', 'h1');
+    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
     await I.click(fields.noButton);
     await I.click(buttons.saveAndContinue);
   }

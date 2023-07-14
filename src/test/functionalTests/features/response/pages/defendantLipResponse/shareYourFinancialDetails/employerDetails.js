@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   employerName: 'input[id="rows[0][employerName]"]',
@@ -12,7 +12,7 @@ const buttons = {
 class EmployerDetails {
 
   async enterEmployerDetails() {
-    await I.see('Who employs you?', 'h1');
+    await I.waitForText('Who employs you?', config.WaitForText);
     await I.fillField(fields.employerName, 'ABC Ltd');
     await I.fillField(fields.jobTitle, 'Builder');
     await I.click(buttons.saveAndContinue);
