@@ -68,25 +68,25 @@ const setupConfig = {
       'codeceptjs-cli-reporter': {
         stdout: '-',
         options: {
-          steps: true
-        }
+          steps: true,
+        },
       },
       'mocha-junit-reporter': {
         stdout: '-',
         options: {
-          mochaFile: `${config.TestOutputDir}/result.xml`
-        }
+          mochaFile: `${testConfig.TestOutputDir}/result.xml`,
+        },
       },
       'mochawesome': {
-        stdout: config.TestOutputDir + '/console.log',
+        stdout: testConfig.TestOutputDir + '/console.log',
         options: {
-          reportDir: config.TestOutputDir,
+          reportDir: testConfig.TestOutputDir,
           reportName: 'et ccd callback x-browsers test',
           reportTitle: 'Crossbrowser results for: ' + browser.toUpperCase(),
-          inlineAssets: true
-        }
-      }
-    }
+          inlineAssets: true,
+        },
+      },
+    },
   },
   multiple: {
     /* microsoftIE11: {
