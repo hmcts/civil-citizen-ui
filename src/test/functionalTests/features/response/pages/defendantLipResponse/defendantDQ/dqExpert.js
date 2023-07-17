@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   continueWithExpert: 'input[id="expertYes"]',
@@ -9,7 +9,7 @@ const fields ={
 class DqExpert {
 
   async chooseExpert() {
-    await I.see('Using an expert', 'h1');
+    await I.waitForText('Using an expert', config.WaitForText);
     await I.click(fields.continueWithExpert);
   }
 }

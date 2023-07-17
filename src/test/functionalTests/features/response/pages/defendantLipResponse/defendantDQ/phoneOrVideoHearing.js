@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -10,7 +10,7 @@ const fields ={
 class PhoneOrVideoHearing {
 
   async selectOptionForPhoneOrVideoHearing() {
-    await I.see('Do you want to ask for a telephone or video hearing?', 'h1');
+    await I.waitForText('Do you want to ask for a telephone or video hearing?', config.WaitForText);
     await I.see('The judge will decide if the hearing can be held by telephone or video.');
     await I.click(fields.yesButton);
     await I.fillField(fields.details, 'Test details');
