@@ -58,9 +58,9 @@ const setupConfig = {
       uniqueScreenshotNames: 'true',
     },
   },
-  /*include: {
-    I: './pages/steps.js',
-  },*/
+  include: {
+    api: './specClaimHelpers/api/steps.js',
+  },
   bootstrap: null,
 
   mocha: {
