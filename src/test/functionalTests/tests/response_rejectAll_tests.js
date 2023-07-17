@@ -75,4 +75,4 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
     //Create sdo in this journey is broken and a bug CIV-9488
     //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
-});
+}).tag('@crossbrowser');
