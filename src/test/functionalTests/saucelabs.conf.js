@@ -94,13 +94,13 @@ const setupConfig = {
     },
     microsoftEdge: {
       browsers: getBrowserConfig('microsoftEdge'),
-    },
+    },*/
     chrome: {
       browsers: 'chromium',
-    },*/
-    firefox: {
-      browsers: getBrowserConfig('firefox'),
     },
+    /*firefox: {
+      browsers: getBrowserConfig('firefox'),
+    },*/
     /* safari: {
       browsers: getBrowserConfig('safari'),
     },*/
