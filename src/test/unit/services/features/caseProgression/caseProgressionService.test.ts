@@ -26,9 +26,9 @@ describe('case Progression service', () => {
     caseData.caseProgression.claimantUploadDocuments.trial = [];
     caseData.caseProgression.defendantUploadDocuments.trial = [];
     caseData.caseProgression.claimantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.CASE_SUMMARY));
-    caseData.caseProgression.claimantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.DOCUMENTARY));
+    caseData.caseProgression.claimantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.SKELETON_ARGUMENT));
     caseData.caseProgression.defendantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.CASE_SUMMARY));
-    caseData.caseProgression.defendantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.DOCUMENTARY));
+    caseData.caseProgression.defendantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.SKELETON_ARGUMENT));
     it('should return claimantDocuments content', async () => {
       //when
       const claimantDocuments = await getDocuments(mockClaimId, ClaimantOrDefendant.CLAIMANT);

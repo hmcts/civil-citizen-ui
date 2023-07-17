@@ -81,6 +81,7 @@ describe('Civil Service Client', () => {
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: ccdClaim,
+        last_modified: new Date(),
         state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
 
