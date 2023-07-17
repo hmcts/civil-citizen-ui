@@ -67,59 +67,59 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 };
 
 const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object> => {
-  const sectionRows = [];
-
   if(claim.isPartialAdmission) {
-    sectionRows.push(
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
-        },
-        value: {
-          text: currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount)),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
-        },
-        value: {
-          text: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
-        },
-        value: {
-          text: formatDateToFullDate(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate,lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
-        },
-        value: {
-          text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH', {lng}),
-        },
-        value: {
-          text: getRepaymentLength(claim, lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-    );
+    return repaymentPlanSummary(claim, lng);
   }
+};
 
-  return sectionRows;
+export const repaymentPlanSummary = (claim: Claim, lng: string): Array<object> =>{
+  return [
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
+      },
+      value: {
+        text: currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount)),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
+      },
+      value: {
+        text: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
+      },
+      value: {
+        text: formatDateToFullDate(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate,lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
+      },
+      value: {
+        text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH', {lng}),
+      },
+      value: {
+        text: getRepaymentLength(claim, lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+  ];
 };
 
 const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
