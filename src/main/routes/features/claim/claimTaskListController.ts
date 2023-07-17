@@ -9,7 +9,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
