@@ -12,5 +12,5 @@ export const CIVIL_SERVICE_CLAIMANT = `${CIVIL_SERVICE_CASES_URL}claimant/`;
 export const CIVIL_SERVICE_SUBMIT_EVENT = `${CIVIL_SERVICE_CASES_URL}:caseId/citizen/:submitterId/event`;
 export const CIVIL_SERVICE_CALCULATE_DEADLINE = `${CIVIL_SERVICE_CASES_URL}response/deadline`;
 export const CIVIL_SERVICE_COURT_LOCATIONS = '/locations/courtLocations';
-export const ASSIGN_CLAIM_TO_DEFENDANT =`${CIVIL_SERVICE_ASSIGNMENT_URL}/case/:claimId/RESPONDENTSOLICITORONE`;
+export const ASSIGN_CLAIM_TO_DEFENDANT =`${CIVIL_SERVICE_ASSIGNMENT_URL}/case/:claimId/DEFENDANT`;
 export const CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE =`${CIVIL_SERVICE_CASES_URL}response/agreeddeadline/:claimId`;

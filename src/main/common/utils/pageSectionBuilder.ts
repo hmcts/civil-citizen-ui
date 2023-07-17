@@ -2,7 +2,7 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
-  addTitle(title: string, variables?: unknown, classes?: string) {
+  addTitle(title: string, variables?: any, classes?: string) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
       data: {
@@ -15,18 +15,19 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addParagraph(text: string, variables?: any) {
+  addParagraph(text: string, variables?: any, classes?: string) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: text,
         variables: variables,
+        classes: classes,
       },
     });
     this._claimSummarySections.push(paragraphSection);
     return this;
   }
-  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
+  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -35,6 +36,7 @@ export class PageSectionBuilder {
         textBefore: textBefore,
         textAfter: textAfter,
         variables: variables,
+        externalLink,
       },
     });
     this._claimSummarySections.push(linkSection);

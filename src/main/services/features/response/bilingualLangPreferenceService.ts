@@ -8,7 +8,7 @@ import {getClaimById} from 'modules/utilityService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getBilingualLangPreference = async (claimId: string, req: Request) => {
+const getBilingualLangPreference = async (claimId: string, req: Request): Promise<GenericYesNo> => {
   try {
     const claim = await getClaimById(claimId, req);
     if (claim.claimBilingualLanguagePreference) {

@@ -9,7 +9,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {ResponseType} from 'form/models/responseType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {FullAdmission} from 'models/fullAdmission';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { addDaysToDate, formatDateToFullDate } from 'common/utils/dateUtils';
 import {
   getAmount,
   getFirstRepaymentDate,
@@ -21,6 +21,18 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {YesNo} from 'common/form/models/yesNo';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import {Document} from 'common/models/document/document';
+
+jest.mock('../../../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -61,6 +73,27 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     paymentAmount: 100,
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
+  };
+  return claim;
+};
+
+const getClaimDetails = (partyType: PartyType, responseType: ResponseType) => {
+  const claim = new Claim();
+  claim.id = '1';
+  claim.totalClaimAmount = 1000;
+  claim.respondent1 = {
+    responseType: responseType,
+    type: partyType,
+  };
+  claim.applicant1 = {
+    type: partyType,
+    responseType: responseType,
+    partyDetails: {
+      partyName: PARTY_NAME,
+      individualTitle: 'Mr.',
+      individualFirstName: 'TestName',
+      individualLastName: 'TestLastName',
+    },
   };
   return claim;
 };
@@ -125,7 +158,7 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
 
-    it('should have deadlline extended title when defendant extended response deadline', () => {
+    it('should have deadline extended title when defendant extended response deadline', () => {
       //Given
       claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
       //When
@@ -338,7 +371,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it('Part Admit Pay Instalments - Defendant IS Org or Company', () => {
+      it('Part Admit Pay Installments - Defendant IS Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
@@ -361,7 +394,7 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
-      it('Part Admit Pay Instalments - Defendant IS NOT Org or Company', () => {
+      it('Part Admit Pay Installments - Defendant IS NOT Org or Company', () => {
         // Given
         const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
@@ -382,6 +415,152 @@ describe('Latest Update Content Builder', () => {
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
       });
+      it('Part Admit Pay Already Paid - Claimant accepted already paid and settled', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
+        claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
+        claim.partAdmitPaidValuePounds = 500;
+        claim.respondent1PaymentDateToStringSpec = new Date(0);
+        const claimId = claim.id;
+        const claimantFullName = claim.getClaimantFullName();
+        const amount = claim?.partAdmitPaidValuePounds;
+        const moneyReceivedOn = formatDateToFullDate(claim.respondent1PaymentDateToStringSpec, lng);
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_SETTLED`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_YOU_PAID`, { claimantName: claimantFullName, amount, moneyReceivedOn })
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Already Paid - Claimant accepted already paid and not settled', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
+        claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+        claim.partAdmitPaidValuePounds = 500;
+        const claimId = claim.id;
+        const partAmount = claim.partAdmitPaidValuePounds;
+        const fullAmount = claim.totalClaimAmount;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM`, { partAmount, fullAmount })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Already Paid - Claimant rejected already paid', () => {
+        // Given
+        const claim = getClaimDetails(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION);
+        claim.partialAdmission = {
+          alreadyPaid: {
+            option: 'yes',
+          },
+        } as any;
+        claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
+        claim.partAdmitPaidValuePounds = 500;
+        const claimId = claim.id;
+        const partAmount = claim.partAdmitPaidValuePounds;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_SAID_YOU_DIDN'T_PAY_THEM`, { partAmount })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+          .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant accepted the amount', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1AcceptAdmitAmountPaidSpec = 'Yes';
+        const claimantFullName = claim.getClaimantFullName();
+        const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
+        const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lng);
+        const claimId = claim.id;
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT`, {
+            amount: currencyFormat(getAmount(claim)),
+            claimantName: claimantFullName,
+          })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MUST_PAY_THEM_BY_PAYMENT_DATE`, { paymentDate: immediatePaymentDeadline })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_MONEY_NOT_RECEIVED_COUNTY_COURT_JUDGEMENT_AGAINST_YOU`)
+          .addContactLink(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, claimId, { claimantName: claimantFullName }, `${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_NEED_THEIR_PAYMENT_DETAILS_GET_RECEIPTS_FOR_ANY_PAYMENTS`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant passed deadline to respond', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1AcceptAdmitAmountPaidSpec = 'Yes';
+        claim.applicant1ResponseDeadline = new Date('2023-07-01T16:00:00');
+        const claimantName = claim.getClaimantFullName();
+        const deadline = formatDateToFullDate(claim.applicant1ResponseDeadline);
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_ENDED_THE_CLAIM`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE`, { claimantName, deadline })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_WANT_TO_RESTART_THE_CLAIM_THEY_NEED_TO_ASK_FOR_PERMISSION_FROM_THE_COURT`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claim in mediation', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.ccdState = CaseState.IN_MEDIATION;
+        const claimantName = claim.getClaimantFullName();
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION`)
+          .addLink(`${PAGES_LATEST_UPDATE_CONTENT}.MORE_INFO_ABOUT_MEDIATION_WORKS`, 'https://www.gov.uk/guidance/small-claims-mediation-service', '', '', '', true)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
+      it('Part Admit Pay Immediately - Claimant opted out of mediation', () => {
+        // Given
+        const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        claim.applicant1ClaimMediationSpecRequiredLip = {
+          hasAgreedFreeMediation: 'No',
+        };
+        const claimantName = claim.getClaimantFullName();
+        const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
+          .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.NO_TO_TRYING_MEDIATION`, { claimantName })
+          .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_WILL_REVIEW_THE_CASE`)
+          .build();
+        // When
+        const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+        // Then
+        expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
+      });
     });
   });
   describe('test SDO Document buildResponseToClaimSection', () => {
@@ -396,6 +575,203 @@ describe('Latest Update Content Builder', () => {
       // Then
       expect(responseToClaimSection.length).toBe(4);
       expect(lastUpdateSdoDocumentExpected.flat()).toEqual(responseToClaimSection);
+    });
+  });
+  describe('test status paid buildResponseToClaimSection', () => {
+    it('should have build status paid section part admit already paid', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, undefined);
+      claim.partialAdmission.alreadyPaid = <GenericYesNo>{option: YesNo.YES};
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_HAVE_EMAILED');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_WILL_CONTACT_YOU');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[3].data.href).toBe('/case/1/documents/sealed-claim');
+    });
+    it('should have build claim settled section full defence paid full scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.rejectAllOfClaim = {
+        option: 'alreadyPaid',
+        howMuchHaveYouPaid: <HowMuchHaveYouPaid>{
+          amount: 1000,
+          date: new Date('2023-02-02T00:00:00.000Z'),
+          year: 2023,
+          month: 2,
+          day: 2,
+          text: 'test',
+        },
+        whyDoYouDisagree: {
+          text: 'test',
+        },
+        defence: {
+          text: 'test',
+        },
+      };
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_HAVE_EMAILED');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_WILL_CONTACT_YOU');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[3].data.href).toBe('/case/1/documents/sealed-claim');
+    });
+    it('should have build claim settled section full defence paid less scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.rejectAllOfClaim = {
+        option : 'alreadyPaid',
+        howMuchHaveYouPaid: <HowMuchHaveYouPaid>{
+          amount: 500,
+          date: new Date('2023-02-02T00:00:00.000Z'),
+          year: 2023,
+          month: 2,
+          day: 2,
+          text: 'test',
+        },
+        whyDoYouDisagree: {
+          text: 'test',
+        },
+        defence: {
+          text: 'test',
+        },
+      };
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_HAVE_EMAILED');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_WILL_CONTACT_YOU');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[3].data.href).toBe('/case/1/documents/sealed-claim');
+    });
+  });
+
+  describe('test Claim ended buildResponseToClaimSection', () => {
+    it('should have build claim ended section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(2);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_ENDED_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_ENDED_MESSAGE');
+      expect(responseToClaimSection[2]).toBeUndefined();
+    });
+  });
+
+  describe('test Claim mediation successfull buildResponseToClaimSection', () => {
+    it('should have build mediation successfull section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccdState = CaseState.CASE_STAYED;
+      claim.mediationAgreement = <MediationAgreement>{
+        name: 'test',
+        document: <Document>{
+          document_url: 'http://dm-store:8080/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc',
+          document_filename: 'sealed_claim_form_000MC003.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc/binary',
+        },
+        documentType: DocumentType.MEDIATION_AGREEMENT,
+      };
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_SETTLED_CLAIM_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_SETTLED_CLAIM');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CONTACT');
+      expect(responseToClaimSection[2].data.href).toBe('/dashboard/1/contact-them');
+      expect(responseToClaimSection[3]).toBeUndefined();
+    });
+  });
+
+  describe('test Claim mediation unsuccessfull buildResponseToClaimSection', () => {
+    it('should have build mediation unsuccessfull section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.unsuccessfulMediationReason ='test';
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.MEDIATION_UNSUCCESSFUL_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.MEDIATION_UNSUCCESSFUL_MSG1');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.MEDIATION_UNSUCCESSFUL_MSG2');
+      expect(responseToClaimSection[3]).toBeUndefined();
+    });
+  });
+
+  describe('test default judgement submitted buildResponseToClaimSection', () => {
+    it('should have build default judgement submitted section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.defaultJudgmentDocuments = [<CaseDocument>{}];
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(9);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DEFAULT_JUDGMENT_SUBMITTED_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DEFAULT_JUDGMENT_MSG1');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DEFAULT_JUDGMENT_MSG2');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DEFAULT_JUDGMENT_MSG3');
+      expect(responseToClaimSection[4].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CONTACT_INFO');
+      expect(responseToClaimSection[5].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID');
+      expect(responseToClaimSection[5].data.href).toBe('mailto:contactocmc@justice.gov.uk');
+      expect(responseToClaimSection[6].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.TELEPHONE');
+      expect(responseToClaimSection[7].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WORKING_HOURS');
+      expect(responseToClaimSection[8].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WE_WILL_POST_COPY');
+      expect(responseToClaimSection[9]).toBeUndefined();
+    });
+  });
+
+  describe('test CCJ requested buildResponseToClaimSection', () => {
+    it('should have build CCJ requested section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccjJudgmentStatement ='test';
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(7);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CCJ_REQUESTED_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CCJ_REQUESTED_MSG1');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CCJ_REQUESTED_MSG2');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CCJ_REQUESTED_MSG3');
+      expect(responseToClaimSection[4].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CERTIFICATE_LINK');
+      expect(responseToClaimSection[4].data.href).toBe('https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation');
+      expect(responseToClaimSection[5].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CONTACT');
+      expect(responseToClaimSection[5].data.href).toBe('/dashboard/1/contact-them');
+      expect(responseToClaimSection[6].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[6].data.href).toBe('/case/1/documents/sealed-claim');
+      expect(responseToClaimSection[7]).toBeUndefined();
+    });
+  });
+
+  describe('test Claim Settled buildResponseToClaimSection', () => {
+    it('should have build claim settled section part admit already paid scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccdState = CaseState.CASE_SETTLED;
+      claim.lastModifiedDate = new Date();
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_CONFIRMED_SETTLED_CLAIM');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/sealed-claim');
+      expect(responseToClaimSection[3]).toBeUndefined();
     });
   });
 });

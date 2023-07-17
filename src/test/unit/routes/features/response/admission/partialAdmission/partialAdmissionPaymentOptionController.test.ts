@@ -32,7 +32,7 @@ describe('Part Admit - Payment Option Controller', () => {
   describe('on Get', () => {
     it('should return payment option page successfully', async () => {
       app.locals.draftStoreClient = mockRedisWithPaymentAmount;
-      const mockAdmittedPaymentAmount = civilClaimResponseWithAdmittedPaymentAmountMock.case_data.partialAdmission.howMuchDoYouOwe.amount;
+      const mockAdmittedPaymentAmount = civilClaimResponseWithAdmittedPaymentAmountMock.case_data.partialAdmission.howMuchDoYouOwe.amount.toFixed(2);
       await request(app)
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
