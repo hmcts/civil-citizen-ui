@@ -6,8 +6,16 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
-{% set PageTitle = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE', { paidAmount: paidAmount }) %}
-{% set Title = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE', { paidAmount: paidAmount }) %}
+{% if isPaidInFull %}
+  {% set PageTitle = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE_IN_FULL', { paidAmount: paidAmount }) %}
+  {% set Title = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.TITLE_IN_FULL', { paidAmount: paidAmount }) %}
+{% else %}
+  {% set PageTitle = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE_LESS_THAN_FULL', { paidAmount: paidAmount }) %}
+  {% set Title = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.TITLE_LESS_THAN_FULL', { paidAmount: paidAmount }) %}
+{% endif %}
+
+{% set yesHint = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.YES_HINT') %}
+{% set noHint = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.NO_HINT')  %}
 
 {% block pageTitle %}
   {{ setPageTitle(pageTitle) }}
@@ -26,7 +34,7 @@
           <h1 class="govuk-heading-l">{{ Title }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '') }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { yesHint: yesHint, noHint: noHint }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

@@ -853,8 +853,12 @@
       "TITLE": "When did it start?"
     },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
-      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
-      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+      "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PAGE_TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "YES_HINT": "Settle the claim",
+      "NO_HINT": "Proceed with the claim"
     },
     "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
       "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
