@@ -55,7 +55,7 @@ export class DashboardDefendantItem extends DashboardItem {
   admittedAmount?: number;
   createdDate?: Date;
   respondToAdmittedClaimOwingAmountPounds?:number;
-  
+
   constructor() {
     super();
     this.url = '/dashboard/:claimId/defendant';
@@ -132,9 +132,9 @@ export class DashboardDefendantItem extends DashboardItem {
       IN_MEDIATION: { translationKey: 'PAGES.DASHBOARD.STATUS.IN_MEDIATION' },
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW' },
       CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_ENDED' },
-      CLAIM_SENT_TO_CLAIMANT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
-      CLAIMANT_REJECT_OFFER: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
-      CLAIMANT_ACCEPTED_SETTLE_IN_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
+      CLAIM_REJECTED_OFFER_SETTLE_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
+      CLAIMANT_REJECT_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
+      CLAIMANT_ACCEPTED_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
       CLAIMANT_REJECT_PARTIAL_ADMISSION: {
         translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
         parameter: [paramClaimantName],
