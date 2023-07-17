@@ -83,23 +83,23 @@ withNightlyPipeline(type, product, component) {
   enableCrossBrowserTest()
 
    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/saucelabs/*'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/saucelabs/**/*'
    }
 
 
   afterAlways('fullFunctionalTest') {
+       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
 
-              steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
-
-          publishHTML target: [
-                  allowMissing : true,
-                  alwaysLinkToLastBuild: true,
-                  keepAll : true,
-                  reportDir : "functional-output/",
-                  reportFiles : "functionalTests.html",
-                  reportName : "Civil-Citizen-UI Functional tests result"
-          ]
-      }
+        publishHTML target: [
+                allowMissing : true,
+                alwaysLinkToLastBuild: true,
+                keepAll : true,
+                reportDir : "functional-output/",
+                reportFiles : "functionalTests.html",
+                reportName : "Civil-Citizen-UI Functional tests result"
+        ]
+    }
   //enablePactAs([
     //AppPipelineDsl.PactRoles.CONSUMER
  // ])
