@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   date1Day: '[id="day"]',
@@ -19,7 +20,7 @@ const extendedYear = newDate.getFullYear();
 
 class AddYourTimeLine {
   async addTimeLineOfEvents() {
-    await I.see('Add your timeline of events', 'h1');
+    await I.waitForText('Add your timeline of events', config.WaitForText);
     await I.fillField(fields.date1Day, extendedDay);
     await I.fillField(fields.date1Month, extendedMonth - 3);
     await I.fillField(fields.date1Year, extendedYear);

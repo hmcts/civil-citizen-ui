@@ -2,23 +2,19 @@ const {listElement, buildAddress} = require('../../api/dataHelper');
 const config = require('../../../../config');
 
 const respondent1 = {
-  type: 'INDIVIDUAL',
-  individualFirstName: 'John',
-  individualLastName: 'Doe',
-  individualTitle: 'Sir',
+  type: 'COMPANY',
+  companyName: 'Def Test Org',
   primaryAddress: buildAddress('respondent'),
-  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const respondent1WithPartyName = {
   ...respondent1,
-  partyName: 'Sir John Doe',
-  partyTypeDisplayValue: 'Individual',
+  partyName: 'Def Test Org',
+  partyTypeDisplayValue: 'Company',
 };
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
   primaryAddress: buildAddress('applicant'),
-  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1WithPartyName = {
   ...applicant1,
@@ -27,7 +23,7 @@ const applicant1WithPartyName = {
 };
 
 const solicitor1Email = 'hmcts.civil+organisation.1.solicitor.1@gmail.com';
-const claimAmount = '150000';
+const claimAmount = '2000000';
 
 const validPba = listElement('PBA0088192');
 const invalidPba = listElement('PBA0078095');
@@ -43,16 +39,6 @@ module.exports = {
             respondentSolicitor1Reference: 'Respondent reference',
           },
         },
-        // Court: {
-        //   courtLocation: {
-        //     applicantPreferredCourtLocationList: {
-        //       list_items: [
-        //         listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //       ],
-        //       value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //     },
-        //   },
-        // },
         Claimant: {
           applicant1: applicant1WithPartyName,
         },
@@ -83,7 +69,20 @@ module.exports = {
           respondent1: respondent1WithPartyName,
         },
         LegalRepresentation: {
-          specRespondent1Represented: 'No',
+          specRespondent1Represented: 'Yes',
+        },
+        DefendantSolicitorOrganisation: {
+          respondent1OrgRegistered: 'Yes',
+          respondent1OrganisationPolicy: {
+            OrgPolicyReference: 'Defendant policy reference',
+            OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORONE]',
+            Organisation: {
+              OrganisationID: config.defendant1SolicitorOrgId,
+            },
+          },
+        },
+        DefendantSolicitorEmail: {
+          respondentSolicitor1EmailAddress: 'civilmoneyclaimsdemo@gmail.com',
         },
         specRespondentCorrespondenceAddress: {
           specRespondentCorrespondenceAddressRequired: 'No',
