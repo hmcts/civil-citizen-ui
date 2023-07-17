@@ -11,8 +11,8 @@ resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, async (req: Requ
 });
 
 resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
-    const userId = req.session?.user?.id;
-    saveResolvingDispute(userId)
+  const userId = req.session?.user?.id;
+  saveResolvingDispute(userId)
     .then(() => {
       res.redirect(CLAIMANT_TASK_LIST_URL);
     })
