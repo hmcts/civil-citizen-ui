@@ -13,16 +13,16 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, async (req: AppRequest, res:
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
-  .then((caseData) => {
-    const taskLists = getTaskLists(caseData, userId, lang);
-    const {completed, total} = calculateTotalAndCompleted(taskLists);
-    const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
-    const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
-    res.render(taskListViewPath, {taskLists, title, description});
-  })
-  .catch((error) => {
-    next(error);
-  });
+    .then((caseData) => {
+      const taskLists = getTaskLists(caseData, userId, lang);
+      const {completed, total} = calculateTotalAndCompleted(taskLists);
+      const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
+      const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
+      res.render(taskListViewPath, {taskLists, title, description});
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 export default claimTaskListController;
