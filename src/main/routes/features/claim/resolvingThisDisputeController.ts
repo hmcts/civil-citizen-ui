@@ -10,14 +10,15 @@ resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, async (req: Requ
   res.render(resolvingThisDisputePath);
 });
 
-resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
+resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
     const userId = req.session?.user?.id;
-    await saveResolvingDispute(userId);
-    res.redirect(CLAIMANT_TASK_LIST_URL);
-  } catch (error) {
-    next(error);
-  }
+    saveResolvingDispute(userId)
+    .then(() => {
+      res.redirect(CLAIMANT_TASK_LIST_URL);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 export default resolvingThisDisputeController;
