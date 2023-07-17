@@ -83,7 +83,20 @@ module.exports = {
           respondent1: respondent1WithPartyName,
         },
         LegalRepresentation: {
-          specRespondent1Represented: 'No',
+          specRespondent1Represented: 'Yes',
+        },
+        DefendantSolicitorOrganisation: {
+          respondent1OrgRegistered: 'Yes',
+          respondent1OrganisationPolicy: {
+            OrgPolicyReference: 'Defendant policy reference',
+            OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORONE]',
+            Organisation: {
+              OrganisationID: config.defendant1SolicitorOrgId,
+            },
+          },
+        },
+        DefendantSolicitorEmail: {
+          respondentSolicitor1EmailAddress: 'civilmoneyclaimsdemo@gmail.com',
         },
         specRespondentCorrespondenceAddress: {
           specRespondentCorrespondenceAddressRequired: 'No',

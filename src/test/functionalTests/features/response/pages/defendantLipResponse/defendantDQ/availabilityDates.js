@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
@@ -22,10 +22,10 @@ const year = newDate.getFullYear();
 class AvailabilityDates {
 
   async enterUnavailableDates() {
-    await I.see('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', 'h1');
+    await I.waitForText('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', config.WaitForText);
 
     await I.click(fields.singleDate);
-    await I.waitForElement(fields.singleDateDay);
+    await I.waitForElement(fields.singleDateDay, config.WaitForText);
     await I.click(fields.singleDateDay);
     await I.fillField(fields.singleDateDay, '10');
     await I.fillField(fields.singleDateMonth, month);
@@ -33,7 +33,7 @@ class AvailabilityDates {
 
     await I.click('Add another date or period of time');
     await I.click(fields.longerPeriod);
-    await I.waitForElement(fields.longerPeriodStartDay);
+    await I.waitForElement(fields.longerPeriodStartDay, config.WaitForText);
     await I.fillField(fields.longerPeriodStartDay, '15');
     await I.fillField(fields.longerPeriodStartMonth, month);
     await I.fillField(fields.longerPeriodStartYear, year);
