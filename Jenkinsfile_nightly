@@ -82,15 +82,17 @@ withNightlyPipeline(type, product, component) {
   enableFullFunctionalTest()
   enableCrossBrowserTest()
 
+
   afterAlways('fullFunctionalTest') {
+
           steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
 
           publishHTML target: [
                   allowMissing : true,
                   alwaysLinkToLastBuild: true,
                   keepAll : true,
-                  reportDir : "functional-output",
-                  reportFiles : "Civil-Citizen-UI-tests.html",
+                  reportDir : "functional-output/",
+                  reportFiles : "functionalTests.html",
                   reportName : "Civil-Citizen-UI Functional tests result"
           ]
       }
