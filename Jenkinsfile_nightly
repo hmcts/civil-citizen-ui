@@ -82,11 +82,14 @@ withNightlyPipeline(type, product, component) {
   enableFullFunctionalTest()
   enableCrossBrowserTest()
 
+   afterAlways('crossBrowserTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/saucelabs/*'
+   }
+
 
   afterAlways('fullFunctionalTest') {
 
               steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
-              steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/saucelabs/*'
 
           publishHTML target: [
                   allowMissing : true,
