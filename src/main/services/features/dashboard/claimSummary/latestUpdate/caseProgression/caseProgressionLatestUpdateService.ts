@@ -8,8 +8,8 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   const sectionContent = [];
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
     sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
   }
   return getClaimSummaryContent(sectionContent.flat());
 };
