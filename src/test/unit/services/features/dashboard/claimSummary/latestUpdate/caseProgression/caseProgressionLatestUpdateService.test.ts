@@ -48,6 +48,33 @@ describe('Case Progression Latest Update Content service', () => {
     expect(hearingUploadSectionResult[0][0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
   });
 
+  describe('test of getViewTrialArrangementsContent', () => {
+    let areTrialArrangementsFinalised : boolean;
+    let areOtherPartyTrialArrangementsFinalised : boolean;
+
+    it('should return view trial arrangements section for the current party if only they have finalised their trial arrangements', () => {
+      //Given
+      areTrialArrangementsFinalised = true;
+      areOtherPartyTrialArrangementsFinalised = false;
+      //When
+      //Then
+    });
+    it('should return view trial arrangements section for the other party if only they have finalised their trial arrangements', () => {
+      //Given
+      areTrialArrangementsFinalised = false;
+      areOtherPartyTrialArrangementsFinalised = true;
+      //When
+      //Then
+    });
+    it('should return view trial arrangements section for the both parties if they have finalised their trial arrangements', () => {
+      //Given
+      areTrialArrangementsFinalised = true;
+      areOtherPartyTrialArrangementsFinalised = true;
+      //When
+      //Then
+    });
+  });
+
   it('getCaseProgressionLatestUpdates: should return hearing notice and evidence upload contents', () => {
     //Given:
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
