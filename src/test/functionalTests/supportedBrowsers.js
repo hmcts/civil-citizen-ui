@@ -54,14 +54,14 @@ const supportedBrowsers = {
     },
   },
   firefox: {
-    firefox_win_latest: {
+    /*firefox_win_latest: {
       browserName: 'firefox',
       platformName: 'Windows 10',
       browserVersion: 'latest',
       'sauce:options': {
         name: 'WIN_FIREFOX_LATEST_ET',
       },
-    },
+    },*/
     firefox_mac_latest: {
       browserName: 'firefox',
       platformName: 'macOS 10.15',
