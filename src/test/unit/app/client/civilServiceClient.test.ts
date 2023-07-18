@@ -231,7 +231,7 @@ describe('Civil Service Client', () => {
     it('should return claims for defendant successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/defendantClaimsMock.json');
-      const mockGet = jest.fn().mockResolvedValue({data: data});
+      const mockGet = jest.fn().mockResolvedValue({ data: { claims: data, totalPages: 1 } });
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
@@ -242,10 +242,10 @@ describe('Civil Service Client', () => {
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
       });
-      expect(defendantDashboardItems.length).toEqual(1);
-      expect(defendantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
-      expect(defendantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
-      expect(defendantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
+      expect(defendantDashboardItems.claims.length).toEqual(1);
+      expect(defendantDashboardItems.claims[0].defendantName).toEqual(data[0].defendantName);
+      expect(defendantDashboardItems.claims[0].claimantName).toEqual(data[0].claimantName);
+      expect(defendantDashboardItems.claims[0].claimNumber).toEqual(data[0].claimNumber);
     });
   });
   describe('calculateExtendedResponseDeadline', () => {
