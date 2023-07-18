@@ -7,6 +7,7 @@ import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/con
 import {FIXED_DATE, FIXED_TIME_HOUR_MINUTE} from '../../../../utils/dateUtils';
 import {DocumentType} from 'models/document/documentType';
 import {CCDClaim} from 'models/civilClaimResponse';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -22,8 +23,10 @@ describe('toCUICaseProgressionHearing', () => {
       hearingDate: FIXED_DATE,
       hearingLocation: hearingLocation,
       hearingTimeHourMinute: FIXED_TIME_HOUR_MINUTE,
+      trialReadyApplicant: YesNoUpperCamelCase.NO,
+      trialReadyRespondent1: YesNoUpperCamelCase.YES,
     };
-    const expectedOutput = new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE);
+    const expectedOutput = new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE, YesNoUpperCamelCase.NO, YesNoUpperCamelCase.YES);
 
     const actualOutput = toCUICaseProgressionHearing(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
@@ -42,9 +45,11 @@ describe('toCUICaseProgressionHearing', () => {
       hearingDate: undefined,
       hearingLocation: undefined,
       hearingTimeHourMinute: undefined,
+      trialReadyApplicant: undefined,
+      trialReadyRespondent1: undefined,
     };
     const expectedOutput: CaseProgressionHearing = new CaseProgressionHearing(
-      undefined,new HearingLocation(undefined),undefined,undefined);
+      undefined,new HearingLocation(undefined),undefined,undefined,undefined, undefined);
     const actualOutput = toCUICaseProgressionHearing(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });

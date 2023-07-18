@@ -1,12 +1,18 @@
 import {
   getCaseProgressionLatestUpdates,
-  getHearingTrialUploadLatestUpdateContent,
+  getHearingTrialUploadLatestUpdateContent, getViewTrialArrangementsContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  buildEvidenceUploadSection,
+  buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
-import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {
+  getCaseProgressionHearingMock,
+  getCaseProgressionHearingWithTrialReadinessMock,
+} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {CaseState} from 'form/models/claimDetails';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('Case Progression Latest Update Content service', () => {
   const claim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -48,30 +54,120 @@ describe('Case Progression Latest Update Content service', () => {
     expect(hearingUploadSectionResult[0][0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
   });
 
-  describe('test of getViewTrialArrangementsContent', () => {
-    let areTrialArrangementsFinalised : boolean;
-    let areOtherPartyTrialArrangementsFinalised : boolean;
+  describe('View Trial Arrangements', () => {
+    const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
+    const claimWithSdoAndHearing = {
+      ...claimWithSdo,
+      hasCaseProgressionHearingDocuments: () => true,
+      hasSdoOrderDocument: () => true,
+    };
+    const lang = 'en';
+    let result: ClaimSummaryContent[];
 
-    it('should return view trial arrangements section for the current party if only they have finalised their trial arrangements', () => {
+    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (respondent) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      areTrialArrangementsFinalised = true;
-      areOtherPartyTrialArrangementsFinalised = false;
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.NO, YesNoUpperCamelCase.YES);
       //When
+      result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
+      expect(result.length).toEqual(3);
+      expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+      expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+      expect(result[1].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`);
+      expect(result[1].contentSections[2].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`);
+      expect(result[1].contentSections.length).toEqual(3);
+      expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(result[2].contentSections.length).toEqual(6);
     });
-    it('should return view trial arrangements section for the other party if only they have finalised their trial arrangements', () => {
+
+    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the other party (claimant) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      areTrialArrangementsFinalised = false;
-      areOtherPartyTrialArrangementsFinalised = true;
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.YES, YesNoUpperCamelCase.NO);
       //When
+      result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
+      expect(result.length).toEqual(3);
+      expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+      expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
+      expect(result[1].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_OTHER_PARTY`);
+      expect(result[1].contentSections.length).toEqual(3);
+      expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(result[2].contentSections.length).toEqual(6);
     });
-    it('should return view trial arrangements section for the both parties if they have finalised their trial arrangements', () => {
+
+    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the both parties as they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      areTrialArrangementsFinalised = true;
-      areOtherPartyTrialArrangementsFinalised = true;
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.YES, YesNoUpperCamelCase.YES);
       //When
+      result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
+      expect(result.length).toEqual(4);
+      expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+      expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
+      expect(result[1].contentSections.length).toEqual(3);
+      expect(result[2].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+      expect(result[2].contentSections.length).toEqual(3);
+      expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(result[3].contentSections.length).toEqual(6);
+    });
+
+    it('getViewTrialArrangementsContent should return trial arrangements content for the current party (respondent) if isOtherParty false', () => {
+      //Given
+      const isOtherParty = false;
+      const viewTrialArrangementsContentExpected: ClaimSummarySection[] = [
+        {
+          type: ClaimSummaryType.TITLE,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`,
+          },
+        },
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`,
+          },
+        },
+        {
+          type: ClaimSummaryType.BUTTON,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
+            href: 'href',
+          },
+        },
+      ];
+      //When
+      const viewTrialArrangementsContent = getViewTrialArrangementsContent(isOtherParty);
+      //Then
+      expect([viewTrialArrangementsContentExpected]).toEqual(viewTrialArrangementsContent);
+    });
+
+    it('getViewTrialArrangementsContent should return trial arrangements content for the other party (claimant) if isOtherParty true', () => {
+      const isOtherParty = true;
+      const viewTrialArrangementsContentExpected: ClaimSummarySection[] = [
+        {
+          type: ClaimSummaryType.TITLE,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`,
+          },
+        },
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_OTHER_PARTY`,
+          },
+        },
+        {
+          type: ClaimSummaryType.BUTTON,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
+            href: 'href',
+          },
+        },
+      ];
+      //When
+      const viewTrialArrangementsContent = getViewTrialArrangementsContent(isOtherParty);
+      //Then
+      expect([viewTrialArrangementsContentExpected]).toEqual(viewTrialArrangementsContent);
     });
   });
 
