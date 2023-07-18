@@ -62,7 +62,7 @@ export class UploadEvidenceWitness{
   witnessOptionDocument: Document;
   createdDatetime: Date;
 
-  constructor(witnessOptionDocument: Document, createdDatetime: Date, witnessOptionName?: string, witnessOptionUploadDate?: Date) {
+  constructor(witnessOptionName: string, witnessOptionUploadDate: Date, witnessOptionDocument: Document, createdDatetime: Date) {
     this.witnessOptionName = witnessOptionName;
     this.witnessOptionUploadDate = witnessOptionUploadDate;
     this.witnessOptionDocument = witnessOptionDocument;
@@ -81,9 +81,9 @@ export class UploadEvidenceExpert {
   createdDatetime: Date;
   expertDocument: Document;
 
-  constructor(expertDocument: Document, createdDatetime: Date, expertOptionName?: string, expertOptionExpertise?: string, expertOptionExpertises?: string,
-    expertOptionOtherParty?: string, expertDocumentQuestion?: string, expertDocumentAnswer?: string,
-    expertOptionUploadDate?: Date) {
+  constructor(expertOptionName: string, expertOptionExpertise: string, expertOptionExpertises: string,
+    expertOptionOtherParty: string, expertDocumentQuestion: string, expertDocumentAnswer: string,
+    expertOptionUploadDate: Date, expertDocument: Document, createdDatetime: Date) {
     this.expertOptionName = expertOptionName;
     this.expertOptionExpertise = expertOptionExpertise;
     this.expertOptionExpertises = expertOptionExpertises;
@@ -102,7 +102,7 @@ export class UploadEvidenceDocumentType{
   documentUpload: Document;
   createdDatetime: Date;
 
-  constructor(documentUpload: Document, createdDatetime: Date, typeOfDocument?: string, documentIssuedDate?: Date) {
+  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;
