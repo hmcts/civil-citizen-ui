@@ -3,7 +3,7 @@ import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummary
 import {
   buildEvidenceUploadSection,
   buildHearingTrialLatestUploadSection,
-  buildViewTrialArrangements,
+  buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
@@ -40,5 +40,5 @@ export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : Claim
 };
 
 export const getViewTrialArrangementsContent = (isOtherParty: boolean) : ClaimSummarySection[][] => {
-  return buildViewTrialArrangements(isOtherParty);
+  return buildViewTrialArrangementsSection(isOtherParty);
 };

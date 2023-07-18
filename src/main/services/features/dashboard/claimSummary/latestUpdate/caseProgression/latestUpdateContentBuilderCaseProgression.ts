@@ -21,7 +21,7 @@ export const buildHearingTrialLatestUploadSection = (claim: Claim, lang: string)
   return sectionContent;
 };
 
-export const buildViewTrialArrangements = (isOtherParty: boolean) : ClaimSummarySection[][] => {
+export const buildViewTrialArrangementsSection = (isOtherParty: boolean) : ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getViewTrialArrangements(isOtherParty));
   return sectionContent;
