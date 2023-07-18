@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   mortgage: 'Mortgage',
@@ -28,12 +29,12 @@ const buttons = {
 class MonthlyExpenses {
 
   async selectMortgage(mortgageAmount) {
-    await I.see('What are your regular expenses?', 'h1');
+    await I.waitForText('What are your regular expenses?', config.WaitForText);
     await I.checkOption(fields.mortgage);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
     await I.click(fields.mortgagePaymentScheduleMonthly);
   }
-  
+
   async selectCouncilTax(councilTaxAmount) {
     await I.checkOption(fields.councilTax);
     await I.fillField(fields.councilTaxPayment, councilTaxAmount);

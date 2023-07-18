@@ -105,3 +105,11 @@ export const checkEvidenceUploadTime = (date: Date): boolean => {
     return date.getTime() >= dayBeforeYesterday.getTime() && date.getTime() < yesterday.getTime();
   }
 };
+
+export const formatStringDateDMY = (date: Date) => {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = DateTime.fromJSDate(date).toFormat('MMM');
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+};

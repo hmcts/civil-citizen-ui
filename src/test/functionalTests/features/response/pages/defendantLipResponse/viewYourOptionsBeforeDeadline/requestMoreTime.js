@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   moreThan28Days: '#option-2',
@@ -14,14 +15,14 @@ class RequestMoreTime {
     await I.amOnPage('/case/' + claimRef + '/response/request-more-time');
   }
 
-  async verifyResponsePageContent() {    
-    await I.see('Request more time to respond');
+  async verifyResponsePageContent() {
+    await I.waitForText('Request more time to respond', config.WaitForText);
   }
-   
+
   async requestMoreTimeToRespond(claimRef) {
     this.open(claimRef);
     await I.click(fields.moreThan28Days);
-    await I.click(buttons.continue);    
+    await I.click(buttons.continue);
   }
 
 }

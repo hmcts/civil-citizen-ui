@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   incomeFromJob: 'Income from your job',
@@ -19,12 +20,12 @@ const buttons = {
 class MonthlyIncome {
 
   async selectIncomeFromJob(incomeAmount) {
-    await I.see('What regular income do you receive?', 'h1');
+    await I.waitForText('What regular income do you receive?', config.WaitForText);
     await I.checkOption(fields.incomeFromJob);
     await I.fillField(fields.incomeFromJobPayment, incomeAmount);
     await I.click(fields.incomeFromJobPaymentSchedule);
   }
-  
+
   async selectChildBenefit(childBenefitAmount) {
     await I.checkOption(fields.childBenefit);
     await I.fillField(fields.childBenefitPayment, childBenefitAmount);
