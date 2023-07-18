@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="partnerAge"]',
@@ -11,13 +12,13 @@ const buttons = {
 class PartnerAgeDetails {
 
   async clickYesButton() {
-    await I.see('Is your partner aged 18 or over?', 'h1');
+    await I.waitForText('Is your partner aged 18 or over?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(buttons.continue);
   }
 
   async clickNoButton() {
-    await I.see('Is your partner aged 18 or over?', 'h1');
+    await I.waitForText('Is your partner aged 18 or over?', config.WaitForText);
     await I.click(fields.noButton);
     await I.click(buttons.continue);
   }
