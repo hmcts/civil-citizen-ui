@@ -4,9 +4,9 @@ import {PartyType} from 'models/partyType';
 import {DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection, buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
-import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {FAST_TRACK_CLAIM_AMOUNT, SMALL_CLAIM_AMOUNT} from 'form/models/claimType';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
@@ -86,6 +86,70 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       // Then
       expect(evidenceUploadSection).toEqual([lastedContentBuilderExpected]);
+    });
+  });
+
+  describe('test buildViewTrialArrangementsSection', () => {
+    it('should have view trial arrangements content for the current party (respondent) if isOtherParty false', () => {
+      //Given
+      const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
+      const isOtherParty = false;
+      const lastedContentBuilderExpected: ClaimSummarySection[][] = [[
+        {
+          type: ClaimSummaryType.TITLE,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`,
+          },
+        },
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`,
+          },
+        },
+        {
+          type: ClaimSummaryType.BUTTON,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
+            href: 'href',
+          },
+        },
+      ]];
+      //When
+      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty);
+      //Then
+      expect(lastedContentBuilderExpected).toEqual(viewTrialArrangementsContent);
+    });
+
+    it('should have view trial arrangements content for the other party (claimant) if isOtherParty true', () => {
+      //Given
+      const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
+      const isOtherParty = true;
+      const lastedContentBuilderExpected: ClaimSummarySection[][] = [[
+        {
+          type: ClaimSummaryType.TITLE,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`,
+          },
+        },
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_OTHER_PARTY`,
+          },
+        },
+        {
+          type: ClaimSummaryType.BUTTON,
+          data: {
+            text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
+            href: 'href',
+          },
+        },
+      ]];
+      //When
+      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty);
+      //Then
+      expect(lastedContentBuilderExpected).toEqual(viewTrialArrangementsContent);
     });
   });
 
