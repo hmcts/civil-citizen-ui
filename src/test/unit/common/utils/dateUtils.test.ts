@@ -1,6 +1,6 @@
 import {
-  addFiveDaysBefore4pm, 
-  addMonths, 
+  addFiveDaysBefore4pm,
+  addMonths, checkEvidenceUploadTime,
   getDOBforAgeFromCurrentTime,
 } from '../../../../main/common/utils/dateUtils';
 
@@ -52,4 +52,67 @@ describe('getDOBforAgeFromCurrentTime', () => {
     expect(result).not.toBeNull();
     expect(result.getMonth()).toEqual(3);
   });
+});
+
+describe('past 18:00, checkEvidenceUploadTime ', () => {
+
+  beforeEach(() => {
+    jest.useFakeTimers()
+      .setSystemTime(new Date('2023-01-03T18:00'));
+  });
+
+  it('upload from today 17:59 should return true', () => {
+    const mockDate = new Date('2023-01-03T17:59');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeTruthy();
+  });
+  it('upload from today 18:00 should return false', () => {
+    const mockDate = new Date('2023-01-03T18:00:00');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeFalsy();
+  });
+  it('upload from yesterday 18:00 should return true', () => {
+    const mockDate = new Date('2023-01-02T18:00:00');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeTruthy();
+  });
+  it('upload from yesterday 17:59 should return false', () => {
+    const mockDate = new Date('2023-01-02T17:59:59');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeFalsy();
+  });
+});
+
+describe('before 18:00, checkEvidenceUploadTime ', () => {
+  beforeEach(() => {
+    jest.useFakeTimers()
+      .setSystemTime(new Date('2023-01-03T17:59:59'));
+  });
+
+  it('upload from today 17:59 should return false', () => {
+    const mockDate = new Date('2023-01-03T17:59');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeFalsy();
+  });
+  it('upload from yesterday 18:00 should return false', () => {
+    const mockDate = new Date('2023-01-02T18:00');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeFalsy();
+  });
+  it('upload from yesterday 17:59 should return true', () => {
+    const mockDate = new Date('2023-01-02T17:59');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeTruthy();
+  });
+  it('upload from day before yesterday 17:59 should return false', () => {
+    const mockDate = new Date('2023-01-01T17:59');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeFalsy();
+  });
+  it('upload from day before yesterday 18:00 should return true', () => {
+    const mockDate = new Date('2023-01-01T18:00');
+    const result = checkEvidenceUploadTime(mockDate);
+    expect(result).toBeTruthy();
+  });
+
 });
