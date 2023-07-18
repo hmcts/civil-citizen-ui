@@ -1,24 +1,24 @@
 const testConfig = require('../config');
-const supportedBrowsers = require('./supportedBrowsers');
+//const supportedBrowsers = require('./supportedBrowsers');
 const testUrl = process.env.TEST_URL || 'http://localhost:3001';
 
 const waitForTimeout = parseInt(testConfig.saucelabs.waitForTimeout);
 const smartWait = parseInt(testConfig.saucelabs.smartWait);
 const browser = process.env.SAUCE_BROWSER || 'chromium';
 
-const defaultSauceOptions = {
+/*const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME || testConfig.saucelabs.username,
   accessKey: process.env.SAUCE_ACCESS_KEY || testConfig.saucelabs.key,
   tunnelIdentifier: process.env.TUNNEL_IDENTIFIER || testConfig.saucelabs.tunnelId,
   acceptSslCerts: true,
   tags: ['Civil CUI'],
-};
+};*/
 
-function merge(intoObject, fromObject) {
+/*function merge(intoObject, fromObject) {
   return Object.assign({}, intoObject, fromObject);
-}
+}*/
 
-function getBrowserConfig(browserGroup) {
+/*function getBrowserConfig(browserGroup) {
   const browserConfig = [];
   for (const candidateBrowser in supportedBrowsers[browserGroup]) {
     if (candidateBrowser) {
@@ -33,7 +33,7 @@ function getBrowserConfig(browserGroup) {
     }
   }
   return browserConfig;
-}
+}*/
 
 const setupConfig = {
   tests: '../functionalTests/tests/*_tests.js',
