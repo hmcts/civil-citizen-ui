@@ -7,6 +7,7 @@ const totp = require('totp-generator');
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
+const getCaseDetailsUrl = (userId, caseId) => `${config.url.ccdDataStore}/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
 const getRequestHeaders = (userAuth) => {
   return {
     'Content-Type': 'application/json',
@@ -28,6 +29,15 @@ module.exports = {
         oneTimePassword: totp(config.s2s.secret),
       })
       .then(response => response.text());
+  },
+
+  fetchCaseDetails: async(user, caseId, response = 200) => {
+    let eventUserAuth = await idamHelper.accessToken(user);
+    let eventUserId = await idamHelper.userId(eventUserAuth);
+    let url = getCaseDetailsUrl(eventUserId, caseId);
+
+    return await restHelper.retriedRequest(url, getRequestHeaders(eventUserAuth), null, 'GET', response)
+      .then(response => response.json());
   },
 
   fetchCaseForDisplay: async(user, caseId, response = 200) => {

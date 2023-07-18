@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -15,7 +15,7 @@ class MediationCanWeUse {
     // await I.see('Can the mediation service use');
     // await I.click(fields.yesButton);
 
-    await I.see('Enter a phone number', 'h1');
+    await I.waitForText('Enter a phone number', config.WaitForText);
     await I.see('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
     await I.fillField(fields.phoneNumberID, '02088008800');
 

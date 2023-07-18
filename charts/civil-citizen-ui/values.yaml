@@ -24,9 +24,13 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
+  devcpuRequests: 500m
+  devmemoryRequests: 512Mi
+  devcpuLimits: 2
+  devmemoryLimits: 1Gi
   keyVaults:
     civil-cui:
-      resourceGroup: civil-cui
+      resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
