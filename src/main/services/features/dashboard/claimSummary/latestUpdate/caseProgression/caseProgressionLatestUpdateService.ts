@@ -2,15 +2,20 @@ import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
   buildEvidenceUploadSection,
+  buildNewUploadSection,
   buildHearingTrialLatestUploadSection,
   buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
+import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const areTrialArrangementsFinalised = claim.caseProgressionHearing.trialReadyRespondent1 === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
   const areOtherPartyTrialArrangementsFinalised = claim.caseProgressionHearing.trialReadyApplicant === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
   const sectionContent = [];
+  if(checkEvidenceUploaded(claim, false)){
+    sectionContent.push(getNewUploadLatestUpdateContent(claim));
+  }
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
     if (areOtherPartyTrialArrangementsFinalised) {
@@ -22,6 +27,18 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
     sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
   }
   return getClaimSummaryContent(sectionContent.flat());
+};
+
+export const checkEvidenceUploaded = (claim: Claim, isClaimant: boolean): boolean => {
+  if(isClaimant){
+    return checkEvidenceUploadTime(claim.caseProgression?.defendantLastUploadDate);
+  }else {
+    return checkEvidenceUploadTime(claim.caseProgression?.claimantLastUploadDate);
+  }
+};
+
+export const getNewUploadLatestUpdateContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildNewUploadSection(claim);
 };
 
 export const getEvidenceUploadLatestUpdateContent = (claimId: string, claim: Claim): ClaimSummarySection[][] => {
