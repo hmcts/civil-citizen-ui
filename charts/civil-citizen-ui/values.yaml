@@ -29,7 +29,7 @@ nodejs:
   devcpuLimits: 2
   devmemoryLimits: 1Gi
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
