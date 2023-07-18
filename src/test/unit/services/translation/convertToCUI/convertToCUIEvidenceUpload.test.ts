@@ -24,44 +24,6 @@ jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   setLanguage: jest.fn(),
 }));
 
-const witnessDocument = {
-  witnessOptionName: 'witness name',
-  witnessOptionUploadDate: new Date(0),
-  witnessOptionDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'witness_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDatetime: new Date(0),
-};
-
-const expertDocument = {
-  expertOptionName: 'expert name',
-  expertOptionExpertise: 'expertise',
-  expertOptionExpertises: 'expertises',
-  expertOptionOtherParty: 'other party',
-  expertDocumentQuestion: 'document question',
-  expertDocumentAnswer: 'document answer',
-  expertOptionUploadDate: new Date(0),
-  expertDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'expert_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDatetime: new Date(0),
-};
-
-const typeDocument = {
-  typeOfDocument: 'type',
-  documentIssuedDate: new Date(0),
-  documentUpload: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'document_type.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
-  createdDatetime: new Date(0),
-};
-
 const documentForWitness = {
   document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
   document_filename: 'witness_document.pdf',
@@ -80,9 +42,9 @@ const documentForType = {
   document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
 };
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType(documentForType, new Date(0),'type', new Date(0));
-const witnessAsParameter = new UploadEvidenceWitness(documentForWitness, new Date(0),'witness name', new Date(0));
-const expertAsParameter = new UploadEvidenceExpert(documentForExpert, new Date(0),'expert name', 'expertise', 'expertises', 'other party', 'document question', 'document answer', new Date(0));
+const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
+const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
+const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
 describe('toCUIEvidenceUpload', () => {
   it('should convert CCDClaim to CaseProgression', () => {

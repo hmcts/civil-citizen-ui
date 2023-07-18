@@ -129,17 +129,17 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
     documentType = documentType as UploadEvidenceDocumentType;
-    documentType = new UploadEvidenceDocumentType(documentType.documentUpload, documentType.createdDatetime, documentType.typeOfDocument, documentType.documentIssuedDate);
+    documentType = new UploadEvidenceDocumentType(documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime,);
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
     documentType = documentType as UploadEvidenceWitness;
-    documentType = new UploadEvidenceWitness(documentType.witnessOptionDocument, documentType.createdDatetime, documentType.witnessOptionName, documentType.witnessOptionUploadDate);
+    documentType = new UploadEvidenceWitness(documentType.witnessOptionName, documentType.witnessOptionUploadDate, documentType.witnessOptionDocument, documentType.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.EXPERT in documentType)
   {
     documentType = documentType as UploadEvidenceExpert;
-    documentType = new UploadEvidenceExpert(documentType.expertDocument, documentType.createdDatetime, documentType.expertOptionName, documentType.expertOptionExpertise, documentType.expertOptionExpertises, documentType.expertOptionOtherParty, documentType.expertDocumentQuestion, documentType.expertDocumentAnswer, documentType.expertOptionUploadDate);
+    documentType = new UploadEvidenceExpert(documentType.expertOptionName, documentType.expertOptionExpertise, documentType.expertOptionExpertises, documentType.expertOptionOtherParty, documentType.expertDocumentQuestion, documentType.expertDocumentAnswer, documentType.expertOptionUploadDate, documentType.expertDocument, documentType.createdDatetime);
   }
 
   return documentType;

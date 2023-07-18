@@ -80,7 +80,6 @@ export class UploadEvidenceExpert {
   expertOptionUploadDate?: Date;
   createdDatetime: Date;
   expertDocument: Document;
-  createdDatetime: Date;
 
   constructor(expertOptionName: string, expertOptionExpertise: string, expertOptionExpertises: string,
     expertOptionOtherParty: string, expertDocumentQuestion: string, expertDocumentAnswer: string,
