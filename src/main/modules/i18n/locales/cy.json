@@ -2819,6 +2819,7 @@
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
+    "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
@@ -2840,6 +2841,7 @@
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
     "VALID_REAL_DATE": "Date of document must be a real date",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
-    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent"
+    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
+    "VALID_ENTER_SUPPORT":"Enter support you, expert or witnesses need."
   }
 }

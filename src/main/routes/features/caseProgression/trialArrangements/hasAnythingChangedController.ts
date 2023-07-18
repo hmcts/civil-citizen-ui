@@ -2,6 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL,
+  HEARING_DURATION_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
@@ -14,7 +15,7 @@ import {saveCaseProgression} from 'services/features/caseProgression/caseProgres
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
-const dqPropertyName = 'isCaseReadyTrialOrHearing';
+const dqPropertyName = 'hasAnythingChanged';
 
 hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
   try {
@@ -38,7 +39,7 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, 
       await renderView(res, claimId, claim, form);
     } else {
       await saveCaseProgression(claimId, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, HEARING_DURATION_URL));
     }
   } catch (error) {
     next(error);

@@ -29,12 +29,13 @@ describe('UploadYourDocumentsSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         variables: 'variables',
+        classes: 'classes',
       },
     });
 
     //When
     const leadParagraphBuilt = new UploadYourDocumentsSectionBuilder()
-      .addLeadParagraph(leadParagraphExpected.data.text,leadParagraphExpected.data.variables)
+      .addLeadParagraph(leadParagraphExpected.data.text,leadParagraphExpected.data.variables,leadParagraphExpected.data.classes)
       .build();
 
     //Then
