@@ -1,12 +1,15 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection, buildViewTrialArrangements,
+  buildEvidenceUploadSection,
+  buildHearingTrialLatestUploadSection,
+  buildViewTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
-  const areTrialArrangementsFinalised = true; //TODO: get the actual value
-  const areOtherPartyTrialArrangementsFinalised = true; //TODO: get the actual value
+  const areTrialArrangementsFinalised = claim.caseProgressionHearing.trialReadyRespondent1 === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
+  const areOtherPartyTrialArrangementsFinalised = claim.caseProgressionHearing.trialReadyApplicant === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
   const sectionContent = [];
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
