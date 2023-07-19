@@ -1999,7 +1999,7 @@
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
-        "DEFENDANT_ADMITS": "{{ Defendant Name }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+        "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
         "HOW_THEY_WANT_PAY": "How they want to pay?",
         "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
       },
