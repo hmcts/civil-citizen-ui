@@ -161,6 +161,7 @@ xui-webapp:
       SERVICES_WORK_ALLOCATION_TASK_API: https://wa-task-management-api-${SERVICE_FQDN}
       SERVICES_WA_WORKFLOW_API_URL: http://wa-workflow-api-${SERVICE_FQDN}
       JURISDICTIONS: CIVIL
+      LAUNCH_DARKLY_CLIENT_ID: ~
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
 
 ccd:
