@@ -3,7 +3,7 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
