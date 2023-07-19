@@ -1,13 +1,13 @@
 import {Response} from 'express';
 import {FileResponse} from 'models/FileResponse';
 
-export function displayPDF(res: Response, content: Buffer, filename: string) {
+export function displayPDF(res: Response, fileResponse: FileResponse, filename: string) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
     'Content-Disposition': `inline; filename=${filename}.pdf`,
-    'Content-Length': content ? content.length : 0,
+    'Content-Length': fileResponse?.data?.length,
   });
-  res.end(content);
+  res.end(fileResponse.data);
 }
 
 export function downloadFile(res: Response, fileResponse: FileResponse) {

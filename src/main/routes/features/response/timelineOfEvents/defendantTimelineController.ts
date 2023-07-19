@@ -28,7 +28,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const theirTimeline = claim.timelineOfEvents;
-      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
+      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
