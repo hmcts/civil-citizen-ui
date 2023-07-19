@@ -6,6 +6,7 @@
 {% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+
 {% block pageTitle %}
   {{ setPageTitle('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
 {% endblock %}
@@ -72,11 +73,16 @@
             <a href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
           </p>
 
-          {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE'),
-              href: continueLink
-          }) }}
-          {{ contactUsForHelp(t) }}
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                  text: t('COMMON.BUTTONS.CONTINUE'),
+                  href: continueLink
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
         </div>
       </div>
     </main>
