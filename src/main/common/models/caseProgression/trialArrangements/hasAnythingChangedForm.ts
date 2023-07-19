@@ -5,12 +5,12 @@ export class HasAnythingChangedForm {
   @IsNotEmpty({message: 'ERRORS.VALID_YES_NO_OPTION_TRIAL_ARR'})
     option?: YesNo;
 
+  @ValidateIf(o => o.option == YesNo.YES)
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_SUPPORT'})
-  @ValidateIf(o => o.option.VALID_YES_NO_SELECTION.YES )
     textArea?: string;
 
-  constructor(option?: YesNo, textArea?: string) {
+  constructor(option?: YesNo, whatSupport?: string) {
     this.option = option;
-    this.textArea = textArea;
+    this.textArea = whatSupport;
   }
 }

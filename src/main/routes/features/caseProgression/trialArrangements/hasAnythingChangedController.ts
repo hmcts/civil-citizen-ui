@@ -31,7 +31,8 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, n
 hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, next) => {
   try {
     const option = req.body.option;
-    const form = new GenericForm(new HasAnythingChangedForm(option));
+    const whatSupport = req.body.whatSupport;
+    const form = new GenericForm(new HasAnythingChangedForm(option,whatSupport));
     await form.validate();
     const claimId = req.params.id;
     if (form.hasErrors()) {
