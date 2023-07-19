@@ -1528,7 +1528,7 @@
         "FINALISE_TRIAL_ARRANGEMENTS": {
           "TITLE": "Finalise your trial arrangements for your upcoming trial or hearing (optional)",
           "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
-          "DUE_BY": "Due by: Midnight,",
+          "DUE_BY": "Due by: Midnight, {{ finalisingTrialArrangementsDeadline }}",
           "IF_THERE_ARE_CHANGES_BEGINNING": "If there are changes to your trial or hearing arrangements, you should let us know by",
           "IF_THERE_ARE_CHANGES_END": "midnight, {{ finalisingTrialArrangementsDeadline }}",
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
