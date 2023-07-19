@@ -27,7 +27,7 @@ Before(async ({api}) => {
   }else{
     claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
+    LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
 

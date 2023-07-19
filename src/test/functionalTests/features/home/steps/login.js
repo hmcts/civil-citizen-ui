@@ -4,15 +4,15 @@ const I= actor();
 
 class LoginSteps  {
 
-  async AcceptCookies() {
-    await LoginPage.acceptCookies();
+  AcceptCookies() {
+    LoginPage.acceptCookies();
   }
 
-  async EnterUserCredentials(username, password) {
-    await I.wait(30);
-    await LoginPage.open();
-    await this.AcceptCookies();
-    await LoginPage.login(username, password);
+  EnterUserCredentials(username, password) {
+    I.wait(30);
+    LoginPage.open();
+    this.AcceptCookies();
+    LoginPage.login(username, password);
   }
 }
 
