@@ -14,10 +14,11 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from 'common/form/models/yesNo';
+import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
+import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
-const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 
 function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
   const summarySections = getSummarySections(userId, claim, lang);
@@ -51,10 +52,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = new GenericForm((req.body.type === 'qualified')
-      ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
-      : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     const claim = await getCaseDataFromStore(userId);
+    if (claim.claimDetails.helpWithFees.option === YesNo.YES){
+      req.body.immutable = false;
+    }
+    const form = new GenericForm((req.body.type === 'qualified')
+      ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, req.body.immutable)
+      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.immutable));
+
     await form.validate();
     if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang);
@@ -62,11 +67,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
-      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
-      } else {
-        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
-      }
+      res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
