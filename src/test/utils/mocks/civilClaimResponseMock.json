@@ -281,6 +281,8 @@
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
     "caseProgression": {
+      "claimantLastUploadDate": "2022-06-21T14:15:19",
+      "defendantLastUploadDate": "2022-06-21T14:15:19",
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",

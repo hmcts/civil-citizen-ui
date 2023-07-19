@@ -30,7 +30,7 @@ const buildExpertReportSection = (claim: Claim, claimId: string, lang: string): 
 const buildHasExportReportSectionOption = (claim: Claim, claimId: string, lang: string, hrefReportDetails: string): SummaryRow => {
   const value = claim?.hasExpertReportDetails() ?
     t('COMMON.VARIATION_2.YES', lang) : t('COMMON.VARIATION_2.NO', lang);
-  return summaryRow(t('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE', lang),
+  return summaryRow(t('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE', {lng:lang}),
     value, hrefReportDetails, changeLabel(lang));
 };
 
@@ -38,7 +38,7 @@ const buildExportReportsRows = (claim: Claim, claimId: string, lang: string, hre
   const rows = claim?.directionQuestionnaire?.experts?.expertReportDetails?.reportDetails;
   return rows.map((row, index) => {
     const reportNumber = index + 1;
-    return summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', lang)} ${reportNumber}`,
+    return summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', {lng:lang})} ${reportNumber}`,
       buildExpertsReportDetailsValue(row, lang), hrefReportDetails, changeLabel(lang));
   });
 };

@@ -42,9 +42,9 @@ const documentForType = {
   document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
 };
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType(documentForType, new Date(0),'type', new Date(0));
-const witnessAsParameter = new UploadEvidenceWitness(documentForWitness, new Date(0),'witness name', new Date(0));
-const expertAsParameter = new UploadEvidenceExpert(documentForExpert, new Date(0),'expert name', 'expertise', 'expertises', 'other party', 'document question', 'document answer', new Date(0));
+const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
+const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
+const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
 describe('toCUIEvidenceUpload', () => {
   it('should convert CCDClaim to CaseProgression', () => {
@@ -142,6 +142,8 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     defendantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
+    claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
+    defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
   } as CaseProgression;
 }
 
