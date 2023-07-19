@@ -2,12 +2,8 @@ import {
   ClaimSummarySection,
   ClaimSummaryType,
 } from "common/form/models/claimSummarySection";
-import {
-  constructRepaymentPlanSection,
-  repaymentPlanSummary,
-} from "../claimantResponseService";
+import {constructRepaymentPlanSection} from "../claimantResponseService";
 import {Claim} from "common/models/claim";
-import {getReasonForNotPayingFullAmount} from "./fullAdmissinionDefendantsResponseContent";
 
 const getResponseSummaryText = (claim: Claim) => {
   const defendantName = claim.getDefendantFullName();
@@ -31,8 +27,6 @@ const getResponseSummaryText = (claim: Claim) => {
 export const buildFullAdmissionInstallmentsResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseSummaryText(claim),
-    ...repaymentPlanSummary(claim, lng),
     ...constructRepaymentPlanSection(claim, lng),
-    ...getReasonForNotPayingFullAmount(claim),
   ];
 };
