@@ -59,13 +59,15 @@
             {% endfor %}
           {% endif %}
 
-          {% if unableToPayFullAmunt %}
-            <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
-          {% endif %}
-          <p class="govuk-body">{{ reasonsWhyYouCantPayImmediately }}</p>
+          {% if claim.isBusiness() === false %}
+            {% if unableToPayFullAmunt %}
+              <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
+              <p class="govuk-body">{{ reasonsWhyYouCantPayImmediately }}</p>
+            {% endif %}
 
-          {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
-            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+            {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+              {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+            {% endif %}
           {% endif %}
 
           <h3 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_RESPONSE') }}</h3>
