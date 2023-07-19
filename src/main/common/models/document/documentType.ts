@@ -24,8 +24,8 @@ export enum DocumentUri {
   CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
   SDO_ORDER = 'sdo-order',
   MEDIATION_AGREEMENT = 'mediation_agreement',
-
 }
+
 export enum EvidenceUploadWitness {
   WITNESS_STATEMENT='WITNESS_STATEMENT',
   WITNESS_SUMMARY='WITNESS_SUMMARY',
