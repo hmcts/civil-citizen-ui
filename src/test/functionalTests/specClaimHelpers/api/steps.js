@@ -19,6 +19,8 @@ const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
 const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
+const claimSpecDataLRvLR = require('../fixtures/events/createClaimSpecLRvLR.js');
+const claimSpecDataFastTrackLRvLR = require('../fixtures/events/createClaimSpecFastTrackLrvLR');
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
@@ -26,7 +28,9 @@ const caseProgressionToHearingInitiated = require('../fixtures/events/createCase
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+  CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
+  CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
 };
 
 let caseId, eventName;
@@ -103,12 +107,59 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    await assignSpecCase(caseId, multipartyScenario);
+    if(claimType !== 'pinInPost'){
+      await assignSpecCase(caseId, multipartyScenario);
+    }
     await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
     return caseId;
+  },
+
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType) => {
+    console.log(' Creating specified claim');
+    eventName = 'CREATE_CLAIM_SPEC';
+    caseId = null;
+    caseData = {};
+    let createClaimSpecData;
+    if (claimType === 'FastTrack'){
+      console.log('Creating LRvLR FastTrack claim...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACKLRvLR(multipartyScenario);
+    } else {
+      console.log('Creating LRvLR small claims...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIMLRvLR(multipartyScenario);
+    }
+
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEvent(eventName);
+    for (let pageId of Object.keys(createClaimSpecData.userInput)) {
+      await assertValidDataSpec(createClaimSpecData, pageId);
+    }
+
+    await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
+    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
+    console.log('Is PBAv3 toggle on?: ' + pbaV3);
+
+    if (pbaV3) {
+      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+        claimSpecData.serviceUpdateDto(caseId, 'paid'));
+      console.log('Service request update sent to callback URL');
+    }
+
+    if(claimType !== 'pinInPost'){
+      await assignSpecCase(caseId, 'lrvlr');
+    }
+    await waitForFinishedBusinessProcess(caseId);
+
+    //field is deleted in about to submit callback
+    deleteCaseFields('applicantSolicitor1CheckEmail');
+    return caseId;
+  },
+
+  retrieveCaseData: async(user, caseId) => {
+    const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
+    return case_data;
   },
 
   createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
@@ -355,6 +406,10 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
   return dynamicElements.map(({code, ...item}) => item);
 }
 
-const assignSpecCase = async (caseId) => {
-  await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantCitizenUser);
+const assignSpecCase = async (caseId, type) => {
+  if(type === 'lrvlr'){
+    await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantLRCitizenUser);
+  }else{
+    await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+  }
 };

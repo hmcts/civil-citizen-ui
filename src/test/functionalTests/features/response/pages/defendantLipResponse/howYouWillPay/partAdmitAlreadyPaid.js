@@ -1,4 +1,5 @@
 const I= actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -11,7 +12,7 @@ const buttons = {
 class PartAdmitAlreadyPaid {
 
   async selectAlreadyPaid(option) {
-    await I.see('Have you paid the claimant the amount you admit you owe?', 'h1');
+    await I.waitForText('Have you paid the claimant the amount you admit you owe?', config.WaitForText);
     if(option == 'yes'){
       await I.click(fields.yesButton);
     }else{
