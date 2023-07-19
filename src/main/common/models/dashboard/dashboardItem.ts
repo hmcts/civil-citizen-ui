@@ -137,7 +137,7 @@ export class DashboardDefendantItem extends DashboardItem {
       CLAIMANT_ACCEPTED_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
       CLAIMANT_REJECT_PARTIAL_ADMISSION: {
         translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
-        parameter: [paramClaimantName],
+        parameter: [paramClaimantName, paramAdmittedAmount],
       },
 
     };
