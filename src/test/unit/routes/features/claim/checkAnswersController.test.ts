@@ -162,7 +162,7 @@ describe('Claim - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Submit and continue to payment');
+          expect(res.text).toContain('Submit claim');
         });
     });
     it('should return submit button when Fee is yes', async () => {
@@ -232,7 +232,7 @@ describe('Claim - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should return 500 when error in service', async () => {
