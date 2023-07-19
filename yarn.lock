@@ -7900,18 +7900,18 @@ __metadata:
   linkType: hard
 
 "ioredis-mock@npm:^8.2.6":
-  version: 8.7.0
-  resolution: "ioredis-mock@npm:8.7.0"
+  version: 8.8.1
+  resolution: "ioredis-mock@npm:8.8.1"
   dependencies:
     "@ioredis/as-callback": ^3.0.0
     "@ioredis/commands": ^1.2.0
     fengari: ^0.1.4
     fengari-interop: ^0.1.3
-    semver: ^7.3.8
+    semver: ^7.5.4
   peerDependencies:
     "@types/ioredis-mock": ^8
     ioredis: ^5
-  checksum: 46a4ee40b899e950569cdfa3f009b797fc5c5acbdc6b1784f8cdeb54ba781ed288b61c4c86c88760a02ea6a481e655660df0507096f93c66c2e8285f029ff8fd
+  checksum: 2737011fae6fe0ba03269d3509754dfcb0a4a0f999162c37d22a8762c04d2d0e71003e8400e05144cc76a43c98f9a78c5e5b324eee6e5f20e2565f6398f573ae
   languageName: node
   linkType: hard
 
