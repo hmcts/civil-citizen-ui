@@ -1,4 +1,5 @@
 import {Response} from 'express';
+import {FileResponse} from 'models/FileResponse';
 
 export function displayPDF(res: Response, content: Buffer, filename: string) {
   res.writeHead(200, {
@@ -9,11 +10,11 @@ export function displayPDF(res: Response, content: Buffer, filename: string) {
   res.end(content);
 }
 
-export function downloadPDF(res: Response, content: Buffer, filename: string) {
+export function downloadFile(res: Response, fileResponse: FileResponse) {
   res.writeHead(200, {
-    'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment; filename=${filename}`,
-    'Content-Length': content ? content.length : 0,
+    'Content-Type': fileResponse.contentType,
+    'Content-Disposition': `attachment; filename=${fileResponse.fileName}`,
+    'Content-Length': fileResponse.data.length,
   });
-  res.end(content);
+  res.end(fileResponse.data);
 }
