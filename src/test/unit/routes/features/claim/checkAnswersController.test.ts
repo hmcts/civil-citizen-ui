@@ -4,7 +4,7 @@ import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnsw
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
@@ -136,10 +136,20 @@ describe('Claim - Check answers', () => {
   });
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
       });
-      const data = {signed: ''};
+      const data = {
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
@@ -226,6 +236,7 @@ describe('Claim - Check answers', () => {
         directionsQuestionnaireSigned: 'Test',
         signerRole: 'Test',
         signerName: 'Test',
+        immutable: 'true',
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
