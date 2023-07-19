@@ -19,7 +19,8 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import currencyFormat from 'common/utils/currencyFormat';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
-import {DocumentUri} from 'models/document/documentType';
+import {DocumentType} from 'models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -37,7 +38,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
         paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lng),
       })
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
       .build();
   }
   return new LatestUpdateSectionBuilder()
@@ -52,7 +53,7 @@ function getPartAdmitPayInstallmentItems(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, {lng}), claimId, {claimantName: claimantFullName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -68,7 +69,7 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
         paymentDate: formatDateToFullDate(getPaymentDate(claim),lng),
       })
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
       .build();
   }
   return new LatestUpdateSectionBuilder()
@@ -81,7 +82,7 @@ function getPartAdmitPaidPayByDate(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, {lng}), claimId, {claimantName: claimantFullName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -93,7 +94,7 @@ function getPartAdmitPaidPayImmediately(claim: Claim, lng: string) {
       claimantName: claim.getClaimantFullName(),
     })
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, lng))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -110,7 +111,7 @@ function getFullAdmitPayInstallments(claim: Claim, lng: string) {
         paymentDate: formatDateToFullDate(getFirstRepaymentDate(claim),lng),
       })
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
       .build();
   }
   return new LatestUpdateSectionBuilder()
@@ -124,7 +125,7 @@ function getFullAdmitPayInstallments(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, {lng}), claimId, {claimantName: claimantFullName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -139,7 +140,7 @@ function getFullAdmitPayByDate(claim: Claim, lng: string) {
         paymentDate:  formatDateToFullDate(getPaymentDate(claim),lng),
       })
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
       .build();
   }
   return new LatestUpdateSectionBuilder()
@@ -151,7 +152,7 @@ function getFullAdmitPayByDate(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.GET_CONTACT_DETAILS`, {lng}), claimId, {claimantName: claimantFullName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND`, {lng}))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -168,7 +169,7 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`, {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName})
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.DEFENDANT_DEFENCE)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -181,7 +182,7 @@ function getStatusPaid(claim: Claim, lng: string) {
       claimantName: claimantFullName,
     })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.WE_WILL_CONTACT_YOU`)
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -209,7 +210,7 @@ function getPartAdmitAlreadyPaidSettled(claim: Claim, lng: string) {
   return new LatestUpdateSectionBuilder()
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_SETTLED`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_YOU_PAID`, { claimantName: claimantFullName, amount, moneyReceivedOn })
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -221,7 +222,7 @@ function getPartAdmitAlreadyPaidNotSettled(claim: Claim) {
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM`, { partAmount, fullAmount })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -232,7 +233,7 @@ function getPartAdmitAlreadyPaidNotAccepted(claim: Claim) {
     .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_SAID_YOU_DIDN'T_PAY_THEM`, { partAmount })
     .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
-    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -255,12 +256,12 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
 
-const getLastUpdateSdoDocument = (claimId: string, lng: string) => {
+const getLastUpdateSdoDocument = (claimId: string, claim: Claim) => {
   return new LatestUpdateSectionBuilder()
-    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`, {lng}))
-    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`, {lng}))
-    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`, {lng}))
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, {lng}), claimId,  DocumentUri.SDO_ORDER, null,`${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_AN_ORDER_HAS_BEEN_ISSUED_BY_THE_COURT`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_PLEASE_FOLLOW_THE_INSTRUCTIONS_IN_THE_ORDER`)
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_THIS_CLAIM_WILL_NO_PROCEED_OFFLINE`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.SDO_DOWNLOAD_THE_COURTS_ORDER`, claimId,  getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SDO_ORDER), null,`${PAGES_LATEST_UPDATE_CONTENT}.SDO_TO_FIND_OUT_THE_DETAILS`)
     .build();
 };
 
@@ -337,7 +338,7 @@ function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
       t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG4`, {lng}),
       t(`${PAGES_LATEST_UPDATE_CONTENT}.CCJ_REQUESTED_MSG5`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName})
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -349,7 +350,7 @@ export function generateClaimSettledLatestUpdate(claim: Claim, lng: string) {
       claimantName: claimantFullName,
       settlementDate: formatDateToFullDate(claim.lastModifiedDate, lng),
     })
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, DocumentUri.SEALED_CLAIM)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM))
     .build();
 }
 
@@ -401,7 +402,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     }
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
-    sectionContent.push(getLastUpdateSdoDocument(claimId, lng));
+    sectionContent.push(getLastUpdateSdoDocument(claimId, claim));
   } else if (claim.hasClaimTakenOffline()) {
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
   } else if (claim.hasMediationSuccessful()) {
