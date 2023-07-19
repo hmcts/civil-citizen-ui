@@ -142,4 +142,3 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   }
   return t(translationKey, {lng:getLng(lang)} );
 };
-
