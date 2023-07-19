@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
@@ -16,7 +17,7 @@
                     + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
                     +'</p>' %}
 {% if payment %}
-  {% set submitText = t('COMMON.BUTTONS.SUBMIT_RESPONSE_PAYMENT', { payment: payment }) %}
+  {% set submitText = t('COMMON.BUTTONS.SUBMIT_CLAIM') %}
       {% if signatureType === SignatureType.BASIC %}
         {% set labelHtml = t('COMMON.STATEMENT_OF_TRUTH.DETAILS_TRUTHY') %}
       {% endif %}
@@ -47,6 +48,22 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
+            {% if payment %}
+              {{ govukCheckboxes({
+                idPrefix: 'immutable',
+                name: 'immutable',
+                items: [
+                  {
+                    value: true,
+                    html: t('COMMON.STATEMENT_OF_TRUTH.MAKE_CHANGES_NOT_ALLOWED'),
+                    checked: true if form.model.immutable
+                  }
+                ],
+                errorMessage: {
+                  text:t(form.errorFor(signed))
+                } if form.errorFor(signed)
+              }) }}
+            {% endif %}
            {{ statementOfTruth(
              t,
              form,
