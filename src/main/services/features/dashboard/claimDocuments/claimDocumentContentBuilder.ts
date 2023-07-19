@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {DocumentType} from 'models/document/documentType';
+import {DocumentType, DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
