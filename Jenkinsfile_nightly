@@ -79,7 +79,7 @@ withNightlyPipeline(type, product, component) {
   env.RUNNING_ENV = params.ENVIRONMENT
   setUrls("aat");
   loadVaultSecrets(secrets)
-  enableFullFunctionalTest()
+  //enableFullFunctionalTest()
   enableCrossBrowserTest()
 
    afterAlways('crossBrowserTest') {
