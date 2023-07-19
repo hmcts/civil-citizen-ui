@@ -79,6 +79,8 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     documentAuthoritiesRes: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
     documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
     documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
+    caseDocumentUploadDate: new Date('1970-01-01T00:00:00.000Z'),
+    caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
   };
 }
 
