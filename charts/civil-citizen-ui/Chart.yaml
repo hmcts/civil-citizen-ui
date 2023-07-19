@@ -45,11 +45,11 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-case-event-handler
-    version: 0.0.34
+    version: 0.0.30
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-workflow-api
-    version: 0.0.33
+    version: 0.0.29
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   # WA Crons
