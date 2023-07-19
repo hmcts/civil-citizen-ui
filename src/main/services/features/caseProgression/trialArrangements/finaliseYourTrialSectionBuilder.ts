@@ -5,30 +5,6 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 export class FinaliseYourTrialSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addMainTitle(mainTitle: string, variables?: unknown) {
-    const mainTitleSection = ({
-      type: ClaimSummaryType.MAINTITLE,
-      data: {
-        text: mainTitle,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(mainTitleSection);
-    return this;
-  }
-
-  addLeadParagraph(text: string, variables?: unknown) {
-    const leadParagraphSection = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
-      data: {
-        text: text,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(leadParagraphSection);
-    return this;
-  }
-
   addParagraphWithHTML(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.HTML,

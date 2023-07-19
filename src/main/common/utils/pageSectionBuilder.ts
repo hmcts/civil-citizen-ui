@@ -2,6 +2,31 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
+  addMainTitle(mainTitle: string, variables?: unknown) {
+    const mainTitleSection = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: mainTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(mainTitleSection);
+    return this;
+  }
+
+  addLeadParagraph(text: string, variables?: unknown) {
+    const leadParagraphSection = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(leadParagraphSection);
+    return this;
+  }
+
   addTitle(title: string, variables?: any, classes?: string) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
