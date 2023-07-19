@@ -55,7 +55,7 @@ export class DashboardDefendantItem extends DashboardItem {
   admittedAmount?: number;
   createdDate?: Date;
   respondToAdmittedClaimOwingAmountPounds?:number;
-  
+
   constructor() {
     super();
     this.url = '/dashboard/:claimId/defendant';
@@ -146,7 +146,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -155,5 +155,5 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
   }
-  return t(translationKey);
+  return t(translationKey, {lng:getLng(lang)} );
 };
