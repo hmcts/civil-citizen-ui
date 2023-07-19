@@ -280,6 +280,7 @@
       "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
+    "hearingDuration": "MINUTES_150",
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",

@@ -1,4 +1,5 @@
 export class OtherTrialInformation {
+
   otherInformation?: string;
 
   constructor(otherInformation?: string) {

@@ -8,7 +8,7 @@
 {%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.TRIAL_ARRANGEMENTS.TITLE') }}
+  {{ setPageTitle('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -29,10 +29,10 @@
                 id: "otherInformation",
                 rows: "5",
                 label: {
-                  html: t('PAGES.TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_LABEL')
+                  html: t('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_LABEL')
                 },
                 hint: {
-                  text: t('PAGES.TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_HINT')
+                  text: t('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_HINT')
                 }
               }) }}
               {{ govukButton({

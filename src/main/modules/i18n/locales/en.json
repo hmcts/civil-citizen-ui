@@ -2302,7 +2302,7 @@
       "TITLE": "What is the total interest for your claim?",
       "TOTAL_AMOUNT": "Total interest amount"
     },
-    "TRIAL_ARRANGEMENTS": {
+    "HEARING_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial or hearing arrangements",
       "HEARING_DURATION_TITLE": "Hearing duration",
       "HEARING_DURATION_PARAGRAPH": "The hearing duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",

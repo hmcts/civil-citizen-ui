@@ -27,12 +27,7 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(paragraphSection);
     return this;
   }
-<<<<<<< HEAD
   addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
-=======
-
-  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any) {
->>>>>>> bbc4fd27a (CIV-9198 - Added page for hearing duration and other information in trial arrangements)
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
