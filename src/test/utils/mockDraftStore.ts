@@ -26,6 +26,7 @@ import {LoggerInstance} from 'winston';
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUndefined = {
   set: jest.fn(() => Promise.resolve(undefined)),
