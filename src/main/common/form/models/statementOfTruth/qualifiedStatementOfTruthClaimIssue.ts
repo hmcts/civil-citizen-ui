@@ -1,7 +1,7 @@
 import {IsNotEmpty, MaxLength} from 'class-validator';
-import {StatementOfTruthForm} from './statementOfTruthForm';
 import {SignatureType} from 'models/signatureType';
 import {SIGNER_NAME_MAX_LENGTH, SIGNER_ROLE_MAX_LENGTH} from 'form/validators/validationConstraints';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 
 export class QualifiedStatementOfTruthClaimIssue extends StatementOfTruthForm {
 
@@ -14,12 +14,12 @@ export class QualifiedStatementOfTruthClaimIssue extends StatementOfTruthForm {
     signerRole?: string;
 
   @IsNotEmpty({message: 'ERRORS.CLAIM_SUBMITTED_ADVICE_REQUIRED'})
-    immutable?: boolean;
+    acceptNoChangesAllowed?: boolean;
 
-  constructor(isFullAmountRejected: boolean, signed?: boolean, directionsQuestionnaireSigned?: boolean, signerName?: string, signerRole?: string, immutable?: boolean) {
+  constructor(isFullAmountRejected: boolean, signed?: boolean, directionsQuestionnaireSigned?: boolean, signerName?: string, signerRole?: string, acceptNoChangesAllowed?: boolean) {
     super(isFullAmountRejected, SignatureType.QUALIFIED, signed, directionsQuestionnaireSigned);
     this.signerName = signerName?.trim();
     this.signerRole = signerRole?.trim();
-    this.immutable = immutable;
+    this.acceptNoChangesAllowed = acceptNoChangesAllowed;
   }
 }
