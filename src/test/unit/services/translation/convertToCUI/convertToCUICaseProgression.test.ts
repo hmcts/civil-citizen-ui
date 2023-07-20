@@ -13,11 +13,15 @@ import {
   UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
-  createCCDClaimForEvidenceUpload, mockExpertDocument,
-  mockTypeDocument, mockUUID, mockWitnessDocument,
+  createCCDClaimForEvidenceUpload,
+  mockExpertDocument,
+  mockTypeDocument,
+  mockUUID,
+  mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -46,7 +50,7 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
-describe('toCUIEvidenceUpload', () => {
+describe('toCUICaseProgression', () => {
   it('should convert CCDClaim to CaseProgression', () => {
 
     const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
@@ -97,6 +101,8 @@ describe('toCUIEvidenceUpload', () => {
       documentCostsRes: undefined,
       documentEvidenceForTrialRes: undefined,
       caseDocumentUploadDateRes: undefined,
+      trialReadyApplicant: undefined,
+      trialReadyRespondent1: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
@@ -116,6 +122,7 @@ describe('toCUIEvidenceUpload', () => {
       documentWitnessStatementRes: undefined,
       documentWitnessSummaryRes: [{id: 'Defendant', value: mockWitnessDocument}],
       documentAuthoritiesRes: [{id: 'Defendant', value: mockTypeDocument}],
+      trialReadyRespondent1: YesNoUpperCamelCase.YES,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
@@ -131,6 +138,7 @@ describe('toCUIEvidenceUpload', () => {
       undefined,
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
+    expectedOutput.trialReadyRespondent1 = YesNoUpperCamelCase.YES;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -144,6 +152,8 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
+    trialReadyApplicant: YesNoUpperCamelCase.NO,
+    trialReadyRespondent1: YesNoUpperCamelCase.YES,
   } as CaseProgression;
 }
 
