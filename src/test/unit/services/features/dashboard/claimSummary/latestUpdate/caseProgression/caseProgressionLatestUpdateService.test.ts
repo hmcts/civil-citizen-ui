@@ -1,15 +1,14 @@
 import {
   checkEvidenceUploaded,
   getCaseProgressionLatestUpdates,
-  getHearingTrialUploadLatestUpdateContent, getViewTrialArrangementsContent,
+  getHearingTrialUploadLatestUpdateContent,
+  getViewTrialArrangementsContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  buildEvidenceUploadSection,
+  buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
-import {
-  getCaseProgressionHearingMock,
-  getCaseProgressionHearingWithTrialReadinessMock,
-} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {getCaseProgressionHearingMock,} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {CaseState} from 'form/models/claimDetails';
 import {Claim} from 'models/claim';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
@@ -68,7 +67,11 @@ describe('Case Progression Latest Update Content service', () => {
 
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (respondent) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.NO, YesNoUpperCamelCase.YES);
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
+      claimWithSdoAndHearing.caseProgression = {
+        trialReadyApplicant: YesNoUpperCamelCase.NO,
+        trialReadyRespondent1: YesNoUpperCamelCase.YES,
+      };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
@@ -84,7 +87,11 @@ describe('Case Progression Latest Update Content service', () => {
 
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the other party (claimant) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.YES, YesNoUpperCamelCase.NO);
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
+      claimWithSdoAndHearing.caseProgression = {
+        trialReadyApplicant: YesNoUpperCamelCase.YES,
+        trialReadyRespondent1: YesNoUpperCamelCase.NO,
+      };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
@@ -99,7 +106,11 @@ describe('Case Progression Latest Update Content service', () => {
 
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the both parties as they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
-      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingWithTrialReadinessMock(YesNoUpperCamelCase.YES, YesNoUpperCamelCase.YES);
+      claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
+      claimWithSdoAndHearing.caseProgression = {
+        trialReadyApplicant: YesNoUpperCamelCase.YES,
+        trialReadyRespondent1: YesNoUpperCamelCase.YES,
+      };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
