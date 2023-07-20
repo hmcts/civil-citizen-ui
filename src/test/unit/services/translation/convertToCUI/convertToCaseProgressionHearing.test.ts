@@ -26,7 +26,7 @@ describe('toCUICaseProgressionHearing', () => {
       trialReadyApplicant: YesNoUpperCamelCase.NO,
       trialReadyRespondent1: YesNoUpperCamelCase.YES,
     };
-    const expectedOutput = new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE, YesNoUpperCamelCase.NO, YesNoUpperCamelCase.YES);
+    const expectedOutput = new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE);
 
     const actualOutput = toCUICaseProgressionHearing(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
@@ -45,11 +45,9 @@ describe('toCUICaseProgressionHearing', () => {
       hearingDate: undefined,
       hearingLocation: undefined,
       hearingTimeHourMinute: undefined,
-      trialReadyApplicant: undefined,
-      trialReadyRespondent1: undefined,
     };
     const expectedOutput: CaseProgressionHearing = new CaseProgressionHearing(
-      undefined,new HearingLocation(undefined),undefined,undefined,undefined, undefined);
+      undefined,new HearingLocation(undefined),undefined,undefined);
     const actualOutput = toCUICaseProgressionHearing(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
