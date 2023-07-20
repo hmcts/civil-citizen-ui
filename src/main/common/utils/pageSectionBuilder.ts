@@ -15,12 +15,13 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addLeadParagraph(text: string, variables?: unknown) {
+  addLeadParagraph(text: string, variables?: unknown, classes?: string) {
     const leadParagraphSection = ({
       type: ClaimSummaryType.LEAD_PARAGRAPH,
       data: {
         text: text,
         variables: variables,
+        classes: classes,
       },
     });
     this._claimSummarySections.push(leadParagraphSection);

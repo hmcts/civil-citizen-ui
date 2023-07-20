@@ -7,7 +7,7 @@ import {
 export const getHearingDurationAndOtherInformation = (claim: Claim, caseIdPrettified?: string) => {
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle(t('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.TITLE'))
-    .addLeadParagraph(t('COMMON.CLAIM_NUMBER')+': {{claimId}}', {claimId: caseIdPrettified})
+    .addLeadParagraph(t('COMMON.CLAIM_NUMBER')+': {{claimId}}', {claimId: caseIdPrettified}, 'govuk-!-margin-bottom-0')
     .addLeadParagraph('COMMON.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),
