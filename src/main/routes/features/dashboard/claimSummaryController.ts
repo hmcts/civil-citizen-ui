@@ -11,7 +11,8 @@ import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDa
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
-import {DocumentType, DocumentUri} from 'common/models/document/documentType';
+import {DocumentType} from 'common/models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -35,7 +36,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
           .forEach(items => latestUpdateContent.push(items));
         documentsContent = getEvidenceUploadContent(claim);
       }
-      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.DEFENDANT_DEFENCE) : undefined;
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, claim.claimBilingualLanguagePreference)) : undefined;
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled, responseDetailsUrl});
     }
   } catch (error) {

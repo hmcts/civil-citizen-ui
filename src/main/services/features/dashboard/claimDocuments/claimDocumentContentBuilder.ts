@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {DocumentType} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
@@ -40,7 +40,7 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.DEFENDANT_DEFENCE),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, claim.claimBilingualLanguagePreference)),
         text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
