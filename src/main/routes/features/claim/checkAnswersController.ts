@@ -56,7 +56,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     if (claim.claimDetails.helpWithFees.option === YesNo.YES){
       req.body.acceptNoChangesAllowed = false;
     }
-    console.log(req.body.type);
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, req.body.acceptNoChangesAllowed)
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.acceptNoChangesAllowed));
@@ -68,7 +67,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
       await deleteDraftClaimFromStore(userId);
-      console.log(submittedClaim);
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
