@@ -7,8 +7,9 @@ import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProg
 import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
-import {DocumentUri} from 'models/document/documentType';
+import {DocumentType, DocumentUri} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {getSystemGeneratedCaseDocumentIdByType} from "models/document/systemGeneratedCaseDocuments";
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -40,7 +41,7 @@ describe('Latest Update Content Builder Case Progression', () => {
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
         .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
+        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
       // when
@@ -63,7 +64,7 @@ describe('Latest Update Content Builder Case Progression', () => {
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
         .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentType', DocumentUri.HEARING_FORM))
+        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
       // when

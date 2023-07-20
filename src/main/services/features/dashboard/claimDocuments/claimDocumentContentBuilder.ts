@@ -39,7 +39,7 @@ const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: 
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.HEARING_FORM)),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
         text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },

@@ -35,7 +35,7 @@ describe('Hearing Notice document content builder', ()=>{
     const hearingNoticeSection = buildDownloadHearingNoticeSection(mockClaim, '1', 'eng');
     //Then
     expect(hearingNoticeSection).not.toBeUndefined();
-    expect(hearingNoticeSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentType', getSystemGeneratedCaseDocumentIdByType(mockClaim.systemGeneratedCaseDocuments, DocumentType.HEARING_FORM)));
+    expect(hearingNoticeSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentId', getSystemGeneratedCaseDocumentIdByType(mockClaim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
     expect(hearingNoticeSection.data?.text).toContain('55 KB');
     expect(hearingNoticeSection.data?.subtitle).toContain('21 June 2022');
   });
