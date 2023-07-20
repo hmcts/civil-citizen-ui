@@ -4,7 +4,7 @@ nodejs:
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
@@ -49,6 +49,8 @@ civil-service:
           - robotics-notification-sender
           - robotics-notification-recipient
           - robotics-notification-recipient-lipj
+          - mediation-notification-recipient
+          - mediation-notification-sender
           - name: launch-darkly-sdk-key-non-prod
             alias: launch-darkly-sdk-key
           - robotics-notification-multipartyrecipient

@@ -43,7 +43,6 @@ export class DashboardClaimantItem extends DashboardItem {
 
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
-
 }
 
 export class DashboardDefendantItem extends DashboardItem {
@@ -146,7 +145,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -155,5 +154,5 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
   }
-  return t(translationKey);
+  return t(translationKey, {lng:getLng(lang)} );
 };
