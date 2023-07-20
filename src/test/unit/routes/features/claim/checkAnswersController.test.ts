@@ -236,7 +236,7 @@ describe('Claim - Check answers', () => {
         directionsQuestionnaireSigned: 'Test',
         signerRole: 'Test',
         signerName: 'Test',
-        immutable: 'true',
+        acceptNoChangesAllowed: 'true',
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)

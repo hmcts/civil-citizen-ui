@@ -33,11 +33,11 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.immutable);
+      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
     case SignatureType.QUALIFIED:
-      return new QualifiedStatementOfTruthClaimIssue(false, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.signerName, claim.claimDetails?.statementOfTruth?.signerRole, claim.claimDetails?.statementOfTruth?.immutable);
+      return new QualifiedStatementOfTruthClaimIssue(false, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.signerName, claim.claimDetails?.statementOfTruth?.signerRole, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
     default:
-      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.immutable);
+      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
   }
 };
 

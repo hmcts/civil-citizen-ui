@@ -50,13 +50,13 @@
             <input type="hidden" name="type" value="{{ form.model.type }}">
             {% if payment %}
               {{ govukCheckboxes({
-                idPrefix: 'immutable',
-                name: 'immutable',
+                idPrefix: 'acceptNoChangesAllowed',
+                name: 'acceptNoChangesAllowed',
                 items: [
                   {
                     value: true,
                     html: t('COMMON.STATEMENT_OF_TRUTH.MAKE_CHANGES_NOT_ALLOWED'),
-                    checked: true if form.model.immutable
+                    checked: true if form.model.acceptNoChangesAllowed
                   }
                 ],
                 errorMessage: {

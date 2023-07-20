@@ -37,7 +37,7 @@ const expectedStatementOfTruth = {
   type: 'basic',
   directionsQuestionnaireSigned: true,
   signed: true,
-  immutable: false,
+  acceptNoChangesAllowed: false,
 };
 
 describe('Check Answers service', () => {
@@ -57,7 +57,7 @@ describe('Check Answers service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true, immutable: false};
+        claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true, acceptNoChangesAllowed: false};
         return claim;
       });
 
