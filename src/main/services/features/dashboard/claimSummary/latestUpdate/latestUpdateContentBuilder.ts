@@ -157,7 +157,6 @@ function getFullAdmitPayByDate(claim: Claim, lng: string) {
 }
 
 function getFullAdmitPayImmediately(claim: Claim, lng: string) {
-  const responseDownloadUrl = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, claim.claimBilingualLanguagePreference);
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   return new LatestUpdateSectionBuilder()
@@ -170,7 +169,7 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`, {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`, {lng}))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName})
-    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, responseDownloadUrl)
+    .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
     .build();
 }
 

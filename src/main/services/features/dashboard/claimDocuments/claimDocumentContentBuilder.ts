@@ -40,7 +40,7 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, claim.claimBilingualLanguagePreference)),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
         text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },

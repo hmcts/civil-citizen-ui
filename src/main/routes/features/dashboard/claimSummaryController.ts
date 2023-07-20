@@ -36,7 +36,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
           .forEach(items => latestUpdateContent.push(items));
         documentsContent = getEvidenceUploadContent(claim);
       }
-      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, claim.claimBilingualLanguagePreference)) : undefined;
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled, responseDetailsUrl});
     }
   } catch (error) {
