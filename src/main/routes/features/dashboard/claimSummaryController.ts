@@ -3,7 +3,7 @@ import config from 'config';
 import {
   getLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdateService';
-import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
+import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {AppRequest} from 'models/AppRequest';
 import {DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -22,14 +22,18 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
-      const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = await getDocumentsContent(claim, claimId);
-      if (latestUpdateContent.length === 0 && await isCaseProgressionV1Enable()) {
+      let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
+      let documentsContent = await getDocumentsContent(claim, claimId);
+      const caseProgressionEnabled = await isCaseProgressionV1Enable();
+      if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
+        latestUpdateContent = [];
+        documentsContent = [];
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         getCaseProgressionLatestUpdates(claim, lang)
           .forEach(items => latestUpdateContent.push(items));
+        documentsContent = getEvidenceUploadContent(claim);
       }
-      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
+      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled});
     }
   } catch (error) {
     next(error);

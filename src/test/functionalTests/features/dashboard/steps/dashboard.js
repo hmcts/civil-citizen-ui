@@ -4,8 +4,11 @@ const DashboardPage = require('../pages/dashboard');
 
 class DashboardSteps {
 
-  DashboardPage () {
-    DashboardPage.verifyDashboardPageContent();
+  async DashboardPage () {
+    await DashboardPage.verifyDashboardPageContent();
+  }
+  async VerifyClaimOnDashboard(claimNumber)  {
+    await DashboardPage.verifyClaimNumberOnDashboard(claimNumber);
   }
 }
 

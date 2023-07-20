@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   addressLine1: 'input[id="primaryAddress[addressLine1]"]',
@@ -16,24 +17,25 @@ const fields = {
 };
 
 class NameAndAddressDetailsPage {
-  enterNameAndAddressDetails () {
-    I.click('Confirm your details');
-    I.fillField(fields.addressLine1, 'Test AddressLine1');
-    I.fillField(fields.addressLine2, 'Test AddressLine2');
-    I.fillField(fields.addressLine3, 'Test AddressLine3');
-    I.fillField(fields.city, 'Test City');
-    I.fillField(fields.postcode, 'IG6 1JD');
-    I.click('Save and continue');
+  async enterNameAndAddressDetails () {
+    await I.click('Confirm your details');
+    await I.waitForElement(fields.addressLine1, config.WaitForText);
+    await I.fillField(fields.addressLine1, 'Test AddressLine1');
+    await I.fillField(fields.addressLine2, 'Test AddressLine2');
+    await I.fillField(fields.addressLine3, 'Test AddressLine3');
+    await I.fillField(fields.city, 'Test City');
+    await I.fillField(fields.postcode, 'IG6 1JD');
+    await I.click('Save and continue');
   }
 
-  enterAddressManually () {
-    I.click(fields.correspondenceAddress_yes);
-    I.click(fields.enterAddressManuallyLink);
-    I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
-    I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
-    I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
-    I.fillField(fields.correspondenceCity, 'Barkingside');
-    I.fillField(fields.correspondencePostCode, 'IG2 6QU');
+  async enterAddressManually () {
+    await I.click(fields.correspondenceAddress_yes);
+    await I.click(fields.enterAddressManuallyLink);
+    await I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
+    await I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
+    await I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
+    await I.fillField(fields.correspondenceCity, 'Barkingside');
+    await I.fillField(fields.correspondencePostCode, 'IG2 6QU');
   }
 }
 

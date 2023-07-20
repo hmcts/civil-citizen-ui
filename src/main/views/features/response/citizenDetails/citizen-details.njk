@@ -2,6 +2,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/address.njk" import addressForm %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -22,8 +23,21 @@
     <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
   {% else %}
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FULL_NAME') }}</h2>
-    <p class="govuk-body">{% if party.model.partyName %}{{ party.model.partyName }}{% endif %}</p>
-    <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+    <p class="govuk-body">
+    {% if party.model.partyName %}
+      {{ party.model.partyName }}</p>
+      <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+    {% else %}
+      {% if party.model.individualFirstName %}
+        {{ party.model.individualFirstName }}
+        <input type="hidden" id="individualFirstName" name="individualFirstName" value="{{ party.model.individualFirstName }}"/>
+      {% endif %}
+      {% if party.model.individualLastName %}
+        {{ party.model.individualLastName }}
+        <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
+      {% endif %}
+    </p>
+    {% endif %}
     {% if party.model.soleTraderTradingAs %}
       <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME') }}</h2>
       <p class="govuk-body">{{ party.model.soleTraderTradingAs }}</p>
@@ -44,8 +58,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if party.hasErrors() %}
-          {{ errorSummary(party.getAllErrors(), t) }}
+        {% if party.hasErrors() or partyPhone.hasErrors() %}
+          {{ errorSummary(party.getAllErrors().concat(partyPhone.getAllErrors()), t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -99,13 +113,17 @@
                 }
               ]
             }) }}
-            {% if party.model.partyPhone !== undefined %}
-              <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
-              <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
-              {{ citizenTelephone(party, t, {
-                id: "partyPhone",
-                name: "partyPhone",
-                className: "govuk-input--width-20"
+            {% if partyPhone.model.phone !== undefined and partyPhone.model.ccdPhoneExist %}
+            <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_PHONE.PAGE_TITLE') }}</h2>
+            <p class="govuk-body">{{ t('PAGES.CLAIMANT_PHONE.INFORMATION') }}</p>
+            {{ govukInput({
+              classes: "govuk-input--width-20",
+              id: "partyPhone",
+              name: "partyPhone",
+              value: partyPhone.model.phone,
+              errorMessage: {
+                html: t(partyPhone.errorFor("phone"))
+              } if partyPhone.hasErrors()
             }) }}
             {% endif %}
             {{ govukButton({

@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: '#option',
@@ -10,15 +11,16 @@ const buttons = {
 
 class SevereDisabilityDetails {
 
-  clickYesButton() {
-    I.see('Are you severely disabled?', 'h1');
-    I.click(fields.yesButton);
-    I.click(buttons.continue);
+  async clickYesButton() {
+    await I.waitForText('Are you severely disabled?', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.click(buttons.continue);
   }
-  clickNoButton() {
-    I.see('Are you severely disabled?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.continue);
+
+  async clickNoButton() {
+    await I.waitForText('Are you severely disabled?', config.WaitForText);
+    await I.click(fields.noButton);
+    await I.click(buttons.continue);
   }
 }
 

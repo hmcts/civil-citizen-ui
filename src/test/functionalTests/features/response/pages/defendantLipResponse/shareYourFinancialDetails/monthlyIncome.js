@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   incomeFromJob: 'Income from your job',
@@ -18,25 +19,28 @@ const buttons = {
 
 class MonthlyIncome {
 
-  selectIncomeFromJob(incomeAmount) {
-    I.see('What regular income do you receive?', 'h1');
-    I.checkOption(fields.incomeFromJob);
-    I.fillField(fields.incomeFromJobPayment, incomeAmount);
-    I.click(fields.incomeFromJobPaymentSchedule);
+  async selectIncomeFromJob(incomeAmount) {
+    await I.waitForText('What regular income do you receive?', config.WaitForText);
+    await I.checkOption(fields.incomeFromJob);
+    await I.fillField(fields.incomeFromJobPayment, incomeAmount);
+    await I.click(fields.incomeFromJobPaymentSchedule);
   }
-  selectChildBenefit(childBenefitAmount) {
-    I.checkOption(fields.childBenefit);
-    I.fillField(fields.childBenefitPayment, childBenefitAmount);
-    I.click(fields.childBenefitSchedule);
+
+  async selectChildBenefit(childBenefitAmount) {
+    await I.checkOption(fields.childBenefit);
+    await I.fillField(fields.childBenefitPayment, childBenefitAmount);
+    await I.click(fields.childBenefitSchedule);
   }
-  selectOtherIncome(otherIncomeAmount) {
-    I.checkOption(fields.otherIncome);
-    I.fillField(fields.otherIncomeSource, 'Rent');
-    I.fillField(fields.otherIncomePayment, otherIncomeAmount);
-    I.click(fields.otherIncomePaymentSchedule);
+
+  async selectOtherIncome(otherIncomeAmount) {
+    await I.checkOption(fields.otherIncome);
+    await I.fillField(fields.otherIncomeSource, 'Rent');
+    await I.fillField(fields.otherIncomePayment, otherIncomeAmount);
+    await I.click(fields.otherIncomePaymentSchedule);
   }
-  clickContinue() {
-    I.click(buttons.saveAndContinue);
+
+  async clickContinue() {
+    await I.click(buttons.saveAndContinue);
   }
 }
 

@@ -10,6 +10,31 @@
   }
 }
 
+.caseProgression {
+  .moj-add-another__item {
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  // sass-lint:disable property-sort-order
+  .moj-add-another__remove-button {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: auto;
+    color: transparent;
+    font-size: 0;
+
+    &::after {
+      content: 'Remove section';
+      font-size: 19px;
+      color: $govuk-remove-section-text-colour;
+    }
+  }
+}
+
 .hide {
   display: none;
 }
@@ -176,5 +201,20 @@
 
   &:active {
     color: $govuk-link-active-colour;
+  }
+}
+
+@keyframes dotAnimation {
+  0% { content: '.'; }
+  20% { content: '..'; }
+  40% { content: '...'; }
+  60% { content: '....'; }
+  80% { content: '.....'; }
+}
+
+.loadingDots {
+  &::after {
+    content: '.....';
+    animation: dotAnimation 1s infinite steps(5);
   }
 }

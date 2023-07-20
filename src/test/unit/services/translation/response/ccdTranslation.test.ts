@@ -88,7 +88,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
   });
 
   it('should translate repayment plan for part admission to ccd', () => {
@@ -105,7 +105,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
   });
 
   it('should translate response type to CCD', () => {
@@ -361,7 +361,7 @@ describe('translate response to ccd version', () => {
       rows: [
         {
           description: 'description',
-          date: '12 Sep 2022',
+          date: new Date('2022-09-12'),
         },
       ],
 
@@ -372,7 +372,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.specResponseTimelineOfEvents).not.toBeUndefined();
     expect(ccdResponse.specResponseTimelineOfEvents.length).toBeGreaterThan(0);
     expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDescription).toEqual('description');
-    expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDate).toEqual('2022-09-12');
+    expect(ccdResponse.specResponseTimelineOfEvents[0].value.timelineDate).toEqual(new Date('2022-09-12'));
   });
 
   it('should translate details of why does you dispute the claim', ()=>{

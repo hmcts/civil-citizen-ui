@@ -1,0 +1,26 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "case_data": {
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "individualTitle": "Mr.",
+      "individualFirstName": "Jan",
+      "individualLastName": "Clark",
+      "partyName": "Mr. Jan Clark"
+    },
+    "respondent1": {
+      "type": "INDIVIDUAL",
+      "individualTitle": "Mr.",
+      "individualFirstName": "Joe",
+      "individualLastName": "Doe",
+      "partyName": "Mr. Joe Doe",
+      "partyPhone": {
+        "phone": ""
+      }
+    }
+  }
+}

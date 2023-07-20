@@ -1,19 +1,42 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
 {% macro timelineRow(timelineModel, index, form, t) %}
   <div class="row-container">
     <div class="multiple-row">
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-        {{ govukInput({
+        {{ govukDateInput({
           id: "rows["+index+"][date]",
-          name: "rows["+index+"][date]",
-          value: timelineModel.date,
-          classes: "govuk-grid-column-full",
-          spellcheck: false,
-          label: {
-            text: t('COMMON.DATE'),
-            classes: 'govuk-visually-hidden'
-          },
+          type: "number",
+          inputmode: "numeric",
+          name: "date",
+          items: [
+            {
+              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+              id: "day",
+              label: t('COMMON.DAY'),
+              name: "rows["+index+"][day]",
+              value: timelineModel.day,
+              max: 31
+            },
+            {
+              classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+              id: "month",
+              label: t('COMMON.MONTH'),
+              name: "rows["+index+"][month]",
+              value: timelineModel.month,
+              max: 12
+            },
+            {
+              classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+              id: "year",
+              label: t('COMMON.YEAR'),
+              name: "rows["+index+"][year]",
+              value: timelineModel.year,
+              max: 9999
+            }
+          ],
           errorMessage: {
             text: t(form.errorFor("rows["+index+"][date]"))
           } if form.hasFieldError( "rows["+index+"][date]")

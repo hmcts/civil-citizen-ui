@@ -52,7 +52,9 @@ describe('defendant timeline controller', () => {
       const data = {
         rows: [
           {
-            date: '17 November 2021',
+            day: 17,
+            month: 11,
+            year: 2022,
             description: '',
           },
         ],
@@ -86,7 +88,9 @@ describe('defendant timeline controller', () => {
       const data = {
         rows: [
           {
-            date: '17 November 2021',
+            day: 17,
+            month: 11,
+            year: 2022,
             description: 'something happened',
           },
         ],
@@ -104,7 +108,9 @@ describe('defendant timeline controller', () => {
       const data = {
         rows: [
           {
-            date: '17 November 2021',
+            day: 17,
+            month: 11,
+            year: 2022,
             description: 'something happened',
           },
         ],

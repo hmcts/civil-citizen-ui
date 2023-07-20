@@ -43,7 +43,8 @@ def secrets = [
     secret('postgres-password', 'POSTGRES_PASSWORD'),
     secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY'),
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
-    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD')
+    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
+    secret('civil-judge-password', 'JUDGE_PASSWORD')
   ]
 ]
 
@@ -82,6 +83,7 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
   enableAksStagingDeployment()
   enableSlackNotifications('#civil_notifications')
+  enableSlackNotifications('#citizen-ui-techteam')
   syncBranchesWithMaster(branchesToSync)
 
   onPR {
@@ -113,13 +115,13 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
           ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*ClaimantResponseLRspec-nonprod.json,*DocmosisEvents-nonprod.json,*UserEventsLRspec-nonprod.json,*ClaimantResponseLRspec-base-nonprod.json,*NotificationEventsDJSpec-nonprod.json,*DefaultJudgmentDJspec-nonprod.json,ClaimantResponseLRspec-hnl-legal-rep-nonprod.json,Categories*.json" ${ccdBranch}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
 
 
-  afterSuccess('smoketest:preview') {
+  afterAlways('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
   }
 
@@ -128,8 +130,9 @@ withPipeline(type, product, component) {
     env.IDAM_STUB_ENABLED='false'
   }
 
-  afterSuccess('functionalTest:preview') {
+  afterAlways('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterAlways('smoketest:preview') {
@@ -149,10 +152,6 @@ withPipeline(type, product, component) {
   before('smoketest:aat') {
     sh """
       eval \$(./bin/variables/load-staging-environment-variables.sh)
-      ./bin/add-roles.sh
-      ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
-      ./bin/import-ccd-definition.sh "-e *GAspec.json,*-nonprod.json"
-      ./bin/pull-latest-camunda-files.sh ${camundaBranch}
     """
     setUrls("aat");
   }
@@ -180,6 +179,7 @@ withPipeline(type, product, component) {
 
   afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterSuccess('functionalTest:aat') {

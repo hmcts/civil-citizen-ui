@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   contactNumber: 'input[id="telephoneNumber"]',
@@ -10,10 +10,10 @@ const buttons = {
 };
 
 class ContactNumberDetailsPage {
-  enterContactNumber () {   
-    I.see('Enter a phone number (optional)', 'h1');
-    I.fillField(fields.contactNumber, '02088908876');    
-    I.click(buttons.saveAndContinue);
+  async enterContactNumber () {
+    await I.waitForText('Enter a phone number (optional)', config.WaitForText);
+    await I.fillField(fields.contactNumber, '02088908876');
+    await I.click(buttons.saveAndContinue);
   }
 }
 

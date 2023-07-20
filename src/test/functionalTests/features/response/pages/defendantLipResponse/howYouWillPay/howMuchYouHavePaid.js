@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   amount: 'input[id="amount"]',
@@ -18,25 +19,25 @@ const year = currentDate.getFullYear() - 1;
 
 class HowMuchYouHavePaid {
 
-  enterPaymentDetails(claimRef, amount, responseType) {
+  async enterPaymentDetails(claimRef, amount, responseType) {
     if(responseType == 'partial-admission'){
-      I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
-      I.see('How much have you paid the claimant?', 'h1');
+      await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
+      await I.waitForText('How much have you paid the claimant?', config.WaitForText);
     }else{
-      I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
-      I.see('How much have you paid?', 'h1');
+      await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
+      await I.waitForText('How much have you paid?', config.WaitForText);
     }
-    I.see('The total amount claimed is £');
-    I.see('How much have you paid?');
-    I.fillField(fields.amount, amount);
-    I.see('When did you pay this amount?');
-    I.see('For example, ');
-    I.fillField(fields.day, day.toString());
-    I.fillField(fields.month, month.toString());
-    I.fillField(fields.year, year.toString());
-    I.see('How did you pay this amount?');
-    I.fillField(fields.text, 'Bank transfer');
-    I.click(buttons.saveAndContinue);
+    await I.see('The total amount claimed is £');
+    await I.see('How much have you paid?');
+    await I.fillField(fields.amount, amount);
+    await I.see('When did you pay this amount?');
+    await I.see('For example, ');
+    await I.fillField(fields.day, day.toString());
+    await I.fillField(fields.month, month.toString());
+    await I.fillField(fields.year, year.toString());
+    await I.see('How did you pay this amount?');
+    await I.fillField(fields.text, 'Bank transfer');
+    await I.click(buttons.saveAndContinue);
   }
 }
 

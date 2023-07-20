@@ -22,6 +22,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
 }));
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
+jest.mock('services/features/dashboard/claimSummaryService');
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -41,6 +42,7 @@ describe('Claim Summary Controller Defendant', () => {
         }
         return done();
       });
+
   });
 
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
@@ -50,17 +52,6 @@ describe('Claim Summary Controller Defendant', () => {
     state: CaseState.AWAITING_APPLICANT_INTENTION,
     case_data: {
       ...claim.case_data,
-      sdoOrderDocument: {
-        value: {
-          createdBy: 'test',
-          documentLink: 'test',
-          documentName: 'test',
-          documentSize: 'test',
-          documentType: 'test',
-          createdDatetime: 'test',
-        },
-        classification: 'test',
-      },
     },
   };
   const mockClaimSummaryContent: ClaimSummaryContent = {
@@ -76,22 +67,6 @@ describe('Claim Summary Controller Defendant', () => {
   };
 
   describe('on GET', () => {
-    it('should return evidence upload content when flag is enabled and hasSDODocument', async () => {
-      //given
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
-        });
-    });
 
     it('should not return evidence upload content when flag is disabled', async () => {
       //given
@@ -107,6 +82,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('Upload documents');
+          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
@@ -142,6 +118,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('Upload documents');
+          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
@@ -165,6 +142,7 @@ describe('Claim Summary Controller Defendant', () => {
     it('should show case progression hearing latest Update', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
+
       const claimWithHeringDocs = {
         ...claim,
         state: CaseState.AWAITING_APPLICANT_INTENTION,
@@ -188,10 +166,9 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Upload documents');
+          expect(res.text).toContain('Upload documents');
           expect(res.text).toContain('A hearing has been scheduled for your case');
         });
     });
-
   });
 });

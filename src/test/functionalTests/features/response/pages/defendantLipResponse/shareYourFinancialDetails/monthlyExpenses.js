@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   mortgage: 'Mortgage',
@@ -27,40 +28,46 @@ const buttons = {
 
 class MonthlyExpenses {
 
-  selectMortgage(mortgageAmount) {
-    I.see('What are your regular expenses?', 'h1');
-    I.checkOption(fields.mortgage);
-    I.fillField(fields.mortgagePayment, mortgageAmount);
-    I.click(fields.mortgagePaymentScheduleMonthly);
+  async selectMortgage(mortgageAmount) {
+    await I.waitForText('What are your regular expenses?', config.WaitForText);
+    await I.checkOption(fields.mortgage);
+    await I.fillField(fields.mortgagePayment, mortgageAmount);
+    await I.click(fields.mortgagePaymentScheduleMonthly);
   }
-  selectCouncilTax(councilTaxAmount) {
-    I.checkOption(fields.councilTax);
-    I.fillField(fields.councilTaxPayment, councilTaxAmount);
-    I.click(fields.councilTaxPaymentScheduleMonthly);
+
+  async selectCouncilTax(councilTaxAmount) {
+    await I.checkOption(fields.councilTax);
+    await I.fillField(fields.councilTaxPayment, councilTaxAmount);
+    await I.click(fields.councilTaxPaymentScheduleMonthly);
   }
-  selectGas(gasAmount) {
-    I.checkOption(fields.gas);
-    I.fillField(fields.gasPayment, gasAmount);
-    I.click(fields.gasPaymentScheduleWeekly);
+
+  async selectGas(gasAmount) {
+    await I.checkOption(fields.gas);
+    await I.fillField(fields.gasPayment, gasAmount);
+    await I.click(fields.gasPaymentScheduleWeekly);
   }
-  selectElectricity(electricityAmount) {
-    I.checkOption(fields.electricity);
-    I.fillField(fields.electricityPayment, electricityAmount);
-    I.click(fields.electricityPaymentScheduleFortnightly);
+
+  async selectElectricity(electricityAmount) {
+    await I.checkOption(fields.electricity);
+    await I.fillField(fields.electricityPayment, electricityAmount);
+    await I.click(fields.electricityPaymentScheduleFortnightly);
   }
-  selectFoodAndHouseKeeping(foodAndHouseKeepingAmount) {
-    I.checkOption(fields.foodAndHouseKeeping);
-    I.fillField(fields.foodAndHouseKeepingPayment, foodAndHouseKeepingAmount);
-    I.click(fields.foodAndHouseKeepingPaymentSchedule);
+
+  async selectFoodAndHouseKeeping(foodAndHouseKeepingAmount) {
+    await I.checkOption(fields.foodAndHouseKeeping);
+    await I.fillField(fields.foodAndHouseKeepingPayment, foodAndHouseKeepingAmount);
+    await I.click(fields.foodAndHouseKeepingPaymentSchedule);
   }
-  selectOtherExpenses(otherExpenses) {
-    I.checkOption(fields.otherExpenses);
-    I.fillField(fields.otherExpensesSource, 'Fuel');
-    I.fillField(fields.otherExpensesPayment, otherExpenses);
-    I.click(fields.otherExpensesPaymentSchedule);
+
+  async selectOtherExpenses(otherExpenses) {
+    await I.checkOption(fields.otherExpenses);
+    await I.fillField(fields.otherExpensesSource, 'Fuel');
+    await I.fillField(fields.otherExpensesPayment, otherExpenses);
+    await I.click(fields.otherExpensesPaymentSchedule);
   }
-  clickContinue() {
-    I.click(buttons.saveAndContinue);
+
+  async clickContinue() {
+    await I.click(buttons.saveAndContinue);
   }
 }
 

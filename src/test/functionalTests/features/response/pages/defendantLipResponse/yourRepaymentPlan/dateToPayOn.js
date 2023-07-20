@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   day: 'input[id="day"]',
@@ -16,12 +16,12 @@ const month = currentDate.getMonth();
 const year = currentDate.getFullYear() + 1;
 
 class DateToPayOn {
-  enterDateToPayOn () {
-    I.see('What date will you pay on?', 'h1');
-    I.fillField(fields.day, day.toString());
-    I.fillField(fields.month, month.toString());
-    I.fillField(fields.year, year.toString());
-    I.click(buttons.saveAndContinue);
+  async enterDateToPayOn () {
+    await I.waitForText('What date will you pay on?', config.WaitForText);
+    await I.fillField(fields.day, day.toString());
+    await I.fillField(fields.month, month.toString());
+    await I.fillField(fields.year, year.toString());
+    await I.click(buttons.saveAndContinue);
   }
 }
 

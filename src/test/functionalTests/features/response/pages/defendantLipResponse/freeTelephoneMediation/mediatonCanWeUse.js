@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -9,17 +9,17 @@ const fields ={
 
 class MediationCanWeUse {
 
-  selectOptionForMediation() {
+  async selectOptionForMediation() {
     //Uncomment the below steps once the issue is fixed.
-    // I.see('Confirm your telephone number', 'h1');
-    // I.see('Can the mediation service use');
-    // I.click(fields.yesButton);
+    // await I.see('Confirm your telephone number', 'h1');
+    // await I.see('Can the mediation service use');
+    // await I.click(fields.yesButton);
 
-    I.see('Enter a phone number', 'h1');
-    I.see('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
-    I.fillField(fields.phoneNumberID, '02088008800');
+    await I.waitForText('Enter a phone number', config.WaitForText);
+    await I.see('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
+    await I.fillField(fields.phoneNumberID, '02088008800');
 
-    I.click('Save and continue');
+    await I.click('Save and continue');
   }
 }
 

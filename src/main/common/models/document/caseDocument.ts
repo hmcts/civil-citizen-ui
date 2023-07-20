@@ -1,11 +1,16 @@
 import {Document} from './document';
-import {DocumentType} from './documentType';
+import {
+  DocumentType,
+  EvidenceUploadDisclosure,
+  EvidenceUploadTrial,
+  EvidenceUploadWitness,
+} from './documentType';
 
 export interface CaseDocument {
   createdBy: string;
   documentLink: Document;
   documentName: string;
-  documentType: DocumentType;
+  documentType: DocumentType|EvidenceUploadWitness|EvidenceUploadDisclosure|EvidenceUploadTrial;
   documentSize: number;
   createdDatetime: Date;
 }

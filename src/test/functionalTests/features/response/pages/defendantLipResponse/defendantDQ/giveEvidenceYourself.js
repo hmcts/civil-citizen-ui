@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -8,10 +8,10 @@ const fields ={
 
 class GiveEvidenceYourself {
 
-  SelectGiveEvidenceYourself() {
-    I.see('Do you want to give evidence yourself?', 'h1');
-    I.click(fields.yesButton);
-    I.click('Save and continue');
+  async SelectGiveEvidenceYourself() {
+    await I.waitForText('Do you want to give evidence yourself?', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.click('Save and continue');
   }
 }
 

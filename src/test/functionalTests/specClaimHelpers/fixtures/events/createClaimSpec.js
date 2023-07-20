@@ -7,17 +7,18 @@ const respondent1 = {
   individualLastName: 'Doe',
   individualTitle: 'Sir',
   primaryAddress: buildAddress('respondent'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const respondent1WithPartyName = {
   ...respondent1,
   partyName: 'Sir John Doe',
   partyTypeDisplayValue: 'Individual',
-  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
   primaryAddress: buildAddress('applicant'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1WithPartyName = {
   ...applicant1,
@@ -82,23 +83,8 @@ module.exports = {
           respondent1: respondent1WithPartyName,
         },
         LegalRepresentation: {
-          specRespondent1Represented: 'Yes',
+          specRespondent1Represented: 'No',
         },
-
-        DefendantSolicitorOrganisation: {
-          respondent1OrgRegistered: 'Yes',
-          respondent1OrganisationPolicy: {
-            OrgPolicyReference: 'Defendant policy reference',
-            OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORONE]',
-            Organisation: {
-              OrganisationID: config.defendant1SolicitorOrgId,
-            },
-          },
-        },
-        DefendantSolicitorEmail: {
-          respondentSolicitor1EmailAddress: 'hmcts.civil+organisation.2.solicitor.1@gmail.com',
-        },
-
         specRespondentCorrespondenceAddress: {
           specRespondentCorrespondenceAddressRequired: 'No',
         },

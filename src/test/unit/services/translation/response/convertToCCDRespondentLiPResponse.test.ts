@@ -5,20 +5,10 @@ import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
-import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
-
-const setUpUndefinedFinancialDetails = () : CCDFinancialDetailsLiP => {
-  return {
-    partnerPensionLiP: undefined,
-    partnerDisabilityLiP: undefined,
-    partnerSevereDisabilityLiP: undefined,
-    childrenEducationLiP: undefined,
-  };
-};
 
 const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
   return {
@@ -57,7 +47,6 @@ const setUPEmptyRespondent = () : Claim => {
 
 const setUpUndefinedOutput = () : CCDRespondentLiPResponse => {
   return {
-    respondent1LiPFinancialDetails : setUpUndefinedFinancialDetails(),
     respondent1MediationLiPResponse: undefined,
     respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
     respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
@@ -92,7 +81,6 @@ describe('translate cui fields to CCD model', () => {
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1MediationLiPResponse: undefined,
       respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
       respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
@@ -112,7 +100,6 @@ describe('translate cui fields to CCD model', () => {
     input.respondent1.partyDetails.postToThisAddress = 'no';
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
       respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1MediationLiPResponse: undefined,
@@ -131,7 +118,6 @@ describe('translate cui fields to CCD model', () => {
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
 
     const expected : CCDRespondentLiPResponse = {
-      respondent1LiPFinancialDetails: setUpUndefinedFinancialDetails(),
       respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
       respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1MediationLiPResponse: undefined,
@@ -146,7 +132,7 @@ describe('translate cui fields to CCD model', () => {
   it('return the Respondent LiP Response object', () => {
     // Given
     const claim = new Claim();
-    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow('6 November 2022', 'Event 1')]);
+    const timeline: DefendantTimeline = new DefendantTimeline([new TimelineRow(6, 11, 2022, 'Event 1')]);
 
     claim.partialAdmission = {
       alreadyPaid: {

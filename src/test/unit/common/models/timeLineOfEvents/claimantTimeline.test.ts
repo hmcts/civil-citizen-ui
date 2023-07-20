@@ -56,7 +56,7 @@ describe('ClaimantTimeline', () => {
 
       //When
       timeline.filterOutEmptyRows();
-      
+
       //Then
       expect(timeline.rows.length).toBe(0);
     });

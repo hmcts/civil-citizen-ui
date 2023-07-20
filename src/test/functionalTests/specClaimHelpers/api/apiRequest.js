@@ -7,6 +7,7 @@ const totp = require('totp-generator');
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
+const getCaseDetailsUrl = (userId, caseId) => `${config.url.ccdDataStore}/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
 const getRequestHeaders = (userAuth) => {
   return {
     'Content-Type': 'application/json',
@@ -30,6 +31,15 @@ module.exports = {
       .then(response => response.text());
   },
 
+  fetchCaseDetails: async(user, caseId, response = 200) => {
+    let eventUserAuth = await idamHelper.accessToken(user);
+    let eventUserId = await idamHelper.userId(eventUserAuth);
+    let url = getCaseDetailsUrl(eventUserId, caseId);
+
+    return await restHelper.retriedRequest(url, getRequestHeaders(eventUserAuth), null, 'GET', response)
+      .then(response => response.json());
+  },
+
   fetchCaseForDisplay: async(user, caseId, response = 200) => {
     let eventUserAuth = await idamHelper.accessToken(user);
     let eventUserId = await idamHelper.userId(eventUserAuth);
@@ -50,6 +60,21 @@ module.exports = {
       .then(response => response.json());
     tokens.ccdEvent = response.token;
     return response.case_details.case_data || {};
+  },
+
+  startEventForCitizen: async (eventName, caseId, payload) => {
+    let url = getCivilServiceUrl();
+    const userId = await idamHelper.userId(tokens.userAuth);
+    console.log('The value of the userId from the startEventForCitizen() : '+userId);
+    console.log('The value of the Auth Token from the startEventForCitizen() : '+tokens.userAuth);
+    if (caseId) {
+      url += `/cases/${caseId}`;
+    }
+    url += `/citizen/${userId}/event`;
+
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
+      .then(response => response.json());
+    tokens.ccdEvent = response.token;
   },
 
   validatePage: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {

@@ -1,20 +1,21 @@
 import {NextFunction, Request, Response} from 'express';
-import {Task} from '../../common/models/taskList/task';
-import {getTaskLists, outstandingTasksFromTaskLists} from '../../services/features/common/taskListService';
+import {Task} from 'models/taskList/task';
+import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import assert from 'assert';
-import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
-import {Claim} from '../../common/models/claim';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {AppRequest} from 'models/AppRequest';
-
+import {getClaimById} from 'modules/utilityService';
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        const caseData: Claim = await getCaseDataFromStore(appReq.session.claimId);
-        const taskLists = getTaskLists(caseData, appReq.session.claimId, lang);
+        const caseData: Claim = await getClaimById(appReq.session.claimId, req);
+        await setResponseDeadline(caseData, appReq);
+        const taskLists = getTaskLists(caseData,  appReq.session.claimId, lang);
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');
         const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
         const allTasksCompleted = outstandingTasks?.length === 0;

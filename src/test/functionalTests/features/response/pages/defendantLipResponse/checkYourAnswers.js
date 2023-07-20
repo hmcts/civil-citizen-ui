@@ -11,14 +11,20 @@ const buttons = {
 };
 
 class CheckYourAnswersPage {
-  checkAndSubmit(claimRef, responseType='') {
-    I.click('Check and submit your response');
-    I.see('Check your answers', 'h1');
-    I.waitForElement(fields.cyaSigned);
-    I.checkOption(fields.cyaSigned);
+  async checkAndSubmit(claimRef, responseType='') {
+    await I.click('Check and submit your response');
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('pcq')){
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click('Check and submit your response');
+    }
+    await I.waitForText('Check your answers', config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
+    await I.checkOption(fields.cyaSigned);
     if (responseType == 'partial-admission' || responseType == 'rejectAll') {
-      I.waitForElement(fields.directionsQuestionnaireSigned);
-      I.checkOption(fields.directionsQuestionnaireSigned);
+      await I.waitForElement(fields.directionsQuestionnaireSigned);
+      await I.checkOption(fields.directionsQuestionnaireSigned);
     } else if (responseType == 'admitPartTwo') {
     //WIP Progerss :Please do not remove this comment
     }
@@ -27,15 +33,15 @@ class CheckYourAnswersPage {
     //Once the CUI Release is done, we can remove this IF statement.
 
     if((config.TestUrl).includes('preview')  ){
-      I.click(buttons.submit);
-      I.amOnPage('/case/'+claimRef+'/response/confirmation');
-      I.see('You\'ve submitted your response','h1');
-      I.see('What happens next');
+      await I.click(buttons.submit);
+      await I.amOnPage('/case/'+claimRef+'/response/confirmation');
+      await I.waitForText('You\'ve submitted your response',config.WaitForText);
+      await I.see('What happens next');
     }
   }
 
-  navigateToCheckYourAnswersPage(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/response/check-and-send');
+  async navigateToCheckYourAnswersPage(claimRef) {
+    await I.amOnPage('/case/'+claimRef+'/response/check-and-send');
   }
 }
 

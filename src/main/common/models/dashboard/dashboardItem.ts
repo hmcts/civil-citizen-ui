@@ -52,6 +52,8 @@ export class DashboardDefendantItem extends DashboardItem {
   paymentDate?: Date;
   ccjRequestedDate?: Date;
   admittedAmount?: number;
+  createdDate?: Date;
+  respondToAdmittedClaimOwingAmountPounds?:number;
 
   constructor() {
     super();
@@ -65,7 +67,7 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramAdmittedAmount = {key: 'amount', value: this.admittedAmount?.toString()};
+    const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
 
     const dashboardStatus: DashboardDefendantStatus = {
       NO_STATUS: {translationKey: ''},
@@ -129,7 +131,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -138,6 +140,5 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
   }
-  return t(translationKey);
+  return t(translationKey, {lng:getLng(lang)} );
 };
-

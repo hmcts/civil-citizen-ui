@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="debtsRadio"]',
@@ -21,25 +22,26 @@ const buttons = {
 
 class Debts {
 
-  clickYesButton() {
-    I.see('Do you have loans or credit card debts?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.debtItem1, 'HSBC Credit card'),
-    I.fillField(fields.debtOwned1, '1200'),
-    I.fillField(fields.monthlyPayments1, '120'),
-    I.fillField(fields.debtItem2, 'Motor vehicle loan'),
-    I.fillField(fields.debtOwned2, '14000'),
-    I.fillField(fields.monthlyPayments2, '220'),
-    I.click(buttons.addDebt),
-    I.fillField(fields.debtItem3, 'Student loan'),
-    I.fillField(fields.debtOwned3, '8000'),
-    I.fillField(fields.monthlyPayments3, '400'),
-    I.click(buttons.saveAndContinue);
+  async clickYesButton() {
+    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.fillField(fields.debtItem1, 'HSBC Credit card'),
+    await I.fillField(fields.debtOwned1, '1200'),
+    await I.fillField(fields.monthlyPayments1, '120'),
+    await I.fillField(fields.debtItem2, 'Motor vehicle loan'),
+    await I.fillField(fields.debtOwned2, '14000'),
+    await I.fillField(fields.monthlyPayments2, '220'),
+    await I.click(buttons.addDebt),
+    await I.fillField(fields.debtItem3, 'Student loan'),
+    await I.fillField(fields.debtOwned3, '8000'),
+    await I.fillField(fields.monthlyPayments3, '400'),
+    await I.click(buttons.saveAndContinue);
   }
-  clickNoButton() {
-    I.see('Do you have loans or credit card debts?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.saveAndContinue);
+
+  async clickNoButton() {
+    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
+    await I.click(fields.noButton);
+    await I.click(buttons.saveAndContinue);
   }
 }
 

@@ -7,6 +7,8 @@ import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemp
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
 import civilClaimResponseRespondentIndividualWithPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithPhoneNumberMock.json';
+import civilClaimResponseRespondentIndividualWithoutPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithoutPhoneNumberMock.json';
+import civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse from './mocks/civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalseMock.json';
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
 import civilClaimResponseNoAdmittedPaymentAmountMock from './mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
 import civilClaimResponseFullAdmissionMock from './mocks/civilClaimResponseFullAdmissionMock.json';
@@ -17,12 +19,14 @@ import claimantClaimsMock from './mocks/claimantClaimsMock.json';
 import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimResponseTimelineAndEvidenceMock.json';
 import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimResponseExpertAndWitnessMock.json';
 import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTelephoneClaimantIntentionMock.json';
+import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
 
 import {LoggerInstance} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUndefined = {
   set: jest.fn(() => Promise.resolve(undefined)),
@@ -71,6 +75,11 @@ const mockCivilClaimantIntention = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
 };
 
+const mockResponseFullAdmitPayBySetDate = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(fullAdmitPayBySetDateMock))),
+};
+
 const mockRedisFailure = {
   del: jest.fn(() => Promise.resolve({})),
   set: jest.fn(() => {
@@ -101,6 +110,16 @@ const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
 };
 
+const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithoutPhoneNumber))),
+};
+
+const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse))),
+};
+
 const mockCivilClaimPDFTimeline = {
   del: jest.fn(() => Promise.resolve({})),
   set: jest.fn(() => Promise.resolve({})),
@@ -128,6 +147,8 @@ export {
   mockCivilClaimApplicantCompanyType,
   mockCivilClaimApplicantIndividualType,
   mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
+  mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
+  mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse,
   mockLogger,
   mockRedisWithMediationProperties,
   mockRedisWithoutAdmittedPaymentAmount,
@@ -138,4 +159,5 @@ export {
   mockCivilClaimWithTimelineAndEvidence,
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantIntention,
+  mockResponseFullAdmitPayBySetDate,
 };

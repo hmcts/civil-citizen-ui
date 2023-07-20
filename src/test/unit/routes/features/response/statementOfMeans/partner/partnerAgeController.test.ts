@@ -7,9 +7,11 @@ import {
   CITIZEN_PARTNER_AGE_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
+  RESPONSE_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaimUndefined, mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../../utils/mockDraftStore';
+import {mockWithSeverelyDisabledDefendant} from '../otherDependants/otherDependantsController.test';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -26,7 +28,7 @@ describe('Partner Age', () => {
 
   describe('on GET', () => {
     it('should return citizen partner age page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_AGE_URL)
         .expect((res) => {
@@ -35,7 +37,7 @@ describe('Partner Age', () => {
         });
     });
     it('should show partner age page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_AGE_URL)
         .send('')
@@ -54,17 +56,22 @@ describe('Partner Age', () => {
     });
   });
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
+
+    it('should redirect to response task list if redis claim is undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
         });
     });
     it('should redirect page when "no" and defendant disabled = YES', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockWithSeverelyDisabledDefendant;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('option=no')
@@ -74,7 +81,6 @@ describe('Partner Age', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('')
@@ -84,7 +90,6 @@ describe('Partner Age', () => {
         });
     });
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('option=yes')

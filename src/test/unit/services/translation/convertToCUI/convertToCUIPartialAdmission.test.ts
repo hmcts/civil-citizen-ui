@@ -114,7 +114,7 @@ describe('translate partial admission to cui model', () => {
       const timelineOfEvents: CCDTimeLineOfEvents[] = [
         <CCDTimeLineOfEvents>{
           value: <CCDTimeLineOfEventsItem>{
-            timelineDate: '2022-09-22',
+            timelineDate: new Date('2022-09-22'),
             timelineDescription: 'you might have signed a contract',
           },
         },
@@ -124,7 +124,7 @@ describe('translate partial admission to cui model', () => {
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
       expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
-      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22');
+      expect(cuiResponseTimelineOfEvents.rows[0].date.toDateString()).toBe('Thu Sep 22 2022');
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract');
       expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();
     });
@@ -134,7 +134,7 @@ describe('translate partial admission to cui model', () => {
       const timelineOfEvents: CCDTimeLineOfEvents[] = [
         <CCDTimeLineOfEvents>{
           value: <CCDTimeLineOfEventsItem>{
-            timelineDate: '2022-09-22',
+            timelineDate: new Date('2022-09-22'),
             timelineDescription: 'you might have signed a contract',
           },
         },
@@ -144,7 +144,7 @@ describe('translate partial admission to cui model', () => {
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
       expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
-      expect(cuiResponseTimelineOfEvents.rows[0].date).toBe('2022-09-22');
+      expect(cuiResponseTimelineOfEvents.rows[0].date.toDateString()).toBe('Thu Sep 22 2022');
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract');
       expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment');
     });
@@ -207,7 +207,7 @@ describe('translate partial admission to cui model', () => {
       const ccdClaim: CCDClaim = {
         defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.REPAYMENT_PLAN,
         respondent1RepaymentPlan: <CCDRepaymentPlan>{
-          paymentAmount: 55,
+          paymentAmount: 5500,
           repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
           firstRepaymentDate: new Date('2022-03-25'),
         },
@@ -271,7 +271,7 @@ describe('translate partial admission to cui model', () => {
     });
     it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with paymentAmount field', () => {
       // Given
-      const ccdRepaymentPlan = {paymentAmount: 55} as CCDRepaymentPlan;
+      const ccdRepaymentPlan = {paymentAmount: 5500} as CCDRepaymentPlan;
       // When
       const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan);
       // Then
@@ -302,7 +302,7 @@ describe('translate partial admission to cui model', () => {
     it('should translate CCDRepaymentPlan to CUI CCDRepaymentPlan model with all fields', () => {
       // Given
       const ccdRepaymentPlan = {
-        paymentAmount: 55,
+        paymentAmount: 5500,
         firstRepaymentDate: new Date('2022-03-25'),
         repaymentFrequency: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
       } as CCDRepaymentPlan;

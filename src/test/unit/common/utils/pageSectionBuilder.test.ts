@@ -9,12 +9,13 @@ describe('PageSectionBuilder tests', ()=> {
       data: {
         text: 'text',
         variables: 'variables',
+        classes: 'classes',
       },
     });
 
     //When
     const titleBuilt = new PageSectionBuilder()
-      .addTitle(titleExpected.data.text,titleExpected.data.variables)
+      .addTitle(titleExpected.data.text,titleExpected.data.variables,titleExpected.data.classes)
       .build();
 
     //Then
@@ -49,6 +50,7 @@ describe('PageSectionBuilder tests', ()=> {
         href: 'href',
         textBefore: 'textBefore',
         textAfter: 'textAfter',
+        externalLink: false,
       },
     });
 
@@ -71,6 +73,7 @@ describe('PageSectionBuilder tests', ()=> {
         textBefore: 'textBefore',
         textAfter: 'textAfter',
         variables: 'variables',
+        externalLink: false,
       },
     });
 
@@ -95,12 +98,37 @@ describe('PageSectionBuilder tests', ()=> {
         href: 'href',
         textAfter: textAfterUnd,
         textBefore: textBeforeUnd,
+        externalLink: false,
       },
     });
 
     //When
     const contactLinkBuilt = new PageSectionBuilder()
       .addLink(contactLinkExpected.data.text,contactLinkExpected.data.href)
+      .build();
+
+    //Then
+    expect(contactLinkBuilt).toEqual([contactLinkExpected]);
+  });
+
+  it('should open the link in external window with just text', () => {
+    //Given
+    const textAfterUnd: any = undefined;
+    const textBeforeUnd: any = undefined;
+    const contactLinkExpected = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        textAfter: textAfterUnd,
+        textBefore: textBeforeUnd,
+        externalLink: true,
+      },
+    });
+
+    //When
+    const contactLinkBuilt = new PageSectionBuilder()
+      .addLink(contactLinkExpected.data.text, contactLinkExpected.data.href, textBeforeUnd, textAfterUnd, undefined, contactLinkExpected.data.externalLink)
       .build();
 
     //Then

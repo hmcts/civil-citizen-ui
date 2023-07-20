@@ -6,6 +6,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
+import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -13,6 +14,8 @@ jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
+jest.mock('../../../../main/modules/utilityService');
+jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -20,6 +23,7 @@ jest.mock('i18next', () => ({
 
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
+const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
 const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
@@ -41,6 +45,9 @@ const MOCK_NEXT = jest.fn() as express.NextFunction;
 describe('Response - Incomplete Submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSetResponseDeadline.mockImplementation(async () => {
+      return new Date();
+    });
   });
 
   describe('on GET', () => {
@@ -48,6 +55,7 @@ describe('Response - Incomplete Submission', () => {
     it('should call next middleware function which will render check answers screen', async () => {
       //Given
       const mockRequest = MOCK_REQUEST();
+
       mockGetTaskList.mockImplementation(() => {
         return [{
           title: 'Task List',

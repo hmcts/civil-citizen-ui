@@ -55,6 +55,15 @@ const VulnerabilityDetails = require('../pages/defendantLipResponse/defendantDQ/
 const SupportRequired = require('../pages/defendantLipResponse/defendantDQ/supportRequired');
 const CourtLocation = require('../pages/defendantLipResponse/defendantDQ/courtLocation');
 const WelshLanguage = require('../pages/defendantLipResponse/defendantDQ/welshLanguage');
+const EnterCompanyDetails = require('../pages/defendantLipResponse/confirmYourDetails/enterCompanyDetails');
+const TriedToSettle = require('../pages/defendantLipResponse/defendantDQ/triedToSettle');
+const RequestExtraFourWeeks = require('../pages/defendantLipResponse/defendantDQ/requestExtraFourWeeks');
+const ConsiderClaimantDocs  =  require('../pages/defendantLipResponse/defendantDQ/considerClaimantDocs');
+const ExpertEvidence = require('../pages/defendantLipResponse/defendantDQ/expertEvidence');
+const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sentExpertReports');
+const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
+const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
+const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -114,313 +123,387 @@ const vulnerabilityDetails = new VulnerabilityDetails();
 const supportRequired = new SupportRequired();
 const courtLocation = new CourtLocation();
 const welshLanguage = new WelshLanguage();
+const enterCompanyDetails = new EnterCompanyDetails();
+const triedToSettle = new TriedToSettle();
+const requestExtraFourWeeks = new RequestExtraFourWeeks();
+const considerClaimantDocs = new ConsiderClaimantDocs();
+const expertEvidence = new ExpertEvidence();
+const sentExpertReports = new SentExpertReports();
+const sharedExpert = new SharedExpert();
+const expertDetails = new ExpertDetails();
+const assignCaseToLip = new AssignCaseToLip();
 
 class ResponseSteps {
-  RespondToClaim(claimRef){
-    defendantLatestUpdate.open(claimRef);
-    bilingualLanguagePreference.verifyContent();
+  async AssignCaseToLip(claimNumber, securityCode){
+    await assignCaseToLip.open(claimNumber, securityCode);
+  }
+  async RespondToClaim(claimRef){
+    await defendantLatestUpdate.open(claimRef);
+    await bilingualLanguagePreference.verifyContent();
   }
 
-  EnterPersonalDetails(claimRef) {
-    taskListPage.verifyResponsePageContent();
-    nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
-    dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    contactNumberDetailsPage.enterContactNumber(claimRef);
+  async DefendantSummaryPage(claimRef){
+    await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  EnterYourOptionsForDeadline(claimRef, deadlineOption) {
-    viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
+  async EnterPersonalDetails(claimRef) {
+    await taskListPage.verifyResponsePageContent();
+    await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
+    await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
+    await contactNumberDetailsPage.enterContactNumber(claimRef);
   }
 
-  RespondToRequest(claimRef) {
-    requestMoreTime.requestMoreTimeToRespond(claimRef);
+  async EnterYourOptionsForDeadline(claimRef, deadlineOption) {
+    await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
 
-  AddMandatoryPhoneNumber() {
-    mediationCanWeUse.enterPhoneNumber();
+  async EnterCompanyDetails(){
+    await taskListPage.verifyResponsePageContent();
+    await enterCompanyDetails.enterCompanyDetails();
+    await enterCompanyDetails.enterCorrespondenceAddressManually();
+    await contactNumberDetailsPage.enterContactNumber();
   }
 
-  AddYourTimeLineEvents() {
-    addYourTimeLine.addTimeLineOfEvents();
+  async RespondToRequest(claimRef) {
+    await requestMoreTime.requestMoreTimeToRespond(claimRef);
   }
 
-  EnterResponseToClaim(claimRef, responseType) {
-    respondTypePage.enterResponseToClaim(claimRef, responseType);
+  async AddMandatoryPhoneNumber() {
+    await mediationCanWeUse.enterPhoneNumber();
   }
 
-  EnterPaymentOption(claimRef, responseType, paymentOption) {
-    paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+  async AddYourTimeLineEvents() {
+    await addYourTimeLine.addTimeLineOfEvents();
   }
 
-  CheckAndSubmit(claimRef, responseType) {
-    checkYourAnswersPage.checkAndSubmit(claimRef, responseType);
+  async EnterResponseToClaim(claimRef, responseType) {
+    await respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
 
-  EnterDateToPayOn() {
-    dateToPayOn.enterDateToPayOn();
+  async EnterPaymentOption(claimRef, responseType, paymentOption) {
+    await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
-  EnterFinancialDetails(claimRef) {
-    this.ShareYourFinancialDetailsIntro(claimRef);
-    this.EnterBankAccountDetails();
-    this.SelectDisabilityDetails('yes', 'yes');
-    this.SelectResidenceDetails('ownHome');
-    this.SelectPartnerDetails('yes');
-    this.SelectPartnerAge('yes');
-    this.SelectPartnerPension('yes');
-    this.SelectPartnerDisability('no');
-    this.SelectDependantDetails('yes');
-    this.SelectOtherDependantDetails('yes');
-    this.SelectEmploymentDetails('yes');
-    this.EnterEmployerDetails();
-    this.EnterSelfEmploymentDetails();
-    this.EnterSelfEmploymentTaxDetails();
-    this.EnterCourtOrderDetails(claimRef);
-    this.PriorityDebtsDetails('120', '20', '10', '5');
-    this.EnterDebtDetails();
-    this.MonthlyExpensesDetails('1200', '45', '25', '30', '100', '125');
-    this.MonthlyIncomeDetails('4500', '120', '1100');
-    this.EnterExplanation();
+  async CheckAndSubmit(claimRef, responseType) {
+    await checkYourAnswersPage.checkAndSubmit(claimRef, responseType);
   }
 
-  ShareYourFinancialDetailsIntro(claimRef) {
-    shareYourFinancialDetailsIntro.open(claimRef);
-    shareYourFinancialDetailsIntro.clickContinue();
+  async EnterDateToPayOn() {
+    await dateToPayOn.enterDateToPayOn();
   }
 
-  EnterBankAccountDetails() {
-    bankAccountDetails.enterBankAccountDetails();
-    bankAccountDetails.clickContinue();
+  async EnterFinancialDetails(claimRef) {
+    await this.ShareYourFinancialDetailsIntro(claimRef);
+    await this.EnterBankAccountDetails();
+    await this.SelectDisabilityDetails('yes', 'yes');
+    await this.SelectResidenceDetails('ownHome');
+    await this.SelectPartnerDetails('yes');
+    await this.SelectPartnerAge('yes');
+    await this.SelectPartnerPension('yes');
+    await this.SelectPartnerDisability('no');
+    await this.SelectDependantDetails('yes');
+    await this.SelectOtherDependantDetails('yes');
+    await this.SelectEmploymentDetails('yes');
+    await this.EnterEmployerDetails();
+    await this.EnterSelfEmploymentDetails();
+    await this.EnterSelfEmploymentTaxDetails();
+    await this.EnterCourtOrderDetails(claimRef);
+    await this.PriorityDebtsDetails('120', '20', '10', '5');
+    await this.EnterDebtDetails();
+    await this.MonthlyExpensesDetails('1200', '45', '25', '30', '100', '125');
+    await this.MonthlyIncomeDetails('4500', '120', '1100');
+    await this.EnterExplanation();
   }
 
-  SelectDisabilityDetails(disability, severeDisability) {
+  async ShareYourFinancialDetailsIntro(claimRef) {
+    await shareYourFinancialDetailsIntro.open(claimRef);
+    await shareYourFinancialDetailsIntro.clickContinue();
+  }
+
+  async EnterBankAccountDetails() {
+    await bankAccountDetails.enterBankAccountDetails();
+    await bankAccountDetails.clickContinue();
+  }
+
+  async SelectDisabilityDetails(disability, severeDisability) {
     if (disability == 'yes') {
-      disabilityDetails.clickYesButton();
+      await disabilityDetails.clickYesButton();
       if (severeDisability == 'yes') {
-        severeDisabilityDetails.clickYesButton();
+        await severeDisabilityDetails.clickYesButton();
       } else {
-        severeDisabilityDetails.clickNoButton();
+        await severeDisabilityDetails.clickNoButton();
       }
     } else {
-      disabilityDetails.clickNoButton();
+      await disabilityDetails.clickNoButton();
     }
   }
 
-  SelectResidenceDetails(residenceType) {
-    selectResidenceDetails.selectResidenceType(residenceType);
+  async SelectResidenceDetails(residenceType) {
+    await selectResidenceDetails.selectResidenceType(residenceType);
   }
 
-  SelectPartnerDetails(partner) {
+  async SelectPartnerDetails(partner) {
     if (partner == 'yes') {
-      selectPartnerDetails.clickYesButton();
+      await selectPartnerDetails.clickYesButton();
     } else {
-      selectPartnerDetails.clickNoButton();
+      await selectPartnerDetails.clickNoButton();
     }
   }
 
-  SelectPartnerAge(partnerAge) {
+  async SelectPartnerAge(partnerAge) {
     if (partnerAge == 'yes') {
-      selectPartnerAge.clickYesButton();
+      await selectPartnerAge.clickYesButton();
     } else {
-      selectPartnerAge.clickNoButton();
+      await selectPartnerAge.clickNoButton();
     }
   }
 
-  SelectPartnerPension(partnerPension) {
+  async SelectPartnerPension(partnerPension) {
     if (partnerPension == 'yes') {
-      selectPartnerPension.clickYesButton();
+      await selectPartnerPension.clickYesButton();
     } else {
-      selectPartnerPension.clickNoButton();
+      await selectPartnerPension.clickNoButton();
     }
   }
 
-  SelectPartnerDisability(partnerDisability) {
+  async SelectPartnerDisability(partnerDisability) {
     if (partnerDisability == 'yes') {
-      selectPartnerDisability.clickYesButton();
+      await selectPartnerDisability.clickYesButton();
     } else {
-      selectPartnerDisability.clickNoButton();
+      await selectPartnerDisability.clickNoButton();
     }
   }
 
-  SelectDependantDetails(dependant) {
+  async SelectDependantDetails(dependant) {
     if (dependant == 'yes') {
-      selectDependantDetails.clickYesButton();
+      await selectDependantDetails.clickYesButton();
     } else {
-      selectDependantDetails.clickNoButton();
+      await selectDependantDetails.clickNoButton();
     }
   }
 
-  SelectOtherDependantDetails(dependant) {
+  async SelectOtherDependantDetails(dependant) {
     if (dependant == 'yes') {
-      selectOtherDependantsDetails.clickYesButton();
+      await selectOtherDependantsDetails.clickYesButton();
     } else {
-      selectOtherDependantsDetails.clickNoButton();
+      await selectOtherDependantsDetails.clickNoButton();
     }
   }
 
-  SelectCarerDetails(carer) {
+  async SelectCarerDetails(carer) {
     if (carer == 'yes') {
-      selectCarerDetails.clickYesButton();
+      await selectCarerDetails.clickYesButton();
     } else {
-      selectCarerDetails.clickNoButton();
+      await selectCarerDetails.clickNoButton();
     }
   }
 
-  SelectEmploymentDetails(employment) {
+  async SelectEmploymentDetails(employment) {
     if (employment == 'yes') {
-      selectEmploymentDetails.clickYesButton();
+      await selectEmploymentDetails.clickYesButton();
     } else {
-      selectEmploymentDetails.clickNoButton();
+      await selectEmploymentDetails.clickNoButton();
     }
   }
 
-  EnterHowMuchYouHavePaid(claimRef, amount, responseType) {
-    howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
+  async EnterHowMuchYouHavePaid(claimRef, amount, responseType) {
+    await howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
   }
 
-  EnterHowMuchMoneyYouOwe(claimRef, amount) {
-    howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  async EnterHowMuchMoneyYouOwe(claimRef, amount) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
   }
 
-  EnterEmployerDetails() {
-    enterEmployerDetails.enterEmployerDetails();
+  async EnterEmployerDetails() {
+    await enterEmployerDetails.enterEmployerDetails();
   }
 
-  EnterSelfEmploymentDetails() {
-    enterSelfEmploymentDetails.enterSelfEmployerDetails();
+  async EnterSelfEmploymentDetails() {
+    await enterSelfEmploymentDetails.enterSelfEmployerDetails();
   }
 
-  EnterSelfEmploymentTaxDetails() {
-    enterSelfEmploymentTaxDetails.clickYesButton();
+  async EnterSelfEmploymentTaxDetails() {
+    await enterSelfEmploymentTaxDetails.clickYesButton();
   }
 
-  EnterCourtOrderDetails(claimRef) {
-    courtOrders.clickYesButton(claimRef);
+  async EnterCourtOrderDetails(claimRef) {
+    await courtOrders.clickYesButton(claimRef);
   }
 
-  PriorityDebtsDetails(mortage, councilTax, gas, electricity) {
-    priorityDebtsDetails.selectMortgage(mortage);
-    priorityDebtsDetails.selectCouncilTax(councilTax);
-    priorityDebtsDetails.selectGas(gas);
-    priorityDebtsDetails.selectElectricity(electricity);
-    priorityDebtsDetails.clickContinue();
+  async PriorityDebtsDetails(mortage, councilTax, gas, electricity) {
+    await priorityDebtsDetails.selectMortgage(mortage);
+    await priorityDebtsDetails.selectCouncilTax(councilTax);
+    await priorityDebtsDetails.selectGas(gas);
+    await priorityDebtsDetails.selectElectricity(electricity);
+    await priorityDebtsDetails.clickContinue();
   }
 
-  EnterDebtDetails() {
-    debts.clickYesButton();
+  async EnterDebtDetails() {
+    await debts.clickYesButton();
   }
 
-  MonthlyExpensesDetails(mortgage, councilTax, gas, electricity, foodAndHouseKeeping, otherExpenses) {
-    monthlyExpenses.selectMortgage(mortgage);
-    monthlyExpenses.selectCouncilTax(councilTax);
-    monthlyExpenses.selectGas(gas);
-    monthlyExpenses.selectElectricity(electricity);
-    monthlyExpenses.selectFoodAndHouseKeeping(foodAndHouseKeeping);
-    monthlyExpenses.selectOtherExpenses(otherExpenses);
-    monthlyExpenses.clickContinue();
+  async MonthlyExpensesDetails(mortgage, councilTax, gas, electricity, foodAndHouseKeeping, otherExpenses) {
+    await monthlyExpenses.selectMortgage(mortgage);
+    await monthlyExpenses.selectCouncilTax(councilTax);
+    await monthlyExpenses.selectGas(gas);
+    await monthlyExpenses.selectElectricity(electricity);
+    await monthlyExpenses.selectFoodAndHouseKeeping(foodAndHouseKeeping);
+    await monthlyExpenses.selectOtherExpenses(otherExpenses);
+    await monthlyExpenses.clickContinue();
   }
 
-  MonthlyIncomeDetails(incomeFromJob, childBenefit, otherIncome) {
-    monthlyIncome.selectIncomeFromJob(incomeFromJob);
-    monthlyIncome.selectChildBenefit(childBenefit);
-    monthlyIncome.selectOtherIncome(otherIncome);
-    monthlyIncome.clickContinue();
+  async MonthlyIncomeDetails(incomeFromJob, childBenefit, otherIncome) {
+    await monthlyIncome.selectIncomeFromJob(incomeFromJob);
+    await monthlyIncome.selectChildBenefit(childBenefit);
+    await monthlyIncome.selectOtherIncome(otherIncome);
+    await monthlyIncome.clickContinue();
   }
 
-  EnterExplanation() {
-    explanation.enterExplanation();
+  async EnterExplanation() {
+    await explanation.enterExplanation();
   }
 
-  EnterRepaymentPlan(claimRef) {
-    repaymentPlan.enterRepaymentPlan(claimRef);
+  async EnterRepaymentPlan(claimRef) {
+    await repaymentPlan.enterRepaymentPlan(claimRef);
   }
 
-  SelectPartAdmitAlreadyPaid(option) {
-    partAdmitAlreadyPaid.selectAlreadyPaid(option);
+  async SelectPartAdmitAlreadyPaid(option) {
+    await partAdmitAlreadyPaid.selectAlreadyPaid(option);
   }
 
-  SelectOptionInRejectAllClaim(reason) {
-    rejectAllOfClaim.selectRejectAllReason(reason);
+  async SelectOptionInRejectAllClaim(reason) {
+    await rejectAllOfClaim.selectRejectAllReason(reason);
   }
 
-  EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
-    whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
+    await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
   }
 
-  EnterWhyYouDisagree(claimRef){
-    whyDoYouDisagree.enterReason(claimRef);
+  async EnterWhyYouDisagree(claimRef){
+    await whyDoYouDisagree.enterReason(claimRef);
   }
 
-  EnterYourEvidenceDetails() {
-    listYourEvidence.selectEvidenceFromDropDown();
+  async EnterYourEvidenceDetails() {
+    await listYourEvidence.selectEvidenceFromDropDown();
   }
 
-  EnterFreeTelephoneMediationDetails(claimRef) {
-    freeTelephoneMediation.selectMediation(claimRef);
-    mediationCanWeUse.selectOptionForMediation(claimRef);
+  async EnterFreeTelephoneMediationDetails(claimRef) {
+    await freeTelephoneMediation.selectMediation(claimRef);
+    await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
-  EnterDQForSmallClaims(claimRef) {
-    this.SelectHearingRequirements(claimRef);
-    this.SelectExpertNeededOrNot();
-    this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
-    this.SelectGiveEvidenceYourself();
-    this.EnterDefedantWitnesses();
-    this.SelectOptionForCantAttendHearing();
-    this.EnterUnavailabilityDates();
-    this.SelectOptionForPhoneOrVideoHearing();
-    this.SelectOptionForVulnerability();
-    this.SelectOptionForSupportRequired();
-    this.SelectPreferredCourtLocation();
-    this.SelectLanguageOption();
+  EnterNoMediation(claimRef){
+    freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  SelectHearingRequirements(claimRef) {
-    hearingRequirements.selectHearingRequirements(claimRef);
+  async EnterDQForSmallClaims(claimRef) {
+    await this.SelectHearingRequirements(claimRef);
+    await this.SelectExpertNeededOrNot();
+    await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
+    await this.SelectGiveEvidenceYourself();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
   }
 
-  SelectExpertNeededOrNot() {
-    dqExpert.chooseExpert();
+  async EnterDQForFastTrack(claimRef){
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectConsiderClaimantDocs();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
   }
 
-  EnterExpertReportDetails(expertName, day, month, year) {
-    expertReportDetails.enterExpertReportDetails(expertName, day, month, year);
+  async SelectHearingRequirements(claimRef) {
+    await hearingRequirements.selectHearingRequirements(claimRef);
   }
 
-  SelectGiveEvidenceYourself() {
-    giveEvidenceYourself.SelectGiveEvidenceYourself();
+  async SelectExpertNeededOrNot() {
+    await dqExpert.chooseExpert();
   }
 
-  EnterDefedantWitnesses() {
-    defendantWitnesses.enterDefendantWitnesses();
+  async EnterExpertReportDetails(expertName, day, month, year) {
+    await expertReportDetails.enterExpertReportDetails(expertName, day, month, year);
   }
 
-  SelectOptionForCantAttendHearing() {
-    cantAttendHearing.selectYesForCantAttendHearing();
+  async SelectGiveEvidenceYourself() {
+    await giveEvidenceYourself.SelectGiveEvidenceYourself();
   }
 
-  EnterUnavailabilityDates() {
-    availabilityDates.enterUnavailableDates();
+  async EnterDefedantWitnesses() {
+    await defendantWitnesses.enterDefendantWitnesses();
   }
 
-  SelectOptionForPhoneOrVideoHearing() {
-    phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing();
+  async SelectOptionForCantAttendHearing() {
+    await cantAttendHearing.selectYesForCantAttendHearing();
   }
 
-  SelectOptionForVulnerability() {
-    vulnerabilityDetails.selectOptionForVulnerability();
+  async EnterUnavailabilityDates() {
+    await availabilityDates.enterUnavailableDates();
   }
 
-  SelectOptionForSupportRequired() {
-    supportRequired.selectOptionForSupportRequired();
+  async SelectOptionForPhoneOrVideoHearing() {
+    await phoneOrVideoHearing.selectOptionForPhoneOrVideoHearing();
   }
 
-  SelectPreferredCourtLocation() {
-    courtLocation.selectPreferredCourtLocation();
+  async SelectOptionForVulnerability() {
+    await vulnerabilityDetails.selectOptionForVulnerability();
   }
 
-  SelectLanguageOption() {
-    welshLanguage.selectLanguageOption();
+  async SelectOptionForSupportRequired() {
+    await supportRequired.selectOptionForSupportRequired();
+  }
+
+  async SelectPreferredCourtLocation() {
+    await courtLocation.selectPreferredCourtLocation();
+  }
+
+  async SelectLanguageOption() {
+    await welshLanguage.selectLanguageOption();
+  }
+
+  async SelectOptionForTriedToSettle(claimRef){
+    await triedToSettle.selectTriedToSettle(claimRef);
+  }
+
+  async SelectOptionToRequestExtraFourWeeksToSettle(){
+    await requestExtraFourWeeks.SelectExtraFourWeeksToSettle();
+  }
+
+  async SelectConsiderClaimantDocs(){
+    await considerClaimantDocs.SelectConsiderClaimantDocs();
+  }
+
+  async SelectExpertEvidence(){
+    await expertEvidence.SelectOptionForExpertEvidence();
+  }
+
+  async SelectSentExpertReports(){
+    await sentExpertReports.SentExpertReports();
+  }
+
+  async SelectOptionForSharedExpert(){
+    await sharedExpert.SelectOptionForSharedExpert();
+  }
+
+  async EnterExpertDetails(){
+    await expertDetails.EnterExpertDetails();
   }
 }
 

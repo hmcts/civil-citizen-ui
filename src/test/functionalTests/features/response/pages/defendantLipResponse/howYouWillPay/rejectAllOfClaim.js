@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   alreadyPaid: 'input[id="option"]',
@@ -10,25 +11,26 @@ const buttons = {
 };
 
 class RejectAllOfClaim {
-  selectRejectAllReason(reason) {
+  async selectRejectAllReason(reason) {
+    await I.waitForText('Why do you believe you don’t owe', config.WaitForText);
     switch (reason) {
       case 'alreadyPaid':{
-        I.click(fields.alreadyPaid);
+        await I.click(fields.alreadyPaid);
         break;
       }
       case 'disputeAll':{
-        I.click(fields.disputeAll);
+        await I.click(fields.disputeAll);
         break;
       }
       case 'disputeAllCounterClaim':{
-        I.click(fields.disputeAllCounterClaim);
+        await I.click(fields.disputeAllCounterClaim);
         break;
       }
       default:{
-        I.click(fields.alreadyPaid);
+        await I.click(fields.alreadyPaid);
       }
     }
-    I.click(buttons.continue);
+    await I.click(buttons.continue);
   }
 }
 

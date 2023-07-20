@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="model[option]"]',
@@ -12,14 +12,14 @@ const fields ={
 
 class SupportRequired {
 
-  selectOptionForSupportRequired() {
-    I.see('Do you, your experts or witnesses need support to attend a hearing', 'h1');
-    I.click(fields.yesButton);
-    I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
-    I.click(fields.hearingLoop);
-    I.click(fields.signLanguage);
-    I.fillField(fields.signLanguageText, 'Spanish');
-    I.click('Save and continue');
+  async selectOptionForSupportRequired() {
+    await I.waitForText('Do you, your experts or witnesses need support to attend a hearing', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.selectOption(fields.selectDropDown,'WitnessFName WitnessLName');
+    await I.click(fields.hearingLoop);
+    await I.click(fields.signLanguage);
+    await I.fillField(fields.signLanguageText, 'Spanish');
+    await I.click('Save and continue');
   }
 }
 

@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -12,17 +13,18 @@ const buttons = {
 
 class SelfEmploymentTaxDetails {
 
-  clickYesButton() {
-    I.see('Are you behind on tax payments?', 'h1');
-    I.click(fields.yesButton);
-    I.fillField(fields.amountYouOwe, '2000');
-    I.fillField(fields.reason, 'Last year pending');
-    I.click(buttons.continue);
+  async clickYesButton() {
+    await I.waitForText('Are you behind on tax payments?', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.fillField(fields.amountYouOwe, '2000');
+    await I.fillField(fields.reason, 'Last year pending');
+    await I.click(buttons.continue);
   }
-  clickNoButton() {
-    I.see('Are you behind on tax payments?', 'h1');
-    I.click(fields.noButton);
-    I.click(buttons.continue);
+
+  async clickNoButton() {
+    await I.waitForText('Are you behind on tax payments?', config.WaitForText);
+    await I.click(fields.noButton);
+    await I.click(buttons.continue);
   }
 }
 

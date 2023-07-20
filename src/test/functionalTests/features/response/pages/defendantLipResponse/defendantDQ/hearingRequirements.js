@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -8,11 +8,11 @@ const fields ={
 
 class HearingRequirements {
 
-  selectHearingRequirements(claimRef) {
-    I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
-    I.see('Determination without Hearing Questions', 'h1');
-    I.click(fields.yesButton);
-    I.click('Save and continue');
+  async selectHearingRequirements(claimRef) {
+    await I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
+    await I.waitForText('Determination without Hearing Questions', config.WaitForText);
+    await I.click(fields.yesButton);
+    await I.click('Save and continue');
   }
 }
 

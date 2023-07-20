@@ -1,5 +1,5 @@
-
 const I= actor();
+const config = require('../../../../../../config');
 
 const fields = {
   day: 'input[id="day"]',
@@ -12,12 +12,12 @@ const buttons = {
 };
 
 class DateOfBirthDetailsPage {
-  enterDateOfBirth ()  {
-    I.see('Enter your date of birth', 'h1');
-    I.fillField(fields.day, '1');
-    I.fillField(fields.month, '11');
-    I.fillField(fields.year, '1987');
-    I.click(buttons.saveAndContinue);
+  async enterDateOfBirth ()  {
+    await I.waitForText('Enter your date of birth', config.WaitForText);
+    await I.fillField(fields.day, '1');
+    await I.fillField(fields.month, '11');
+    await I.fillField(fields.year, '1987');
+    await I.click(buttons.saveAndContinue);
   }
 }
 
