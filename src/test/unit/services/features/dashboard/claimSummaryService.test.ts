@@ -10,7 +10,7 @@ import {t} from 'i18next';
 import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
