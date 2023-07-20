@@ -25,16 +25,16 @@ describe('Their PDF timeline controller', () => {
         'content-type': 'application/pdf',
         'original-file-name': 'example.pdf',
       };
-      const responseBody = Buffer.from('111');;
+      const responseBody = Buffer.from('111');
       nock('http://localhost:4000')
         .get('/case/document/downloadDocument/111')
         .reply(200, responseBody, responseHeaders);
-      await request(app).get(`/case/123/documents/timeline/111`)
+      await request(app).get('/case/123/documents/timeline/111')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(mockDisplayPDFDocument).toBeCalled();
-      })
-    })
+        });
+    });
 
     it('should return http 500 when has error', async () => {
       nock('http://localhost:4000')
