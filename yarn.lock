@@ -7674,11 +7674,11 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^22.4.6":
-  version: 22.4.15
-  resolution: "i18next@npm:22.4.15"
+  version: 22.5.1
+  resolution: "i18next@npm:22.5.1"
   dependencies:
     "@babel/runtime": ^7.20.6
-  checksum: fced898227983e439c59e7aa6e7b87e53ad1b8a1c85f0613a968881418266e5336e9443831125590559796075d516fe3dbf8118679c894094a0a404be78b02a2
+  checksum: 175f8ab7fac2abcee147b00cc2d8e7d4fa9b05cdc227f02cac841fc2fd9545ed4a6d88774f594f8ad12dc944e4d34cc8e88aa00c8b9947baef9e859d93abd305
   languageName: node
   linkType: hard
 
@@ -7900,18 +7900,18 @@ __metadata:
   linkType: hard
 
 "ioredis-mock@npm:^8.2.6":
-  version: 8.7.0
-  resolution: "ioredis-mock@npm:8.7.0"
+  version: 8.8.1
+  resolution: "ioredis-mock@npm:8.8.1"
   dependencies:
     "@ioredis/as-callback": ^3.0.0
     "@ioredis/commands": ^1.2.0
     fengari: ^0.1.4
     fengari-interop: ^0.1.3
-    semver: ^7.3.8
+    semver: ^7.5.4
   peerDependencies:
     "@types/ioredis-mock": ^8
     ioredis: ^5
-  checksum: 46a4ee40b899e950569cdfa3f009b797fc5c5acbdc6b1784f8cdeb54ba781ed288b61c4c86c88760a02ea6a481e655660df0507096f93c66c2e8285f029ff8fd
+  checksum: 2737011fae6fe0ba03269d3509754dfcb0a4a0f999162c37d22a8762c04d2d0e71003e8400e05144cc76a43c98f9a78c5e5b324eee6e5f20e2565f6398f573ae
   languageName: node
   linkType: hard
 
@@ -8609,8 +8609,8 @@ __metadata:
   linkType: hard
 
 "jest-launchdarkly-mock@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "jest-launchdarkly-mock@npm:2.0.3"
+  version: 2.1.0
+  resolution: "jest-launchdarkly-mock@npm:2.1.0"
   dependencies:
     lodash.camelcase: ^4.3.0
     lodash.kebabcase: ^4.1.1
@@ -8621,7 +8621,7 @@ __metadata:
   dependenciesMeta:
     universal-hot-reload@3.3.9:
       unplugged: true
-  checksum: f816b842fc092287cfe5bc9a7705a4ce22f52ec1f6348d8d60099fcb86c42b83732e44a4011d65679ba6b453044228972021580d245e099603beaa74511ac020
+  checksum: a5258858194da702f6affbf7ef0e8ebc95e109b9bde17fb4ac438a4dd83375751a114adf883aae110b1c1146e3e8e44e7949f4a4310352a5165b4d604e7d5475
   languageName: node
   linkType: hard
 
@@ -11089,23 +11089,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.33.0":
-  version: 1.33.0
-  resolution: "playwright-core@npm:1.33.0"
+"playwright-core@npm:1.36.1":
+  version: 1.36.1
+  resolution: "playwright-core@npm:1.36.1"
   bin:
-    playwright: cli.js
-  checksum: 5fb7bda06a8b73b56b85b5a0b8f711211dde57a375d9379289e22239b2de879c6d93c8fdc9ba44b932bf100914ab1ca1a55697ad88440fdd0a39101fc020b77f
+    playwright-core: cli.js
+  checksum: bbde807294053b50f0dbbc81f0dacc43fe525830ce1526e6ca74012582dd1645eae2391719cfb020051abea90704057cfabcbfe45ca530b37becc491e9459790
   languageName: node
   linkType: hard
 
 "playwright@npm:^1.30.0":
-  version: 1.33.0
-  resolution: "playwright@npm:1.33.0"
+  version: 1.36.1
+  resolution: "playwright@npm:1.36.1"
   dependencies:
-    playwright-core: 1.33.0
+    playwright-core: 1.36.1
   bin:
     playwright: cli.js
-  checksum: fb3934c56ed749cf412ea35b82052f013872d7f7b7747ab7042580af473dfc1b038956a31c132ee8c0098f74150c75e2073e9c737fd4c1ed54700a23fffc079f
+  checksum: 21940ccd174eb03a52b13e26dc7e0e90db05298caeab1dd71d21e996b65d959b82aa133f3c9fafb99b5e0bd37265338802d3fbcee1b567e0f75212ddbde5ebae
   languageName: node
   linkType: hard
 

@@ -1,4 +1,5 @@
-import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem, DashboardStatusTranslationParam} from 'common/models/dashboard/dashboardItem';
+import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -66,5 +67,18 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
     });
+    it('should return the translated string without parameters when params is provided but empty', () => {
+      // Given
+      const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT'; 
+      const params: DashboardStatusTranslationParam[] = []; 
+      const lang = 'cy'; 
+      
+      // When
+      const result = translate(translationKey, params, lang);
+      
+      // Then
+      expect(result).toBe(expectedTranslation);
+    }); 
   });
 });
