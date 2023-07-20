@@ -5,7 +5,7 @@ export function displayPDF(res: Response, fileResponse: FileResponse) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
     'Content-Disposition': `inline; filename=${fileResponse.fileName}`,
-    'Content-Length': fileResponse?.data?.length,
+    'Content-Length': fileResponse.data.length,
   });
   res.end(fileResponse.data);
 }
