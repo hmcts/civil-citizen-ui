@@ -8,7 +8,7 @@ import {
   buildEvidenceUploadSection,
   buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
-import {getCaseProgressionHearingMock,} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {CaseState} from 'form/models/claimDetails';
 import {Claim} from 'models/claim';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
