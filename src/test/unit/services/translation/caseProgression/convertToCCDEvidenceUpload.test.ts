@@ -32,7 +32,7 @@ const witnessDocument = {
     document_filename: 'witness_document.pdf',
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
   } as Document,
-  createdDateTime: new Date(0),
+  createdDatetime: new Date(0),
 };
 
 const expertDocument = {
@@ -48,7 +48,7 @@ const expertDocument = {
     document_filename: 'expert_document.pdf',
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
   } as Document,
-  createdDateTime: new Date(0),
+  createdDatetime: new Date(0),
 };
 
 const typeDocument = {
@@ -59,7 +59,7 @@ const typeDocument = {
     document_filename: 'document_type.pdf',
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
   } as Document,
-  createdDateTime: new Date(0),
+  createdDatetime: new Date(0),
 };
 
 const documentForWitness = {
@@ -82,7 +82,7 @@ const documentForType = {
 
 const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
-const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise', 'expertises', 'other party', 'document question', 'document answer', new Date(0),documentForExpert, new Date(0));
+const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
 const uuid = '1221';
 

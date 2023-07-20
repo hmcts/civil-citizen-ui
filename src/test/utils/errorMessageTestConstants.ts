@@ -114,8 +114,8 @@ export const enum TestMessages {
   VALID_ENTER_A_DATE_BEFORE = 'Please enter a date of birth before',
   VALID_ENTER_TYPE_OF_DOCUMENT = 'You must enter type of document',
   VALID_ENTER_WITNESS_NAME = 'You must enter name of witness',
-  VALID_ENTER_EXPERT_NAME = 'You must enter name of expert',
   VALID_ENTER_EXPERT_NAMES = 'You must enter the name of at least one expert',
+  VALID_ENTER_EXPERT_NAME = 'You must enter name of expert',
   VALID_ENTER_EXPERTISE = 'You must enter field of expertise',
   VALID_ENTER_DOCUMENT_QUESTIONS = 'You must enter name of document you have questions about',
   VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY = 'You must enter name of document with other party&#39;s questions',
@@ -151,5 +151,12 @@ export const enum TestMessages {
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
-  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document'
+  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document',
+  VALID_ENTER_DATE_DOC_ISSUED = 'Enter the date the document was issued or message was sent',
+  VALID_REAL_DATE = 'Date of document must be a real date',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_DAY = 'Date of document must include a day',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH = 'Date of document must include a month',
+  VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
+  VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past'
+
 }

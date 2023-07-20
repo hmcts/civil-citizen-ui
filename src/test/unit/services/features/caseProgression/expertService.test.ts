@@ -229,7 +229,7 @@ describe('Expert service', () => {
 
 const getMockExpertSectionArray = () => {
   const sectionArray: ExpertSection[] = [];
-  sectionArray.push(new ExpertSection());
-  sectionArray.push(new ExpertSection());
+  sectionArray.push(new ExpertSection('12', '12', '2022'));
+  sectionArray.push(new ExpertSection('12', '12', '2022'));
   return sectionArray;
 };

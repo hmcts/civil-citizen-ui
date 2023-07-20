@@ -59,8 +59,8 @@ describe('Disclosure service', () => {
 
   it('should return multiple disclosure documents only', () => {
     const documentsForDisclosure: TypeOfDocumentSection[] = [];
-    documentsForDisclosure.push(new TypeOfDocumentSection());
-    documentsForDisclosure.push(new TypeOfDocumentSection());
+    documentsForDisclosure.push(new TypeOfDocumentSection('12', '12', '2022'));
+    documentsForDisclosure.push(new TypeOfDocumentSection('12', '12', '2022'));
     const form = new UploadDocumentsUserForm(documentsForDisclosure);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
