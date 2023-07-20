@@ -9,16 +9,20 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set yesHtml %}
-  <div class="govuk-form-group">
+  <div class="govuk-form-group {%- if form.errorFor('textArea') %} govuk-form-group--error {% endif %}">
     <h1 class="govuk-label-wrapper">
-      <label class="govuk-heading-m" for="whatSupport">
+      <label class="govuk-heading-m" for="textArea">
         {{ t('PAGES.HAS_ANYTHING_CHANGED.WHAT_SUPPORT') }}
       </label>
     </h1>
-    <div id="whatSupport-hint" class="govuk-hint">
+    <div id="textArea-hint" class="govuk-hint">
       {{ t('PAGES.HAS_ANYTHING_CHANGED.FOR_EXAMPLE') }}
     </div>
-    <textarea class="govuk-textarea" id="whatSupport" name="whatSupport" rows="5" aria-describedby="whatSupport-hint more-detail-error"></textarea>
+    <p id="textArea-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span>
+      {{ t(form.errorFor('textArea')) }}
+    </p>
+    <textarea class="govuk-textarea {%- if form.errorFor('textArea') %} govuk-textarea--error {% endif %}" id="textArea" name="textArea" rows="5" aria-describedby="textArea-hint textArea-error"></textarea>
   </div>
 {% endset -%}
 

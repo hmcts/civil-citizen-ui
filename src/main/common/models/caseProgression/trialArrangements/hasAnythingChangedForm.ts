@@ -9,8 +9,8 @@ export class HasAnythingChangedForm {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_SUPPORT'})
     textArea?: string;
 
-  constructor(option?: YesNo, whatSupport?: string) {
+  constructor(option?: YesNo, textArea?: string) {
     this.option = option;
-    this.textArea = whatSupport;
+    this.textArea = textArea;
   }
 }
