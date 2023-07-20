@@ -20,7 +20,7 @@ const requestIsForPinAndPost = (req: Request): boolean => {
 };
 
 const requestIsForDownloadPdf = (req: Request): boolean => {
-  return req.originalUrl.includes('/documents/')
+  return req.originalUrl.includes('/documents/');
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
