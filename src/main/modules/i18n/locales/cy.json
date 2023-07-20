@@ -1524,9 +1524,9 @@
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
-          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under '",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
           "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
-          "VIEW_HEARING_NOTICE_AFTER": "'.",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
         }
       },

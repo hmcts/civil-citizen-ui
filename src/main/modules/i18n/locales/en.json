@@ -1524,9 +1524,9 @@
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
-          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under '",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
           "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
-          "VIEW_HEARING_NOTICE_AFTER": "'.",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         }
       },
