@@ -11,7 +11,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 theirPdfTimelineDownloadController.get(CASE_TIMELINE_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const pdfDocument = await civilServiceClientForDocRetrieve.retrieveDocument(req.params.documentId);
-    displayPDF(res, pdfDocument, pdfDocument.fileName);
+    displayPDF(res, pdfDocument);
   } catch (error) {
     next(error);
   }
