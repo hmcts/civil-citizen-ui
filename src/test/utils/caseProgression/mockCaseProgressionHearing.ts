@@ -5,14 +5,9 @@ import {
 } from 'models/caseProgression/caseProgressionHearing';
 import {FIXED_DATE, FIXED_TIME_HOUR_MINUTE} from '../dateUtils';
 import {DocumentType} from 'models/document/documentType';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
 const hearingLocation = new HearingLocation({code: '1', label: 'test - test'});
 export const getCaseProgressionHearingMock = (): CaseProgressionHearing => {
   return new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE);
-};
-
-export const getCaseProgressionHearingWithTrialReadinessMock = (trialReadyApplicant: YesNoUpperCamelCase, trialReadyRespondent1: YesNoUpperCamelCase): CaseProgressionHearing => {
-  return new CaseProgressionHearing(getCaseProgressionHearingDocuments(),hearingLocation, FIXED_DATE, FIXED_TIME_HOUR_MINUTE, trialReadyApplicant, trialReadyRespondent1);
 };
 
 function getCaseProgressionHearingDocuments(): CaseProgressionHearingDocuments[] {
