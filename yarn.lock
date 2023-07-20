@@ -8755,8 +8755,8 @@ __metadata:
   linkType: hard
 
 "jest-launchdarkly-mock@npm:^2.0.3":
-  version: 2.1.0
-  resolution: "jest-launchdarkly-mock@npm:2.1.0"
+  version: 2.0.3
+  resolution: "jest-launchdarkly-mock@npm:2.0.3"
   dependencies:
     lodash.camelcase: ^4.3.0
     lodash.kebabcase: ^4.1.1
@@ -8767,7 +8767,7 @@ __metadata:
   dependenciesMeta:
     universal-hot-reload@3.3.9:
       unplugged: true
-  checksum: a5258858194da702f6affbf7ef0e8ebc95e109b9bde17fb4ac438a4dd83375751a114adf883aae110b1c1146e3e8e44e7949f4a4310352a5165b4d604e7d5475
+  checksum: f816b842fc092287cfe5bc9a7705a4ce22f52ec1f6348d8d60099fcb86c42b83732e44a4011d65679ba6b453044228972021580d245e099603beaa74511ac020
   languageName: node
   linkType: hard
 
