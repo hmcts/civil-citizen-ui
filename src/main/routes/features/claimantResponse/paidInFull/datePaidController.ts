@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {DATE_PAID_URL,DATE_PAID_CONFIRMATION_URL} from '../../../urls';
+import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
@@ -34,8 +34,8 @@ datePaidViewController.post(DATE_PAID_URL, async (req: Request,res: Response,nex
     if (form.hasErrors()) {
       renderView(form,res);
     } else {
-      await saveClaimantResponse(claimId,form.model,claimantResponsePropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id,DATE_PAID_CONFIRMATION_URL));
+      await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName);
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, DATE_PAID_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

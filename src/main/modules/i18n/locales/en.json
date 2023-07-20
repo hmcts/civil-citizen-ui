@@ -2252,6 +2252,7 @@
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SETTLED_CLAIM": "This claim is now settled",
       "YOU_SHOULD": "You should:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
       "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
