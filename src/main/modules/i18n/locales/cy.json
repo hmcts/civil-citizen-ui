@@ -2491,6 +2491,14 @@
       "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
+    },
+    "FOOTER":{
+      "COOKIES_URL": "Cwcis",
+      "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
+      "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
+      "CONTACT_US_URL": "Cysylltu â ni",
+      "ACCESSIBILTY_STATEMENT_URL": "Datganiad hygyrchedd",
+      "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
     }
   },
   "ERRORS": {
