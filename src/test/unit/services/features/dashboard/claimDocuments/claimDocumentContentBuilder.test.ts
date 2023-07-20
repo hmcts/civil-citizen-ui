@@ -22,7 +22,7 @@ describe('Claim document content builder', ()=>{
     const claimDocumentSection = buildDownloadSealedResponseSection(mockClaim, '2', 'eng');
     //Then
     expect(claimDocumentSection).not.toBeUndefined();
-    expect(claimDocumentSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '2').replace(':documentType', DocumentUri.DEFENDANT_DEFENCE));
+    expect(claimDocumentSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '2').replace(':documentId', '7f092465-658e-4ec1-af30-b5551b5260b4').replace(':documentType', DocumentUri.DEFENDANT_DEFENCE));
     expect(claimDocumentSection.data?.text).toContain('33 KB');
     expect(claimDocumentSection.data?.subtitle).toContain('22 June 2022');
   });
