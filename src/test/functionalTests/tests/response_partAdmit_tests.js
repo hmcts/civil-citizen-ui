@@ -54,7 +54,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression'
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing);
+    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
 });
 
@@ -102,7 +102,6 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes);
   }
 });
 
@@ -127,6 +126,5 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes);
   }
 });
