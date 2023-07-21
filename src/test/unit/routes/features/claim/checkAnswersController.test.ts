@@ -135,6 +135,11 @@ describe('Claim - Check answers', () => {
     });
   });
   describe('on Post', () => {
+
+    beforeAll(() => {
+      mockGetSummarySections.mockReset();
+    });
+
     it('should return errors when form is incomplete', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
@@ -158,7 +163,7 @@ describe('Claim - Check answers', () => {
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
-    it('should return payment button when Fee is no', async () => {
+    it('should return submit button when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
