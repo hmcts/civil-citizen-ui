@@ -61,8 +61,8 @@ async function handleChange(event) {
     new Promise((_, reject) => setTimeout(() => reject(new Error('File upload timed out')), fetchTimeout)),
   ]);
 
-  const response = await racePromise; //TEST this out see if it works then upload and see preview
-  const parsed = await response.json();
+  const response = await racePromise;
+  const parsed = response.json();
   if (response.status === 400) {
     removeLoading(event);
     target.value = '';
