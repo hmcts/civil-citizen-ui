@@ -25,4 +25,4 @@ Scenario('Response with RejectAll and DisputeAll For the Case Progression and He
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef);
   }
-}).tag('@disabled');
+}).tag('@regression');
