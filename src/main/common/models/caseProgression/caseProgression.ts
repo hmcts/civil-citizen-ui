@@ -6,5 +6,6 @@ export class CaseProgression{
   defendantUploadDocuments?: UploadDocuments;
   claimantLastUploadDate?: Date;
   defendantLastUploadDate?: Date;
-  trialArrangements?: TrialArrangements;
+  claimantTrialArrangements?: TrialArrangements;
+  defendantTrialArrangements?: TrialArrangements;
 }
