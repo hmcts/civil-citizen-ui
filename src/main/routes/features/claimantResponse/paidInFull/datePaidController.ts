@@ -1,10 +1,19 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from '../../../urls';
+import {DATE_PAID_CONFIRMATION_URL, DATE_PAID_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
+import {
+  getClaimantResponse,
+  saveClaimantResponse,
+} from '../../../../services/features/claimantResponse/claimantResponseService';
 import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
+import {AppRequest} from 'models/AppRequest';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const claimantResponsePropertyName = 'datePaid';
 const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';
@@ -35,6 +44,7 @@ datePaidViewController.post(DATE_PAID_URL, async (req: Request,res: Response,nex
       renderView(form,res);
     } else {
       await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName);
+      await civilServiceClient.settleClaim(claimId, <AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DATE_PAID_CONFIRMATION_URL));
     }
   } catch (error) {
