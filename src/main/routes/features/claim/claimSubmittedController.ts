@@ -22,6 +22,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
         defendantFullName,
         defendantResponseLimit,
         helpWithFee,
+        claimId,
       });
     }
   } catch (error) {
