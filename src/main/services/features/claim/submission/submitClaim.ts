@@ -15,7 +15,6 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getCaseDataFromStore(req.session?.user?.id);
     const ccdClaim = translateDraftClaimToCCD(claim, req);
-    logger.info('----translated claim before submit----', ccdClaim);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);
   } catch (err) {
     logger.error(err);

@@ -1,7 +1,6 @@
 import {NextFunction, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
+import {CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
-import {DocumentUri} from 'models/document/documentType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
@@ -15,14 +14,14 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
 
     if(!claim.isEmpty()) {
       const claimNumber = claim.legacyCaseReference;
-      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
-
       res.render(claimSubmittedView, {
-        claimNumber, defendantFullName, defendantResponseLimit,
-        helpWithFee, downloadHref,
+        claimNumber,
+        defendantFullName,
+        defendantResponseLimit,
+        helpWithFee,
       });
     }
   } catch (error) {
