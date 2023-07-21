@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {DocumentType} from 'models/document/documentType';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
-
+jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
