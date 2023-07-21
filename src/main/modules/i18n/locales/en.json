@@ -2496,6 +2496,32 @@
       "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
+    },
+    "FINALISE_TRIAL_ARRANGEMENTS": {
+      "PAGE_TITLE": "Trial arrangements",
+      "TITLE": "Finalize your trial or hearing arrangements",
+      "CASE_REFERENCE": "Claim number: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
+      "YOU_SHOULD_FINALISE": "You should finalise your trial or hearing arrangements to ensure the court has the necessary information for the trial or hearing to proceed in a suitable way.",
+      "IS_THE_CASE_READY_FOR_TRIAL": "Is the case ready for trial or hearing?",
+      "WE_ARE_ASKING_YOU": "We are asking you to confirm the case is ready for the trial or hearing. This means you have taken all the action required of you in the ",
+      "DIRECTIONS_ORDER": "directions order",
+      "YOU_HAVE_RECEIVED": "that you have received.",
+      "IF_YOUR_CASE_NOT_READY": "If your case is not ready and you do not think it will be ready by the deadline for finalising your trial arrangements, you may wish to postpone or adjourn the hearing. To do this, you will need to make an application to the court.",
+      "IF_YOU_NEED_TO_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first.",
+      "YOU_SHOULD_ONLY_MAKE_AN_APPLICATION": "You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.",
+      "IF_YOU_MAKE_APPLICATION": "If you make an application, please note the hearing will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the hearing.",
+      "HEARING_ADJUSTMENTS_AND_DURATION": "Hearing adjustments and duration",
+      "YOU_WILL_BE_ASKED": "You will be asked to specify if there are any changes to the support or adjustments you previously specified in your ",
+      "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire.",
+      "YOU_SHOULD_REVIEW": "You should review this to identify if your circumstances have changed.",
+      "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial or hearing. If you feel less time is needed, you can specify why in the 'other information' box.",
+      "IF_YOU_FEEL_THAT": "If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.",
+      "YOU_SHOULD_ONLY_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first. You should only make an application once this has been completed.",
+      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the hearing, for example if any party is only available at a specific time.",
+      "START_NOW": "Start now"
     }
   },
   "ERRORS": {
