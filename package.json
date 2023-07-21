@@ -72,7 +72,7 @@
     "express-nunjucks": "^3.0.0",
     "express-session": "^1.17.3",
     "glob": "^10.0.0",
-    "govuk-frontend": "4.6.0",
+    "govuk-frontend": "4.7.0",
     "helmet": "^7.0.0",
     "i18next": "^22.4.6",
     "i18next-fs-backend": "^2.1.1",
