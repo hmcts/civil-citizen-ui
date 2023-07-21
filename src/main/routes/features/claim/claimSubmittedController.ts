@@ -2,6 +2,7 @@ import {NextFunction, Router} from 'express';
 import {CLAIM_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
