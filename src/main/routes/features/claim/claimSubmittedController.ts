@@ -1,5 +1,5 @@
 import {NextFunction, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL, CLAIM_FEE_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {DocumentType} from 'models/document/documentType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -20,10 +20,10 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
-
+      const claimFeeUrl = CLAIM_FEE_URL;
       res.render(claimSubmittedView, {
         claimNumber, defendantFullName, defendantResponseLimit,
-        helpWithFee, downloadHref,
+        helpWithFee, downloadHref, claimFeeUrl,
       });
     }
   } catch (error) {
