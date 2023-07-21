@@ -2252,6 +2252,7 @@
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
+      "YOU_SETTLED_CLAIM": "This claim is now settled",
       "YOU_SHOULD": "Dylech:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "Rydych wedi cyflwyno eich ymateb",
       "YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai",
