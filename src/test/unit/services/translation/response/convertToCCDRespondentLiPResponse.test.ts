@@ -151,9 +151,8 @@ describe('translate cui fields to CCD model', () => {
       helpWithFees: <HelpWithFees>{
         option: YesNo.YES,
         referenceNumber: '12345',
-      }
-
-    }
+      },
+    };
 
     // When
     const result = toCCDRespondentLiPResponse(claim);
