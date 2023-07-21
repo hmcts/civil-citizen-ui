@@ -108,7 +108,8 @@ describe('toCUICaseProgression', () => {
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
-    expectedOutput.trialArrangements = new TrialArrangements();
+    expectedOutput.claimantTrialArrangements = new TrialArrangements();
+    expectedOutput.defendantTrialArrangements = new TrialArrangements();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -140,17 +141,19 @@ describe('toCUICaseProgression', () => {
       undefined,
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
-    expectedOutput.trialArrangements = new TrialArrangements();
-    expectedOutput.trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
+    expectedOutput.claimantTrialArrangements = new TrialArrangements();
+    expectedOutput.defendantTrialArrangements = new TrialArrangements();
+    expectedOutput.defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
 });
 
 function createCUIClaim(): CaseProgression {
-  const trialArrangements = new TrialArrangements();
-  trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-  trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
+  const claimantTrialArrangements = new TrialArrangements();
+  claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+  const defendantTrialArrangements = new TrialArrangements();
+  defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
   return {
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
@@ -158,7 +161,8 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
-    trialArrangements: trialArrangements,
+    claimantTrialArrangements: claimantTrialArrangements,
+    defendantTrialArrangements: defendantTrialArrangements,
   } as CaseProgression;
 }
 

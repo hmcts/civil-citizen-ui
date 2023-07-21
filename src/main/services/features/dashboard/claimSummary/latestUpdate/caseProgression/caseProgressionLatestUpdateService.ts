@@ -10,8 +10,8 @@ import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
-  const areTrialArrangementsFinalised = claim.caseProgression.trialArrangements.defendantTrialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
-  const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.trialArrangements.claimantTrialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
+  const areTrialArrangementsFinalised = claim.caseProgression.defendantTrialArrangements.trialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
+  const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.claimantTrialArrangements.trialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
   const sectionContent = [];
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));

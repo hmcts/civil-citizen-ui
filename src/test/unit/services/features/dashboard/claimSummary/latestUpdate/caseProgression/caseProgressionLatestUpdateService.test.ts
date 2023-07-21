@@ -69,11 +69,13 @@ describe('Case Progression Latest Update Content service', () => {
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (respondent) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
-      const trialArrangements = new TrialArrangements();
-      trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-      trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
+      const claimantTrialArrangements = new TrialArrangements();
+      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+      const defendantTrialArrangements = new TrialArrangements();
+      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
       claimWithSdoAndHearing.caseProgression = {
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
@@ -91,11 +93,13 @@ describe('Case Progression Latest Update Content service', () => {
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the other party (claimant) as only they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
-      const trialArrangements = new TrialArrangements();
-      trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.YES;
-      trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+      const claimantTrialArrangements = new TrialArrangements();
+      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      const defendantTrialArrangements = new TrialArrangements();
+      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
       claimWithSdoAndHearing.caseProgression = {
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
@@ -112,11 +116,13 @@ describe('Case Progression Latest Update Content service', () => {
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the both parties as they have finalised their trial arrangements and evidence upload contents', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
-      const trialArrangements = new TrialArrangements();
-      trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.YES;
-      trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
+      const claimantTrialArrangements = new TrialArrangements();
+      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      const defendantTrialArrangements = new TrialArrangements();
+      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
       claimWithSdoAndHearing.caseProgression = {
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       };
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
@@ -198,9 +204,10 @@ describe('Case Progression Latest Update Content service', () => {
       .setSystemTime(new Date('2020-01-02T17:59'));
 
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
-    const trialArrangements = new TrialArrangements();
-    trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-    trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+    const claimantTrialArrangements = new TrialArrangements();
+    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    const defendantTrialArrangements = new TrialArrangements();
+    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
 
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
@@ -208,7 +215,8 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T18:00'),
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       },
     };
 
@@ -228,9 +236,10 @@ describe('Case Progression Latest Update Content service', () => {
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
-    const trialArrangements = new TrialArrangements();
-    trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-    trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+    const claimantTrialArrangements = new TrialArrangements();
+    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    const defendantTrialArrangements = new TrialArrangements();
+    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
 
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
@@ -238,7 +247,8 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       },
     };
 
@@ -258,15 +268,17 @@ describe('Case Progression Latest Update Content service', () => {
     jest
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
-    const trialArrangements = new TrialArrangements();
-    trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-    trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+    const claimantTrialArrangements = new TrialArrangements();
+    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    const defendantTrialArrangements = new TrialArrangements();
+    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
 
     const claim = {
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
         defendantLastUploadDate: new Date('2020-01-01T18:00'),
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       },
     } as Claim;
 
@@ -289,15 +301,17 @@ describe('Case Progression Latest Update Content service', () => {
     jest
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
-    const trialArrangements = new TrialArrangements();
-    trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
-    trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+    const claimantTrialArrangements = new TrialArrangements();
+    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    const defendantTrialArrangements = new TrialArrangements();
+    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
 
     const claim = {
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T18:00'),
         defendantLastUploadDate: new Date('2020-01-01T17:59'),
-        trialArrangements: trialArrangements,
+        claimantTrialArrangements: claimantTrialArrangements,
+        defendantTrialArrangements: defendantTrialArrangements,
       },
     } as Claim;
 
