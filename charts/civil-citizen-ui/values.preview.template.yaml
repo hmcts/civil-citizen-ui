@@ -5,7 +5,7 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil-cui:
-      resourceGroup: civil-cui
+      resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
@@ -49,6 +49,8 @@ civil-service:
           - robotics-notification-sender
           - robotics-notification-recipient
           - robotics-notification-recipient-lipj
+          - mediation-notification-recipient
+          - mediation-notification-sender
           - name: launch-darkly-sdk-key-non-prod
             alias: launch-darkly-sdk-key
           - robotics-notification-multipartyrecipient
