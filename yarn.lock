@@ -4614,7 +4614,7 @@ __metadata:
     express-nunjucks: ^3.0.0
     express-session: ^1.17.3
     glob: ^10.0.0
-    govuk-frontend: 4.6.0
+    govuk-frontend: 4.7.0
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
@@ -7470,7 +7470,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:4.6.0, govuk-frontend@npm:^3.0.0 || ^4.0.0":
+"govuk-frontend@npm:4.7.0":
+  version: 4.7.0
+  resolution: "govuk-frontend@npm:4.7.0"
+  checksum: 0e246dd2c724e51fd14dd40fc31c66627df7d07ebe89e1a19b1e7da7e7a5eb86bc6560229e18a13e40651e6c953a67422d54e77e240d82efff7b2cbefaa8b88d
+  languageName: node
+  linkType: hard
+
+"govuk-frontend@npm:^3.0.0 || ^4.0.0":
   version: 4.6.0
   resolution: "govuk-frontend@npm:4.6.0"
   checksum: 025a5b99f59aa84586a221b227c66c9ccf48d1b71e6df69ebd39e055b181328dd59ba392cef9f6a38b108c0b1276ba888619cc51343b2e2f35c668772f2ec472
