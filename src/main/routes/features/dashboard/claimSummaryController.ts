@@ -5,12 +5,15 @@ import {
 } from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {AppRequest} from 'models/AppRequest';
-import {DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
+import {DocumentType} from 'common/models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -33,7 +36,8 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
           .forEach(items => latestUpdateContent.push(items));
         documentsContent = getEvidenceUploadContent(claim);
       }
-      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled});
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled, responseDetailsUrl});
     }
   } catch (error) {
     next(error);
