@@ -38,7 +38,7 @@ describe('Has anything changed - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.IS_CASE_READY.PAGE_TITLE'));
+        expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
       });
   });
 
