@@ -22,6 +22,7 @@ import {
   mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -107,6 +108,7 @@ describe('toCUICaseProgression', () => {
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    expectedOutput.trialArrangements = new TrialArrangements();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -138,13 +140,17 @@ describe('toCUICaseProgression', () => {
       undefined,
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
-    expectedOutput.trialReadyRespondent1 = YesNoUpperCamelCase.YES;
+    expectedOutput.trialArrangements = new TrialArrangements();
+    expectedOutput.trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
 });
 
 function createCUIClaim(): CaseProgression {
+  const trialArrangements = new TrialArrangements();
+  trialArrangements.claimantTrialArrangementsReady = YesNoUpperCamelCase.NO;
+  trialArrangements.defendantTrialArrangementsReady = YesNoUpperCamelCase.YES;
   return {
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
@@ -152,8 +158,7 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
-    trialReadyApplicant: YesNoUpperCamelCase.NO,
-    trialReadyRespondent1: YesNoUpperCamelCase.YES,
+    trialArrangements: trialArrangements,
   } as CaseProgression;
 }
 
