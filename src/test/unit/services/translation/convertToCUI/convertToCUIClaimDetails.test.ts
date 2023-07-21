@@ -22,7 +22,7 @@ describe('translate Claim Details to CUI model', () => {
   it('should translate Claim Details to CUI', () => {
     //Given
     const claimDetailsCUI = new ClaimDetails(new Reason('test detailsOfClaim to reason'));
-    claimDetailsCUI.helpWithFees = new HelpWithFees(YesNo.NO)
+    claimDetailsCUI.helpWithFees = new HelpWithFees(YesNo.NO);
     //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
     //Then

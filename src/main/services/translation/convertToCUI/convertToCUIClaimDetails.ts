@@ -9,7 +9,7 @@ export const toCUIClaimDetails = (ccdClaim: CCDClaim): ClaimDetails => {
   const claimDetails: ClaimDetails = new ClaimDetails();
   claimDetails.reason = new Reason(ccdClaim.detailsOfClaim);
   if (ccdClaim?.respondent1LiPResponse?.helpWithFeesReferenceNumberLip) {
-    claimDetails.helpWithFees = new HelpWithFees(YesNo.YES, ccdClaim.respondent1LiPResponse.helpWithFeesReferenceNumberLip)
+    claimDetails.helpWithFees = new HelpWithFees(YesNo.YES, ccdClaim.respondent1LiPResponse.helpWithFeesReferenceNumberLip);
   } else {
     claimDetails.helpWithFees = new HelpWithFees(YesNo.NO);
   }
