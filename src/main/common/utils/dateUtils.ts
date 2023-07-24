@@ -83,6 +83,29 @@ export const formatStringDate = (text: string) => {
   return `${year}-${month}-${day}`;
 };
 
+export const checkEvidenceUploadTime = (date: Date): boolean => {
+
+  const endOfDay = 18;
+
+  if(date == undefined)
+  {
+    return false;
+  }
+  const today = new Date();
+  today.setHours(endOfDay, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate()-1);
+
+  if(new Date().getHours() >= endOfDay) {
+    return date.getTime() >= yesterday.getTime() && date.getTime() < today.getTime();
+  } else {
+    const dayBeforeYesterday = new Date(yesterday);
+    dayBeforeYesterday.setDate(yesterday.getDate()-1);
+    return date.getTime() >= dayBeforeYesterday.getTime() && date.getTime() < yesterday.getTime();
+  }
+};
+
 export const formatStringDateDMY = (date: Date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const month = DateTime.fromJSDate(date).toFormat('MMM');
