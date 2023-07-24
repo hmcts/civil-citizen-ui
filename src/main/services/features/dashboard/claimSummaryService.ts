@@ -14,6 +14,7 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
   const downloadClaimSection = buildDownloadSealedClaimSection(claim, claimId, lang);
   const downloadResponseSection = buildDownloadSealedResponseSection(claim, claimId, lang);
   const downloadHearingNoticeSection = await isCaseProgressionV1Enable() ? buildDownloadHearingNoticeSection(claim, claimId, lang) : undefined;
+
   return [{
     contentSections: [
       downloadClaimTitle,
