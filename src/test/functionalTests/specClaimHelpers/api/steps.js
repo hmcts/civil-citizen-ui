@@ -25,6 +25,7 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
+const generateSDODocument = require('../fixtures/events/generateSDODocument');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -181,6 +182,20 @@ module.exports = {
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of createSDO()');
+  },
+
+  generateSDO : async (user, claimType, expectedState) => {
+    let generateSDODocumentPayload;
+
+    if (claimType === 'FastTrack') {
+        generateSDODocumentPayload = generateSDODocument.generateSDODocument();
+    }
+    eventName = generateSDODocumentPayload['event'];
+    caseData = generateSDODocumentPayload['caseDataUpdate'];
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(expectedState);
+    console.log('End of generateSDO()');
+
   },
 
   viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
@@ -379,6 +394,10 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     caseId = responseBody.id;
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);
     console.log('Case created: ' + caseId);
+  }
+  if (eventName === 'CREATE_SDO') {
+    caseId = responseBody.id;
+    console.log('Case created from the Create SDO method: ' + caseId);
   }
   await waitForFinishedBusinessProcess(caseId);
   if (expectedState) {
