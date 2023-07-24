@@ -14,7 +14,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: Request, res: Response
     const claim: Claim = await getClaimById(req.params.id, req);
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
-    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
+    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
     const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
     res.render('features/response/claimDetails/claim-details', {
       claim, totalAmount, interestData, timelinePdfUrl, sealedClaimPdfUrl,
