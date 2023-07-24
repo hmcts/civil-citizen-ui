@@ -26,8 +26,8 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import {generateServiceToken} from "client/serviceAuthProviderClient";
-import config from "config";
+import {generateServiceToken} from 'client/serviceAuthProviderClient';
+import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
