@@ -18,12 +18,14 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
       downloadClaimSection,
       downloadHearingNoticeSection,
     ],
+    hasDivider: false,
   }];
 }
 
 function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[]{
   return [{
     contentSections: getEvidenceUploadDocuments(claim),
+    hasDivider: false,
   }];
 }
 

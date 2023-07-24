@@ -1,8 +1,9 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
 import {DocumentType} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
+import {TabId} from "routes/tabs";
 
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 
@@ -26,8 +27,7 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
-    //href in link will need to be updated once Notices & Orders page is done.
-    .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+    .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
     .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`,  CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
 
   return latestUpdateSectionBuilder.build();
