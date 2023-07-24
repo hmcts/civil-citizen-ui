@@ -1,7 +1,7 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
@@ -13,6 +13,8 @@ import {TabItem} from 'models/dashboard/tabItem';
 import {TabId, TabLabel} from 'routes/tabs';
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
+import {DocumentType} from 'common/models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -26,7 +28,8 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       const tabContent = await getTabs(claimId, claim, lang);
-      res.render(claimSummaryViewPath, {claim, claimId, tabContent});
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+      res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
     }
   } catch (error) {
     next(error);
