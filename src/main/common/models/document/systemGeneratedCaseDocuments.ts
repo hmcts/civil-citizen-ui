@@ -1,7 +1,7 @@
 import {CaseDocument} from './caseDocument';
 import {DocumentType} from 'models/document/documentType';
 import {
-  CaseDocumentInfoExtractor
+  CaseDocumentInfoExtractor,
 } from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 
 export interface SystemGeneratedCaseDocuments {

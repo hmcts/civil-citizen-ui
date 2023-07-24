@@ -1,8 +1,8 @@
 import {CaseDocument} from 'models/document/caseDocument';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
-import {DocumentType} from "models/document/documentType";
-import {CaseDocumentInfoExtractor} from "services/features/caseProgression/SystemDocumentInfoExtractor";
+import {DocumentType} from 'models/document/documentType';
+import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 
 export class HearingLocation {
   value: {

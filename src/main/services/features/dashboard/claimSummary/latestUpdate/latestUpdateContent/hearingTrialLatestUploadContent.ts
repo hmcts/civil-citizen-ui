@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {DocumentType} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
-import {TabId} from "routes/tabs";
+import {TabId} from 'routes/tabs';
 
 const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
 

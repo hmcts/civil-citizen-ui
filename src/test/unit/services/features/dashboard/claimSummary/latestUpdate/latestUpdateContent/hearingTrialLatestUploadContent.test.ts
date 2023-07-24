@@ -7,9 +7,9 @@ import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProg
 import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
-import {DocumentType, DocumentUri} from 'models/document/documentType';
+import {DocumentType} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
-import {getSystemGeneratedCaseDocumentIdByType} from "models/document/systemGeneratedCaseDocuments";
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
