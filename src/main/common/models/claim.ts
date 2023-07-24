@@ -365,9 +365,9 @@ export class Claim {
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
-        return document.value.documentType === documentType;
+        return document?.value.documentType === documentType;
       });
-      return filteredDocumentDetailsByType.value;
+      return filteredDocumentDetailsByType?.value;
     }
     return undefined;
   }

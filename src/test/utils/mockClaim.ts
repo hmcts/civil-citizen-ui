@@ -193,6 +193,21 @@ function buildMockClaim(): Claim {
       },
     },
     {
+      id: '98765432',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/7f092465-658e-4ec1-af30-b5551b5260b4',
+          document_filename: 'response_claim_form_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/7f092465-658e-4ec1-af30-b5551b5260b4/binary',
+        },
+        documentName: 'response_claim_form_000MC001.pdf',
+        documentSize: 33331,
+        documentType: DocumentType.DEFENDANT_DEFENCE,
+        createdDatetime: new Date('2022-06-22T14:15:19'),
+
+    },
+    {
       id: '1234567',
       value: {
         createdBy: 'Civil',

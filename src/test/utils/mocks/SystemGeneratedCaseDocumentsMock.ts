@@ -26,7 +26,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
       id: '1',
       value: {
         createdBy: 'cui',
-        documentType: DocumentType.SEALED_CLAIM,
+        documentType: DocumentType.DEFENDANT_DEFENCE,
         documentLink:  {
           document_url: 'url1',
           document_filename: 'filename1',
