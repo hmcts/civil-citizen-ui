@@ -15,7 +15,6 @@ describe('Document download controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-
   });
 
   describe('on Get', () => {
