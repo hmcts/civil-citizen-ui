@@ -2,6 +2,7 @@ import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 import {
   buildDownloadSealedClaimSection,
+  buildDownloadSealedResponseSection,
   buildDownloadSealedClaimSectionTitle,
 } from './claimDocuments/claimDocumentContentBuilder';
 import {getEvidenceUploadDocuments} from 'services/features/caseProgression/documentTableBuilder';
@@ -9,10 +10,13 @@ import {getEvidenceUploadDocuments} from 'services/features/caseProgression/docu
 function getDocumentsContent(claim: Claim, claimId: string, lang?: string): ClaimSummaryContent[] {
   const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
   const downloadClaimSection = buildDownloadSealedClaimSection(claim, claimId, lang);
+  const downloadResponseSection = buildDownloadSealedResponseSection(claim, claimId, lang);
+
   return [{
     contentSections: [
       downloadClaimTitle,
       downloadClaimSection,
+      downloadResponseSection,
     ],
   }];
 }
