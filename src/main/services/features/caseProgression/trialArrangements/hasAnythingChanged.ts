@@ -1,13 +1,13 @@
 import {Claim} from 'models/claim';
-import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
   const documentId = getDocumentId(claim, DocumentType.DEFENDANT_DEFENCE);
-  return new UploadYourDocumentsSectionBuilder()
+  return new PageSectionBuilder()
     .addMainTitle('PAGES.HAS_ANYTHING_CHANGED.FINALISE')
     .addLeadParagraph('PAGES.HAS_ANYTHING_CHANGED.CLAIM_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-0')
     .addLeadParagraph('COMMON.PARTIES', {
