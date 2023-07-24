@@ -308,4 +308,16 @@
       </fieldset>
     </div>
   {% endif %}
+
+  {% if content.type === ClaimSummaryType.BUTTON_WITH_CANCEL_LINK %}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        href: content.data.href,
+        text:  t(content.data.text),
+        classes: content.data.classes,
+        isStartButton: content.data.isStartButton
+      }) }}
+      <a href={{ content.data.cancelHref }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+    </div>
+  {% endif %}
 {% endmacro %}
