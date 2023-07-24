@@ -26,6 +26,8 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import {generateServiceToken} from "client/serviceAuthProviderClient";
+import config from "config";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -55,11 +57,15 @@ export class CivilServiceClient {
     }
   }
 
-  getConfig(req: AppRequest) {
+  async getConfig(req: AppRequest) {
+    const civilServiceS2sSecret = config.get<string>('services.serviceAuthProvider.civilServiceS2sSecret');
+    const s2sAuth = await generateServiceToken('civil_service', civilServiceS2sSecret);
+
     return {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
+        'ServiceAuthorization': s2sAuth,
       },
     };
   }
@@ -68,7 +74,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
     try {
-      const response = await this.client.get('/cases/claimant/' + submitterId, config);
+      const response = await this.client.get('/cases/claimant/' + submitterId, await config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
       logger.error(err);
@@ -79,7 +85,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
     try {
-      const response = await this.client.get('/cases/defendant/' + submitterId, config);
+      const response = await this.client.get('/cases/defendant/' + submitterId, await config);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     } catch (err) {
       logger.error(err);
@@ -90,7 +96,7 @@ export class CivilServiceClient {
   async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
     const config = this.getConfig(req);
     let claims: CivilClaimResponse[] = [];
-    await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
+    await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, await config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => {
           //TODO Maybe we need to convert also CCD to CUI
@@ -106,7 +112,7 @@ export class CivilServiceClient {
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
+      const response = await this.client.get(`/cases/${claimId}`, await config);// nosonar
       if (!response.data) {
         throw new AssertionError({message: 'Claim details not available!'});
       }
@@ -120,7 +126,7 @@ export class CivilServiceClient {
   async getFeeRanges(req: AppRequest): Promise<FeeRanges> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, await config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
       logger.error(err);
@@ -131,7 +137,7 @@ export class CivilServiceClient {
   async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, await config);
       return response.data;
     } catch (err: unknown) {
       logger.error(err);
@@ -142,7 +148,7 @@ export class CivilServiceClient {
   async getClaimAmountFee(amount: number, req: AppRequest): Promise<number> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, await config);
       const claimFeeResponse: ClaimFeeData = response.data;
       return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
     } catch (err: unknown) {
@@ -220,7 +226,7 @@ export class CivilServiceClient {
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
-        .replace(':caseId', claimId), data, config);// nosonar
+        .replace(':caseId', claimId), data, await config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
       return translateCCDCaseDataToCUIModel(claimResponse.case_data);
@@ -233,7 +239,7 @@ export class CivilServiceClient {
   async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, await config);
       return response.data as Date;
     } catch (err: unknown) {
       logger.error(err);
@@ -244,7 +250,7 @@ export class CivilServiceClient {
   async getCourtLocations(req: AppRequest): Promise<CourtLocation[]> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, await config);
       return plainToInstance(CourtLocation, response.data as object[]);
     } catch (error: unknown) {
       logger.error(error);
@@ -265,7 +271,7 @@ export class CivilServiceClient {
   async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), await config);
       if(response.data)
         return new Date(response.data.toString());
     } catch (error: unknown) {

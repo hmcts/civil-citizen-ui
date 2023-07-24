@@ -16,6 +16,7 @@ export class PropertiesVolume {
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-draft-store-primary', 'services.draftStore.legacy.s2s.primarySecret');
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-cui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
+      PropertiesVolume.setSecret('secrets.civil-citizen-ui.microservicekey-civil-service', 'services.serviceAuthProvider.civilServiceS2sSecret'),
       PropertiesVolume.setSecret('secrets.civil-cui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
     }
   }

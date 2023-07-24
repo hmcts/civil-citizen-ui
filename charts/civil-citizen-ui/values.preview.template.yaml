@@ -16,6 +16,7 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - microservicekey-civil-service
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
@@ -101,6 +102,7 @@ civil-service:
       STITCHING_API_ENABLED: false
       SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
+      S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
