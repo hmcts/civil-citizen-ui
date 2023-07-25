@@ -31,6 +31,8 @@ import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
+const secretName = 'services.serviceAuthProvider.civilServiceS2sSecret';
+const microServiceName = 'civil_citizen_ui';
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
@@ -58,8 +60,8 @@ export class CivilServiceClient {
   }
 
   async getConfig(req: AppRequest) {
-    const civilServiceS2sSecret = config.get<string>('services.serviceAuthProvider.civilServiceS2sSecret');
-    const s2sAuth = await generateServiceToken('civil_service', civilServiceS2sSecret);
+    const civilServiceS2sSecret = config.get<string>(secretName);
+    const s2sAuth = await generateServiceToken(microServiceName, civilServiceS2sSecret);
 
     return {
       headers: {
