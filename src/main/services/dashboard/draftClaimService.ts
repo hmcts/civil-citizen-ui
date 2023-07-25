@@ -1,6 +1,6 @@
 import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
-import {DashboardClaimantItem, toDashboardItem} from 'models/dashboard/dashboardItem';
+import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
@@ -20,7 +20,7 @@ export const getDraftClaim = async (userToken: string): Promise<DashboardClaiman
   console.log(isReleaseTwoEnabled);
   if(isReleaseTwoEnabled) {
     const claim = await getCaseDataFromStore(userToken);
-    return toDashboardItem(claim);
+    return toDraftClaimDashboardItem(claim);
   }
   return await getOcmcDraftClaims(userToken);
 

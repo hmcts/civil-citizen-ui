@@ -158,7 +158,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
-export const toDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
+export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
   if(claim == undefined || claim?.isEmpty()) {
     return undefined;
   }
