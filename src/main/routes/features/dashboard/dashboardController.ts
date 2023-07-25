@@ -11,10 +11,10 @@ import {createDraftClaimUrl, getDraftClaim} from 'services/dashboard/draftClaimS
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-
-function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
+async function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string | unknown): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string | unknown): Promise<void> {
+  const draftClaimUrl = await createDraftClaimUrl()
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
     claimDraftSaved,
@@ -23,7 +23,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentClaimant,
     paginationArgumentDefendant,
     lang,
-    newOcmcClaimUrl: createDraftClaimUrl(),
+    newOcmcClaimUrl: draftClaimUrl,
   });
 }
 
@@ -41,7 +41,7 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
     const responseDraftSaved = false;
     const paginationArgumentClaimant: object = {};
     const paginationArgumentDefendant: object = claimsAsDefendantPaginationData.paginationArguments;
-    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendantPaginationData.paginatedClaims, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant, lang);
+    await renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendantPaginationData.paginatedClaims, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant, lang);
   }catch(error){
     next(error);
   }

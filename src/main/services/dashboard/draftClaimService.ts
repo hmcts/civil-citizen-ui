@@ -6,16 +6,19 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
-export const createDraftClaimUrl = () => {
+export const createDraftClaimUrl = async ():Promise<string> => {
   const eligibility = '/eligibility';
-  if(isReleaseTwo()) {
+  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+  if(isReleaseTwoEnabled) {
     return eligibility;
   }
   return `${ocmcBaseUrl}/eligibility`;
 };
 
 export const getDraftClaim = async (userToken: string): Promise<DashboardClaimantItem> => {
-  if(isReleaseTwo()) {
+  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+  console.log(isReleaseTwoEnabled);
+  if(isReleaseTwoEnabled) {
     const claim = await getCaseDataFromStore(userToken);
     return toDashboardItem(claim);
   }
@@ -23,8 +26,3 @@ export const getDraftClaim = async (userToken: string): Promise<DashboardClaiman
 
 };
 
-const isReleaseTwo = () => {
-  return (async ()=> {
-    await isCUIReleaseTwoEnabled();
-  });
-};
