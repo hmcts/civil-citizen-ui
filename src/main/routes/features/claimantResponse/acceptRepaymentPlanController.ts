@@ -57,7 +57,7 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
     const claimId = req.params.id;
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
-    const displayHintTextForNoOption = await (await getCaseDataFromStore(claimId)).isBusiness();
+    const displayHintTextForNoOption = (await getCaseDataFromStore(claimId)).isBusiness();
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, repaymentPlan, res, displayHintTextForNoOption);

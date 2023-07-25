@@ -29,7 +29,9 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% if displayHintTextForNoOption %}
-              {% set hint =  t('PAGES.ACCEPT_REPAYMENT_PLAN.NO_OPTION_HINT_TEXT') %}
+              {% set noOptionConditionalText %}
+              <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.NO_OPTION_HINT_TEXT') }}</p>
+              {% endset %}
             {% endif %}
             {{ govukRadios({
               idPrefix: "option",
@@ -44,7 +46,7 @@
                   value: YesNo.NO,
                   checked: form.model.option === YesNo.NO,
                   text: t('PAGES.ACCEPT_REPAYMENT_PLAN.NO_OPTION'),
-                  conditional:{html: hint}
+                  conditional:{html: noOptionConditionalText}
                 }
               ],
               errorMessage: { text: t(optionError) } if t(optionError)
