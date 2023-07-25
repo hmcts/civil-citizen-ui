@@ -33,6 +33,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
     "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
@@ -2431,6 +2432,16 @@
       },
       "YEAR": "Year"
     },
+    "HAS_ANYTHING_CHANGED": {
+      "PAGE_TITLE": "Has anything changed to the support",
+      "FINALISE": "Finalise your trial or hearing arrangements",
+      "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+      "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
+      "YOU_CAN": "You can check your previous answers in the ",
+      "DIRECTIONS": "directions questionnaire.",
+      "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
+      "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
       "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
@@ -2862,6 +2873,7 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
@@ -2883,6 +2895,7 @@
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
     "VALID_REAL_DATE": "Date of document must be a real date",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
-    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent"
+    "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
+    "VALID_ENTER_SUPPORT":"Enter support you, experts or witnesses need."
   }
 }
