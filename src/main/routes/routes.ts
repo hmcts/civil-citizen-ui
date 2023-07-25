@@ -204,6 +204,7 @@ import finaliseTrialArrangementsController from 'routes/features/caseProgression
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
 import claimTaskListController from './features/claim/claimTaskListController';
+import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
 
 export default [
   homeController,
@@ -396,4 +397,5 @@ export default [
   uploadFileController,
   documentUploadCheckAnswerController,
   claimTaskListController,
+  hasAnythingChangedController,
 ];
