@@ -6,7 +6,6 @@ import {DATE_PAID_CONFIRMATION_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claim settled confirmation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
