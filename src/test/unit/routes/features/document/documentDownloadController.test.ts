@@ -1,16 +1,11 @@
 import config from 'config';
 import nock from 'nock';
-import {mockCivilClaimPDFTimeline, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import request from 'supertest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as documentUtils from '../../../../../main/common/utils/downloadUtils';
-import {DocumentUri} from 'models/document/documentType';
-import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Document download controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -20,35 +15,40 @@ describe('Document download controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-
   });
 
   describe('on Get', () => {
-    it('should download the pdf successfully', async () => {
-
-      app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+    it('should download successfully', async () => {
+      //given
+      const responseHeaders =  {
+        'content-type': 'application/json',
+        'originalfilename': 'example.json',
+      };
+      const responseBody = Buffer.from('111');
 
       nock('http://localhost:4000')
-        .get('/cases/:id')
-        .reply(200, civilClaimResponseMock);
+        .get('/case/document/downloadDocument/111')
+        .reply(200, responseBody, responseHeaders);
 
-      nock('http://localhost:4000')
-        .post('/case/document/downloadSealedDoc/')
-        .reply(200, civilClaimResponseMock);
-
+      //then
       await request(app)
-        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentType', DocumentUri.SEALED_CLAIM))
+        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentId', '111'))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(mockDownloadPDFDocument).toBeCalled();
+          expect(res.body).toBe(111);
         });
+
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      //given
+      nock('http://localhost:4000')
+        .get('/case/document/downloadDocument/111')
+        .reply(500);
+
+      //then
       await request(app)
-        .get(CASE_DOCUMENT_DOWNLOAD_URL)
+        .get(CASE_DOCUMENT_DOWNLOAD_URL.replace(':documentId', '111'))
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

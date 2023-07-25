@@ -43,7 +43,6 @@ export class DashboardClaimantItem extends DashboardItem {
 
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
-
 }
 
 export class DashboardDefendantItem extends DashboardItem {
@@ -132,12 +131,12 @@ export class DashboardDefendantItem extends DashboardItem {
       IN_MEDIATION: { translationKey: 'PAGES.DASHBOARD.STATUS.IN_MEDIATION' },
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW' },
       CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_ENDED' },
-      CLAIM_SENT_TO_CLAIMANT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
-      CLAIMANT_REJECT_OFFER: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
-      CLAIMANT_ACCEPTED_SETTLE_IN_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
+      CLAIM_REJECTED_OFFER_SETTLE_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
+      CLAIMANT_REJECT_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
+      CLAIMANT_ACCEPTED_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
       CLAIMANT_REJECT_PARTIAL_ADMISSION: {
         translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
-        parameter: [paramClaimantName],
+        parameter: [paramClaimantName, paramAdmittedAmount],
       },
 
     };
@@ -157,3 +156,4 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   }
   return t(translationKey, {lng:getLng(lang)} );
 };
+
