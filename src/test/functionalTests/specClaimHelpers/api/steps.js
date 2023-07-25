@@ -190,10 +190,10 @@ module.exports = {
     if (claimType === 'FastTrack') {
         generateSDODocumentPayload = generateSDODocument.generateSDODocument();
     }
-    eventName = generateSDODocumentPayload['event'];
+    eventName = 'CREATE_SDO';
     caseData = generateSDODocumentPayload['caseDataUpdate'];
     await apiRequest.setupTokens(user);
-    await assertSubmittedSpecEvent(expectedState);
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of generateSDO()');
 
   },

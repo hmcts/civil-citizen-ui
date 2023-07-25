@@ -17,13 +17,13 @@ Before(async ({api}) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'FastTrack');
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
   await api.generateSDO(config.judgeUserWithRegionId1,'FastTrack','JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
-  //await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
+  //await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
 });
 
 //Disabled the test due to the defect https://tools.hmcts.net/jira/browse/CIV-9730
 Scenario('Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
-  /*if (['preview', 'demo'].includes(config.runningEnv)) {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef);
-  }*/
+  }
 }).tag('@regression');
