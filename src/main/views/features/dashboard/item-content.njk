@@ -20,7 +20,7 @@
 
   {% if content.type === ClaimSummaryType.TITLE %}
     {% set object = '' %}
-    {% if content.data.variables %}
+    {% if  content.data.variables %}
       {% set object = content.data.variables %}
       <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h3>
     {% else %}
@@ -36,17 +36,17 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
     {% else %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
     {% if content.data.variables %}
-      {% set object = content.data.variables %}
-      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
+        {% set object = content.data.variables %}
+        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
     {% else %}
       <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}

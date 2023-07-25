@@ -1,7 +1,7 @@
 import {
   mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
-import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {HAS_ANYTHING_CHANGED_URL, HEARING_DURATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -19,7 +19,7 @@ const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
-describe('Is case ready - On GET', () => {
+describe('Has anything changed - On GET', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -34,11 +34,11 @@ describe('Is case ready - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(IS_CASE_READY_URL.replace(':id', claimId))
-    //Then
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId))
+      //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.IS_CASE_READY.PAGE_TITLE'));
+        expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
       });
   });
 
@@ -47,8 +47,8 @@ describe('Is case ready - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(IS_CASE_READY_URL.replace(':id', '1111'))
-    //Then
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -56,44 +56,72 @@ describe('Is case ready - On GET', () => {
   });
 });
 
-describe('Is case ready - on POST', () => {
+describe('Has anything changed - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
-  it('should display error when neither Yes nor No were selected', async () => {
 
+  it('should display error when neither Yes nor No were selected', async () => {
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
-
     //When
     await testSession
-      .post(IS_CASE_READY_URL.replace(':id', '1111'))
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
       .send({})
-    //Then
+      //Then
       .expect((res: {status: unknown, text: unknown}) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_TRIAL_ARR'));
       });
   });
 
-  it('should redirect to "Has anything changed" page when one option is selected', async () => {
-
+  it('should display error when Yes was selected, but the textArea was not filled', async () => {
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
-
     //When
     await testSession
-      .post(IS_CASE_READY_URL.replace(':id', '1111'))
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .send({option: YesNo.YES})
+      //Then
+      .expect((res: {status: unknown, text: unknown}) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('ERRORS.VALID_ENTER_SUPPORT'));
+      });
+  });
+
+  it('should redirect to "Hearing duration" page when No is selected', async () => {
+    //Given
+    nock(civilServiceUrl)
+      .post(CIVIL_SERVICE_CASES_URL + '1111')
+      .reply(200, claimId);
+    //When
+    await testSession
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
       .send({option: YesNo.NO})
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'));
+        expect(res.header.location).toEqual(HEARING_DURATION_URL.replace(':id', '1111'));
+      });
+  });
+
+  it('should redirect to "Hearing duration" page when Yes is selected and textArea is filled', async () => {
+    //Given
+    nock(civilServiceUrl)
+      .post(CIVIL_SERVICE_CASES_URL + '1111')
+      .reply(200, claimId);
+    //When
+    await testSession
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .send({option: YesNo.YES, textArea: 'some text'})
+      //Then
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(HEARING_DURATION_URL.replace(':id', '1111'));
       });
   });
 });
-
