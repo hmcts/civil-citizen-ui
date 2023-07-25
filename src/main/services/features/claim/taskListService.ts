@@ -18,7 +18,7 @@ export const getTaskLists = (caseData: Claim, userId: string, lang: string): Tas
 export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang: string): TaskList => {
   
   const considerOtherOptionsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_RESOLVING_DISPUTE_URL),
     status: TaskStatus.INCOMPLETE,
   };
