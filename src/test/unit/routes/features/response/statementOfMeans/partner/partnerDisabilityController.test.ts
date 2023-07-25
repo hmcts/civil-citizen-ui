@@ -8,7 +8,7 @@ import {
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../../../../main/routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaimUndefined, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -25,7 +25,7 @@ describe('Partner disability', () => {
 
   describe('on GET', () => {
     it('should return citizen disability partner page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_DISABILITY_URL)
         .expect((res) => {
@@ -34,7 +34,7 @@ describe('Partner disability', () => {
         });
     });
     it('should show partner page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_PARTNER_DISABILITY_URL)
         .send('')
@@ -53,6 +53,9 @@ describe('Partner disability', () => {
     });
   });
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should create a new claim if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
@@ -63,7 +66,6 @@ describe('Partner disability', () => {
         });
     });
     it('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
         .send('option=no')
@@ -73,7 +75,6 @@ describe('Partner disability', () => {
         });
     });
     it('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
         .send('option=no')
@@ -83,7 +84,6 @@ describe('Partner disability', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
         .send('')
@@ -93,7 +93,6 @@ describe('Partner disability', () => {
         });
     });
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
         .send('option=yes')

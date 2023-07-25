@@ -4,7 +4,7 @@ import config from 'config';
 import nock from 'nock';
 import {CITIZEN_SELF_EMPLOYED_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -22,7 +22,7 @@ describe('Self Employed As', () => {
 
   describe('on Get', () => {
     it('should return on self employed page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app).get(CITIZEN_SELF_EMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -41,6 +41,9 @@ describe('Self Employed As', () => {
   });
 
   describe('on Post', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should return error when no input text is filled', async () => {
       await request(app)
         .post(CITIZEN_SELF_EMPLOYED_URL)
@@ -97,7 +100,6 @@ describe('Self Employed As', () => {
         });
     });
     it('should redirect with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_SELF_EMPLOYED_URL)
         .send({jobTitle: 'Developer', annualTurnover: 70000})

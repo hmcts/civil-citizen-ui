@@ -6,6 +6,7 @@ import {
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
 import {Document} from 'common/models/document/document';
+import {formatStringDateDMY} from 'common/utils/dateUtils';
 
 export class UploadDocuments {
 
@@ -35,6 +36,7 @@ export class UploadDocuments {
   }
 
 }
+
 export class UploadDocumentTypes {
   selected?: boolean;
   uuid?: string;
@@ -48,36 +50,40 @@ export class UploadDocumentTypes {
     this.documentType = documentType;
     this.uuid = uuid;
   }
+
+  get createdDateTimeFormatted(): string {
+    return formatStringDateDMY(this.caseDocument?.createdDatetime);
+  }
 }
 
-export class UploadEvidenceWitness {
-  witnessOptionName: string;
-  witnessOptionUploadDate: Date;
+export class UploadEvidenceWitness{
+  witnessOptionName?: string;
+  witnessOptionUploadDate?: Date;
   witnessOptionDocument: Document;
-  createdDateTime: Date;
+  createdDatetime: Date;
 
-  constructor(witnessOptionName: string, witnessOptionUploadDate: Date, witnessOptionDocument: Document, createdDateTime: Date) {
+  constructor(witnessOptionName: string, witnessOptionUploadDate: Date, witnessOptionDocument: Document, createdDatetime: Date) {
     this.witnessOptionName = witnessOptionName;
     this.witnessOptionUploadDate = witnessOptionUploadDate;
     this.witnessOptionDocument = witnessOptionDocument;
-    this.createdDateTime = createdDateTime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 
 export class UploadEvidenceExpert {
-  expertOptionName: string;
-  expertOptionExpertise: string;
-  expertOptionExpertises: string;
-  expertOptionOtherParty: string;
-  expertDocumentQuestion: string;
-  expertDocumentAnswer: string;
-  expertOptionUploadDate: Date;
+  expertOptionName?: string;
+  expertOptionExpertise?: string;
+  expertOptionExpertises?: string;
+  expertOptionOtherParty?: string;
+  expertDocumentQuestion?: string;
+  expertDocumentAnswer?: string;
+  expertOptionUploadDate?: Date;
+  createdDatetime: Date;
   expertDocument: Document;
-  createdDateTime: Date;
 
   constructor(expertOptionName: string, expertOptionExpertise: string, expertOptionExpertises: string,
     expertOptionOtherParty: string, expertDocumentQuestion: string, expertDocumentAnswer: string,
-    expertOptionUploadDate: Date, expertDocument: Document, createdDateTime: Date) {
+    expertOptionUploadDate: Date, expertDocument: Document, createdDatetime: Date) {
     this.expertOptionName = expertOptionName;
     this.expertOptionExpertise = expertOptionExpertise;
     this.expertOptionExpertises = expertOptionExpertises;
@@ -86,26 +92,25 @@ export class UploadEvidenceExpert {
     this.expertDocumentAnswer = expertDocumentAnswer;
     this.expertOptionUploadDate = expertOptionUploadDate;
     this.expertDocument = expertDocument;
-    this.createdDateTime = createdDateTime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 
-export class UploadEvidenceDocumentType {
-  typeOfDocument: string;
-  documentIssuedDate: Date;
+export class UploadEvidenceDocumentType{
+  typeOfDocument?: string;
+  documentIssuedDate?: Date;
   documentUpload: Document;
-  createdDateTime: Date;
+  createdDatetime: Date;
 
-  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDateTime: Date) {
+  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;
-    this.createdDateTime = createdDateTime;
+    this.createdDatetime = new Date(createdDatetime);
   }
 }
 
-export class UploadEvidenceElementCCD
-{
+export class UploadEvidenceElementCCD {
   id: string;
   value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness;
 }

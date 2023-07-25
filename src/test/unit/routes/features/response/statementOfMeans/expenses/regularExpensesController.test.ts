@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 
@@ -22,7 +22,7 @@ describe('Regular Expenses Controller', () => {
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
         .get(CITIZEN_MONTHLY_EXPENSES_URL)
         .expect((res: Response) => {
@@ -41,6 +41,9 @@ describe('Regular Expenses Controller', () => {
     });
   });
   describe('on POST', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should show errors when mortgage is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -422,7 +425,6 @@ describe('Regular Expenses Controller', () => {
         });
     });
     it('should redirect when no data is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({})
@@ -432,7 +434,6 @@ describe('Regular Expenses Controller', () => {
         });
     });
     it('should redirect when correct data is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -451,7 +452,6 @@ describe('Regular Expenses Controller', () => {
         });
     });
     it('should redirect when correct data for other expenses', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({

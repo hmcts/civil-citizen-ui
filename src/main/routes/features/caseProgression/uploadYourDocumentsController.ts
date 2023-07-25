@@ -10,7 +10,6 @@ uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], (async (req, res,
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-
     res.render(uploadYourDocumentsViewPath, {uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim)});
   } catch (error) {
     next(error);

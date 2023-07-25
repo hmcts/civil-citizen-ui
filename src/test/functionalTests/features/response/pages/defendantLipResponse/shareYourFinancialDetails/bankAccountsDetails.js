@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   accounts1: 'accounts[0][typeOfAccount]',
@@ -19,7 +20,7 @@ const buttons = {
 
 class BankAccountsDetails {
   async enterBankAccountDetails() {
-    await I.see('List your bank and savings accounts', 'h1');
+    await I.waitForText('List your bank and savings accounts', config.WaitForText);
     await I.selectOption(fields.accounts1, 'Current account');
     await I.selectOption(fields.jointAccount1, 'Yes');
     await I.fillField(fields.account1Balance, '2000');

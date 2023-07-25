@@ -14,7 +14,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         hint: 'hint',
         value: 'value',
         index: 0,
-        error: null as string | null,
+        errorMessage: null as string,
       },
     });
 
@@ -29,35 +29,15 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
     expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY);
   });
 
-  it('should create Input Array with errorMessage', ()=> {
-    //Given
-    const inputArrayExpected = ({
-      type: ClaimSummaryType.INPUT_ARRAY_ERROR,
-      data: {
-        category: 'category',
-        field: 'field',
-        text: 'title',
-        classes: 'classes',
-        hint: 'hint',
-        value: 'value',
-        index: 0,
-        error: 'error',
-      },
-    });
-
-    //When
-    const inputArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
-        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value, 0, 'error')
-      .build();
-
-    //Then
-    expect(inputArrayBuilt).toEqual([inputArrayExpected]);
-    expect(inputArrayBuilt[0].type).toEqual(ClaimSummaryType.INPUT_ARRAY_ERROR);
-  });
-
   it('should create Date Array', ()=> {
     //Given
+    const errors = {
+      invalidDayError : 'invalidDayError',
+      invalidMonthError : 'invalidMonthError',
+      invalidYearError : 'invalidYearError',
+      invalidDateError : 'invalidDateError',
+    };
+
     const dateArrayExpected = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
@@ -65,6 +45,10 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         field: 'date',
         text: 'title',
         hint: 'hint',
+        invalidDayError: 'invalidDayError',
+        invalidMonthError: 'invalidMonthError',
+        invalidYearError: 'invalidYearError',
+        invalidDateError: 'invalidDateError',
         dayValue: 'dayValue',
         monthValue: 'monthValue',
         yearValue: 'yearValue',
@@ -74,8 +58,8 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addDateArray(dateArrayExpected.data.text,dateArrayExpected.data.hint,
-        dateArrayExpected.data.category, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
+      .addDateArray(dateArrayExpected.data.text, errors, dateArrayExpected.data.hint,
+        dateArrayExpected.data.category, dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
       .build();
 
     //Then
@@ -119,14 +103,17 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         classes: 'classes',
         hint: 'hint',
         choose: 'choose',
-        items: ['item1','item2','item2'],
+        items: [{'value': '', 'text': ''}],
+        value: '',
+        index: 0,
+        errorMessage: null as string,
       },
     });
 
     //When
     const selectBuilt = new UploadDocumentsSectionBuilder()
       .addSelect(selectExpected.data.text,selectExpected.data.classes,selectExpected.data.hint
-        ,selectExpected.data.choose,selectExpected.data.items,selectExpected.data.category,selectExpected.data.field)
+        ,selectExpected.data.choose,selectExpected.data.items,selectExpected.data.category,selectExpected.data.field, selectExpected.data.value)
       .build();
 
     //Then

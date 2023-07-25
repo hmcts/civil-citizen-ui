@@ -12,6 +12,12 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+     "fullAdmission": {
+      "paymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": "2023-11-11T00:00:00.000Z"
+      }
+    },
     "statementOfMeans": {
       "unemployment": {
         "option": "Other",
@@ -26,7 +32,8 @@
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "partyPhone": "111"
+      "partyPhone": "111",
+      "responseType": "FULL_ADMISSION"
     }
   }
 }

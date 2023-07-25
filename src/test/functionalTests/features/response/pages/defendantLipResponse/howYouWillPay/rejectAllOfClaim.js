@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   alreadyPaid: 'input[id="option"]',
@@ -11,6 +12,7 @@ const buttons = {
 
 class RejectAllOfClaim {
   async selectRejectAllReason(reason) {
+    await I.waitForText('Why do you believe you don’t owe', config.WaitForText);
     switch (reason) {
       case 'alreadyPaid':{
         await I.click(fields.alreadyPaid);

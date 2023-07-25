@@ -5,9 +5,9 @@ import {CaseDocument} from 'models/document/caseDocument';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, error: string = null) {
+  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, errorMessage: string = null) {
     const section = ({
-      type: error !== null ? ClaimSummaryType.INPUT_ARRAY_ERROR : ClaimSummaryType.INPUT_ARRAY,
+      type: ClaimSummaryType.INPUT_ARRAY,
       data: {
         category: category,
         field: field,
@@ -16,21 +16,25 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         hint: hint,
         value: value,
         index: index,
-        error: error,
+        errorMessage: errorMessage,
       },
     });
     this._claimSummarySections.push(section);
     return this;
   }
 
-  addDateArray(title: string, hint: string, category: string, dayValue: string = null, monthValue: string = null, yearValue: string = null, index = 0) {
+  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
         category: category,
-        field: 'date',
+        field: field,
         text: title,
         hint: hint,
+        invalidDayError: invalidDateErrors.invalidDayError,
+        invalidMonthError: invalidDateErrors.invalidMonthError,
+        invalidYearError: invalidDateErrors.invalidYearError,
+        invalidDateError: invalidDateErrors.invalidDateError,
         dayValue: dayValue,
         monthValue: monthValue,
         yearValue: yearValue,
@@ -41,7 +45,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string, caseDocument?: CaseDocument) {
+  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string) {
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
@@ -52,7 +56,6 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         html: html,
         index: index,
         errorMessage: errorMessage,
-        caseDocument: caseDocument ? JSON.stringify(caseDocument) : '',
       },
     });
     this._claimSummarySections.push(section);
@@ -72,7 +75,10 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addSelect(title:string, classes:string, hint:string, choose:string, selectItems:string[], category:string, field:string) {
+  addSelect(title:string, classes:string, hint:string, choose:string, selectItems: ({
+    text: string;
+    value: string
+  })[], category:string, field:string, value: string = null, index = 0, errorMessage: string = null) {
     const section = ({
       type: ClaimSummaryType.SELECT,
       data: {
@@ -83,6 +89,9 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         hint: hint,
         choose: choose,
         items: selectItems,
+        value: value,
+        index: index,
+        errorMessage: errorMessage,
       },
     });
     this._claimSummarySections.push(section);

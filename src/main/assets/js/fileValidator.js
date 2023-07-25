@@ -1,12 +1,17 @@
+/*
 function createLoading(event) {
   const eventId = event.target.id;
-  const loadingContainer = document.createElement('div');
-  loadingContainer.id = `${eventId}-loadingContainer`;
-  loadingContainer.innerHTML = `
-  <div class="loadingAnimation"></div>
-    <p id="loadingText">Uploading<span class="loadingDots"></span></p>
-`;
-  event.target.parentNode.insertBefore(loadingContainer, event.target);
+  const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
+  if (!existsLoading) {
+    const loadingContainer = document.createElement('div');
+    loadingContainer.id = `${eventId}-loadingContainer`;
+    loadingContainer.innerHTML = `
+        <div class="loadingAnimation"></div>
+        <p id="loadingText">Uploading<span class="loadingDots"></span></p>`;
+
+    event.target.parentNode.insertBefore(loadingContainer, event.target);
+  }
+
 }
 
 function removeLoading(event) {
@@ -14,11 +19,6 @@ function removeLoading(event) {
   const loadingContainer = document.getElementById(`${eventId}-loadingContainer`);
   loadingContainer.remove();
 
-}
-
-function appendCaseDocument(target, value) {
-  const caseDocumentInput = document.querySelector(`[id='${target}']`);
-  caseDocumentInput.value = value;
 }
 
 function elementExists(element) {
@@ -44,7 +44,7 @@ async function handleChange(event) {
   removeErrors(event);
   const csrfToken = document.getElementsByName('_csrf')[0].value;
   const formData = new FormData();
-  formData.append('file', target.files[0]); // Assuming you have an input element with type="file" and id="fileInput"
+  formData.append('file', target.files[0]);
 
   const options = {
     method: 'POST',
@@ -74,7 +74,6 @@ async function handleChange(event) {
   }
   if (response.status === 200) {
     removeLoading(event);
-    appendCaseDocument(objectId.replace(/\].*/, '][caseDocument]'), JSON.stringify(parsed));
   }
 }
 
@@ -89,7 +88,7 @@ function createObservable() {
             // Iterate over the node's children
             const element = node.querySelector('.govuk-file-upload');
             if (element) {
-              node.addEventListener('change', handleChange);
+              element.addEventListener('change', handleChange);
             }
           }
         }
@@ -121,3 +120,4 @@ if (window.location.href.includes('upload-documents')) {
 
 }
 
+*/

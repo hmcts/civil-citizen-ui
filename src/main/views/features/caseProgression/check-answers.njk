@@ -1,10 +1,20 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 
-
+{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
+                    + '<p class="govuk-!-margin-top-2">'
+                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
+                    +'</p>' %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -13,25 +23,66 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {% if documents.documentsForDisclosure.length > 0 %}
-            <h1 class="govuk-heading-l">Disclosure</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
+          {% if summarySections.witnessEvidenceSections %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.WITNESS_EVIDENCE') }}</h1>
+            {% for section in summarySections.witnessEvidenceSections.sections %}
+                  <div class="govuk-!-margin-bottom-9">
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <div class="govuk-form-group">
+                      {{ govukSummaryList({
+                        rows: section.summaryList.rows
+                      }) }}
+                    </div>
+                  </div>
+            {% endfor %}
           {% endif %}
-
-          {% for document in documents.documentsForDisclosure %}
-            <p>{{ document.typeOfDocument }}</p>
-            <p>{{ document.caseDocument.createdDatetime }}</p>
-            <p>{{ document.caseDocument.documentName }}</p>
-            <p>{{ document.caseDocument.documentLink.document_url }}  </p>
-          {% endfor %}
-          {% if documents.trialDocumentary.length > 0 %}
-            <h1 class="govuk-heading-l">Trial documents</h1>
+  //Expert Evidence
+          {% if summarySections.expertEvidenceSections %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.EXPERT_EVIDENCE') }}</h1>
+            {% for section in summarySections.expertEvidenceSections.sections %}
+                  <div class="govuk-!-margin-bottom-9">
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <div class="govuk-form-group">
+                      {{ govukSummaryList({
+                        rows: section.summaryList.rows
+                      }) }}
+                    </div>
+                  </div>
+              {% endif %}
+            {% endfor %}
+  //Trial Documents
+          {% if summarySections.trialDocumentSections %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.TRIAL') }}</h1>
+            {% for section in summarySections.trialDocumentSections.sections %}
+              {% if section.yourStatement %}
+                {% for statement in section.yourStatement %}
+                  <div class="govuk-!-margin-bottom-9">
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ statement.title }}</h2>
+                    <div class="govuk-form-group">
+                      {{ govukSummaryList({
+                        rows: statement.summaryList.rows
+                      }) }}
+                    </div>
+                  </div>
+              {% endif %}
+            {% endfor %}
           {% endif %}
-          {% for document in documents.trialDocumentary %}
-            <p>{{ document.typeOfDocument }}</p>
-            <p>{{ document.caseDocument.createdDatetime }}</p>
-            <p>{{ document.caseDocument.documentName }}</p>
-            <p>{{ document.caseDocument.documentLink.document_url }}  </p>
-          {% endfor %}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            <input type="hidden" name="type" value="{{ form.model.type }}">
+            {{ statementOfTruth(
+              t,
+              form,
+              labelHtml
+            ) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
         </div>
       </div>
     </main>

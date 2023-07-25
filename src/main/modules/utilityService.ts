@@ -6,6 +6,8 @@ import {Claim} from '../../main/common/models/claim';
 import {Request} from 'express';
 import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
 import {Reason} from '../common/form/models/claim/details/reason';
+import RedisStore from 'connect-redis';
+import Redis from 'ioredis';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -31,4 +33,14 @@ export const getClaimById = async (claimId: string, req: Request): Promise<Claim
     }
   }
   return claim;
+};
+
+export const getRedisStoreForSession = () => {
+  const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+  const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
+  return new RedisStore({
+    client: new Redis(connectionString),
+    prefix: 'citizen-ui-session:',
+    ttl: 86400, //prune expired entries every 24h
+  });
 };

@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   responseAdmitAll: 'input[id="responseType"]',
@@ -13,7 +14,7 @@ const buttons = {
 class RespondTypePage {
   async enterResponseToClaim(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.see('How do you respond to the claim?', 'h1');
+    await I.waitForText('How do you respond to the claim?', config.WaitForText);
     switch (responseType){
       case 'full-admission':{
         await I.click(fields.responseAdmitAll);

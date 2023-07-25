@@ -23,8 +23,21 @@
     <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
   {% else %}
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FULL_NAME') }}</h2>
-    <p class="govuk-body">{% if party.model.partyName %}{{ party.model.partyName }}{% endif %}</p>
-    <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+    <p class="govuk-body">
+    {% if party.model.partyName %}
+      {{ party.model.partyName }}</p>
+      <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+    {% else %}
+      {% if party.model.individualFirstName %}
+        {{ party.model.individualFirstName }}
+        <input type="hidden" id="individualFirstName" name="individualFirstName" value="{{ party.model.individualFirstName }}"/>
+      {% endif %}
+      {% if party.model.individualLastName %}
+        {{ party.model.individualLastName }}
+        <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
+      {% endif %}
+    </p>
+    {% endif %}
     {% if party.model.soleTraderTradingAs %}
       <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.BUSINESS_NAME') }}</h2>
       <p class="govuk-body">{{ party.model.soleTraderTradingAs }}</p>

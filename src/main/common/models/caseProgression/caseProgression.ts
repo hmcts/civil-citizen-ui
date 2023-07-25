@@ -5,4 +5,6 @@ export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
   defendantUploadDocuments?: UploadDocuments;
   defendantDocuments?: UploadDocumentsUserForm;
+  claimantLastUploadDate?: Date;
+  defendantLastUploadDate?: Date;
 }

@@ -25,8 +25,24 @@ export const isPaymentOptionMissing = (caseData: Claim): boolean => {
   return !caseData?.fullAdmission?.paymentIntention?.paymentOption;
 };
 
+export const isPaymentOptionExisting = (caseData: Claim): boolean => {
+  if (caseData?.isFullAdmission()) {
+    return !!caseData?.fullAdmission?.paymentIntention?.paymentOption;
+  }
+  if (caseData?.isPartialAdmission()) {
+    return !!caseData?.partialAdmission?.paymentIntention?.paymentOption;
+  }
+  return false;
+};
+
 export const isNotPayImmediatelyResponse = (caseData: Claim): boolean => {
-  return (caseData?.fullAdmission?.paymentIntention?.paymentOption !== PaymentOptionType.IMMEDIATELY);
+  if (caseData?.isFullAdmission()) {
+    return caseData?.fullAdmission?.paymentIntention?.paymentOption !== PaymentOptionType.IMMEDIATELY;
+  }
+  if (caseData?.isPartialAdmission()) {
+    return caseData?.partialAdmission?.paymentIntention?.paymentOption !== PaymentOptionType.IMMEDIATELY;
+  }
+  return true;
 };
 
 export const isRepaymentPlanMissing = (caseData: Claim): boolean => {
