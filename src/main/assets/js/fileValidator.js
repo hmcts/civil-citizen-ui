@@ -1,4 +1,4 @@
-/*
+
 function createLoading(event) {
   const eventId = event.target.id;
   const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
@@ -120,4 +120,3 @@ if (window.location.href.includes('upload-documents')) {
 
 }
 
-*/
