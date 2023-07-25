@@ -8,8 +8,9 @@ import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
 import {DocumentType} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {TabId} from 'routes/tabs';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -40,7 +41,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+        .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
@@ -63,7 +64,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addLink(noticesAndOrdersLinkText,'href',noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+        .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
