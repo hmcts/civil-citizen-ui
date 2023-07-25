@@ -14,7 +14,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 async function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string | unknown): Promise<void> {
-  const draftClaimUrl = await createDraftClaimUrl()
+  const draftClaimUrl = await createDraftClaimUrl();
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
     claimDraftSaved,
