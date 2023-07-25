@@ -18,9 +18,6 @@
       {{ govukPanel({
         titleText: t('PAGES.SUBMIT_CONFIRMATION.YOU_SETTLED_CLAIM')
       }) }}
-      {% for item in confirmationContent %}
-        {{ itemContent(item,t) }}
-      {% endfor %}
       <p class="govuk-body">
         {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
       </p>

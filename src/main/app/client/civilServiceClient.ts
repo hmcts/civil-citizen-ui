@@ -203,10 +203,6 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async settleClaim(claimId: string, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.UPDATE_CASE_STATE_CASE_SETTLED, claimId, {}, req);
-  }
-
   async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
