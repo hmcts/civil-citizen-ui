@@ -20,7 +20,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
-jest.mock('../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
