@@ -17,13 +17,14 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
-import {CaseDocument} from 'common/models/document/caseDocument';
+import {CaseDocument} from 'models/document/caseDocument';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -33,6 +34,7 @@ const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
+  claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
 
@@ -181,15 +183,17 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentDetails: CaseDocument, req: AppRequest): Promise<Buffer> {
+  async retrieveDocument(documentId: string) {
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails);
-      if (!response.data) {
-        throw new AssertionError({message: 'Document is not available.'});
-      }
-      return response.data as Buffer;
-    } catch (err: unknown) {
-      logger.error(err);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
+        .replace(':documentId', documentId));
+
+      return new FileResponse(response.headers['content-type'],
+        response.headers['original-file-name'],
+        response.data as Buffer);
+
+    } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
     }
   }

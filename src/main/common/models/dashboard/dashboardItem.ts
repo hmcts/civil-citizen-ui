@@ -126,13 +126,27 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS.PART_ADMIT_NOT_PAID'},
       HEARING_FORM_GENERATED: {translationKey: 'PAGES.DASHBOARD.STATUS.TRIAL_OR_HEARING_SCHEDULED'},
+      MORE_DETAILS_REQUIRED: { translationKey: 'PAGES.DASHBOARD.STATUS.MORE_DETAILS_REQUIRED' },
+      MEDIATION_SUCCESSFUL: { translationKey: 'PAGES.DASHBOARD.STATUS.MEDIATION_SUCCESSFUL' },
+      MEDIATION_UNSUCCESSFUL: { translationKey: 'PAGES.DASHBOARD.STATUS.MEDIATION_UNSUCCESSFUL' },
+      IN_MEDIATION: { translationKey: 'PAGES.DASHBOARD.STATUS.IN_MEDIATION' },
+      WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW' },
+      CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_ENDED' },
+      CLAIM_REJECTED_OFFER_SETTLE_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
+      CLAIMANT_REJECT_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
+      CLAIMANT_ACCEPTED_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
+      CLAIMANT_REJECT_PARTIAL_ADMISSION: {
+        translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
+        parameter: [paramClaimantName, paramAdmittedAmount],
+      },
+
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);
   }
 }
 
-const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -141,7 +155,7 @@ const translate = (translationKey: string, params?: DashboardStatusTranslationPa
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
   }
-  return t(translationKey);
+  return t(translationKey, {lng:getLng(lang)} );
 };
 
 export const toDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{

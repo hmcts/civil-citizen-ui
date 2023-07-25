@@ -59,6 +59,7 @@ import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
   legacyCaseReference: string;
@@ -99,6 +100,12 @@ export class Claim {
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   caseProgressionHearing?: CaseProgressionHearing;
+  takenOfflineDate?: Date;
+  mediationAgreement?: MediationAgreement;
+  unsuccessfulMediationReason?: string;
+  defaultJudgmentDocuments?: CaseDocument[];
+  ccjJudgmentStatement?: string;
+  lastModifiedDate?: Date;
   applicant1AcceptAdmitAmountPaidSpec?: string;
   applicant1PartAdmitConfirmAmountPaidSpec?: string;
   applicant1PartAdmitIntentionToSettleClaimSpec?: string;
@@ -348,9 +355,9 @@ export class Claim {
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
-        return document.value.documentType === documentType;
+        return document?.value.documentType === documentType;
       });
-      return filteredDocumentDetailsByType.value;
+      return filteredDocumentDetailsByType?.value;
     }
     return undefined;
   }
@@ -537,6 +544,30 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  hasClaimTakenOffline() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
+  }
+
+  hasMediationSuccessful() {
+    return  this.ccdState === CaseState.CASE_STAYED && !!this.mediationAgreement;
+  }
+
+  hasMediationUnSuccessful() {
+    return !!this.unsuccessfulMediationReason;
+  }
+
+  hasDefaultJudgmentSubmitted() {
+    return !!this.defaultJudgmentDocuments;
+  }
+
+  hasClaimantRequestedCCJ() {
+    return !!this.ccjJudgmentStatement;
+  }
+
+  isClaimSettled() {
+    return this.ccdState === CaseState.CASE_SETTLED;
   }
 }
 

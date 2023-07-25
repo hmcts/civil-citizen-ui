@@ -10,7 +10,7 @@ data "azurerm_user_assigned_identity" "civil" {
 
 module "key-vault" {
   source                  = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
-  name                    = "${var.product}-${var.component}-${var.env}"
+  name                    = "${var.product}-${local.short_kv_name}-${var.env}"
   product                 = var.product
   env                     = var.env
   tenant_id               = var.tenant_id

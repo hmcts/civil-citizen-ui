@@ -1,5 +1,5 @@
-
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -9,7 +9,7 @@ const fields ={
 class RequestExtraFourWeeks {
 
   async SelectExtraFourWeeksToSettle() {
-    await I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
+    await I.waitForText('Do you want an extra 4 weeks to try to settle the claim?', config.WaitForText);
     await I.click(fields.noButton);
     await I.click('Save and continue');
   }

@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -13,13 +14,13 @@ const buttons = {
 class OtherDependantDetails {
 
   async clickYesButton() {
-    await I.see('Do you support anyone else financially?', 'h1');
+    await I.waitForText('Do you support anyone else financially?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.numberOfPeople, '2');
     await I.fillField(fields.otherDetails, 'Parents');
     await I.click(buttons.continue);
   }
-  
+
   async clickNoButton() {
     await I.see('Do you support anyone else financially?', 'h1');
     await I.click(fields.noButton);
