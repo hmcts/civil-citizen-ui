@@ -1,7 +1,7 @@
 import {isCUIReleaseTwoEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as DraftSoreClient from 'client/legacyDraftStoreClient';
 import * as RedisDraftStoreClient  from 'modules/draft-store/draftStoreService';
-import {createDraftClaimUrl, getDraftClaim} from 'services/dashboard/draftClaimService';
+import {getDraftClaimData} from 'services/dashboard/draftClaimService';
 import config from 'config';
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -21,7 +21,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(false);
     //When
-    await getDraftClaim('userToken');
+    await getDraftClaimData('userToken');
     //Then
     expect(ocmcDraftClaimStore).toHaveBeenCalled();
     expect(redisDraftClaimStore).not.toHaveBeenCalled();
@@ -30,7 +30,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(true);
     //When
-    await getDraftClaim('userToken');
+    await getDraftClaimData('userToken');
     //Then
     expect(ocmcDraftClaimStore).not.toHaveBeenCalled();
     expect(redisDraftClaimStore).toHaveBeenCalled();
@@ -39,16 +39,16 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(false);
     //When
-    const url = await createDraftClaimUrl();
+    const draftClaimData = await getDraftClaimData('userToken');
     //Then
-    expect(url).toContain(ocmcBaseUrl);
+    expect(draftClaimData.claimCreationUrl).toContain(ocmcBaseUrl);
   });
   it('should not have ocmc eligibility page when flag for release2 is true', async () => {
     //Given
     isReleaseTwo.mockResolvedValue(true);
     //When
-    const url = await createDraftClaimUrl();
+    const draftClaimData = await getDraftClaimData('userToken');
     //Then
-    expect(url).not.toContain(ocmcBaseUrl);
+    expect(draftClaimData.claimCreationUrl).not.toContain(ocmcBaseUrl);
   });
 });

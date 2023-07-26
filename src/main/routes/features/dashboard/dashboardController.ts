@@ -5,7 +5,7 @@ import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {createDraftClaimUrl, getDraftClaim} from 'services/dashboard/draftClaimService';
+import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
 import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
@@ -35,13 +35,15 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const appRequest = <AppRequest> req;
   const user: UserDetails = appRequest.session.user;
   try{
+    const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken);
     const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
-    const claimDraftSaved = await getDraftClaim(user?.accessToken);
+    const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
     const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.page as string, lang);
     const responseDraftSaved = false;
     const paginationArgumentClaimant: object = {};
-    const draftClaimUrl = await createDraftClaimUrl();
+    const draftClaimUrl = draftClaimData?.claimCreationUrl;
+
     renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
