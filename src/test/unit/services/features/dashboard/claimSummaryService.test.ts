@@ -91,7 +91,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(3);
+    expect(result[0].contentSections).toHaveLength(4);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
     const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
@@ -99,7 +99,7 @@ describe('getDocumentsContent', () => {
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection);
-    expect(result[0].contentSections[2]).toEqual(downloadHearingNoticeSection);
+    expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
   });
 });
 
