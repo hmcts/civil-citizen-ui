@@ -184,11 +184,11 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  generateSDO : async (user, claimType, expectedState) => {
+  generateSDO : async (user, claimType) => {
     let generateSDODocumentPayload;
 
     if (claimType === 'FastTrack') {
-        generateSDODocumentPayload = generateSDODocument.generateSDODocument();
+      generateSDODocumentPayload = generateSDODocument.generateSDODocument();
     }
     eventName = 'CREATE_SDO';
     caseData = generateSDODocumentPayload['caseDataUpdate'];
