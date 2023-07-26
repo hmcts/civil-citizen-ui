@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "s2s_secrets" {
 
 resource "azurerm_key_vault_secret" "s2s" {
   name         = "s2s-secret"
-  value        = data.azurerm_key_vault_secret.key_from_vault.value
+  value        = data.azurerm_key_vault_secret.s2s_secrets.value
   key_vault_id = data.azurerm_key_vault.s2s_vault.id
 }
 
