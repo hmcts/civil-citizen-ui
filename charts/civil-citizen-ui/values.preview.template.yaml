@@ -140,6 +140,19 @@ idam-pr:
     XUI:
       - https://xui-${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
 
+ccd-case-document-am-api:
+  enabled: true
+  java:
+    image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
+    releaseNameOverride: ${SERVICE_NAME}-ccd-case-document-am-api
+    environment:
+      CCD_DATA_STORE_API_BASE_URL: http://{{ .Release.Name }}-ccd-data-store-api
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
+      S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
+
 xui-webapp:
   enabled: true
   memoryLimits: 1Gi
@@ -159,6 +172,7 @@ xui-webapp:
       HEALTH_WORK_ALLOCATION_TASK_API: https://wa-task-management-api-${SERVICE_FQDN}.preview.platform.hmcts.net/health
       SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-ccd-case-document-am-api
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       SERVICES_WORK_ALLOCATION_TASK_API: https://wa-task-management-api-${SERVICE_FQDN}
       SERVICES_WA_WORKFLOW_API_URL: http://wa-workflow-api-${SERVICE_FQDN}
