@@ -63,6 +63,7 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
   resolvingDispute: boolean;
+  completingClaimConfirmed: boolean;
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
@@ -373,6 +374,10 @@ export class Claim {
 
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
+  isClaimantBusiness(): boolean {
+    return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
 
   isDeadlineExtended(): boolean {
