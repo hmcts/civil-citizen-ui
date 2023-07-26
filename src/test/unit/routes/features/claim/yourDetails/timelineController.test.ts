@@ -55,6 +55,7 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should update data and redirect to evidence page if all required details are provided', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       const mockData = [{
         date: '18 July',
         description: 'Raised an issue with Mr. Smith',
