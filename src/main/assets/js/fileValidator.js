@@ -88,7 +88,11 @@ function createObservable() {
             // Iterate over the node's children
             const element = node.querySelector('.govuk-file-upload');
             if (element) {
-              element.addEventListener('change', handleChange);
+              element.addEventListener('change', (event) => {
+                handleChange(event).catch(error => {
+                  console.error('Error:', error);
+                });
+              });
             }
           }
         }
