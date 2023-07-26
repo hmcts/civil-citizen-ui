@@ -1,5 +1,8 @@
+
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {
+  buildDownloadHearingNoticeSection,
   buildDownloadSealedClaimSection,
   buildDownloadSealedClaimSectionTitle,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
@@ -11,12 +14,16 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+
+const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 
 function getTable(isClaimant: boolean, sectionText: string, documentText: string[] ): ClaimSummarySection {
 
@@ -77,19 +84,22 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
+    isCaseProgressionV1EnableMock.mockResolvedValue(true);
 
     // When
-    const result = getDocumentsContent(new Claim(), claimId, lang);
+    const result = await getDocumentsContent(new Claim(), claimId, lang);
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(3);
+    expect(result[0].contentSections).toHaveLength(4);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
     const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
+    const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(new Claim(), claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection);
+    expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
   });
 });
 
@@ -128,5 +138,6 @@ describe('getEvidenceUploadContent', () => {
     expect(result[0].contentSections[6]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions', 'pages.upload_evidence_documents.questions_for_other_party', 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.claim_summary.expert_report']));
     expect(result[0].contentSections[7]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS',['pages.claim_summary.documentary_evidence', 'pages.upload_evidence_documents.costs','pages.upload_evidence_documents.legal_authorities', 'pages.upload_evidence_documents.skeleton_argument', 'pages.upload_evidence_documents.case_summary']));
     expect(result[0].contentSections[8]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS',['pages.claim_summary.documentary_evidence', 'pages.upload_evidence_documents.costs','pages.upload_evidence_documents.legal_authorities', 'pages.upload_evidence_documents.skeleton_argument', 'pages.upload_evidence_documents.case_summary']));
+
   });
 });

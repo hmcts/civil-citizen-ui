@@ -353,6 +353,16 @@ export class Claim {
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
+    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()){
+      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return hearingNotice.value;
+    }
+    else if (documentType === DocumentType.HEARING_FORM){
+      return undefined;
+    }
+
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         return document?.value.documentType === documentType;
