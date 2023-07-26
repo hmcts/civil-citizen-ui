@@ -159,7 +159,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
 };
 
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
-  if(claim == undefined || claim?.isEmpty()) {
+  if(!claim || claim?.isEmpty()) {
     return undefined;
   }
   const draftClaim = new DashboardClaimantItem();
