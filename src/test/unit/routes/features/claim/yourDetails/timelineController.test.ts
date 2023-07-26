@@ -55,18 +55,11 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should update data and redirect to evidence page if all required details are provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const mockData = {
-        rows: [
-          {
-            day: 17,
-            month: 11,
-            year: 2022,
-            description: 'Raised an issue with Mr. Smith',
-          },
-        ],
-      };
-      await request(app).post(CLAIM_TIMELINE_URL).send(mockData).expect((res) => {
+      const mockData = [{
+        date: '18 July',
+        description: 'Raised an issue with Mr. Smith',
+      }];
+      await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
       });
@@ -74,17 +67,11 @@ describe('Claimant Timeline Controller', () => {
 
     it('should save data if applicant doesn\'t exist and redirect to evidence page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const mockData = {
-        rows: [
-          {
-            day: 17,
-            month: 11,
-            year: 2022,
-            description: 'Raised an issue with Mr. Smith',
-          },
-        ],
-      };
-      await request(app).post(CLAIM_TIMELINE_URL).send(mockData).expect((res) => {
+      const mockData = [{
+        date: '18 July',
+        description: 'Raised an issue with Mr. Smith',
+      }];
+      await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
       });
