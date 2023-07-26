@@ -231,3 +231,5 @@ export const CP_FINALISE_TRIAL_ARRANGEMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/
 export const IS_CASE_READY_URL = `${BASE_CASE_PROGRESSION_URL}/is-case-ready`;
 export const TRIAL_ARRANGEMENTS_HEARING_DURATION= `${BASE_CASE_PROGRESSION_URL}/hearing-duration-other-info`;
 export const TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS= `${BASE_CASE_PROGRESSION_URL}/check-trial-arrangements`;
+export const HAS_ANYTHING_CHANGED_URL = `${BASE_CASE_PROGRESSION_URL}/has-anything-changed`;
+export const HEARING_DURATION_URL = `${BASE_CASE_PROGRESSION_URL}/hearing-duration`;
