@@ -20,7 +20,7 @@ describe('Response Task List service', () => {
     title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS'),
     tasks: [
       {
-        description: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS', {lng}),
+        description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', {lng}),
         url: constructResponseUrlWithIdParams(userId, CLAIM_RESOLVING_DISPUTE_URL),
         status: TaskStatus.INCOMPLETE,
       },
