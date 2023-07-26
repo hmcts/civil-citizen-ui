@@ -100,14 +100,12 @@ function createObservable() {
 }
 
 function addEventListenerWhenDomIsLoaded() {
-  document.addEventListener('DOMContentLoaded', async function () {
+  document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
-      fileUpload.addEventListener('change', async (event) => {
-        try {
-          await handleChange(event);
-        } catch (error) {
+      fileUpload.addEventListener('change', (event) => {
+        handleChange(event).catch(error => {
           console.error('Error:', error);
-        }
+        });
       });
     });
   });
