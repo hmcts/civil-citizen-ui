@@ -1,7 +1,7 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
 import {t} from 'i18next';
-import {DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
 
 const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS';
 
@@ -20,7 +20,7 @@ export const getFinaliseTrialArrangements = (claim: Claim) => {
     .addWarning(`${FINALISE_TRIAL_ARRANGEMENTS}.DUE_BY`, {finalisingTrialArrangementsDeadline: deadline})
     .addRawHtml(htmlText)
     .addLink(linkText, linkHref, linkTextBefore, linkTextAfter)
-    .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, 'href'); //TODO: provide an actual href once CIV-9124 is merged into master
+    .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claim.id));
 
   return latestUpdateSectionBuilder.build();
 };

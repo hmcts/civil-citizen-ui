@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
-import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
 import {
   buildEvidenceUploadSection, buildFinaliseTrialArrangements, buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
@@ -108,7 +108,7 @@ describe('Latest Update Content Builder Case Progression', () => {
           DEFENDANT_DOCUMENTS_URL.replace(':id', claim.id),
           `${FINALISE_TRIAL_ARRANGEMENTS}.YOU_MAY_WISH_TO_REVIEW`,
           `${FINALISE_TRIAL_ARRANGEMENTS}.UNDER_NOTICES_AND_ORDERS`)
-        .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, 'href') //TODO: provide an actual href once CIV-9124 is merged into master
+        .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claim.id))
         .build();
 
       //When
