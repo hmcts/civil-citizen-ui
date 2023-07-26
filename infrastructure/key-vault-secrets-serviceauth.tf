@@ -1,8 +1,3 @@
-data "azurerm_key_vault" "key_vault" {
-  name                = "${var.product}-${var.env}" # update these values if required
-  resource_group_name = "${var.product}-${var.env}" # update these values if required
-}
-
 data "azurerm_key_vault" "s2s_vault" {
   name                = "s2s-${var.env}"
   resource_group_name = "rpe-service-auth-provider-${var.env}"
