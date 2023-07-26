@@ -230,3 +230,5 @@ export const DEFENDANT_SUMMARY_TAB_URL = `${DASHBOARD_URL}/:id/defendant#:tab`;
 export const CP_UPLOAD_FILE = '/upload-file';
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/finalise-trial-arrangements`;
 export const IS_CASE_READY_URL = `${BASE_CASE_PROGRESSION_URL}/is-case-ready`;
+export const HAS_ANYTHING_CHANGED_URL = `${BASE_CASE_PROGRESSION_URL}/has-anything-changed`;
+export const HEARING_DURATION_URL = `${BASE_CASE_PROGRESSION_URL}/hearing-duration`;
