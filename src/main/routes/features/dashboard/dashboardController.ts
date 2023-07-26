@@ -6,7 +6,8 @@ import {AppRequest, UserDetails} from 'models/AppRequest';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {buildPaginationData} from 'services/features/dashboard/claimPaginationService';
+import { buildPagination } from 'services/features/dashboard/claimPaginationService';
+import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -35,13 +36,12 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const user: UserDetails = appRequest.session.user;
   try{
     const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
-    const claimsAsDefendant: DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(appRequest);
-    const claimsAsDefendantPaginationData = buildPaginationData(claimsAsDefendant, req.query?.page as string, lang);
+    const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
+    const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.page as string, lang);
     const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
     const responseDraftSaved = false;
     const paginationArgumentClaimant: object = {};
-    const paginationArgumentDefendant: object = claimsAsDefendantPaginationData.paginationArguments;
-    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendantPaginationData.paginatedClaims, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant, lang);
+    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
   }
