@@ -17,7 +17,6 @@ export const createDraftClaimUrl = async ():Promise<string> => {
 
 export const getDraftClaim = async (userToken: string): Promise<DashboardClaimantItem> => {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  console.log(isReleaseTwoEnabled);
   if(isReleaseTwoEnabled) {
     const claim = await getCaseDataFromStore(userToken);
     return toDraftClaimDashboardItem(claim);
