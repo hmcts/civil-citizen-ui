@@ -1,21 +1,22 @@
-import {t} from "i18next";
-import {TaskStatus} from "common/models/taskList/TaskStatus";
-import {TaskList} from "common/models/taskList/taskList";
-import {getLng} from "common/utils/languageToggleUtils";
-import {Claim} from "common/models/claim";
-import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
+import {t} from 'i18next';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {TaskList} from 'common/models/taskList/taskList';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {Claim} from 'common/models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
-  CLAIMANT_TASK_LIST_URL,
   CLAIM_AMOUNT_URL,
+  CLAIM_CHECK_ANSWERS_URL,
   CLAIM_COMPLETING_CLAIM_URL,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
+  CLAIM_FEE_URL,
   CLAIM_REASON_URL,
   CLAIM_RESOLVING_DISPUTE_URL,
-} from "routes/urls";
-import { YesNo } from "common/form/models/yesNo";
-import { InterestClaimOptionsType } from "common/form/models/claim/interest/interestClaimOptionsType";
-import { InterestClaimFromType } from "common/form/models/claimDetails";
+} from 'routes/urls';
+import { YesNo } from 'common/form/models/yesNo';
+import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
+import { InterestClaimFromType } from 'common/form/models/claimDetails';
 
 export const getTaskLists = (caseData: Claim, userId: string, lang: string): TaskList[] => {
   const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions( caseData, userId, lang);
@@ -33,7 +34,7 @@ export const getTaskLists = (caseData: Claim, userId: string, lang: string): Tas
 
 export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang: string): TaskList => {
   const considerOtherOptionsTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE", { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_RESOLVING_DISPUTE_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -43,7 +44,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
   }
 
   const taskList: TaskList = {
-    title: t("PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS"),
+    title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS'),
     tasks: [considerOtherOptionsTask],
   };
 
@@ -52,7 +53,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
 
 export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, lang: string): TaskList => {
   const completingYourClaimTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.COMPLETING_CLAIM", { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.COMPLETING_CLAIM', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_COMPLETING_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -62,12 +63,12 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const yourDetailsTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.YOUR_DETAILS", { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.YOUR_DETAILS', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIMANT_PARTY_TYPE_SELECTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
-  console.log("userId: ", userId);
+  console.log('userId: ', userId);
   // TODO DOB doesnt work
   // if (caseData.respondent1?.type) {
   //   if (
@@ -79,7 +80,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   // }
 
   const theirDetailsTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.THEIR_DETAILS", { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_DEFENDANT_PARTY_TYPE_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -94,7 +95,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const claimAmountTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.CLAIM_AMOUNT", { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_AMOUNT', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -127,7 +128,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const claimDetailsTask = {
-    description: t("PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS", { lng: getLng(lang)}),
+    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS', { lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_REASON_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -137,7 +138,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const taskList: TaskList = {
-    title: t("PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM"),
+    title: t('PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM'),
     tasks: [
       completingYourClaimTask,
       yourDetailsTask,
@@ -152,15 +153,27 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
 
 export const buildSubmitSection = (caseData: Claim, userId: string, lang: string): TaskList => {
   const considerOtherOptionsTask = {
-    description: t("COMMON.CONFIRM_YOUR_DETAILS", { lng: getLng(lang) }),
-    url: constructResponseUrlWithIdParams(userId, CLAIMANT_TASK_LIST_URL),
+    description: t('PAGES.CLAIM_TASK_LIST.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
+    url: constructResponseUrlWithIdParams(userId, CLAIM_CHECK_ANSWERS_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+
+  const payYourClaimFeeTask = {
+    description: t('PAGES.CLAIM_TASK_LIST.PAY_FEE', { lng: getLng(lang) }),
+    url: constructResponseUrlWithIdParams(userId, CLAIM_FEE_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
   const taskList: TaskList = {
-    title: t("PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS"),
-    tasks: [considerOtherOptionsTask],
+    title: t('PAGES.CLAIM_TASK_LIST.SUBMIT'),
+    tasks: [],
   };
+
+  if (caseData.claimDetails?.helpWithFees?.option === YesNo.NO) {
+    taskList.tasks.push(payYourClaimFeeTask);
+  }
+
+  taskList.tasks.push(considerOtherOptionsTask);
 
   return taskList;
 };
