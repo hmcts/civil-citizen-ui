@@ -5,7 +5,6 @@ import {
   CASE_DOCUMENT_DOWNLOAD_URL,
   DEFENDANT_SUMMARY_TAB_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
-  DEFENDANT_DOCUMENTS_URL,
 } from 'routes/urls';
 import {
   buildEvidenceUploadSection,
@@ -124,7 +123,7 @@ describe('Latest Update Content Builder Case Progression', () => {
                                 <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: claim.finalisingTrialArrangementsDeadline})}</span>.
                               </p>`)
         .addLink(`${FINALISE_TRIAL_ARRANGEMENTS}.DIRECTIONS_QUESTIONNAIRE`,
-          DEFENDANT_DOCUMENTS_URL.replace(':id', claim.id),
+          DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),
           `${FINALISE_TRIAL_ARRANGEMENTS}.YOU_MAY_WISH_TO_REVIEW`,
           `${FINALISE_TRIAL_ARRANGEMENTS}.UNDER_NOTICES_AND_ORDERS`)
         .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claim.id))
