@@ -7,7 +7,6 @@ import {downloadFile} from 'common/utils/downloadUtils';
 const documentDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
-
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const document = await civilServiceClientForDocRetrieve.retrieveDocument(req.params.documentId);
@@ -16,5 +15,4 @@ documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: Request, 
     next(error);
   }
 });
-
 export default documentDownloadController;
