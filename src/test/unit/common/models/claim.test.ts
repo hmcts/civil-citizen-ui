@@ -1,4 +1,4 @@
-import {Claim, DocumentWithCategory, TimeLineDocument} from 'common/models/claim';
+import {Claim} from 'common/models/claim';
 import {
   CaseState,
   InterestClaimFromType,
