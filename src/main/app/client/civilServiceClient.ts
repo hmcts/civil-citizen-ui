@@ -17,8 +17,8 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
-import {CaseDocument} from 'models/document/caseDocument';
-import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import { DashboardClaimantItem, DashboardDefendantItem } from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
@@ -26,6 +26,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -75,12 +76,14 @@ export class CivilServiceClient {
     }
   }
 
-  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantItem[]> {
+  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
+    const currentPage = req.query?.page ?? 1;
     try {
-      const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      return plainToInstance(DashboardDefendantItem, response.data as object[]);
+      const response = await this.client.get('/cases/defendant/' + submitterId + '?page=' + currentPage, config);
+      const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
+      return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
       throw err;
