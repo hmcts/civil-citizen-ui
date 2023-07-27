@@ -36,6 +36,7 @@
             {{ claim.legacyCaseReference }}
           </p>
 
+          <div class="wordWrap">
           {{ govukTabs({
             classes: 'tab-section',
             items: [
@@ -51,7 +52,7 @@
               }
             ]
           }) }}
-
+          </div>
           {{ contactUsForHelp(t) }}
         </div>
         {{ aboutClaimWidget({
