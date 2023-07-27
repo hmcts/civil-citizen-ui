@@ -14,18 +14,24 @@ let securityCode;
 Feature('Response with RejectAll');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-  console.log('claim number', claimNumber);
-  console.log('Security code', securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('claim number', claimNumber);
+    console.log('Security code', securityCode);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  }else{
+    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
+  }
 });
 
 Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -48,7 +54,6 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
 });
 
 Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -65,9 +70,7 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
-    //mediation with claimant lr to be replaced with admin after bug CIV-9427
-    await api.mediationUnsuccessful(config.applicantSolicitorUser);
-    //Create sdo in this journey is broken and a bug CIV-9488
-    //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
+    await api.mediationUnsuccessful(config.caseWorker);
+    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
 });

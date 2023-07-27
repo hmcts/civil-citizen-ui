@@ -20,8 +20,7 @@ const requestIsForPinAndPost = (req: Request): boolean => {
 };
 
 const requestIsForDownloadPdf = (req: Request): boolean => {
-  return req.originalUrl.endsWith('/documents/timeline')
-    || req.originalUrl.endsWith('/documents/sealed-claim');
+  return req.originalUrl.includes('/documents/');
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
