@@ -46,6 +46,8 @@ async function handleChange(event) {
   const formData = new FormData();
   formData.append('file', target.files[0]);
 
+  const fetchTimeout = 60000; // 60 seconds
+
   const options = {
     method: 'POST',
     headers: {
@@ -54,8 +56,13 @@ async function handleChange(event) {
     body: formData,
   };
 
-  const response = await fetch('/upload-file', options);
-  const parsed = await response.json();
+  const racePromise = Promise.race([
+    fetch('/upload-file', options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('File upload timed out')), fetchTimeout)),
+  ]);
+
+  const response = await racePromise;
+  const parsed = response.json();
   if (response.status === 400) {
     removeLoading(event);
     target.value = '';
