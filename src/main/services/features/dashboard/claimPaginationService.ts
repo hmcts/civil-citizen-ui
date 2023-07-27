@@ -1,23 +1,11 @@
-import {t} from 'i18next';
-import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
+import { t } from 'i18next';
 import {DASHBOARD_URL} from 'routes/urls';
 
-const CASE_PER_PAGE = 10;
 const DEFAULT_PAGE_NUMBER = 1;
 
-export function buildPaginationData(claims: DashboardDefendantItem[], currentPageAsString: string, lang: string) {
+export function buildPagination(totalPages: number, currentPageAsString: string, lang: string) {
   const currentPage = Number(currentPageAsString) ? Number(currentPageAsString) : DEFAULT_PAGE_NUMBER;
-  const totalPages = claims?.length ? Math.ceil(claims.length / CASE_PER_PAGE) : undefined;
-  const paginationArguments = totalPages > 1 ? buildPaginationListArgs(totalPages, currentPage, lang) : undefined;
-  const paginatedClaims = totalPages > 1 ? getPaginatedClaims(claims, currentPage) : claims;
-  return {
-    paginationArguments,
-    paginatedClaims,
-  };
-}
-
-function getPaginatedClaims(claims: DashboardDefendantItem[], currentPage: number): DashboardDefendantItem[] {
-  return claims.slice((currentPage - 1) * CASE_PER_PAGE, currentPage * CASE_PER_PAGE);
+  return totalPages > 1 ? buildPaginationListArgs(totalPages, currentPage, lang) : undefined;
 }
 
 function buildPaginationListArgs(totalPages: number, currentPage: number, lang: string) {
