@@ -8,9 +8,10 @@ import {t} from 'i18next';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const buildDownloadSealedClaimSectionTitle = (lang: string): ClaimSummarySection => {
-  return {type: ClaimSummaryType.TITLE,
-    data:{
-      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng : lang}),
+  return {
+    type: ClaimSummaryType.TITLE,
+    data: {
+      text: t("PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS", { lng: lang }),
     },
   };
 };
