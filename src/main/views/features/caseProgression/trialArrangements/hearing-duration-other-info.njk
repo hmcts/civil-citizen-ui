@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -12,6 +13,11 @@
 {% endblock %}
 
 {% block content %}
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: hasAnythingChangedUrl,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
@@ -35,10 +41,12 @@
                   text: t('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_HINT')
                 }
               }) }}
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
-              }) }}
-              <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              <div class="govuk-button-group">
+                {{ govukButton({
+                  text: t('COMMON.BUTTONS.CONTINUE')
+                }) }}
+                <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              </div>
             </form>
           </div>
           {{ contactUsForHelp(t) }}

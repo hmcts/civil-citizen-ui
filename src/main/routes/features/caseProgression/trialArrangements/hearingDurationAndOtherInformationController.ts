@@ -2,7 +2,9 @@ import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  DEFENDANT_SUMMARY_URL,
+
+  DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL,
+
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -26,11 +28,12 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const claimIdPrettified = caseNumberPrettify(req.params.id);
-    const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    const hasAnythingChangedUrl = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
+    const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const defendantOtherTrialInformation = claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation;
     const form = new GenericForm(new OtherTrialInformation(defendantOtherTrialInformation));
 
-    res.render(hearingDurationViewPath, {form: form, hearingDurationContents:getHearingDurationAndOtherInformation(claim, claimIdPrettified), latestUploadUrl: latestUploadUrl});
+    res.render(hearingDurationViewPath, {form: form, hearingDurationContents:getHearingDurationAndOtherInformation(claim, claimIdPrettified), latestUpdatesUrl: latestUpdatesUrl, hasAnythingChangedUrl: hasAnythingChangedUrl});
   } catch (error) {
     next(error);
   }
