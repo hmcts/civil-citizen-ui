@@ -42,27 +42,20 @@ async function handleChange(event) {
   const target = event.target;
   createLoading(event);
   removeErrors(event);
-  // const csrfToken = document.getElementsByName('_csrf')[0].value;
+  const csrfToken = document.getElementsByName('_csrf')[0].value;
   const formData = new FormData();
   formData.append('file', target.files[0]);
 
-  const fetchTimeout = 60000; // 60 seconds
-
   const options = {
     method: 'POST',
-    // headers: {
-    //   'CSRF-Token': csrfToken,
-    // },
+    headers: {
+      'CSRF-Token': csrfToken,
+    },
     body: formData,
   };
 
-  const racePromise = Promise.race([
-    fetch('/upload-file', options),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('File upload timed out')), fetchTimeout)),
-  ]);
-
-  const response = await racePromise;
-  const parsed = response.json();
+  const response = await fetch('/upload-file', options);
+  const parsed = await response.json();
   if (response.status === 400) {
     removeLoading(event);
     target.value = '';
