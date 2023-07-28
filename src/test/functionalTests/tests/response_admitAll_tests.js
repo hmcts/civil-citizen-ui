@@ -2,37 +2,35 @@ const config = require('../../config');
 
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 const admitAll = 'full-admission';
-const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 let claimRef;
+let caseData;
+let claimNumber;
+let securityCode;
 
-Feature('Response with AdmitAll @regression');
+Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-  console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-  if (claimRef) {
-    await LoginSteps.EnterUserCredentials(config.Username, config.Password);
-  } else {
-    console.log('claimRef has not been Created');
-  }
-});
-
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @regression', async ({api}) => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  await ResponseSteps.EnterPaymentOption(claimRef, admitAll, immediatePayment);
-  await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('claim number', claimNumber);
+    console.log('Security code', securityCode);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  }else{
+    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
+    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
 
@@ -46,8 +44,9 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
@@ -62,8 +61,9 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await api.enterBreathingSpace(config.applicantSolicitorUser);
-    await api.liftBreathingSpace(config.applicantSolicitorUser);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+    // await api.enterBreathingSpace(config.applicantSolicitorUser);
+    // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });

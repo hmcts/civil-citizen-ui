@@ -176,4 +176,13 @@ module.exports = {
       },
     };  
   },
+  doNotAcceptAskToPayImmediately: () => {
+    return {
+      event: 'CLAIMANT_RESPONSE_SPEC',
+      caseData: {
+        'applicant1DefenceResponseDocumentSpec': null,
+        'whenToBePaidText': '4 July 2025',
+      },
+    };
+  },
 };

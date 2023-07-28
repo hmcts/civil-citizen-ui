@@ -28,9 +28,6 @@
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEFENDANT_NAME') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.NEXT_STEPS') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEADLINE') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.ACTIONS') }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -44,18 +41,6 @@
                 </td>
                 <td class="govuk-table__cell">-</td>
                 <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">
-                  <a href={{ claimDraftSaved.getHref() }}>
-                    {{ t(claimDraftSaved.nextSteps) }}
-                  </a>
-                </td>
-                <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">
-                  <a href={{ claimDraftSaved.getHref() }}>
-                    {{ t('PAGES.DASHBOARD.VIEW') }}
-                    <span class="govuk-visually-hidden">{{ viewClaimNumberDraft }}</span>
-                  </a>
-                </td>
               </tr>
             {% endif %}
             {% for item in claimsAsClaimant %}
@@ -68,14 +53,6 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.defendantName }}</td>
                 <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.nextSteps }}</td>
-                <td class="govuk-table__cell">{{ item.responseDeadline | formatDate }}</td>
-                <td class="govuk-table__cell">
-                  <a href={{ item.getHref() }}>
-                    {{ t('PAGES.DASHBOARD.VIEW') }}
-                    <span class="govuk-visually-hidden">{{ viewClaimNumber }}</span>
-                  </a>
-                </td>
               </tr>
             {% endfor %}
           </tbody>

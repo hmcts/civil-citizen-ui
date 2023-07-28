@@ -4,7 +4,7 @@ nodejs:
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
@@ -15,6 +15,7 @@ nodejs:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
+        - civil-citizen-ui-token-key
   environment:
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
@@ -48,6 +49,8 @@ civil-service:
           - robotics-notification-sender
           - robotics-notification-recipient
           - robotics-notification-recipient-lipj
+          - mediation-notification-recipient
+          - mediation-notification-sender
           - name: launch-darkly-sdk-key-non-prod
             alias: launch-darkly-sdk-key
           - robotics-notification-multipartyrecipient
@@ -242,7 +245,7 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
-        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 10000
+        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 

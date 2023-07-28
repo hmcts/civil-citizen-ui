@@ -32,7 +32,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO', classes: 'govuk-radios--inline'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

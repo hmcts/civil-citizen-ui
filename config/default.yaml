@@ -32,6 +32,11 @@ services:
         microserviceName: 'cmc'
         primarySecret: 'not-a-real-primary-secret'
         secondarySecret: 'not-a-real-secondary-secret'
+  session:
+    redis:
+      host: 'localhost'
+      port: 6379
+    secureCookie: 'true'
   dmStore:
     microserviceName: 'xui_webapp'
     baseUrl: 'http://localhost:4506'
@@ -41,6 +46,9 @@ services:
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
   cmc:
     url: 'https://localhost:3000'
+  pcq:
+    url: 'https://pcq.aat.platform.hmcts.net'
+    tokenKey: 'test'
 health:
   timeout: 5000
   deadline: 15000

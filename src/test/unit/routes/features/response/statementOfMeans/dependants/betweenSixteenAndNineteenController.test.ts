@@ -9,7 +9,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -30,7 +30,7 @@ describe('Dependant Teenagers', () => {
   });
 
   describe('on GET', () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     it('should return dependent teenagers page', async () => {
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -50,7 +50,9 @@ describe('Dependant Teenagers', () => {
     });
   });
   describe('on POST', () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    });
     it('should show error when no number is added', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -91,7 +93,6 @@ describe('Dependant Teenagers', () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return false;
       });
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
@@ -104,7 +105,6 @@ describe('Dependant Teenagers', () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return true;
       });
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})

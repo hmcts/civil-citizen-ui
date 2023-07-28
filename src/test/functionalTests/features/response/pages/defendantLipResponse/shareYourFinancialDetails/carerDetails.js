@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -11,13 +12,13 @@ const buttons = {
 class CarerDetails {
 
   async clickYesButton() {
-    await I.see('Do you claim Carer’s Allowance or Carer’s Credit?', 'h1');
+    await I.waitForText('Do you claim Carer’s Allowance or Carer’s Credit?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(buttons.continue);
   }
 
   async clickNoButton() {
-    await I.see('Do you claim Carer’s Allowance or Carer’s Credit?', 'h1');
+    await I.waitForText('Do you claim Carer’s Allowance or Carer’s Credit?', config.WaitForText);
     await I.click(fields.noButton);
     await I.click(buttons.continue);
   }

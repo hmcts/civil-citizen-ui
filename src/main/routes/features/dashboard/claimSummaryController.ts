@@ -3,14 +3,17 @@ import config from 'config';
 import {
   getLatestUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdateService';
-import {getDocumentsContent} from 'services/features/dashboard/claimSummaryService';
+import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {AppRequest} from 'models/AppRequest';
-import {DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
+import {DocumentType} from 'common/models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -23,14 +26,18 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = getDocumentsContent(claim, claimId);
-      if (await isCaseProgressionV1Enable() && claim.hasCaseProgressionHearingDocuments()) {
+      let documentsContent = getDocumentsContent(claim, claimId);
+      const caseProgressionEnabled = await isCaseProgressionV1Enable();
+      if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
         latestUpdateContent = [];
+        documentsContent = [];
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         getCaseProgressionLatestUpdates(claim, lang)
           .forEach(items => latestUpdateContent.push(items));
+        documentsContent = getEvidenceUploadContent(claim);
       }
-      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled, responseDetailsUrl});
     }
   } catch (error) {
     next(error);

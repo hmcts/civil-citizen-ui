@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
-import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
+import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
@@ -21,12 +21,13 @@ const uploadDocumentsController = Router();
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
+  const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
-    const witnessContent = getWitnessContent(claim);
-    const expertContent = getExpertContent(claim);
-    const trialContent = getTrialContent(claim, form);
+    const witnessContent = getWitnessContent(claim, form);
+    const expertContent = getExpertContent(claim, form);
+    const trialContent = getTrialContent(claim, form, isSmallClaims);
     res.render(uploadDocumentsViewPath, {
       form,
       claim,
@@ -36,6 +37,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       expertContent,
       trialContent,
       cancelUrl,
+      isSmallClaims,
     });
   }
 }
@@ -60,8 +62,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     } else {
       console.log('Evidence upload form validated');
       //todo: save to redis
-      //todo: next page (cancel page or continue page)
-      await renderView(res, claimId, form);
+      res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
     next(error);

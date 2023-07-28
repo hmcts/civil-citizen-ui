@@ -19,12 +19,14 @@ import claimantClaimsMock from './mocks/claimantClaimsMock.json';
 import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimResponseTimelineAndEvidenceMock.json';
 import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimResponseExpertAndWitnessMock.json';
 import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTelephoneClaimantIntentionMock.json';
+import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
 
 import {LoggerInstance} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUndefined = {
   set: jest.fn(() => Promise.resolve(undefined)),
@@ -71,6 +73,11 @@ const mockCivilClaimWithTimelineAndEvidence = {
 const mockCivilClaimantIntention = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
+};
+
+const mockResponseFullAdmitPayBySetDate = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(fullAdmitPayBySetDateMock))),
 };
 
 const mockRedisFailure = {
@@ -150,4 +157,5 @@ export {
   mockCivilClaimWithTimelineAndEvidence,
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantIntention,
+  mockResponseFullAdmitPayBySetDate,
 };

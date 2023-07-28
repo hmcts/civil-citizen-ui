@@ -52,22 +52,22 @@ describe('Trial service', () => {
     };
 
     //when
-    const actualDisclosureContent = getTrialContent(testClaim.case_data, null);
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(5);
+    expect(actualTrialContent.length).toEqual(5);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[2][0].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[3][0].contentSections.length).toEqual(2);
-    expect(actualDisclosureContent[4][0].contentSections.length).toEqual(4);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[1][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[2][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[3][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[4][0].contentSections.length).toEqual(4);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
-    expect(actualDisclosureContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
-    expect(actualDisclosureContent[2][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
-    expect(actualDisclosureContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
-    expect(actualDisclosureContent[4][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
+    expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
+    expect(actualTrialContent[2][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
+    expect(actualTrialContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
+    expect(actualTrialContent[4][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
   });
 
   it('should return section 1 if selected', () => {
@@ -77,14 +77,14 @@ describe('Trial service', () => {
     ).selected = true;
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(1);
+    expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
   });
 
   it('should return multiple of section 1 if selected', () => {
@@ -99,10 +99,10 @@ describe('Trial service', () => {
     genericForm.validateSync();
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, genericForm);
+    const actualTrialContent = getTrialContent(trialSections.case_data, genericForm,false);
 
     //Then
-    expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualTrialContent[0].length).toEqual(2);
   });
 
   it('should return section 2 if selected', () => {
@@ -112,14 +112,14 @@ describe('Trial service', () => {
     ).selected = true;
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(1);
+    expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
   });
 
   it('should return multiple of section 2 if selected', () => {
@@ -134,10 +134,10 @@ describe('Trial service', () => {
     genericForm.validateSync();
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, genericForm);
+    const actualTrialContent = getTrialContent(trialSections.case_data, genericForm,false);
 
     //Then
-    expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualTrialContent[0].length).toEqual(2);
   });
 
   it('should return section 3 if selected', () => {
@@ -147,14 +147,14 @@ describe('Trial service', () => {
     ).selected = true;
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(1);
+    expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
 
   it('should return multiple of section 3 if selected', () => {
@@ -169,10 +169,10 @@ describe('Trial service', () => {
     genericForm.validateSync();
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, genericForm);
+    const actualTrialContent = getTrialContent(trialSections.case_data, genericForm,false);
 
     //Then
-    expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualTrialContent[0].length).toEqual(2);
   });
 
   it('should return section 4 if selected', () => {
@@ -182,14 +182,14 @@ describe('Trial service', () => {
     ).selected = true;
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(1);
+    expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
   });
 
   it('should return multiple of section 4 if selected', () => {
@@ -204,10 +204,10 @@ describe('Trial service', () => {
     genericForm.validateSync();
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, genericForm);
+    const actualTrialContent = getTrialContent(trialSections.case_data, genericForm,false);
 
     //Then
-    expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualTrialContent[0].length).toEqual(2);
   });
 
   it('should return section 5 if selected', () => {
@@ -217,14 +217,14 @@ describe('Trial service', () => {
     ).selected = true;
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(1);
+    expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(4);
 
-    expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
   });
 
   it('should return multiple of section 5 if selected', () => {
@@ -239,18 +239,18 @@ describe('Trial service', () => {
     genericForm.validateSync();
 
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, genericForm);
+    const actualTrialContent = getTrialContent(trialSections.case_data, genericForm,false);
 
     //Then
-    expect(actualDisclosureContent[0].length).toEqual(2);
+    expect(actualTrialContent[0].length).toEqual(2);
   });
 
   it('should return no section if nothing selected', () => {
     //when
-    const actualDisclosureContent = getTrialContent(trialSections.case_data, null);
+    const actualTrialContent = getTrialContent(trialSections.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualTrialContent.length).toEqual(0);
   });
 
   it('should return no section if documentType not present', () => {
@@ -270,10 +270,10 @@ describe('Trial service', () => {
     };
 
     //when
-    const actualDisclosureContent = getTrialContent(testClaim.case_data, null);
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualTrialContent.length).toEqual(0);
   });
 
   it('should return no section if defendantUploadDocuments not present', () => {
@@ -289,10 +289,10 @@ describe('Trial service', () => {
     };
 
     //when
-    const actualDisclosureContent = getTrialContent(testClaim.case_data, null);
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualTrialContent.length).toEqual(0);
   });
 
   it('should return no section if caseProgression not present', () => {
@@ -307,16 +307,51 @@ describe('Trial service', () => {
     };
 
     //when
-    const actualDisclosureContent = getTrialContent(testClaim.case_data, null);
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
 
     //Then
-    expect(actualDisclosureContent.length).toEqual(0);
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return sections for Small Claims in the correct order, if both selected', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {
+          defendantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: false},
+              {documentType: 'SKELETON', selected: false},
+              {documentType: 'LEGAL', selected: true},
+              {documentType: 'COSTS', selected: false},
+              {documentType: 'DOCUMENTARY', selected: true},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,true);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(2);
+
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(4);
+    expect(actualTrialContent[1][0].contentSections.length).toEqual(2);
+
+    expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY');
+    expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
 });
 
 const getMockSectionArray = () => {
   const sectionArray: TypeOfDocumentSection[] = [];
-  sectionArray.push(new TypeOfDocumentSection());
-  sectionArray.push(new TypeOfDocumentSection());
+  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
+  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
   return sectionArray;
 };

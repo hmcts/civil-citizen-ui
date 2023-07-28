@@ -19,6 +19,10 @@ const requestIsForPinAndPost = (req: Request): boolean => {
   return req.originalUrl.startsWith(BASE_FIRST_CONTACT_URL);
 };
 
+const requestIsForDownloadPdf = (req: Request): boolean => {
+  return req.originalUrl.includes('/documents/');
+};
+
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
   const claimId = app.locals.assignClaimId;
   app.locals.assignClaimId = undefined;
@@ -79,10 +83,10 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req)) {
         return next();
       }
-      if (requestIsForAssigningClaimForDefendant(req)) {
+      if (requestIsForAssigningClaimForDefendant(req) ) {
         app.locals.assignClaimId = <string>req.query.id;
       }
       return res.redirect(SIGN_IN_URL);
