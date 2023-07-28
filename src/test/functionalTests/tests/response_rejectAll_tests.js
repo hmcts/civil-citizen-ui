@@ -53,7 +53,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
