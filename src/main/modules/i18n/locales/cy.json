@@ -2566,11 +2566,10 @@
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
     "CONTACT_US_URL": "Cysylltu â ni",
     "COOKIES_URL": "Cwcis",
-    "CROWN_COPYRIGHT": "Crown Copyright",
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ", 
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
-   },
+  },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
