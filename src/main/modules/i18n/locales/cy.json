@@ -2441,7 +2441,7 @@
       "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
       "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
       "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
-      "THE_TRIAL_OR": "The trial or hearing will go ahead as planned on the specified date unless a judge makes an order changing the date of the hearing. If you want the date of the hearing to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
+      "THE_TRIAL_OR": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
