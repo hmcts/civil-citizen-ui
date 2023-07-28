@@ -42,7 +42,7 @@ async function handleChange(event) {
   const target = event.target;
   createLoading(event);
   removeErrors(event);
-  const csrfToken = document.getElementsByName('_csrf')[0].value;
+  // const csrfToken = document.getElementsByName('_csrf')[0].value;
   const formData = new FormData();
   formData.append('file', target.files[0]);
 
@@ -50,9 +50,9 @@ async function handleChange(event) {
 
   const options = {
     method: 'POST',
-    headers: {
-      'CSRF-Token': csrfToken,
-    },
+    // headers: {
+    //   'CSRF-Token': csrfToken,
+    // },
     body: formData,
   };
 
