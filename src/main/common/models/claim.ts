@@ -336,7 +336,6 @@ export class Claim {
 
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
-    // const documentUrl = this.servedDocumentFiles?.timelineEventUpload ? this.servedDocumentFiles.timelineEventUpload[0].value.document_url: undefined;
     let documentId: string;
     if (documentUrl?.length) {
       const splitData = documentUrl.split('/');
@@ -347,7 +346,6 @@ export class Claim {
 
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
-    // return `${this.legacyCaseReference}-${this.servedDocumentFiles.timelineEventUpload[0].value?.document_filename}`;
   }
 
   isSystemGeneratedCaseDocumentsAvailable(): boolean {
