@@ -557,6 +557,10 @@ export class Claim {
     return this.threeWeeksBeforeHearingDate();
   }
 
+  get isSixWeeksOrLessFromTrial(): boolean {
+    return new Date() >= this.sixWeeksBeforeHearingDate();
+  }
+
   hasClaimTakenOffline() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
   }
@@ -586,6 +590,12 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  sixWeeksBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
+    return new Date(hearingDateTime - sixWeeksMilli);
   }
 }
 
