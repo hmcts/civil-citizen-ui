@@ -7,10 +7,10 @@ import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter
 import {t} from 'i18next';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
-const buildDownloadSealedClaimSectionTitle = (): ClaimSummarySection => {
+const buildDownloadSealedClaimSectionTitle = (lang: string): ClaimSummarySection => {
   return {type: ClaimSummaryType.TITLE,
     data:{
-      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS'),
+      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng : lang})
     },
   };
 };
@@ -24,8 +24,8 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
       type: ClaimSummaryType.LINK,
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM)),
-        text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+        text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime)}`,
       },
     };
   }
@@ -41,8 +41,8 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
       type: ClaimSummaryType.LINK,
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
-        text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+        text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime)}`,
       },
     };
   }

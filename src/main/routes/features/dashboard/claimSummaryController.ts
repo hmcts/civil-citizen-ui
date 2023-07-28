@@ -26,7 +26,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      let documentsContent = getDocumentsContent(claim, claimId);
+      let documentsContent = getDocumentsContent(claim, claimId, lang);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
       if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
         latestUpdateContent = [];
