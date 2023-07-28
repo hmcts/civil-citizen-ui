@@ -31,7 +31,7 @@ describe('Trial arrangements confirmation service', () => {
     expect(trialArrangementsConfirmationContent[1].data.html).toContain('</div>');
     expect(trialArrangementsConfirmationContent[2].type).toEqual(ClaimSummaryType.LINK);
     expect(trialArrangementsConfirmationContent[2].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION');
-    expect(trialArrangementsConfirmationContent[2].data.href).toEqual('https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1087082/N244.pdf');
+    expect(trialArrangementsConfirmationContent[2].data.href).toEqual('https://www.gov.uk/government/publications/form-n244-application-notice');
     expect(trialArrangementsConfirmationContent[2].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_YOU_WANT_THE_DATE_OF_THE_HEARING');
     expect(trialArrangementsConfirmationContent[2].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TO_THE_COURT_AND_PAY');
     expect(trialArrangementsConfirmationContent[3].type).toEqual(ClaimSummaryType.PARAGRAPH);

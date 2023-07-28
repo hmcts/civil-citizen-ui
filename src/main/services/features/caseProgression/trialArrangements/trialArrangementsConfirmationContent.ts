@@ -34,7 +34,7 @@ export function getNextStepsSection(claimId: string, claim: Claim, lng: string, 
         type: ClaimSummaryType.LINK,
         data: {
           text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION', {lng}),
-          href: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1087082/N244.pdf',
+          href: 'https://www.gov.uk/government/publications/form-n244-application-notice',
           textBefore: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_YOU_WANT_THE_DATE_OF_THE_HEARING', {lng}),
           textAfter: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TO_THE_COURT_AND_PAY', {lng}),
           externalLink: true,
