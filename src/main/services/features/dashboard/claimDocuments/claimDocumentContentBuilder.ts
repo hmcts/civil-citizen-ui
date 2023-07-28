@@ -10,7 +10,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 const buildDownloadSealedClaimSectionTitle = (lang: string): ClaimSummarySection => {
   return {type: ClaimSummaryType.TITLE,
     data:{
-      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng : lang})
+      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng : lang}),
     },
   };
 };
