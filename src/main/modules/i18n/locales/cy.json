@@ -1543,10 +1543,10 @@
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
         },
         "FINALISE_TRIAL_ARRANGEMENTS": {
-          "TITLE": "Finalise your trial arrangements for your upcoming trial or hearing (optional)",
+          "TITLE": "Finalise your trial arrangements for your upcoming trial",
           "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
           "DUE_BY": "Due by: Midnight, {{ finalisingTrialArrangementsDeadline }}",
-          "IF_THERE_ARE_CHANGES_BEGINNING": "If there are changes to your trial or hearing arrangements, you should let us know by",
+          "IF_THERE_ARE_CHANGES_BEGINNING": "If there are changes to your trial arrangements, you should let us know by",
           "IF_THERE_ARE_CHANGES_END": "midnight, {{ finalisingTrialArrangementsDeadline }}",
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
           "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
