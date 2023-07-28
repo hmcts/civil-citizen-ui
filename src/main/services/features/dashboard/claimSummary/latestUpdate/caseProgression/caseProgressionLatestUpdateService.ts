@@ -15,7 +15,9 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   }
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
-    sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    if (claim.isSixWeeksOrLessFromTrial) {
+      sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    }
     sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
   }
   return getClaimSummaryContent(sectionContent.flat());
