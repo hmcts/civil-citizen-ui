@@ -54,6 +54,11 @@ module.exports = {
     email: 'citizen1.user@gmail.com',
     type: 'defendant',
   },
+  defendantLRCitizenUser:{
+    password: defaultPassword,
+    email: 'cuiuser@gmail.com',
+    type: 'defendant',
+  },
   adminUser: {
     password: defaultPassword,
     email: 'civil-admin@mailnesia.com',
@@ -83,6 +88,11 @@ module.exports = {
   definition: {
     jurisdiction: 'CIVIL',
     caseType: 'CIVIL',
+  },
+  caseWorker: {
+    email: 'ga_ctsc_team_leader_national@justice.gov.uk',
+    password: defaultPassword,
+    type: 'caseworker',
   },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
