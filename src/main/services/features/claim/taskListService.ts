@@ -10,7 +10,6 @@ import {
   CLAIM_CHECK_ANSWERS_URL,
   CLAIM_COMPLETING_CLAIM_URL,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
-  CLAIM_FEE_URL,
   CLAIM_REASON_URL,
   CLAIM_RESOLVING_DISPUTE_URL,
 } from 'routes/urls';
@@ -70,14 +69,14 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
 
   console.log('userId: ', userId);
   // TODO DOB doesnt work
-  // if (caseData.respondent1?.type) {
-  //   if (
-  //     (caseData.isBusiness() && caseData.respondent1?.partyDetails?.partyName) || 
-  //     (!caseData.isBusiness() && caseData.respondent1?.partyDetails?.individualFirstName && caseData.applicant1?.dateOfBirth?.date)
-  //   ) {
-  //     yourDetailsTask.status = TaskStatus.COMPLETE;
-  //   }
-  // }
+  if (caseData.respondent1?.type) {
+    if (
+      (caseData.isBusiness() && caseData.respondent1?.partyDetails?.partyName) || 
+      (!caseData.isBusiness() && caseData.respondent1?.partyDetails?.individualFirstName && caseData.applicant1?.dateOfBirth?.date)
+    ) {
+      yourDetailsTask.status = TaskStatus.COMPLETE;
+    }
+  }
 
   const theirDetailsTask = {
     description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', { lng: getLng(lang) }),
@@ -158,22 +157,10 @@ export const buildSubmitSection = (caseData: Claim, userId: string, lang: string
     status: TaskStatus.INCOMPLETE,
   };
 
-  const payYourClaimFeeTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.PAY_FEE', { lng: getLng(lang) }),
-    url: constructResponseUrlWithIdParams(userId, CLAIM_FEE_URL),
-    status: TaskStatus.INCOMPLETE,
-  };
-
   const taskList: TaskList = {
     title: t('PAGES.CLAIM_TASK_LIST.SUBMIT'),
-    tasks: [],
+    tasks: [considerOtherOptionsTask],
   };
-
-  if (caseData.claimDetails?.helpWithFees?.option === YesNo.NO) {
-    taskList.tasks.push(payYourClaimFeeTask);
-  }
-
-  taskList.tasks.push(considerOtherOptionsTask);
 
   return taskList;
 };

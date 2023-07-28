@@ -15,7 +15,7 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const caseData: Claim = await getCaseDataFromStore(userId);
     const taskLists = getTaskLists(caseData,  userId, lang);
     // Mark as complete 'Check and send' task
-    taskLists[2].tasks[taskLists[2].tasks.length].status = TaskStatus.COMPLETE;
+    taskLists[2].tasks[0].status = TaskStatus.COMPLETE;
     const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
     const allTasksCompleted = outstandingTasks?.length === 0;
 
