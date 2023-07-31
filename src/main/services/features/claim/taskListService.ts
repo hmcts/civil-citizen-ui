@@ -98,7 +98,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   };
 
   if (caseData.claimAmountBreakup && caseData.claimDetails?.helpWithFees?.option) {
-    if (caseData.claimInterest = YesNo.NO) {
+    if (caseData.claimInterest === YesNo.NO) {
       claimAmountTask.status = TaskStatus.COMPLETE;
     } else {
       if (
