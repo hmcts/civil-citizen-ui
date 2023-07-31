@@ -1,5 +1,26 @@
-/*
+const englishUploading = 'Uploading';
+const welshUploading = 'Wrthi\'n uwchlwytho';
+const englishUnknownError = 'Unknown error';
+const welshUnknownError = 'Gwall anhysbys';
+
+const getCookie = (name) => {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    let c = cookies[i].trim().split('=');
+    if (c[0] === name) {
+      return c[1];
+    }
+  }
+  return '';
+};
+
+function appendCaseDocument(target, value) {
+  const caseDocumentInput = document.querySelector(`[id='${target}']`);
+  caseDocumentInput.value = value;
+}
+
 function createLoading(event) {
+  const uploadingText = getCookie('lang') === 'cy' ? welshUploading : englishUploading;
   const eventId = event.target.id;
   const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
   if (!existsLoading) {
@@ -7,7 +28,7 @@ function createLoading(event) {
     loadingContainer.id = `${eventId}-loadingContainer`;
     loadingContainer.innerHTML = `
         <div class="loadingAnimation"></div>
-        <p id="loadingText">Uploading<span class="loadingDots"></span></p>`;
+        <p id="loadingText">${uploadingText}<span class="loadingDots"></span></p>`;
 
     event.target.parentNode.insertBefore(loadingContainer, event.target);
   }
@@ -19,11 +40,6 @@ function removeLoading(event) {
   const loadingContainer = document.getElementById(`${eventId}-loadingContainer`);
   loadingContainer.remove();
 
-}
-
-function appendCaseDocument(target, value) {
-  const caseDocumentInput = document.querySelector(`[id='${target}']`);
-  caseDocumentInput.value = value;
 }
 
 function elementExists(element) {
@@ -62,17 +78,12 @@ async function handleChange(event) {
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
   if (response.status === 400) {
-    removeLoading(event);
     target.value = '';
     const formGroup = target.closest('div');
     formGroup.classList.add('govuk-form-group--error');
 
     parsed.errors.forEach((item) => {
-      const errorMessage = document.createElement('p');
-      errorMessage.id = `${objectId}-error`;
-      errorMessage.classList.add('govuk-error-message');
-      errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
-      target.parentNode.insertBefore(errorMessage, target);
+      buildErrorDisplay(item, objectId, target);
     });
     target.classList.add('govuk-file-upload--error');
     target.setAttribute('aria-describedby', `${objectId}-error`);
@@ -94,7 +105,14 @@ function createObservable() {
             // Iterate over the node's children
             const element = node.querySelector('.govuk-file-upload');
             if (element) {
-              element.addEventListener('change', handleChange);
+              element.addEventListener('change', (event) => {
+                handleChange(event).catch(error => {
+                  const unknownError = getCookie('lang') === 'cy' ? welshUnknownError : englishUnknownError;
+                  console.error('Error:', error);
+                  removeLoading(event);
+                  buildErrorDisplay(unknownError, event.target.id, event.target);
+                });
+              });
             }
           }
         }
@@ -105,15 +123,24 @@ function createObservable() {
   return {observer, observerConfig};
 }
 
+function buildErrorDisplay(error, objectId, target) {
+  const errorMessage = document.createElement('p');
+  errorMessage.id = `${objectId}-error`;
+  errorMessage.classList.add('govuk-error-message');
+  errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${error}`;
+  target.parentNode.insertBefore(errorMessage, target);
+}
+
 function addEventListenerWhenDomIsLoaded() {
-  document.addEventListener('DOMContentLoaded', async function () {
+  document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
-      fileUpload.addEventListener('change', async (event) => {
-        try {
-          await handleChange(event);
-        } catch (error) {
+      fileUpload.addEventListener('change', (event) => {
+        handleChange(event).catch(error => {
+          const unknownError = getCookie('lang') === 'cy' ? welshUnknownError : englishUnknownError;
           console.error('Error:', error);
-        }
+          removeLoading(event);
+          buildErrorDisplay(unknownError, event.target.id, event.target);
+        });
       });
     });
   });
@@ -126,4 +153,3 @@ if (window.location.href.includes('upload-documents')) {
 
 }
 
-*/
