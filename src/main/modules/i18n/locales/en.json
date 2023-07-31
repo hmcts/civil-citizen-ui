@@ -718,6 +718,7 @@
     "CLAIM_SUMMARY": {
       "1_DAY_REMAINING": "1 day remaining",
       "ABOUT_CLAIM": "About claim",
+      "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT": "Claimant ",

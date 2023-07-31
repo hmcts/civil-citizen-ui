@@ -718,6 +718,7 @@
     "CLAIM_SUMMARY": {
       "1_DAY_REMAINING": "1 diwrnod yn weddill",
       "ABOUT_CLAIM": "Am hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Dogfennau hawlio",
       "CLAIMANT": "Claimant ",
