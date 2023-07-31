@@ -1,3 +1,8 @@
+const englishUploading = 'Uploading';
+const welshUploading = 'Wrthi\'n uwchlwytho';
+const englishUnknownError = 'Unknown error';
+const welshUnknownError = 'Gwall anhysbys';
+
 const getCookie = (name) => {
   const cookies = document.cookie.split(';');
   for (let i = 0; i < cookies.length; i++) {
@@ -10,7 +15,7 @@ const getCookie = (name) => {
 };
 
 function createLoading(event) {
-  const uploadingText = getCookie('lang') === 'cy' ? 'Wrthi\'n uwchlwytho' : 'Uploading';
+  const uploadingText = getCookie('lang') === 'cy' ? welshUploading : englishUploading;
   const eventId = event.target.id;
   const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
   if (!existsLoading) {
@@ -67,7 +72,6 @@ async function handleChange(event) {
 
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
-  removeLoading(event);
   if (response.status === 400) {
     target.value = '';
     const formGroup = target.closest('div');
@@ -97,8 +101,9 @@ function createObservable() {
             if (element) {
               element.addEventListener('change', (event) => {
                 handleChange(event).catch(error => {
-                  const unknownError = getCookie('lang') === 'cy' ? 'Gwall anhysbys' : 'Unknown error';
+                  const unknownError = getCookie('lang') === 'cy' ? welshUnknownError : englishUnknownError;
                   console.error('Error:', error);
+                  removeLoading(event);
                   buildErrorDisplay(unknownError, event.target.id, event.target);
                 });
               });
@@ -125,8 +130,9 @@ function addEventListenerWhenDomIsLoaded() {
     document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
       fileUpload.addEventListener('change', (event) => {
         handleChange(event).catch(error => {
-          const unknownError = getCookie('lang') === 'cy' ? 'Gwall anhysbys' : 'Unknown error';
+          const unknownError = getCookie('lang') === 'cy' ? welshUnknownError : englishUnknownError;
           console.error('Error:', error);
+          removeLoading(event);
           buildErrorDisplay(unknownError, event.target.id, event.target);
         });
       });
