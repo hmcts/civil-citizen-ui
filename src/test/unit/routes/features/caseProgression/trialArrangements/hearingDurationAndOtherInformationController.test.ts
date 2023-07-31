@@ -36,7 +36,7 @@ describe('Hearing duration & other info - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.HEARING_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
+        expect(res.text).toContain(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
       });
   });
 

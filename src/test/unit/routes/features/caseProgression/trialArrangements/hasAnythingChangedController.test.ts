@@ -1,7 +1,7 @@
 import {
   mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
-import {HAS_ANYTHING_CHANGED_URL, HEARING_DURATION_URL} from 'routes/urls';
+import {HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -105,7 +105,7 @@ describe('Has anything changed - on POST', () => {
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(HEARING_DURATION_URL.replace(':id', '1111'));
+        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
       });
   });
 
@@ -121,7 +121,7 @@ describe('Has anything changed - on POST', () => {
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(HEARING_DURATION_URL.replace(':id', '1111'));
+        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
       });
   });
 });
