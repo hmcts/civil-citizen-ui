@@ -1304,6 +1304,40 @@ describe('Documents', () => {
     });
   });
 
+  describe('test of method isSixWeeksOrLessFromTrial', () => {
+    const claim = new Claim();
+
+    it('should return true if a date is exactly six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksFromTrial).toBeTruthy();
+    });
+
+    it('should return true if a date is less than six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 - 1);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeTruthy();
+    });
+
+    it('should return false if a date is more than six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 + 1);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
     caseProgressionHearingDocuments.id = '1221';
