@@ -1,5 +1,16 @@
+const getCookie = (name) => {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    let c = cookies[i].trim().split('=');
+    if (c[0] === name) {
+      return c[1];
+    }
+  }
+  return '';
+};
 
 function createLoading(event) {
+  const uploadingText = getCookie('lang') === 'cy' ? 'Wrthi\'n uwchlwytho' : 'Uploading';
   const eventId = event.target.id;
   const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
   if (!existsLoading) {
@@ -7,7 +18,7 @@ function createLoading(event) {
     loadingContainer.id = `${eventId}-loadingContainer`;
     loadingContainer.innerHTML = `
         <div class="loadingAnimation"></div>
-        <p id="loadingText">Uploading<span class="loadingDots"></span></p>`;
+        <p id="loadingText">${uploadingText}<span class="loadingDots"></span></p>`;
 
     event.target.parentNode.insertBefore(loadingContainer, event.target);
   }
@@ -56,18 +67,14 @@ async function handleChange(event) {
 
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
+  removeLoading(event);
   if (response.status === 400) {
-    removeLoading(event);
     target.value = '';
     const formGroup = target.closest('div');
     formGroup.classList.add('govuk-form-group--error');
 
     parsed.errors.forEach((item) => {
-      const errorMessage = document.createElement('p');
-      errorMessage.id = `${objectId}-error`;
-      errorMessage.classList.add('govuk-error-message');
-      errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${item}`;
-      target.parentNode.insertBefore(errorMessage, target);
+      buildErrorDisplay(item, objectId, target);
     });
     target.classList.add('govuk-file-upload--error');
     target.setAttribute('aria-describedby', `${objectId}-error`);
@@ -90,7 +97,9 @@ function createObservable() {
             if (element) {
               element.addEventListener('change', (event) => {
                 handleChange(event).catch(error => {
+                  const unknownError = getCookie('lang') === 'cy' ? 'Gwall anhysbys' : 'Unknown error';
                   console.error('Error:', error);
+                  buildErrorDisplay(unknownError, event.target.id, event.target);
                 });
               });
             }
@@ -103,12 +112,22 @@ function createObservable() {
   return {observer, observerConfig};
 }
 
+function buildErrorDisplay(error, objectId, target) {
+  const errorMessage = document.createElement('p');
+  errorMessage.id = `${objectId}-error`;
+  errorMessage.classList.add('govuk-error-message');
+  errorMessage.innerHTML = `<span class="govuk-visually-hidden"></span>${error}`;
+  target.parentNode.insertBefore(errorMessage, target);
+}
+
 function addEventListenerWhenDomIsLoaded() {
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.govuk-file-upload').forEach(fileUpload => {
       fileUpload.addEventListener('change', (event) => {
         handleChange(event).catch(error => {
+          const unknownError = getCookie('lang') === 'cy' ? 'Gwall anhysbys' : 'Unknown error';
           console.error('Error:', error);
+          buildErrorDisplay(unknownError, event.target.id, event.target);
         });
       });
     });
