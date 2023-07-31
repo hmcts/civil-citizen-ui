@@ -1,0 +1,68 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set yesHtml %}
+  <div class="govuk-form-group {%- if form.errorFor('textArea') %} govuk-form-group--error {% endif %}">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-heading-m" for="textArea">
+        {{ t('PAGES.HAS_ANYTHING_CHANGED.WHAT_SUPPORT') }}
+      </label>
+    </h1>
+    <div id="textArea-hint" class="govuk-hint">
+      {{ t('PAGES.HAS_ANYTHING_CHANGED.FOR_EXAMPLE') }}
+    </div>
+    <p id="textArea-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span>
+      {{ t(form.errorFor('textArea')) }}
+    </p>
+    <textarea class="govuk-textarea {%- if form.errorFor('textArea') %} govuk-textarea--error {% endif %}" id="textArea" name="textArea" rows="5" aria-describedby="textArea-hint textArea-error"></textarea>
+  </div>
+{% endset -%}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: latestUpdatesUrl,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getAllErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          {% for content in hasAnythingChangedContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+              <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            </div>
+          </form>
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
