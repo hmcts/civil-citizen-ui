@@ -1,12 +1,17 @@
+/*
 function createLoading(event) {
   const eventId = event.target.id;
-  const loadingContainer = document.createElement('div');
-  loadingContainer.id = `${eventId}-loadingContainer`;
-  loadingContainer.innerHTML = `
-  <div class="loadingAnimation"></div>
-    <p id="loadingText">Uploading<span class="loadingDots"></span></p>
-`;
-  event.target.parentNode.insertBefore(loadingContainer, event.target);
+  const existsLoading = document.getElementById(`${eventId}-loadingContainer`);
+  if (!existsLoading) {
+    const loadingContainer = document.createElement('div');
+    loadingContainer.id = `${eventId}-loadingContainer`;
+    loadingContainer.innerHTML = `
+        <div class="loadingAnimation"></div>
+        <p id="loadingText">Uploading<span class="loadingDots"></span></p>`;
+
+    event.target.parentNode.insertBefore(loadingContainer, event.target);
+  }
+
 }
 
 function removeLoading(event) {
@@ -89,7 +94,7 @@ function createObservable() {
             // Iterate over the node's children
             const element = node.querySelector('.govuk-file-upload');
             if (element) {
-              node.addEventListener('change', handleChange);
+              element.addEventListener('change', handleChange);
             }
           }
         }
@@ -121,3 +126,4 @@ if (window.location.href.includes('upload-documents')) {
 
 }
 
+*/

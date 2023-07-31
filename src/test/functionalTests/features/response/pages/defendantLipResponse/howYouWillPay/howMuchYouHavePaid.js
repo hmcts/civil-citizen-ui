@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   amount: 'input[id="amount"]',
@@ -21,10 +22,10 @@ class HowMuchYouHavePaid {
   async enterPaymentDetails(claimRef, amount, responseType) {
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
-      await I.see('How much have you paid the claimant?', 'h1');
+      await I.waitForText('How much have you paid the claimant?', config.WaitForText);
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
-      await I.see('How much have you paid?', 'h1');
+      await I.waitForText('How much have you paid?', config.WaitForText);
     }
     await I.see('The total amount claimed is £');
     await I.see('How much have you paid?');

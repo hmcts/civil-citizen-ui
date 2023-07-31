@@ -18,13 +18,15 @@ import {
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
+import { DashboardClaimantItem, DashboardDefendantItem } from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -33,6 +35,7 @@ const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
+  claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
 
@@ -73,12 +76,14 @@ export class CivilServiceClient {
     }
   }
 
-  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantItem[]> {
+  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
+    const currentPage = req.query?.page ?? 1;
     try {
-      const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      return plainToInstance(DashboardDefendantItem, response.data as object[]);
+      const response = await this.client.get('/cases/defendant/' + submitterId + '?page=' + currentPage, config);
+      const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
+      return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
       throw err;
@@ -187,15 +192,17 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentDetails: CaseDocument, req: AppRequest): Promise<Buffer> {
+  async retrieveDocument(documentId: string) {
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails);
-      if (!response.data) {
-        throw new AssertionError({message: 'Document is not available.'});
-      }
-      return response.data as Buffer;
-    } catch (err: unknown) {
-      logger.error(err);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
+        .replace(':documentId', documentId));
+
+      return new FileResponse(response.headers['content-type'],
+        response.headers['original-file-name'],
+        response.data as Buffer);
+
+    } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
     }
   }

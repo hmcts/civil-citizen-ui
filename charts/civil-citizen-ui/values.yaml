@@ -24,8 +24,12 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
+  devcpuRequests: 500m
+  devmemoryRequests: 512Mi
+  devcpuLimits: 2
+  devmemoryLimits: 1Gi
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
@@ -36,6 +40,7 @@ nodejs:
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
+        - civil-citizen-ui-token-key
 
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
@@ -55,6 +60,8 @@ nodejs:
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     DRAFT_STORE_API_URL: http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
+    PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
+
   autoscaling:
     enabled: false
     maxReplicas: 16

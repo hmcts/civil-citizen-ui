@@ -5,28 +5,27 @@
  * Once the issue above addressed, MoJ library can be upgraded and this workaround can be discarded.
  */
 
-[...document.getElementsByClassName('moj-add-another__add-button')].forEach( addButton => addButton.addEventListener('click', () => {
-  [...document.getElementsByClassName('govuk-error-summary')]
-    .forEach(errorSummary => errorSummary.classList.add('hide'));
-  [...document.getElementsByClassName('govuk-error-message')]
-    .forEach(errorMessage => errorMessage.classList.add('hide'));
-  [...document.getElementsByClassName('govuk-input--error')]
-    .forEach(inputError => inputError.classList.remove('govuk-input--error'));
-  [...document.getElementsByClassName('govuk-form-group--error')]
-    .forEach(errorMessage => {
-      errorMessage.classList.add('govuk-form-group');
-      errorMessage.classList.remove('govuk-form-group--error');
+if (document.getElementsByClassName('moj-add-another__add-button')) {
+  const mutationObserver = new MutationObserver((mutations) => {
+    const newBlock = mutations
+      .filter((mutation) => mutation.type === 'childList')
+      .findLast((mutation) => mutation);
+    newBlock?.addedNodes.forEach((el) => {
+      if (el?.children) {
+        [...el.getElementsByClassName('govuk-error-summary')].forEach(errorSummary => errorSummary.classList.add('hide'));
+        [...el.getElementsByClassName('govuk-error-message')].forEach(errorMessage => errorMessage.classList.add('hide'));
+        [...el.getElementsByClassName('govuk-input--error')].forEach(inputError => inputError.classList.remove('govuk-input--error'));
+        [...el.getElementsByClassName('govuk-form-group--error')].forEach(groupError => groupError.classList.remove('govuk-form-group--error'));
+      }
     });
+  });
 
-  if (window.location.href.includes('upload-documents')) {
-    //remove document name on new Add
-    const parentDiv = addButton.closest('[data-module="moj-add-another"]');
-    if (parentDiv) {
-      setTimeout(() => {
-        const documentName = parentDiv.querySelectorAll('.documentName');
-        const lastDocumentName = documentName[documentName.length - 1];
-        lastDocumentName.textContent = '';
-      }, 200);
-    }
-  }
-}));
+  mutationObserver.observe(document.documentElement, {
+    attributes: true,
+    characterData: true,
+    childList: true,
+    subtree: true,
+    attributeOldValue: true,
+    characterDataOldValue: true,
+  });
+}

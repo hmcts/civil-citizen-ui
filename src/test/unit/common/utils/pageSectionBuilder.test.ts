@@ -50,6 +50,7 @@ describe('PageSectionBuilder tests', ()=> {
         href: 'href',
         textBefore: 'textBefore',
         textAfter: 'textAfter',
+        externalLink: false,
       },
     });
 
@@ -72,6 +73,7 @@ describe('PageSectionBuilder tests', ()=> {
         textBefore: 'textBefore',
         textAfter: 'textAfter',
         variables: 'variables',
+        externalLink: false,
       },
     });
 
@@ -96,12 +98,37 @@ describe('PageSectionBuilder tests', ()=> {
         href: 'href',
         textAfter: textAfterUnd,
         textBefore: textBeforeUnd,
+        externalLink: false,
       },
     });
 
     //When
     const contactLinkBuilt = new PageSectionBuilder()
       .addLink(contactLinkExpected.data.text,contactLinkExpected.data.href)
+      .build();
+
+    //Then
+    expect(contactLinkBuilt).toEqual([contactLinkExpected]);
+  });
+
+  it('should open the link in external window with just text', () => {
+    //Given
+    const textAfterUnd: any = undefined;
+    const textBeforeUnd: any = undefined;
+    const contactLinkExpected = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        textAfter: textAfterUnd,
+        textBefore: textBeforeUnd,
+        externalLink: true,
+      },
+    });
+
+    //When
+    const contactLinkBuilt = new PageSectionBuilder()
+      .addLink(contactLinkExpected.data.text, contactLinkExpected.data.href, textBeforeUnd, textAfterUnd, undefined, contactLinkExpected.data.externalLink)
       .build();
 
     //Then
@@ -125,5 +152,44 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(buttonBuilt).toEqual([buttonExpected]);
+  });
+
+  it('should create mainTitle', ()=> {
+    //Given
+    const mainTitleExpected = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const mainTitleBuilt = new PageSectionBuilder()
+      .addMainTitle(mainTitleExpected.data.text,mainTitleExpected.data.variables)
+      .build();
+
+    //Then
+    expect(mainTitleBuilt).toEqual([mainTitleExpected]);
+  });
+
+  it('should add leadParagraph', ()=> {
+    //Given
+    const leadParagraphExpected = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: 'text',
+        variables: 'variables',
+        classes: 'classes',
+      },
+    });
+
+    //When
+    const leadParagraphBuilt = new PageSectionBuilder()
+      .addLeadParagraph(leadParagraphExpected.data.text,leadParagraphExpected.data.variables,leadParagraphExpected.data.classes)
+      .build();
+
+    //Then
+    expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
   });
 });

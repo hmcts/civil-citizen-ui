@@ -1,8 +1,14 @@
+# Short kv name added due to 24 char limitation on vault names.
+locals {
+  short_kv_name = "cui"
+}
+
 variable "product" {
   type        = string
   default     = "civil"
   description = "The Project Product"
 }
+
 variable "component" {
   type        = string
   default     = "citizen-ui"
@@ -18,6 +24,7 @@ variable "env" {
   type        = string
   description = "Current Environment"
 }
+
 variable "tenant_id" {
   type        = string
   description = "Target Tenant ID"
