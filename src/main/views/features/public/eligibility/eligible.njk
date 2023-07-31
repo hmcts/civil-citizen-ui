@@ -15,13 +15,17 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-xl">{{ t('PAGES.YOU_CAN_USE.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.YOU_CAN_USE.BASED_ON') }}</p>
-          {% for item in youCanUseContent %}
-            {{ itemContent(item,t) }}
-          {% endfor %}
-          {{ govukButton({
-            text: t('COMMON.BUTTONS.CONTINUE'),
-            href: '/login'
-          }) }}
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% for item in youCanUseContent %}
+             {{ itemContent(item,t) }}
+            {% endfor %}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+            </div>
+          </form>
           {{ contactUsForHelp(t) }}
         </div>
       </div>
