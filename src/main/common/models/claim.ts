@@ -557,7 +557,7 @@ export class Claim {
     return this.threeWeeksBeforeHearingDate();
   }
 
-  get isSixWeeksOrLessFromTrial(): boolean {
+  isSixWeeksOrLessFromTrial(): boolean {
     return new Date() >= this.sixWeeksBeforeHearingDate();
   }
 
@@ -592,7 +592,7 @@ export class Claim {
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
   }
 
-  sixWeeksBeforeHearingDate() {
+  private  sixWeeksBeforeHearingDate(): Date {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
     return new Date(hearingDateTime - sixWeeksMilli);
