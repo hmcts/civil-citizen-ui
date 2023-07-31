@@ -1,7 +1,10 @@
 import {CaseDocument} from 'models/document/caseDocument';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
-import {formatHearingDuration, HearingDuration} from 'models/caseProgression/HearingDuration';
+import {HearingDuration} from 'models/caseProgression/HearingDuration';
+import {
+  HearingDurationFormatter,
+} from 'services/features/caseProgression/hearingDurationFormatter';
 
 export class HearingLocation {
   value: {
@@ -48,6 +51,6 @@ export class CaseProgressionHearing {
   }
 
   getHearingDurationFormatted(): string {
-    return formatHearingDuration(this.hearingDuration);
+    return HearingDurationFormatter.formatHearingDuration(this.hearingDuration);
   }
 }

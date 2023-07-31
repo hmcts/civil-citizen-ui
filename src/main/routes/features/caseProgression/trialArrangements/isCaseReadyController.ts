@@ -5,7 +5,6 @@ import {
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL,
 } from 'routes/urls';
-import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -16,13 +15,15 @@ import {saveCaseProgression} from 'services/features/caseProgression/caseProgres
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
-const dqPropertyName = 'isCaseReadyTrialOrHearing';
+const dqPropertyName = 'isCaseReady';
+const parentPropertyName = 'defendantTrialArrangements';
 
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    const form = new GenericForm(new IsCaseReadyForm());
+    const claim = await getCaseDataFromStore(claimId);
+    const isCaseReady = claim.caseProgression.defendantTrialArrangements?.isCaseReady;
+    const form = new GenericForm(new IsCaseReadyForm(isCaseReady));
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
@@ -39,7 +40,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await renderView(res, claimId, claim, form);
     } else {
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
+      await saveCaseProgression(claimId, form.model.option, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
     }
   } catch (error) {

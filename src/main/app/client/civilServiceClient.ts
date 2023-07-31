@@ -31,7 +31,7 @@ import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddef
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
+export const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;

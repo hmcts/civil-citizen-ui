@@ -22,7 +22,7 @@
       <span class="govuk-visually-hidden">Error:</span>
       {{ t(form.errorFor('textArea')) }}
     </p>
-    <textarea class="govuk-textarea {%- if form.errorFor('textArea') %} govuk-textarea--error {% endif %}" id="textArea" name="textArea" rows="5" aria-describedby="textArea-hint textArea-error"></textarea>
+    <textarea class="govuk-textarea {%- if form.errorFor('textArea') %} govuk-textarea--error {% endif %}" id="textArea" name="textArea" rows="5" aria-describedby="textArea-hint textArea-error">{{ form.model.textArea }}</textarea>
   </div>
 {% endset -%}
 
