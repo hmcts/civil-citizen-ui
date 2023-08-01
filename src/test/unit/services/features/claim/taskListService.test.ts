@@ -49,7 +49,7 @@ const expectedTaskConsiderOptions: TaskList = {
       description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', { lng }),
       url: constructResponseUrlWithIdParams(
         userId,
-        CLAIM_RESOLVING_DISPUTE_URL
+        CLAIM_RESOLVING_DISPUTE_URL,
       ),
       status: TaskStatus.INCOMPLETE,
     },
@@ -68,7 +68,7 @@ const expectedTaskPrepareClaim: TaskList = {
       description: t('PAGES.CLAIM_TASK_LIST.YOUR_DETAILS', { lng }),
       url: constructResponseUrlWithIdParams(
         userId,
-        CLAIMANT_PARTY_TYPE_SELECTION_URL
+        CLAIMANT_PARTY_TYPE_SELECTION_URL,
       ),
       status: TaskStatus.INCOMPLETE,
     },
@@ -76,7 +76,7 @@ const expectedTaskPrepareClaim: TaskList = {
       description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', { lng }),
       url: constructResponseUrlWithIdParams(
         userId,
-        CLAIM_DEFENDANT_PARTY_TYPE_URL
+        CLAIM_DEFENDANT_PARTY_TYPE_URL,
       ),
       status: TaskStatus.INCOMPLETE,
     },
@@ -145,7 +145,7 @@ describe('Claim Task List service', () => {
       caseData.claimDetails = new ClaimDetails(
         new Reason('reason'),
         new ClaimantTimeline([new TimelineRow(1, 1, 2020, 'test')]),
-        new HelpWithFees(YesNo.NO)
+        new HelpWithFees(YesNo.NO),
       );
       //When
       const taskList = getTaskLists(caseData, userId, lng);
@@ -194,7 +194,7 @@ describe('Claim Task List service', () => {
       caseData.claimDetails = new ClaimDetails(
         new Reason('reason'),
         new ClaimantTimeline([new TimelineRow(1, 1, 2020, 'test')]),
-        new HelpWithFees(YesNo.NO)
+        new HelpWithFees(YesNo.NO),
       );
       //When
       const taskList = getTaskLists(caseData, userId, lng);
@@ -247,7 +247,7 @@ describe('Claim Task List service', () => {
       caseData.claimDetails = new ClaimDetails(
         new Reason('reason'),
         new ClaimantTimeline([new TimelineRow(1, 1, 2020, 'test')]),
-        new HelpWithFees(YesNo.NO)
+        new HelpWithFees(YesNo.NO),
       );
       //When
       const taskList = getTaskLists(caseData, userId, lng);
@@ -301,7 +301,7 @@ describe('Claim Task List service', () => {
         '1',
         '1',
         '2020',
-        'test'
+        'test',
       );
       caseData.interest.interestEndDate =
         InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
@@ -309,7 +309,7 @@ describe('Claim Task List service', () => {
       caseData.claimDetails = new ClaimDetails(
         new Reason('reason'),
         new ClaimantTimeline([new TimelineRow(1, 1, 2020, 'test')]),
-        new HelpWithFees(YesNo.NO)
+        new HelpWithFees(YesNo.NO),
       );
       //When
       const taskList = getTaskLists(caseData, userId, lng);

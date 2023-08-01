@@ -26,4 +26,4 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
   } catch (error) {
     next(error);
   }
-}
+};

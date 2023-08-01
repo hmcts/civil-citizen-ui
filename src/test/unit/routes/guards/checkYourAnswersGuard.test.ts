@@ -1,28 +1,21 @@
-import {
-  CLAIM_INCOMPLETE_SUBMISSION_URL,
-  RESPONSE_INCOMPLETE_SUBMISSION_URL,
-} from "routes/urls";
-import { AllResponseTasksCompletedGuard } from "routes/guards/allResponseTasksCompletedGuard";
-import express from "express";
-import { TaskStatus } from "models/taskList/TaskStatus";
-import { TaskList } from "models/taskList/taskList";
-import { Task } from "models/taskList/task";
-import { setResponseDeadline } from "services/features/common/responseDeadlineAgreedService";
-import { getTaskLists } from "services/features/claim/taskListService";
-import { outstandingTasksFromTaskLists } from "services/features/common/taskListService";
-import { checkYourAnswersClaimGuard } from "routes/guards/checkYourAnswersGuard";
-import { AppRequest } from "common/models/AppRequest";
+import express from 'express';
+import {CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {TaskList} from 'models/taskList/taskList';
+import {Task} from 'models/taskList/task';
+import {getTaskLists} from 'services/features/claim/taskListService';
+import {outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
+import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
+import {AppRequest} from 'common/models/AppRequest';
 
-jest.mock("../../../../main/modules/oidc");
-jest.mock("../../../../main/modules/draft-store/draftStoreService");
-jest.mock("../../../../main/modules/draft-store");
-jest.mock("../../../../main/routes/features/response/checkAnswersController");
-jest.mock("../../../../main/services/features/claim/taskListService");
-jest.mock("../../../../main/services/features/common/taskListService");
-jest.mock("../../../../main/modules/i18n");
-jest.mock("../../../../main/modules/utilityService");
+jest.mock('../../../../main/modules/oidc');
+jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/routes/features/claim/checkAnswersController');
+jest.mock('../../../../main/services/features/claim/taskListService');
+jest.mock('../../../../main/services/features/common/taskListService');
+jest.mock('../../../../main/modules/i18n');
 
-jest.mock("i18next", () => ({
+jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
@@ -31,7 +24,7 @@ const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists =
   outstandingTasksFromTaskLists as jest.Mock;
 
-const CLAIM_ID = "123";
+const CLAIM_ID = '123';
 
 const MOCK_REQUEST = () => {
   return {
@@ -47,32 +40,32 @@ const MOCK_RESPONSE = {
 
 const mockTaskList = [
   {
-    title: "Task List",
+    title: 'Task List',
     tasks: [
       {
-        description: "Task 1",
+        description: 'Task 1',
         status: TaskStatus.COMPLETE,
-        url: "some URL",
+        url: 'some URL',
       },
     ],
   },
   {
-    title: "Task List 2",
+    title: 'Task List 2',
     tasks: [
       {
-        description: "Task 1",
+        description: 'Task 1',
         status: TaskStatus.COMPLETE,
-        url: "some URL",
+        url: 'some URL',
       },
     ],
   },
   {
-    title: "Task List 3",
+    title: 'Task List 3',
     tasks: [
       {
-        description: "Task 1",
+        description: 'Task 1',
         status: TaskStatus.COMPLETE,
-        url: "some URL",
+        url: 'some URL',
       },
     ],
   },
@@ -80,12 +73,12 @@ const mockTaskList = [
 
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
-describe("checkYourAnswersClaimGuard", () => {
+describe('checkYourAnswersClaimGuard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should call next if all task are complete", async () => {
+  it('should call next if all task are complete', async () => {
     //Given
     const mockRequest = MOCK_REQUEST();
 
@@ -104,7 +97,7 @@ describe("checkYourAnswersClaimGuard", () => {
     expect(MOCK_NEXT).toHaveBeenCalledWith();
   });
 
-  it("should throw error", async () => {
+  it('should throw error', async () => {
     //Given
     const mockRequest = MOCK_REQUEST();
     mockGetTaskList.mockImplementation(async () => {
@@ -117,12 +110,12 @@ describe("checkYourAnswersClaimGuard", () => {
     expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
     expect(MOCK_NEXT).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        message: `Cannot read properties of undefined (reading 'tasks')`,
-      })
+        message: "Cannot read properties of undefined (reading 'tasks')",
+      }),
     );
   });
 
-  it("should redirect to incomplete submission", async () => {
+  it('should redirect to incomplete submission', async () => {
     //Given
     const mockRequest = MOCK_REQUEST();
     mockGetTaskList.mockImplementation(() => {
@@ -136,7 +129,7 @@ describe("checkYourAnswersClaimGuard", () => {
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
-      CLAIM_INCOMPLETE_SUBMISSION_URL
+      CLAIM_INCOMPLETE_SUBMISSION_URL,
     );
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });

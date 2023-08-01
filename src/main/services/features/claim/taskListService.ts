@@ -105,7 +105,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
         caseData.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
         caseData.interest?.totalInterest?.amount &&
         caseData.interest?.totalInterest?.reason
-        ) {
+      ) {
         claimAmountTask.status = TaskStatus.COMPLETE;
       } else if (
         caseData.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
@@ -118,7 +118,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
             caseData.interest?.interestEndDate
           )
         )
-        ) {
+      ) {
         claimAmountTask.status = TaskStatus.COMPLETE;
       }
     }
