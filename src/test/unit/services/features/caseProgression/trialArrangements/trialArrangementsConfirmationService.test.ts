@@ -6,11 +6,6 @@ import {
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
 
-jest.mock('../../../../../../main/modules/i18n');
-jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
-  use: jest.fn(),
-}));
 const TITLE = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT';
 const DOCUMENT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 
