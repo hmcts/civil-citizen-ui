@@ -5,7 +5,7 @@ import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 
-export function getNextStepsSection(claimId: string, claim: Claim, lng: string, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
+export function getConfirmationPageSection(claimId: string, claim: Claim, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
   const title = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT';
   const document = 'https://www.gov.uk/government/publications/form-n244-application-notice';
   if (readyForTrialOrHearing) {

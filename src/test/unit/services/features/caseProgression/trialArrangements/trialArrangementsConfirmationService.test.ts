@@ -1,70 +1,70 @@
 import {
   getTrialArrangementsConfirmationContent,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsConfirmationService';
-import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {
+  FinaliseYourTrialSectionBuilder,
+} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+const TITLE = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT';
+const DOCUMENT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 
 describe('Trial arrangements confirmation service', () => {
   it('should return trial arrangements confirmation content if claim is ready for trial or hearing', () => {
     //Given
     const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
     const claimId = mockClaim.id;
-    const lang = 'en';
     const readyForTrialOrHearing = true;
+    const readyTrialArrangementsConfirmationContentExpected = new FinaliseYourTrialSectionBuilder()
+      .addMainTitle(TITLE)
+      .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
+        DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
+      .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',
+        DOCUMENT,
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS',
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.AS_SOON_AS_POSSIBLE_AND_PAY',
+        '',
+        true)
+      .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_PHONE')
+      .build();
     //When
-    const readyTrialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, mockClaim, lang, readyForTrialOrHearing);
+    const readyTrialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, mockClaim, readyForTrialOrHearing);
     //Then
     expect(readyTrialArrangementsConfirmationContent.length).toEqual(4);
-    expect(readyTrialArrangementsConfirmationContent[0].type).toEqual(ClaimSummaryType.TITLE);
-    expect(readyTrialArrangementsConfirmationContent[0].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT');
-    expect(readyTrialArrangementsConfirmationContent[1].type).toEqual(ClaimSummaryType.LINK);
-    expect(readyTrialArrangementsConfirmationContent[1].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS');
-    expect(readyTrialArrangementsConfirmationContent[1].data.href).toEqual(`/dashboard/${claimId}/defendant#documents`);
-    expect(readyTrialArrangementsConfirmationContent[1].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS');
-    expect(readyTrialArrangementsConfirmationContent[1].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS');
-    expect(readyTrialArrangementsConfirmationContent[2].type).toEqual(ClaimSummaryType.LINK);
-    expect(readyTrialArrangementsConfirmationContent[2].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION');
-    expect(readyTrialArrangementsConfirmationContent[2].data.href).toEqual('https://www.gov.uk/government/publications/form-n244-application-notice');
-    expect(readyTrialArrangementsConfirmationContent[2].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS');
-    expect(readyTrialArrangementsConfirmationContent[2].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.AS_SOON_AS_POSSIBLE_AND_PAY');
-    expect(readyTrialArrangementsConfirmationContent[3].type).toEqual(ClaimSummaryType.PARAGRAPH);
-    expect(readyTrialArrangementsConfirmationContent[3].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_PHONE');
+    expect(readyTrialArrangementsConfirmationContentExpected).toEqual(readyTrialArrangementsConfirmationContent);
+
   });
   it('should return trial arrangements confirmation content if claim is not ready for trial or hearing', () => {
     //Given
     const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
     const claimId = mockClaim.id;
-    const lang = 'en';
     const readyForTrialOrHearing = false;
+    const trialArrangementsConfirmationContentExpected = new FinaliseYourTrialSectionBuilder()
+      .addMainTitle(TITLE)
+      .addWarning('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED')
+      .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',
+        DOCUMENT,
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_YOU_WANT_THE_DATE_OF_THE_HEARING',
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TO_THE_COURT_AND_PAY',
+        '',
+        true)
+      .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_CALL')
+      .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
+        DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
+        'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
+      .build();
     //When
-    const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, mockClaim, lang, readyForTrialOrHearing);
+    const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, mockClaim, readyForTrialOrHearing);
     //Then
     expect(trialArrangementsConfirmationContent.length).toEqual(5);
-    expect(trialArrangementsConfirmationContent[0].type).toEqual(ClaimSummaryType.TITLE);
-    expect(trialArrangementsConfirmationContent[0].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT');
-    expect(trialArrangementsConfirmationContent[1].type).toEqual(ClaimSummaryType.HTML);
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('<div class="warning-text-container">');
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('<span class="govuk-warning-text__icon" aria-hidden="true">!</span>');
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('<strong class="govuk-warning-text__text">');
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED');
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('</strong>');
-    expect(trialArrangementsConfirmationContent[1].data.html).toContain('</div>');
-    expect(trialArrangementsConfirmationContent[2].type).toEqual(ClaimSummaryType.LINK);
-    expect(trialArrangementsConfirmationContent[2].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION');
-    expect(trialArrangementsConfirmationContent[2].data.href).toEqual('https://www.gov.uk/government/publications/form-n244-application-notice');
-    expect(trialArrangementsConfirmationContent[2].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IF_YOU_WANT_THE_DATE_OF_THE_HEARING');
-    expect(trialArrangementsConfirmationContent[2].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.TO_THE_COURT_AND_PAY');
-    expect(trialArrangementsConfirmationContent[3].type).toEqual(ClaimSummaryType.PARAGRAPH);
-    expect(trialArrangementsConfirmationContent[3].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_CALL');
-    expect(trialArrangementsConfirmationContent[4].type).toEqual(ClaimSummaryType.LINK);
-    expect(trialArrangementsConfirmationContent[4].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS');
-    expect(trialArrangementsConfirmationContent[4].data.href).toEqual(`/dashboard/${claimId}/defendant#documents`);
-    expect(trialArrangementsConfirmationContent[4].data.textBefore).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS');
-    expect(trialArrangementsConfirmationContent[4].data.textAfter).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS');
+    expect(trialArrangementsConfirmationContentExpected).toEqual(trialArrangementsConfirmationContent);
   });
 });
