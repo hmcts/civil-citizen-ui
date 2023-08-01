@@ -5,7 +5,10 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  getCaseDataFromStore,
+} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -61,10 +64,12 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
-      await deleteDraftClaimFromStore(userId);
+
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        res.redirect(constructResponseUrlWithIdParams(userId, paymentUrl));
+        const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+        res.redirect(paymentUrlWithId);
       } else {
+        await deleteDraftClaimFromStore(userId);
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }

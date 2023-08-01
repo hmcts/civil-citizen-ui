@@ -205,6 +205,7 @@ import uploadFileController from 'routes/features/caseProgression/uploadFileCont
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakDownController';
 
 export default [
   homeController,
@@ -398,4 +399,5 @@ export default [
   documentUploadCheckAnswerController,
   isCaseReadyController,
   hasAnythingChangedController,
+  claimFeeBreakDownController,
 ];
