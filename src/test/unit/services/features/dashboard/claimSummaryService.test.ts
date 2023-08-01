@@ -27,7 +27,7 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
   for(let i = documentText.length-1; i >= 0; i--){
     tableRows.push([
       {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01 Jan 1970', classes: 'govuk-!-width-one-half'},
-      {html: '<a class="govuk-link" href="e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6">'+getDocumentName(sectionText, documentText[i])+'</a>', classes: 'govuk-!-width-one-half govuk-table__cell--numeric'},
+      {html: '<a class="govuk-link" href="/case/undefined/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6">'+getDocumentName(sectionText, documentText[i])+'</a>', classes: 'govuk-!-width-one-half govuk-table__cell--numeric'},
     ]);
   }
 
