@@ -24,8 +24,9 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
-  const claimId = app.locals.assignClaimId;
+  const claimId = req.session.assignClaimId;
   app.locals.assignClaimId = undefined;
+  req.session.assignClaimId = undefined;
   return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
 };
 
