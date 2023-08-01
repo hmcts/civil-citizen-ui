@@ -26,7 +26,7 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM)),
         text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime)}`,
+        subtitle: `${t(createdLabel, {lng : lang})} ${t(formatDateToFullDate(document.createdDatetime))}`,
       },
     };
   }
