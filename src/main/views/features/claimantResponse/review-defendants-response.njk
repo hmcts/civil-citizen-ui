@@ -48,27 +48,32 @@
           {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
             {% for item in repaymentPlan %}
               {{ govukSummaryList({
-                  rows: [
+                rows: [
                   {
-                      key: {
-                        text: item.key.text
-                      },
-                      value: {
-                        text: item.value.text
-                      }
-                    }
-                  ]
+                    key: {
+                    text: item.key.text
+                  },
+                    value: {
+                    text: item.value.text
+                  }
+                  }
+                ]
               }) }}
             {% endfor %}
           {% endif %}
           {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
             {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
           {% endif %}
-          {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE'),
-              href: continueLink
-          }) }}
-          {{ contactUsForHelp(t) }}
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE'),
+                href: continueLink
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
         </div>
       </div>
     </main>
