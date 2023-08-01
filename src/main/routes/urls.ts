@@ -98,6 +98,7 @@ export const PERMISSION_FOR_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/permis
 export const SUPPORT_REQUIRED_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/support-required`;
 export const CASE_TIMELINE_DOCUMENTS_URL = `${BASE_CASE_URL}/documents/timeline/:documentId`;
 export const CASE_DOCUMENT_DOWNLOAD_URL = `${BASE_CASE_URL}/documents/:documentId`;
+export const CASE_DOCUMENT_VIEW_URL = `${BASE_CASE_URL}/view-documents/:documentId`;
 export const VULNERABILITY_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/vulnerability`;
 export const UNDERSTANDING_RESPONSE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/understanding-your-options`;
 export const RESPONSE_DEADLINE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/response-deadline-options`;
