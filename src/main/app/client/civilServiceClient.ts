@@ -26,7 +26,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -114,6 +114,8 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
+      logger.info('----ccd-caseDetails----', caseDetails);
+      logger.info('----ccd-timelineDocument-details----', caseDetails?.case_data?.servedDocumentFiles);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);

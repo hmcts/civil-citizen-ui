@@ -29,6 +29,9 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
       const claim = await getCaseDataFromStore(req.params.id);
       const theirTimeline = claim.timelineOfEvents;
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
+      //TODO : remove this after CIV-3046 is completed
+      console.log('----controller-manuel-timeline----', JSON.stringify(theirTimeline));
+      console.log('----controller-pdf-timeline----', pdfUrl);
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {

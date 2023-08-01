@@ -891,11 +891,32 @@ describe('Documents', () => {
     document_binary_url: '',
     document_filename: '',
   };
+  // const emptyDocumentDetails = {
+  //   timelineEventUpload: [
+  //     <TimeLineDocument>{
+  //       id: '6f5daf35-e492-4f89-891c-bbd948263653',
+  //       value: {},
+  //     },
+  //   ],
+  // };
   const documentDetails = {
     document_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
     document_filename: 'timeline-event-summary.pdf',
     document_binary_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary',
   };
+  // const documentDetails = {
+  //   timelineEventUpload: [
+  //     <TimeLineDocument>{
+  //       id: '6f5daf35-e492-4f89-891c-bbd948263653',
+  //       value: <DocumentWithCategory>{
+  //         category_id: 'detailsOfClaim',
+  //         document_url: 'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
+  //         document_filename: 'timeline-event-summary.pdf',
+  //         document_binary_url: 'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary'
+  //       },
+  //     },
+  //   ],
+  // };
 
   describe('extractDocumentId', () => {
     const claim = new Claim();
@@ -908,6 +929,7 @@ describe('Documents', () => {
     it('should return undefined with empty document details', () => {
       //Given
       claim.specClaimTemplateDocumentFiles = emptyDocumentDetails;
+      // claim.servedDocumentFiles = emptyDocumentDetails;
       //When
       const result = claim.extractDocumentId();
       //Then
@@ -916,6 +938,7 @@ describe('Documents', () => {
     it('should return document id with existing document details  ', () => {
       //Given
       claim.specClaimTemplateDocumentFiles = documentDetails;
+      // claim.servedDocumentFiles = documentDetails;
       //When
       const result = claim.extractDocumentId();
       //Then
@@ -929,6 +952,7 @@ describe('Documents', () => {
       // Given
       claim.legacyCaseReference = '000MC009';
       claim.specClaimTemplateDocumentFiles = emptyDocumentDetails;
+      // claim.servedDocumentFiles = emptyDocumentDetails;
       //When
       const result = claim.generatePdfFileName();
       //Then
@@ -937,6 +961,7 @@ describe('Documents', () => {
     it('should return file name with case number and declared file name', () => {
       // Given
       claim.specClaimTemplateDocumentFiles = documentDetails;
+      // claim.servedDocumentFiles = documentDetails;
       //When
       const result = claim.generatePdfFileName();
       //Then

@@ -20,6 +20,8 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getClaimById(currentClaimId, req);
+    //TODO : remove this after CIV-3046 is completed
+    console.log('----timeline-document----', JSON.stringify(caseData?.specClaimTemplateDocumentFiles), 'document-id', caseData?.extractDocumentId());
     await setResponseDeadline(caseData, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
