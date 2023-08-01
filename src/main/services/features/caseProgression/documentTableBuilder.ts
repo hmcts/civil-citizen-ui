@@ -17,6 +17,7 @@ import {
   addEvidenceUploadDescription,
   addEvidenceUploadTable,
 } from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] {
 
@@ -129,20 +130,24 @@ function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUp
 
 function getDocumentLink (document: UploadDocumentTypes) : string {
   let documentName : string;
+  let documentId : string;
 
   if(document.caseDocument instanceof UploadEvidenceDocumentType)
   {
     documentName = document.caseDocument.documentUpload.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.documentUpload.document_binary_url);
   }
   else if(document.caseDocument instanceof  UploadEvidenceWitness)
   {
     documentName = document.caseDocument.witnessOptionDocument.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.witnessOptionDocument.document_binary_url);
   }
   else if(document.caseDocument instanceof UploadEvidenceExpert)
   {
     documentName = document.caseDocument.expertDocument.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.expertDocument.document_binary_url);
   }
 
-  //TODO: href will need to be added - dependent on document download API implementation.
-  return '<a class="govuk-link" href="href will need to be connected to document">'+documentName+'</a>';
+  return `<a class="govuk-link" href="${documentId}">${documentName}</a>`;
+
 }
