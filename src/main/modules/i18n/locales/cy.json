@@ -2534,8 +2534,8 @@
     "UPLOAD_YOUR_DOCUMENTS": {
       "PAGE_TITLE": "Upload your documents",
       "TITLE": "Upload your documents",
-      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CASE_REFERENCE": "Case reference: {{ caseId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
       "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
       "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.",
