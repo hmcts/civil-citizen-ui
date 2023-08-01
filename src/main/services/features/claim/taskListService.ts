@@ -99,13 +99,11 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     if (caseData.claimInterest === YesNo.NO) {
       claimAmountTask.status = TaskStatus.COMPLETE;
     } else {
-      if (caseData.isBreakDownCompleted()) {
-        claimAmountTask.status = TaskStatus.COMPLETE;
-      } else if (caseData.isInterestSameRateCompleted() &&
-        (
-          caseData.isInterestFromClaimSubmitDate() || 
-          caseData.isInterestFromSpecificDateCompleted()
-        )
+      if (
+        caseData.isBreakDownCompleted() ||
+        (caseData.isInterestSameRateCompleted() &&
+          (caseData.isInterestFromClaimSubmitDate() ||
+            caseData.isInterestFromSpecificDateCompleted()))
       ) {
         claimAmountTask.status = TaskStatus.COMPLETE;
       }
