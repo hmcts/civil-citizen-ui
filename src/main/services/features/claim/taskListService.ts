@@ -67,7 +67,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.applicant1?.type && caseData.applicant1?.partyDetails.primaryAddress) {
+  if (caseData.applicant1?.type && caseData.applicant1?.partyDetails?.primaryAddress) {
     if (
       (caseData.isClaimantBusiness() && caseData.applicant1?.partyDetails?.partyName) || 
       (!caseData.isClaimantBusiness() && caseData.applicant1?.partyDetails?.individualFirstName && caseData.applicant1?.dateOfBirth)
@@ -82,7 +82,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.respondent1?.type && caseData.respondent1?.partyDetails.primaryAddress) {
+  if (caseData.respondent1?.type && caseData.respondent1?.partyDetails?.primaryAddress) {
     if (
       (caseData.isBusiness() && caseData.respondent1?.partyDetails?.partyName) || 
       (!caseData.isBusiness() && caseData.respondent1?.partyDetails?.individualFirstName)
@@ -130,7 +130,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if(caseData.claimDetails?.reason.text && caseData.claimDetails?.timeline?.rows?.length) {
+  if(caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
     claimDetailsTask.status = TaskStatus.COMPLETE;
   }
 
