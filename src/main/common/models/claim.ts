@@ -408,6 +408,29 @@ export class Claim {
     return this.respondent1ResponseDate <= new Date();
   }
 
+  isBreakDownCompleted(): boolean {
+    return (
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
+      !!this.interest?.totalInterest?.amount && 
+      !!this.interest?.totalInterest?.reason
+      );
+  }
+
+  isInterestSameRateCompleted(): boolean {
+    return (
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
+      !!this.interest?.sameRateInterestSelection?.sameRateInterestType
+      );
+  }
+
+  isInterestFromSpecificDateCompleted(): boolean {
+    return (
+      this.isInterestFromASpecificDate() &&
+      !!this.interest?.interestStartDate &&
+      !!this.interest?.interestEndDate
+    );
+  }
+
   get hasSupportRequiredList(): boolean {
     return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
   }

@@ -13,9 +13,7 @@ import {
   CLAIM_REASON_URL,
   CLAIM_RESOLVING_DISPUTE_URL,
 } from 'routes/urls';
-import { YesNo } from 'common/form/models/yesNo';
-import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
-import { InterestClaimFromType } from 'common/form/models/claimDetails';
+import {YesNo} from 'common/form/models/yesNo';
 
 export const getTaskLists = (caseData: Claim, userId: string, lang: string): TaskList[] => {
   const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions( caseData, userId, lang);
@@ -101,22 +99,12 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     if (caseData.claimInterest === YesNo.NO) {
       claimAmountTask.status = TaskStatus.COMPLETE;
     } else {
-      if (
-        caseData.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
-        caseData.interest?.totalInterest?.amount &&
-        caseData.interest?.totalInterest?.reason
-      ) {
+      if (caseData.isBreakDownCompleted()) {
         claimAmountTask.status = TaskStatus.COMPLETE;
-      } else if (
-        caseData.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
-        caseData.interest?.sameRateInterestSelection?.sameRateInterestType &&
+      } else if (caseData.isInterestSameRateCompleted() &&
         (
-          caseData.interest?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE || 
-          (
-            caseData.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE && 
-            caseData.interest?.interestStartDate && 
-            caseData.interest?.interestEndDate
-          )
+          caseData.isInterestFromClaimSubmitDate() || 
+          caseData.isInterestFromSpecificDateCompleted()
         )
       ) {
         claimAmountTask.status = TaskStatus.COMPLETE;
