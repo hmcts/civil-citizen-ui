@@ -4,7 +4,7 @@ import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/ca
 
 export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgressionHearing => {
   if (ccdClaim) {
-    const caseProgressionHearing : CaseProgressionHearing = new CaseProgressionHearing(ccdClaim.hearingDocuments);
+    const caseProgressionHearing : CaseProgressionHearing = new CaseProgressionHearing();
     caseProgressionHearing.hearingDocuments = ccdClaim.hearingDocuments;
     caseProgressionHearing.hearingDate = ccdClaim.hearingDate;
     caseProgressionHearing.hearingLocation = new HearingLocation(ccdClaim.hearingLocation?.value);

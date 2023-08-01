@@ -11,6 +11,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {getClaimById} from 'modules/utilityService';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -20,7 +21,7 @@ const parentPropertyName = 'defendantTrialArrangements';
 hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getClaimById(claimId, req);
     const hasAnythingChanged = claim.caseProgression.defendantTrialArrangements?.hasAnythingChanged?.option;
     const hasAnythingChangedText =   claim.caseProgression.defendantTrialArrangements?.hasAnythingChanged?.textArea;
     const form = new GenericForm(new HasAnythingChangedForm(hasAnythingChanged, hasAnythingChangedText));

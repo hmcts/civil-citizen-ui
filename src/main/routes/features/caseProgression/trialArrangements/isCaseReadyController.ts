@@ -12,6 +12,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getIsCaseReady} from 'services/features/caseProgression/trialArrangements/isCaseReady';
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {getClaimById} from 'modules/utilityService';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
@@ -37,7 +38,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     await form.validate();
     const claimId = req.params.id;
     if (form.hasErrors()) {
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const claim: Claim = await getClaimById(claimId, req);
       await renderView(res, claimId, claim, form);
     } else {
       await saveCaseProgression(claimId, form.model.option, dqPropertyName, parentPropertyName);

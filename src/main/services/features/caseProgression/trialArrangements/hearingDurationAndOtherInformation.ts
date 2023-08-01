@@ -3,6 +3,7 @@ import {t} from 'i18next';
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'services/features/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
 
 export const getHearingDurationAndOtherInformation = (claim: Claim, caseIdPrettified?: string) => {
 
@@ -14,7 +15,7 @@ export const getHearingDurationAndOtherInformation = (claim: Claim, caseIdPretti
       defendantName: claim.getDefendantFullName(),
     })
     .addTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_TITLE')
-    .addParagraphWithHTML(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', {hearingDuration: claim.caseProgressionHearing.getHearingDurationFormatted()}))
+    .addParagraphWithHTML(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', {hearingDuration: HearingDurationFormatter.formatHearingDuration(claim.caseProgressionHearing.hearingDuration)}))
     .addParagraph('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_LESS_TIME')
     .addInsetText('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_MORE_TIME')
     .addTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE')
