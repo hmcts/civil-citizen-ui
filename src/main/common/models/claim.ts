@@ -413,14 +413,14 @@ export class Claim {
       this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
       !!this.interest?.totalInterest?.amount && 
       !!this.interest?.totalInterest?.reason
-      );
+    );
   }
 
   isInterestSameRateCompleted(): boolean {
     return (
       this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
       !!this.interest?.sameRateInterestSelection?.sameRateInterestType
-      );
+    );
   }
 
   isInterestFromSpecificDateCompleted(): boolean {
