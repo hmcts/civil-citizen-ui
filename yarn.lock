@@ -11812,7 +11812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request@npm:^2.83.0":
+"request@npm:2.88.2":
   version: 2.88.2
   resolution: "request@npm:2.88.2"
   dependencies:
