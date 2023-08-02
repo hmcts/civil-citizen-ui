@@ -124,4 +124,17 @@ describe('Has anything changed - on POST', () => {
         expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
       });
   });
+
+  it('should return "Something went wrong" page when claim does not exist', async () => {
+    //Given
+    app.locals.draftStoreClient = mockRedisFailure;
+    //When
+    await testSession
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+  });
 });

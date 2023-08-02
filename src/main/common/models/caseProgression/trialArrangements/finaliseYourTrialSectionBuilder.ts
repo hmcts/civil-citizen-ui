@@ -55,6 +55,30 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     return this;
   }
 
+  addParagraphWithHTML(text: string, variables?: any) {
+    const paragraphSection = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: '<p class="govuk-body">'+text+'</p>',
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
+  addInsetText(text: string, variables?: unknown) {
+    const insetSection = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t(text),
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(insetSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }

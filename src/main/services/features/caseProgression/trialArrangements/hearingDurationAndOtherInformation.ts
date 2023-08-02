@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {t} from 'i18next';
 import {
   FinaliseYourTrialSectionBuilder,
-} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+} from 'common/models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
 
 export const getHearingDurationAndOtherInformation = (claim: Claim, caseIdPrettified?: string) => {

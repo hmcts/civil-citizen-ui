@@ -7,6 +7,6 @@ export enum HearingDuration {
   MINUTES_180 = 'MINUTES_180',
   MINUTES_240 = 'MINUTES_240',
   DAY_1 = 'DAY_1',
-  DAY_2 = 'DAY_2'
+  DAY_2 = 'DAY_2',
 }
 

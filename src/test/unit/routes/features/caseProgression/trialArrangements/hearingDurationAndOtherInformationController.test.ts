@@ -1,4 +1,7 @@
-import {TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
+import {
+  TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -92,6 +95,19 @@ describe('Hearing duration & other information - on POST', () => {
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
+      });
+  });
+
+  it('should return "Something went wrong" page when claim does not exist', async () => {
+    //Given
+    app.locals.draftStoreClient = mockRedisFailure;
+    //When
+    await testSession
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });
