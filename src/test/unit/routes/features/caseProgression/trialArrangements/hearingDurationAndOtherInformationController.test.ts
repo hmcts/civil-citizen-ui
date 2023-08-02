@@ -1,6 +1,6 @@
 import {
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION
+  TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
