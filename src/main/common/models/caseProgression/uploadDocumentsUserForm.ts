@@ -157,7 +157,7 @@ export class ExpertSection extends DateInputFields {
   @IsOptional()
     fieldOfExpertise: string;
 
-  // @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
   @IsOptional()
     otherPartyName: string;
 
