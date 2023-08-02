@@ -53,6 +53,11 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import { HearingDuration } from './caseProgression/HearingDuration';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 
 export class CivilClaimResponse {
   id: string;
@@ -173,6 +178,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -212,6 +218,9 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
 }
 
 export interface ClaimFeeData {

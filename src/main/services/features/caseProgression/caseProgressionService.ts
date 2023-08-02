@@ -18,6 +18,7 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {TrialArrangements} from "models/caseProgression/trialArrangements/trialArrangements";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -42,6 +43,10 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
 
     if (!claim.caseProgression) {
       claim.caseProgression = new CaseProgression();
+    }
+    if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
+    {
+      claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
     }
     if (claim?.caseProgression) {
       if (parentPropertyName && claim.caseProgression[parentPropertyName]) {

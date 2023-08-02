@@ -213,6 +213,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
 
+  async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
