@@ -7,6 +7,10 @@
 
 if (document.getElementsByClassName('moj-add-another__add-button')) {
   const mutationObserver = new MutationObserver((mutations) => {
+    [...document.getElementsByClassName('moj-add-another__remove-button')].forEach(removeButton => {
+      removeButton.style.position = 'relative';
+    });
+
     const newBlock = mutations
       .filter((mutation) => mutation.type === 'childList')
       .findLast((mutation) => mutation);
