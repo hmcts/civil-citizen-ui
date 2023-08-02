@@ -6,9 +6,11 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -27,9 +29,7 @@ describe('Hearing duration & other info - On GET', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId)
-      .reply(200, claim);
+    app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId))
@@ -42,9 +42,7 @@ describe('Hearing duration & other info - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId)
-      .reply(404, null);
+    app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
@@ -57,6 +55,10 @@ describe('Hearing duration & other info - On GET', () => {
 });
 
 describe('Hearing duration & other information - on POST', () => {
+
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaim;
+  });
 
   it('should redirect when other information is filled in', async () => {
 
