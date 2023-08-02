@@ -13,7 +13,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     if (!claim.isEmpty()) {
-      const readyForTrialOrHearing:boolean = claim.caseProgression.isCaseReadyTrialOrHearing.option === YesNo.YES;
+      const readyForTrialOrHearing:boolean = claim.caseProgression.defendantTrialArrangements.isCaseReady.option === YesNo.YES;
       const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, readyForTrialOrHearing);
       const latestUpdateUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
       res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});

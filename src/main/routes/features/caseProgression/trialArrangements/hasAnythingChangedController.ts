@@ -16,12 +16,14 @@ import {saveCaseProgression} from 'services/features/caseProgression/caseProgres
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
 const dqPropertyName = 'hasAnythingChanged';
+const parentPropertyName = 'defendantTrialArrangements';
 
 hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    const form = new GenericForm(new HasAnythingChangedForm());
+    const hasAnythingChanged = claim.caseProgression?.defendantTrialArrangements?.hasAnythingChanged ?? new HasAnythingChangedForm();
+    const form = new GenericForm(hasAnythingChanged);
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
@@ -39,7 +41,7 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, 
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await renderView(res, claimId, claim, form);
     } else {
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
+      await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, HEARING_DURATION_URL));
     }
   } catch (error) {
