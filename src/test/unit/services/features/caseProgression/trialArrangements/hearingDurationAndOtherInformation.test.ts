@@ -9,7 +9,7 @@ import {HearingDurationFormatter} from 'services/features/caseProgression/hearin
 
 jest.mock('services/features/caseProgression/HearingDurationFormatter');
 
-describe('hasAnythingChanged', () => {
+describe('hearingDurationAndOtherInformation', () => {
   let mockClaim;
   let claimContent: CivilClaimResponse;
 
