@@ -7,7 +7,7 @@ import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
 
-jest.mock('services/features/caseProgression/HearingDurationFormatter');
+jest.mock('services/features/caseProgression/hearingDurationFormatter');
 
 describe('hearingDurationAndOtherInformation', () => {
   let mockClaim;
