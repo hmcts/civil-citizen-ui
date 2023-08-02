@@ -168,7 +168,7 @@ describe('Case Progression Latest Update Content service', () => {
 
     const claimDismissedHearingFeeNotPaid = {
       ...claimWithSdo,
-      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00')
+      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00'),
     };
 
     //When
@@ -190,7 +190,7 @@ describe('Case Progression Latest Update Content service', () => {
 
     const claimDismissedHearingFeeNotPaid = {
       ...claimWithSdo,
-      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00')
+      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00'),
     };
 
     //When

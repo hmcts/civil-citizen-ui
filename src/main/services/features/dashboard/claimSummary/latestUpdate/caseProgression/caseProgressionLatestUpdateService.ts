@@ -32,7 +32,7 @@ export const checkEvidenceUploaded = (claim: Claim, isClaimant: boolean): boolea
 
 export const checkClaimDismissedHearingDueDate = (claim: Claim): boolean => {
   return claim.caseDismissedHearingFeeDueDate != null;
-}
+};
 
 export const getNewUploadLatestUpdateContent = (claim: Claim): ClaimSummarySection[][] => {
   return buildNewUploadSection(claim);
