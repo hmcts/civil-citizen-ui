@@ -1,21 +1,29 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL} from 'routes/urls';
 import {t} from 'i18next';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import * as utilityService from 'modules/utilityService';
 import {YesNo} from 'form/models/yesNo';
-import { CaseProgression } from 'common/models/caseProgression/caseProgression';
+import { CaseProgression } from 'models/caseProgression/caseProgression';
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/utilityService');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/utilityService');
+
+const claim = new Claim();
+const party = new Party();
+party.type = PartyType.ORGANISATION;
+claim.applicant1 = party;
+claim.caseProgression = new CaseProgression();
+claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
 
 describe('Confirm trial arrangements - On GET', () => {
   const mockGetClaimById = utilityService.getClaimById as jest.Mock;
@@ -30,15 +38,20 @@ describe('Confirm trial arrangements - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully', async () => {
+  it('should render page successfully with IsCaseReady yes', async () => {
     mockGetClaimById.mockImplementation(async () => {
-      const claim = new Claim();
-      const party = new Party();
-      party.type = PartyType.ORGANISATION;
-      claim.applicant1 = party;
-      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = new IsCaseReadyForm(YesNo.YES);
+      return claim;
+    });
+    await request(app).get(confirmationUrl).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT'));
+    });
+  });
 
-      claim.caseProgression.isCaseReadyTrialOrHearing = new IsCaseReadyForm(YesNo.YES);
+  it('should render page successfully with IsCaseReady No', async () => {
+    mockGetClaimById.mockImplementation(async () => {
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = new IsCaseReadyForm(YesNo.NO);
       return claim;
     });
     await request(app).get(confirmationUrl).expect((res) => {

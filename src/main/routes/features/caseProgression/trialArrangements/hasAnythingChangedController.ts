@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, HEARING_DURATION_URL,} from 'routes/urls';
+import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, HEARING_DURATION_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
