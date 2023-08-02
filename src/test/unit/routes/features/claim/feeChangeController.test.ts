@@ -25,7 +25,6 @@ describe('Claimant Date of Birth Controller', () => {
 
   describe('on GET', () => {
     it('should claim fee page with no draft claim data', async () => {
-
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
@@ -43,7 +42,6 @@ describe('Claimant Date of Birth Controller', () => {
     });
 
     it('should claim fee page with claim data', async () => {
-
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
