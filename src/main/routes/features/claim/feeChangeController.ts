@@ -1,10 +1,10 @@
-import {NextFunction, Response, Router} from "express";
-import {CLAIMANT_TASK_LIST_URL, CLAIM_FEE_CHANGE_URL} from "routes/urls";
-import {AppRequest, UserDetails} from "models/AppRequest";
-import {getCaseDataFromStore} from "modules/draft-store/draftStoreService";
-import {CivilServiceClient} from "client/civilServiceClient";
-import config from "config";
-import {DraftClaimData, getDraftClaimData} from "services/dashboard/draftClaimService";
+import {NextFunction, Response, Router} from 'express';
+import {CLAIMANT_TASK_LIST_URL, CLAIM_FEE_CHANGE_URL} from 'routes/urls';
+import {AppRequest, UserDetails} from 'models/AppRequest';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
+import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
