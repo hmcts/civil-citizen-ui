@@ -53,7 +53,7 @@ export const buildQuestionsForOtherSection = (selectItems: ({ text: string; valu
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', questionsForExperts, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`, questionsForExperts))
-    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', '', '', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT', selectItems, questionsForExperts, 'otherPartyName', section?.otherPartyName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyName]`))
+    .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', '', '', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT', selectItems, questionsForExperts, 'otherPartyName', section?.otherPartyName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyName]`, questionsForExperts))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU', '', '', questionsForExperts, 'questionDocumentName', section?.questionDocumentName, index, form?.errorFor(`${errorFieldNamePrefix}[questionDocumentName]`, questionsForExperts))
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', questionsForExperts, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, questionsForExperts))
     .addRemoveSectionButton(form?.model.questionsForExperts?.length > 1 || false)
