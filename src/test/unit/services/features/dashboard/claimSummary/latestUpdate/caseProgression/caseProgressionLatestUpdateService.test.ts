@@ -69,7 +69,7 @@ describe('Case Progression Latest Update Content service', () => {
     };
 
     //When
-    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
+    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en', false);
 
     //Then
     expect(result.length).toEqual(2);
@@ -95,7 +95,7 @@ describe('Case Progression Latest Update Content service', () => {
     };
 
     //When
-    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
+    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en', false);
 
     //Then
     expect(result.length).toEqual(3);
@@ -156,5 +156,49 @@ describe('Case Progression Latest Update Content service', () => {
     expect(resultClaimantDirectly).toBeTruthy();
     expect(resultDefendant).toBeFalsy();
     expect(resultDefendantDirectly).toBeFalsy();
+  });
+
+  it('getCaseProgressionLatestUpdates: should return case Dismissed notification due to hearing fee not paid for defendant', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimDismissedHearingFeeNotPaid = {
+      ...claimWithSdo,
+      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00')
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimDismissedHearingFeeNotPaid, 'en', false);
+
+    //Then
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.TITLE');
+    expect(result[0].contentSections[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.DEFENDANT_WARNING');
+    expect(result[0].contentSections[2].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.DEFENDANT_PARAGRAPH');
+  });
+
+  it('getCaseProgressionLatestUpdates: should return case Dismissed notification due to hearing fee not paid for claimant', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimDismissedHearingFeeNotPaid = {
+      ...claimWithSdo,
+      caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00')
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimDismissedHearingFeeNotPaid, 'en', true);
+
+    //Then
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.TITLE');
+    expect(result[0].contentSections[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_WARNING');
+    expect(result[0].contentSections[2].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_PARAGRAPH');
   });
 });

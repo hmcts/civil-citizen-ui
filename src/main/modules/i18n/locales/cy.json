@@ -1535,6 +1535,18 @@
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
+        },
+        "CASE_DISMISSED_HEARING_DUE_DATE": {
+          "TITLE": "Claim has been struck out",
+          "CLAIMANT_WARNING": "Your claim has been struck out because you have not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
+          "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
+          "CLAIMANT_PARAGRAPH": "If you want to reinstate this claim, you will need to make an application to the court and pay a fee of £{{ hearingFee }}",
+          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court.",
+          "CLAIMANT_FURTHER_INFORMATION": "For more information on reinstating the claim contact the Online Civil Claims team on:",
+          "CLAIMANT_FURTHER_INFORMATION_SPECIFIED_EMAIL": "Email for Specified Claims: ",
+          "CLAIMANT_FURTHER_INFORMATION_DAMAGES_EMAIL": "Email for Damages Claims: ",
+          "CLAIMANT_FURTHER_INFORMATION_CONTACT": "Telephone: 0300 123 7050 Hours: 8.30am to 5pm, Monday to Friday",
+          "CLAIMANT_FURTHER_INFORMATION_FIND_OUT": "Find out about call charges "
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",

@@ -20,7 +20,7 @@ import {
   ClaimantMediationLip,
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestType,
+  SameRateInterestType, HearingFee,
 } from 'form/models/claimDetails';
 import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
@@ -114,6 +114,8 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseDismissedHearingFeeDueDate?: Date;
+  hearingFee?: HearingFee;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

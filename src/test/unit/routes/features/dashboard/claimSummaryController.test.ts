@@ -170,5 +170,70 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain('A hearing has been scheduled for your case');
         });
     });
+
+    it('should show case dismissed latest Update defendant', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          caseDismissedHearingFeeDueDate: new Date(Date.now()),
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
+        });
+    });
+
+    it('should show case progression hearing latest Update for claimant', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          caseDismissedHearingFeeDueDate: new Date(Date.now()),
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/claimant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Claim has been struck out');
+          expect(res.text).toContain('Your claim has been struck out because you have not paid the hearing fee as instructed in the hearing notice');
+        });
+    });
   });
 });
