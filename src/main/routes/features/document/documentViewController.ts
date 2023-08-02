@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {CASE_DOCUMENT_VIEW_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -12,9 +12,8 @@ documentViewController.get(CASE_DOCUMENT_VIEW_URL, async (req: Request, res: Res
   try {
     const document = await civilServiceClientForDocRetrieve.retrieveDocument(req.params.documentId);
     viewFile(res, document);
-    return res.status(200);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler;
 export default documentViewController;
