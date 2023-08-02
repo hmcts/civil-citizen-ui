@@ -9,6 +9,13 @@
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+<!-- Google Tag Manager -->
+<script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZB85WRX');</script>
+<!-- End Google Tag Manager -->
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
@@ -34,6 +41,10 @@
 {% endblock %}
 
 {% block bodyStart %}
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZB85WRX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
   {{ cookieBanner(t) }}
 {% endblock %}
 

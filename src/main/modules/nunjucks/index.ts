@@ -37,6 +37,7 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import config from 'config';
+import crypto from 'crypto';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -104,6 +105,7 @@ export class Nunjucks {
 
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
+    const nonceValue = crypto.randomBytes(16).toString("base64");
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
@@ -150,9 +152,11 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
     nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
     nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
+    nunjucksEnv.addGlobal('nonceValue', nonceValue);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
+      req.cookies.nonceValue = nonceValue;
       next();
     });
   }
