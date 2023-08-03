@@ -153,7 +153,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
     nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
-    // TODO : 'GTM-MZB85WRX' is test id, it should be replaced with production GTM id
+    // TODO : 'GTM-MZB85WRX' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-MZB85WRX');
 
     app.use((req, res, next) => {
