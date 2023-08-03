@@ -24,8 +24,9 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
-  const claimId = app.locals.assignClaimId;
+  const claimId = req.session.assignClaimId;
   app.locals.assignClaimId = undefined;
+  req.session.assignClaimId = undefined;
   return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
 };
 
@@ -47,7 +48,7 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
-        if (app.locals.assignClaimId) {
+        if (app.locals.assignClaimId || req.session.assignClaimId) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
@@ -87,7 +88,7 @@ export class OidcMiddleware {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
-        app.locals.assignClaimId = <string>req.query.id;
+        app.locals.assignClaimId = appReq.session.assignClaimId = <string>req.query.id;
       }
       return res.redirect(SIGN_IN_URL);
     });
