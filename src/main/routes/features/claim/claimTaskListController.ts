@@ -10,7 +10,7 @@ import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, async (req: AppRequest, res: Response, next: NextFunction) : Promise<void> => {
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
