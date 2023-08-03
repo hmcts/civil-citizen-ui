@@ -105,7 +105,8 @@ export class Nunjucks {
 
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
-    const nonceValue = crypto.randomBytes(16).toString("base64");
+
+    const nonceValue = crypto.randomBytes(16).toString('base64');
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);

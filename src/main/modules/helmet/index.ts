@@ -11,7 +11,7 @@ const scriptSrcElem = [
   self,
   inline,
   '*.google-analytics.com',
-  '*.googletagmanager.com'
+  '*.googletagmanager.com',
 ];
 
 const styleSrc = [
@@ -20,7 +20,7 @@ const styleSrc = [
   '*.googletagmanager.com',
   'fonts.googleapis.com',
   '*.google-analytics.com',
-  '*.analytics.google.com'
+  '*.analytics.google.com',
 ];
 
 const imgSrc = [
@@ -45,7 +45,7 @@ const mediaSrc = [
   'www.gstatic.com',
   'stats.g.doubleclick.net',
   '*.google-analytics.com',
-  '*.analytics.google.com'
+  '*.analytics.google.com',
 ];
 
 const connectSrc = [
@@ -53,7 +53,7 @@ const connectSrc = [
   inline,
   '*.gov.uk',
   '*.google-analytics.com',
-  '*.analytics.google.com'
+  '*.analytics.google.com',
 ];
 
 /**
