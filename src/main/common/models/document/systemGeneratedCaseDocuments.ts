@@ -14,4 +14,3 @@ export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocum
   }
   return documentId;
 });
-
