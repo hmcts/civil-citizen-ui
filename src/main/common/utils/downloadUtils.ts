@@ -1,6 +1,9 @@
 import {Response} from 'express';
 import {FileResponse} from 'models/FileResponse';
 
+const fileActionDownload = 'attachment';
+const fileActionView = 'inline';
+
 export function displayPDF(res: Response, fileResponse: FileResponse) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
@@ -11,11 +14,11 @@ export function displayPDF(res: Response, fileResponse: FileResponse) {
 }
 
 export function downloadFile(res: Response, fileResponse: FileResponse) {
-  retrieveFile(res, fileResponse, 'attachment');
+  retrieveFile(res, fileResponse, fileActionDownload);
 }
 
 export function viewFile(res: Response, fileResponse: FileResponse) {
-  retrieveFile(res, fileResponse, 'inline');
+  retrieveFile(res, fileResponse, fileActionView);
 }
 
 export function retrieveFile(res: Response, fileResponse: FileResponse, action: string) {

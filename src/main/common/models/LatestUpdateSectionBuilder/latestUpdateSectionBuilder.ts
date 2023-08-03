@@ -24,7 +24,6 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
       data: {
         text: title,
         href: href,
-        isStartButton: true,
       },
     });
     this._claimSummarySections.push(newTabButtonSection);
