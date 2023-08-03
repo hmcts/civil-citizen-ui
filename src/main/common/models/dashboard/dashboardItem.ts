@@ -138,7 +138,7 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
-
+      SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS.SDO_ORDER_STATUS' },
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);
