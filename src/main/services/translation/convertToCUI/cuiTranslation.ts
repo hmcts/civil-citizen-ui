@@ -29,11 +29,12 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.sdoOrderDocument = ccdClaim?.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   claim.caseProgression = toCUICaseProgression(ccdClaim);
-  if (claim.isFullAdmission())
+  claim.specClaimTemplateDocumentFiles = ccdClaim?.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
+  if (claim.isFullAdmission()) {
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
-  else if (claim.isPartialAdmission())
+  } else if (claim.isPartialAdmission()) {
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
-
+  }
   return claim;
 };
 
