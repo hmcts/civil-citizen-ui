@@ -117,6 +117,7 @@ export const enum TestMessages {
   VALID_ENTER_EXPERT_NAMES = 'You must enter the name of at least one expert',
   VALID_ENTER_EXPERT_NAME = 'Enter the expert’s name',
   VALID_ENTER_EXPERTISE = 'You must enter field of expertise',
+  VALID_ENTER_OTHER_PARTY = 'Select the name of the other party',
   VALID_ENTER_DOCUMENT_QUESTIONS = 'Enter the name of the document with other party’s questions',
   VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY = 'You must enter name of document with other party&#39;s questions',
   VALID_SENT_EXPERT_REPORTS = 'Select yes if you have sent expert reports to the other parties',
