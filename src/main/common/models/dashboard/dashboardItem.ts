@@ -2,6 +2,7 @@ import config from 'config';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {Claim} from 'models/claim';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -155,5 +156,20 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
     return t(translationKey, keyValue);
   }
   return t(translationKey, {lng:getLng(lang)} );
+};
+
+export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
+  if(!claim || claim?.isEmpty()) {
+    return undefined;
+  }
+  const draftClaim = new DashboardClaimantItem();
+  draftClaim.claimId = 'draft';
+  draftClaim.draft = true;
+  draftClaim.ocmc = false;
+  draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
+  draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
+  draftClaim.claimantName = claim.getClaimantFullName();
+  draftClaim.defendantName = claim.getDefendantFullName();
+  return draftClaim;
 };
 
