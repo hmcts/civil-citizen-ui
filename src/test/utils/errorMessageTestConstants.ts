@@ -153,7 +153,6 @@ export const enum TestMessages {
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
   VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document',
   VALID_ENTER_DATE_DOC_ISSUED = 'Enter the date the document was issued or message was sent',
-  VALID_REAL_DATE = 'Date of document must be a real date',
   VALID_REAL_DAY = 'Day of Date must be a valid day',
   VALID_REAL_MONTH = 'Month of Date must be a valid month',
   VALID_REAL_YEAR = 'Year of Date must be a valid year',
