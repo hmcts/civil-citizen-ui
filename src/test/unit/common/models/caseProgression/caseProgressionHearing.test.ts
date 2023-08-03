@@ -1,6 +1,6 @@
 import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),

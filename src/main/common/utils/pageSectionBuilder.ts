@@ -1,4 +1,5 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -53,6 +54,19 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(paragraphSection);
     return this;
   }
+
+  addInsetText(text: string, variables?: unknown) {
+    const insetSection = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t(text),
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(insetSection);
+    return this;
+  }
+
   addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
