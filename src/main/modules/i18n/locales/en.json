@@ -2906,6 +2906,6 @@
     "VALID_REAL_DATE": "Date of document must be a real date",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter support you, experts or witnessess need"
+    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
   }
 }
