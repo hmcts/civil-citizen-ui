@@ -206,7 +206,7 @@ describe('on POST', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
-        expect(res.text).toContain(TestMessages.VALID_ENTER_OTHER_PARTY);
+        expect(res.text).toContain(TestMessages.VALID_SELECT_OTHER_PARTY);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY);
         expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
