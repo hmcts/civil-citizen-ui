@@ -1,5 +1,5 @@
 import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
-import {HearingDuration} from 'models/caseProgression/HearingDuration';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {t} from 'i18next';
 
 describe('Hearing Duration formatter', () => {

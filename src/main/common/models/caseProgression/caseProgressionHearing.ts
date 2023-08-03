@@ -1,7 +1,7 @@
 import {CaseDocument} from 'models/document/caseDocument';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
-import {HearingDuration} from 'models/caseProgression/HearingDuration';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {
   HearingDurationFormatter,
 } from 'services/features/caseProgression/hearingDurationFormatter';

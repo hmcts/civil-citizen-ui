@@ -67,18 +67,6 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     return this;
   }
 
-  addInsetText(text: string, variables?: unknown) {
-    const insetSection = ({
-      type: ClaimSummaryType.INSET_TEXT,
-      data: {
-        html: t(text),
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(insetSection);
-    return this;
-  }
-
   build() {
     return this._claimSummarySections;
   }

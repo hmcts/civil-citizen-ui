@@ -1,5 +1,5 @@
 import {t} from 'i18next';
-import {HearingDuration} from 'models/caseProgression/HearingDuration';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
 
 export class HearingDurationFormatter
 {
