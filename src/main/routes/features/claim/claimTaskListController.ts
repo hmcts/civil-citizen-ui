@@ -1,16 +1,16 @@
 import {Router, Response, NextFunction} from 'express';
-import {BASE_ELIGIBILITY_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
+import { CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
 import {t} from 'i18next';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {ClaimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, ClaimIssueTaskListGuard.apply(BASE_ELIGIBILITY_URL), async (req: AppRequest, res: Response, next: NextFunction) => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
