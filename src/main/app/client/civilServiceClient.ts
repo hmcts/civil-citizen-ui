@@ -115,7 +115,6 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       logger.info('----ccd-caseDetails----', caseDetails);
-      logger.info('----ccd-timelineDocument-details----', caseDetails?.case_data?.servedDocumentFiles);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
