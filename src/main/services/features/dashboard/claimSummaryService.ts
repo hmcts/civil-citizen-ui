@@ -1,22 +1,19 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 import {
-  buildDownloadSealedClaimSection,
-  buildDownloadSealedResponseSection,
+  buildSystemGeneratedDocumentSections,
   buildDownloadSealedClaimSectionTitle,
 } from './claimDocuments/claimDocumentContentBuilder';
 import {getEvidenceUploadDocuments} from 'services/features/caseProgression/documentTableBuilder';
 
 function getDocumentsContent(claim: Claim, claimId: string, lang?: string): ClaimSummaryContent[] {
   const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
-  const downloadClaimSection = buildDownloadSealedClaimSection(claim, claimId, lang);
-  const downloadResponseSection = buildDownloadSealedResponseSection(claim, claimId, lang);
+  const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
 
   return [{
     contentSections: [
       downloadClaimTitle,
-      downloadClaimSection,
-      downloadResponseSection,
+      ...downloadClaimSection,
     ],
   }];
 }
