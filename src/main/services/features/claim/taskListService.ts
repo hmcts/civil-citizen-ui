@@ -65,13 +65,8 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.applicant1?.type && caseData.applicant1?.partyDetails?.primaryAddress) {
-    if (
-      (caseData.isClaimantBusiness() && caseData.applicant1?.partyDetails?.partyName) || 
-      (!caseData.isClaimantBusiness() && caseData.applicant1?.partyDetails?.individualFirstName && caseData.applicant1?.dateOfBirth)
-    ) {
-      yourDetailsTask.status = TaskStatus.COMPLETE;
-    }
+  if (caseData.isClaimantDetailsCompleted()) {
+    yourDetailsTask.status = TaskStatus.COMPLETE;
   }
 
   const theirDetailsTask = {
@@ -80,13 +75,8 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.respondent1?.type && caseData.respondent1?.partyDetails?.primaryAddress) {
-    if (
-      (caseData.isBusiness() && caseData.respondent1?.partyDetails?.partyName) || 
-      (!caseData.isBusiness() && caseData.respondent1?.partyDetails?.individualFirstName)
-    ) {
-      theirDetailsTask.status = TaskStatus.COMPLETE;
-    }
+  if (caseData.isDefendantDetailsCompleted()) {
+    theirDetailsTask.status = TaskStatus.COMPLETE;
   }
 
   const claimAmountTask = {
@@ -95,19 +85,12 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.claimAmountBreakup && caseData.claimDetails?.helpWithFees?.option) {
-    if (caseData.claimInterest === YesNo.NO) {
-      claimAmountTask.status = TaskStatus.COMPLETE;
-    } else {
-      if (
-        caseData.isBreakDownCompleted() ||
-        (caseData.isInterestSameRateCompleted() &&
-          (caseData.isInterestFromClaimSubmitDate() ||
-            caseData.isInterestFromSpecificDateCompleted()))
-      ) {
-        claimAmountTask.status = TaskStatus.COMPLETE;
-      }
-    }
+  if (
+    caseData.claimAmountBreakup && 
+    caseData.claimDetails?.helpWithFees?.option &&
+    (caseData.claimInterest === YesNo.NO || caseData.isInterestCompleted())
+  ) {
+    claimAmountTask.status = TaskStatus.COMPLETE;
   }
 
   const claimDetailsTask = {

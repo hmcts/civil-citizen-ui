@@ -14,6 +14,10 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
     const caseData: Claim = await getCaseDataFromStore(userId);
     const taskLists = getTaskLists(caseData,  userId, lang);
+    /**
+     * We have to check that all sections are completed except Submit section 
+     * so we mark submit section as COMPLETE to ignore it.
+     */
     taskLists[2].tasks[0].status = TaskStatus.COMPLETE;
     const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
     const allTasksCompleted = outstandingTasks?.length === 0;

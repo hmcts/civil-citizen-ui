@@ -431,6 +431,35 @@ export class Claim {
     );
   }
 
+  isInterestCompleted(): boolean {
+    return (
+      this.claimInterest === YesNo.YES &&
+      (this.isBreakDownCompleted() ||
+      (
+        this.isInterestSameRateCompleted() &&
+        (this.isInterestFromClaimSubmitDate() || this.isInterestFromSpecificDateCompleted())
+      ))
+    );
+  }
+
+  isDefendantDetailsCompleted(): boolean {
+    return (
+      !!this.respondent1?.type && 
+      !!this.respondent1?.partyDetails?.primaryAddress &&
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
+    );
+  }
+
+  isClaimantDetailsCompleted(): boolean {
+    return (
+      !!this.applicant1?.type && 
+      !!this.applicant1?.partyDetails?.primaryAddress &&
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
+    );
+  }
+
   get hasSupportRequiredList(): boolean {
     return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
   }
