@@ -198,7 +198,7 @@ describe('on POST', () => {
   });
 
   it('should display all questions for other party\'s expert validation errors', async () => {
-    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':'', 'fileUpload':''}]};
+    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -208,6 +208,20 @@ describe('on POST', () => {
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
         expect(res.text).toContain(TestMessages.VALID_SELECT_OTHER_PARTY);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS);
+        expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
+      });
+  });
+
+  it('should display all answers to questions asked by other party validation errors', async () => {
+    const model = {'answersForExperts':[{'expertName':'', 'otherPartyName':'', 'otherPartyQuestionsDocumentName':'', 'fileUpload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
+        expect(res.text).toContain(TestMessages.VALID_SELECT_OTHER_PARTY);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY);
         expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
       });
