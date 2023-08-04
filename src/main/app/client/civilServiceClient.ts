@@ -227,7 +227,7 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      return translateCCDCaseDataToCUIModel(claimResponse.case_data);
+      return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
