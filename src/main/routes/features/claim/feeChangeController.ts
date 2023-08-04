@@ -18,7 +18,7 @@ feeChangeController.get(CLAIM_FEE_CHANGE_URL, async (req: AppRequest, res: Respo
     const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken);
     const redirectUrl = draftClaimData?.draftClaim ? CLAIMANT_TASK_LIST_URL : draftClaimData.claimCreationUrl;
-    res.render(feeChangeViewPath, {claimFee, redirectUrl});
+    return res.render(feeChangeViewPath, {claimFee, redirectUrl});
   } catch (error) {
     next(error);
   }
