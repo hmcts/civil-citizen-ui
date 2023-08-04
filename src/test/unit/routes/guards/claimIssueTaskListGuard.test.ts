@@ -9,6 +9,8 @@ import {
 import config from 'config';
 import nock from 'nock';
 import {t} from 'i18next';
+import {mockRedisFailure} from '../../../utils/mockDraftStore';
+import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -72,6 +74,12 @@ describe('Claim Issue TaskList Guard', () => {
     //Then
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
+  });
+  it('should return 500 status code when error occurs', async () => {
+    app.locals.draftStoreClient = mockRedisFailure;
+    const res = await request(app).get(CLAIMANT_TASK_LIST_URL);
+    expect(res.status).toBe(500);
+    expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
   });
 
 });
