@@ -4,7 +4,7 @@ import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnsw
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
@@ -135,11 +135,26 @@ describe('Claim - Check answers', () => {
     });
   });
   describe('on Post', () => {
+
+    beforeAll(() => {
+      mockGetSummarySections.mockReset();
+    });
+
     it('should return errors when form is incomplete', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
       });
-      const data = {signed: ''};
+      const data = {
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
@@ -148,7 +163,7 @@ describe('Claim - Check answers', () => {
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
-    it('should return payment button when Fee is no', async () => {
+    it('should return submit button when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -162,7 +177,7 @@ describe('Claim - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Submit and continue to payment');
+          expect(res.text).toContain('Submit claim');
         });
     });
     it('should return submit button when Fee is yes', async () => {
@@ -226,13 +241,14 @@ describe('Claim - Check answers', () => {
         directionsQuestionnaireSigned: 'Test',
         signerRole: 'Test',
         signerName: 'Test',
+        acceptNoChangesAllowed: 'true',
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
     });
     it('should return 500 when error in service', async () => {
