@@ -2,21 +2,22 @@ import {
   getSignatureType,
   getStatementOfTruth,
   saveStatementOfTruth,
-} from '../../../../../../main/services/features/claim/checkAnswers/checkAnswersService';
+} from 'services/features/claim/checkAnswers/checkAnswersService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
-import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
-import {SignatureType} from '../../../../../../main/common/models/signatureType';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {SignatureType} from 'models/signatureType';
 import {
   createClaimWithBasicClaimDetails,
   createClaimWithBasicDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import {Party} from '../../../../../../main/common/models/party';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {Claim} from 'models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
-import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import {ClaimDetails} from '../../../../../../main/common/form/models/claim/details/claimDetails';
+import {ResponseType} from 'form/models/responseType';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -36,6 +37,7 @@ const expectedStatementOfTruth = {
   type: 'basic',
   directionsQuestionnaireSigned: true,
   signed: true,
+  acceptNoChangesAllowed: false,
 };
 
 describe('Check Answers service', () => {
@@ -55,13 +57,13 @@ describe('Check Answers service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true};
+        claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true, acceptNoChangesAllowed: false};
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, true))).toBeTruthy();
     });
   });
 
@@ -74,7 +76,7 @@ describe('Check Answers service', () => {
 
     it('should return statement of truth if it is set in the draft store', () => {
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-      claim.claimDetails.statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, true, true);
+      claim.claimDetails.statementOfTruth = new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, true, true, false);
       expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
     });
 
