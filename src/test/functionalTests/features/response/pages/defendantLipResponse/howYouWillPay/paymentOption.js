@@ -1,4 +1,5 @@
 const I = actor();
+const config = require('../../../../../../config');
 
 const fields = {
   responseAdmitAllImmediate: 'input[id="paymentType"]',
@@ -13,7 +14,7 @@ const buttons = {
 class PaymentOptionPage {
   async enterPaymentOption(claimRef, responseType, paymentType) {
     await I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
-    await I.see('When do you want to pay', 'h1');
+    await I.waitForText('When do you want to pay', config.WaitForText);
     switch (paymentType){
       case 'immediate':{
         await I.click(fields.responseAdmitAllImmediate);

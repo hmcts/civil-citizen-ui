@@ -1,13 +1,16 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import config from 'config';
-import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
+import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
+import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
+import {
+  getDisclosureContent,
+} from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getUploadDocumentsForm,
+} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
@@ -82,8 +85,8 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const uploadDocumentsForm: UploadDocumentsUserForm = getUploadDocumentsForm(req);
-    const form: GenericForm<UploadDocumentsUserForm> = new GenericForm(uploadDocumentsForm);
+    const uploadDocumentsForm = getUploadDocumentsForm(req);
+    const form = new GenericForm(uploadDocumentsForm);
     const submitAction: string = req.body.buttonPressed;
     form.validateSync();
     if (submitAction?.includes('[uploadButton]')) {
@@ -93,8 +96,8 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
         await renderView(res, claimId, form);
       } else {
         console.log('Evidence upload form validated');
-        //todo: go to next page
-        await renderView(res, claimId, form);
+        //todo: go to next page and save to redis
+        res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
       }
     }
   } catch (error) {

@@ -1,4 +1,5 @@
-const I= actor();
+const I = actor();
+const config = require('../../../../config');
 
 const fields = {
   username: 'input[id="username"]',
@@ -11,17 +12,18 @@ const buttons = {
   hideMessage: 'button[name="hide-accepted"]',
 };
 
-class LoginPage  {
-  async open () {
+class LoginPage {
+  async open() {
     await I.amOnPage('/');
   }
 
-  async acceptCookies () {
+  async acceptCookies() {
     await I.click(buttons.acceptCookies);
     await I.click(buttons.hideMessage);
   }
 
-  async login (email, password) {
+  async login(email, password) {
+    await I.waitForText('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);

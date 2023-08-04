@@ -30,3 +30,11 @@ export async function isCaseProgressionV1Enable(): Promise<boolean> {
 export async function isServiceShuttered(): Promise<boolean> {
   return await getFlagValue('shutter-cui-service') as boolean;
 }
+
+export async function isPcqShutterOn(): Promise<boolean> {
+  return await getFlagValue('shutter-pcq') as boolean;
+}
+
+export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+}

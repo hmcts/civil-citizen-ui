@@ -10,9 +10,12 @@ import {FileOnlySection} from 'models/caseProgression/uploadDocumentsUserForm';
 export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const allowedMimeTypes: string[] = [
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word docx
+      'application/msword', // Word doc
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel xlsx
+      'application/vnd.ms-excel', // Excel xls
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint pptx
+      'application/vnd.ms-powerpoint', // PowerPoint ppt
       'application/pdf',
       'application/rtf',
       'text/plain',
