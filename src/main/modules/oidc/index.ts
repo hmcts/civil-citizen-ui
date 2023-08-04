@@ -3,8 +3,11 @@ import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {
-  ASSIGN_CLAIM_URL, BASE_FIRST_CONTACT_URL,
-  CALLBACK_URL, CLAIMANT_TASK_LIST_URL,
+  ASSIGN_CLAIM_URL,
+  BASE_ELIGIBILITY_URL,
+  BASE_FIRST_CONTACT_URL,
+  CALLBACK_URL,
+  CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
@@ -25,6 +28,10 @@ const requestIsForPinAndPost = (req: Request): boolean => {
 
 const requestIsForDownloadPdf = (req: Request): boolean => {
   return req.originalUrl.includes('/documents/');
+};
+
+const isEligibilityPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
@@ -93,7 +100,7 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
