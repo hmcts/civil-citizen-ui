@@ -1,15 +1,17 @@
-import {SummarySections} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
+import {SummarySections} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildTheirDetailsSection} from './detailsSection/buildTheirDetailsSection';
 import {buildClaimAmountSection} from './financialSection/buildClaimAmountSection';
 import {buildClaimSection} from './claimSection/buildClaimSection';
-import {StatementOfTruthForm} from '../../../../common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {SignatureType} from '../../../../common/models/signatureType';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {SignatureType} from 'models/signatureType';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {isCounterpartyIndividual} from 'common/utils/taskList/tasks/taskListHelpers';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
+import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -31,11 +33,11 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-      return new StatementOfTruthForm(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned);
+      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
     case SignatureType.QUALIFIED:
-      return new QualifiedStatementOfTruth(false, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.signerName, claim.claimDetails?.statementOfTruth?.signerRole);
+      return new QualifiedStatementOfTruthClaimIssue(false, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.signerName, claim.claimDetails?.statementOfTruth?.signerRole, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
     default:
-      return new StatementOfTruthForm(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned);
+      return new StatementOfTruthFormClaimIssue(false, SignatureType.BASIC, claim.claimDetails?.statementOfTruth?.signed, claim.claimDetails?.statementOfTruth?.directionsQuestionnaireSigned, claim.claimDetails?.statementOfTruth?.acceptNoChangesAllowed);
   }
 };
 
