@@ -1089,6 +1089,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "Rydych wedi gwneud cais i newid yr hawliad",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae angen i chi ymateb cyn 4pm   ar {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
