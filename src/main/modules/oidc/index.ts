@@ -56,7 +56,7 @@ export class OidcMiddleware {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
-        if (app.locals.claimIssueTasklist) {
+        if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
           app.locals.claimIssueTasklist = undefined;
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
@@ -99,7 +99,7 @@ export class OidcMiddleware {
         app.locals.assignClaimId = appReq.session.assignClaimId = <string>req.query.id;
       }
       if (requestIsForClaimIssueTaskList(req) ) {
-        app.locals.claimIssueTasklist = true;
+        app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
       }
       return res.redirect(SIGN_IN_URL);
     });
