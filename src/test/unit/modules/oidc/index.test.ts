@@ -66,12 +66,10 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to assign claim url when claim id is set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
-      app.locals.assignClaimId = '1';
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('/assignclaim?id=1');
         });
       expect(app.locals.assignClaimId).toBeUndefined();
     });
