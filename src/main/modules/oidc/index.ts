@@ -57,6 +57,7 @@ export class OidcMiddleware {
           return res.redirect(assignClaimUrlWithClaimId);
         }
         if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
+          req.session.claimIssueTasklist = undefined;
           app.locals.claimIssueTasklist = undefined;
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
