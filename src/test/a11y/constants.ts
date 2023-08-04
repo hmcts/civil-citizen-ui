@@ -118,7 +118,6 @@ export const PageUrls = {
   DQ_UNAVAILABLE_FOR_HEARING_URL : '/case/:cuiCaseId/directions-questionnaire/unavailable-for-hearing',
   DQ_PHONE_OR_VIDEO_HEARING_URL : '/case/:cuiCaseId/directions-questionnaire/phone-or-video-hearing',
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL : '/case/:cuiCaseId/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-  //Page URL's for the Case Progression Functional Pages.
 
   /**
    * Page URL's for the Case Progression Functional Pages.
