@@ -99,7 +99,9 @@ describe('on POST', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
-        expect(res.text).toContain(TestMessages.VALID_REAL_DATE);
+        expect(res.text).toContain(TestMessages.VALID_REAL_DAY);
+        expect(res.text).toContain(TestMessages.VALID_REAL_MONTH);
+        expect(res.text).toContain(TestMessages.VALID_REAL_YEAR);
       });
   });
 
