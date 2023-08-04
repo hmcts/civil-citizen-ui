@@ -3,7 +3,7 @@ import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdark
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {
   buildDownloadHearingNoticeSection,
-  buildDownloadSealedClaimSection,
+  buildSystemGeneratedDocumentSections,
   buildDownloadSealedClaimSectionTitle,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
@@ -14,6 +14,7 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {DocumentType} from 'models/document/documentType';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -86,19 +87,36 @@ describe('getDocumentsContent', () => {
     const lang = 'en';
     isCaseProgressionV1EnableMock.mockResolvedValue(true);
 
+    const claim = new Claim();
+    claim.systemGeneratedCaseDocuments =  [{
+      id: '1234',
+      value: {
+        createdBy: 'some one',
+        documentLink: {
+          document_url: 'url',
+          document_filename: 'filename',
+          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+        },
+        documentName: 'some name',
+        documentType: DocumentType.DEFENDANT_DEFENCE,
+        documentSize: 123,
+        createdDatetime: new Date(),
+      },
+    }];
+
     // When
-    const result = await getDocumentsContent(new Claim(), claimId, lang);
+    const result = await getDocumentsContent(claim, claimId, lang);
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(4);
+    expect(result[0].contentSections).toHaveLength(3);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
-    const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
-    const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(new Claim(), claimId, lang);
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
+    const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(claim, claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
-    expect(result[0].contentSections[1]).toEqual(downloadClaimSection);
+    expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
     expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
   });
 });
