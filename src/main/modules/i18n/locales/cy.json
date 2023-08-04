@@ -637,6 +637,24 @@
       "TIMELINE": "Amserlen",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
+    "CLAIM_TASK_LIST":{
+      "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "APPLICATION_COMPLETE": "Application complete",
+      "APPLICATION_INCOMPLETE": "Application incomplete",
+      "CHECK_AND_SUBMIT": "Check and submit your claim",
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_DETAILS": "Claim details",
+      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "COMPLETING_CLAIM": "Completing your claim",
+      "CONSIDER_OPTIONS": "Consider other options",
+      "PAGE_TITLE": "Make a money claim",
+      "PAY_FEE": "Pay your claim fee",
+      "PREPARE_CLAIM": "Prepare your claim",
+      "RESOLVING_DISPUTE": "Resolving this dispute",
+      "SUBMIT": "Submit",
+      "THEIR_DETAILS": "Their details",
+      "YOUR_DETAILS": "Your details"
+    },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
         "PAGE_TITLE": "Ydych chi eisiau hawlio llog?",
@@ -1088,6 +1106,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "Rydych wedi gwneud cais i newid yr hawliad",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae angen i chi ymateb cyn 4pm   ar {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },

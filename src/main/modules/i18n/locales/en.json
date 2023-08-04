@@ -637,6 +637,24 @@
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
+    "CLAIM_TASK_LIST":{
+      "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "APPLICATION_COMPLETE": "Application complete",
+      "APPLICATION_INCOMPLETE": "Application incomplete",
+      "CHECK_AND_SUBMIT": "Check and submit your claim",
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_DETAILS": "Claim details",
+      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "COMPLETING_CLAIM": "Completing your claim",
+      "CONSIDER_OPTIONS": "Consider other options",
+      "PAGE_TITLE": "Make a money claim",
+      "PAY_FEE": "Pay your claim fee",
+      "PREPARE_CLAIM": "Prepare your claim",
+      "RESOLVING_DISPUTE": "Resolving this dispute",
+      "SUBMIT": "Submit",
+      "THEIR_DETAILS": "Their details",
+      "YOUR_DETAILS": "Your details"
+    },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
         "PAGE_TITLE": "Do you want to claim interest?",
@@ -1088,6 +1106,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
