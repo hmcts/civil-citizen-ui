@@ -119,7 +119,7 @@ export const enum TestMessages {
   VALID_ENTER_EXPERTISE = 'You must enter field of expertise',
   VALID_SELECT_OTHER_PARTY = 'Select the name of the other party',
   VALID_CHOOSE_THE_FILE = 'Choose the file you want to upload',
-  VALID_ENTER_DOCUMENT_QUESTIONS = 'Enter the name of the document you have questions about',
+  VALID_ENTER_DOCUMENT_QUESTIONS = 'Enter name of the document you have questions about',
   VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY = 'Enter the name of the document with other party’s questions',
   VALID_SENT_EXPERT_REPORTS = 'Select yes if you have sent expert reports to the other parties',
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
