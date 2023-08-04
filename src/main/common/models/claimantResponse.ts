@@ -10,6 +10,18 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {YesNo} from 'common/form/models/yesNo';
+
+export enum ClaimantIntention {
+  NOT_TO_PROCEED_WITH_CLAIM = 'NOT_TO_PROCEED_WITH_CLAIM',
+  ACCEPTED_DEFENDANT_RESPONSE = 'ACCEPTED_DEFENDANT_RESPONSE',
+  REJECTED_DEFENDANT_RESPONSE = 'REJECTED_DEFENDANT_RESPONSE',
+  PROPOSED_DIFFERENT_REPAYMENT_PLAN = 'PROPOSED_DIFFERENT_REPAYMENT_PLAN',
+  SIGNED_SETTLEMENT_AGREEMENT = 'SIGNED_SETTLEMENT_AGREEMENT',
+  ACCEPTED_PLAN_AND_REQUESTED_CCJ = 'ACCEPTED_PLAN_AND_REQUESTED_CCJ',
+  REJECTED_PLAN_AND_REQUESTED_CCJ = 'REJECTED_PLAN_AND_REQUESTED_CCJ',
+  REJECTED_PLAN_AND_AGREED_MEDIATION = 'REJECTED_PLAN_AND_AGREED_MEDIATION',
+}
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -39,5 +51,14 @@ export class ClaimantResponse {
 
   get isClaimantSuggestedPayByInstalments(): boolean {
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
+
+  get claimantIntention(): ClaimantIntention {
+    if (this.intentionToProceed?.option === YesNo.NO) {
+      return ClaimantIntention.NOT_TO_PROCEED_WITH_CLAIM;
+    }
+    if (this.hasPartAdmittedBeenAccepted?.option === YesNo.YES) {
+      return ClaimantIntention.ACCEPTED_DEFENDANT_RESPONSE;
+    }
   }
 }

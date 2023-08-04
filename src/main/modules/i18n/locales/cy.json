@@ -815,7 +815,7 @@
       "PA_PAY_IMMEDIATELY": {
         "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
         "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "The defendant said they'll pay you {{ admittedAmount }} immediately.",
-        "PAYMENT_BY": "They must make sure you the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
+        "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "RC_DISPUTE": {
