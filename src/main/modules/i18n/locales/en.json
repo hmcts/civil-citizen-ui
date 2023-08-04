@@ -228,6 +228,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your response. You can see it on the response form after you submit.",
+      "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the statement of truth.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
@@ -1106,6 +1107,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
@@ -2450,6 +2452,16 @@
       },
       "YEAR": "Year"
     },
+    "IS_CASE_READY": {
+      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
+      "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+      "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+      "IS_CASE_READY": "Is the case ready for trial or hearing?",
+      "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
+      "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
+      "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial or hearing.",
+      "THE_TRIAL_OR": "The trial or hearing will go ahead as planned on the specified date unless a judge makes an order changing the date of the hearing. If you want the date of the hearing to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
+    },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
       "FINALISE": "Finalise your trial or hearing arrangements",
@@ -2573,6 +2585,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
@@ -2911,7 +2924,9 @@
     "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
-    "VALID_REAL_DATE": "Date of document must be a real date",
+    "VALID_REAL_DAY": "Day of Date must be a valid day",
+    "VALID_REAL_MONTH": "Month of Date must be a valid month",
+    "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
     "VALID_ENTER_SUPPORT":"Enter support you, experts or witnesses need."
