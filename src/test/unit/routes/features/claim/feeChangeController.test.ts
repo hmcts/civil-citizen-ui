@@ -25,6 +25,7 @@ describe('Claimant Date of Birth Controller', () => {
 
   describe('on GET', () => {
     it('should claim fee page with no draft claim data', async () => {
+      //Given
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
@@ -33,15 +34,17 @@ describe('Claimant Date of Birth Controller', () => {
         claimCreationUrl: 'testOcmcUrl',
         draftClaim: undefined,
       });
-
+      //When
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CLAIM_FEE_CHANGE_URL);
+      //Then
       expect(res.status).toBe(200);
       expect(res.text).toContain('Claim fee has changed');
       expect(res.text).toContain('testOcmcUrl');
     });
 
     it('should claim fee page with claim data', async () => {
+      //Given
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
@@ -53,15 +56,20 @@ describe('Claimant Date of Birth Controller', () => {
         },
       });
 
+      //When
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CLAIM_FEE_CHANGE_URL);
+      //Then
       expect(res.status).toBe(200);
       expect(res.text).toContain('Claim fee has changed');
       expect(res.text).toContain(CLAIMANT_TASK_LIST_URL);
     });
 
     it('should return http 500 when has error in the get method', async () => {
+      //Given
+      //When
       app.locals.draftStoreClient = mockRedisFailure;
+      //Then
       await request(app)
         .get(CLAIM_FEE_CHANGE_URL)
         .expect((res) => {
