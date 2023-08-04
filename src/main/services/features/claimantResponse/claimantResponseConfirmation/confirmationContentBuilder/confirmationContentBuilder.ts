@@ -3,7 +3,8 @@ import {Claim} from 'common/models/claim';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
 import {getPAPayImmediatelyAcceptedNextSteps} from './partAdmitConfirmationContentBuilder';
-import {ClaimantIntention, ClaimantResponse} from 'common/models/claimantResponse';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {ClaimantIntention} from 'common/form/models/claimantResponse/claimantIntention';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);

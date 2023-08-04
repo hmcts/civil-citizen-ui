@@ -11,17 +11,7 @@ import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProcee
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
-
-export enum ClaimantIntention {
-  NOT_TO_PROCEED_WITH_CLAIM = 'NOT_TO_PROCEED_WITH_CLAIM',
-  ACCEPTED_DEFENDANT_RESPONSE = 'ACCEPTED_DEFENDANT_RESPONSE',
-  REJECTED_DEFENDANT_RESPONSE = 'REJECTED_DEFENDANT_RESPONSE',
-  PROPOSED_DIFFERENT_REPAYMENT_PLAN = 'PROPOSED_DIFFERENT_REPAYMENT_PLAN',
-  SIGNED_SETTLEMENT_AGREEMENT = 'SIGNED_SETTLEMENT_AGREEMENT',
-  ACCEPTED_PLAN_AND_REQUESTED_CCJ = 'ACCEPTED_PLAN_AND_REQUESTED_CCJ',
-  REJECTED_PLAN_AND_REQUESTED_CCJ = 'REJECTED_PLAN_AND_REQUESTED_CCJ',
-  REJECTED_PLAN_AND_AGREED_MEDIATION = 'REJECTED_PLAN_AND_AGREED_MEDIATION',
-}
+import {ClaimantIntention} from 'common/form/models/claimantResponse/claimantIntention';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
