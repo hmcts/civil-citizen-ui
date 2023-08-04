@@ -42,14 +42,13 @@ const generateDocumentSection = (document: CaseDocument, claimId: string, lang:s
 
 const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.HEARING_FORM);
-  const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_HEARING_NOTICE';
   const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
   if (document) {
     return {
       type: ClaimSummaryType.LINK,
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
-        text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
     };
