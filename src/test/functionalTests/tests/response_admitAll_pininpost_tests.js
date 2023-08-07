@@ -34,7 +34,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smoketest', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smoketest @nightly', async ({api}) => {
   await DashboardSteps.DashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
