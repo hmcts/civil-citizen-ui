@@ -749,6 +749,7 @@
       "DOCUMENTS": "Dogfennau",
       "DOCUMENT_CREATED": "Creu:",
       "DOWNLOAD_CLAIM": "Lawrlwytho'r hawliad",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Lawrlwytho'r gorchymyn dyfarniad",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
@@ -757,7 +758,9 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
+      "NOTICES_AND_ORDERS": "Notices and orders",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "UPDATES": "Updates",
       "VIEW_CLAIM": "Gweld yr hawliad",
       "WITNESS_EVIDENCE": "witness evidence",
       "RESPONSE_DEADLINE": "Dyddiad cau ar gyfer ymateb:",
@@ -1554,6 +1557,9 @@
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
+          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
         }
       },
