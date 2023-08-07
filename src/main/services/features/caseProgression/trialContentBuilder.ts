@@ -17,7 +17,7 @@ const fileUpload = 'fileUpload';
 export const buildTrialCaseSummarySection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${trialCaseSummary}[${trialCaseSummary}][${index}]`;
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY', null, 'govuk-!-width-three-quarters')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCaseSummary, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, trialCaseSummary))
     .addRemoveSectionButton(form?.model.trialCaseSummary?.length > 1 || false)
     .build();
@@ -26,7 +26,7 @@ export const buildTrialCaseSummarySection = (section: FileOnlySection = null, in
 export const buildTrialSkeletonSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${trialSkeletonArgument}[${trialSkeletonArgument}][${index}]`;
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON', null, 'govuk-!-width-three-quarters')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialSkeletonArgument, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, trialSkeletonArgument))
     .addRemoveSectionButton(form?.model.trialSkeletonArgument?.length > 1 || false)
     .build();
@@ -35,7 +35,7 @@ export const buildTrialSkeletonSection = (section: FileOnlySection = null, index
 export const buildTrialLegalSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${trialAuthorities}[${trialAuthorities}][${index}]`;
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL', null, 'govuk-!-width-three-quarters')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialAuthorities, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, trialAuthorities))
     .addRemoveSectionButton(form?.model.trialAuthorities?.length > 1 || false)
     .build();
@@ -44,7 +44,7 @@ export const buildTrialLegalSection = (section: FileOnlySection = null, index = 
 export const buildTrialCostSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${trialCosts}[${trialCosts}][${index}]`;
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS', null, 'govuk-!-width-three-quarters')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCosts, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, trialCosts))
     .addRemoveSectionButton(form?.model.trialCosts?.length > 1 || false)
     .build();
@@ -63,7 +63,7 @@ export const buildTrialDocumentarySection = (isSmallClaims:boolean, section: Typ
   };
 
   return new UploadDocumentsSectionBuilder()
-    .addTitle(hearingOrTrialTitle)
+    .addTitle(hearingOrTrialTitle, null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', trialDocumentary, 'typeOfDocument', section?.typeOfDocument, index, missingInputError)
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDateErrors,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', trialDocumentary, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialDocumentary, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, trialDocumentary))
