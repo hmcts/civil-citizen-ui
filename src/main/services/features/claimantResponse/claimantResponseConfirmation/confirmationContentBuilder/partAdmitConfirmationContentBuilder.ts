@@ -34,5 +34,3 @@ export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string)
     },
   ];
 };
-
-// http://localhost:3001/case/1690544997384581/claimant-response/confirmation

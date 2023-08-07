@@ -11,7 +11,6 @@ import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProcee
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
-import {ClaimantIntention} from 'common/form/models/claimantResponse/claimantIntention';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -43,12 +42,15 @@ export class ClaimantResponse {
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
-  get claimantIntention(): ClaimantIntention {
-    if (this.intentionToProceed?.option === YesNo.NO) {
-      return ClaimantIntention.NOT_TO_PROCEED_WITH_CLAIM;
-    }
-    if (this.hasPartAdmittedBeenAccepted?.option === YesNo.YES) {
-      return ClaimantIntention.ACCEPTED_DEFENDANT_RESPONSE;
-    }
+  get isClaimantNotIntendedToProceed(): boolean {
+    return this.intentionToProceed?.option === YesNo.NO;
+  }
+
+  get isClaimantAcceptedPartAdmittedAmount(): boolean {
+    return this.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
+  get isClaimantNotAcceptedPartAdmittedAmount(): boolean {
+    return this.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
 }

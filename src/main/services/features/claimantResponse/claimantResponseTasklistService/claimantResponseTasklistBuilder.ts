@@ -15,6 +15,7 @@ import {
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -27,12 +28,13 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   const tasks: Task[] = [];
   const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
   tasks.push(acceptOrRejectDefendantAdmittedTask);
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   if (claim.isPartialAdmission()) {
-    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+    if (claimantResponse?.isClaimantNotAcceptedPartAdmittedAmount) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
-    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES && claim.isPAPaymentOptionInstallments()) {
+    } else if (claimantResponse?.isClaimantAcceptedPartAdmittedAmount && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
