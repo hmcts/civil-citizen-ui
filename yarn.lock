@@ -2621,9 +2621,9 @@ __metadata:
   linkType: hard
 
 "@types/luxon@npm:^3.2.0":
-  version: 3.3.0
-  resolution: "@types/luxon@npm:3.3.0"
-  checksum: f7e3a89fc3ca404fbc3ea538653ed6860bc28f570a8c4d6d24449b89b9b553b7d6ad6cc94a9e129c5b8c9a2b97f0c365b3017f811e59c4a859a9c219a1c918e0
+  version: 3.3.1
+  resolution: "@types/luxon@npm:3.3.1"
+  checksum: da8f6158edacae1430f3eca5f4ab4891200ffb34aa521ef6bae407a3c50b3854907098bc4535fb2a66a2779738f3c6c48fdfd86f01117a6f4844b18536cdb7c0
   languageName: node
   linkType: hard
 
