@@ -61,18 +61,18 @@ module.exports = {
         smallClaimsAddNewDirections: [],
         sdoOrderDocument: {
           documentLink: {
-            document_url: "http://dm-store-aat.service.core-compute-aat.internal/documents/bc507939-87a8-4887-a68c-b97555d9b2c5",
-            document_binary_url: "http://dm-store-aat.service.core-compute-aat.internal/documents/bc507939-87a8-4887-a68c-b97555d9b2c5/binary",
-            document_filename: "small_claims_sdo_000MC012.pdf",
-            document_hash: "2cb0dde43b631c22fc5f0f032b615213d3946619ac70c4b5ea62e422da3b3283",
-            category_id: "sdo"
+            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/bc507939-87a8-4887-a68c-b97555d9b2c5',
+            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/bc507939-87a8-4887-a68c-b97555d9b2c5/binary',
+            document_filename: 'small_claims_sdo_000MC012.pdf',
+            document_hash: '2cb0dde43b631c22fc5f0f032b615213d3946619ac70c4b5ea62e422da3b3283',
+            category_id: 'sdo',
           },
-          documentName: "small_claims_sdo_000MC012.pdf",
-          documentType: "SDO_ORDER",
-          documentSize: "64843",
-          createdDatetime: "2023-08-07T12:57:46",
-          createdBy: "Civil"
-        }
+          documentName: 'small_claims_sdo_000MC012.pdf',
+          documentType: 'SDO_ORDER',
+          documentSize: '64843',
+          createdDatetime: '2023-08-07T12:57:46',
+          createdBy: 'Civil',
+        },
 
       },
     };
