@@ -90,7 +90,7 @@ export class FileOnlySection {
     fileUpload: FileUpload;
 }
 
-export class DateInputFields extends  FileOnlySection {
+export class DateInputFields {
   @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
     || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
   @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
@@ -112,7 +112,6 @@ export class DateInputFields extends  FileOnlySection {
     dateYear: string;
 
   constructor(day?: string, month?: string, year?: string) {
-    super();
     if (day !== undefined && month !== undefined && year != undefined) {
       this.dateDay = day;
       this.dateMonth = month;
@@ -122,14 +121,16 @@ export class DateInputFields extends  FileOnlySection {
   }
 }
 
-export class TypeOfDocumentSection extends DateInputFields {
+export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
-
+  @ValidateNested()
+    dateInputFields: DateInputFields;
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+
   constructor(day?: string, month?: string, year?: string) {
-    super(day, month, year);
+    this.dateInputFields = new DateInputFields(day, month, year);
   }
 
 }

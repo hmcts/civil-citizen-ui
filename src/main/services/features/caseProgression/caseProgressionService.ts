@@ -157,7 +157,7 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
