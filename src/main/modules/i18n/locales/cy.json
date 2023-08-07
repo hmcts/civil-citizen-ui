@@ -1555,6 +1555,12 @@
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
+        },
+        "BUNDLE": {
+          "TITLE": "Bundle is complete and ready to view",
+          "BUNDLE_CONTAINS_ALL_DOCUMENTS": "The bundle contains all the documents submitted by both parties. Please review the bundle to makes sure all the information is correct.",
+          "YOU_ARE_REMINDED": "You are reminded that the other party will also be able to view the bundle.",
+          "VIEW_BUNDLE": "View bundle"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",

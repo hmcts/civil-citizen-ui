@@ -1555,6 +1555,12 @@
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        },
+        "BUNDLE": {
+          "TITLE": "Bundle is complete and ready to view",
+          "BUNDLE_CONTAINS_ALL_DOCUMENTS": "The bundle contains all the documents submitted by both parties. Please review the bundle to makes sure all the information is correct.",
+          "YOU_ARE_REMINDED": "You are reminded that the other party will also be able to view the bundle.",
+          "VIEW_BUNDLE": "View bundle"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
