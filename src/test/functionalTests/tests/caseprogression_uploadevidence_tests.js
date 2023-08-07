@@ -23,6 +23,6 @@ Before(async ({api}) => {
 //Disabled the test due to the defect https://tools.hmcts.net/jira/browse/CIV-9730
 Scenario('Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.initiateUploadEvidengit ceJourney(claimRef);
+    UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef);
   }
 }).tag('@regression');
