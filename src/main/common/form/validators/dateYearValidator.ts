@@ -19,6 +19,6 @@ export class DateYearValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.yearExists?'ERRORS.VALID_REAL_DATE':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR';
+    return this.yearExists?'ERRORS.VALID_REAL_YEAR':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR';
   }
 }
