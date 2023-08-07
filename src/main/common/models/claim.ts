@@ -547,6 +547,10 @@ export class Claim {
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
   }
 
+  isBundleStitched(): boolean {
+    return true; // TODO - add the actual logic once the details of bundle functionality discussed within the team
+  }
+
   hasClaimTakenOffline() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
   }
