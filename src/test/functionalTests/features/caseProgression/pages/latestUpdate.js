@@ -24,7 +24,8 @@ class LatestUpdate {
   verifyHeadingDetails() {
     I.see('Test Inc v Sir John Doe', 'h1');
     I.see('Claim number: ');
-    I.see('Latest update');
+    I.see('Updates');
+    I.see('Notices and Orders');
     I.see('Documents');
   }
 
