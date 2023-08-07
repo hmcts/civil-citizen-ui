@@ -24,15 +24,15 @@
         {{ errorSummary(errors, t) }}
       {% endif %}
       {% set yesHtml %}
+        <p class="govuk-label">{{t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT')}}</p>
         {{ govukInput({
           id: "amountYouOwe",
           name: "amountYouOwe",
           label: {
-            text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT'),
-            attributes: {
-              'aria-label': t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT_YOU_OWE_IN_POUNDS')
-            }
-          },
+            text: commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS'),
+            for: "amountYouOwe",
+            classes: 'govuk-visually-hidden'
+          }
           type: "number",
           prefix: {
             text: "£"
