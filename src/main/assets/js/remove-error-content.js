@@ -7,7 +7,6 @@
 
 if (document.getElementsByClassName('moj-add-another__add-button')) {
   const mutationObserver = new MutationObserver((mutations) => {
-
     const newBlock = mutations
       .filter((mutation) => mutation.type === 'childList')
       .findLast((mutation) => mutation);
