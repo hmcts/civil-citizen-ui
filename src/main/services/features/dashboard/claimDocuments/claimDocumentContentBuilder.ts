@@ -29,14 +29,13 @@ const buildSystemGeneratedDocumentSections = (claim: Claim, claimId: string, lan
 
 const generateDocumentSection = (document: CaseDocument, claimId: string, lang:string): ClaimSummarySection => {
   if (document) {
-    const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
+    const createdLabel = t('PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED', {lng: lang});
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM)),
-        text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime, lang)}`,
-
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(document.documentLink?.document_binary_url)),
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },
     };
   }

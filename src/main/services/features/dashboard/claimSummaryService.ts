@@ -8,10 +8,7 @@ import {getEvidenceUploadDocuments} from 'services/features/caseProgression/docu
 
 function getDocumentsContent(claim: Claim, claimId: string, lang?: string): ClaimSummaryContent[] {
   const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
-  const downloadClaimSection = buildDownloadSealedClaimSection(claim, claimId, lang);
-  const downloadResponseSection = buildDownloadSealedResponseSection(claim, claimId, lang);
-
-
+  const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
   return [{
     contentSections: [
       downloadClaimTitle,
@@ -20,7 +17,7 @@ function getDocumentsContent(claim: Claim, claimId: string, lang?: string): Clai
   }];
 }
 
-function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[]{
+function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[] {
   return [{
     contentSections: getEvidenceUploadDocuments(claim),
   }];
