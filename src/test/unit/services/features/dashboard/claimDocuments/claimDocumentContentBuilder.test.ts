@@ -9,7 +9,7 @@ import {DocumentUri} from 'common/models/document/documentType';
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{
     //When
-    const claimDocumentSection = buildDownloadSealedClaimSection(mockClaim, '1', 'en');
+    const claimDocumentSection = buildSystemGeneratedDocumentSections(mockClaim, '1', 'en');
 
     //Then
     expect(claimDocumentSection).not.toBeUndefined();

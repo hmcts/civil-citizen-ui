@@ -103,7 +103,7 @@ describe('getDocumentsContent', () => {
     expect(result[0].contentSections).toHaveLength(2);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
-    const downloadClaimSection = buildSystemGeneratedDocumentSections(new claim(), claimId, lang);
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(new Claim(), claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
