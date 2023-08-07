@@ -11,7 +11,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document} from 'models/document/document';
+import {Document, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -108,6 +108,7 @@ export interface CCDClaim extends ClaimUpdate {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  servedDocumentFiles?: ServedDocumentFiles;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   ccdState?: CaseState;

@@ -239,6 +239,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your response. You can see it on the response form after you submit.",
+      "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the statement of truth.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
@@ -647,6 +648,24 @@
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+    },
+    "CLAIM_TASK_LIST":{
+      "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "APPLICATION_COMPLETE": "Application complete",
+      "APPLICATION_INCOMPLETE": "Application incomplete",
+      "CHECK_AND_SUBMIT": "Check and submit your claim",
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_DETAILS": "Claim details",
+      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "COMPLETING_CLAIM": "Completing your claim",
+      "CONSIDER_OPTIONS": "Consider other options",
+      "PAGE_TITLE": "Make a money claim",
+      "PAY_FEE": "Pay your claim fee",
+      "PREPARE_CLAIM": "Prepare your claim",
+      "RESOLVING_DISPUTE": "Resolving this dispute",
+      "SUBMIT": "Submit",
+      "THEIR_DETAILS": "Their details",
+      "YOUR_DETAILS": "Your details"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -1099,6 +1118,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
@@ -2587,6 +2607,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
@@ -2925,9 +2946,11 @@
     "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
-    "VALID_REAL_DATE": "Date of document must be a real date",
+    "VALID_REAL_DAY": "Day of Date must be a valid day",
+    "VALID_REAL_MONTH": "Month of Date must be a valid month",
+    "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter support you, experts or witnesses need."
+    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
   }
 }
