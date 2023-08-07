@@ -14,7 +14,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   }
-  return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang)
+  return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
 export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {

@@ -45,7 +45,7 @@ describe('Claimant Response Task List builder', () => {
       claim = new Claim();
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = new ClaimantResponse();
-    })
+    });
     it('should display view defendant`s response task as incomplete', () => {
       //When
       const howDefendantRespond = buildHowDefendantRespondSection(claim, claimId, lang);
@@ -76,7 +76,7 @@ describe('Claimant Response Task List builder', () => {
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.claimantResponse = new ClaimantResponse();
-    })
+    });
     it('should display Accept or reject the amount task as incomplete', () => {
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -305,7 +305,7 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse.directionQuestionnaire.witnesses = new Witnesses();
       claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-    })
+    });
     it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: undefined};
@@ -327,7 +327,7 @@ describe('Claimant Response Task List builder', () => {
     describe('Small Claims track DQ', () => {
       beforeEach(() => {
         claim.totalClaimAmount = 9000;
-      })
+      });
 
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //When
@@ -500,7 +500,7 @@ describe('Claimant Response Task List builder', () => {
     describe('Fast track DQ', () => {
       beforeEach(() => {
         claim.totalClaimAmount = 24000;
-      })
+      });
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -555,9 +555,9 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete for fast track claims when all information provided - expert evidence not used sceneraio', () => {
         //Given
-        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted())
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.experts = {
-          expertEvidence: {option: YesNo.NO}
+          expertEvidence: {option: YesNo.NO},
         };
         claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
@@ -604,7 +604,7 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert evidence used, sent expert reports, sharedExpert and expert details available', () => {
         //Given
-        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted())
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES};
@@ -642,7 +642,7 @@ function getCommonJourneyCompleted() {
       cantAttendHearingInNext12Months: {option: YesNo.NO},
     },
     witnesses: <Witnesses>{
-      otherWitnesses: {option: YesNo.NO}
+      otherWitnesses: {option: YesNo.NO},
     },
     vulnerabilityQuestions: <VulnerabilityQuestions>{
       vulnerability: {option: YesNo.NO},
@@ -653,6 +653,6 @@ function getCommonJourneyCompleted() {
         documentsLanguage: LanguageOptions.ENGLISH,
       },
     },
-    experts: <Experts>{}
+    experts: new Experts(),
   };
 }
