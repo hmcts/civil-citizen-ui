@@ -18,7 +18,7 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
-import {TrialArrangements} from "models/caseProgression/trialArrangements/trialArrangements";
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
