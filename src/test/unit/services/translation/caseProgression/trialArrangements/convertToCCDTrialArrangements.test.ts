@@ -1,5 +1,5 @@
 import {
-  translateDraftTrialArrangementsToCCD
+  translateDraftTrialArrangementsToCCD,
 } from 'services/translation/caseProgression/trialArrangements/convertToCCDTrialArrangements';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -17,7 +17,7 @@ describe('toCCDTrialArrangements', () => {
     const defendantTrialArrangement = new TrialArrangements();
     defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(YesNo.YES, 'Changed'),
     defendantTrialArrangement.isCaseReady = YesNo.YES,
-    defendantTrialArrangement.otherTrialInformation = 'Other information'
+    defendantTrialArrangement.otherTrialInformation = 'Other information';
     caseProgression.defendantTrialArrangements = defendantTrialArrangement;
     claim.caseProgression = caseProgression;
     return claim;
@@ -27,7 +27,7 @@ describe('toCCDTrialArrangements', () => {
     return {
       trialReadyRespondent1 : YesNoUpperCamelCase.YES,
       respondent1RevisedHearingRequirements: {revisedHearingRequirements:YesNoUpperCamelCase.YES, revisedHearingComments:'Changed'},
-      respondent1HearingOtherComments: {hearingOtherComments:'Other information'}
+      respondent1HearingOtherComments: {hearingOtherComments:'Other information'},
     };
   }
 

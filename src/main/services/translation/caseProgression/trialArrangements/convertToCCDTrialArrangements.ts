@@ -26,6 +26,6 @@ export const translateDraftTrialArrangementsToCCD = (claim: Claim): CCDTrialArra
   return {
     trialReadyRespondent1: toCCDYesNo(claim.caseProgression?.defendantTrialArrangements?.isCaseReady),
     respondent1RevisedHearingRequirements: toCCDTrialUpdatedHearingRequirements(claim.caseProgression?.defendantTrialArrangements?.hasAnythingChanged),
-    respondent1HearingOtherComments: toCCDTrialOtherComments(claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation)
+    respondent1HearingOtherComments: toCCDTrialOtherComments(claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation),
   };
 };

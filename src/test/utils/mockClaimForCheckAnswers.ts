@@ -2,7 +2,7 @@ import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
-  TransactionSchedule
+  TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
@@ -52,7 +52,7 @@ import {InterestClaimOptionsType} from '../../main/common/form/models/claim/inte
 import {
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestType
+  SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from '../../main/common/models/fullAdmission';

@@ -1,6 +1,6 @@
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 import {
-  getClaimWithDefendantTrialArrangements
+  getClaimWithDefendantTrialArrangements,
 } from '../../../../../../../utils/mockClaimForCheckAnswers';
 import {
   buildIsCaseReadyForTrialOrHearing,
