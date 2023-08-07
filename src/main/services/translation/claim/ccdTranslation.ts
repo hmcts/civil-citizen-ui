@@ -13,10 +13,6 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
-import {
-  toCCDTrialOtherComments,
-  toCCDTrialUpdatedHearingRequirements
-} from 'services/translation/response/convertToCCDTrialUpdatedHearingRequirements';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -41,8 +37,5 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
     interestClaimUntil: claim.interest?.interestEndDate,
     claimantUserDetails: getClaimantIdamDetails(req.session?.user),
-    trialReadyRespondent1: toCCDYesNo(claim.caseProgression?.defendantTrialArrangements?.isCaseReady),
-    respondent1RevisedHearingRequirements: toCCDTrialUpdatedHearingRequirements(claim.caseProgression?.defendantTrialArrangements?.hasAnythingChanged),
-    respondent1HearingOtherComments: toCCDTrialOtherComments(claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation),
   };
 };

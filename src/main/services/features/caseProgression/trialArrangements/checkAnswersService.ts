@@ -4,7 +4,6 @@ import {
   buildIsCaseReadyForTrialOrHearing,
 } from 'services/features/response/checkAnswers/caseProgression/trialArrangements/buildTrialReadyConfirmationSection';
 
-
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
 
   return {

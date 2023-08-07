@@ -11,10 +11,6 @@
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 {% set submitText = t('COMMON.BUTTONS.SUBMIT') %}
-{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
-                    + '<p class="govuk-!-margin-top-2">'
-                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
-                    +'</p>' %}
 
 {% block content %}
   {{ govukBackLink({
@@ -49,6 +45,7 @@
               <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+          {{ contactUsForHelp(t) }}
         </div>
       </div>
     </main>
