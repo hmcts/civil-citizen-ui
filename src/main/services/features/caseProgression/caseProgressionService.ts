@@ -165,7 +165,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
-  const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.witnessName = request['witnessName'].trim();
   //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
@@ -173,7 +173,7 @@ const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
 };
 
 const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
-  const formObj: ExpertSection = new ExpertSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: ExpertSection = new ExpertSection(request['dateInputFields']?.dateDay, request['dateInputFields']?.dateMonth, request['dateInputFields']?.dateYear);
   formObj.expertName = request['expertName'] != null ? request['expertName'].trim() : null;
   formObj.multipleExpertsName = request['multipleExpertsName'] != null ? request['multipleExpertsName'].trim() : null;
   formObj.fieldOfExpertise = request['fieldOfExpertise'] != null ? request['fieldOfExpertise'].trim() : null;
