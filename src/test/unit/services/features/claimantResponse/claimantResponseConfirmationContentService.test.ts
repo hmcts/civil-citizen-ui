@@ -23,24 +23,24 @@ describe('Claimant Response Confirmation service', () => {
   beforeEach(() => {
     claim = getClaim();
   });
-it('Dispute Scenario when claimant intention is not to proceed with claim', () => {
-  // Given
-  claim.claimantResponse.intentionToProceed = {option: 'no'};
-  claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-  claim.rejectAllOfClaim = new RejectAllOfClaim(
-    RejectAllOfClaimType.DISPUTE,
-  );
-  // When
-  const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-  // Then
-  expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM');
-  expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
-  expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
-  expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
-  expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
-  expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.CLAIM_ENDED');
-  expect(claimantResponseConfirmationContent[3]).toBeUndefined();
-});
+  it('Dispute Scenario when claimant intention is not to proceed with claim', () => {
+    // Given
+    claim.claimantResponse.intentionToProceed = {option: 'no'};
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.DISPUTE,
+    );
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.CLAIM_ENDED');
+    expect(claimantResponseConfirmationContent[3]).toBeUndefined();
+  });
 
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
