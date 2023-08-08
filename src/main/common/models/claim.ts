@@ -116,6 +116,7 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  responseClaimMediationSpecRequired: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

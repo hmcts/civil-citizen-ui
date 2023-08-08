@@ -10,10 +10,11 @@ import {
   getChooseHowFormaliseTask,
   getCountyCourtJudgmentTask,
   getFreeTelephoneMediationTask,
+  getFullDefenceTask,
   getProposeAlternativeRepaymentTask,
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
-import {YesNo} from 'common/form/models/yesNo';
+import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
@@ -25,9 +26,9 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
-  tasks.push(acceptOrRejectDefendantAdmittedTask);
   if (claim.isPartialAdmission()) {
+    const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
+    tasks.push(acceptOrRejectDefendantAdmittedTask);
     if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
@@ -59,9 +60,16 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
         tasks.push(signSettlementAgreement);
       }
     }
-
   }
 
+  if (claim.isFullDefence()) {
+    const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang)
+    tasks.push(decideWetherToProceed);
+    if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.responseClaimMediationSpecRequired === YesNoUpperCamelCase.YES) {
+      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+      tasks.push(freeTelephoneMediationTask);
+    }
+  }
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
@@ -75,6 +83,11 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
   if (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
+    tasks.push(giveUsDetailsClaimantHearingTask);
+  }
+
+  if (claim.isClaimantIntentionPending() && claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
