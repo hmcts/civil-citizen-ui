@@ -5,14 +5,14 @@ import {ccjConfirmationGuard} from 'routes/guards/ccjConfirmationGuard';
 
 const ccjConfirmationController = Router();
 
-ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async (req, res, next: NextFunction) => {
+ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, async (req, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     const defendantName = claim.getDefendantFullName();
-    return res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName});
+    res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName});
   } catch (error) {
-    return next(error);
+    next(error);
   }
-}) as RequestHandler);
+});
 
 export default ccjConfirmationController;
