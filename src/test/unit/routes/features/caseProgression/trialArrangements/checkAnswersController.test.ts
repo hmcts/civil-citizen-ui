@@ -75,23 +75,23 @@ describe('Trial Arrangements check answers - On GET', () => {
     expect(otherInformation.length).toBe(1);
     expect(otherInformation[0].textContent).toContain('other information');
   });
-});
-
-describe('Trial Arrangements check answers - on POST', () => {
-  beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
-  });
 
   it('should return status 500 when error thrown', async () => {
     mockGetSummarySections.mockImplementation(() => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
     await session(app)
-      .post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS)
+      .get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS)
       .expect((res: Response) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
+  });
+});
+
+describe('Trial Arrangements check answers - on POST', () => {
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   it('should call ccd when submitted and redirected to the confirmation page', async () => {
