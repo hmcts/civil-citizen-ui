@@ -1,7 +1,12 @@
 import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {t} from 'i18next';
+
 jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
 }));
+
+jest.mock('services/features/caseProgression/hearingDurationFormatter');
 
 const hearingLocation =  new HearingLocation(  {
   code: '1',
@@ -37,4 +42,15 @@ describe('testing of caseProgressionHearing class', ()=> {
     //Then
     expect(resultCOurtNameExpected).toBe('test');
   });
+
+  it('should getHearingDurationFormatted returns with correct information', () => {
+    //Given
+
+    const caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, HearingDuration.MINUTES_180);
+    //When
+    const resultDateExpected = caseProgressionHearing.getHearingDurationFormatted();
+    //Then
+    expect(resultDateExpected).toBe(t('COMMON.HEARING_DURATION.'+HearingDuration.MINUTES_180.toString()));
+  });
+
 });

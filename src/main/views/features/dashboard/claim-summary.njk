@@ -11,22 +11,6 @@
       {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
       {% set claimantName = claim.getClaimantFullName() %}
       {% set defendantName = claim.getDefendantFullName() %}
-      {% set latestUpdate %}
-        {% for latestUpdateSection in latestUpdateContent %}
-          {{ claimSummaryContent({
-            contentSections: latestUpdateSection.contentSections,
-            hasDivider: latestUpdateSection.hasDivider
-          }) }}
-        {% endfor %}
-      {% endset %}
-
-      {% set documents %}
-        {% for documentsSection in documentsContent %}
-          {{ claimSummaryContent({
-            contentSections: documentsSection.contentSections
-          },t) }}
-        {% endfor %}
-      {% endset %}
 
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
@@ -36,22 +20,41 @@
             {{ claim.legacyCaseReference }}
           </p>
 
-          {{ govukTabs({
-            classes: 'tab-section',
-            items: [
-              {
-                label: t('PAGES.CLAIM_SUMMARY.LATEST_UPDATE'),
-                id: "latest-update",
-                panel: {html: latestUpdate}
-              },
-              {
-                label: t('PAGES.CLAIM_SUMMARY.DOCUMENTS'),
-                id: "documents",
-                panel: {html: documents}
-              }
-            ]
-          }) }}
+          <div class="govuk-tabs" data-module="govuk-tabs">
+            <ul class="govuk-tabs__list">
+              {% for i in range(0, tabContent.length)  %}
+                {% if i == 0 %}
+                  <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                    <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                      {{ tabContent[i].label }}
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="govuk-tabs__list-item">
+                    <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                      {{ tabContent[i].label }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
 
+
+            {% for i in range(0, tabContent.length)  %}
+              {% if i == 0 %}
+            <div class="govuk-tabs__panel" id="{{ tabContent[i].id }}">
+              {% else %}
+            <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="{{ tabContent[i].id }}">
+              {% endif %}
+              {% for tabSection in tabContent[i].panels %}
+                {{ claimSummaryContent({
+                    contentSections: tabSection.contentSections,
+                    hasDivider: tabSection.hasDivider
+                }) }}
+              {% endfor %}
+            </div>
+              {% endfor %}
+          </div>
           {{ contactUsForHelp(t) }}
         </div>
         {{ aboutClaimWidget(t, {
