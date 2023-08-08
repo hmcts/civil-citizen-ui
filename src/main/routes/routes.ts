@@ -200,8 +200,13 @@ import uploadDocumentsController from './features/caseProgression/uploadDocument
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
+import finaliseTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController';
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
+import claimTaskListController from './features/claim/claimTaskListController';
+import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
+import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import documentViewController from 'routes/features/document/documentViewController';
 
 export default [
   homeController,
@@ -390,6 +395,11 @@ export default [
   uploadYourDocumentsController,
   documentsUploadedController,
   cancelYourUploadController,
+  finaliseTrialArrangementsController,
   uploadFileController,
   documentUploadCheckAnswerController,
+  claimTaskListController,
+  isCaseReadyController,
+  hasAnythingChangedController,
+  documentViewController,
 ];

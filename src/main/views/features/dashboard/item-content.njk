@@ -20,13 +20,11 @@
 
   {% if content.type === ClaimSummaryType.TITLE %}
     {% set object = '' %}
-    {% if content.data.classes %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
-    {% elif  content.data.variables %}
-       {% set object = content.data.variables %}
-       <h3 class="govuk-heading-m">{{ t(content.data.text,object) }}</h3>
+    {% if  content.data.variables %}
+      {% set object = content.data.variables %}
+      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h3>
     {% else %}
-      <h3 class="govuk-heading-m">{{ t(content.data.text) }}</h3>
+      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
     {% endif %}
   {% endif %}
 
@@ -38,19 +36,19 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l">{{ t(content.data.text,object) }}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
     {% else %}
-      <p class="govuk-body-l">{{ t(content.data.text) }}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
     {% set object = '' %}
-    {% if content.data.variables or content.data.classes %}
+    {% if content.data.variables %}
         {% set object = content.data.variables %}
         <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
     {% else %}
-      <p class="govuk-body">{{ t(content.data.text) }}</p>
+      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}
   {% endif %}
 
@@ -76,6 +74,12 @@
         isStartButton: content.data.isStartButton
       }) }}
     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
+    <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href={{ content.data.href }}>
+      {{ t(content.data.text) }}
+    </a>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LINK %}
@@ -306,6 +310,18 @@
           }
         }) }}
       </fieldset>
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.BUTTON_WITH_CANCEL_LINK %}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        href: content.data.href,
+        text:  t(content.data.text),
+        classes: content.data.classes,
+        isStartButton: content.data.isStartButton
+      }) }}
+      <a href={{ content.data.cancelHref }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
     </div>
   {% endif %}
 {% endmacro %}

@@ -26,7 +26,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
       id: '1',
       value: {
         createdBy: 'cui',
-        documentType: DocumentType.SEALED_CLAIM,
+        documentType: DocumentType.DEFENDANT_DEFENCE,
         documentLink:  {
           document_url: 'url1',
           document_filename: 'filename1',
@@ -63,6 +63,21 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url2',
           document_filename: 'filename2',
+          document_binary_url: 'documents/123/binary',
+        },
+        documentName: 'documentName',
+        createdDatetime: new Date(Date.now()),
+        documentSize: 1,
+      },
+    },
+    {
+      id: '3',
+      value: {
+        createdBy: 'cui',
+        documentType: DocumentType.HEARING_FORM,
+        documentLink:  {
+          document_url: 'url3',
+          document_filename: 'filename3',
           document_binary_url: 'documents/123/binary',
         },
         documentName: 'documentName',

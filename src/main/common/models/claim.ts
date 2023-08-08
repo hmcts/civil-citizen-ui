@@ -62,6 +62,7 @@ import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
+  resolvingDispute: boolean;
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
@@ -353,11 +354,21 @@ export class Claim {
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
-    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
-      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()){
+      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
         return document.value.documentType === documentType;
       });
-      return filteredDocumentDetailsByType.value;
+      return hearingNotice.value;
+    }
+    else if (documentType === DocumentType.HEARING_FORM){
+      return undefined;
+    }
+
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+        return document?.value.documentType === documentType;
+      });
+      return filteredDocumentDetailsByType?.value;
     }
     return undefined;
   }

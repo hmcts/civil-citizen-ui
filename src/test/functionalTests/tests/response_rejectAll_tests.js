@@ -31,7 +31,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -53,7 +53,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -70,9 +70,7 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
-    //mediation with claimant lr to be replaced with admin after bug CIV-9427
-    await api.mediationUnsuccessful(config.applicantSolicitorUser);
-    //Create sdo in this journey is broken and a bug CIV-9488
-    //await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
+    await api.mediationUnsuccessful(config.caseWorker);
+    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
 });

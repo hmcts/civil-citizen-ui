@@ -6,6 +6,8 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {t} from 'i18next';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {CaseDocument} from 'models/document/caseDocument';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 const buildDownloadSealedClaimSectionTitle = (): ClaimSummarySection => {
   return {type: ClaimSummaryType.TITLE,
@@ -15,15 +17,54 @@ const buildDownloadSealedClaimSectionTitle = (): ClaimSummarySection => {
   };
 };
 
-const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
-  const document = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
-  const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_CLAIM';
+const buildSystemGeneratedDocumentSections = (claim: Claim, claimId: string, lang: string): ClaimSummarySection [] => {
+  const claimDocuments = claim.systemGeneratedCaseDocuments;
+  const claimDocumentsSections: ClaimSummarySection[] = [];
+  if(claimDocuments && claimDocuments.length > 0) {
+    claimDocuments.forEach(document =>  claimDocumentsSections.push(generateDocumentSection(document.value, claimId, lang)));
+  }
+  return claimDocumentsSections;
+};
+
+const generateDocumentSection = (document: CaseDocument, claimId: string, lang:string): ClaimSummarySection => {
+  if (document) {
+    const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
+    return {
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(document.documentLink?.document_binary_url)),
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+      },
+    };
+  }
+};
+
+const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
+  const document = claim.getDocumentDetails(DocumentType.HEARING_FORM);
   const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
   if (document) {
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.SEALED_CLAIM)),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+      },
+    };
+  }
+};
+
+const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
+  const document = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
+  const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE';
+  const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
+
+  if(document) {
+    return {
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
         text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
@@ -32,6 +73,8 @@ const buildDownloadSealedClaimSection = (claim: Claim, claimId: string, lang: st
 };
 
 export {
-  buildDownloadSealedClaimSection,
+  buildSystemGeneratedDocumentSections,
+  buildDownloadSealedResponseSection,
+  buildDownloadHearingNoticeSection,
   buildDownloadSealedClaimSectionTitle,
 };
