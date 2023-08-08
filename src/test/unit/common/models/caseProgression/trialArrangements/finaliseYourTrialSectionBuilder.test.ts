@@ -119,4 +119,43 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
     //Then
     expect(startButtonBuilt).toEqual([startButtonExpected]);
   });
+
+  it('should create insetText', ()=> {
+    //Given
+    const insetTextExpected = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t('text'),
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const insetTextBuilt = new FinaliseYourTrialSectionBuilder()
+      .addInsetText('text', insetTextExpected.data.variables)
+      .build();
+
+    //Then
+    expect(insetTextBuilt).toEqual([insetTextExpected]);
+  });
+
+  it('should create ParagraphWithHTML', ()=> {
+    //Given
+    const htmlParagraphExpected = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: '<p class="govuk-body">text</p>',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const mainTitleBuilt = new FinaliseYourTrialSectionBuilder()
+      .addParagraphWithHTML('text', htmlParagraphExpected.data.variables)
+      .build();
+
+    //Then
+    expect(mainTitleBuilt).toEqual([htmlParagraphExpected]);
+  });
+
 });

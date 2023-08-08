@@ -5,7 +5,6 @@ import {
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL,
 } from 'routes/urls';
-import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -13,6 +12,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getIsCaseReady} from 'services/features/caseProgression/trialArrangements/isCaseReady';
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {getClaimById} from 'modules/utilityService';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
