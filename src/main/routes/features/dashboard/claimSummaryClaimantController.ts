@@ -25,7 +25,7 @@ claimSummaryClaimantController.get([CLAIMANT_SUMMARY_URL], async (req, res, next
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (claim && !claim.isEmpty()) {
+    if (await claim && !claim.isEmpty()) {
       await saveDocumentsToExistingClaim(claimId, claim);
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
       let documentsContent = getDocumentsContent(claim, claimId);
