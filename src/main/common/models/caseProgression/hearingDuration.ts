@@ -9,3 +9,4 @@ export enum HearingDuration {
   DAY_1 = 'DAY_1',
   DAY_2 = 'DAY_2',
 }
+
