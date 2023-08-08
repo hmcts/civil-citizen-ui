@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Router} from 'express';
+import {NextFunction, Router} from 'express';
 import {CCJ_CONFIRMATION_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {ccjConfirmationGuard} from 'routes/guards/ccjConfirmationGuard';
