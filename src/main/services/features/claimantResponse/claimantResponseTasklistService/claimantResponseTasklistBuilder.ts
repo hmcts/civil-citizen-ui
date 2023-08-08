@@ -14,7 +14,7 @@ import {
   getProposeAlternativeRepaymentTask,
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
-import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { YesNo } from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
@@ -65,7 +65,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   if (claim.isFullDefence()) {
     const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
     tasks.push(decideWetherToProceed);
-    if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.responseClaimMediationSpecRequired === YesNoUpperCamelCase.YES) {
+    if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.isDefendantAgreedForMediation()) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }

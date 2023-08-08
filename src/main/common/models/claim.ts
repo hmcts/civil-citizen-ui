@@ -116,7 +116,6 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
-  responseClaimMediationSpecRequired: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -637,6 +636,10 @@ export class Claim {
 
   isClaimSettled() {
     return this.ccdState === CaseState.CASE_SETTLED;
+  }
+
+  isDefendantAgreedForMediation() {
+    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
   }
 
   hasRespondent1NotAgreedMediation() {

@@ -1,6 +1,6 @@
 import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
-import { YesNo, YesNoNotReceived, YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { YesNo, YesNoNotReceived } from 'common/form/models/yesNo';
 import {
   buildClaimantHearingRequirementsSection,
   buildClaimantResponseSubmitSection,
@@ -24,6 +24,7 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import { Mediation } from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -289,7 +290,11 @@ describe('Claimant Response Task List builder', () => {
       //Given
       const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
-      claim.responseClaimMediationSpecRequired = YesNoUpperCamelCase.YES;
+      claim.mediation = {
+        canWeUse: {
+          option: 'yes',
+        },
+      } as Mediation;
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
         intentionToProceed: {
