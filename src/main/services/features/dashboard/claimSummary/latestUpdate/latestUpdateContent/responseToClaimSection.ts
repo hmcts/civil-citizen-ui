@@ -15,7 +15,7 @@ export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean
   }) : ({
     type: ClaimSummaryType.TITLE,
     data: {
-      text: t('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', {lng: lang}),
+      text: t('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', {lng : lang}),
     },
   });
 };
