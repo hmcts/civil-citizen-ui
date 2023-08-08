@@ -13,6 +13,7 @@ import {
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -25,6 +26,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
+      await saveDocumentsToExistingClaim(claimId, claim);
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
       let documentsContent = getDocumentsContent(claim, claimId);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
