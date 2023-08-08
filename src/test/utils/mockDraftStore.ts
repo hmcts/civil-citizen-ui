@@ -81,6 +81,7 @@ const mockResponseFullAdmitPayBySetDate = {
 };
 
 const mockRedisFailure = {
+  del: jest.fn(() => Promise.resolve({})),
   set: jest.fn(() => {
     throw new Error(TestMessages.REDIS_FAILURE);
   }),
@@ -120,6 +121,7 @@ const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
 };
 
 const mockCivilClaimPDFTimeline = {
+  del: jest.fn(() => Promise.resolve({})),
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
 };

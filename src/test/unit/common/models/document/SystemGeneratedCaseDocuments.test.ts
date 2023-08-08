@@ -1,5 +1,5 @@
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
-import {SystemDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
+import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {
   DocumentType,
 } from 'models/document/documentType';
@@ -12,7 +12,7 @@ describe('testing of System GeneratedCaseDocuments class', () => {
     const documentType = DocumentType.SDO_ORDER;
 
     // when
-    const result = SystemDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(
+    const result = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(
       systemGeneratedCaseDocuments,
       documentType,
     );
