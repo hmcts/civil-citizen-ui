@@ -13,7 +13,7 @@ import {getHasAnythingChanged} from 'services/features/caseProgression/trialArra
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {getClaimById} from 'modules/utilityService';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
