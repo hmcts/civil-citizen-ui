@@ -102,8 +102,6 @@ wa-case-event-handler:
     keyVaults:
       wa:
         secrets:
-          - name: app-insights-connection-string
-            alias: app-insights-connection-string
           - name: s2s-secret-case-event-handler
             alias: S2S_SECRET_CASE_EVENT_HANDLER
           - name: ld-secret
