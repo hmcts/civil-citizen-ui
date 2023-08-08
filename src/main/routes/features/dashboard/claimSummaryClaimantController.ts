@@ -34,7 +34,7 @@ claimSummaryClaimantController.get([CLAIMANT_SUMMARY_URL], async (req, res, next
         latestUpdateContent = [];
         documentsContent = [];
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        getCaseProgressionLatestUpdates(claim, lang, false)
+        getCaseProgressionLatestUpdates(claim, lang, true)
           .forEach(items => latestUpdateContent.push(items));
         documentsContent = getEvidenceUploadContent(claim);
       }
