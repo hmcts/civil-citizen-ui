@@ -47,7 +47,6 @@ hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (re
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
 
-    //TODO: check your answers URL will have to be checked as part of CIV-9201
     res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
 
   } catch (error) {
