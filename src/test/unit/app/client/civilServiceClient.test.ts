@@ -8,7 +8,8 @@ import {
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -16,12 +17,13 @@ import {mockClaim} from '../../../utils/mockClaim';
 import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
-import { CivilServiceClient } from 'client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -50,7 +52,14 @@ const ccdClaim : CCDClaim = {
   claimantUserDetails: {
     email: 'email',
     id: '1',
-  },
+  }
+};
+
+const ccdClaimTrialArrangements : CCDClaim = {
+  legacyCaseReference : '000MC003',
+  trialReadyRespondent1: YesNoUpperCamelCase.YES,
+  respondent1HearingOtherComments: {hearingOtherComments: 'Other comments'},
+  respondent1RevisedHearingRequirements: {revisedHearingRequirements: YesNoUpperCamelCase.YES, revisedHearingComments: 'revised'},
 };
 
 describe('Civil Service Client', () => {
@@ -364,6 +373,44 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  
+  describe('submitDefendantTrialArrangements', () => {
+    it('should submit defendant trial arrangement successfully', async () => {
+      //Given
+      const mockResponse = new CivilClaimResponse();
+      mockResponse.id = '1';
+      mockResponse.case_data = ccdClaimTrialArrangements;
+
+      const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const claim = await civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId', 'undefined')
+        .replace(':caseId', '123'));
+      expect(claim.caseProgression.defendantTrialArrangements.isCaseReady).toEqual('yes');
+      expect(claim.caseProgression.defendantTrialArrangements.otherTrialInformation).toEqual('Other comments');
+      expect(claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.textArea).toEqual('revised');
+      expect(claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.option).toEqual('yes');
+
+    });
+
+    it('should throw error when there is an error with api', async () => {
+      //Given
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });
