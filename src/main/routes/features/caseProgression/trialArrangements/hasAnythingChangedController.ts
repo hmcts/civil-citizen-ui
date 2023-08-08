@@ -1,10 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   DEFENDANT_SUMMARY_URL,
-  HAS_ANYTHING_CHANGED_URL,
-  IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION,
+  HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
-import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -12,6 +11,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {getClaimById} from 'modules/utilityService';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();

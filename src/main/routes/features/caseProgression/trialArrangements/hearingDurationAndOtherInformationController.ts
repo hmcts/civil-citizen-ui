@@ -11,10 +11,10 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 
+import {OtherTrialInformation} from 'form/models/caseProgression/trialArrangements/otherTrialInformation';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {OtherTrialInformation} from 'models/caseProgression/trialArrangements/OtherTrialInformation';
 
 const hearingDurationViewPath = 'features/caseProgression/trialArrangements/hearing-duration-other-info';
 const hearingDurationController = Router();
