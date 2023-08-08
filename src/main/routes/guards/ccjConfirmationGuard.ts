@@ -8,9 +8,9 @@ export const ccjConfirmationGuard = async (req: Request, res: Response, next: Ne
   try {
     const caseData: Claim = await getCaseDataFromStore(req.params.id);
     if (caseData.isCCJCompleted()) {
-      next();
+      return next();
     } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
+      return res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
     }
   } catch (error) {
     next(error);

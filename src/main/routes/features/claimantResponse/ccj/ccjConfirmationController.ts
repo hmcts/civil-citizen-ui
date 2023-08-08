@@ -9,9 +9,9 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, async 
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     const defendantName = claim.getDefendantFullName();
-    res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName});
+    return res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName});
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
