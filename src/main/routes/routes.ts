@@ -208,6 +208,7 @@ import isCaseReadyController from 'routes/features/caseProgression/trialArrangem
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
 import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
 import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
+import documentViewController from 'routes/features/document/documentViewController';
 
 export default [
   homeController,
@@ -404,4 +405,5 @@ export default [
   hasAnythingChangedController,
   hearingDurationController,
   trialCheckAnswersController,
+  documentViewController,
 ];
