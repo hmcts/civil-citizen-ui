@@ -52,7 +52,7 @@ const ccdClaim : CCDClaim = {
   claimantUserDetails: {
     email: 'email',
     id: '1',
-  }
+  },
 };
 
 const ccdClaimTrialArrangements : CCDClaim = {
@@ -375,7 +375,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
-  
+
   describe('submitDefendantTrialArrangements', () => {
     it('should submit defendant trial arrangement successfully', async () => {
       //Given
