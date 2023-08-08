@@ -53,7 +53,7 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
-import { HearingDuration } from './caseProgression/HearingDuration';
+import { HearingDuration } from './caseProgression/hearingDuration';
 import {
   CCDTrialArrangementsHearingRequirements,
   CCDTrialArrangementsOtherComments,

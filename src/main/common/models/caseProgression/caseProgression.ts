@@ -1,7 +1,7 @@
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
-export class  CaseProgression{
+export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
   defendantUploadDocuments?: UploadDocuments;
   claimantLastUploadDate?: Date;
