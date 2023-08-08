@@ -30,7 +30,7 @@
 {% block content %}
   {{ govukBackLink({
     text: t('COMMON.BUTTONS.BACK'),
-    href: eventStartUrl,
+    href: latestUpdatesUrl,
     classes: 'govuk-!-margin-top-0'
   }) }}
   <div class="govuk-width-container">
@@ -54,7 +54,7 @@
               {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE')
               }) }}
-              <a href={{ eventStartUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
           {{ contactUsForHelp(t) }}
