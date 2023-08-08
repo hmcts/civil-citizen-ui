@@ -78,6 +78,7 @@ async function handleChange(event) {
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
   if (response.status === 400) {
+    removeLoading(event);
     target.value = '';
     const formGroup = target.closest('div');
     formGroup.classList.add('govuk-form-group--error');
