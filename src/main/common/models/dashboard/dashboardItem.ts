@@ -2,6 +2,7 @@ import config from 'config';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {Claim} from 'models/claim';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -125,6 +126,20 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS.PART_ADMIT_NOT_PAID'},
       HEARING_FORM_GENERATED: {translationKey: 'PAGES.DASHBOARD.STATUS.TRIAL_OR_HEARING_SCHEDULED'},
+      MORE_DETAILS_REQUIRED: { translationKey: 'PAGES.DASHBOARD.STATUS.MORE_DETAILS_REQUIRED' },
+      MEDIATION_SUCCESSFUL: { translationKey: 'PAGES.DASHBOARD.STATUS.MEDIATION_SUCCESSFUL' },
+      MEDIATION_UNSUCCESSFUL: { translationKey: 'PAGES.DASHBOARD.STATUS.MEDIATION_UNSUCCESSFUL' },
+      IN_MEDIATION: { translationKey: 'PAGES.DASHBOARD.STATUS.IN_MEDIATION' },
+      WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW' },
+      CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_ENDED' },
+      CLAIM_REJECTED_OFFER_SETTLE_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_SENT_TO_CLAIMANT'},
+      CLAIMANT_REJECT_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_OFFER'},
+      CLAIMANT_ACCEPTED_OFFER_OUT_OF_COURT: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_ACCEPTED_SETTLE_IN_COURT' },
+      CLAIMANT_REJECT_PARTIAL_ADMISSION: {
+        translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_REJECT_PARTIAL_ADMISSION',
+        parameter: [paramClaimantName, paramAdmittedAmount],
+      },
+      SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS.SDO_ORDER_STATUS' },
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);
@@ -142,3 +157,19 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   }
   return t(translationKey, {lng:getLng(lang)} );
 };
+
+export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
+  if(!claim || claim?.isEmpty()) {
+    return undefined;
+  }
+  const draftClaim = new DashboardClaimantItem();
+  draftClaim.claimId = 'draft';
+  draftClaim.draft = true;
+  draftClaim.ocmc = false;
+  draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
+  draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
+  draftClaim.claimantName = claim.getClaimantFullName();
+  draftClaim.defendantName = claim.getDefendantFullName();
+  return draftClaim;
+};
+

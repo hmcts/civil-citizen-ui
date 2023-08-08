@@ -16,9 +16,9 @@ describe('Test download Utils class', () => {
       end: jest.fn(),
     };
 
-    const byteArrayFile = Buffer.from('Hello, world!');
+    const fileResponse: FileResponse = new FileResponse('application/pdf', 'test.pdf', Buffer.from('Hello, world!'));
 
-    displayPDF(mockResponse, byteArrayFile, 'test');
+    displayPDF(mockResponse, fileResponse);
 
     expect(mockResponse.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',

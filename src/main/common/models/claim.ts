@@ -62,6 +62,7 @@ import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
+  resolvingDispute: boolean;
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
@@ -355,9 +356,9 @@ export class Claim {
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
-        return document.value.documentType === documentType;
+        return document?.value.documentType === documentType;
       });
-      return filteredDocumentDetailsByType.value;
+      return filteredDocumentDetailsByType?.value;
     }
     return undefined;
   }

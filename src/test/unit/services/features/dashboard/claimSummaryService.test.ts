@@ -1,6 +1,6 @@
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {
-  buildDownloadSealedClaimSection,
+  buildSystemGeneratedDocumentSections,
   buildDownloadSealedClaimSectionTitle,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
@@ -11,6 +11,7 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {DocumentType} from 'models/document/documentType';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -77,19 +78,35 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
+    const claim = new Claim();
+    claim.systemGeneratedCaseDocuments =  [{
+      id: '1234',
+      value: {
+        createdBy: 'some one',
+        documentLink: {
+          document_url: 'url',
+          document_filename: 'filename',
+          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+        },
+        documentName: 'some name',
+        documentType: DocumentType.DEFENDANT_DEFENCE,
+        documentSize: 123,
+        createdDatetime: new Date(),
+      },
+    }];
 
     // When
-    const result = getDocumentsContent(new Claim(), claimId, lang);
+    const result = getDocumentsContent(claim, claimId, lang);
 
     // Then
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(2);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
-    const downloadClaimSection = buildDownloadSealedClaimSection(new Claim(), claimId, lang);
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
-    expect(result[0].contentSections[1]).toEqual(downloadClaimSection);
+    expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
   });
 });
 
