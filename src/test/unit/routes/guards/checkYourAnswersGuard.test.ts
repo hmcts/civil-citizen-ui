@@ -1,5 +1,5 @@
 import express from 'express';
-import {CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
+import {CLAIM_INCOMPLETE_SUBMISSION_URL, DASHBOARD_URL} from 'routes/urls';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
@@ -7,6 +7,8 @@ import {getTaskLists} from 'services/features/claim/taskListService';
 import {outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {AppRequest} from 'common/models/AppRequest';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -23,7 +25,7 @@ jest.mock('i18next', () => ({
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists =
   outstandingTasksFromTaskLists as jest.Mock;
-
+const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 
 const MOCK_REQUEST = () => {
@@ -131,6 +133,27 @@ describe('checkYourAnswersClaimGuard', () => {
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
       CLAIM_INCOMPLETE_SUBMISSION_URL,
     );
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to dashboard', async () => {
+    //Given
+    const mockRequest = MOCK_REQUEST();
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+
+    mockGetTaskList.mockImplementation(() => {
+      return mockTaskList;
+    });
+    //When
+    await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
+      DASHBOARD_URL,
+    );
+    expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalledWith(
+      CLAIM_INCOMPLETE_SUBMISSION_URL  );
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 });

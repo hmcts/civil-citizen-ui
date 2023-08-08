@@ -3,7 +3,7 @@ import {Task} from 'models/taskList/task';
 import {outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
-import {CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
+import {CLAIM_INCOMPLETE_SUBMISSION_URL, DASHBOARD_URL} from 'routes/urls';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
@@ -15,7 +15,7 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const caseData: Claim = await getCaseDataFromStore(userId);
     const taskLists = getTaskLists(caseData,  userId, lang);
     /**
-     * We have to check that all sections are completed except Submit section 
+     * We have to check that all sections are completed except Submit section
      * so we mark submit section as COMPLETE to ignore it.
      */
     taskLists[2].tasks[0].status = TaskStatus.COMPLETE;
@@ -25,7 +25,9 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     if (allTasksCompleted) {
       return next();
     }
-
+    else if (caseData && caseData?.id === undefined) {
+      return res.redirect(DASHBOARD_URL);
+    }
     return res.redirect(CLAIM_INCOMPLETE_SUBMISSION_URL);
   } catch (error) {
     next(error);
