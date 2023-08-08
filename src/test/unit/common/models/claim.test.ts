@@ -1308,7 +1308,7 @@ describe('Documents', () => {
         new InstalmentFirstPaymentDate({year:'1991', month:'1', day:'1'}),
         TransactionSchedule.WEEK,
         10,
-        );
+      );
       claim.claimantResponse.ccjRequest.statementOfTruth = new QualifiedStatementOfTruth(true);
       //Then
       expect(claim.isCCJCompleted()).toBeTruthy();
