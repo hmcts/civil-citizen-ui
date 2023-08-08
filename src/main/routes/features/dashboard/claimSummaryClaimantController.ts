@@ -10,10 +10,10 @@ import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDa
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
-import {saveDocumentsToExistingClaim} from "services/caseDocuments/documentService";
-import {getDocumentsContent, getEvidenceUploadContent} from "services/features/dashboard/claimSummaryService";
-import {DocumentType} from "models/document/documentType";
-import {getSystemGeneratedCaseDocumentIdByType} from "models/document/systemGeneratedCaseDocuments";
+import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
+import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
+import {DocumentType} from 'models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryClaimantController = Router();
