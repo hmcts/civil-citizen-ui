@@ -7,6 +7,9 @@ import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
 import {getNewUpload} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/newUploadContent';
+import {
+  getViewFinalGeneralOrder,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/viewFinalGeneralOrderContent';
 export const buildNewUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getNewUpload(claim));
@@ -20,5 +23,11 @@ export const buildEvidenceUploadSection = (claim: Claim): ClaimSummarySection[][
 export const buildHearingTrialLatestUploadSection = (claim: Claim, lang: string): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getHearingTrialLatestUpload(claim, lang));
+  return sectionContent;
+};
+
+export const buildViewFinalGeneralOrderContent = (): ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getViewFinalGeneralOrder());
   return sectionContent;
 };

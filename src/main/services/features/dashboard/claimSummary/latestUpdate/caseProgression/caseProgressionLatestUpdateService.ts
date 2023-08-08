@@ -1,12 +1,18 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection, buildNewUploadSection,
+  buildEvidenceUploadSection,
+  buildHearingTrialLatestUploadSection,
+  buildNewUploadSection,
+  buildViewFinalGeneralOrderContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
+  if (claim.isFinalGeneralOrderIssued()) {
+    sectionContent.push(getViewFinalGeneralOrderContent());
+  }
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
   }
@@ -35,6 +41,10 @@ export const getEvidenceUploadLatestUpdateContent = (claimId: string, claim: Cla
 
 export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: string): ClaimSummarySection[][] => {
   return buildHearingTrialLatestUploadSection(claim, lang);
+};
+
+export const getViewFinalGeneralOrderContent = (): ClaimSummarySection[][] => {
+  return buildViewFinalGeneralOrderContent();
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {
