@@ -201,4 +201,27 @@ describe('Case Progression Latest Update Content service', () => {
     expect(result[0].contentSections[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_WARNING');
     expect(result[0].contentSections[2].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_PARAGRAPH');
   });
+
+  it('getCaseProgressionLatestUpdates: should not return case Dismissed notification if caseDismissedHearingFeeDueDate not yet reached', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimDismissedHearingFeeNotPaid = {
+      hasCaseProgressionHearingDocuments: () => true,
+      hasSdoOrderDocument: () => true,
+      ...claimWithSdo,
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimDismissedHearingFeeNotPaid, 'en', true);
+
+    //Then
+    expect(result[0].contentSections[0].data.text).not.toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.TITLE');
+    expect(result[0].contentSections[1].data.text).not.toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_WARNING');
+    expect(result[0].contentSections[2].data.text).not.toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_PARAGRAPH');
+  });
 });

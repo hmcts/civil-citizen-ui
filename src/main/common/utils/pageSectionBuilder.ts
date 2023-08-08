@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -23,25 +22,6 @@ export class PageSectionBuilder {
         text: text,
         variables: variables,
         classes: classes,
-      },
-    });
-    this._claimSummarySections.push(paragraphSection);
-    return this;
-  }
-
-  addLatestUpdateClaimantParagraph(lang:string) {
-    const paragraphSection = ({
-      type: ClaimSummaryType.HTML,
-      data: {
-        html: `<p class="govuk-body">${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_FURTHER_INFORMATION', {lng: lang})}
-                <br> ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_FURTHER_INFORMATION_SPECIFIED_EMAIL', {lng: lang})}
-                <a href="mailto:contactocmc@justice.gov.uk">contactocmc@justice.gov.uk</a>
-                <br> ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_FURTHER_INFORMATION_DAMAGES_EMAIL', {lng: lang})}
-                <a href="mailto:ccmcccustomerenquiries@justice.gov.uk">ccmcccustomerenquiries@justice.gov.uk</a>
-                <br> ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_FURTHER_INFORMATION_CONTACT', {lng: lang})}
-                <br> ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.CASE_DISMISSED_HEARING_DUE_DATE.CLAIMANT_FURTHER_INFORMATION_FIND_OUT', {lng: lang})}
-                <a href="https://www.gov.uk/call-charges">https://www.gov.uk/call-charges</a>
-                </p>`,
       },
     });
     this._claimSummarySections.push(paragraphSection);
