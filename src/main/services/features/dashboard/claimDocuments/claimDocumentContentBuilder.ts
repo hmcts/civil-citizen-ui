@@ -40,6 +40,21 @@ const generateDocumentSection = (document: CaseDocument, claimId: string, lang:s
   }
 };
 
+const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
+  const document = claim.getDocumentDetails(DocumentType.HEARING_FORM);
+  const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
+  if (document) {
+    return {
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+      },
+    };
+  }
+};
+
 const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
   const document = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
   const downloadClaimLabel = 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE';
@@ -60,5 +75,6 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
 export {
   buildSystemGeneratedDocumentSections,
   buildDownloadSealedResponseSection,
+  buildDownloadHearingNoticeSection,
   buildDownloadSealedClaimSectionTitle,
 };
