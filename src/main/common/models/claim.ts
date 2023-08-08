@@ -522,6 +522,10 @@ export class Claim {
     return this.statementOfMeans?.courtOrders;
   }
 
+  isFinalGeneralOrderIssued(): boolean {
+    return true; // TODO - add a relevant logic as part of CIV-9958
+  }
+
   getPriorityDebts(): PriorityDebts | undefined {
     return this.statementOfMeans?.priorityDebts;
   }
