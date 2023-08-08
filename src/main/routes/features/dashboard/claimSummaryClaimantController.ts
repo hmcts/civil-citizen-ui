@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {
   getLatestUpdateContent,
@@ -20,12 +20,12 @@ const claimSummaryClaimantController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimSummaryClaimantController.get([CLAIMANT_SUMMARY_URL], async (req, res, next: NextFunction) => {
+claimSummaryClaimantController.get([CLAIMANT_SUMMARY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (await claim && !claim.isEmpty()) {
+    if (claim && !claim.isEmpty()) {
       await saveDocumentsToExistingClaim(claimId, claim);
       let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
       let documentsContent = getDocumentsContent(claim, claimId);
@@ -45,6 +45,6 @@ claimSummaryClaimantController.get([CLAIMANT_SUMMARY_URL], async (req, res, next
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimSummaryClaimantController;
