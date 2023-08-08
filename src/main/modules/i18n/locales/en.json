@@ -749,6 +749,7 @@
       "DOCUMENTS": "Documents",
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
@@ -757,7 +758,9 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
+      "NOTICES_AND_ORDERS": "Notices and orders",
       "LATEST_UPDATE": "Latest update",
+      "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
       "RESPONSE_DEADLINE": "Response deadline:",
@@ -1554,6 +1557,9 @@
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
+          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         },
         "CASE_DISMISSED_HEARING_DUE_DATE": {
