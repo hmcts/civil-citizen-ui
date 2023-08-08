@@ -63,7 +63,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   }
 
   if (claim.isFullDefence()) {
-    const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang)
+    const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
     tasks.push(decideWetherToProceed);
     if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.responseClaimMediationSpecRequired === YesNoUpperCamelCase.YES) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);

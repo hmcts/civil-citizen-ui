@@ -276,7 +276,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display decide wether to proceed task as incomplete for full defense', () => {
       //Given
-      let claim = new Claim();
+      const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -287,14 +287,14 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense', () => {
       //Given
-      let claim = new Claim()
+      const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
-      claim.responseClaimMediationSpecRequired = YesNoUpperCamelCase.YES
+      claim.responseClaimMediationSpecRequired = YesNoUpperCamelCase.YES;
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
         intentionToProceed: {
-          option: 'yes'
-        }
+          option: 'yes',
+        },
       } as ClaimantResponse;
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -313,13 +313,13 @@ describe('Claimant Response Task List builder', () => {
 
     it('should display decide wether to proceed task with proceed value as no as complete for full defense', () => {
       //Given
-      let claim = new Claim()
+      const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
         intentionToProceed: {
-          option: 'no'
-        }
+          option: 'no',
+        },
       } as ClaimantResponse;
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);

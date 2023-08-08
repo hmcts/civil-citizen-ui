@@ -34,7 +34,7 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
 export function getFullDefenceTask(claim: Claim, claimId: string, lang: string): Task {
   const decideWetherToProceed = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED', {
-      lng: lang
+      lng: lang,
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
@@ -42,7 +42,7 @@ export function getFullDefenceTask(claim: Claim, claimId: string, lang: string):
 
   if (claim?.claimantResponse?.intentionToProceed?.option) {
     decideWetherToProceed.status = TaskStatus.COMPLETE;
-  };
+  }
   return decideWetherToProceed;
 }
 
