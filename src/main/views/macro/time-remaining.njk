@@ -1,9 +1,9 @@
-{% macro timeRemaining(noOfRemainingDays, isDeadLinePassed) %}
+{% macro timeRemaining(t, noOfRemainingDays, isDeadLinePassed) %}
   {% if noOfRemainingDays > 0 %}
     {% if noOfRemainingDays == 1 %}
       {{ t('(1 day remaining)') }}
     {% else %}
-      ({{ noOfRemainingDays }} {{t(' days remaining')}}) 
+      ({{ noOfRemainingDays }} {{t('PAGES.CLAIM_SUMMARY.DAYS_REMAINING')}}) 
     {% endif %}
   {% else %}
     {% if noOfRemainingDays == 0 %}
