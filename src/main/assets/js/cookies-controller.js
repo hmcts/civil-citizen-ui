@@ -1,5 +1,5 @@
 /**
- * This js code controls displaying success notification banner on cookies page after successfuly saving cookies selection on cookies page
+ * This code controls displaying success notification banner on cookies page after successfulyy saving cookies preferences
  */
 
 if (document.getElementById("cui-cookies-submit")) {
