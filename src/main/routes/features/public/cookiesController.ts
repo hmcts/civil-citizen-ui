@@ -16,7 +16,7 @@ export const defaultCookiePreferences = {
 
 cookiesController.get(COOKIES_URL, (req: AppRequest, res: Response) => {
   const cookiePreferences = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : defaultCookiePreferences;
-  res.render(cookiesViewPath, {cookiePreferences});
+  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences});
 });
 
 cookiesController.post(COOKIES_URL, async (req: AppRequest<CookiesModel>, res: Response) => {
@@ -26,7 +26,6 @@ cookiesController.post(COOKIES_URL, async (req: AppRequest<CookiesModel>, res: R
   res.cookie('money-claims-cookie-preferences', cookie);
   res.render(cookiesViewPath, {
     cookiePreferences: cookie,
-    isSavedPreferencesBannerDisplayed: true,
     redirectUrl: DASHBOARD_URL,
   });
 });

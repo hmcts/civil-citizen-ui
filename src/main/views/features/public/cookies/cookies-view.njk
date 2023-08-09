@@ -28,12 +28,11 @@
               {{ t('COMMON.GO_TO_HOMEPAGE') }}</a>.
             </p>
           {% endset %}
-          {% if isSavedPreferencesBannerDisplayed %}
             {{ govukNotificationBanner({
               type: "success",
-              html: html
+              html: html,
+              classes: 'govuk-visually-hidden'
             }) }}
-            {% endif%}
             <h1 class="govuk-heading-l">{{ t('PAGES.COOKIES.TITLE') }}</h1>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION1') }}</p>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION2') }}</p>
@@ -150,7 +149,8 @@
               <p class="govuk-body">{{ externalLink(t, 'PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES', externalURLs.essentialCookiesUrl, true) }}</p>
               <div class="govuk-form-group">
                 {{ govukButton({
-                  text: t('COMMON.BUTTONS.SAVE')
+                  text: t('COMMON.BUTTONS.SAVE'),
+                  id: 'cui-cookies-submit'
                 }) }}
                 {{ contactUsForHelp(t) }}
               </div>
