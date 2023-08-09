@@ -62,6 +62,8 @@ import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
+  resolvingDispute: boolean;
+  completingClaimConfirmed: boolean;
   legacyCaseReference: string;
   applicant1?: Party;
   claimantResponse?: ClaimantResponse;
@@ -353,6 +355,16 @@ export class Claim {
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
+    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()){
+      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return hearingNotice.value;
+    }
+    else if (documentType === DocumentType.HEARING_FORM){
+      return undefined;
+    }
+
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         return document?.value.documentType === documentType;
@@ -372,6 +384,10 @@ export class Claim {
 
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
+  isClaimantBusiness(): boolean {
+    return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
 
   isDeadlineExtended(): boolean {
@@ -400,6 +416,58 @@ export class Claim {
 
   isResponseDateInThePast(): boolean {
     return this.respondent1ResponseDate <= new Date();
+  }
+
+  isBreakDownCompleted(): boolean {
+    return (
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
+      !!this.interest?.totalInterest?.amount && 
+      !!this.interest?.totalInterest?.reason
+    );
+  }
+
+  isInterestSameRateCompleted(): boolean {
+    return (
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
+      !!this.interest?.sameRateInterestSelection?.sameRateInterestType
+    );
+  }
+
+  isInterestFromSpecificDateCompleted(): boolean {
+    return (
+      this.isInterestFromASpecificDate() &&
+      !!this.interest?.interestStartDate &&
+      !!this.interest?.interestEndDate
+    );
+  }
+
+  isInterestCompleted(): boolean {
+    return (
+      this.claimInterest === YesNo.YES &&
+      (this.isBreakDownCompleted() ||
+      (
+        this.isInterestSameRateCompleted() &&
+        (this.isInterestFromClaimSubmitDate() || this.isInterestFromSpecificDateCompleted())
+      ))
+    );
+  }
+
+  isDefendantDetailsCompleted(): boolean {
+    return (
+      !!this.respondent1?.type && 
+      !!this.respondent1?.partyDetails?.primaryAddress &&
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
+    );
+  }
+
+  isClaimantDetailsCompleted(): boolean {
+    return (
+      !!this.applicant1?.type && 
+      !!this.applicant1?.partyDetails?.primaryAddress &&
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
+    );
   }
 
   get hasSupportRequiredList(): boolean {

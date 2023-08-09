@@ -23,6 +23,7 @@ export enum DocumentUri {
   CLAIMANT_DEFENCE = 'claimant-defence',
   CLAIMANT_DRAFT_DIRECTIONS = 'claimant-draft-directions',
   SDO_ORDER = 'sdo-order',
+  HEARING_FORM = 'hearing-form',
   MEDIATION_AGREEMENT = 'mediation_agreement',
 }
 
