@@ -77,8 +77,8 @@ async function handleChange(event) {
 
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
-  if (response.status === 400) {
-    removeLoading(event);
+  removeLoading(event);
+  if (response.status !== 200) {
     target.value = '';
     const formGroup = target.closest('div');
     formGroup.classList.add('govuk-form-group--error');
@@ -88,9 +88,7 @@ async function handleChange(event) {
     });
     target.classList.add('govuk-file-upload--error');
     target.setAttribute('aria-describedby', `${objectId}-error`);
-  }
-  if (response.status === 200) {
-    removeLoading(event);
+  } else {
     appendCaseDocument(objectId.replace(/\].*/, '][caseDocument]'), JSON.stringify(parsed));
   }
 }

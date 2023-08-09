@@ -29,6 +29,8 @@ const uploadFileController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
+const UNKNOWN_ERROR = 'unknown error';
+
 uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
   (async () => {
     try {
@@ -48,9 +50,14 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
       }
     } catch (error) {
       if (error.response) {
-        const errorMessage = Buffer.from(error.response.data).toString('utf-8');
+        let errorMessage = Buffer.from(error.response.data).toString('utf-8');
+        errorMessage = errorMessage === '' ? UNKNOWN_ERROR : errorMessage;
         res.status(error.response.status).json({
           errors: [errorMessage],
+        });
+      } else {
+        res.status(500).json({
+          errors: [error.message],
         });
       }
     }
