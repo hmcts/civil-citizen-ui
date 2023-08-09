@@ -84,6 +84,12 @@ describe('checkYourAnswersClaimGuard', () => {
     //Given
     const mockRequest = MOCK_REQUEST();
 
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.id = CLAIM_ID;
+      return claim;
+    });
+
     mockGetTaskList.mockImplementation(() => {
       return mockTaskList;
     });

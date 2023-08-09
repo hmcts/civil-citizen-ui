@@ -13,6 +13,11 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const userId = req.session?.user?.id;
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
     const caseData: Claim = await getCaseDataFromStore(userId);
+
+    if (!caseData.id) {
+      return res.redirect(DASHBOARD_URL);
+    }
+
     const taskLists = getTaskLists(caseData,  userId, lang);
     /**
      * We have to check that all sections are completed except Submit section
@@ -25,9 +30,7 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     if (allTasksCompleted) {
       return next();
     }
-    else if (caseData && caseData?.id === undefined) {
-      return res.redirect(DASHBOARD_URL);
-    }
+
     return res.redirect(CLAIM_INCOMPLETE_SUBMISSION_URL);
   } catch (error) {
     next(error);
