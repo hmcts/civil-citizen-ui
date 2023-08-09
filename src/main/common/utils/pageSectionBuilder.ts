@@ -1,7 +1,34 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
+  addMainTitle(mainTitle: string, variables?: unknown) {
+    const mainTitleSection = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: mainTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(mainTitleSection);
+    return this;
+  }
+
+  addLeadParagraph(text: string, variables?: unknown, classes?: string) {
+    const leadParagraphSection = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(leadParagraphSection);
+    return this;
+  }
+
   addTitle(title: string, variables?: any, classes?: string) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
@@ -25,6 +52,18 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
+  addInsetText(text: string, variables?: unknown) {
+    const insetSection = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: t(text),
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(insetSection);
     return this;
   }
 
@@ -65,31 +104,6 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(titleSection);
-    return this;
-  }
-
-  addMainTitle(mainTitle: string, variables?: unknown) {
-    const mainTitleSection = ({
-      type: ClaimSummaryType.MAINTITLE,
-      data: {
-        text: mainTitle,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(mainTitleSection);
-    return this;
-  }
-
-  addLeadParagraph(text: string, variables?: unknown, classes?: string) {
-    const leadParagraphSection = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
-      data: {
-        text: text,
-        variables: variables,
-        classes: classes,
-      },
-    });
-    this._claimSummarySections.push(leadParagraphSection);
     return this;
   }
 
