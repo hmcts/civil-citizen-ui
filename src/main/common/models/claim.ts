@@ -567,29 +567,6 @@ export class Claim {
     return !!this.ccjJudgmentStatement;
   }
 
-  isCCJCompleted(): boolean {
-    return (
-      //Date of birth compelted
-      (this.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.NO ||
-        (this.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES &&
-          !!this.claimantResponse?.ccjRequest?.defendantDOB?.dob?.dateOfBirth)) &&
-      //Paid amount compelted
-      (this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.NO ||
-        (this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES &&
-          !!this.claimantResponse?.ccjRequest?.paidAmount?.amount)) &&
-      //Payment options compelted
-      (this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.IMMEDIATELY ||
-        (this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.BY_SET_DATE &&
-          !!this.claimantResponse?.ccjRequest?.defendantPaymentDate?.date) ||
-        (this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS &&
-          !!this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount &&
-          !!this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date &&
-          !!this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency)) &&
-      // Statement of truth compelted
-      !!this.claimantResponse?.ccjRequest?.statementOfTruth
-    );
-  }
-
   isClaimSettled() {
     return this.ccdState === CaseState.CASE_SETTLED;
   }

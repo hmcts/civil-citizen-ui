@@ -1260,60 +1260,6 @@ describe('Documents', () => {
       expect(claim.hasExpertDetails()).toBeFalsy();
     });
   });
-  describe('isCCJCompleted', () => {
-    let claim: Claim;
-    beforeEach(() => {
-      claim = new Claim;
-    });
-
-    it('should return false', () => {
-      //Then
-      expect(claim.isCCJCompleted()).toBeFalsy();
-    });
-    
-    it('should return true when paid by immediately', () => {
-      //Given
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.ccjRequest = new CCJRequest();
-      claim.claimantResponse.ccjRequest.defendantDOB = new DefendantDOB(YesNo.NO);
-      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
-      claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.IMMEDIATELY);
-      claim.claimantResponse.ccjRequest.statementOfTruth = new QualifiedStatementOfTruth(true);
-      //Then
-      expect(claim.isCCJCompleted()).toBeTruthy();
-    });
-
-    it('should return true when paid by set day', () => {
-      //Given
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.ccjRequest = new CCJRequest();
-      claim.claimantResponse.ccjRequest.defendantDOB = new DefendantDOB(YesNo.YES, new DateOfBirth({year:'1991', month:'1', day:'1'}));
-      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 10, 100);
-      claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.BY_SET_DATE);
-      claim.claimantResponse.ccjRequest.defendantPaymentDate = new PaymentDate('2000', '1', '1');
-      claim.claimantResponse.ccjRequest.statementOfTruth = new QualifiedStatementOfTruth(true);
-      //Then
-      expect(claim.isCCJCompleted()).toBeTruthy();
-    });
-
-    it('should return true when paid by instalments', () => {
-      //Given
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.ccjRequest = new CCJRequest();
-      claim.claimantResponse.ccjRequest.defendantDOB = new DefendantDOB(YesNo.YES, new DateOfBirth({year:'1991', month:'1', day:'1'}));
-      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 10, 100);
-      claim.claimantResponse.ccjRequest.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.INSTALMENTS);
-      claim.claimantResponse.ccjRequest.repaymentPlanInstalments =  new RepaymentPlanInstalments(
-        '500', 
-        new InstalmentFirstPaymentDate({year:'1991', month:'1', day:'1'}),
-        TransactionSchedule.WEEK,
-        10,
-      );
-      claim.claimantResponse.ccjRequest.statementOfTruth = new QualifiedStatementOfTruth(true);
-      //Then
-      expect(claim.isCCJCompleted()).toBeTruthy();
-    });
-  });
 
   describe('test of method hasCaseProgressionHearingDocuments', () => {
     it('should return true when have hasCaseProgressionHearingDocuments', () => {
