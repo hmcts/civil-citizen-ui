@@ -45,6 +45,7 @@ services:
     serviceAuthTokenGeneratorUrl : '/testing-support/lease'
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
     civilServiceS2sSecret: 'AABBCCDDEEFFGGHH'
+    civilCitizenUiS2sSecret: 'AAAAAAAAAAAAAAAA'
   cmc:
     url: 'https://localhost:3000'
   pcq:
