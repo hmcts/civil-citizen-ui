@@ -746,7 +746,9 @@
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
+      "1_DAY_REMAINING": "1 day remaining",
       "ABOUT_CLAIM": "About claim",
+      "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT": "Claimant ",
@@ -754,6 +756,8 @@
       "CLAIM_NUMBER": "Claim number:",
       "CLAIMANT_RESPONSE": "Claimant Response:",
       "DATE_DOCUMENT_UPLOADED": "Date uploaded ",
+      "DAYS_REMAINING": " days remaining",
+      "DEADLINE_AT": "{{responseDeadline}} at 4pm",
       "DEFENDANT": "Defendant ",
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
@@ -2298,7 +2302,9 @@
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
-      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "COMPLETE": "Complete",
+      "INCOMPLETE": "Incomplete"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
@@ -2575,6 +2581,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
+    
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial or hearing arrangements",
@@ -2602,6 +2609,15 @@
       "START_NOW": "Start now",
       "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?"
     }
+  },
+  "FOOTER":{
+    "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
+    "ALL_CONTENT": "All content is available under the <a href='{{ link }}' rel='license'>Open Government Licence v3.0</a>, except where otherwise stated",
+    "CONTACT_US_URL": "Contact Us",
+    "COOKIES_URL": "Cookies",
+    "HELP_USING_GOV_URL": "Help using GOV.UK",
+    "PRIVACY_POLICY_URL": "Privacy Policy",    
+    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
