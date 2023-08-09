@@ -79,9 +79,6 @@ async function handleChange(event) {
   const parsed = await response.json();
   removeLoading(event);
   if (response.status !== 200) {
-    target.value = '';
-    const formGroup = target.closest('div');
-    formGroup.classList.add('govuk-form-group--error');
 
     parsed.errors.forEach((item) => {
       buildErrorDisplay(item, objectId, target);
@@ -123,6 +120,9 @@ function createObservable() {
 }
 
 function buildErrorDisplay(error, objectId, target) {
+  target.value = '';
+  const formGroup = target.closest('div');
+  formGroup.classList.add('govuk-form-group--error');
   const errorMessage = document.createElement('p');
   errorMessage.id = `${objectId}-error`;
   errorMessage.classList.add('govuk-error-message');
