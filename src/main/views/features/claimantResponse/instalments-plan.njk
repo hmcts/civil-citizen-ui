@@ -39,13 +39,12 @@
           <form method="post" novalidate name="repaymentPlan">
             {{ csrfProtection(csrf) }}
             <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
+            <p class="govuk-!-margin-0 govuk-body-m"><strong>{{t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS')}}:</strong></p>
             {{ govukInput({
               label: {
-                html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS') + ':' + '</strong></p>',
-                isPageHeading: true,
-                attributes: {
-                  'aria-label': t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS')
-                }
+                text: t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS'),
+                for: "paymentAmount",
+                classes: 'govuk-visually-hidden'
               },
               hint: {
                 text: t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200'
