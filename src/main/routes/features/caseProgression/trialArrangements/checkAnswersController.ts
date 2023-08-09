@@ -49,7 +49,7 @@ trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (
     await civilServiceClient.submitDefendantTrialArrangement(req.params.id, trialReadyCCD, req);
     await deleteDraftClaimFromStore(req.params.id);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL));
-  }catch (error) {
+  } catch (error) {
     next(error);
   }
 })as RequestHandler);
