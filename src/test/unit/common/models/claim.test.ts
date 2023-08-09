@@ -39,17 +39,6 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import { CCJRequest } from 'common/models/claimantResponse/ccj/ccjRequest';
-import { DefendantDOB } from 'common/models/claimantResponse/ccj/defendantDOB';
-import { PaidAmount } from 'common/models/claimantResponse/ccj/paidAmount';
-import { CcjPaymentOption } from 'common/form/models/claimantResponse/ccj/ccjPaymentOption';
-import { QualifiedStatementOfTruth } from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import { DateOfBirth } from 'common/models/claimantResponse/ccj/dateOfBirth';
-import { PaymentDate } from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import { RepaymentPlanInstalments } from 'common/models/claimantResponse/ccj/repaymentPlanInstalments';
-import { InstalmentFirstPaymentDate } from 'common/models/claimantResponse/ccj/instalmentFirstPaymentDate';
-import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
