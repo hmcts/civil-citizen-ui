@@ -164,11 +164,12 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
+const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   formObj.fileUpload = request['fileUpload'];
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }
   return formObj;
