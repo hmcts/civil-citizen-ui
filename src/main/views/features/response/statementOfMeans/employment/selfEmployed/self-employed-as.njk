@@ -44,13 +44,12 @@
                 text: t(form.errorFor('jobTitle'))
               } if form.hasFieldError('jobTitle')
             }) }}
+              <p class="govuk-label">{{t('COMMON.ANNUAL_TURNOVER')}}</p>
               {{ govukInput({
               label: {
-                text: t('COMMON.ANNUAL_TURNOVER'),
-                isPageHeading: true,
-                attributes: {
-                  'aria-label': t('PAGES.SELF_EMPLOYED.ANNUAL_TURNOVER_IN_POUNDS')
-                }
+                text: t('PAGES.SELF_EMPLOYED.ANNUAL_TURNOVER_IN_POUNDS'),
+                for: "annualTurnover",
+                classes: 'govuk-visually-hidden'
               },
               id: "annualTurnover",
               name: "annualTurnover",

@@ -124,6 +124,17 @@
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
+    "HEARING_DURATION": {
+      "MINUTES_30": "30 minutes",
+      "MINUTES_60": "1 hour",
+      "MINUTES_90": "1 and a half hours",
+      "MINUTES_120": "2 hours",
+      "MINUTES_150": "2 and a half hours",
+      "MINUTES_180": "3 hours",
+      "MINUTES_240": "4 hours",
+      "DAY_1": "1 day",
+      "DAY_2": "2 days"
+    },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps bellow",
       "EXAMPLE": {
@@ -228,6 +239,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich ymateb. Gallwch ei weld ar y ffurflen ymateb ar ôl i chi ei chyflwyno.",
+      "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "Mae'n rhaid i chi ddal swydd uwch yn eich sefydliad i lofnodi'r datganiad o wirionedd.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
@@ -637,6 +649,24 @@
       "TIMELINE": "Amserlen",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
+    "CLAIM_TASK_LIST":{
+      "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "APPLICATION_COMPLETE": "Application complete",
+      "APPLICATION_INCOMPLETE": "Application incomplete",
+      "CHECK_AND_SUBMIT": "Check and submit your claim",
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_DETAILS": "Claim details",
+      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "COMPLETING_CLAIM": "Completing your claim",
+      "CONSIDER_OPTIONS": "Consider other options",
+      "PAGE_TITLE": "Make a money claim",
+      "PAY_FEE": "Pay your claim fee",
+      "PREPARE_CLAIM": "Prepare your claim",
+      "RESOLVING_DISPUTE": "Resolving this dispute",
+      "SUBMIT": "Submit",
+      "THEIR_DETAILS": "Their details",
+      "YOUR_DETAILS": "Your details"
+    },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
         "PAGE_TITLE": "Ydych chi eisiau hawlio llog?",
@@ -730,6 +760,7 @@
       "DOCUMENTS": "Dogfennau",
       "DOCUMENT_CREATED": "Creu:",
       "DOWNLOAD_CLAIM": "Lawrlwytho'r hawliad",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Lawrlwytho'r gorchymyn dyfarniad",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
@@ -738,7 +769,9 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
+      "NOTICES_AND_ORDERS": "Notices and orders",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "UPDATES": "Updates",
       "VIEW_CLAIM": "Gweld yr hawliad",
       "WITNESS_EVIDENCE": "witness evidence",
       "RESPONSE_DEADLINE": "Dyddiad cau ar gyfer ymateb:",
@@ -1535,6 +1568,9 @@
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
+          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
         }
       },
@@ -2302,6 +2338,16 @@
       "TITLE": "What is the total interest for your claim?",
       "TOTAL_AMOUNT": "Total interest amount"
     },
+    "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
+      "TITLE": "Finalise your trial arrangements",
+      "TRIAL_DURATION_TITLE": "Trial duration",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
+      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Is there anything else the court needs to know (optional)?</span>",
+      "OTHER_INFORMATION_INPUT_HINT": "For example, a witness needs to leave the court by 3pm due to caring responsibilities."
+    },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
       "PAGE_TITLE": "Ydych chi wedi ceisio setlo’r hawliad hwn cyn mynd i’r llys?",
@@ -2566,6 +2612,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
+    "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
@@ -2904,9 +2951,11 @@
     "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Date of document must include a year",
-    "VALID_REAL_DATE": "Date of document must be a real date",
+    "VALID_REAL_DAY": "Day of Date must be a valid day",
+    "VALID_REAL_MONTH": "Month of Date must be a valid month",
+    "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter support you, experts or witnesses need."
+    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
   }
 }

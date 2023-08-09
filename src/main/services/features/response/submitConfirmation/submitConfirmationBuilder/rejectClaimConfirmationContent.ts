@@ -1,10 +1,11 @@
 import {t} from 'i18next';
 import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
+import {convertToPoundsFilter} from '../../../../../common/utils/currencyFormat';
 
 export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
-  const amount = claim.isRejectAllOfClaimAlreadyPaid();
+  const amount = convertToPoundsFilter(claim.isRejectAllOfClaimAlreadyPaid());
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -18,7 +19,7 @@ export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySe
 
 export function getRC_PaidFullStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
-  const amount = claim.isRejectAllOfClaimAlreadyPaid();
+  const amount = convertToPoundsFilter(claim.isRejectAllOfClaimAlreadyPaid());
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
