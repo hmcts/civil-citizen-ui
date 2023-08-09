@@ -14,7 +14,7 @@ const PropertiesVolume = {
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.citizen-draft-store-primary', 'services.draftStore.legacy.s2s.primarySecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
-      PropertiesVolume.setSecret('secrets.civil-citizen-ui.microservicekey-civil-service', 'services.serviceAuthProvider.civilServiceS2sSecret'),
+      PropertiesVolume.setSecret('secrets.civil-citizen-ui.microservicekey-civil-citizen-ui', 'services.serviceAuthProvider.civilCitizenUiS2sSecret'),
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
     }
   },

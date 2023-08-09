@@ -60,8 +60,8 @@ export class CivilServiceClient {
   }
 
   async getConfig(req: AppRequest) {
-    const civilServiceS2sSecret = config.get<string>(secretName);
-    const s2sAuth = await generateServiceToken(microServiceName, civilServiceS2sSecret);
+    const civilCitizenUiS2sSecret = config.get<string>(secretName);
+    const s2sAuth = await generateServiceToken(microServiceName, civilCitizenUiS2sSecret);
 
     return {
       headers: {
