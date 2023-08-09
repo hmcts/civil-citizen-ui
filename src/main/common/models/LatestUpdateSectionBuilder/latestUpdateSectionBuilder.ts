@@ -17,6 +17,19 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
+
+  addButtonOpensNewTab(title: string, href: string) {
+    const newTabButtonSection = ({
+      type: ClaimSummaryType.NEW_TAB_BUTTON,
+      data: {
+        text: title,
+        href: href,
+      },
+    });
+    this._claimSummarySections.push(newTabButtonSection);
+    return this;
+  }
+
   addResponseDocumentLink(text: string, claimId: string, documentId: string, variables?: any, textAfter?: string) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
