@@ -47,9 +47,12 @@ uploadFileController.post(CP_UPLOAD_FILE, upload.single('file'), (req, res) => {
         res.status(200).json(document);
       }
     } catch (error) {
-      res.status(500).json({
-        errors: error.message,
-      });
+      if (error.response) {
+        const errorMessage = Buffer.from(error.response.data).toString('utf-8');
+        res.status(error.response.status).json({
+          errors: [errorMessage],
+        });
+      }
     }
   })();
 });
