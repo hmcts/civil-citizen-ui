@@ -1576,6 +1576,12 @@
           "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
           "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+        },
+        "VIEW_ORDER": {
+          "TITLE": "An order has been made on your claim",
+          "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+          "ORDER_IS_AVAILABLE": "The order is available in 'Notices and orders'.",
+          "VIEW_ORDER": "View the order"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
