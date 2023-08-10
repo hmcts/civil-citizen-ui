@@ -55,5 +55,6 @@ export enum ClaimSummaryType {
   DATE_ARRAY = 'dateArray',
   UPLOAD_ARRAY = 'uploadArray',
   SELECT = 'select',
-  BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink'
+  BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink',
+  NEW_TAB_BUTTON = 'newTabButton'
 }

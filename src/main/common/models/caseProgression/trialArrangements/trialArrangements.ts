@@ -1,8 +1,8 @@
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
-import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
+import {YesNo} from 'form/models/yesNo';
 
 export class TrialArrangements{
-  isCaseReady?: IsCaseReadyForm;
+  isCaseReady?: YesNo;
   hasAnythingChanged?: HasAnythingChangedForm;
+  otherTrialInformation?: string;
 }
-
