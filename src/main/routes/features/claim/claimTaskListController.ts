@@ -4,7 +4,8 @@ import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
 import {t} from 'i18next';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -14,6 +15,10 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, (req: AppRequest, res: Respo
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
     .then((caseData) => {
+      if(caseData.id == undefined) {
+        saveDraftClaim(userId, new Claim());
+      }
+
       const taskLists = getTaskLists(caseData, userId, lang);
       const {completed, total} = calculateTotalAndCompleted(taskLists);
       const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
