@@ -6,6 +6,7 @@ import {isUndefined} from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
+const DRAFT_EXPIRE_TIME = 24 * 60 * 60 * 180;
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -55,7 +56,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  draftStoreClient.expireat(claimId, 24*60*60*180);
+  draftStoreClient.expire(claimId, DRAFT_EXPIRE_TIME);
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
