@@ -1,6 +1,6 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
-import {DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
+import {NOTICE_AND_ORDERS_TAB} from 'routes/urls';
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
@@ -12,7 +12,7 @@ export function getConfirmationPageSection(claimId: string, claim: Claim, readyF
     return new FinaliseYourTrialSectionBuilder()
       .addMainTitle(title)
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+        NOTICE_AND_ORDERS_TAB.replace(':id', claimId),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',
@@ -35,7 +35,7 @@ export function getConfirmationPageSection(claimId: string, claim: Claim, readyF
       true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_CALL')
     .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-      DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+      NOTICE_AND_ORDERS_TAB.replace(':id', claimId),
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
     .build();

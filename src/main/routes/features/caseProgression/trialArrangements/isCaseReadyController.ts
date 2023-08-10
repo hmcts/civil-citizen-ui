@@ -22,8 +22,8 @@ isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunct
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    const isCaseReady = claim.caseProgression?.defendantTrialArrangements?.isCaseReady ?? new IsCaseReadyForm();
-    const form = new GenericForm(isCaseReady);
+    const isCaseReady = claim.caseProgression?.defendantTrialArrangements?.isCaseReady;
+    const form = new GenericForm(new IsCaseReadyForm(isCaseReady));
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
