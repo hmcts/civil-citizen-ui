@@ -79,7 +79,6 @@ async function handleChange(event) {
   const parsed = await response.json();
   removeLoading(event);
   if (response.status !== 200) {
-
     parsed.errors.forEach((item) => {
       buildErrorDisplay(item, objectId, target);
     });
