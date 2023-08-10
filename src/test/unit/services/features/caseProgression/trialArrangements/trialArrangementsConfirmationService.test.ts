@@ -4,7 +4,8 @@ import {
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
-import {DEFENDANT_DOCUMENTS_URL} from 'routes/urls';
+import {DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
+import {TabId} from 'routes/tabs';
 
 const TITLE = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT';
 const DOCUMENT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
@@ -18,7 +19,7 @@ describe('Trial arrangements confirmation service', () => {
     const readyTrialArrangementsConfirmationContentExpected = new FinaliseYourTrialSectionBuilder()
       .addMainTitle(TITLE)
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+        DEFENDANT_SUMMARY_TAB_URL.replace(':id', claimId).replace(':tab', TabId.NOTICES),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',
@@ -52,7 +53,7 @@ describe('Trial arrangements confirmation service', () => {
         true)
       .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_CALL')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        DEFENDANT_DOCUMENTS_URL.replace(':id', claimId),
+        DEFENDANT_SUMMARY_TAB_URL.replace(':id', claimId).replace(':tab', TabId.NOTICES),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .build();
