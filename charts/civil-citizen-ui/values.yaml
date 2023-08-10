@@ -43,6 +43,7 @@ nodejs:
         - civil-citizen-ui-token-key
 
   environment:
+    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
@@ -53,7 +54,6 @@ nodejs:
     REDIS_PORT: 6380
     REDIS_TLS: true
     SECURE_COOKIE: 'true'
-    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
     DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
