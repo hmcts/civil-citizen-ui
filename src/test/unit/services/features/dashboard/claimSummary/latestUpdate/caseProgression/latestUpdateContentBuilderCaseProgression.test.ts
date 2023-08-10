@@ -4,7 +4,7 @@ import {PartyType} from 'models/partyType';
 import {
   CASE_DOCUMENT_DOWNLOAD_URL,
   DEFENDANT_SUMMARY_TAB_URL,
-  CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL, CASE_DOCUMENT_VIEW_URL,
 } from 'routes/urls';
 import {
   buildEvidenceUploadSection,
