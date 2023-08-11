@@ -141,7 +141,7 @@ export function createSummaryListWithAllSectionDetails(): SummarySections {
               text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES'),
             },
             value: {
-              text: '<p class="govuk-section-break--visible" >no<p></p><p>changes</p>',
+              text: '<p>no</p><hr class="govuk-section-break--visible" ><p>changes</p>',
             },
             actions: {
               items: [{

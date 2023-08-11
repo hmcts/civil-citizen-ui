@@ -2,7 +2,7 @@ import {getSummarySections} from 'services/features/caseProgression/trialArrange
 import {getClaimWithDefendantTrialArrangements} from '../../../../../utils/mockClaimForCheckAnswers';
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 
-const HAS_ANYTHING_CHANGED_HTML = '<p class="govuk-section-break--visible" >yes</p><p>Changed</p>';
+const HAS_ANYTHING_CHANGED_HTML = '<p>yes</p><hr class="govuk-section-break--visible" ><p>Changed</p>';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
