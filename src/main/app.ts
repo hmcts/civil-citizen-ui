@@ -34,6 +34,8 @@ app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -69,8 +71,8 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
 app.use((_req, res, next) => {
   res.setHeader(
