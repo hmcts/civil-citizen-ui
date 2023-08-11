@@ -53,6 +53,7 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {BundleId} from "models/caseProgression/bundles/bundleId";
 
 export class CivilClaimResponse {
   id: string;
@@ -213,6 +214,7 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  caseBundles?: BundleId[];
 }
 
 export interface ClaimFeeData {

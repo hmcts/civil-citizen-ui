@@ -60,6 +60,7 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Bundle} from "models/caseProgression/bundles/bundle";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -555,6 +556,16 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  isBundleStitched(): boolean {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[caseBundles.length-1]?.stitchedDocument;
   }
 
   hasClaimTakenOffline() {

@@ -1,6 +1,7 @@
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
 import {TableCell} from 'models/summaryList/summaryList';
+import {TableHead} from 'models/LatestUpdateSectionBuilder/tableHead.js';
 
 export function addEvidenceUploadDescription() {
   return {
@@ -29,4 +30,20 @@ export const addEvidenceUploadTable = (header: string, isClaimant: boolean, tabl
     },
   };
 };
+
+export function buildTableHeaders(headerStrings: string[], headerClasses?: string[]){
+  const tableHeaders = [] as TableHead[];
+
+  for(let i = 0; i < headerStrings.length; i++){
+    let headerClass = '';
+    if(headerClasses && i < headerClasses.length) {
+      headerClass = headerClasses[i];
+    }
+
+    const header = new TableHead(headerStrings[i], headerClass);
+    tableHeaders.push(header);
+  }
+
+  return tableHeaders;
+}
 

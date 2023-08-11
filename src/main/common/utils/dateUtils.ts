@@ -113,3 +113,8 @@ export const formatStringDateDMY = (date: Date) => {
 
   return `${day} ${month} ${year}`;
 };
+
+export const formatStringTimeHMS = (date: Date) => {
+
+  return `${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}`;
+};

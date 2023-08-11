@@ -13,7 +13,7 @@ import {t} from 'i18next';
 import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {DocumentType} from 'models/document/documentType';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
