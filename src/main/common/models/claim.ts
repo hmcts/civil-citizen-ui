@@ -16,13 +16,13 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {
   CaseState,
   ClaimAmountBreakup,
-  ClaimFee,
   ClaimantMediationLip,
+  ClaimFee,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -116,6 +116,8 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  applicant1AcceptPartAdmitPaymentPlanSpec?:YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?:YesNoUpperCamelCase;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -631,11 +633,15 @@ export class Claim {
   }
 
   hasClaimantRequestedCCJ() {
-    return !!this.ccjJudgmentStatement;
+    return !!this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
 
   isClaimSettled() {
     return this.ccdState === CaseState.CASE_SETTLED;
+  }
+
+  isClaimantRejectedPaymentPlan(){
+    return this.applicant1AcceptPartAdmitPaymentPlanSpec === YesNoUpperCamelCase.NO || this.applicant1AcceptFullAdmitPaymentPlanSpec === YesNoUpperCamelCase.NO;
   }
 }
 

@@ -140,6 +140,9 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
       SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS.SDO_ORDER_STATUS' },
+      CLAIMANT_REJECTS_REPAYMENT_PLAN: {
+        translationKey: 'PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW',
+      },
     };
     const currentStatus = dashboardStatus[this.status];
     return translate(currentStatus.translationKey, currentStatus.parameter, lang);

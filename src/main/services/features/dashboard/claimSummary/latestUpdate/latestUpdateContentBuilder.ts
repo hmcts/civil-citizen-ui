@@ -383,6 +383,17 @@ const getLastUpdateForNoMediation = (claim: Claim) => {
     .build();
 };
 
+function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string) {
+  const claimantName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW', {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1`, {lng}), {
+      claimantName: claimantName})
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG3`, {lng}))
+    .build();
+}
+
 export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
@@ -403,6 +414,8 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId, claim));
+  } else if (claim.isClaimantRejectedPaymentPlan()) {
+    sectionContent.push(getLatestUpdateForClaimantRejectRepaymentPlan(claim, lng));
   } else if (claim.hasClaimTakenOffline()) {
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
   } else if (claim.hasMediationSuccessful()) {
