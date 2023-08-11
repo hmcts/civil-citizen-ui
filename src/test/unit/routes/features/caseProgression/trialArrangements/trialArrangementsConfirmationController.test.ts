@@ -9,7 +9,6 @@ import {Claim} from 'models/claim';
 import * as utilityService from 'modules/utilityService';
 import {YesNo} from 'form/models/yesNo';
 import { CaseProgression } from 'models/caseProgression/caseProgression';
-import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
@@ -40,7 +39,7 @@ describe('Confirm trial arrangements - On GET', () => {
 
   it('should render page successfully with IsCaseReady yes', async () => {
     mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = new IsCaseReadyForm(YesNo.YES);
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
       return claim;
     });
     await request(app).get(confirmationUrl).expect((res) => {
@@ -51,7 +50,7 @@ describe('Confirm trial arrangements - On GET', () => {
 
   it('should render page successfully with IsCaseReady No', async () => {
     mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = new IsCaseReadyForm(YesNo.NO);
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
       return claim;
     });
     await request(app).get(confirmationUrl).expect((res) => {
