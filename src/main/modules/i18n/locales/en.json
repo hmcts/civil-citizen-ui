@@ -1579,15 +1579,8 @@
         },
         "CASE_DISMISSED_HEARING_DUE_DATE": {
           "TITLE": "Claim has been struck out",
-          "CLAIMANT_WARNING": "Your claim has been struck out because you have not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
           "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
-          "CLAIMANT_PARAGRAPH": "If you want to reinstate this claim, you will need to make an application to the court and pay a fee of £{{ hearingFee }}.",
-          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court.",
-          "CLAIMANT_FURTHER_INFORMATION": "For more information on reinstating the claim contact the Online Civil Claims team on:",
-          "CLAIMANT_FURTHER_INFORMATION_SPECIFIED_EMAIL": "Email for Specified Claims: ",
-          "CLAIMANT_FURTHER_INFORMATION_DAMAGES_EMAIL": "Email for Damages Claims: ",
-          "CLAIMANT_FURTHER_INFORMATION_CONTACT": "Telephone: 0300 123 7050 Hours: 8.30am to 5pm, Monday to Friday",
-          "CLAIMANT_FURTHER_INFORMATION_FIND_OUT": "Find out about call charges "
+          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -2593,7 +2586,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-    
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial or hearing arrangements",
@@ -2627,7 +2620,7 @@
     "CONTACT_US_URL": "Contact Us",
     "COOKIES_URL": "Cookies",
     "HELP_USING_GOV_URL": "Help using GOV.UK",
-    "PRIVACY_POLICY_URL": "Privacy Policy",    
+    "PRIVACY_POLICY_URL": "Privacy Policy",
     "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
   },
   "ERRORS": {

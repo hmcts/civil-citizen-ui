@@ -20,7 +20,7 @@ import {
   ClaimantMediationLip,
   InterestClaimFromType,
   InterestEndDateType,
-  SameRateInterestType, HearingFee,
+  SameRateInterestType,
 } from 'form/models/claimDetails';
 import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
@@ -117,7 +117,6 @@ export class Claim {
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
   caseDismissedHearingFeeDueDate?: Date;
-  hearingFee?: HearingFee;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -422,8 +421,8 @@ export class Claim {
 
   isBreakDownCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
-      !!this.interest?.totalInterest?.amount && 
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
+      !!this.interest?.totalInterest?.amount &&
       !!this.interest?.totalInterest?.reason
     );
   }
@@ -456,18 +455,18 @@ export class Claim {
 
   isDefendantDetailsCompleted(): boolean {
     return (
-      !!this.respondent1?.type && 
+      !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
       (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
     );
   }
 
   isClaimantDetailsCompleted(): boolean {
     return (
-      !!this.applicant1?.type && 
+      !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
-      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
       (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
     );
   }

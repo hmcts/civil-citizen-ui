@@ -6,10 +6,10 @@ import {
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
-export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string, isClaimant: boolean) : ClaimSummaryContent[] => {
+export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
   if (checkClaimDismissedHearingDueDate(claim)) {
-    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant));
+    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, false));
     return getClaimSummaryContent(sectionContent.flat());
   }
   if(checkEvidenceUploaded(claim, false)){

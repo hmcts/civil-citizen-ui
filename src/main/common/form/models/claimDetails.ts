@@ -22,12 +22,6 @@ export interface ClaimFee {
   calculatedAmountInPence: string;
 }
 
-export interface HearingFee {
-  calculatedAmountInPence: string;
-  code: string;
-  version: string;
-}
-
 export interface ClaimAmountBreakup {
   value: ClaimAmountBreakupDetails,
 }
