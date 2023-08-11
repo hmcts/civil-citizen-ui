@@ -1,5 +1,5 @@
 import {Router, Response, NextFunction} from 'express';
-import { CLAIMANT_TASK_LIST_URL} from '../../urls';
+import {CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
