@@ -16,7 +16,9 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, (req: AppRequest, res: Respo
   getCaseDataFromStore(userId)
     .then((caseData) => {
       if(caseData.id == undefined) {
-        saveDraftClaim(userId, new Claim());
+        const claim = new Claim();
+        claim.createAt = new Date();
+        saveDraftClaim(userId, claim);
       }
 
       const taskLists = getTaskLists(caseData, userId, lang);

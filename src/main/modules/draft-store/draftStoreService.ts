@@ -2,11 +2,13 @@ import {app} from '../../app';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
+import {addDaysToDate} from 'common/utils/dateUtils';
+import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
-const DRAFT_EXPIRE_TIME = 24 * 60 * 60 * 180;
+const DRAFT_EXPIRE_TIME_IN_DAYS = config.get('services.draftStore.redis.expireInDays') as number;
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -56,7 +58,9 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  draftStoreClient.expire(claimId, DRAFT_EXPIRE_TIME);
+  if(claim.createAt) {
+    draftStoreClient.expireat(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS));
+  }
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {

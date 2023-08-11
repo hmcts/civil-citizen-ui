@@ -26,6 +26,7 @@ services:
       port: 6379
       key:
       tls: false
+      expireInDays: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:
