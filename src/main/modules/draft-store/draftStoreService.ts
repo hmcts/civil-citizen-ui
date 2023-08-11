@@ -59,7 +59,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if(claim.createAt) {
-    draftStoreClient.expireat(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS));
+    draftStoreClient.expireat(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
   }
 };
 
