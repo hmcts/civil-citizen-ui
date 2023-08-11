@@ -1,5 +1,5 @@
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
