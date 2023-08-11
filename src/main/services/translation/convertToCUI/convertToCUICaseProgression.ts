@@ -104,6 +104,10 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantLastUploadDate = ccdClaim?.caseDocumentUploadDate ? new Date(ccdClaim?.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim?.caseDocumentUploadDateRes ? new Date(ccdClaim?.caseDocumentUploadDateRes): undefined;
 
+    if(ccdClaim?.caseBundles) {
+      ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(element.value);});
+    }
+
     return caseProgression as CaseProgression;
   }
   return undefined;

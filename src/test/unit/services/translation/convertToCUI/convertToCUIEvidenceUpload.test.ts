@@ -13,7 +13,7 @@ import {
   UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
   createCCDClaimForEvidenceUpload, mockExpertDocument,
   mockTypeDocument, mockUUID, mockWitnessDocument,

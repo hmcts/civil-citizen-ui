@@ -19,7 +19,24 @@
             {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
             {{ claim.legacyCaseReference }}
           </p>
-
+            <div class="govuk-tabs" data-module="govuk-tabs">
+              <ul class="govuk-tabs__list">
+                {% for i in range(0, tabContent.length)  %}
+                  {% if i == 0 %}
+                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                      <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                        {{ tabContent[i].label }}
+                      </a>
+                    </li>
+                  {% else %}
+                    <li class="govuk-tabs__list-item">
+                      <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                        {{ tabContent[i].label }}
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
           <div class="wordWrap">
             <div class="govuk-tabs" data-module="govuk-tabs">
               <ul class="govuk-tabs__list">

@@ -60,6 +60,7 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Bundle} from "models/caseProgression/bundles/bundle";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -617,6 +618,16 @@ export class Claim {
 
   isSixWeeksOrLessFromTrial(): boolean {
     return new Date() >= this.sixWeeksBeforeHearingDate();
+  }
+
+  isBundleStitched(): boolean {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[caseBundles.length-1]?.stitchedDocument;
   }
 
   hasClaimTakenOffline() {

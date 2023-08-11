@@ -16,6 +16,7 @@ import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
+import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -41,6 +42,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
 async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
   const caseProgressionEnabled = await isCaseProgressionV1Enable() && claim.hasCaseProgressionHearingDocuments();
+  const bundleAvailable = claim.isBundleStitched();
   const tabItems = [] as TabItem[];
 
   let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
@@ -73,6 +75,14 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
 
   if (caseProgressionEnabled) {
     tabItems.push(new TabItem(evidenceUploadTabLabel, evidenceUploadTabId, evidenceUploadContent));
+  }
+
+  if(caseProgressionEnabled && bundleAvailable) {
+    const bundleTabLabel = TabLabel.BUNDLES;
+    const bundleTabId = TabId.BUNDLES;
+    const bundleTabContent = getBundlesContent(claim);
+
+    tabItems.push(new TabItem(bundleTabLabel, bundleTabId, bundleTabContent));
   }
 
   return tabItems;
