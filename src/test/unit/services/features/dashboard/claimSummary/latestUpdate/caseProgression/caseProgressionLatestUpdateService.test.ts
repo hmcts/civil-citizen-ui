@@ -79,6 +79,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T18:00'),
@@ -106,6 +107,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
@@ -119,6 +121,66 @@ describe('Case Progression Latest Update Content service', () => {
     expect(result.length).toEqual(3);
     expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
     expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[2].contentSections.length).toEqual(6);
+  });
+
+  it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents, ' +
+    'but not finalise trial arrangements if it is a small track claim', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimWithSdoAndHearing = {
+      ...claimWithSdo,
+      hasCaseProgressionHearingDocuments: () => true,
+      hasSdoOrderDocument: () => true,
+      isFastTrackClaim: false,
+      isSixWeeksOrLessFromTrial: () => true,
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T17:59'),
+      },
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
+
+    //Then
+    expect(result.length).toEqual(3);
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
+    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[2].contentSections.length).toEqual(6);
+  });
+
+  it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents, ' +
+    'but not finalise trial arrangements given it is not six weeks or less from trial', () => {
+    //Given:
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2020-01-02T17:59'));
+    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
+
+    const claimWithSdoAndHearing = {
+      ...claimWithSdo,
+      hasCaseProgressionHearingDocuments: () => true,
+      hasSdoOrderDocument: () => true,
+      isFastTrackClaim: true,
+      isSixWeeksOrLessFromTrial: () => false,
+      caseProgression: {
+        claimantLastUploadDate: new Date('2020-01-01T17:59'),
+      },
+    };
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
+
+    //Then
+    expect(result.length).toEqual(3);
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
+    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_TRIAL_TITLE');
     expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
     expect(result[2].contentSections.length).toEqual(6);
   });
@@ -147,6 +209,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      isFastTrackClaim: true,
       isSixWeeksOrLessFromTrial: () => true,
       caseProgression: {
         claimantLastUploadDate: fakeDayBeforeDate,
@@ -160,7 +223,7 @@ describe('Case Progression Latest Update Content service', () => {
     //Then
     expect(result.length).toEqual(4);
     expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
-    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
+    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_TRIAL_TITLE');
     expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS.TITLE');
     expect(result[2].contentSections.length).toEqual(5);
     expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
