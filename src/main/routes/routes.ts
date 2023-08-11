@@ -207,6 +207,7 @@ import documentUploadCheckAnswerController from 'routes/features/caseProgression
 import claimTaskListController from './features/claim/claimTaskListController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
 import documentViewController from 'routes/features/document/documentViewController';
 
 export default [
@@ -403,5 +404,6 @@ export default [
   claimTaskListController,
   isCaseReadyController,
   hasAnythingChangedController,
+  hearingDurationController,
   documentViewController,
 ];

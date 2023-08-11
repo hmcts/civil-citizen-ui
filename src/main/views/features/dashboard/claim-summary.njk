@@ -57,13 +57,13 @@
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget({
+        {{ aboutClaimWidget(t, {
           header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
           lines:[
-            {title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
-            {title: t('COMMON.CLAIM_AMOUNT'), content: totalClaimAmount, href: ''},
-            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')},
-            {title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER'), href: responseDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE')} ]
+            {title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: 'contact-them', hrefContact: claimantName},
+            {title: 'COMMON.CLAIM_AMOUNT', content: totalClaimAmount, href: ''},
+            {title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: '/case/' + claimId + '/response/claim-details', hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'},
+            {title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', href: responseDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE'} ]
           }) }}
       </div>
     </main>

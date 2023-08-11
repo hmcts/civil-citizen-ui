@@ -1,6 +1,5 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {t} from 'i18next';
 export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
@@ -15,18 +14,6 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(startButtonSection);
-    return this;
-  }
-
-  addInsetText(text: string, variables?: unknown) {
-    const insetSection = ({
-      type: ClaimSummaryType.INSET_TEXT,
-      data: {
-        html: t(text),
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(insetSection);
     return this;
   }
 
