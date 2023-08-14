@@ -13,6 +13,7 @@ import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotI
 import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -86,8 +87,10 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
 }
 
 export class DateInputFields extends  FileOnlySection {

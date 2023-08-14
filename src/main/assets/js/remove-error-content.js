@@ -28,4 +28,19 @@ if (document.getElementsByClassName('moj-add-another__add-button')) {
     attributeOldValue: true,
     characterDataOldValue: true,
   });
+
+  if (window.location.href.includes('upload-documents')) {
+    [...document.getElementsByClassName('.moj-add-another__add-button')].forEach(addButton => {
+      addButton.addEventListener('click', () => {
+        const parentDiv = addButton.closest('[data-module="moj-add-another"]');
+        if (parentDiv) {
+          setTimeout(() => {
+            const documentName = parentDiv.querySelectorAll('.documentName');
+            const lastDocumentName = documentName[documentName.length - 1];
+            lastDocumentName.textContent = '';
+          }, 200);
+        }
+      });
+    });
+  }
 }
