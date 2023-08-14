@@ -67,8 +67,18 @@ describe('on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
-  it('should display documentForDisclosure validation error when invalid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'','dateMonth':'','dateYear':'','fileUpload':''}]};
+  it('Type Of Document Section - enter a valid type of document', async () => {
+    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'caseDocument': `${caseDoc}`,
+        'date-day': '',
+        'date-month': '',
+        'date-year': '',
+        'file_upload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -79,14 +89,15 @@ describe('on POST', () => {
       });
   });
 
-  it('should display disclosureList validation error when invalid', async () => {
-    const disclosureList = {'disclosureList':[{'fileUpload':''}]};
+  it('File only section', async () => {
+    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+    const disclosureList = {'disclosureList': [{'file_upload': '', 'caseDocument': `${caseDoc}`}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
       .send(disclosureList)
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
       });
   });
 
