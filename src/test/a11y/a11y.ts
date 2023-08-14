@@ -6,10 +6,9 @@ import {PageUrls} from './constants';
 const pa11y = require('pa11y');
 
 const envUrl = process.env.TEST_URL || 'http://localhost:3001';
-const options = ['WCAG2AA.Principle1.Guideline1_3.1_3_1.H42.2'];
+const options = ['WCAG2AA.Principle1.Guideline1_3.1_3_1.H42.2', 'WCAG2AA.Principle1.Guideline1_4.1_4_3'];
 // Ignore pages that are passing in WAVE evaluation tool
-// const ignoredPages = [''];
-import {IGNORED_URLS} from './ignored-urls';
+const ignoredPages = [''];
 
 const cuiCaseReference = '1645882162449409';
 const cuiCaseProgressionCaseReference = '1645882162449409';
@@ -35,7 +34,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 function testAccessibility(url: string): void {
   describe(`Page ${url}`, () => {
     it('should have no accessibility errors', async () => {
-      if (!IGNORED_URLS.includes(url)) {
+      if (!ignoredPages.includes(url)) {
         if (url.includes(':cuiCaseId')) {
           url = url.replace(':cuiCaseId', cuiCaseReference);
         } else if (url.includes(':caseProgressionCaseId')) {
