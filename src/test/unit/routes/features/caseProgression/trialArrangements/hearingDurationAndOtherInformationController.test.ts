@@ -1,25 +1,26 @@
 import {
-  mockCivilClaim, mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
+  TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
-import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
-describe('Has anything changed - On GET', () => {
+describe('Hearing duration & other info - On GET', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -34,11 +35,11 @@ describe('Has anything changed - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId))
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
+        expect(res.text).toContain(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
       });
   });
 
@@ -47,7 +48,7 @@ describe('Has anything changed - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
@@ -56,72 +57,44 @@ describe('Has anything changed - On GET', () => {
   });
 });
 
-describe('Has anything changed - on POST', () => {
+describe('Hearing duration & other information - on POST', () => {
+
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
 
-  it('should display error when neither Yes nor No were selected', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
-    //When
-    await testSession
-      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
-      .send({})
-      //Then
-      .expect((res: {status: unknown, text: unknown}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_TRIAL_ARR'));
-      });
-  });
+  it('should redirect when other information is filled in', async () => {
 
-  it('should display error when Yes was selected, but the textArea was not filled', async () => {
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
-    //When
-    await testSession
-      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
-      .send({option: YesNo.YES})
-      //Then
-      .expect((res: {status: unknown, text: unknown}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_ENTER_SUPPORT'));
-      });
-  });
 
-  it('should redirect to "Hearing duration" page when No is selected', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
     //When
     await testSession
-      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
-      .send({option: YesNo.NO})
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      .send({otherInformation: 'Info put in'})
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
+        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
       });
   });
 
-  it('should redirect to "Hearing duration" page when Yes is selected and textArea is filled', async () => {
+  it('should redirect when otherInformation is not filled in', async () => {
+
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
+
     //When
     await testSession
-      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
-      .send({option: YesNo.YES, textArea: 'some text'})
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
+        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
       });
   });
 
@@ -130,7 +103,7 @@ describe('Has anything changed - on POST', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
