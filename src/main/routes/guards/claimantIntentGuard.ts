@@ -11,7 +11,6 @@ export const claimantIntentGuard = (
   (async () => {
     try {
       const caseData: Claim = await getClaimById(req.params.id, req);
-      console.log(caseData);
       if (caseData.isClaimantIntentionPending()) {
         next();
       } else {
