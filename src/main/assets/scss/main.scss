@@ -218,3 +218,6 @@
     animation: dotAnimation 1s infinite steps(5);
   }
 }
+#global-cookie-message > p > a {
+  color: #1669b1; /* New text color with sufficient contrast */
+}
