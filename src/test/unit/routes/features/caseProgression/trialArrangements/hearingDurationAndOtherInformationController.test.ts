@@ -9,7 +9,7 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -32,7 +32,7 @@ describe('Hearing duration & other info - On GET', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId))
@@ -60,7 +60,7 @@ describe('Hearing duration & other info - On GET', () => {
 describe('Hearing duration & other information - on POST', () => {
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
   });
 
   it('should redirect when other information is filled in', async () => {

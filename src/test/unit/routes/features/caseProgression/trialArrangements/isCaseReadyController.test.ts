@@ -1,5 +1,5 @@
 import {
-  mockCivilClaim, mockRedisFailure,
+  mockCivilClaimFastTrack, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -31,7 +31,7 @@ describe('Is case ready - On GET', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', claimId))
@@ -58,7 +58,7 @@ describe('Is case ready - On GET', () => {
 
 describe('Is case ready - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
   });
   it('should display error when neither Yes nor No were selected', async () => {
 

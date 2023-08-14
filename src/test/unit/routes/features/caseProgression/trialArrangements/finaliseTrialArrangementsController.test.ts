@@ -6,7 +6,7 @@ import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -47,7 +47,7 @@ describe('"finalise trial arrangements" page test', () => {
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
       //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimFastTrack;
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);

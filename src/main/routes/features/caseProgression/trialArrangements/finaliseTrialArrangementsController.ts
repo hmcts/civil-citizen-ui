@@ -1,18 +1,16 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from '../../../urls';
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from 'routes/urls';
 import {getFinaliseTrialArrangementContents} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {trialArrangementsGuard} from "routes/guards/caseProgression/trialArragement/trialArrangementsGuard";
-
+import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const finalizeTrialArrangementsViewPath = 'features/caseProgression/trialArrangements/finalise-trial-arrangements';
 const finaliseTrialArrangementsController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-//finaliseTrialArrangementsController.use(pageGuardTrialArragement);
 
 finaliseTrialArrangementsController.get([CP_FINALISE_TRIAL_ARRANGEMENTS_URL],trialArrangementsGuard, (async (req, res, next: NextFunction) => {
   try {

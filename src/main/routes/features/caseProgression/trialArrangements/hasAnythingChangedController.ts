@@ -12,6 +12,7 @@ import {getHasAnythingChanged} from 'services/features/caseProgression/trialArra
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {getClaimById} from 'modules/utilityService';
+import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -31,7 +32,7 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, n
   }
 }) as RequestHandler);
 
-hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, next) => {
+hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], trialArrangementsGuard,(async (req, res, next) => {
   try {
     const option = req.body.option;
     const textArea = req.body.textArea;
