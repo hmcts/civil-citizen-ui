@@ -13,8 +13,8 @@ import {CaseState} from 'form/models/claimDetails';
 import {Claim} from 'models/claim';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements';
+import {YesNo} from 'form/models/yesNo';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 describe('Case Progression Latest Update Content service', () => {
   const claim = require('../../../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -70,9 +70,9 @@ describe('Case Progression Latest Update Content service', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
       const claimantTrialArrangements = new TrialArrangements();
-      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+      claimantTrialArrangements.isCaseReady = YesNo.NO;
       const defendantTrialArrangements = new TrialArrangements();
-      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      defendantTrialArrangements.isCaseReady = YesNo.YES;
       claimWithSdoAndHearing.caseProgression = {
         claimantTrialArrangements: claimantTrialArrangements,
         defendantTrialArrangements: defendantTrialArrangements,
@@ -94,9 +94,9 @@ describe('Case Progression Latest Update Content service', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
       const claimantTrialArrangements = new TrialArrangements();
-      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      claimantTrialArrangements.isCaseReady = YesNo.YES;
       const defendantTrialArrangements = new TrialArrangements();
-      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+      defendantTrialArrangements.isCaseReady = YesNo.NO;
       claimWithSdoAndHearing.caseProgression = {
         claimantTrialArrangements: claimantTrialArrangements,
         defendantTrialArrangements: defendantTrialArrangements,
@@ -117,9 +117,9 @@ describe('Case Progression Latest Update Content service', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
       const claimantTrialArrangements = new TrialArrangements();
-      claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      claimantTrialArrangements.isCaseReady = YesNo.YES;
       const defendantTrialArrangements = new TrialArrangements();
-      defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+      defendantTrialArrangements.isCaseReady = YesNo.YES;
       claimWithSdoAndHearing.caseProgression = {
         claimantTrialArrangements: claimantTrialArrangements,
         defendantTrialArrangements: defendantTrialArrangements,
@@ -205,9 +205,9 @@ describe('Case Progression Latest Update Content service', () => {
 
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
     const claimantTrialArrangements = new TrialArrangements();
-    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    claimantTrialArrangements.isCaseReady = YesNo.NO;
     const defendantTrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    defendantTrialArrangements.isCaseReady = YesNo.NO;
 
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
@@ -237,9 +237,9 @@ describe('Case Progression Latest Update Content service', () => {
       .setSystemTime(new Date('2020-01-02T17:59'));
     claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
     const claimantTrialArrangements = new TrialArrangements();
-    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    claimantTrialArrangements.isCaseReady = YesNo.NO;
     const defendantTrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    defendantTrialArrangements.isCaseReady = YesNo.NO;
 
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
@@ -269,9 +269,9 @@ describe('Case Progression Latest Update Content service', () => {
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
     const claimantTrialArrangements = new TrialArrangements();
-    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    claimantTrialArrangements.isCaseReady = YesNo.NO;
     const defendantTrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    defendantTrialArrangements.isCaseReady = YesNo.NO;
 
     const claim = {
       caseProgression: {
@@ -302,9 +302,9 @@ describe('Case Progression Latest Update Content service', () => {
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
     const claimantTrialArrangements = new TrialArrangements();
-    claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    claimantTrialArrangements.isCaseReady = YesNo.NO;
     const defendantTrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+    defendantTrialArrangements.isCaseReady = YesNo.NO;
 
     const claim = {
       caseProgression: {

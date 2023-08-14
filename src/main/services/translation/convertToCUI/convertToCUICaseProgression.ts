@@ -12,7 +12,8 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements';
+import {YesNo} from 'form/models/yesNo';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (ccdClaim) {
@@ -105,9 +106,9 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantLastUploadDate = ccdClaim?.caseDocumentUploadDate ? new Date(ccdClaim?.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim?.caseDocumentUploadDateRes ? new Date(ccdClaim?.caseDocumentUploadDateRes): undefined;
     caseProgression.claimantTrialArrangements = new TrialArrangements();
-    caseProgression.claimantTrialArrangements.trialArrangementsReady = ccdClaim.trialReadyApplicant;
+    caseProgression.claimantTrialArrangements.isCaseReady = ccdClaim.trialReadyApplicant ? Object.values(YesNo).find(val => val.toLowerCase() === ccdClaim.trialReadyApplicant.toLowerCase()) : undefined;
     caseProgression.defendantTrialArrangements = new TrialArrangements();
-    caseProgression.defendantTrialArrangements.trialArrangementsReady = ccdClaim.trialReadyRespondent1;
+    caseProgression.defendantTrialArrangements.isCaseReady = ccdClaim.trialReadyRespondent1 ? Object.values(YesNo).find(val => val.toLowerCase() === ccdClaim.trialReadyRespondent1.toLowerCase()) : undefined;
 
     return caseProgression as CaseProgression;
   }

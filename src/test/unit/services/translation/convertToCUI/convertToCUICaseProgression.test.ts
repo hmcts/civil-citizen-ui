@@ -21,8 +21,8 @@ import {
   mockUUID,
   mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -143,7 +143,7 @@ describe('toCUICaseProgression', () => {
     );
     expectedOutput.claimantTrialArrangements = new TrialArrangements();
     expectedOutput.defendantTrialArrangements = new TrialArrangements();
-    expectedOutput.defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+    expectedOutput.defendantTrialArrangements.isCaseReady = YesNo.YES;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -151,9 +151,9 @@ describe('toCUICaseProgression', () => {
 
 function createCUIClaim(): CaseProgression {
   const claimantTrialArrangements = new TrialArrangements();
-  claimantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.NO;
+  claimantTrialArrangements.isCaseReady = YesNo.NO;
   const defendantTrialArrangements = new TrialArrangements();
-  defendantTrialArrangements.trialArrangementsReady = YesNoUpperCamelCase.YES;
+  defendantTrialArrangements.isCaseReady = YesNo.YES;
   return {
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),

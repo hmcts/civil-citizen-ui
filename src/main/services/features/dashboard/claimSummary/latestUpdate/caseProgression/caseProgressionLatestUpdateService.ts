@@ -7,11 +7,11 @@ import {
   buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
-  const areTrialArrangementsFinalised = claim.caseProgression.defendantTrialArrangements.trialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
-  const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.claimantTrialArrangements.trialArrangementsReady === YesNoUpperCamelCase.YES; //TODO: get the correct value once the logged in user is known
+  const areTrialArrangementsFinalised = claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
+  const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.claimantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
   const sectionContent = [];
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
