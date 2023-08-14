@@ -2,6 +2,8 @@
 @import './task-list';
 @import './citizen-ui-colours';
 
+$color1: #1669b1;
+
 .moj-add-another {
 
   // sass-lint:disable class-name-format
@@ -218,6 +220,7 @@
     animation: dotAnimation 1s infinite steps(5);
   }
 }
+
 #global-cookie-message > p > a {
-  color: #1669b1; /* New text color with sufficient contrast */
+  color: $color1;
 }
