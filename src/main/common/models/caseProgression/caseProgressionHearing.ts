@@ -44,10 +44,10 @@ export class CaseProgressionHearing {
   hearingDuration?: HearingDuration;
 
   constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
-              hearingLocation?: HearingLocation,
-              hearingDate?: Date,
-              hearingTimeHourMinute?: string,
-              hearingDuration?: HearingDuration) {
+    hearingLocation?: HearingLocation,
+    hearingDate?: Date,
+    hearingTimeHourMinute?: string,
+    hearingDuration?: HearingDuration) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;
