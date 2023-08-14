@@ -13,8 +13,7 @@ import {DocumentUri} from 'common/models/document/documentType';
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{
     //When
-    const claimDocumentSection = buildSystemGeneratedDocumentSections(mockClaim, '1', 'en');
-
+    const claimDocumentSection = buildSystemGeneratedDocumentSections(mockClaim, '1', 'eng');
     //Then
     expect(claimDocumentSection).not.toBeUndefined();
     expect(claimDocumentSection[0].data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentId', '71582e35-300e-4294-a604-35d8cabc33de'));
@@ -24,7 +23,7 @@ describe('Claim document content builder', ()=>{
 
   it('should return json with document size in KB and link to defendant response pdf', ()=>{
     //When
-    const claimDocumentSection = buildDownloadSealedResponseSection(mockClaim, '2', 'en');
+    const claimDocumentSection = buildDownloadSealedResponseSection(mockClaim, '2', 'eng');
     //Then
     expect(claimDocumentSection).not.toBeUndefined();
     expect(claimDocumentSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '2').replace(':documentId', '7f092465-658e-4ec1-af30-b5551b5260b4').replace(':documentType', DocumentUri.DEFENDANT_DEFENCE));

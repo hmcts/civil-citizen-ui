@@ -25,11 +25,10 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, ne
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     if (claim.respondent1?.responseType) {
       citizenResponseType.model.responseType = claim.respondent1.responseType;
     }
-    const componentDetailItemsList = getDetailItemsList(claim, lang);
+    const componentDetailItemsList = getDetailItemsList(claim);
     renderView(citizenResponseType, res, componentDetailItemsList);
   } catch (error) {
     next(error);
@@ -64,12 +63,12 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
     }
   });
 
-function getDetailItemsList(claim: Claim, lng?: string): ComponentDetailItems[] {
+function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
   return [
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_ALL',
       content: ['PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_ALL_DEADLINE'],
-      formattedValues: [claim.formattedResponseDeadline(lng)],
+      formattedValues: [claim.formattedResponseDeadline()],
     },
     {
       subtitle: 'PAGES.CITIZEN_RESPONSE_TYPE.PAY_IMMEDIATELY',
@@ -90,7 +89,7 @@ function getDetailItemsList(claim: Claim, lng?: string): ComponentDetailItems[] 
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_PART',
       content: ['PAGES.CITIZEN_RESPONSE_TYPE.PART_ADMIT_DEADLINE'],
-      formattedValues: [claim.formattedResponseDeadline(lng)],
+      formattedValues: [claim.formattedResponseDeadline()],
     },
     {
       subtitle: 'PAGES.CITIZEN_RESPONSE_TYPE.PAY_IMMEDIATELY',
@@ -114,7 +113,7 @@ function getDetailItemsList(claim: Claim, lng?: string): ComponentDetailItems[] 
         'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_PAID',
         'PAGES.CITIZEN_RESPONSE_TYPE.IF_PROCEED',
       ],
-      formattedValues: [claim.formattedResponseDeadline(lng)],
+      formattedValues: [claim.formattedResponseDeadline()],
     },
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.HEARING_CENTRE',

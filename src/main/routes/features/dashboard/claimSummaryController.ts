@@ -49,7 +49,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
 
   let noticesTabLabel= TabLabel.DOCUMENTS;
   let noticesTabId = TabId.DOCUMENTS;
-  const noticesContent: ClaimSummaryContent[] = await getDocumentsContent(claim, claimId, lang);
+  const noticesContent: ClaimSummaryContent[] = await getDocumentsContent(claim, claimId);
 
   let evidenceUploadTabLabel: TabLabel;
   let evidenceUploadTabId: TabId;

@@ -9,7 +9,7 @@ import {getEvidenceUploadDocuments} from 'services/features/caseProgression/docu
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 async function getDocumentsContent(claim: Claim, claimId: string, lang?: string): Promise<ClaimSummaryContent[]> {
-  const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
+  const downloadClaimTitle = buildDownloadSealedClaimSectionTitle();
 
   const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
   const downloadHearingNoticeSection = await isCaseProgressionV1Enable() ? buildDownloadHearingNoticeSection(claim, claimId, lang) : undefined;
@@ -24,7 +24,7 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
   }];
 }
 
-function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[] {
+function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[]{
   return [{
     contentSections: getEvidenceUploadDocuments(claim),
     hasDivider: false,

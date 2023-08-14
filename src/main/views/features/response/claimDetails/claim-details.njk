@@ -53,7 +53,7 @@
           <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.REASON_FOR_CLAIM')+' :' }}</h2>
           <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
           {% if timelineRows and timelineRows.length > 0 %}
-            {{ timelineSummary(t, timelineRows) }}
+            {{ timelineSummary(timelineRows) }}
           {% elseif timelinePdfUrl %}
             <div class="govuk-body">
               <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
