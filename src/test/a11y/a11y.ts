@@ -6,7 +6,7 @@ import {PageUrls} from './constants';
 const pa11y = require('pa11y');
 
 const envUrl = process.env.TEST_URL || 'http://localhost:3001';
-const options = ['WCAG2AA.Principle1.Guideline1_3.1_3_1.H42.2', 'WCAG2AA.Principle1.Guideline1_4.1_4_3'];
+const options = ['WCAG2AA.Principle1.Guideline1_3.1_3_1.H42.2', 'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail'];
 // Ignore pages that are passing in WAVE evaluation tool
 const ignoredPages = [''];
 
