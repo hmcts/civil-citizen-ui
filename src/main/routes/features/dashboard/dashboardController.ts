@@ -35,7 +35,7 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const appRequest = <AppRequest> req;
   const user: UserDetails = appRequest.session.user;
   try{
-    const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken);
+    const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);

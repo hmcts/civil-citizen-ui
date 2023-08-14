@@ -31,8 +31,11 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  * Gets only case data.
  * @param claimId
  */
-export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
+export const getCaseDataFromStore = async (claimId: string, isReleaseTwoEnabled? : boolean): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
+  if (isReleaseTwoEnabled && !civilClaimResponse?.case_data) {
+    return undefined;
+  }
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
   claim.id = civilClaimResponse?.id;
