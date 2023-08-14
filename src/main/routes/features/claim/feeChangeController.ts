@@ -4,7 +4,7 @@ import {AppRequest, UserDetails} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
