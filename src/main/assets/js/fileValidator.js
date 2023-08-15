@@ -14,6 +14,11 @@ const getCookie = (name) => {
   return '';
 };
 
+function appendCaseDocument(target, value) {
+  const caseDocumentInput = document.querySelector(`[id='${target}']`);
+  caseDocumentInput.value = value;
+}
+
 function createLoading(event) {
   const uploadingText = getCookie('lang') === 'cy' ? welshUploading : englishUploading;
   const eventId = event.target.id;
@@ -72,20 +77,15 @@ async function handleChange(event) {
 
   const response = await fetch('/upload-file', options);
   const parsed = await response.json();
-  if (response.status === 400) {
-    removeLoading(event);
-    target.value = '';
-    const formGroup = target.closest('div');
-    formGroup.classList.add('govuk-form-group--error');
-
+  removeLoading(event);
+  if (response.status !== 200) {
     parsed.errors.forEach((item) => {
       buildErrorDisplay(item, objectId, target);
     });
     target.classList.add('govuk-file-upload--error');
     target.setAttribute('aria-describedby', `${objectId}-error`);
-  }
-  if (response.status === 200) {
-    removeLoading(event);
+  } else {
+    appendCaseDocument(objectId.replace(/\].*/, '][caseDocument]'), JSON.stringify(parsed));
   }
 }
 
@@ -119,6 +119,9 @@ function createObservable() {
 }
 
 function buildErrorDisplay(error, objectId, target) {
+  target.value = '';
+  const formGroup = target.closest('div');
+  formGroup.classList.add('govuk-form-group--error');
   const errorMessage = document.createElement('p');
   errorMessage.id = `${objectId}-error`;
   errorMessage.classList.add('govuk-error-message');
