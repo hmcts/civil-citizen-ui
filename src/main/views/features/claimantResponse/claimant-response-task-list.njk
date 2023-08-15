@@ -36,7 +36,7 @@
                       <a href={{task.url}}>{{ t(task.description) }}</a>
                     </span>
                     <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
-                      {{ t(task.status) }}
+                      {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>
                 {% endfor %}
