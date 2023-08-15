@@ -76,13 +76,17 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         text: 'title',
         html: 'html',
         index: 0,
+        caseDocument: '',
+        classes: '',
+        errorMessage: '',
+        documentName: '',
       },
     });
 
     //When
     const uploadArrayBuilt = new UploadDocumentsSectionBuilder()
       .addUploadArray(uploadArrayExpected.data.text,uploadArrayExpected.data.html,
-        uploadArrayExpected.data.category,uploadArrayExpected.data.field)
+        uploadArrayExpected.data.category,uploadArrayExpected.data.field, 0, uploadArrayExpected.data.classes, uploadArrayExpected.data.errorMessage)
       .build();
 
     //Then
