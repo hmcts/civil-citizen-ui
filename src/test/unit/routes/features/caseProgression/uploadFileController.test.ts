@@ -118,7 +118,7 @@ describe('"upload File controller test', () => {
 
   it('should return validation http 400 from civil service ', async () => {
     //given
-    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+    TypeOfDocumentSectionMapper.mapReqToSingleFile = jest.fn(() => {
       return file;
     });
 
@@ -141,7 +141,7 @@ describe('"upload File controller test', () => {
 
   it('should return validation http 401 from civil service ', async () => {
     //given
-    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+    TypeOfDocumentSectionMapper.mapReqToSingleFile = jest.fn(() => {
       return file;
     });
 

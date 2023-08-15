@@ -18,6 +18,7 @@ import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/Typ
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseDocument} from 'models/document/caseDocument';
 import {AppRequest} from 'models/AppRequest';
+import config from 'config';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -37,13 +38,13 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
   );
   if (inputFile[0]){
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-    form.model[category][index].fileUpload = fileUpload;
-    form.model[category][index].caseDocument = undefined;
+    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
+    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
     form.validateSync();
     const expertErrorFieldNamePrefix = `${category}[${index}]`;
     if (!form?.errorFor(`${category}[${category}][${index}][fileUpload]`, `${category}`) && !form?.errorFor(`${expertErrorFieldNamePrefix}[${fileUpload}]`)) {
       const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      form.model[category][index].caseDocument = document;
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = document;
     }
   }
   await renderView(res, claimId, form);
