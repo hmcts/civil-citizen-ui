@@ -1575,7 +1575,8 @@
           "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
           "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
           "VIEW_HEARING_NOTICE_AFTER": ".",
-          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
+          "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice",
+          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -2583,7 +2584,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-    
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial or hearing arrangements",
@@ -2635,7 +2636,7 @@
     "CONTACT_US_URL": "Contact Us",
     "COOKIES_URL": "Cookies",
     "HELP_USING_GOV_URL": "Help using GOV.UK",
-    "PRIVACY_POLICY_URL": "Privacy Policy",    
+    "PRIVACY_POLICY_URL": "Privacy Policy",
     "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
   },
   "ERRORS": {
