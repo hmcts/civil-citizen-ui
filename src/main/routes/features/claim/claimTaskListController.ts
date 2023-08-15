@@ -6,6 +6,7 @@ import {calculateTotalAndCompleted} from 'services/features/common/taskListServi
 import {t} from 'i18next';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
+import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -16,9 +17,15 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, (req: AppRequest, res: Respo
   getCaseDataFromStore(userId)
     .then((caseData) => {
       if(caseData.id == undefined) {
-        const claim = new Claim();
-        claim.createAt = new Date();
-        saveDraftClaim(userId, claim);
+        const isReleaseTwoEnabled = isCUIReleaseTwoEnabled();
+
+        if(isReleaseTwoEnabled){
+          saveDraftClaim(null, undefined);
+        } else {
+          const claim = new Claim();
+          claim.createAt = new Date();
+          saveDraftClaim(userId, claim);
+        }
       }
 
       const taskLists = getTaskLists(caseData, userId, lang);
