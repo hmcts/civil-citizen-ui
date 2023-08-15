@@ -30,3 +30,21 @@ export function convertToEvidenceType(type: CCDEvidenceType): EvidenceType {
   }
 }
 
+export function convertToEvidenceTypeToTranslationKey(type: EvidenceType): string {
+  switch (type) {
+    case EvidenceType.CONTRACTS_AND_AGREEMENTS:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS';
+    case EvidenceType.EXPERT_WITNESS:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_EXPERT_WITNESS';
+    case EvidenceType.CORRESPONDENCE:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CORRESPONDENCE';
+    case EvidenceType.PHOTO:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_PHOTO';
+    case EvidenceType.RECEIPTS:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_RECEIPTS';
+    case EvidenceType.STATEMENT_OF_ACCOUNT:
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_STATEMENT_OF_ACCOUNT';
+    case EvidenceType.OTHER:
+      return 'PAGES.CHECK_YOUR_ANSWER.VIDENCE_OTHER';
+  }
+}
