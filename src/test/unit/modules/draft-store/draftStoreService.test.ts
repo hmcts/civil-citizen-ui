@@ -20,6 +20,9 @@ jest.mock('ioredis', () => {
       on: jest.fn(async () => {
         return;
       }),
+      expire: jest.fn(async () => {
+        return;
+      }),
     };
   });
 });
@@ -31,6 +34,9 @@ function createMockDraftStore(returnData: unknown) {
       return;
     }),
     del: jest.fn(async () => {
+      return;
+    }),
+    expire: jest.fn(async () => {
       return;
     }),
   };
@@ -48,6 +54,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(id).toBe(Number(CLAIM_ID));
   });
+
   it('should return empty result', async () => {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
@@ -59,6 +66,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(id).toBeUndefined();
   });
+
   it('should update existing claim when data exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
@@ -71,6 +79,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
+
   it('should save new claim when data does not exists', async () => {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
@@ -83,6 +92,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
+
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA);
@@ -94,6 +104,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
   });
+
   it('should return undefined when getting case data and data in redis exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
@@ -117,4 +128,18 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyDel).toBeCalled();
   });
 
+  it('should expire date be in 180 days', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
+    //When
+    const claimId = '1645882162449409';
+    const claim: Claim = new Claim();
+    claim.createAt = new Date('2023-07-12T12:00:00.000Z');
+    await saveDraftClaim(claimId, claim);
+    //Then
+    expect(spyTTL).toBeCalled();
+    expect(spyTTL).toBeCalledWith(claimId, 1704718800000);
+  });
 });
