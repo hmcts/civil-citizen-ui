@@ -8,7 +8,7 @@ import config from 'config';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
-const DRAFT_EXPIRE_TIME_IN_DAYS = config.get('services.draftStore.redis.expireInDays') as number;
+const DRAFT_EXPIRE_TIME_IN_DAYS = config.get('services.draftStore.redis.expireInDays');
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
