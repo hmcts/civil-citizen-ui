@@ -124,6 +124,17 @@
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
+    "HEARING_DURATION": {
+      "MINUTES_30": "30 minutes",
+      "MINUTES_60": "1 hour",
+      "MINUTES_90": "1 and a half hours",
+      "MINUTES_120": "2 hours",
+      "MINUTES_150": "2 and a half hours",
+      "MINUTES_180": "3 hours",
+      "MINUTES_240": "4 hours",
+      "DAY_1": "1 day",
+      "DAY_2": "2 days"
+    },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps bellow.",
       "EXAMPLE": {
@@ -735,7 +746,9 @@
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
+      "1_DAY_REMAINING": "1 day remaining",
       "ABOUT_CLAIM": "About claim",
+      "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT": "Claimant ",
@@ -743,12 +756,15 @@
       "CLAIM_NUMBER": "Claim number:",
       "CLAIMANT_RESPONSE": "Claimant Response:",
       "DATE_DOCUMENT_UPLOADED": "Date uploaded ",
+      "DAYS_REMAINING": " days remaining",
+      "DEADLINE_AT": "{{responseDeadline}} at 4pm",
       "DEFENDANT": "Defendant ",
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
@@ -757,7 +773,9 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
+      "NOTICES_AND_ORDERS": "Notices and orders",
       "LATEST_UPDATE": "Latest update",
+      "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
       "RESPONSE_DEADLINE": "Response deadline:",
@@ -1554,6 +1572,9 @@
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
           "YOUR_TRIAL_PARAGRAPH": "Your trial has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Your hearing has been scheduled for {{ hearingDate }} at {{ hearingTimeHourMinute }} at {{ courtName }}.",
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
+          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice"
         }
       },
@@ -2281,7 +2302,9 @@
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
-      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+      "COMPLETE": "Complete",
+      "INCOMPLETE": "Incomplete"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
@@ -2320,6 +2343,16 @@
       "PAGE_TITLE": "Claim total interest",
       "TITLE": "What is the total interest for your claim?",
       "TOTAL_AMOUNT": "Total interest amount"
+    },
+    "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
+      "TITLE": "Finalise your trial arrangements",
+      "TRIAL_DURATION_TITLE": "Trial duration",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
+      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Is there anything else the court needs to know (optional)?</span>",
+      "OTHER_INFORMATION_INPUT_HINT": "For example, a witness needs to leave the court by 3pm due to caring responsibilities."
     },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
@@ -2548,6 +2581,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
+    
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial arrangements",
@@ -2574,6 +2608,15 @@
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now"
     }
+  },
+  "FOOTER":{
+    "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
+    "ALL_CONTENT": "All content is available under the <a href='{{ link }}' rel='license'>Open Government Licence v3.0</a>, except where otherwise stated",
+    "CONTACT_US_URL": "Contact Us",
+    "COOKIES_URL": "Cookies",
+    "HELP_USING_GOV_URL": "Help using GOV.UK",
+    "PRIVACY_POLICY_URL": "Privacy Policy",    
+    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
@@ -2908,12 +2951,12 @@
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
-    "VALID_ENTER_EXPERT_NAME": "You must enter name of expert",
+    "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",
     "VALID_ENTER_EXPERT_NAMES": "You must enter the name of at least one expert",
     "VALID_ENTER_EXPERTISE": "You must enter field of expertise",
-    "VALID_ENTER_OTHER_PARTY": "You must enter other party's name",
-    "VALID_ENTER_DOCUMENT_QUESTIONS": "You must enter name of document you have questions about",
-    "VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY": "You must enter name of document with other party's questions",
+    "VALID_SELECT_OTHER_PARTY": "Select the name of the other party",
+    "VALID_ENTER_DOCUMENT_QUESTIONS": "Enter name of the document you have questions about",
+    "VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY": "Enter name of the document with other party’s questions",
     "VALID_CHOOSE_THE_FILE": "Choose the file you want to upload",
     "VALID_MIME_TYPE_FILE": "Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Document must be less than 100MB",
