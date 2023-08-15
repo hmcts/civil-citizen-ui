@@ -252,6 +252,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),
     [ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED]: getPartAdmitAlreadyPaidNotAccepted(claim),
+    [ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN]: getLatestUpdateForClaimantRejectRepaymentPlan(claim, lng),
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
@@ -414,8 +415,6 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId, claim));
-  } else if (claim.isClaimantRejectedPaymentPlan()) {
-    sectionContent.push(getLatestUpdateForClaimantRejectRepaymentPlan(claim, lng));
   } else if (claim.hasClaimTakenOffline()) {
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
   } else if (claim.hasMediationSuccessful()) {

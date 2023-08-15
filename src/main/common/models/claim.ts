@@ -134,11 +134,11 @@ export class Claim {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
-    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate()) {
+    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate() && !this.isClaimantRejectedPaymentPlan()) {
       return ClaimResponseStatus.FA_PAY_BY_DATE;
     }
 
@@ -162,12 +162,16 @@ export class Claim {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
     }
 
-    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
+    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate() && !this.isClaimantRejectedPaymentPlan()) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
     }
 
-    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
+    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+
+    if ((this.isPartialAdmission() || this.isFullAdmission()) && this.isClaimantRejectedPaymentPlan()) {
+      return ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN;
     }
 
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
@@ -422,8 +426,8 @@ export class Claim {
 
   isBreakDownCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
-      !!this.interest?.totalInterest?.amount && 
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
+      !!this.interest?.totalInterest?.amount &&
       !!this.interest?.totalInterest?.reason
     );
   }
@@ -456,18 +460,18 @@ export class Claim {
 
   isDefendantDetailsCompleted(): boolean {
     return (
-      !!this.respondent1?.type && 
+      !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
       (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
     );
   }
 
   isClaimantDetailsCompleted(): boolean {
     return (
-      !!this.applicant1?.type && 
+      !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
-      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
       (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
     );
   }
@@ -617,7 +621,7 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
 
   hasMediationSuccessful() {

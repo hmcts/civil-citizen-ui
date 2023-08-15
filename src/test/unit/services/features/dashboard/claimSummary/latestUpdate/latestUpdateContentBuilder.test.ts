@@ -1,6 +1,8 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
-import {buildResponseToClaimSection} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {
+  buildResponseToClaimSection
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -14,14 +16,15 @@ import {
   getAmount,
   getFirstRepaymentDate,
   getPaymentAmount,
-  getPaymentDate, getRepaymentFrequency,
+  getPaymentDate,
+  getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
 import currencyFormat from 'common/utils/currencyFormat';
 import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
@@ -758,6 +761,23 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
       expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/123');
       expect(responseToClaimSection[3]).toBeUndefined();
+    });
+  });
+
+  describe('test claimant rejects payment plan', () => {
+    it('should have build claimant reject payment plan scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+      claim.applicant1AcceptPartAdmitPaymentPlanSpec = YesNoUpperCamelCase.NO;
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG3');
     });
   });
 });
