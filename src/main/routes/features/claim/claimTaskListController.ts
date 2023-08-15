@@ -20,13 +20,16 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
       if(caseData.id == undefined) {
         const isReleaseTwoEnabled = isCUIReleaseTwoEnabled();
 
-        if(isReleaseTwoEnabled){
-          saveDraftClaim(null, undefined);
-        } else {
-          const claim = new Claim();
-          claim.createAt = new Date();
-          saveDraftClaim(userId, claim);
-        }
+        isReleaseTwoEnabled
+          .then(value => {
+            if(value) {
+              saveDraftClaim(null, undefined);
+            } else {
+              const claim = new Claim();
+              claim.createAt = new Date();
+              saveDraftClaim(userId, claim);
+            }
+          });
       }
 
       const taskLists = getTaskLists(caseData, userId, lang);
