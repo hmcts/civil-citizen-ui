@@ -7,11 +7,12 @@ import {t} from 'i18next';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (req: AppRequest, res: Response, next: NextFunction) : void  => {
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
