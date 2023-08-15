@@ -1,7 +1,7 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
 import {
-  buildResponseToClaimSection
+  buildResponseToClaimSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
