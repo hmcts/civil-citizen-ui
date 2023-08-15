@@ -13,6 +13,7 @@ import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotI
 import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -162,7 +163,7 @@ export class ExpertSection extends DateInputFields {
   @IsOptional()
     fieldOfExpertise: string;
 
-  // @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
+  @IsNotEmpty({message: 'ERRORS.VALID_SELECT_OTHER_PARTY'})
   @IsOptional()
     otherPartyName: string;
 

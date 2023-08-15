@@ -18,6 +18,7 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -44,6 +45,12 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if (!claim.caseProgression) {
       claim.caseProgression = new CaseProgression();
     }
+
+    if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
+    {
+      claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    }
+
     if (claim?.caseProgression) {
       if (parentPropertyName && claim.caseProgression[parentPropertyName]) {
         claim.caseProgression[parentPropertyName][caseProgressionPropertyName] = value;
@@ -157,13 +164,13 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
+const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-
   formObj.fileUpload = request['fileUpload'];
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;
 };
@@ -171,10 +178,9 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
   formObj.witnessName = request['witnessName'].trim();
-
   formObj.fileUpload = request['fileUpload'];
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;
 };
@@ -188,8 +194,8 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
   formObj.fileUpload = request['fileUpload'];
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;
 };
@@ -197,8 +203,8 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
   formObj.fileUpload = request['fileUpload'];
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;
 };

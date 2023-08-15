@@ -24,7 +24,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {FileResponse} from 'models/FileResponse';
+import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 

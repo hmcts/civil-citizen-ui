@@ -29,7 +29,7 @@ servicebus:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-asb
   resourceGroup: civil-aso-preview-rg
-  sbNamespace: civil # due to a bug https://github.com/kubernetes-sigs/kustomize/issues/5072 this value is set to civil, when this bug is resolved, the sbNamespace should be changed to the actual name of the Service Bus Namespace (civil-sb-preview)
+  sbNamespace: civil-servicebus-preview # due to a bug https://github.com/kubernetes-sigs/kustomize/issues/5072 this value is set to civil, when this bug is resolved, the sbNamespace should be changed to the actual name of the Service Bus Namespace (civil-sb-preview)
   setup:
     topics:
       - name: ccd-case-events
@@ -102,8 +102,6 @@ wa-case-event-handler:
     keyVaults:
       wa:
         secrets:
-          - name: app-insights-connection-string
-            alias: app-insights-connection-string
           - name: s2s-secret-case-event-handler
             alias: S2S_SECRET_CASE_EVENT_HANDLER
           - name: ld-secret

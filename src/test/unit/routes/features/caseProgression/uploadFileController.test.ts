@@ -96,7 +96,7 @@ describe('"upload File controller test', () => {
 
       //Then
       expect(response.status).toBe(500);
-      expect(response.text).toBe('{"errors":"Test error"}');
+      expect(response.text).toBe('{"errors":["Test error"]}');
     });
   });
 
@@ -114,6 +114,52 @@ describe('"upload File controller test', () => {
     //Then
     expect(response.status).toBe(400);
     expect(response.text).toBe('{"errors":["Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF"]}');
+  });
+
+  it('should return validation http 400 from civil service ', async () => {
+    //given
+    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+      return file;
+    });
+
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(400, 'Error');
+
+    //When
+    const response = await testSession
+      .post(CP_UPLOAD_FILE)
+      .attach('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+    //Then
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('{"errors":["Error"]}');
+  });
+
+  it('should return validation http 401 from civil service ', async () => {
+    //given
+    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+      return file;
+    });
+
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(401, '');
+
+    //When
+    const response = await testSession
+      .post(CP_UPLOAD_FILE)
+      .attach('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+    //Then
+    expect(response.status).toBe(401);
+    expect(response.text).toBe('{"errors":["unknown error"]}');
   });
 
 });
