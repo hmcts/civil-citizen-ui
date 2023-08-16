@@ -1,4 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {toCCDParty} from '../response/convertToCCDParty';
@@ -11,7 +11,6 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
-    applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
     partialPayment: toCCDYesNo(claim.claimantResponse?.ccjRequest?.paidAmount?.option),
     partialPaymentAmount: claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? claim.claimantResponse?.ccjRequest?.paidAmount?.amount.toString() : undefined,
