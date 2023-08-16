@@ -17,20 +17,18 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   getCaseDataFromStore(userId)
     .then((caseData) => {
-      if(caseData.id == undefined) {
-        const isReleaseTwoEnabled = isCUIReleaseTwoEnabled();
+      const isReleaseTwoEnabled = isCUIReleaseTwoEnabled();
 
-        isReleaseTwoEnabled
-          .then(value => {
-            if(value) {
-              saveDraftClaim(null, undefined);
-            } else {
-              const claim = new Claim();
-              claim.createAt = new Date();
-              saveDraftClaim(userId, claim);
-            }
-          });
-      }
+      isReleaseTwoEnabled
+        .then(value => {
+          if(value) {
+            saveDraftClaim(null, undefined);
+          } else {
+            const claim = new Claim();
+            claim.createAt = new Date();
+            saveDraftClaim(userId, claim);
+          }
+        });
 
       const taskLists = getTaskLists(caseData, userId, lang);
       const {completed, total} = calculateTotalAndCompleted(taskLists);
