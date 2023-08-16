@@ -16,6 +16,8 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
     ? `${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`
     : `${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`;
 
+  const keepContactDetaislUpToDate = `${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`;
+
   const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
   const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
   const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
@@ -27,6 +29,7 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
+    .addParagraph(keepContactDetaislUpToDate)
     .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
     .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`,  CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
 
