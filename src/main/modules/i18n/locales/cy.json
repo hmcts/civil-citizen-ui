@@ -2499,7 +2499,7 @@
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial or hearing arrangements",
+      "FINALISE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
@@ -2583,7 +2583,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-    
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial arrangements",
@@ -2635,7 +2635,7 @@
     "CONTACT_US_URL": "Cysylltu â ni",
     "COOKIES_URL": "Cwcis",
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
-    "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ", 
+    "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
   },
   "ERRORS": {
