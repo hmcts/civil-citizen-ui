@@ -252,7 +252,7 @@ describe('Submit Confirmation service', () => {
 
     it('should display next steps section with no mediation', () => {
       // Given
-      claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}}
+      claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}};
       // When
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
       // Then
@@ -332,7 +332,7 @@ describe('Submit Confirmation service', () => {
 
     it('should display next steps section with no mediation', () => {
       // Given
-      claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}}
+      claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}};
       // When
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
       // Then
