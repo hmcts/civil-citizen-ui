@@ -2293,6 +2293,7 @@
       "WE_CONTACT_YOU": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "SETUP_REPAYMENT_PLAN": "sefydlwch eich cynllun ad-dalu i ddechrau pan ddywedoch chi y byddai’n dechrau",
       "THE_CLAIM_WILL_BE_SETTLED": "Bydd yr honiad yn cael ei setlo",
+      "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
@@ -2583,7 +2584,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-    
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalize your trial or hearing arrangements",
@@ -2635,7 +2636,7 @@
     "CONTACT_US_URL": "Cysylltu â ni",
     "COOKIES_URL": "Cwcis",
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
-    "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ", 
+    "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
   },
   "ERRORS": {
