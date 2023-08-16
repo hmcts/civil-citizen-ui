@@ -24,8 +24,20 @@ const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 
 const multer = require('multer');
-const storage = multer.memoryStorage(); // Use memory storage
-const upload = multer({storage});
+const fileSize = Infinity;
+
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: fileSize,
+  },
+});
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
