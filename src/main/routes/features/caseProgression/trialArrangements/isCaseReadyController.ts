@@ -18,7 +18,7 @@ const isCaseReadyController = Router();
 const dqPropertyName = 'isCaseReady';
 const parentPropertyName = 'defendantTrialArrangements';
 
-isCaseReadyController.get([IS_CASE_READY_URL], async (req, res, next: NextFunction) => {
+isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
@@ -28,7 +28,7 @@ isCaseReadyController.get([IS_CASE_READY_URL], async (req, res, next: NextFuncti
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
   try {
