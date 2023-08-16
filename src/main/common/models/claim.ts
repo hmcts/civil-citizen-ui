@@ -601,7 +601,8 @@ export class Claim {
   }
 
   hasClaimantNotAgreedToMediation(): boolean {
-    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No' ||
+           !this?.applicant1ClaimMediationSpecRequiredLip;
   }
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
