@@ -14,7 +14,11 @@ const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
-describe('Trial Arrangement guard ', () => {
+describe('Trial Arrangement guard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should redirect to next screen with fast track claim', async () => {
     //Given
     const mockClaim = new Claim();
