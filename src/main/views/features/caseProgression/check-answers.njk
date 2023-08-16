@@ -49,8 +49,8 @@
                       }) }}
                     </div>
                   </div>
-              {% endif %}
             {% endfor %}
+          {% endif %}
   //Trial Documents
           {% if summarySections.trialDocumentSections %}
             <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.TRIAL') }}</h1>
@@ -65,6 +65,7 @@
                       }) }}
                     </div>
                   </div>
+                {% endfor %}
               {% endif %}
             {% endfor %}
           {% endif %}
