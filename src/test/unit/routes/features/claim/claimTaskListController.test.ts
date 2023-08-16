@@ -46,7 +46,7 @@ describe('Claim TaskList page', () => {
         });
     });
 
-    it('should create return undefined for Release 2', async () => {
+    it('should return undefined for Release 2', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
       const mockClaim = new Claim();
@@ -65,7 +65,7 @@ describe('Claim TaskList page', () => {
       expect(saveDraftClaimSpy).toBeCalledWith(null, undefined);
     });
 
-    it('should create return new Claim when not Release 2', async () => {
+    it('should create and return new Claim when not Release 2', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
 
@@ -73,7 +73,7 @@ describe('Claim TaskList page', () => {
       mockClaim.id = '1';
       mockClaim.createAt = new Date('2023-07-01T13:29:22.447');
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => false);
+      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => undefined);
       const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await request(app)
