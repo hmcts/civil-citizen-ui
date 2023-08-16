@@ -12,22 +12,20 @@ import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (req: AppRequest, res: Response, next: NextFunction) : void  => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, async (req: AppRequest, res: Response, next: NextFunction) : void  => {
   const userId = req.session?.user?.id;
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const isReleasedTwoEnabled = await isCUIReleaseTwoEnabled();
   getCaseDataFromStore(userId)
     .then((caseData) => {
 
-      isCUIReleaseTwoEnabled()
-        .then(value => {
-          if(value) {
-            saveDraftClaim(null, undefined);
-          } else {
-            const claim = new Claim();
-            claim.createAt = new Date();
-            saveDraftClaim(userId, claim);
-          }
-        });
+      if(isReleasedTwoEnabled) {
+        saveDraftClaim(null, undefined);
+      } else {
+        const claim = new Claim();
+        claim.createAt = new Date();
+        saveDraftClaim(userId, claim);
+      }
 
       const taskLists = getTaskLists(caseData, userId, lang);
       const {completed, total} = calculateTotalAndCompleted(taskLists);
