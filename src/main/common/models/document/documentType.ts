@@ -11,7 +11,7 @@ export enum DocumentType {
   SDO_ORDER = 'SDO_ORDER',
   HEARING_FORM = 'HEARING_FORM',
   MEDIATION_AGREEMENT = 'MEDIATION_AGREEMENT',
-  TRIAL_ARRANGEMENTS = 'TRIAL_ARRANGEMENTS'
+  TRIAL_READY_DOCUMENT = 'TRIAL_READY_DOCUMENT'
 }
 export enum DocumentUri {
   SEALED_CLAIM = 'sealed-claim',
@@ -26,7 +26,7 @@ export enum DocumentUri {
   SDO_ORDER = 'sdo-order',
   HEARING_FORM = 'hearing-form',
   MEDIATION_AGREEMENT = 'mediation_agreement',
-  TRIAL_ARRANGEMENTS = 'trial-arrangements'
+  TRIAL_READY_DOCUMENT = 'trial-ready-document'
 }
 
 export enum EvidenceUploadWitness {
