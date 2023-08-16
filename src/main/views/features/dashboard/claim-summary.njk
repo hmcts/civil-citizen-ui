@@ -41,31 +41,31 @@
 
 
             {% for i in range(0, tabContent.length)  %}
-            {% if i == 0 %}
+              {% if i == 0 %}
             <div class="govuk-tabs__panel" id="{{ tabContent[i].id }}">
               {% else %}
-              <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="{{ tabContent[i].id }}">
-                {% endif %}
-                {% for tabSection in tabContent[i].panels %}
-                  {{ claimSummaryContent({
+            <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="{{ tabContent[i].id }}">
+              {% endif %}
+              {% for tabSection in tabContent[i].panels %}
+                {{ claimSummaryContent({
                     contentSections: tabSection.contentSections,
                     hasDivider: tabSection.hasDivider
-                  }) }}
-                {% endfor %}
-              </div>
+                }) }}
               {% endfor %}
             </div>
-            {{ contactUsForHelp(t) }}
+              {% endfor %}
           </div>
-          {{ aboutClaimWidget(t, {
-            header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
-            lines:[
-              {title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: 'contact-them', hrefContact: claimantName},
-              {title: 'COMMON.CLAIM_AMOUNT', content: totalClaimAmount, href: ''},
-              {title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: '/case/' + claimId + '/response/claim-details', hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'},
-              {title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', href: responseDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE'} ]
-          }) }}
+          {{ contactUsForHelp(t) }}
         </div>
+        {{ aboutClaimWidget(t, {
+          header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
+          lines:[
+            {title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: 'contact-them', hrefContact: claimantName},
+            {title: 'COMMON.CLAIM_AMOUNT', content: totalClaimAmount, href: ''},
+            {title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: '/case/' + claimId + '/response/claim-details', hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'},
+            {title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', href: responseDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE'} ]
+          }) }}
+      </div>
     </main>
   </div>
 {% endblock %}
