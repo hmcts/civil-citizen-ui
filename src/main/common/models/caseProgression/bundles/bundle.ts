@@ -1,18 +1,16 @@
 import {Document} from 'models/document/document';
-import {YesNo} from 'form/models/yesNo';
 
 export class Bundle {
-  id: string;
   title: string;
-  description: string;
-  stitchStatus?: string;
   stitchedDocument?: Document;
-  filename: string;
   createdOn?: Date;
-
-  hasCoversheets: YesNo;
-  hasTableOfContents: YesNo;
-
   bundleHearingDate?: Date;
-  stitchingFailureMessage?: string;
+
+  constructor(title: string, stitchedDocument?: Document, createdOn?: Date, bundleHearingDate?: Date) {
+    this.title = title;
+    this.stitchedDocument = stitchedDocument;
+    this.createdOn = createdOn ? new Date(createdOn) : null;
+    this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : null;
+
+  }
 }

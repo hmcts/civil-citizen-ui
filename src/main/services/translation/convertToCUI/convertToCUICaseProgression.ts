@@ -12,6 +12,7 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (ccdClaim) {
@@ -104,8 +105,9 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantLastUploadDate = ccdClaim?.caseDocumentUploadDate ? new Date(ccdClaim?.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim?.caseDocumentUploadDateRes ? new Date(ccdClaim?.caseDocumentUploadDateRes): undefined;
 
+    caseProgression.caseBundles = [] as Bundle[];
     if(ccdClaim?.caseBundles) {
-      ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(element.value);});
+      ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(new Bundle(element.value?.title, element.value?.stitchedDocument, element.value?.createdOn, element.value?.bundleHearingDate));});
     }
 
     return caseProgression as CaseProgression;

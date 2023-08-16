@@ -18,6 +18,7 @@ import {
   createCCDClaimForEvidenceUpload, mockExpertDocument,
   mockTypeDocument, mockUUID, mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -99,6 +100,7 @@ describe('toCUIEvidenceUpload', () => {
       caseDocumentUploadDateRes: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     const actualOutput = toCUICaseProgression(ccdClaim);
@@ -118,6 +120,7 @@ describe('toCUIEvidenceUpload', () => {
       documentAuthoritiesRes: [{id: 'Defendant', value: mockTypeDocument}],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant'),
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant')],
@@ -138,6 +141,7 @@ describe('toCUIEvidenceUpload', () => {
 
 function createCUIClaim(): CaseProgression {
   return {
+    caseBundles: [] as Bundle[],
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     defendantUploadDocuments:

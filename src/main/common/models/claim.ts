@@ -60,7 +60,8 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import {Bundle} from "models/caseProgression/bundles/bundle";
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {orderBundlesNewToOld} from 'services/features/caseProgression/bundles/bundlesService';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -421,8 +422,8 @@ export class Claim {
 
   isBreakDownCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
-      !!this.interest?.totalInterest?.amount && 
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
+      !!this.interest?.totalInterest?.amount &&
       !!this.interest?.totalInterest?.reason
     );
   }
@@ -455,18 +456,18 @@ export class Claim {
 
   isDefendantDetailsCompleted(): boolean {
     return (
-      !!this.respondent1?.type && 
+      !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
       (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
     );
   }
 
   isClaimantDetailsCompleted(): boolean {
     return (
-      !!this.applicant1?.type && 
+      !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
-      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
       (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
     );
   }
@@ -622,7 +623,26 @@ export class Claim {
       return false;
     }
 
-    return !!caseBundles[caseBundles.length-1]?.stitchedDocument;
+    return !!caseBundles[0]?.stitchedDocument;
+  }
+
+  lastBundleCreatedDate(): Date {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return undefined;
+    }
+    orderBundlesNewToOld(caseBundles);
+
+    for(const bundle of caseBundles)
+    {
+      if(bundle.createdOn)
+      {
+        return bundle.createdOn;
+      }
+    }
+
+    return undefined;
   }
 
   hasClaimTakenOffline() {

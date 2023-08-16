@@ -67,7 +67,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
 
     evidenceUploadTabLabel = TabLabel.DOCUMENTS;
     evidenceUploadTabId = TabId.DOCUMENTS;
-    evidenceUploadContent = getEvidenceUploadContent(claim);
+    evidenceUploadContent = getEvidenceUploadContent(claim, lang);
   }
 
   tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
@@ -80,7 +80,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
   if(caseProgressionEnabled && bundleAvailable) {
     const bundleTabLabel = TabLabel.BUNDLES;
     const bundleTabId = TabId.BUNDLES;
-    const bundleTabContent = getBundlesContent(claim);
+    const bundleTabContent = getBundlesContent(claim, lang);
 
     tabItems.push(new TabItem(bundleTabLabel, bundleTabId, bundleTabContent));
   }

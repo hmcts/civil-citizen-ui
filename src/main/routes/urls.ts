@@ -235,3 +235,4 @@ export const TRIAL_ARRANGEMENTS_HEARING_DURATION= `${BASE_CASE_PROGRESSION_URL}/
 export const TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS= `${BASE_CASE_PROGRESSION_URL}/check-trial-arrangements`;
 export const HAS_ANYTHING_CHANGED_URL = `${BASE_CASE_PROGRESSION_URL}/has-anything-changed`;
 export const HEARING_DURATION_URL = `${BASE_CASE_PROGRESSION_URL}/hearing-duration`;
+export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';

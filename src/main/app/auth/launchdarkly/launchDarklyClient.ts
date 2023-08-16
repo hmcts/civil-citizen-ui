@@ -24,7 +24,7 @@ export async function getFlagValue(
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return await getFlagValue('cui-case-progression') as boolean;
+  return true;
 }
 
 export async function isServiceShuttered(): Promise<boolean> {

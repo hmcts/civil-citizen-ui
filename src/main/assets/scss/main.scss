@@ -218,3 +218,9 @@
     animation: dotAnimation 1s infinite steps(5);
   }
 }
+
+.tableWrap {
+  word-break: break-word;
+  table-layout: fixed;
+  width: 100%;
+}
