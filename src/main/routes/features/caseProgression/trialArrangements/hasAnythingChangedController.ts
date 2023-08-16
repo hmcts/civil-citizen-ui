@@ -20,7 +20,7 @@ const hasAnythingChangedController = Router();
 const dqPropertyName = 'hasAnythingChanged';
 const parentPropertyName = 'defendantTrialArrangements';
 
-hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
+hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], trialArrangementsGuard, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);

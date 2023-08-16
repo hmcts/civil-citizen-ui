@@ -5,10 +5,11 @@ import {
   getTrialArrangementsConfirmationContent,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsConfirmationService';
 import {YesNo} from 'form/models/yesNo';
+import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const trialArrangementsConfirmationController = Router();
 
-trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, (async (req: Request, res: Response, next: NextFunction) => {
+trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, trialArrangementsGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);

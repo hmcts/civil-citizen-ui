@@ -1,4 +1,5 @@
 import {
+  DEFENDANT_SUMMARY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -9,7 +10,7 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
-import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -108,6 +109,19 @@ describe('Hearing duration & other information - on POST', () => {
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+  });
+
+  it('should redirect to latestUpload screen when is small claim', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    //When
+    await testSession
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      //Then
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
       });
   });
 });

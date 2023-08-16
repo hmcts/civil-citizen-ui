@@ -1,7 +1,8 @@
 import {
+  mockCivilClaim,
   mockCivilClaimFastTrack, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
-import {HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
+import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -20,6 +21,9 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
 describe('Has anything changed - On GET', () => {
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+  });
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -39,6 +43,19 @@ describe('Has anything changed - On GET', () => {
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
+      });
+  });
+
+  it('should redirect to latestUpload screen when is small claim', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    //When
+    await testSession
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId))
+      //Then
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
       });
   });
 
@@ -122,6 +139,20 @@ describe('Has anything changed - on POST', () => {
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'));
+      });
+  });
+
+  it('should redirect to latestUpload screen when is small claim', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    //When
+    await testSession
+      .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .send({option: YesNo.YES, textArea: 'some text'})
+      //Then
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
       });
   });
 

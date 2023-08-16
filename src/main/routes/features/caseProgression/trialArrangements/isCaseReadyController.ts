@@ -31,7 +31,7 @@ isCaseReadyController.get([IS_CASE_READY_URL], trialArrangementsGuard, (async (r
   }
 }) as RequestHandler);
 
-isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
+isCaseReadyController.post([IS_CASE_READY_URL], trialArrangementsGuard, (async (req, res, next) => {
   try {
     const option = req.body.option;
     const form = new GenericForm(new IsCaseReadyForm(option));
