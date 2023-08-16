@@ -17,10 +17,10 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const isReleasedTwoEnabled = await isCUIReleaseTwoEnabled();
+      const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
       const caseData= await getCaseDataFromStore(userId);
 
-      if(isReleasedTwoEnabled != undefined && isReleasedTwoEnabled.valueOf()) {
+      if(isReleasedTwoEnabled) {
         saveDraftClaim(null, undefined);
       } else {
         const claim = new Claim();
