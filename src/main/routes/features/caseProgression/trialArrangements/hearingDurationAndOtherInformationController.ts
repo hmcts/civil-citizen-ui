@@ -22,7 +22,7 @@ const hearingDurationController = Router();
 const propertyName = 'otherTrialInformation';
 const parentPropertyName = 'defendantTrialArrangements';
 
-hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next: NextFunction) => {
+hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], trialArrangementsGuard, (async (req, res, next: NextFunction) => {
   try {
     const claimId: string = req.params.id;
     const claim: Claim = await getClaimById(claimId, req);
