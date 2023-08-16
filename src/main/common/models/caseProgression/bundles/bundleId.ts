@@ -1,4 +1,4 @@
-import {Bundle} from 'models/caseProgression/bundles/Bundle';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 
 export class BundleId {
   id: string;
