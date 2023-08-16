@@ -3,12 +3,11 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {toCCDParty} from '../response/convertToCCDParty';
 import {toCCDYesNo} from '../response/convertToCCDYesNo';
-import {AppRequest} from 'models/AppRequest';
 import {toCCDDJPaymentOption} from 'services/translation/claimantResponse/convertToCCDDJPaymentOption';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCCDDJPaymentFrequency';
 
-export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
+export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
