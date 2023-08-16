@@ -15,14 +15,13 @@ import {OtherTrialInformation} from 'form/models/caseProgression/trialArrangemen
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const hearingDurationViewPath = 'features/caseProgression/trialArrangements/hearing-duration-other-info';
 const hearingDurationController = Router();
 const propertyName = 'otherTrialInformation';
 const parentPropertyName = 'defendantTrialArrangements';
 
-hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], trialArrangementsGuard, (async (req, res, next: NextFunction) => {
+hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next: NextFunction) => {
   try {
     const claimId: string = req.params.id;
     const claim: Claim = await getClaimById(claimId, req);
@@ -41,7 +40,7 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], trialArrang
   }
 }) as RequestHandler);
 
-hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], trialArrangementsGuard, (async (req, res, next) => {
+hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const otherInfo = req.body.otherInformation;

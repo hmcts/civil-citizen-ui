@@ -13,14 +13,13 @@ import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/h
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {YesNo} from 'form/models/yesNo';
 import {getClaimById} from 'modules/utilityService';
-import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
 const dqPropertyName = 'hasAnythingChanged';
 const parentPropertyName = 'defendantTrialArrangements';
 
-hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], trialArrangementsGuard, (async (req, res, next: NextFunction) => {
+hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
@@ -33,7 +32,7 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], trialArrangementsGu
   }
 }) as RequestHandler);
 
-hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], trialArrangementsGuard,(async (req, res, next) => {
+hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, next) => {
   try {
     const option = req.body.option;
     const textArea = req.body.textArea;

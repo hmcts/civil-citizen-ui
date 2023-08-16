@@ -12,14 +12,13 @@ import {getIsCaseReady} from 'services/features/caseProgression/trialArrangement
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {getClaimById} from 'modules/utilityService';
-import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
 const dqPropertyName = 'isCaseReady';
 const parentPropertyName = 'defendantTrialArrangements';
 
-isCaseReadyController.get([IS_CASE_READY_URL], trialArrangementsGuard, async (req, res, next: NextFunction) => {
+isCaseReadyController.get([IS_CASE_READY_URL], async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
@@ -31,7 +30,7 @@ isCaseReadyController.get([IS_CASE_READY_URL], trialArrangementsGuard, async (re
   }
 });
 
-isCaseReadyController.post([IS_CASE_READY_URL], trialArrangementsGuard, (async (req, res, next) => {
+isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
   try {
     const option = req.body.option;
     const form = new GenericForm(new IsCaseReadyForm(option));
