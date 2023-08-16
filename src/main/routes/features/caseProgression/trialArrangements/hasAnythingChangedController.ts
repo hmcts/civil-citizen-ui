@@ -1,4 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {getClaimById} from 'modules/utilityService';
 import {
   DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
@@ -12,7 +13,6 @@ import {getHasAnythingChanged} from 'services/features/caseProgression/trialArra
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {YesNo} from 'form/models/yesNo';
-import {getClaimById} from 'modules/utilityService';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
