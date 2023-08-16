@@ -70,6 +70,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
         .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
@@ -93,6 +94,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
         .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
         .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
