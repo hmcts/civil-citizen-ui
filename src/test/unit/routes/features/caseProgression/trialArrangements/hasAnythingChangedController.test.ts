@@ -70,6 +70,7 @@ describe('Has anything changed - On GET', () => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
+
   });
 });
 
