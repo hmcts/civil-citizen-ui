@@ -1,32 +1,34 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
-import {TableHead} from 'models/LatestUpdateSectionBuilder/tableHead.js';
 import {TableCell} from 'models/summaryList/summaryList';
 import {formatStringDateDMY, formatStringTimeHMS} from 'common/utils/dateUtils';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {CASE_DOCUMENT_DOWNLOAD_URL, MAKE_APPLICATION_TO_COURT} from 'routes/urls';
+import {t} from 'i18next';
 
-export function getBundlesContent(claim: Claim): ClaimSummaryContent[] {
+export function getBundlesContent(claim: Claim, lang: string): ClaimSummaryContent[] {
 
-  const tableHeaders = getTableHeaders();
+  const tableHeaders = getTableHeaders(lang);
   const tableRows = getTableRows(claim);
 
   const bundlesSection = new LatestUpdateSectionBuilder()
-    .addParagraph('You can find the bundle below')
-    .addLink('apply to the court', 'href', 'As the bundle has now been created, you will have to', 'if you want any new documents you upload to be used at your trial or hearing.')
-    .addParagraph('Any new documents you upload will not be included in the main bundle. They will be listed separately below and under \'Documents\'.')
-    .addTable(tableHeaders, tableRows)
+    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW')
+    .addLink('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_LINK', MAKE_APPLICATION_TO_COURT, 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_BEFORE', 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_AFTER', null, true)
+    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.NEW_DOCUMENT_NOT_INCLUDED')
+    .addTable(tableHeaders, tableRows, 'tableWrap')
     .build();
 
   return [{contentSections: bundlesSection, hasDivider: false}];
 }
 
-function getTableHeaders(): TableHead[]{
-  const tableHeaders = [] as TableHead[];
+function getTableHeaders(lang: string): TableCell[]{
+  const tableHeaders = [] as TableCell[];
 
-  tableHeaders.push(new TableHead('Trial Bundle'));
-  tableHeaders.push(new TableHead('Created On'));
-  tableHeaders.push(new TableHead('Hearing Date'));
-  tableHeaders.push(new TableHead('Document URL'));
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.BUNDLE_HEADER', {lng:lang})});
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.CREATED_DATE_HEADER', {lng:lang})});
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.HEARING_DATE_HEADER', {lng:lang})});
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.URL_HEADER', {lng:lang})});
 
   return tableHeaders;
 }
@@ -34,11 +36,40 @@ function getTableHeaders(): TableHead[]{
 function getTableRows(claim: Claim): TableCell[][] {
 
   const tableRows = [] as TableCell[][];
+  const bundles = claim.caseProgression?.caseBundles;
 
-  for(const bundle of claim.caseProgression.caseBundles){
+  if(!bundles){
+    return null;
+  }
 
-    tableRows.push([{html: bundle.filename, classes: ''}, {html: formatStringDateDMY(bundle.createdOn)+formatStringTimeHMS(bundle.createdOn), classes: ''}, {html: '', classes: ''}]);
+  orderBundlesNewToOld(bundles);
+
+  for(const bundle of bundles){
+    const creationDateFormatted = formatStringDateDMY(bundle.createdOn);
+    const creationTimeFormatted = formatStringTimeHMS(bundle.createdOn);
+    const hearingDateFormatted = formatStringDateDMY(bundle.bundleHearingDate);
+
+    tableRows.push([{html: bundle.title}, {html: `${creationDateFormatted}, ${creationTimeFormatted}`}, {html: hearingDateFormatted}, {html: getBundleLink(bundle, claim.id)}]);
   }
 
   return tableRows;
+}
+
+function getBundleLink(bundle: Bundle, claimId: string): string {
+
+  const binaryUrl = bundle.stitchedDocument?.document_binary_url;
+  const url = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', binaryUrl);
+  const fileName = bundle.stitchedDocument?.document_filename;
+
+  return `<a class="govuk-link" href="${url}">${fileName}</a>`;
+}
+
+export function orderBundlesNewToOld(documentsWithDates: Bundle[]): Bundle[] {
+
+  documentsWithDates.sort((a: Bundle, b: Bundle) => {
+
+    return +b.createdOn - +a.createdOn;
+  });
+
+  return documentsWithDates;
 }

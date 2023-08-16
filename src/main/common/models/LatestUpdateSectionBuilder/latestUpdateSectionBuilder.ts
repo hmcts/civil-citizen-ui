@@ -1,7 +1,6 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
-import {TableHead} from 'models/LatestUpdateSectionBuilder/tableHead.js';
 import {TableCell} from 'models/summaryList/summaryList';
 
 export class LatestUpdateSectionBuilder extends PageSectionBuilder {
@@ -58,11 +57,17 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addTable(tableHeaders: TableHead[], tableRows: TableCell[][]){
+  addTable(tableHeaders?: TableCell[], tableRows?: TableCell[][], classes?: string){
+
+    if(!tableHeaders && !tableRows)
+    {
+      return this;
+    }
 
     const tableSection = ({
       type: ClaimSummaryType.TABLE,
       data: {
+        classes: classes,
         head: tableHeaders,
         tableRows: tableRows,
       },
