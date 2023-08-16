@@ -156,6 +156,29 @@ describe('Civil Service Client', () => {
         responseType: 'arraybuffer',
       });
     });
+    it('should upload document successfully when response is utf-8', async () => {
+      //Given
+      const encoder = new TextEncoder();
+      const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+        documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date()};
+      const mockPostUTF8 = jest.fn().mockResolvedValue({data: encoder.encode(JSON.stringify(mockCaseDocument))});
+      mockedAxios.create.mockReturnValueOnce({post: mockPostUTF8} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //When
+      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(mockedAppRequest, mockFile);
+      //Then
+      expect(mockPostUTF8.mock.calls[0][0]).toEqual(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL);
+      expect(actualCaseDocument.documentName).toEqual(mockCaseDocument.documentName);
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+        responseEncoding: 'binary',
+        responseType: 'arraybuffer',
+      });
+    });
     it('should return error', async () => {
       //Given
       const mockPost = jest.fn().mockResolvedValue({status: 500});

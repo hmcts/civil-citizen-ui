@@ -1,4 +1,4 @@
-import {displayPDF, downloadFile} from 'common/utils/downloadUtils';
+import {displayPDF, downloadFile, viewFile} from 'common/utils/downloadUtils';
 import {FileResponse} from 'models/FileResponse';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -40,6 +40,23 @@ describe('Test download Utils class', () => {
     expect(mockResponse.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'text/plain',
       'Content-Disposition': 'attachment; filename=example.txt',
+      'Content-Length': 13,
+    });
+  });
+
+  test('viewFile Method with correct headers', () => {
+    const mockResponse: MockResponse = {
+      writeHead: jest.fn(),
+      end: jest.fn(),
+    };
+
+    const fileResponse: FileResponse = new FileResponse('text/plain', 'example.txt', Buffer.from('Hello, world!'));
+
+    viewFile(mockResponse, fileResponse);
+
+    expect(mockResponse.writeHead).toHaveBeenCalledWith(200, {
+      'Content-Type': 'text/plain',
+      'Content-Disposition': 'inline; filename=example.txt',
       'Content-Length': 13,
     });
   });
