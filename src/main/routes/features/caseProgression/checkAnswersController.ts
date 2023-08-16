@@ -24,7 +24,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL,
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(userId);
+      const claim = await getCaseDataFromStore(req.params.id);
       const form = new GenericForm(new documentUploadSubmissionForm());
       renderView(res, form, claim, userId, lang);
     } catch (error) {

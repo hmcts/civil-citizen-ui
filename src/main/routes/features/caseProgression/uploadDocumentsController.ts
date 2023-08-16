@@ -9,7 +9,7 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  getUploadDocumentsForm,
+  getUploadDocumentsForm, saveCaseProgression,
 } from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
@@ -17,6 +17,7 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
+const dqPropertyName = 'defendantDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
@@ -60,8 +61,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     if (form.hasErrors()) {
       await renderView(res, claimId, form);
     } else {
-      console.log('Evidence upload form validated');
-      //todo: save to redis
+      await saveCaseProgression(claimId, form.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
