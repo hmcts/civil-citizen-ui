@@ -11,6 +11,8 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
+    //TO DO: Test the commented code creating the claim from CUI.
+    //applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
     partialPayment: toCCDYesNo(claim.claimantResponse?.ccjRequest?.paidAmount?.option),
     partialPaymentAmount: claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? claim.claimantResponse?.ccjRequest?.paidAmount?.amount.toString() : undefined,
