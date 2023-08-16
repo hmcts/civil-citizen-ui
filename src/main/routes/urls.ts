@@ -153,7 +153,6 @@ export const DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_
 export const CLAIM_EVIDENCE_URL = `${BASE_CLAIM_URL}/evidence`;
 export const CLAIM_FEE_URL = `${BASE_CLAIM_URL}/fee`;
 export const CLAIM_AMOUNT_URL = `${BASE_CLAIM_URL}/amount`;
-export const CLAIM_FEE_URL = `${BASE_CLAIM_URL}/fee`;
 export const CLAIM_HELP_WITH_FEES_URL = `${BASE_CLAIM_URL}/help-with-fees`;
 export const CLAIM_HELP_WITH_FEES_REFERENCE_URL = `${BASE_CLAIM_URL}/help-with-fees-reference`;
 export const CLAIM_TOTAL_URL = `${BASE_CLAIM_URL}/total`;
