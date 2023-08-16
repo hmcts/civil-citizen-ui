@@ -27,8 +27,10 @@ describe('Trial Arrangement guard', () => {
     mockGetCaseData.mockImplementation(async () => mockClaim);
     //When
     await trialArrangementsGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
     //Then
     expect(MOCK_NEXT).toHaveBeenCalled();
+
   });
 
   it('should redirect not call next screen with small claim', async () => {
