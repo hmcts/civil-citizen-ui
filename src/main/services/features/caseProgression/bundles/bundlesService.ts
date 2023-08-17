@@ -1,7 +1,6 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {TableCell} from 'models/summaryList/summaryList';
-import {formatStringDateDMY, formatStringTimeHMS} from 'common/utils/dateUtils';
 import {MAKE_APPLICATION_TO_COURT} from 'routes/urls';
 import {t} from 'i18next';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
@@ -48,12 +47,9 @@ function getTableRows(claim: Claim): TableCell[][] {
   for(const bundle of bundles){
 
     if(bundle.createdOn && bundle.stitchedDocument) {
-      const creationDateFormatted = formatStringDateDMY(bundle.createdOn);
-      const creationTimeFormatted = formatStringTimeHMS(bundle.createdOn);
-      const hearingDateFormatted = formatStringDateDMY(bundle.bundleHearingDate);
       const bundleLink = formatDocumentDownloadURL(bundle.stitchedDocument?.document_filename, claim.id, bundle.stitchedDocument?.document_binary_url);
 
-      tableRows.push([{html: bundle.title}, {html: `${creationDateFormatted}, ${creationTimeFormatted}`}, {html: hearingDateFormatted}, {html: bundleLink}]);
+      tableRows.push([{html: bundle.title}, {html: bundle.getFormattedCreatedOn}, {html: bundle.getFormattedHearingDate}, {html: bundleLink}]);
     }
   }
 
