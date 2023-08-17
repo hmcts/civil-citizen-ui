@@ -11,6 +11,5 @@ export class Bundle {
     this.stitchedDocument = stitchedDocument;
     this.createdOn = createdOn ? new Date(createdOn) : null;
     this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : null;
-
   }
 }

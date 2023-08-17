@@ -749,6 +749,7 @@
       "1_DAY_REMAINING": "1 diwrnod yn weddill",
       "ABOUT_CLAIM": "Am hawliad",
       "BUNDLES": {
+        "TAB_TITLE": "Bundles",
         "FIND_BUNDLE_BELOW": "You can find the bundle below.",
         "APPLY_TO_COURT_BEFORE": "As the bundle has now been created, you will have to",
         "APPLY_TO_COURT_LINK": "apply to the court",

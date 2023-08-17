@@ -1332,8 +1332,11 @@ describe('Documents', () => {
       caseProgression.caseBundles = [new Bundle('title', document, middleDate), new Bundle('title', document, newestDate), new Bundle('title', document, oldestDate)];
       const claim = new Claim();
       claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
       //Then
-      expect(claim.lastBundleCreatedDate()).toStrictEqual(newestDate);
+      expect(dateActual).toStrictEqual(newestDate);
     });
     it('should return latest createdOn in bundles, when some bundles do not have dates', () => {
       //Given
@@ -1345,8 +1348,11 @@ describe('Documents', () => {
       caseProgression.caseBundles = [new Bundle('title', document), new Bundle('title', document, middleDate), new Bundle('title', document, newestDate), new Bundle('title', document, oldestDate), new Bundle('title', document)];
       const claim = new Claim();
       claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
       //Then
-      expect(claim.lastBundleCreatedDate()).toStrictEqual(newestDate);
+      expect(dateActual).toStrictEqual(newestDate);
     });
     it('should return undefined when no date present', () => {
       //Given
@@ -1354,8 +1360,11 @@ describe('Documents', () => {
       caseProgression.caseBundles = [new Bundle('title')];
       const claim = new Claim();
       claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
       //Then
-      expect(claim.lastBundleCreatedDate()).toBeUndefined();
+      expect(dateActual).toBeUndefined();
     });
   });
 });
