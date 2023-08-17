@@ -50,11 +50,8 @@ describe('Claim TaskList page', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
 
-      const mockClaim = new Claim();
-      mockClaim.id = '1';
-      mockClaim.createAt = new Date('2023-07-01T13:29:22.447');
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => undefined);
+      mockGetCaseData.mockImplementation(async () => undefined);
+      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => true);
       const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await request(app)

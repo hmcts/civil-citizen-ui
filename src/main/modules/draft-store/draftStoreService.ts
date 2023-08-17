@@ -38,11 +38,13 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
   const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
+
   if(isReleasedTwoEnabled &&
     (civilClaimResponse == undefined
       || civilClaimResponse.case_data == undefined)) {
     return undefined;
   }
+
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
   claim.id = civilClaimResponse?.id;
@@ -61,7 +63,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId);
   const draftStoreClient = app.locals.draftStoreClient;
 
-  if (isUndefined(storedClaimResponse.case_data)) {
+  if (isUndefined(storedClaimResponse?.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
     draftStoreClient.expire(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
   }
@@ -73,6 +75,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
+  storedClaimResponse.case_data = {};
   storedClaimResponse.case_data.createAt = new Date();
   return storedClaimResponse;
 };
