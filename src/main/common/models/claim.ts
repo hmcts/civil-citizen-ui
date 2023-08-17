@@ -116,8 +116,6 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
-  applicant1AcceptPartAdmitPaymentPlanSpec?:YesNoUpperCamelCase;
-  applicant1AcceptFullAdmitPaymentPlanSpec?:YesNoUpperCamelCase;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -601,9 +599,9 @@ export class Claim {
   }
 
   hasClaimantNotAgreedToMediation(): boolean {
-    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No' ||
-           !this?.applicant1ClaimMediationSpecRequiredLip;
+    return  this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
+
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
     const now = new Date();
@@ -646,7 +644,7 @@ export class Claim {
   }
 
   isClaimantRejectedPaymentPlan(){
-    return this.applicant1AcceptPartAdmitPaymentPlanSpec === YesNoUpperCamelCase.NO || this.applicant1AcceptFullAdmitPaymentPlanSpec === YesNoUpperCamelCase.NO;
+    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === 'no';
   }
 }
 

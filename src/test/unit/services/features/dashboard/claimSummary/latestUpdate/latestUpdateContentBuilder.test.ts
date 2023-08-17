@@ -24,7 +24,7 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
@@ -34,6 +34,7 @@ import {
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock,
 } from '../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -82,6 +83,7 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     firstRepaymentDate: new Date(Date.now()),
   };
   claim.systemGeneratedCaseDocuments = SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock();
+  claim.claimantResponse =new ClaimantResponse();
   return claim;
 };
 
@@ -538,6 +540,8 @@ describe('Latest Update Content Builder', () => {
         claim.applicant1ClaimMediationSpecRequiredLip = {
           hasAgreedFreeMediation: 'No',
         };
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+
         const claimantName = claim.getClaimantFullName();
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`)
@@ -663,6 +667,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.ccdState = CaseState.CASE_STAYED;
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       claim.mediationAgreement = <MediationAgreement>{
         name: 'test',
         document: <Document>{
@@ -689,6 +694,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.unsuccessfulMediationReason ='test';
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
@@ -705,6 +711,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.defaultJudgmentDocuments = [<CaseDocument>{}];
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
@@ -728,6 +735,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.ccjJudgmentStatement ='test';
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
@@ -752,6 +760,7 @@ describe('Latest Update Content Builder', () => {
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.ccdState = CaseState.CASE_SETTLED;
       claim.lastModifiedDate = new Date();
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
@@ -769,7 +778,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
       claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-      claim.applicant1AcceptPartAdmitPaymentPlanSpec = YesNoUpperCamelCase.NO;
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then

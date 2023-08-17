@@ -9,7 +9,7 @@ import {Mediation} from 'models/mediation/mediation';
 import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
 import {Document, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
@@ -215,8 +215,8 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
-  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNo;
-  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNo;
+  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
 }
 
 export interface ClaimFeeData {
