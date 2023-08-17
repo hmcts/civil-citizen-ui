@@ -4,6 +4,7 @@ import {POSTCODE_LOOKUP_URL} from '../../../urls';
 import config from 'config';
 
 const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
+console.log('post code lookup key' + postcodeLookupApiKey);
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 
 export default Router()

@@ -35,15 +35,13 @@ nodejs:
         - appinsights-instrumentation-key
         - draft-store-access-key
         - citizen-ui-idam-secret
-        - name: ordnance-survey-api-key
-          alias: ORDNANCE_SURVEY_API_KEY
+        - ordnance-survey-api-key
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
 
   environment:
-    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
