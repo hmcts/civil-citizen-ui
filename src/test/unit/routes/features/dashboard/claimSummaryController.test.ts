@@ -12,7 +12,7 @@ import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/m
 import {TabId, TabLabel} from 'routes/tabs';
 import {t} from 'i18next';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
-import {BundleId} from 'models/caseProgression/bundles/bundleId';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -189,8 +189,8 @@ describe('Claim Summary Controller Defendant', () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
 
-      const bundles = [] as BundleId[];
-      bundles.push(new BundleId('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
+      const bundles = [] as CCDBundle[];
+      bundles.push(new CCDBundle('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
 
       const claimWithHearingAndBundleDocs = {
         ...claim,

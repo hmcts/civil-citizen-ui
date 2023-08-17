@@ -1,6 +1,6 @@
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 
-export class BundleId {
+export class CCDBundle {
   id: string;
   value: Bundle;
 

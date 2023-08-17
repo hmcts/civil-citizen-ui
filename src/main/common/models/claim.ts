@@ -61,7 +61,7 @@ import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
-import {orderBundlesNewToOld} from 'services/features/caseProgression/bundles/bundlesService';
+import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -637,7 +637,8 @@ export class Claim {
     if(!caseBundles || caseBundles.length < 1) {
       return undefined;
     }
-    orderBundlesNewToOld(caseBundles);
+
+    BundlesFormatter.orderBundlesNewToOld(caseBundles);
 
     for(const bundle of caseBundles)
     {
