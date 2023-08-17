@@ -5,10 +5,10 @@ const claimantPrefix = 'claimant';
 const defendantPrefix = 'defendant';
 
 export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean): TrialArrangements => {
-  if (ccdClaim) {
+  if (ccdClaim && ccdClaim.trialReadyDocuments) {
     const trialArrangements: TrialArrangements = new TrialArrangements();
     trialArrangements.trialArrangementsDocument = isClaimant ? ccdClaim.trialReadyDocuments.find(doc => doc.value.documentName.toLowerCase().includes(claimantPrefix))
       : ccdClaim.trialReadyDocuments.find(doc => doc.value.documentName.toLowerCase().includes(defendantPrefix));
-    return trialArrangements;
+    return trialArrangements.trialArrangementsDocument ? trialArrangements : undefined;
   }
 };

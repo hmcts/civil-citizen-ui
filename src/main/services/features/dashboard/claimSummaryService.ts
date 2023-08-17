@@ -15,7 +15,7 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
   const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
   const downloadHearingNoticeSection = await isCaseProgressionV1Enable() ? buildDownloadHearingNoticeSection(claim, claimId, lang) : undefined;
   const isClaimant = false; // TODO - provide the actual value once the claimant part is developed in R2
-  const downloadTrialReadySection = buildTrialReadyDocumentSection(claim, claimId, lang, isClaimant);
+  const downloadTrialReadySection = hasTrialArrangementsDocuments(claim) ? buildTrialReadyDocumentSection(claim, claimId, lang, isClaimant) : undefined;
 
   return [{
     contentSections: [
@@ -35,4 +35,12 @@ function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[] {
   }];
 }
 
-export {getDocumentsContent, getEvidenceUploadContent};
+function hasTrialArrangementsDocuments(claim: Claim): boolean {
+  const claimantTrialArrangementsDocument = claim?.caseProgression?.claimantTrialArrangements?.trialArrangementsDocument;
+  const defendantTrialArrangementsDocument = claim?.caseProgression?.defendantTrialArrangements?.trialArrangementsDocument;
+
+  return claimantTrialArrangementsDocument !== undefined && claimantTrialArrangementsDocument !== null
+    || defendantTrialArrangementsDocument !== undefined && defendantTrialArrangementsDocument !== null;
+}
+
+export {getDocumentsContent, getEvidenceUploadContent, hasTrialArrangementsDocuments};
