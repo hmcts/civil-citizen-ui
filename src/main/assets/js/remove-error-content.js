@@ -12,6 +12,7 @@ if (document.getElementsByClassName('moj-add-another__add-button')) {
       .findLast((mutation) => mutation);
     newBlock?.addedNodes.forEach((el) => {
       if (el?.children) {
+        removeLoading(el);
         [...el.getElementsByClassName('govuk-error-summary')].forEach(errorSummary => errorSummary.classList.add('hide'));
         [...el.getElementsByClassName('govuk-error-message')].forEach(errorMessage => errorMessage.classList.add('hide'));
         [...el.getElementsByClassName('govuk-input--error')].forEach(inputError => inputError.classList.remove('govuk-input--error'));
@@ -42,5 +43,12 @@ if (document.getElementsByClassName('moj-add-another__add-button')) {
         }
       });
     });
+  }
+}
+
+function removeLoading(node) {
+  const loadingContainer  = node.querySelector('[id*="-loadingContainer"]');
+  if (loadingContainer) {
+    loadingContainer.remove();
   }
 }

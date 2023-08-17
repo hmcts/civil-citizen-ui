@@ -66,6 +66,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const claim: Claim = await getCaseDataFromStore(claimId);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
+  const currentUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
@@ -82,6 +83,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
       trialContent,
       cancelUrl,
       isSmallClaims,
+      currentUrl,
     });
   }
 }
