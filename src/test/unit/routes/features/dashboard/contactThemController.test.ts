@@ -9,7 +9,7 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getClaimById,
-  getRedisStoreForSession
+  getRedisStoreForSession,
 } from '../../../../../main/modules/utilityService';
 import {Claim} from 'common/models/claim';
 
@@ -29,13 +29,13 @@ describe('Claimant details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-      (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
-        client: new Redis(),
-      }));
+    (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
+      client: new Redis(),
+    }));
   });
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data) ;
+      const caseData = Object.assign(new Claim(), claim.case_data);
       (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
       await request(app)
         .get(CITIZEN_CONTACT_THEM_URL)
