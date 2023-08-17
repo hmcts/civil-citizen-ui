@@ -1,4 +1,5 @@
 import {Document} from 'models/document/document';
+import {formatStringDateDMY, formatStringTimeHMS} from "common/utils/dateUtils";
 
 export class Bundle {
   title: string;
@@ -11,5 +12,20 @@ export class Bundle {
     this.stitchedDocument = stitchedDocument;
     this.createdOn = createdOn ? new Date(createdOn) : null;
     this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : null;
+  }
+
+  get getFormattedCreatedOn(): string {
+    if(this.createdOn){
+      const createdOnDateFormatted = formatStringDateDMY(this.createdOn);
+      const createdOnTimeFormatted = formatStringTimeHMS(this.createdOn);
+
+      return `${createdOnDateFormatted}, ${createdOnTimeFormatted}`
+    }
+  }
+
+  get getFormattedHearingDate(): string {
+    if(this.bundleHearingDate){
+      return formatStringDateDMY(this.bundleHearingDate);
+    }
   }
 }

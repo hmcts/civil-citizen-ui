@@ -3,7 +3,6 @@ import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {t} from 'i18next';
-import {formatStringDateDMY, formatStringTimeHMS} from 'common/utils/dateUtils';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 
 jest.mock('i18next');
@@ -23,11 +22,6 @@ describe('getBundlesContent', () =>{
   const document = {document_filename: 'name', document_url: 'url', document_binary_url:`http://dm-store:8080/documents/${binary}/binary`};
   const creationDate = new Date('01-01-2023');
   const hearingDate = new Date('01-01-2022');
-
-  const creationDateFormatted = formatStringDateDMY(creationDate);
-  const creationTimeFormatted = formatStringTimeHMS(creationDate);
-  const creationFullFormatted = `${creationDateFormatted}, ${creationTimeFormatted}`;
-  const hearingDateFormatted = formatStringDateDMY(hearingDate);
 
   const documentUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234').replace(':documentId', binary);
   const documentUrlElement = `<a class="govuk-link" href="${documentUrl}">${document.document_filename}</a>`;
@@ -63,12 +57,12 @@ describe('getBundlesContent', () =>{
     expect(bundleTabActual[0].contentSections[3].data.head[2].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.head[3].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(creationFullFormatted);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(hearingDateFormatted);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(bundle.getFormattedCreatedOn);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(bundle.getFormattedHearingDate);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][3].html).toMatch(documentUrlElement);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[1][0].html).toMatch(title);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(creationFullFormatted);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[1][2].html).toMatch(hearingDateFormatted);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(bundle.getFormattedCreatedOn);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[1][2].html).toMatch(bundle.getFormattedHearingDate);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[1][3].html).toMatch(documentUrlElement);
   });
 
@@ -95,8 +89,8 @@ describe('getBundlesContent', () =>{
     expect(bundleTabActual[0].contentSections[3].data.head[2].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.head[3].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(creationFullFormatted);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(hearingDateFormatted);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(bundle.getFormattedCreatedOn);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(bundle.getFormattedHearingDate);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][3].html).toMatch(documentUrlElement);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[1]).toBeUndefined();
   });
@@ -124,8 +118,8 @@ describe('getBundlesContent', () =>{
     expect(bundleTabActual[0].contentSections[3].data.head[2].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.head[3].html).toMatch('Table header text');
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(creationFullFormatted);
-    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(hearingDateFormatted);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(bundle.getFormattedCreatedOn);
+    expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(bundle.getFormattedHearingDate);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[0][3].html).toMatch(documentUrlElement);
     expect(bundleTabActual[0].contentSections[3].data.tableRows[1]).toBeUndefined();
   });
