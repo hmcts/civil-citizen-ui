@@ -17,15 +17,21 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
-    if(!claim.respondent1?.dateOfBirth && claim.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES){
-      claim.respondent1.dateOfBirth = new CitizenDate();
-      claim.respondent1.dateOfBirth.date = claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth;
-    }
+    await setRespondentDateOfBirth(claim);
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
     logger.info(ccdResponse);
     return await civilServiceClient.submitClaimantResponseDJEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
     throw err;
+  }
+};
+
+const setRespondentDateOfBirth = (claim: Claim) => {
+  if(!claim.isBusiness()){
+    if(!claim.respondent1?.dateOfBirth && claim.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES){
+      claim.respondent1.dateOfBirth = new CitizenDate();
+      claim.respondent1.dateOfBirth.date = claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth;
+    }
   }
 };
