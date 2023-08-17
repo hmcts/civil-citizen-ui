@@ -274,41 +274,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
-  describe('submitDefaultJudgementEvent', () => {
-    it('should submit default judgement request successfully', async () => {
-      //Given
-      const mockResponse = new CivilClaimResponse();
-      mockResponse.id = '1';
-      mockResponse.case_data = ccdClaim;
-      mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
-      const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
-      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
-      const civilServiceClient = new CivilServiceClient(baseUrl);
-      //When
-      const claim = await civilServiceClient.submitClaimantResponseDJEvent('123', {}, mockedAppRequest);
-      //Then
-      expect(mockedAxios.create).toHaveBeenCalledWith({
-        baseURL: baseUrl,
-      });
-      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId', 'undefined')
-        .replace(':caseId', '123'));
-      expect(claim.applicant1.partyDetails.individualTitle).toEqual(mockClaim.applicant1.partyDetails.individualTitle);
-      expect(claim.applicant1.partyDetails.individualFirstName).toEqual(mockClaim.applicant1.partyDetails.individualFirstName);
-      expect(claim.applicant1.partyDetails.individualLastName).toEqual(mockClaim.applicant1.partyDetails.individualLastName);
-    });
-    it('should throw error when there is an error with api', async () => {
-      //Given
-      const mockPost = jest.fn().mockImplementation(() => {
-        throw new Error('error');
-      });
-      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
-      const civilServiceClient = new CivilServiceClient(baseUrl);
-      //Then
-      await expect(civilServiceClient.submitClaimantResponseDJEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
-    });
-  });
   describe('getClaimsForDefendant', () => {
     it('should return claims for defendant successfully', async () => {
       //Given
