@@ -27,6 +27,8 @@ import {
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
+import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
+import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -78,7 +80,7 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
-
+app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
