@@ -59,20 +59,21 @@ export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
  */
 export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId);
+  const draftStoreClient = app.locals.draftStoreClient;
+
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
-  }
-  storedClaimResponse.case_data = claim;
-  const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if(claim.createAt) {
     draftStoreClient.expire(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
   }
+
+  storedClaimResponse.case_data = claim;
+  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
+  storedClaimResponse.case_data.createAt = new Date();
   return storedClaimResponse;
 };
 

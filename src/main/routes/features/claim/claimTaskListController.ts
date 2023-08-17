@@ -19,9 +19,6 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
       const caseData: Claim = await getCaseDataFromStore(userId);
 
       if(caseData == undefined) {
-        saveDraftClaim(null, undefined);
-      } else {
-        caseData.createAt = new Date();
         saveDraftClaim(userId, caseData);
       }
 
