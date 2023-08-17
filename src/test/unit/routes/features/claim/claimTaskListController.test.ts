@@ -46,25 +46,6 @@ describe('Claim TaskList page', () => {
         });
     });
 
-    it('should return undefined for Release 2', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request.cookies = {eligibilityCompleted: true};
-      const mockClaim = new Claim();
-      mockClaim.id = '1';
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => true);
-      const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
-      await request(app)
-        .get(CLAIMANT_TASK_LIST_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
-        });
-
-      expect(saveDraftClaimSpy).toBeCalledWith(null, undefined);
-    });
-
     it('should create and return new Claim when not Release 2', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};

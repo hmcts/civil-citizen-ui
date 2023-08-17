@@ -4,6 +4,7 @@ import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import config from 'config';
+import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -35,6 +36,11 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  * @param claimId
  */
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
+  const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
+  if(isReleasedTwoEnabled) {
+    return undefined;
+  }
+
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
