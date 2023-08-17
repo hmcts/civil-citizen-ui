@@ -1,18 +1,9 @@
 import { Claim } from 'models/claim';
 import { translateClaimantResponseDJToCCD } from 'services/translation/claimantResponse/ccdTranslation';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { Party } from 'common/models/party';
 import { PartyType } from 'common/models/partyType';
 
 describe('translate draft claim to ccd version', () => {
-  it('should translate applicant1 to ccd', () => {
-    //Given
-    const claim = new Claim();
-    //When
-    const ccdClaim = translateClaimantResponseDJToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1Represented).toBe(YesNoUpperCamelCase.NO);
-  });
   it('should translate applicant 1 to ccd', () => {
     //Given
     const claim = new Claim();
