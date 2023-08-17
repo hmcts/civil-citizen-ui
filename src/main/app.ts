@@ -21,6 +21,8 @@ import {getRedisStoreForSession} from 'modules/utilityService';
 import session from 'express-session';
 import {STATEMENT_OF_MEANS_URL} from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
+import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
+import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -71,6 +73,7 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
+app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
