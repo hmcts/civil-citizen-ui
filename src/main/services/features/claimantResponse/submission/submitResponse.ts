@@ -4,6 +4,8 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {translateClaimantResponseDJToCCD} from 'services/translation/claimantResponse/ccdTranslation';
+import {YesNo} from 'form/models/yesNo';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -15,9 +17,8 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
-    if(!claim.respondent1?.dateOfBirth){
-      //TODO: Redirection from ccj/paid-amount-summary to ccj/payment-options
-      //TODO: Check when dateOfBirth.date is undefined
+    if(!claim.respondent1?.dateOfBirth && claim.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES){
+      claim.respondent1.dateOfBirth = new CitizenDate();
       claim.respondent1.dateOfBirth.date = claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth;
     }
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
