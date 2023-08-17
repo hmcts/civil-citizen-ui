@@ -5,6 +5,7 @@ import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
 import { CLAIM_FEE_URL } from 'routes/urls';
 import { mockRedisFailure } from '../../../../../utils/mockDraftStore';
+import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('modules/draft-store/draftStoreService', () => {
   return { getCaseDataFromStore: jest.fn((claimId: string) => Promise.resolve()) };
@@ -21,7 +22,7 @@ app.use(claimFeeBreakDownController);
 
 describe('on GET', () => {
   it('should handle the get call of fee summary details', async () => {
-    const mockClaimData = { totalClaimAmount: 1000, totalInterest: 100 };
+    const mockClaimData = { totalClaimAmount: 1000, interest: { interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST, totalInterest: { amount: 100 } }, claimInterest: 'yes' };
     const mockClaimFee = 50;
     const mockTotalAmount = 1150;
     (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(mockClaimData);
@@ -31,7 +32,7 @@ describe('on GET', () => {
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
           totalClaimAmount: mockClaimData.totalClaimAmount,
-          interest: mockClaimData.totalInterest,
+          interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
           hasInterest: true,
           totalAmount: mockTotalAmount,

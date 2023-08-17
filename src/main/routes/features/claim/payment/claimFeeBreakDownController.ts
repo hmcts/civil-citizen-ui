@@ -4,6 +4,8 @@ import { NextFunction, Response, Router } from 'express';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import { CLAIM_FEE_URL } from 'routes/urls';
+import { YesNo } from 'common/form/models/yesNo';
+import { calculateInterestToDate } from 'common/utils/interestUtils';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
@@ -13,11 +15,13 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimFeeBreakDownController.get(CLAIM_FEE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
-    const claim = await getCaseDataFromStore(userId);
+    const claim = 
+    await getCaseDataFromStore(userId);
     const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
-    const totalAmount = claim.totalInterest ? (claim.totalClaimAmount + claim.totalInterest + claimFee) : (claim.totalClaimAmount + claimFee);
-    return res.render(viewPath, { totalClaimAmount: claim.totalClaimAmount, interest: claim.totalInterest, claimFee, hasInterest: !!claim.totalInterest, totalAmount });
-
+    const hasInterest = claim.claimInterest === YesNo.YES;
+    const interestAmount = calculateInterestToDate(claim);
+    const totalAmount = hasInterest ? (claim.totalClaimAmount + interestAmount + claimFee) : (claim.totalClaimAmount + claimFee);
+    return res.render(viewPath, { totalClaimAmount: claim.totalClaimAmount, interest: interestAmount, claimFee, hasInterest, totalAmount });
   } catch (error) {
     next(error);
   }
