@@ -12,7 +12,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitResponse';
+import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
