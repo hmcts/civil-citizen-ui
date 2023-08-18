@@ -165,27 +165,27 @@ describe('translate draft claim to ccd version', () => {
     expect(ccdClaim.paymentSetDate).toBeUndefined();
   });
 
-it('should translate the repayment due when option is Yes', () => {
+  it('should translate the repayment due when option is Yes', () => {
   // given
-  const claim = new Claim();
-  claim.claimantResponse = {
-    ccjRequest: {
-      paidAmount: {
-        option: YesNo.YES,
-        totalAmount: 20,
-        amount: 10,
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        paidAmount: {
+          option: YesNo.YES,
+          totalAmount: 20,
+          amount: 10,
+        },
       },
-    },
-  } as any;
+    } as any;
 
-  // when
-  const ccdClaim = translateClaimantResponseDJToCCD(claim);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-  // then
-  expect(ccdClaim.repaymentDue).toEqual('10');
-});
+    // then
+    expect(ccdClaim.repaymentDue).toEqual('10');
+  });
 
-it('should not translate the repayment due when option is No', () => {
+  it('should not translate the repayment due when option is No', () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -205,28 +205,28 @@ it('should not translate the repayment due when option is No', () => {
     expect(ccdClaim.repaymentDue).toBeUndefined();
   });
 
-it('should translate the repayment suggestion when payment option type is INSTALMENTS', () => {
+  it('should translate the repayment suggestion when payment option type is INSTALMENTS', () => {
   // given
-  const claim = new Claim();
-  claim.claimantResponse = {
-    ccjRequest: {
-      ccjPaymentOption: {
-        type: PaymentOptionType.INSTALMENTS,
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+         type: PaymentOptionType.INSTALMENTS,
+        },
+        repaymentPlanInstalments: {
+          amount: 100,
+        },
       },
-      repaymentPlanInstalments: {
-        amount: 100,
-      },
-    },
-  } as any;
+    } as any;
 
-  // when
-  const ccdClaim = translateClaimantResponseDJToCCD(claim);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-  // then
-  expect(ccdClaim.repaymentSuggestion).toEqual('100');
-});
+    // then
+    expect(ccdClaim.repaymentSuggestion).toEqual('100');
+  });
 
-it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {
+  it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -245,5 +245,5 @@ it('should not translate the repayment suggestion when payment option type is no
 
     // then
     expect(ccdClaim.repaymentSuggestion).toBeUndefined();
-});
+  });
 });
