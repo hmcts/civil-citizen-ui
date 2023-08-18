@@ -63,7 +63,7 @@ describe('Upload document- upload document controller', () => {
     });
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
+  it('should render page successfully with uploaded document section if document available in redis', async () => {
     app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
