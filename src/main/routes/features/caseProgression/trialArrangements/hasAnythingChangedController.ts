@@ -1,4 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {getClaimById} from 'modules/utilityService';
 import {
   DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
@@ -11,7 +12,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
-import {getClaimById} from 'modules/utilityService';
+import {YesNo} from 'form/models/yesNo';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -42,6 +43,9 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, 
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await renderView(res, claimId, claim, form);
     } else {
+      if(form.model.option === YesNo.NO){
+        form.model.textArea = '';
+      }
       await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_HEARING_DURATION));
     }
