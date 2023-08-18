@@ -131,6 +131,6 @@ export const PageUrls = {
 
   //Trial Arrangements
   FINALISE_TRIAL_ARRANGEMENTS : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements',
-  IS_CASE_READY : '/case/:caseProgressionCaseId/case-progression/is-case-ready',
-  HAS_ANYTHING_CHANGED : '/case/:caseProgressionCaseId/case-progression/has-anything-changed',
+  IS_CASE_READY : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/is-case-ready',
+  HAS_ANYTHING_CHANGED : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/has-anything-changed',
 } as const;
