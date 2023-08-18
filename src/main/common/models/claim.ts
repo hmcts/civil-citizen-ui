@@ -22,7 +22,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -595,7 +595,7 @@ export class Claim {
   }
 
   hasClaimantNotAgreedToMediation(): boolean {
-    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === YesNoUpperCase.NO;
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
