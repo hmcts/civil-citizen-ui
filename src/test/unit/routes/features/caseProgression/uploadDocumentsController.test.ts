@@ -1,6 +1,6 @@
 import request from 'supertest';
 import {
-  mockCivilClaim,
+  mockCivilClaim, mockCivilClaimDocumentUploaded,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
@@ -19,6 +19,10 @@ import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getNextYearValue} from '../../../../utils/dateUtils';
 import express from 'express';
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -37,7 +41,13 @@ describe('Upload document- upload document controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    getDisclosureContentMock.mockReturnValue([]);
+    getDisclosureContentMock.mockImplementation((claim: Claim, form: GenericForm<UploadDocumentsUserForm>) => {
+      if(form)
+      {
+        return [{type: ClaimSummaryType.INPUT_ARRAY}];
+      }
+      return [];
+    });
     getWitnessContentMock.mockReturnValue([]);
     getExpertContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
@@ -45,9 +55,21 @@ describe('Upload document- upload document controller', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
+
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).not.toContain('Disclosure');
+    });
+  });
+
+  it('should render page successfully if cookie has correct values', async () => {
+    app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).toContain('Disclosure');
     });
   });
 
