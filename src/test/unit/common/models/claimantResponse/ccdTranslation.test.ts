@@ -211,7 +211,7 @@ describe('translate draft claim to ccd version', () => {
     claim.claimantResponse = {
       ccjRequest: {
         ccjPaymentOption: {
-         type: PaymentOptionType.INSTALMENTS,
+          type: PaymentOptionType.INSTALMENTS,
         },
         repaymentPlanInstalments: {
           amount: 100,
