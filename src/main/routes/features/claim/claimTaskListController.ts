@@ -19,7 +19,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
       const caseData: Claim = await getCaseDataFromStore(userId);
 
       if(caseData == undefined) {
-        saveDraftClaim(userId, caseData);
+        saveDraftClaim(userId, new Claim());
       }
 
       const taskLists = getTaskLists(caseData, userId, lang);
