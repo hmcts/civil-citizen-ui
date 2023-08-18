@@ -167,5 +167,5 @@ export {
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantIntention,
   mockResponseFullAdmitPayBySetDate,
-  mockCivilClaimDocumentUploaded
+  mockCivilClaimDocumentUploaded,
 };
