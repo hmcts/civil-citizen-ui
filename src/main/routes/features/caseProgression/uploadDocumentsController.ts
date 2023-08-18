@@ -24,6 +24,12 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
+  //TODO: This will need to distinguish between claimant and defendant once claimant is implemented.
+  if(!form && claim.caseProgression?.defendantDocuments)
+  {
+    form = new GenericForm(claim.caseProgression?.defendantDocuments);
+  }
+
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claim, form);
@@ -46,6 +52,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+
     await renderView(res, claimId, null);
   } catch (error) {
     next(error);
