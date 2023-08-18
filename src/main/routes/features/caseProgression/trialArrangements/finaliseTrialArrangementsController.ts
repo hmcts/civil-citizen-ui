@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from '../../../urls';
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from 'routes/urls';
 import {getFinaliseTrialArrangementContents} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';

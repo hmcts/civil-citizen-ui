@@ -20,6 +20,7 @@ import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEve
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
+import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evidenceType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -46,19 +47,21 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
 const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
   const evidenceItem = claim.evidence?.evidenceItem;
+  const lng = getLng(lang);
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lng: getLng(lang)}), '', yourEvidenceHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lng}), '', yourEvidenceHref, changeLabel(lang)),
   );
   if (evidenceItem) {
     for (const item of evidenceItem) {
+      const itemType = t(convertToEvidenceTypeToTranslationKey(item.type), {lng});
       section.summaryList.rows.push(
-        summaryRow(item.type, item.description, yourEvidenceHref, changeLabel(lang)),
+        summaryRow(itemType, item.description, yourEvidenceHref, changeLabel(lang)),
       );
     }
   }
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng: getLng(lang)}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
   );
 };
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {

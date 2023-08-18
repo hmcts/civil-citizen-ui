@@ -205,8 +205,13 @@ import cancelYourUploadController from 'routes/features/caseProgression/cancelYo
 import finaliseTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController';
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
+import claimTaskListController from './features/claim/claimTaskListController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
+import documentViewController from 'routes/features/document/documentViewController';
+import trialArrangementsConfirmationController
+  from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 
 export default [
   homeController,
@@ -399,6 +404,10 @@ export default [
   finaliseTrialArrangementsController,
   uploadFileController,
   documentUploadCheckAnswerController,
+  claimTaskListController,
   isCaseReadyController,
   hasAnythingChangedController,
+  hearingDurationController,
+  documentViewController,
+  trialArrangementsConfirmationController,
 ];
