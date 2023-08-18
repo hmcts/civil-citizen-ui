@@ -638,11 +638,11 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
-  hasRespondent1HasNotAgreedMediation() {
+  hasRespondent1NotAgreedMediation() {
     return  this.mediation?.mediationDisagreement?.option;
   }
 
-  hasRespondent1HasAgreedMediation() {
+  hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
 }

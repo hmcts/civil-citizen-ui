@@ -239,7 +239,7 @@ function getPartAdmitAlreadyPaidNotAccepted(claim: Claim) {
 
 function getStatusFDClaimDispute(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
-  if(claim.hasRespondent1HasNotAgreedMediation()) {
+  if(claim.hasRespondent1NotAgreedMediation()) {
     return new LatestUpdateSectionBuilder()
       .addTitle(t('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE', {lng}))
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM`, {lng}))
@@ -248,7 +248,7 @@ function getStatusFDClaimDispute(claim: Claim, lng: string) {
       .build();
 
   }
-  if(claim.hasRespondent1HasAgreedMediation()) {
+  if(claim.hasRespondent1AgreedMediation()) {
     return new LatestUpdateSectionBuilder()
       .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
       .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG1`, {lng}))
