@@ -382,10 +382,6 @@ describe('on POST', () => {
       }],
     };
 
-    const expertReport = {'expertReport':[{'expertName':'expert Name', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'12','dateYear':'2020', 'fileUpload':'Evidence_12.pdf'}]};
-    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_13.pdf'}]};
-    const questionsForExperts = {'questionsForExperts':[{'expertName':'John Doe', 'otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_14.pdf'}]};
-    const answersForExperts = {'answersForExperts':[{'expertName':'expert Name 2', 'otherPartyName':'Mark Smith', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_15.pdf'}]};
     const expertReport = {
       'expertReport': [{
         'expertName': 'expert Name',
