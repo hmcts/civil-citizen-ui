@@ -60,6 +60,7 @@ export class CivilClaimResponse {
   case_data: CCDClaim;
   state: CaseState;
   last_modified: Date;
+  create_at: Date;
 
   constructor(
     id?: string,
@@ -215,7 +216,6 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
-  createAt?: Date;
 }
 
 export interface ClaimFeeData {

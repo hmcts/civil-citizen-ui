@@ -65,7 +65,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
 
   if (isUndefined(storedClaimResponse?.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
-    draftStoreClient.expire(claimId, addDaysToDate(claim.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
+    draftStoreClient.expire(claimId, addDaysToDate(storedClaimResponse.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
   }
 
   storedClaimResponse.case_data = claim;
@@ -75,8 +75,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
-  storedClaimResponse.case_data = {};
-  storedClaimResponse.case_data.createAt = new Date();
+  storedClaimResponse.create_at = new Date();
   return storedClaimResponse;
 };
 
