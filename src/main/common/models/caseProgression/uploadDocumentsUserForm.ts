@@ -14,6 +14,7 @@ import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
 import {CaseDocument} from 'models/document/caseDocument';
+import {Type} from "class-transformer";
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -132,6 +133,8 @@ export class TypeOfDocumentSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
 
+  @ValidateNested()
+  @Type(() => FileUpload)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
   constructor(day?: string, month?: string, year?: string) {
