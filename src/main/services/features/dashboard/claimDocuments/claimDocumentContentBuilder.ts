@@ -74,12 +74,11 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
 };
 
 const buildDownloadOrdersSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection [] => {
-  const sdoOrderDocuments = claim.sdoOrderDocument;
+  const finalOrderDocumentCollection = claim.caseProgression.finalOrderDocumentCollection;
   const claimDocumentsSections: ClaimSummarySection[] = [];
   claimDocumentsSections.push (getOrdersTitle(lang));
-  if(claim.hasSdoOrderDocument()) {
-    sdoOrderDocuments.id;
-    claim.systemGeneratedCaseDocuments.forEach(document =>  claimDocumentsSections.push(generateDocumentSection(document.value, claimId, lang)));
+  if (finalOrderDocumentCollection && finalOrderDocumentCollection.length > 0) {
+    finalOrderDocumentCollection.forEach(document =>  claimDocumentsSections.push(generateDocumentSection(document.value, claimId, lang)));
   }
   return claimDocumentsSections;
 };

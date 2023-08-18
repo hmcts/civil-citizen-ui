@@ -1,4 +1,5 @@
 import {
+  DocumentType,
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
@@ -13,11 +14,16 @@ import {
   UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
   createCCDClaimForEvidenceUpload, mockExpertDocument,
   mockTypeDocument, mockUUID, mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {
+  mockFinalOrderDocument1,
+  mockFinalOrderDocument2,
+} from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -42,14 +48,28 @@ const documentForType = {
   document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
 };
 
+const documentForFinalOrder = {
+  createdBy: 'Civil',
+  documentLink: {
+    category_id: 'finalOrders',
+    document_url: 'http://dm-store:8080/documents/20712d13-18c2-4779-b1f4-8b7d3e0312b9',
+    document_filename: 'Order_2023-08-17.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/20712d13-18c2-4779-b1f4-8b7d3e0312b9/binary'},
+  documentName: 'Order_2023-08-17.pdf',
+  documentType: DocumentType.JUDGE_FINAL_ORDER,
+  documentSize: 21069,
+  createdDatetime: new Date('2023-08-17T09:59:13.000Z'),
+};
+
 const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
-describe('toCUIEvidenceUpload', () => {
+describe('toCUICaseProgression', () => {
   it('should convert CCDClaim to CaseProgression', () => {
 
     const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
+    ccdClaim.finalOrderDocumentCollection = [mockFinalOrderDocument1];
     const expectedOutput = createCUIClaim();
 
     const actualOutput = toCUICaseProgression(ccdClaim);
@@ -97,10 +117,12 @@ describe('toCUIEvidenceUpload', () => {
       documentCostsRes: undefined,
       documentEvidenceForTrialRes: undefined,
       caseDocumentUploadDateRes: undefined,
+      finalOrderDocumentCollection: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    expectedOutput.finalOrderDocumentCollection = [undefined, undefined];
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -116,6 +138,7 @@ describe('toCUIEvidenceUpload', () => {
       documentWitnessStatementRes: undefined,
       documentWitnessSummaryRes: [{id: 'Defendant', value: mockWitnessDocument}],
       documentAuthoritiesRes: [{id: 'Defendant', value: mockTypeDocument}],
+      finalOrderDocumentCollection: [mockFinalOrderDocument1, mockFinalOrderDocument2],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
@@ -131,12 +154,16 @@ describe('toCUIEvidenceUpload', () => {
       undefined,
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
+    expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
+      (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
 });
 
 function createCUIClaim(): CaseProgression {
+  const finalOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
+  finalOrderDocumentCollection.push( new FinalOrderDocumentCollection('1177a9b6-8f66-4241-a00b-0618bfb40733', documentForFinalOrder));
   return {
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
@@ -144,6 +171,7 @@ function createCUIClaim(): CaseProgression {
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
+    finalOrderDocumentCollection: finalOrderDocumentCollection,
   } as CaseProgression;
 }
 

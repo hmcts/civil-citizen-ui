@@ -12,6 +12,9 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {
+  FinalOrderDocumentCollection,
+} from 'models/caseProgression/finalOrderDocumentCollectionType';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (ccdClaim) {
@@ -97,12 +100,26 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       uploadDefendantTrialDocuments = undefined;
     }
 
+    // Judge Final Orders
+    let finalOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
+    const finalOrderDocumentList = ccdClaim?.finalOrderDocumentCollection;
+    if(finalOrderDocumentList != null) {
+      for (const ccdElement of finalOrderDocumentList) {
+        finalOrderDocumentCollection.push(ccdElement);
+      }
+      if (finalOrderDocumentCollection.length == 0) {
+        finalOrderDocumentCollection = undefined;
+      }
+    }
+
     caseProgression.claimantUploadDocuments =
       new UploadDocuments(uploadApplicantDisclosureDocuments, uploadApplicantWitnessDocuments, uploadApplicantExpertDocuments, uploadApplicantTrialDocuments);
     caseProgression.defendantUploadDocuments =
       new UploadDocuments(uploadDefendantDisclosureDocuments, uploadDefendantWitnessDocuments, uploadDefendantExpertDocuments, uploadDefendantTrialDocuments);
     caseProgression.claimantLastUploadDate = ccdClaim?.caseDocumentUploadDate ? new Date(ccdClaim?.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim?.caseDocumentUploadDateRes ? new Date(ccdClaim?.caseDocumentUploadDateRes): undefined;
+
+    caseProgression.finalOrderDocumentCollection = finalOrderDocumentCollection;
 
     return caseProgression as CaseProgression;
   }
