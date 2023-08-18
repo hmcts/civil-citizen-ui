@@ -42,13 +42,19 @@ describe('Upload document- upload document controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     getDisclosureContentMock.mockImplementation((claim: Claim, form: GenericForm<UploadDocumentsUserForm>) => {
-      if(form)
+      if(form && claim.caseProgression?.defendantDocuments?.documentsForDisclosure)
       {
         return [{type: ClaimSummaryType.INPUT_ARRAY}];
       }
       return [];
     });
-    getWitnessContentMock.mockReturnValue([]);
+    getWitnessContentMock.mockImplementation((claim: Claim, form: GenericForm<UploadDocumentsUserForm>) => {
+      if(form && claim.caseProgression?.defendantDocuments?.witnessStatement)
+      {
+        return [{type: ClaimSummaryType.INPUT_ARRAY}];
+      }
+      return [];
+    });
     getExpertContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
   });
@@ -60,6 +66,7 @@ describe('Upload document- upload document controller', () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
       expect(res.text).not.toContain('Disclosure');
+      expect(res.text).not.toContain('Witness');
     });
   });
 
@@ -70,6 +77,7 @@ describe('Upload document- upload document controller', () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
       expect(res.text).toContain('Disclosure');
+      expect(res.text).not.toContain('Witness');
     });
   });
 
