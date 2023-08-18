@@ -18,6 +18,8 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {CaseDocument} from 'models/document/caseDocument';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -43,6 +45,12 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if (!claim.caseProgression) {
       claim.caseProgression = new CaseProgression();
     }
+
+    if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
+    {
+      claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    }
+
     if (claim?.caseProgression) {
       if (parentPropertyName && claim.caseProgression[parentPropertyName]) {
         claim.caseProgression[parentPropertyName][caseProgressionPropertyName] = value;
@@ -156,19 +164,24 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
+const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.witnessName = request['witnessName'].trim();
-  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
@@ -180,14 +193,18 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  //TODO we should get the file from dm-store
   formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };

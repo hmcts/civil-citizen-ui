@@ -89,14 +89,15 @@ describe('on POST', () => {
       });
   });
 
-  it('should display disclosureList validation error when invalid', async () => {
-    const disclosureList = {'disclosureList':[{'fileUpload':''}]};
+  it('File only section', async () => {
+    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+    const disclosureList = {'disclosureList': [{'file_upload': '', 'caseDocument': `${caseDoc}`}]};
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
       .send(disclosureList)
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
       });
   });
 
@@ -291,6 +292,36 @@ describe('on POST', () => {
       });
   });
 
+  it('should display all questions for other party\'s expert validation errors', async () => {
+    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
+        expect(res.text).toContain(TestMessages.VALID_SELECT_OTHER_PARTY);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS);
+        expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
+      });
+  });
+
+  it('should display all answers to questions asked by other party validation errors', async () => {
+    const model = {'answersForExperts':[{'expertName':'', 'otherPartyName':'', 'otherPartyQuestionsDocumentName':'', 'fileUpload':''}]};
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
+        expect(res.text).toContain(TestMessages.VALID_SELECT_OTHER_PARTY);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY);
+        expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
+      });
+  });
+
   it('should redirect to the next page when inputs are validated', async () => {
 
     const documentForDisclosureModel = {
@@ -351,6 +382,10 @@ describe('on POST', () => {
       }],
     };
 
+    const expertReport = {'expertReport':[{'expertName':'expert Name', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'12','dateYear':'2020', 'fileUpload':'Evidence_12.pdf'}]};
+    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_13.pdf'}]};
+    const questionsForExperts = {'questionsForExperts':[{'expertName':'John Doe', 'otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_14.pdf'}]};
+    const answersForExperts = {'answersForExperts':[{'expertName':'expert Name 2', 'otherPartyName':'Mark Smith', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_15.pdf'}]};
     const expertReport = {
       'expertReport': [{
         'expertName': 'expert Name',
