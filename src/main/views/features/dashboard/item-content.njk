@@ -226,7 +226,7 @@
      <div class="govuk-inset-text">
        {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']' if javascriptEnabled else 'file',
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
