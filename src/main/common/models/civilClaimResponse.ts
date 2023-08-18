@@ -60,7 +60,7 @@ export class CivilClaimResponse {
   case_data: CCDClaim;
   state: CaseState;
   last_modified: Date;
-  create_at: Date;
+  createAt: Date;
 
   constructor(
     id?: string,
