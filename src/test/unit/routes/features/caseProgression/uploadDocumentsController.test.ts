@@ -101,7 +101,7 @@ describe('Upload a single file', () => {
       .field('documentsForDisclosure[0][date-month]', '')
       .field('documentsForDisclosure[0][date-year]', '')
       .field('documentsForDisclosure[0][fileUpload]', '')
-      .attach('documentsForDisclosure[0][fileUpload]', file.buffer, {
+      .attach('file', file.buffer, {
         filename: file.originalname,
         contentType: file.mimetype,
       });
