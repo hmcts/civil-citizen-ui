@@ -75,7 +75,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
-  storedClaimResponse.create_at = new Date();
+  storedClaimResponse.createAt = new Date();
   return storedClaimResponse;
 };
 

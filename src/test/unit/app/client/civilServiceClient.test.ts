@@ -85,6 +85,7 @@ describe('Civil Service Client', () => {
         case_data: ccdClaim,
         last_modified: new Date(),
         state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
+        createAt: new Date(),
       };
 
       const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
