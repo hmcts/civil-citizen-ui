@@ -124,6 +124,17 @@
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
+    "HEARING_DURATION": {
+      "MINUTES_30": "30 minutes",
+      "MINUTES_60": "1 hour",
+      "MINUTES_90": "1 and a half hours",
+      "MINUTES_120": "2 hours",
+      "MINUTES_150": "2 and a half hours",
+      "MINUTES_180": "3 hours",
+      "MINUTES_240": "4 hours",
+      "DAY_1": "1 day",
+      "DAY_2": "2 days"
+    },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps bellow",
       "EXAMPLE": {
@@ -294,7 +305,7 @@
       "TITLE": "Paratoi eich ymateb"
     },
     "RESOLVING_THE_CLAIM": {
-      "TITLE": "Resolving the claim"
+      "TITLE": "Datrys yr hawliad"
     },
     "RESPOND_TO_CLAIM": {
       "CHOOSE_A_RESPONSE": "Dewiswch ymateb",
@@ -576,7 +587,7 @@
       "ACCEPT_OR_TRANSFER": "Gallant dderbyn y swm rydych wedi'i dalu a setlo'r hawliad, neu ofyn i'r llys drosglwyddo'r hawliad i ganolfan wrandawiadau Llys Sirol.",
       "ADMIT_ALL": "Cyfaddef i'r hawliad cyfan",
       "ADMIT_ALL_CANT_PAY": "Os ydych yn cyfaddef i'r hawliad cyfan ond na allwch dalu ar unwaith, gallwch gynnig talu'r hawlydd mewn rhandaliadau.",
-      "ADMIT_ALL_DEADLINE": "Mae gennych tan {{ deadline }} i gyfaddef i'r hawliad..",
+      "ADMIT_ALL_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i gyfaddef i'r hawliad.",
       "ADMIT_PART": "Cyfaddef i ran o'r hawliad",
       "AGAINST_INDIVIDUAL": "Os yw'r hawliad yn erbyn chi fel unigolyn, y ganolfan wrandawiadau fydd yr un agosaf at eich cartref neu'ch busnes.",
       "CANT_PAY_IMMEDIATELY": "Os na allwch dalu ar unwaith",
@@ -735,7 +746,9 @@
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
+      "1_DAY_REMAINING": "1 diwrnod yn weddill",
       "ABOUT_CLAIM": "Am hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Dogfennau hawlio",
       "CLAIMANT": "Claimant ",
@@ -743,12 +756,15 @@
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "CLAIMANT_RESPONSE": "Ymateb y Hawlydd",
       "DATE_DOCUMENT_UPLOADED": "Date uploaded ",
+      "DAYS_REMAINING": " dyddiau sy`n weddill",
+      "DEADLINE_AT": "{{responseDeadline}} ar 4pm",
       "DEFENDANT": "Defendant ",
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Dogfennau",
       "DOCUMENT_CREATED": "Creu:",
       "DOWNLOAD_CLAIM": "Lawrlwytho'r hawliad",
+      "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
       "DOWNLOAD_JUDGMENT_ORDER": "Lawrlwytho'r gorchymyn dyfarniad",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
@@ -757,7 +773,9 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
+      "NOTICES_AND_ORDERS": "Notices and orders",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "UPDATES": "Updates",
       "VIEW_CLAIM": "Gweld yr hawliad",
       "WITNESS_EVIDENCE": "witness evidence",
       "RESPONSE_DEADLINE": "Dyddiad cau ar gyfer ymateb:",
@@ -1452,7 +1470,7 @@
       "PAGE_TITLE": "Manylion yr hawliad",
       "PERSONAL_INFORMATION": "gwybodaeth bersonol",
       "PERSONAL_INFORMATION_USAGE": "Sut rydym yn defnyddio ac yn storio eich gwybodaeth bersonol",
-      "REASON_FOR_CLAIM": "Reason for claim:",
+      "REASON_FOR_CLAIM": "Rheswm dros yr hawliad:",
       "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{claimant}} has provided, for example your name and address.",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
@@ -1554,7 +1572,11 @@
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
-          "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad"
+          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
+          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_AFTER": ".",
+          "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad",
+          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -1893,10 +1915,10 @@
       "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
     "PIN": {
-      "CONTACT_US": "contact us",
-      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "CONTACT_US": "cysylltu â ni",
+      "CHECK_SECURITY_CODE": "Gwiriwch mai’r cod diogelwch yw'r un anfonom ni atoch chi. Gallwch",
       "FIND_PIN": "Gellir ei weld ar yr e-bost neu'r llythyr a anfonwyd gennym.",
-      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "FOR_A_NEW_SECURITY_CODE": "am god diogelwch newydd.",
       "SECURITY_CODE": "Cod diogelwch",
       "TITLE": "Nodwch y cod diogelwch"
     },
@@ -2248,6 +2270,7 @@
       },
       "ASK_SIGN_SETTLEMENT": "gofyn i chi arwyddo cytundeb setlo i ffurfioli'r cynllun ad-dalu",
       "BECAUSE_YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai:",
+      "CLAIM_NOT_BE_ISSUED_UNTIL_PAID": "Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
@@ -2261,6 +2284,7 @@
       "IF_NEED_PAYMENT_DETAILS": " os oes angen ei fanylion talu arnoch.",
       "IF_CLAIMANT_REJECTS_RESPONSE": "Os yw {{ claimantName }} yn gwrthod eich ymateb",
       "PAGE_TITLE": "Cyflwyno cadarnhad",
+      "PAY_CLAIM_FEE": "Pay claim fee",
       "RECEIPT_FOR_PAYMENTS": "Sicrhewch eich bod yn cael derbynneb ar gyfer pob taliad",
       "REQUEST_CCJ_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn",
       "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }}",
@@ -2281,7 +2305,9 @@
     "TASK_LIST": {
       "PAGE_TITLE": "Eich rhestr dasgau",
       "HEADER": "Ymateb i hawliad ariannol",
-      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno."
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
+      "COMPLETE": "Cyflawn",
+      "INCOMPLETE": "Anghyflawn"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
@@ -2320,6 +2346,16 @@
       "PAGE_TITLE": "Claim total interest",
       "TITLE": "What is the total interest for your claim?",
       "TOTAL_AMOUNT": "Total interest amount"
+    },
+    "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
+      "TITLE": "Finalise your trial arrangements",
+      "TRIAL_DURATION_TITLE": "Trial duration",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
+      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Is there anything else the court needs to know (optional)?</span>",
+      "OTHER_INFORMATION_INPUT_HINT": "For example, a witness needs to leave the court by 3pm due to caring responsibilities."
     },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
@@ -2453,18 +2489,18 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
+      "PAGE_TITLE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "Is the case ready for trial or hearing?",
+      "IS_CASE_READY": "Is the case ready for trial?",
       "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
       "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
-      "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial or hearing.",
-      "THE_TRIAL_OR": "The trial or hearing will go ahead as planned on the specified date unless a judge makes an order changing the date of the hearing. If you want the date of the hearing to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
+      "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
+      "THE_TRIAL_OR": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial or hearing arrangements",
+      "FINALISE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
@@ -2548,32 +2584,60 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalize your trial or hearing arrangements",
+      "TITLE": "Finalize your trial arrangements",
       "CASE_REFERENCE": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
-      "YOU_SHOULD_FINALISE": "You should finalise your trial or hearing arrangements to ensure the court has the necessary information for the trial or hearing to proceed in a suitable way.",
-      "IS_THE_CASE_READY_FOR_TRIAL": "Is the case ready for trial or hearing?",
-      "WE_ARE_ASKING_YOU": "We are asking you to confirm the case is ready for the trial or hearing. This means you have taken all the action required of you in the ",
+      "YOU_SHOULD_FINALISE": "You should finalise your trial arrangements to ensure the court has the necessary information for the trial to proceed in a suitable way.",
+      "IS_THE_CASE_READY_FOR_TRIAL": "Is the case ready for trial?",
+      "WE_ARE_ASKING_YOU": "We are asking you to confirm the case is ready for the trial. This means you have taken all the action required of you in the ",
       "DIRECTIONS_ORDER": "directions order",
       "YOU_HAVE_RECEIVED": "that you have received.",
-      "IF_YOUR_CASE_NOT_READY": "If your case is not ready and you do not think it will be ready by the deadline for finalising your trial arrangements, you may wish to postpone or adjourn the hearing. To do this, you will need to make an application to the court.",
+      "IF_YOUR_CASE_NOT_READY": "If your case is not ready and you do not think it will be ready by the deadline for finalising your trial arrangements, you may wish to postpone or adjourn the trial. To do this, you will need to make an application to the court.",
       "IF_YOU_NEED_TO_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first.",
       "YOU_SHOULD_ONLY_MAKE_AN_APPLICATION": "You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.",
-      "IF_YOU_MAKE_APPLICATION": "If you make an application, please note the hearing will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the hearing.",
-      "HEARING_ADJUSTMENTS_AND_DURATION": "Hearing adjustments and duration",
+      "IF_YOU_MAKE_APPLICATION": "If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.",
+      "HEARING_ADJUSTMENTS_AND_DURATION": "Trial adjustments and duration",
       "YOU_WILL_BE_ASKED": "You will be asked to specify if there are any changes to the support or adjustments you previously specified in your ",
       "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire.",
       "YOU_SHOULD_REVIEW": "You should review this to identify if your circumstances have changed.",
-      "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial or hearing. If you feel less time is needed, you can specify why in the 'other information' box.",
+      "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial. If you feel less time is needed, you can specify why in the 'other information' box.",
       "IF_YOU_FEEL_THAT": "If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.",
       "YOU_SHOULD_ONLY_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first. You should only make an application once this has been completed.",
       "OTHER_INFORMATION_TITLE": "Other information",
-      "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the hearing, for example if any party is only available at a specific time.",
-      "START_NOW": "Start now"
+      "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
+      "START_NOW": "Start now",
+      "CONFIRMATION": {
+        "PAGE_TITLE": "Trial Arrangements Confirmation",
+        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
+        "RETURN_TO_CASE_DETAILS": "Return to case details",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.",
+        "NOTICES_AND_ORDERS": "Notices and orders",
+        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under",
+        "IN_THE_CASE_DETAILS": "in the case details.",
+        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.",
+        "MAKE_AN_APPLICATION": "make an application",
+        "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to",
+        "TO_THE_COURT_AND_PAY": "to the court and pay the appropriate fee.",
+        "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "You have said this case is ready for trial",
+        "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "If there are any changes to the arrangements between now and the trial date you will need to",
+        "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
+        "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
+      }
     }
+  },
+  "FOOTER":{
+    "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
+    "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
+    "CONTACT_US_URL": "Cysylltu â ni",
+    "COOKIES_URL": "Cwcis",
+    "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
+    "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
+    "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
@@ -2908,16 +2972,16 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
-    "VALID_ENTER_EXPERT_NAME": "You must enter name of expert",
+    "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",
     "VALID_ENTER_EXPERT_NAMES": "You must enter the name of at least one expert",
     "VALID_ENTER_EXPERTISE": "You must enter field of expertise",
-    "VALID_ENTER_OTHER_PARTY": "You must enter other party's name",
-    "VALID_ENTER_DOCUMENT_QUESTIONS": "You must enter name of document you have questions about",
-    "VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY": "You must enter name of document with other party's questions",
+    "VALID_SELECT_OTHER_PARTY": "Select the name of the other party",
+    "VALID_ENTER_DOCUMENT_QUESTIONS": "Enter name of the document you have questions about",
+    "VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY": "Enter name of the document with other party’s questions",
     "VALID_CHOOSE_THE_FILE": "Choose the file you want to upload",
     "VALID_MIME_TYPE_FILE": "Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Document must be less than 100MB",
-    "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
+    "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
     "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan",
@@ -2929,6 +2993,6 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter support you, experts or witnesses need."
+    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
   }
 }
