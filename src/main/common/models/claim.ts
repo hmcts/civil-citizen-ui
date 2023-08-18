@@ -644,7 +644,7 @@ export class Claim {
   }
 
   isClaimantRejectedPaymentPlan(){
-    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === 'no';
+    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 }
 
