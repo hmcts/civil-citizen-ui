@@ -31,6 +31,7 @@ const mockCivilClaim = {
 const mockCivilClaimUndefined = {
   set: jest.fn(() => Promise.resolve(undefined)),
   get: jest.fn(() => Promise.resolve(undefined)),
+  expire: jest.fn(() => Promise.resolve({})),
 };
 const mockNoStatementOfMeans = {
   set: jest.fn(() => Promise.resolve({})),
