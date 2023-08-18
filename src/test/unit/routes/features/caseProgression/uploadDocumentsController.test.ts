@@ -71,7 +71,7 @@ describe('Upload a single file', () => {
 
   it('should upload a single file', async () => {
     //given
-    // getDisclosureContentMock.mockImplementation(getDisclosureContent);
+    getDisclosureContentMock.mockImplementation(getDisclosureContent);
 
     mockGetClaim.mockImplementation(() => {
       return Object.assign(new Claim(), disclosureSections.case_data);
