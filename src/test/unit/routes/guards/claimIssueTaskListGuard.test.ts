@@ -26,11 +26,22 @@ describe('Claim Issue TaskList Guard', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-  it('should redirect if claim not exists and eligibility not completed', async () => {
-    //Given
 
+  it('should redirect if claim has no id and eligibility not completed', async () => {
+    //Given
     const mockClaim = new Claim();
     mockGetCaseData.mockImplementation(async () => mockClaim);
+    app.request.cookies = {};
+    //When
+    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
+    //Then
+    expect(res.status).toBe(302);
+    expect(res.header.location).toBe(BASE_ELIGIBILITY_URL);
+  });
+
+  it('should redirect if claim not exists and eligibility not completed', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => undefined);
     app.request.cookies = {};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -50,7 +61,8 @@ describe('Claim Issue TaskList Guard', () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-  it('should access to claim/task-list  page when eligibility questions completed', async () => {
+
+  it('should access to claim/task-list page when eligibility questions completed', async () => {
     //Given
     const mockClaim = new Claim();
     mockGetCaseData.mockImplementation(async () => mockClaim);
@@ -61,6 +73,7 @@ describe('Claim Issue TaskList Guard', () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
+
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
     const mockClaim = new Claim();
