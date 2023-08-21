@@ -4,7 +4,7 @@ import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/d
 import {
   buildDownloadHearingNoticeSection,
   buildSystemGeneratedDocumentSections,
-  buildDownloadSealedClaimSectionTitle,
+  buildDownloadSealedClaimSectionTitle, buildDownloadFinalOrderSection,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
@@ -15,6 +15,7 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {DocumentType} from 'models/document/documentType';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -116,6 +117,82 @@ describe('getDocumentsContent', () => {
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
     expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
+  });
+
+  it('should return an array with one ClaimSummaryContent object with one content section containing the Final Orders section', async () => {
+    // Given
+    const claimId = '123';
+    const lang = 'en';
+    isCaseProgressionV1EnableMock.mockResolvedValue(true);
+
+    const claim = new Claim();
+    claim.caseProgression = new CaseProgression();
+    claim.caseProgression.finalOrderDocumentCollection = [{
+      id: '1234',
+      value: {
+        createdBy: 'some one',
+        documentLink: {
+          document_url: 'url',
+          document_filename: 'filename',
+          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+        },
+        documentName: 'some name',
+        documentType: DocumentType.JUDGE_FINAL_ORDER,
+        documentSize: 123,
+        createdDatetime: new Date(),
+      },
+    }];
+
+    // When
+    const result = await getDocumentsContent(claim, claimId, lang);
+
+    // Then
+    expect(result).toHaveLength(1);
+    expect(result[0].contentSections).toHaveLength(4);
+
+    const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claim, claimId, lang)[0];
+    const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claim, claimId, lang)[1];
+
+    expect(result[0].contentSections[0]).toEqual(downloadFinalOrderSectionTitle);
+    expect(result[0].contentSections[1]).toEqual(downloadFinalOrderSectionLink);
+  });
+
+  it('should not return an array with the Final Orders section if CaseProgressionV1 disabled', async () => {
+  // Given
+    const claimId = '123';
+    const lang = 'en';
+    isCaseProgressionV1EnableMock.mockResolvedValue(false);
+
+    const claim = new Claim();
+    claim.caseProgression = new CaseProgression();
+    claim.caseProgression.finalOrderDocumentCollection = [{
+      id: '1234',
+      value: {
+        createdBy: 'some one',
+        documentLink: {
+          document_url: 'url',
+          document_filename: 'filename',
+          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+        },
+        documentName: 'some name',
+        documentType: DocumentType.JUDGE_FINAL_ORDER,
+        documentSize: 123,
+        createdDatetime: new Date(),
+      },
+    }];
+
+    // When
+    const result = await getDocumentsContent(claim, claimId, lang);
+
+    // Then
+    expect(result).toHaveLength(1);
+    expect(result[0].contentSections).toHaveLength(2);
+
+    const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
+
+    expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
+    expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
   });
 });
 

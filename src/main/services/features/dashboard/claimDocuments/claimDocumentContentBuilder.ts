@@ -73,12 +73,13 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
   }
 };
 
-const buildDownloadOrdersSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection [] => {
-  const finalOrderDocumentCollection = claim.caseProgression.finalOrderDocumentCollection;
+const buildDownloadFinalOrderSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection [] => {
+  const finalOrderDocumentCollection = claim.caseProgression?.finalOrderDocumentCollection;
   const claimDocumentsSections: ClaimSummarySection[] = [];
-  claimDocumentsSections.push (getOrdersTitle(lang));
   if (finalOrderDocumentCollection && finalOrderDocumentCollection.length > 0) {
-    finalOrderDocumentCollection.forEach(document =>  claimDocumentsSections.push(generateDocumentSection(document.value, claimId, lang)));
+    claimDocumentsSections.push (getOrdersTitle(lang));
+    finalOrderDocumentCollection.forEach(document =>
+      claimDocumentsSections.push(generateDocumentSection(document.value, claimId, lang)));
   }
   return claimDocumentsSections;
 };
@@ -97,5 +98,5 @@ export {
   buildDownloadSealedResponseSection,
   buildDownloadHearingNoticeSection,
   buildDownloadSealedClaimSectionTitle,
-  buildDownloadOrdersSection,
+  buildDownloadFinalOrderSection,
 };

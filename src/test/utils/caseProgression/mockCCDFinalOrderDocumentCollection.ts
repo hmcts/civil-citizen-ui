@@ -1,4 +1,5 @@
 import {DocumentType} from 'models/document/documentType';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 
 export const mockUUID = '3445';
 
@@ -34,4 +35,8 @@ export const mockFinalOrderDocument2 = {
     documentType: DocumentType.JUDGE_FINAL_ORDER,
     createdDatetime: new Date('2023-08-18T10:53:23'),
   },
+};
+
+export const getFinalOrderDocumentCollectionMock = (): FinalOrderDocumentCollection => {
+  return new FinalOrderDocumentCollection(mockFinalOrderDocument1.id, mockFinalOrderDocument1.value);
 };
