@@ -17,9 +17,9 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
     partialPayment: toCCDYesNo(claim.claimantResponse?.ccjRequest?.paidAmount?.option),
     partialPaymentAmount: claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? claim.claimantResponse?.ccjRequest?.paidAmount?.amount.toString() : undefined,
     paymentTypeSelection: toCCDDJPaymentOption( claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type),
-    paymentSetDate: claim.claimantResponse?.ccjRequest?.ccjPaymentOption.type === PaymentOptionType.BY_SET_DATE ? claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date : undefined,
-    repaymentFrequency: claim.claimantResponse?.ccjRequest?.ccjPaymentOption.type === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency) : undefined,
+    paymentSetDate: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.BY_SET_DATE ? claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date : undefined,
+    repaymentFrequency: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency) : undefined,
     repaymentDue:claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? (claim.claimantResponse?.ccjRequest?.paidAmount?.totalAmount - claim.claimantResponse?.ccjRequest?.paidAmount?.amount).toString() : undefined,
-    repaymentSuggestion: claim.claimantResponse?.ccjRequest?.ccjPaymentOption.type === PaymentOptionType.INSTALMENTS ? claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount.toString() : undefined,
+    repaymentSuggestion: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount.toString() : undefined,
   };
 };
