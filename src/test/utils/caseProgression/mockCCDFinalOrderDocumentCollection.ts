@@ -1,5 +1,6 @@
 import {DocumentType} from 'models/document/documentType';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {FIXED_DATE} from '../dateUtils';
 
 export const mockUUID = '3445';
 
@@ -16,7 +17,7 @@ export const mockFinalOrderDocument1 = {
     documentName: 'Order_2023-08-17.pdf',
     documentSize: 21069,
     documentType: DocumentType.JUDGE_FINAL_ORDER,
-    createdDatetime: new Date('2023-08-17T10:59:13'),
+    createdDatetime: FIXED_DATE,
   },
 };
 
@@ -33,7 +34,7 @@ export const mockFinalOrderDocument2 = {
     documentName: 'Order_2023-08-18.pdf',
     documentSize: 37901,
     documentType: DocumentType.JUDGE_FINAL_ORDER,
-    createdDatetime: new Date('2023-08-18T10:53:23'),
+    createdDatetime: FIXED_DATE,
   },
 };
 

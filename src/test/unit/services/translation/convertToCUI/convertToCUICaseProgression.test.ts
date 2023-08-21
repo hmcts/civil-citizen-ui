@@ -24,6 +24,7 @@ import {
   mockFinalOrderDocument1,
   mockFinalOrderDocument2,
 } from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -60,7 +61,7 @@ const documentForFinalOrder = {
     documentName: 'Order_2023-08-17.pdf',
     documentType: DocumentType.JUDGE_FINAL_ORDER,
     documentSize: 21069,
-    createdDatetime: new Date('2023-08-17T09:59:13.000Z'),
+    createdDatetime: FIXED_DATE,
   },
 };
 
@@ -77,6 +78,7 @@ describe('toCUICaseProgression', () => {
 
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
+
   });
 
   it('should return undefined when CCDClaim is undefined', () => {

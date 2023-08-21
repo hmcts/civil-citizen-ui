@@ -16,6 +16,7 @@ import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {DocumentType} from 'models/document/documentType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -93,7 +94,7 @@ claimContainingFinalOrder.caseProgression.finalOrderDocumentCollection = [{
     documentName: 'some name',
     documentType: DocumentType.JUDGE_FINAL_ORDER,
     documentSize: 123,
-    createdDatetime: new Date(),
+    createdDatetime: FIXED_DATE,
   },
 }];
 
