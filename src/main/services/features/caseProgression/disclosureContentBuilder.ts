@@ -23,7 +23,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', documentsForDisclosure, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForDisclosure))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDisclosure, 'dateInputFields', 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index )
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForDisclosure))
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForDisclosure), section?.caseDocument)
     .addRemoveSectionButton(form?.model.documentsForDisclosure?.length > 1 || false)
     .build();
 };
@@ -32,6 +32,7 @@ export const buildDisclosureListSection = (section: FileOnlySection = null, inde
   const errorFieldNamePrefix = `${disclosureList}[${disclosureList}][${index}]`;
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST', {}, 'govuk-!-width-three-quarters')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList))    .addRemoveSectionButton(form?.model.disclosureList?.length > 1 || false)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList), section?.caseDocument)
+    .addRemoveSectionButton(form?.model.disclosureList?.length > 1 || false)
     .build();
 };

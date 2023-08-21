@@ -130,8 +130,10 @@ export class TypeOfDocumentSection {
     typeOfDocument: string;
   @ValidateNested()
     dateInputFields: DateInputFields;
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
@@ -144,8 +146,10 @@ export class WitnessSection {
     witnessName: string;
   @ValidateNested()
     dateInputFields: DateInputFields;
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
@@ -178,8 +182,11 @@ export class ExpertSection {
     otherPartyQuestionsDocumentName: string;
   @ValidateNested()
     dateInputFields: DateInputFields;
+
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
