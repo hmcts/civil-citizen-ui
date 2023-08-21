@@ -21,6 +21,8 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
 
+const civilServiceUrl = config.get<string>('services.civilService.url');
+
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -60,7 +62,7 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
-      nock('http://localhost:4000')
+      nock(civilServiceUrl)
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimUndefined;

@@ -21,6 +21,8 @@ import {getRedisStoreForSession} from 'modules/utilityService';
 import session from 'express-session';
 import {STATEMENT_OF_MEANS_URL} from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
+import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
+import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -34,6 +36,8 @@ app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -69,8 +73,9 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
 app.use((_req, res, next) => {
   res.setHeader(
