@@ -21,11 +21,13 @@ export class Bundle {
 
       return `${createdOnDateFormatted}, ${createdOnTimeFormatted}`;
     }
+    return undefined;
   }
 
   get getFormattedHearingDate(): string {
     if(this.bundleHearingDate){
       return formatStringDateDMY(this.bundleHearingDate);
     }
+    return undefined;
   }
 }
