@@ -79,6 +79,23 @@ function getDocumentSectionName(isClaimantString: string, documentTypeText: stri
     return isClaimantString + t(documentTypeText);
   }
 }
+const claimContainingFinalOrder = new Claim();
+claimContainingFinalOrder.caseProgression = new CaseProgression();
+claimContainingFinalOrder.caseProgression.finalOrderDocumentCollection = [{
+  id: '1234',
+  value: {
+    createdBy: 'some one',
+    documentLink: {
+      document_url: 'url',
+      document_filename: 'filename',
+      document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+    },
+    documentName: 'some name',
+    documentType: DocumentType.JUDGE_FINAL_ORDER,
+    documentSize: 123,
+    createdDatetime: new Date(),
+  },
+}];
 
 describe('getDocumentsContent', () => {
   it('should return an array with one ClaimSummaryContent object with one content section containing the download claim section', async () => {
@@ -126,33 +143,15 @@ describe('getDocumentsContent', () => {
     const lang = 'en';
     isCaseProgressionV1EnableMock.mockResolvedValue(true);
 
-    const claim = new Claim();
-    claim.caseProgression = new CaseProgression();
-    claim.caseProgression.finalOrderDocumentCollection = [{
-      id: '1234',
-      value: {
-        createdBy: 'some one',
-        documentLink: {
-          document_url: 'url',
-          document_filename: 'filename',
-          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
-        },
-        documentName: 'some name',
-        documentType: DocumentType.JUDGE_FINAL_ORDER,
-        documentSize: 123,
-        createdDatetime: new Date(),
-      },
-    }];
-
     // When
-    const result = await getDocumentsContent(claim, claimId, lang);
+    const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
 
     // Then
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(4);
 
-    const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claim, claimId, lang)[0];
-    const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claim, claimId, lang)[1];
+    const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[0];
+    const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[1];
 
     expect(result[0].contentSections[0]).toEqual(downloadFinalOrderSectionTitle);
     expect(result[0].contentSections[1]).toEqual(downloadFinalOrderSectionLink);
@@ -164,33 +163,15 @@ describe('getDocumentsContent', () => {
     const lang = 'en';
     isCaseProgressionV1EnableMock.mockResolvedValue(false);
 
-    const claim = new Claim();
-    claim.caseProgression = new CaseProgression();
-    claim.caseProgression.finalOrderDocumentCollection = [{
-      id: '1234',
-      value: {
-        createdBy: 'some one',
-        documentLink: {
-          document_url: 'url',
-          document_filename: 'filename',
-          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
-        },
-        documentName: 'some name',
-        documentType: DocumentType.JUDGE_FINAL_ORDER,
-        documentSize: 123,
-        createdDatetime: new Date(),
-      },
-    }];
-
     // When
-    const result = await getDocumentsContent(claim, claimId, lang);
+    const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
 
     // Then
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(2);
 
     const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
-    const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
