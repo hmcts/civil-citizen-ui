@@ -39,9 +39,7 @@ export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
   const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
 
-  if(isReleasedTwoEnabled &&
-    (civilClaimResponse == undefined
-      || civilClaimResponse.case_data == undefined)) {
+  if(isReleasedTwoEnabled && isUndefined(civilClaimResponse?.case_data)) {
     return undefined;
   }
 

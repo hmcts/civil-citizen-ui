@@ -18,7 +18,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const caseData: Claim = await getCaseDataFromStore(userId);
 
-      if(caseData == undefined) {
+      if(caseData === undefined || caseData.id === undefined) {
         saveDraftClaim(userId, new Claim());
       }
 
