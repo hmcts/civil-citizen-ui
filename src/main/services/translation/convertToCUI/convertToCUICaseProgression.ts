@@ -107,9 +107,9 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       for (const ccdElement of finalOrderDocumentList) {
         finalOrderDocumentCollection.push(ccdElement);
       }
-      if (finalOrderDocumentCollection.length == 0) {
-        finalOrderDocumentCollection = undefined;
-      }
+    }
+    if (finalOrderDocumentCollection.length == 0) {
+      finalOrderDocumentCollection = undefined;
     }
 
     caseProgression.claimantUploadDocuments =
