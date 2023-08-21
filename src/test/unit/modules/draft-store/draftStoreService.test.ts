@@ -128,7 +128,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyDel).toBeCalled();
   });
 
-  it('should expire date be in 180 days', async () => {
+  it('should should create new claim with 180 days expire', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
@@ -140,5 +140,33 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(claimId, claim);
     //Then
     expect(spyTTL).toBeCalled();
+  });
+
+  it('should not create new claim', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
+    //When
+    const claimId = '1645882162449409';
+    const claim: Claim = new Claim();
+    claim.createAt = new Date('2023-07-12T12:23:34.123');
+    await saveDraftClaim(claimId, claim);
+    //Then
+    expect(spyTTL).toHaveBeenCalledTimes(0);
+  });
+
+  it('should return undefined', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(undefined);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
+    //When
+    const claimId = '1645882162449409';
+    const claim: Claim = new Claim();
+    claim.createAt = new Date('2023-07-12T12:23:34.123');
+    await saveDraftClaim(claimId, claim);
+    //Then
+    expect(spyTTL).toHaveBeenCalledTimes(0);
   });
 });
