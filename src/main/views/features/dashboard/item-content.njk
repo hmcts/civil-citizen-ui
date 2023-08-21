@@ -230,7 +230,7 @@
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
-             html: '<strong>'+t(content.data.text)+'</strong><p class="documentName">'+content.data.documentName+'</p><hr class="govuk-section-break--s govuk-section-break--visible">'
+             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
