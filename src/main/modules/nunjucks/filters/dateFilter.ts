@@ -1,3 +1,4 @@
+import { DateFormatter } from 'common/utils/dateFormatter';
 import {DateTime} from 'luxon';
 
 /* *
@@ -59,9 +60,14 @@ export function addDaysFilter(value: string, num: number): DateTime {
   return date.plus({days: num});
 }
 
-export function addDaysFilterTranslated(value: string, num: number, t: (key:string) => string): string {
+export function addDaysFilterTranslated(value: string, num: number, t: (key: string) => string, format?: string): string {
   const newDate = addDaysFilter(value, num);
   const month = t('COMMON.MONTH_NAMES.' + newDate.monthLong.toUpperCase());
+  if (format === 'GB') {
+    return DateFormatter.setDateFormat(newDate.toJSDate(), 'en-GB', {
+      day: 'numeric', month: '2-digit', year: 'numeric',
+    });
+  }
 
   return (newDate.day + ' ' + month + ' ' + newDate.year);
 }
