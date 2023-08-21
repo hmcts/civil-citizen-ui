@@ -6,9 +6,14 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from 'models/claim';
+import {isCUIReleaseTwoEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
+
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const mockIsCUIReleasedTwoEnabled = isCUIReleaseTwoEnabled as jest.Mock;
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -43,6 +48,10 @@ function createMockDraftStore(returnData: unknown) {
 }
 
 describe('Draft store service to save and retrieve claim', () => {
+  beforeAll(() => {
+    mockIsCUIReleasedTwoEnabled.mockImplementation(async () => false);
+  });
+
   it('should get claim data successfully when data exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
@@ -156,17 +165,15 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyTTL).toHaveBeenCalledTimes(0);
   });
 
-  it('should return undefined', async () => {
-    //Given
+  it('should return undefined when Release 2 when claim undefined', async () => {
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
-    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    mockIsCUIReleasedTwoEnabled.mockImplementation(async () => true);
     //When
-    const claimId = '1645882162449409';
-    const claim: Claim = new Claim();
-    claim.createAt = new Date('2023-07-12T12:23:34.123');
-    await saveDraftClaim(claimId, claim);
+    const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
-    expect(spyTTL).toHaveBeenCalledTimes(0);
+    expect(spyGet).toBeCalled();
+    expect(result).toEqual(undefined);
   });
 });
