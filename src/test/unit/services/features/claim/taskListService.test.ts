@@ -327,5 +327,25 @@ describe('Claim Task List service', () => {
       ];
       expect(taskList).toMatchObject(expectedTaskList);
     });
+
+    it('should return incomplete task list', () => {
+      //Given
+
+      //When
+      const taskList = getTaskLists(undefined, userId, lng);
+      //Then
+      expectedTaskConsiderOptions.tasks[0].status = TaskStatus.INCOMPLETE;
+      expectedTaskPrepareClaim.tasks[0].status = TaskStatus.INCOMPLETE;
+      expectedTaskPrepareClaim.tasks[1].status = TaskStatus.INCOMPLETE;
+      expectedTaskPrepareClaim.tasks[2].status = TaskStatus.INCOMPLETE;
+      expectedTaskPrepareClaim.tasks[3].status = TaskStatus.INCOMPLETE;
+      expectedTaskPrepareClaim.tasks[4].status = TaskStatus.INCOMPLETE;
+      const expectedTaskList: TaskList[] = [
+        expectedTaskConsiderOptions,
+        expectedTaskPrepareClaim,
+        expectedTaskSubmit,
+      ];
+      expect(taskList).toMatchObject(expectedTaskList);
+    });
   });
 });
