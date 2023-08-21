@@ -325,7 +325,10 @@
               "originalname": "original name",
               "mimetype": "application/pdf",
               "size": 1234
-            }
+            },
+            "dateDay": "01",
+            "dateMonth": "01",
+            "dateYear": "2023"
           }
         ]
       },

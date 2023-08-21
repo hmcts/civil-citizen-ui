@@ -8,12 +8,12 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
-import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
-import {getWitnessContent} from 'services/features/caseProgression/witnessService';
+import * as DisclosureService from 'services/features/caseProgression/disclosureService';
+import * as WitnessService from 'services/features/caseProgression/witnessService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 
-const getDisclosureContentMock = getDisclosureContent as jest.Mock;
-const getWitnessContentMock = getWitnessContent as jest.Mock;
+const getDisclosureContentMock = DisclosureService.getDisclosureContent as jest.Mock;
+const getWitnessContentMock = WitnessService.getWitnessContent as jest.Mock;
 const getExpertContentMock = getExpertContent as jest.Mock;
 import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
@@ -42,9 +42,10 @@ describe('Upload document- upload document controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     getDisclosureContentMock.mockImplementation((claim: Claim, form: GenericForm<UploadDocumentsUserForm>) => {
-      if(form && claim.caseProgression?.defendantDocuments?.documentsForDisclosure)
+      const documentsForDisclosure = claim.caseProgression?.defendantDocuments?.documentsForDisclosure;
+      if(form && documentsForDisclosure)
       {
-        return [{type: ClaimSummaryType.INPUT_ARRAY}];
+        return [[{type: ClaimSummaryType.INPUT_ARRAY}]];
       }
       return [];
     });
@@ -62,22 +63,52 @@ describe('Upload document- upload document controller', () => {
   it('should render page successfully if cookie has correct values', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
 
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+
+    const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
       expect(res.text).not.toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
+      expect(spyDisclosure).toHaveBeenCalledWith(claim, null);
     });
   });
 
   it('should render page successfully with uploaded document section if document available in redis', async () => {
     app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
 
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+
+    const disclosureUpload =
+        {'documentsForDisclosure':
+            [
+              {'dateDay': '01', 'dateMonth': '01', 'dateYear': '2023', 'fileUpload':
+                  {'fieldname': 'field name',
+                    'mimetype': 'application/pdf',
+                    'originalname': 'original name',
+                    'size': 1234,
+                  },
+              'typeOfDocument': 'type',
+              },
+            ],
+        } as UploadDocumentsUserForm;
+
+    const formWithDisclosure = new GenericForm(disclosureUpload);
+
+    const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
       expect(res.text).toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
+      expect(spyDisclosure).toHaveBeenCalledWith(claim, formWithDisclosure);
     });
   });
 
