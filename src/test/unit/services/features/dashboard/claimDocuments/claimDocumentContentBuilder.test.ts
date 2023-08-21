@@ -71,6 +71,6 @@ describe('Final Order Document Collection content builder', ()=>{
     expect(finalOrderSection[1]).not.toBeUndefined();
     expect(finalOrderSection[1].data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentId', '20712d13-18c2-4779-b1f4-8b7d3e0312b9'));
     expect(finalOrderSection[1].data?.text).toContain('21 KB');
-    expect(finalOrderSection[1].data?.subtitle).toContain('17 August 2023');
+    expect(finalOrderSection[1].data?.subtitle).toContain('26 April 2023');
   });
 });
