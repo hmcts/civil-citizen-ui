@@ -2923,6 +2923,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
     "VALID_DAY": "Rhowch ddydd dilys",
+    "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Rhowch swm dilys o Dreth Gyngor neu Dreth Gymunedol, uchafswm dau le degol",
       "ELECTRICITY": "Rhowch swm Trydan dilys, uchafswm dau le degol",
@@ -3000,6 +3001,6 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
   }
 }
