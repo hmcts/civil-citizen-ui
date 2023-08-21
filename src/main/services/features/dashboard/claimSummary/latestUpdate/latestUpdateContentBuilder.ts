@@ -237,6 +237,29 @@ function getPartAdmitAlreadyPaidNotAccepted(claim: Claim) {
     .build();
 }
 
+function getStatusFDClaimDispute(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  if(claim.hasRespondent1NotAgreedMediation()) {
+    return new LatestUpdateSectionBuilder()
+      .addTitle(t('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE', {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.NO_MEDIATION_REQUIRED`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS`, {lng}))
+      .build();
+
+  }
+  if(claim.hasRespondent1AgreedMediation()) {
+    return new LatestUpdateSectionBuilder()
+      .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG1`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG2`, {lng}), { claimantName: claimantFullName})
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG3`, {lng}))
+      .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
+      .build();
+  }
+
+}
+
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
@@ -248,6 +271,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_ALREADY_PAID]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_PAID_FULL]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_PAID_LESS]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_DISPUTE]: getStatusFDClaimDispute(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED]: getPartAdmitPaidPayImmediatelyAccepted(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),

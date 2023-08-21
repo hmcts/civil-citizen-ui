@@ -176,7 +176,7 @@ export class Claim {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
   }
@@ -645,6 +645,14 @@ export class Claim {
 
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
+  }
+
+  hasRespondent1NotAgreedMediation() {
+    return  this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasRespondent1AgreedMediation() {
+    return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
 }
 

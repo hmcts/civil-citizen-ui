@@ -1644,7 +1644,13 @@
       "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
       "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
       "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
-      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG1": "You have rejected the claim. You’ve suggested mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG2": "We’ll ask {{ claimantName }} if they agree to take part in mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG3": "If they say yes, we’ll arrange a date for mediation. If they say no we’ll send you a directions questionnaire this is a form you complete to tell us more about the claim.",
+      "YOU_HAVE_REJECTED_CLAIM": "You’ve rejected the claim.",
+      "NO_MEDIATION_REQUIRED": "You said you don’t want to use mediation to solve it. You might have to go to a hearing",
+      "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "We’ll contact you when the claimant responds"
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
