@@ -219,6 +219,10 @@
   }
 }
 
+.wordWrap {
+  word-break: break-word;
+}
+
 .tableWrap {
   word-break: break-word;
   table-layout: fixed;
