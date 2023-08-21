@@ -36,9 +36,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
     {% else %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}
   {% endif %}
 
@@ -230,7 +230,7 @@
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
-             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
+             html: '<strong>'+t(content.data.text)+'</strong><p class="documentName">'+content.data.documentName+'</p><hr class="govuk-section-break--s govuk-section-break--visible">'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
@@ -239,6 +239,20 @@
            }
         }) }}
     </div>
+    {{ govukInput({
+       id: content.data.category+'['+content.data.index+'][caseDocument]',
+       name: content.data.category+'['+content.data.index+'][caseDocument]',
+       type:'hidden',
+       label: {
+        text: 'Case Document',
+        classes: 'govuk-visually-hidden'
+       },
+       value: content.data.caseDocument,
+       attributes: {
+         'data-name': content.data.category+'[%index%][caseDocument]',
+         'data-id': content.data.category+'[%index%][caseDocument]'
+       }
+    }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD %}

@@ -4,7 +4,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 
 {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-{% set responseDeadLineExpression = t("£DEADLINE at 4pm") | replace ("£DEADLINE", claim.formattedResponseDeadline()) %}
+{% set responseDeadLineExpression = t('PAGES.CLAIM_SUMMARY.DEADLINE_AT', {responseDeadline: responseDeadline}) %}
 {% set remainingDays = claim.getRemainingDays() %}
 {% set claimNumber = claim.legacyCaseReference %}
 {% set isDeadLinePassed = claim.isDeadLinePassed() %}
@@ -44,7 +44,7 @@
                       <a href={{task.url}}>{{ t(task.description) }}</a>
                     </span>
                     <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
-                      {{ t(task.status) }}
+                      {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>
                 {% endfor %}
@@ -52,16 +52,16 @@
             </div>
           {% endfor %}
         </div>
-        {% set responseDeadLineHint = timeRemaining(remainingDays, isDeadLinePassed) %}
+        {% set responseDeadLineHint = timeRemaining(t, remainingDays, isDeadLinePassed) %}
         {% if remainingDays < 1  %}
           {% set responseDeadLineHintStyle = "due-or-overdue" %}
         {% endif %}
-        {{ aboutClaimWidget({header:'',lines:[
-        {title: t('PAGES.CLAIM_SUMMARY.RESPONSE_DEADLINE'), content: responseDeadLineExpression, href: '', hrefContact: '', hint:responseDeadLineHint, hintStyle:responseDeadLineHintStyle},
-        {title: t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER'), content : claimNumber, href: '', hrefContact: ''},
-        {title: t('PAGES.CLAIM_SUMMARY.TOTAL_CLAIM_AMOUNT'), content:totalClaimAmount, href: ''},
-        {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')},
-        {title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER'), href: responseDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE')} ]}) }}
+        {{ aboutClaimWidget(t, {header:'',lines:[
+        {title: 'PAGES.CLAIM_SUMMARY.RESPONSE_DEADLINE', content: responseDeadLineExpression, href: '', hrefContact: '', hint:responseDeadLineHint, hintStyle:responseDeadLineHintStyle},
+        {title: 'PAGES.CLAIM_SUMMARY.CLAIM_NUMBER', content : claimNumber, href: '', hrefContact: ''},
+        {title: 'PAGES.CLAIM_SUMMARY.TOTAL_CLAIM_AMOUNT', content:totalClaimAmount, href: ''},
+        {title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')},
+        {title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', href: responseDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE')} ]}) }}
       </div>
     </main>
   </div>
