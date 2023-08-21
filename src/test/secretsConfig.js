@@ -4,9 +4,9 @@ const propertiesVolume = require('@hmcts/properties-volume');
 
 const PropertiesVolume = {
   enableFor: (server) => {
+    console.log(server?.locals?.ENV);
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
-
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.draft-store-access-key', 'services.draftStore.redis.key');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
@@ -18,6 +18,7 @@ const PropertiesVolume = {
     }
   },
   setSecret: (fromPath, toPath) => {
+    console.log('from path '+ config.has(fromPath));
     if (config.has(fromPath)) {
       set(config, toPath, get(config, fromPath));
     }

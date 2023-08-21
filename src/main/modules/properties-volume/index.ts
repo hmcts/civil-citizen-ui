@@ -6,9 +6,9 @@ import { get, set } from 'lodash';
 export class PropertiesVolume {
 
   enableFor(server: Application): void {
+    console.log('env ' + server.locals.ENV);
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
-
       PropertiesVolume.setSecret('secrets.civil-cui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
       PropertiesVolume.setSecret('secrets.civil-cui.draft-store-access-key', 'services.draftStore.redis.key');
       PropertiesVolume.setSecret('secrets.civil-cui.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
@@ -21,6 +21,7 @@ export class PropertiesVolume {
   }
 
   private static setSecret(fromPath: string, toPath: string): void {
+    console.log('from path ' + (config.has(fromPath)));
     if (config.has(fromPath)) {
       set(config, toPath, get(config, fromPath));
     }
