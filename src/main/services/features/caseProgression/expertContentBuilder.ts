@@ -39,7 +39,7 @@ export const buildJointStatementSection = (section: ExpertSection = null, index 
     invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[date]`, expertStatement),
   };
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES', '', '', expertStatement, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`, expertStatement))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', 'govuk-!-width-three-half', '', expertStatement, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`, expertStatement))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DATE', invalidDateErrors,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertStatement, 'date', section?.dateDay.toString(), section?.dateMonth.toString(), section?.dateYear.toString(), index)
@@ -63,7 +63,7 @@ export const buildQuestionsForOtherSection = (selectItems: ({ text: string; valu
 export const buildAnswersToQuestionsSection = (selectItems: ({ text: string; value: string })[], section: ExpertSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${answersForExperts}[${answersForExperts}][${index}]`;
   return new UploadDocumentsSectionBuilder()
-    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', answersForExperts, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`, answersForExperts))
     .addSelect('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', '', '', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.SELECT', selectItems, answersForExperts, 'otherPartyName', section?.otherPartyName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyName]`, answersForExperts))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_WITH', '', '', answersForExperts, 'otherPartyQuestionsDocumentName', section?.otherPartyQuestionsDocumentName, index, form?.errorFor(`${errorFieldNamePrefix}[otherPartyQuestionsDocumentName]`, answersForExperts))

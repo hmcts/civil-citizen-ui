@@ -154,7 +154,7 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string): S
 };
 
 export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing);
+  const hasUnavailableDatesForHearing = getListOfUnavailableDate(claim.directionQuestionnaire?.hearing?.unavailableDatesForHearing, lng);
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
     ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,

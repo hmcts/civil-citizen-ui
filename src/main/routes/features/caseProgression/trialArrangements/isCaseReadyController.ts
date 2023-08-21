@@ -7,7 +7,6 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getIsCaseReady} from 'services/features/caseProgression/trialArrangements/isCaseReady';
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
@@ -22,8 +21,8 @@ const parentPropertyName = 'defendantTrialArrangements';
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
-    const isCaseReady = claim.caseProgression.defendantTrialArrangements?.isCaseReady;
+    const claim = await getClaimById(claimId, req);
+    const isCaseReady = claim.caseProgression?.defendantTrialArrangements?.isCaseReady;
     const form = new GenericForm(new IsCaseReadyForm(isCaseReady));
     await renderView(res, claimId, claim, form);
   } catch (error) {
