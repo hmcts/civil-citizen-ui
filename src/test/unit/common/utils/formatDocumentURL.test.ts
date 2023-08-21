@@ -1,5 +1,5 @@
-import {formatDocumentDownloadURL} from 'common/utils/formatDocumentURL';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 
 describe('format <a> element for document', ()=>{
   it('Should format document details into <a>', ()=>{
@@ -12,11 +12,11 @@ describe('format <a> element for document', ()=>{
     const document = {document_filename: fileName, document_url: url, document_binary_url: binary_url};
 
     //When
-    const urlElement = formatDocumentDownloadURL(document.document_filename, claimId, document.document_binary_url);
+    const urlElement = formatDocumentViewURL(document.document_filename, claimId, document.document_binary_url);
 
     //Then
-    const hrefExpected = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', binary);
-    const expectedResult = `<a class="govuk-link" href="${hrefExpected}">${fileName}</a>`;
+    const hrefExpected = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', binary);
+    const expectedResult = `<a class="govuk-link" target="_blank" href="${hrefExpected}">${fileName}</a>`;
     expect(urlElement).toEqual(expectedResult);
   });
 });

@@ -4,7 +4,7 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {MAKE_APPLICATION_TO_COURT} from 'routes/urls';
 import {t} from 'i18next';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
-import {formatDocumentDownloadURL} from 'common/utils/formatDocumentURL';
+import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
 
 export function getBundlesContent(claim: Claim, lang: string): ClaimSummaryContent[] {
@@ -47,7 +47,7 @@ function getTableRows(claim: Claim): TableCell[][] {
   for(const bundle of bundles){
 
     if(bundle.createdOn && bundle.stitchedDocument) {
-      const bundleLink = formatDocumentDownloadURL(bundle.stitchedDocument?.document_filename, claim.id, bundle.stitchedDocument?.document_binary_url);
+      const bundleLink = formatDocumentViewURL(bundle.stitchedDocument?.document_filename, claim.id, bundle.stitchedDocument?.document_binary_url);
 
       tableRows.push([{html: bundle.title}, {html: bundle.getFormattedCreatedOn}, {html: bundle.getFormattedHearingDate}, {html: bundleLink}]);
     }
