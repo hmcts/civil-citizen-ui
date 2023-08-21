@@ -17,8 +17,9 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
-    await setRespondentDateOfBirth(claim);
+    setRespondentDateOfBirth(claim);
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
+    logger.info('Translation claimant response sent to civil-service - submit event');
     logger.info(ccdResponse);
     return await civilServiceClient.submitClaimantResponseDJEvent(req.params.id, ccdResponse, req);
   } catch (err) {
