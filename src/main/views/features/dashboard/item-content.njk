@@ -191,8 +191,8 @@
                value: content.data.dayValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Day]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Day]'
+                 'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]',
+                 'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]'
                }
              },
              {
@@ -202,8 +202,8 @@
                value: content.data.monthValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidMonthError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Month]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Month]'
+                'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]',
+                'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]'
                }
              },
              {
@@ -213,8 +213,8 @@
                value: content.data.yearValue,
                classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Year]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Year]'
+                  'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]',
+                  'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]'
                }
              }
            ]
