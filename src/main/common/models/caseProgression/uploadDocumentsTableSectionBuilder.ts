@@ -15,6 +15,7 @@ export const addEvidenceUploadTable = (header: string, isClaimant: boolean, tabl
   return {
     type: ClaimSummaryType.TABLE,
     data: {
+      classes: 'tableWrap',
       head: [
         {
           text: isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT') + t(header) : t('PAGES.CLAIM_SUMMARY.DEFENDANT') + t(header),
