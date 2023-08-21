@@ -1641,7 +1641,13 @@
       "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
       "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
       "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
-      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG1": "You have rejected the claim. You’ve suggested mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG2": "We’ll ask {{ claimantName }} if they agree to take part in mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG3": "If they say yes, we’ll arrange a date for mediation. If they say no we’ll send you a directions questionnaire this is a form you complete to tell us more about the claim.",
+      "YOU_HAVE_REJECTED_CLAIM": "You’ve rejected the claim.",
+      "NO_MEDIATION_REQUIRED": "You said you don’t want to use mediation to solve it. You might have to go to a hearing",
+      "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "We’ll contact you when the claimant responds"
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
@@ -2294,6 +2300,7 @@
       "WE_CONTACT_YOU": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "SETUP_REPAYMENT_PLAN": "sefydlwch eich cynllun ad-dalu i ddechrau pan ddywedoch chi y byddai’n dechrau",
       "THE_CLAIM_WILL_BE_SETTLED": "Bydd yr honiad yn cael ei setlo",
+      "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
