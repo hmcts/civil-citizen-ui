@@ -127,7 +127,7 @@ describe('Repayment Plan', () => {
         .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
+          expect(res.text).toContain(TestMessages.FIRST_PAYMENT_MESSAGE);
         });
     });
 

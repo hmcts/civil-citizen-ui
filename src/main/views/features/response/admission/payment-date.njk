@@ -16,13 +16,18 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set firstPaymentDate = "now" | addDaysTranslated(30, t,'GB') %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(errors, t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
         {% set errorMessages %}
           {% if errors %}
             {% for error in errors %}
+            {% if error.text == 'ERRORS.FIRST_PAYMENT_MESSAGE' %}
+              <span class="govuk-error-message">{{  t(error.text,{firstPaymentDate:firstPaymentDate}) | safe}}</span>
+              {% else %}
               <span class="govuk-error-message">{{ t(error.text) }}</span>
+              {% endif %}
             {% endfor %}
           {% endif %}
         {% endset -%}
