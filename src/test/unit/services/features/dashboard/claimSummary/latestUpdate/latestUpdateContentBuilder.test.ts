@@ -31,6 +31,7 @@ import {
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock,
 } from '../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
+import {Mediation} from 'models/mediation/mediation';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -758,6 +759,48 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
       expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/123');
       expect(responseToClaimSection[3]).toBeUndefined();
+    });
+  });
+
+  describe('test FD with/without mediation buildResponseToClaimSection', () => {
+    it('FD and dispute all and respondant rejected free mediation', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.mediation = new Mediation(undefined, undefined, undefined, {option: YesNo.NO});
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(5);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM_MSG1');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM_MSG2');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM_MSG3');
+      expect(responseToClaimSection[4].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
+      expect(responseToClaimSection[4].data.href).toBe('/case/1/documents/123');
+    });
+
+    it('FD and dispute all and respondant agreed for free mediation.', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined);
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(4);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
     });
   });
 });

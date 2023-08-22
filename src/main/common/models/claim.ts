@@ -172,7 +172,7 @@ export class Claim {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
   }
@@ -420,8 +420,8 @@ export class Claim {
 
   isBreakDownCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST && 
-      !!this.interest?.totalInterest?.amount && 
+      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
+      !!this.interest?.totalInterest?.amount &&
       !!this.interest?.totalInterest?.reason
     );
   }
@@ -454,18 +454,18 @@ export class Claim {
 
   isDefendantDetailsCompleted(): boolean {
     return (
-      !!this.respondent1?.type && 
+      !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) || 
+      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
       (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
     );
   }
 
   isClaimantDetailsCompleted(): boolean {
     return (
-      !!this.applicant1?.type && 
+      !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
-      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) || 
+      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
       (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
     );
   }
@@ -654,6 +654,14 @@ export class Claim {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
     return new Date(hearingDateTime - sixWeeksMilli);
+  }
+
+  hasRespondent1NotAgreedMediation() {
+    return  this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasRespondent1AgreedMediation() {
+    return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
 }
 

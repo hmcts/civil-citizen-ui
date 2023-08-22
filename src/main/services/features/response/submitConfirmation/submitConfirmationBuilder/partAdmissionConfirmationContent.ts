@@ -4,6 +4,7 @@ import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addDaysToDate} from '../../../../../common/utils/dateUtils';
+import {YesNo} from 'common/form/models/yesNo';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -51,7 +52,10 @@ const getSubtitleIfClaimantRejectOwe = (claimantName: string, partialAmount: str
   };
 };
 
-const getParagraphAskMediation = (lang: string) => {
+const getParagraphAskMediation = (lang: string, isDefendantRejectedMediation?: boolean) => {
+  if (isDefendantRejectedMediation) {
+    return undefined;
+  }
   return {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
@@ -60,11 +64,12 @@ const getParagraphAskMediation = (lang: string) => {
   };
 };
 
-const getParagraphDontWantMediation = (claimAmount: number, partialAmount: string, lang: string) => {
+const getParagraphDontWantMediation = (claimAmount: number, partialAmount: string, lang: string, isDefendantRejectedMediation?: boolean) => {
+  const textContent = isDefendantRejectedMediation ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE' : 'PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION';
   return {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', {claimAmount, partialAmount, lng: lang}),
+      text: t(textContent, {claimAmount, partialAmount, lng: lang}),
     },
   };
 };
@@ -158,6 +163,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
   const claimantName = claim.getClaimantFullName();
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const claimAmount = claim.totalClaimAmount;
+  const isDefendantRejectedMediation = claim.mediation?.mediationDisagreement?.option === YesNo.NO;
 
   return [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
@@ -188,8 +194,8 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang)},
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediation)},
+    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediation)},
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
@@ -205,6 +211,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const paymentDate = formatDateToFullDate(claim.partialAdmission?.paymentIntention?.paymentDate, lang);
   const claimAmount = claim.totalClaimAmount;
+  const isDefendantRejectedMediation = claim.mediation?.mediationDisagreement?.option === YesNo.NO;
 
   return [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
@@ -233,8 +240,8 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang)},
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediation)},
+    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediation)},
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
