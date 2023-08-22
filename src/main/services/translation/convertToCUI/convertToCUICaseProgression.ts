@@ -102,7 +102,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     // Judge Final Orders
     let finalOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
-    const finalOrderDocumentList = ccdClaim?.finalOrderDocumentCollection;
+    const finalOrderDocumentList = ccdClaim.finalOrderDocumentCollection;
     if(finalOrderDocumentList != null) {
       for (const ccdElement of finalOrderDocumentList) {
         finalOrderDocumentCollection.push(ccdElement);
