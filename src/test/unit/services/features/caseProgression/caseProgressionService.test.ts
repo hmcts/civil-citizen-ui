@@ -58,60 +58,6 @@ describe('case Progression service', () => {
       await expect(caseProgressionService.getDocuments('claimId', ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(REDIS_FAILURE);
     });
   });
-  describe('saveDocumentUpload', () => {
-    const uploadDocuments = new UploadDocuments();
-    uploadDocuments.expert = [];
-    uploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-
-    it('should save defendantUploadDocuments expert successfully', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.caseProgression = new CaseProgression();
-        claim.caseProgression.defendantUploadDocuments = new UploadDocuments();
-
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
-      const documentUploadToSave  = new Claim();
-      documentUploadToSave.caseProgression = new CaseProgression();
-      documentUploadToSave.caseProgression.defendantUploadDocuments = new UploadDocuments();
-      documentUploadToSave.caseProgression.defendantUploadDocuments.expert = [];
-      documentUploadToSave.caseProgression.defendantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-
-      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'defendantUploadDocuments');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
-    });
-    it('should save claimantUploadDocuments expert successfully', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.caseProgression = new CaseProgression();
-        claim.caseProgression.claimantUploadDocuments = new UploadDocuments();
-
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
-      const documentUploadToSave  = new Claim();
-      documentUploadToSave.caseProgression = new CaseProgression();
-      documentUploadToSave.caseProgression.claimantUploadDocuments = new UploadDocuments();
-      documentUploadToSave.caseProgression.claimantUploadDocuments.expert = [];
-      documentUploadToSave.caseProgression.claimantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-
-      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'claimantUploadDocuments');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
-    });
-    it('should return an error on redis failure', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
-      });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(REDIS_FAILURE);
-      });
-      await expect(caseProgressionService.saveCaseProgression('claimId', mockGetCaseDataFromDraftStore, ''))
-        .rejects.toThrow(REDIS_FAILURE);
-    });
-  });
   describe('deleteUntickedDocumentsFromStore', () => {
     it('should save Draftclaim with existing files for all selected documents', async() => {
       //given
@@ -176,4 +122,60 @@ describe('case Progression service', () => {
       expect(spySave).toHaveBeenCalledWith(claimId, getMockEmptyUploadDocumentsUserForm(), 'defendantDocuments');
     });
   });
+  describe('saveDocumentUpload', () => {
+    const uploadDocuments = new UploadDocuments();
+    uploadDocuments.expert = [];
+    uploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
+
+    it('should save defendantUploadDocuments expert successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.caseProgression = new CaseProgression();
+        claim.caseProgression.defendantUploadDocuments = new UploadDocuments();
+
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      const documentUploadToSave  = new Claim();
+      documentUploadToSave.caseProgression = new CaseProgression();
+      documentUploadToSave.caseProgression.defendantUploadDocuments = new UploadDocuments();
+      documentUploadToSave.caseProgression.defendantUploadDocuments.expert = [];
+      documentUploadToSave.caseProgression.defendantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
+
+      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'defendantUploadDocuments');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
+    });
+    it('should save claimantUploadDocuments expert successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.caseProgression = new CaseProgression();
+        claim.caseProgression.claimantUploadDocuments = new UploadDocuments();
+
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      const documentUploadToSave  = new Claim();
+      documentUploadToSave.caseProgression = new CaseProgression();
+      documentUploadToSave.caseProgression.claimantUploadDocuments = new UploadDocuments();
+      documentUploadToSave.caseProgression.claimantUploadDocuments.expert = [];
+      documentUploadToSave.caseProgression.claimantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
+
+      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'claimantUploadDocuments');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
+    });
+    it('should return an error on redis failure', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(REDIS_FAILURE);
+      });
+      await expect(caseProgressionService.saveCaseProgression('claimId', mockGetCaseDataFromDraftStore, ''))
+        .rejects.toThrow(REDIS_FAILURE);
+    });
+  });
 });
+
+
