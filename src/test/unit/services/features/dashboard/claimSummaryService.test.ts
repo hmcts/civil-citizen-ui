@@ -42,6 +42,7 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
   return {
     type: ClaimSummaryType.TABLE,
     data: {
+      classes: 'tableWrap',
       head: [
         {
           text: isClaimantString + sectionText,
