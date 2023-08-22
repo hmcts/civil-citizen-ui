@@ -8,9 +8,7 @@ import {
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {
-  getUploadDocumentsForm, saveCaseProgression,
-} from 'services/features/caseProgression/caseProgressionService';
+import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
