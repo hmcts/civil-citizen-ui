@@ -1,14 +1,14 @@
 import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
+import {generateDocumentSection} from 'services/features/dashboard/documentBuilderService';
 
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/i18n');
-jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
-  use: jest.fn(),
-}));
+// jest.mock('../../../../../main/modules/i18n');
+// jest.mock('i18next', () => ({
+//   t: (i: string | unknown) => i,
+//   use: jest.fn(),
+// }));
 
-describe('buildPaginationData Service', () => {
+describe('documentBuilderService.ts', () => {
   const lang = 'en';
 
   // claims undefined
@@ -37,7 +37,7 @@ describe('buildPaginationData Service', () => {
     const totalPages = 2;
     const currentPageAsString = '2';
     // When
-    const result = buildPagination(totalPages, currentPageAsString, lang);
+    const result = generateDocumentSection(document.value, claimId, lang);
     // Then
     expect(result.items.length).toEqual(2);
     expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&page=1', 'number': 1 });

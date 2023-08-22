@@ -4,7 +4,6 @@ import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/d
 import {
   buildDownloadHearingNoticeSection,
   buildSystemGeneratedDocumentSections,
-  buildDownloadSealedClaimSectionTitle, buildDownloadFinalOrderSection,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
@@ -13,10 +12,14 @@ import {t} from 'i18next';
 import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {DocumentType} from 'models/document/documentType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
+import {buildDownloadSectionTitle} from 'services/features/dashboard/documentBuilderService';
+import {
+  buildDownloadFinalOrderSection,
+} from 'services/features/dashboard/finalOrderDocuments/finalOrderDocumentContentBuilder';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -129,7 +132,7 @@ describe('getDocumentsContent', () => {
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(3);
 
-    const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
+    const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
     const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(claim, claimId, lang);
 
@@ -171,7 +174,7 @@ describe('getDocumentsContent', () => {
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(2);
 
-    const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
+    const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);

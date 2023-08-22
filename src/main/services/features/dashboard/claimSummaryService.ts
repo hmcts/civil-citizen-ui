@@ -9,7 +9,7 @@ import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDa
 import {t} from 'i18next';
 import {buildDownloadSectionTitle} from 'services/features/dashboard/documentBuilderService';
 import {
-  buildDownloadFinalOrderSection
+  buildDownloadFinalOrderSection,
 } from 'services/features/dashboard/finalOrderDocuments/finalOrderDocumentContentBuilder';
 
 async function getDocumentsContent(claim: Claim, claimId: string, lang?: string): Promise<ClaimSummaryContent[]> {

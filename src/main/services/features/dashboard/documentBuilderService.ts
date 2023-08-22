@@ -1,10 +1,10 @@
 import {CaseDocument} from 'models/document/caseDocument';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
-import {documentIdExtractor} from 'common/utils/stringUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {t} from 'i18next';
 
 export const generateDocumentSection = (document: CaseDocument, claimId: string, lang:string): ClaimSummarySection => {
   if (document) {
