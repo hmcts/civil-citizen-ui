@@ -6,7 +6,7 @@ import { get, set } from 'lodash';
 export class PropertiesVolume {
 
   enableFor(server: Application): void {
-    console.log('env ' + server.locals.ENV);
+    console.log('env ::::: Dev ' + server.locals.ENV);
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
       PropertiesVolume.setSecret('secrets.civil-cui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
@@ -21,8 +21,10 @@ export class PropertiesVolume {
   }
 
   private static setSecret(fromPath: string, toPath: string): void {
-    console.log('from path ' + (config.has(fromPath)));
+    console.log('from path Dev' + fromPath);
+
     if (config.has(fromPath)) {
+      console.log('from path DEV ::: ' + get(config, fromPath));
       set(config, toPath, get(config, fromPath));
     }
   }

@@ -18,8 +18,9 @@ const PropertiesVolume = {
     }
   },
   setSecret: (fromPath, toPath) => {
-    console.log('from path '+ config.has(fromPath));
+    console.log('from path ' + fromPath);
     if (config.has(fromPath)) {
+      console.log('from path ::: ' + get(config, fromPath));
       set(config, toPath, get(config, fromPath));
     }
   },
