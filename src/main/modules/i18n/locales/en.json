@@ -2300,6 +2300,7 @@
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
       "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
+      "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
@@ -2922,6 +2923,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
+    "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
       "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
@@ -2999,6 +3001,6 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
   }
 }
