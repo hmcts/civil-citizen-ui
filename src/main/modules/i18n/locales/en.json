@@ -1618,7 +1618,7 @@
       "THE_COURT_WILL_REVIEW_THE_CASE": "The court will review the case. We’ll email you if we set a hearing date to tell you how to prepare.",
       "THEY_ACCEPT_THAT_YOU_HAVE_PAID_THEM": "They accept that you’ve paid them {{ partAmount }}, but believe you owe the full {{ fullAmount}} claimed.",
       "THEY_HAVE_ALSO_SENT_US_THEIR_HEARING_REQUIREMENTS": "They’ve also sent us their hearing requirements:",
-      "THEY_SAID_YOU_DIDN'T_PAY_THEM": "They said you didn’t pay them {{ partAmount }}.",
+      "THEY_SAID_YOU_DIDN'T_PAY_THEM": " They said you didn’t pay them {{ partAmount }}.",
       "THEIR_PAYMENT_DETAILS": "if you need their payment details. Make sure you get receipts for any payments.",
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION": "You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.",
