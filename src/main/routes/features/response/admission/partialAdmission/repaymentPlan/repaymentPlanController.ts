@@ -1,5 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import { NextFunction, Request, Response, Router } from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getRepaymentPlanForm,
@@ -11,12 +10,13 @@ import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repa
 import {ResponseType} from 'common/form/models/responseType';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
+import { PartialAdmissionRepaymentPlanForm } from 'common/form/models/admission/partialAdmission/partialAdmissionRepaymentPlan';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = Router();
 let amount: number;
 
-function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, amount: number): void {
+function renderView(form: GenericForm<PartialAdmissionRepaymentPlanForm>, res: Response, amount: number): void {
   res.render(repaymentPlanViewPath, {
     form,
     paymentExampleDate: getFirstPaymentExampleDate(),
@@ -30,7 +30,7 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, Par
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       amount = claim.partialAdmissionPaymentAmount();
-      const form = getRepaymentPlanForm(claim, true);
+      const form = getRepaymentPlanForm(claim, true) as PartialAdmissionRepaymentPlanForm;
       renderView(new GenericForm(form), res, amount);
     } catch (error) {
       next(error);
@@ -42,7 +42,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const repaymentPlan = getRepaymentPlanForm(claim, true);
-      const repaymentPlanForm: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
+      const repaymentPlanForm: GenericForm<PartialAdmissionRepaymentPlanForm> = new GenericForm(new PartialAdmissionRepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       repaymentPlanForm.validateSync();
       if (repaymentPlanForm.hasErrors()) {
         renderView(repaymentPlanForm, res, amount);

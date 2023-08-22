@@ -13,6 +13,7 @@ if (document.getElementsByClassName('moj-add-another__add-button')) {
     newBlock?.addedNodes.forEach((el) => {
       if (el?.children) {
         removeLoading(el);
+        removeDocumentFile(el);
         [...el.getElementsByClassName('govuk-error-summary')].forEach(errorSummary => errorSummary.classList.add('hide'));
         [...el.getElementsByClassName('govuk-error-message')].forEach(errorMessage => errorMessage.classList.add('hide'));
         [...el.getElementsByClassName('govuk-input--error')].forEach(inputError => inputError.classList.remove('govuk-input--error'));
@@ -29,26 +30,17 @@ if (document.getElementsByClassName('moj-add-another__add-button')) {
     attributeOldValue: true,
     characterDataOldValue: true,
   });
-
-  if (window.location.href.includes('upload-documents')) {
-    [...document.getElementsByClassName('.moj-add-another__add-button')].forEach(addButton => {
-      addButton.addEventListener('click', () => {
-        const parentDiv = addButton.closest('[data-module="moj-add-another"]');
-        if (parentDiv) {
-          setTimeout(() => {
-            const documentName = parentDiv.querySelectorAll('.documentName');
-            const lastDocumentName = documentName[documentName.length - 1];
-            lastDocumentName.textContent = '';
-          }, 200);
-        }
-      });
-    });
-  }
 }
 
 function removeLoading(node) {
   const loadingContainer  = node.querySelector('[id*="-loadingContainer"]');
   if (loadingContainer) {
     loadingContainer.remove();
+  }
+}
+function removeDocumentFile(node) {
+  const documentNameContainer  = node.querySelector('[id*="[documentName]"]');
+  if (documentNameContainer) {
+    documentNameContainer.remove();
   }
 }

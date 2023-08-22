@@ -149,16 +149,16 @@ describe('on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
-  it('Type Of Document Section - enter a valid type of document', async () => {
-    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+  it('should display documentForDisclosure validation error when invalid', async () => {
     const documentForDisclosureModel = {
       'documentsForDisclosure': [{
         'typeOfDocument': '',
-        'caseDocument': `${caseDoc}`,
-        'date-day': '',
-        'date-month': '',
-        'date-year': '',
-        'file_upload': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
       }],
     };
 
@@ -184,7 +184,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when Day month and year is invalid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'45','dateMonth':'17','dateYear':'202','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '45',
+          'dateMonth': '17',
+          'dateYear': '202',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -199,7 +209,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when day is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'','dateMonth':'11','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -212,7 +232,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when month is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -225,7 +255,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when year is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -238,7 +278,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when date is in future', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':mockFutureYear,'fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': mockFutureYear,
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -251,7 +301,17 @@ describe('on POST', () => {
   });
 
   it('should not display documentForDisclosure validation error when date is valid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -264,7 +324,17 @@ describe('on POST', () => {
   });
 
   it('should display witness validation error when invalid', async () => {
-    const model = {'witnessStatement':[{'witnessName':'', 'dateDay':'','dateMonth':'','dateYear':'','fileUpload':''}]};
+    const model = {
+      'witnessStatement': [{
+        'witnessName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -277,7 +347,19 @@ describe('on POST', () => {
   });
 
   it('should display all expert validation errors', async () => {
-    const model = {'expertReport':[{'expertName':'', 'fieldOfExpertise':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':'', 'dateDay':'','dateMonth':'','dateYear':''}]};
+    const model = {
+      'expertReport': [{
+        'expertName': '',
+        'fieldOfExpertise': '',
+        'questionDocumentName': '',
+        'otherPartyQuestionsDocumentName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
