@@ -67,6 +67,18 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addRawHtml(html: string, variables?: any) {
+    const htmlSection = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: html,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(htmlSection);
+    return this;
+  }
+
   addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
