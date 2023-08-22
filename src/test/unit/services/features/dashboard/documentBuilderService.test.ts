@@ -37,11 +37,39 @@ describe('documentBuilderService.ts', () => {
     const lang = 'eng';
     const createdLabel = t('PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED', {lng: lang});
     const document = mockClaim.caseProgression.finalOrderDocumentCollection[0].value;
+    const documentId = documentIdExtractor(document.documentLink?.document_binary_url);
 
     const generatedDocumentSectionExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(document.documentLink?.document_binary_url)),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId),
+        text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`,
+      },
+    });
+
+    //When
+    const generatedDocumentSection = generateDocumentSection(document, claimId, lang);
+
+    //Then
+    expect(generatedDocumentSection).toEqual(generatedDocumentSectionExpected);
+  });
+
+  it('should generate document section if link is not available', () => {
+    //Given
+    mockClaim.caseProgression = new CaseProgression();
+    mockClaim.caseProgression.finalOrderDocumentCollection = [getFinalOrderDocumentCollectionMock()];
+    const claimId = '123';
+    const lang = 'eng';
+    const createdLabel = t('PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED', {lng: lang});
+    const document = mockClaim.caseProgression.finalOrderDocumentCollection[0].value;
+    mockClaim.caseProgression.finalOrderDocumentCollection[0].value.documentLink = undefined;
+    const documentId: string = undefined;
+
+    const generatedDocumentSectionExpected = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId),
         text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },
