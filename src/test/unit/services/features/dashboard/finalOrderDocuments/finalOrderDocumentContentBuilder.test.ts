@@ -1,5 +1,5 @@
 import {mockClaim} from '../../../../../utils/mockClaim';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from '/routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../../../../../main/routes/urls';
 import {
   getFinalOrderDocumentCollectionMock,
 } from '../../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
