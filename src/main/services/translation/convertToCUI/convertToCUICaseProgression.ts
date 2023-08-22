@@ -111,6 +111,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     if (finalOrderDocumentCollection.length == 0) {
       finalOrderDocumentCollection = undefined;
     }
+    caseProgression.finalOrderDocumentCollection = finalOrderDocumentCollection;
 
     caseProgression.claimantUploadDocuments =
       new UploadDocuments(uploadApplicantDisclosureDocuments, uploadApplicantWitnessDocuments, uploadApplicantExpertDocuments, uploadApplicantTrialDocuments);
@@ -118,8 +119,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       new UploadDocuments(uploadDefendantDisclosureDocuments, uploadDefendantWitnessDocuments, uploadDefendantExpertDocuments, uploadDefendantTrialDocuments);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
-
-    caseProgression.finalOrderDocumentCollection = finalOrderDocumentCollection;
 
     return caseProgression as CaseProgression;
   }
