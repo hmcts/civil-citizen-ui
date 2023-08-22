@@ -177,5 +177,3 @@ describe('case Progression service', () => {
     });
   });
 });
-
-
