@@ -63,11 +63,14 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
 
   if (isUndefined(storedClaimResponse?.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
-    draftStoreClient.expire(claimId, addDaysToDate(storedClaimResponse.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
   }
 
   storedClaimResponse.case_data = claim;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+
+  if (await draftStoreClient.ttl(claimId) === -1) {
+    await draftStoreClient.expire(claimId, addDaysToDate(storedClaimResponse.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
+  }
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
