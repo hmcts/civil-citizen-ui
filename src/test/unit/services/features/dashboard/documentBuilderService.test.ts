@@ -8,7 +8,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {mockClaim} from '../../../../utils/mockClaim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
-  getFinalOrderDocumentCollectionMock
+  getFinalOrderDocumentCollectionMock,
 } from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
 import { CaseDocument } from 'common/models/document/caseDocument';
 
