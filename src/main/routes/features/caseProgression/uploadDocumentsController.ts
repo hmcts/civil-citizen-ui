@@ -49,12 +49,13 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile);
     form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
-    //const fileForm = new GenericForm(fileUpload);
-    //fileForm.validateSync();
+
     form.validateSync();
-    //const expertErrorFieldNamePrefix = `${category}[${index}]`;
-    if(!form.hasErrors()){
-    //if (!form?.errorFor(`${category}[${category}][${index}][fileUpload]`, `${category}`) && !form?.errorFor(`${expertErrorFieldNamePrefix}[${fileUpload}]`)) {
+    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
+    if (!form?.errorFor(`${errorFieldNamePrefix}`)
+      && !form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
+      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)) {
+
       const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = document;
     }

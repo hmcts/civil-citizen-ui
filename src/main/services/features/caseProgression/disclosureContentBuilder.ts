@@ -18,7 +18,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
     invalidMonthError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateMonth]`, documentsForDisclosure),
     invalidYearError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateYear]`, documentsForDisclosure),
     invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, documentsForDisclosure),
-    InvalidFileError : form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, documentsForDisclosure)
+    invalidFileError : form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, documentsForDisclosure)
       || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, documentsForDisclosure)
       || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForDisclosure) ,
   };
@@ -26,7 +26,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS', null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', documentsForDisclosure, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForDisclosure))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDisclosure, 'dateInputFields', 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index )
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.InvalidFileError, section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.invalidFileError, section?.caseDocument)
     .addRemoveSectionButton(form?.model.documentsForDisclosure?.length > 1 || false)
     .build();
 };
