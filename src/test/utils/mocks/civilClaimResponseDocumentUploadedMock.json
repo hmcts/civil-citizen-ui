@@ -326,9 +326,11 @@
               "mimetype": "application/pdf",
               "size": 1234
             },
-            "dateDay": "01",
-            "dateMonth": "01",
-            "dateYear": "2023"
+            "dateInputFields":{
+              "dateDay": "01",
+              "dateMonth": "01",
+              "dateYear": "2023"
+          }
           }
         ]
       },

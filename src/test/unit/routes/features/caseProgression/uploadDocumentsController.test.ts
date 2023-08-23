@@ -21,8 +21,9 @@ import {getNextYearValue} from '../../../../utils/dateUtils';
 import express from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -85,26 +86,26 @@ describe('Upload document- upload document controller', () => {
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
 
-    const disclosureUpload =
-        {'documentsForDisclosure':
+    const disclosureUpload = {documentsForDisclosure:
             [
               {
-                'dateInputFields':
+                dateInputFields:
                     {
-                      'dateDay': '01',
-                      'dateMonth': '01',
-                      'dateYear': '2023',
-                    },
-                'fileUpload':
-                  {'fieldname': 'field name',
-                    'mimetype': 'application/pdf',
-                    'originalname': 'original name',
-                    'size': 1234,
-                  },
-                'typeOfDocument': 'type',
+                      dateDay: '01',
+                      dateMonth: '01',
+                      dateYear: '2023',
+                    } as DateInputFields,
+                fileUpload:
+                  {
+                    fieldname: 'field name',
+                    mimetype: 'application/pdf',
+                    originalname: 'original name',
+                    size: 1234,
+                  } as FileUpload,
+                typeOfDocument: 'type',
               },
             ],
-        } as UploadDocumentsUserForm;
+    } as UploadDocumentsUserForm;
 
     const formWithDisclosure = new GenericForm(disclosureUpload);
 
