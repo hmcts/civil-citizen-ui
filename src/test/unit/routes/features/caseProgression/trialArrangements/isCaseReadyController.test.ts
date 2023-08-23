@@ -1,7 +1,8 @@
 import {
-  mockCivilClaim, mockRedisFailure,
+  mockCivilClaim,
+  mockCivilClaimFastTrack, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
-import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -31,7 +32,7 @@ describe('Is case ready - On GET', () => {
 
   it('should render page successfully if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', claimId))
@@ -58,7 +59,7 @@ describe('Is case ready - On GET', () => {
 
 describe('Is case ready - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
   });
   it('should display error when neither Yes nor No were selected', async () => {
 
@@ -95,5 +96,21 @@ describe('Is case ready - on POST', () => {
         expect(res.header.location).toEqual(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'));
       });
   });
+
+  it('should redirect to latestUpload screen when is small claim', async () => {
+
+    //Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    //When
+    await testSession
+      .post(IS_CASE_READY_URL.replace(':id', '1111'))
+      .send({option: YesNo.NO})
+      //Then
+      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
+      });
+  });
+
 });
 
