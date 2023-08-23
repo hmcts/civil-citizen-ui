@@ -32,7 +32,7 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, n
   }
 }) as RequestHandler);
 
-hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL], (async (req, res, next) => {
+hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, next) => {
   try {
     const option = req.body.option;
     const textArea = req.body.textArea;
