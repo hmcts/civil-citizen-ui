@@ -52,9 +52,9 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
 
     form.validateSync();
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
-    if (!form?.errorFor(`${errorFieldNamePrefix}`)
-      && !form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)) {
+    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
+      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
+      && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
       const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = document;

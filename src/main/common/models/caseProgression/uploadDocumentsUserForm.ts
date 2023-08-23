@@ -89,10 +89,10 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
-  @ValidateIf((object, value) => !object.caseDocument)
-  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
-  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
-  @IsNotEmpty({ message: 'ERRORS.VALID_CHOOSE_THE_FILE' })
+  @ValidateNested()
+  @Type(() => FileUpload)
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
 
   caseDocument: CaseDocument;
@@ -153,6 +153,8 @@ export class WitnessSection {
     witnessName: string;
   @ValidateNested()
     dateInputFields: DateInputFields;
+  @ValidateNested()
+  @Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
@@ -190,6 +192,8 @@ export class ExpertSection {
   @ValidateNested()
     dateInputFields: DateInputFields;
 
+  @ValidateNested()
+  @Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
