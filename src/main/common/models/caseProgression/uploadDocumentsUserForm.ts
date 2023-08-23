@@ -15,7 +15,6 @@ import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
 import {CaseDocument} from 'models/document/caseDocument';
-import {Type} from 'class-transformer';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -90,7 +89,7 @@ export class FileUpload {
 
 export class FileOnlySection {
   @ValidateNested()
-  @Type(() => FileUpload)
+  //@Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
@@ -136,7 +135,6 @@ export class TypeOfDocumentSection {
     dateInputFields: DateInputFields;
 
   @ValidateNested()
-  @Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
@@ -154,7 +152,6 @@ export class WitnessSection {
   @ValidateNested()
     dateInputFields: DateInputFields;
   @ValidateNested()
-  @Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
@@ -193,7 +190,6 @@ export class ExpertSection {
     dateInputFields: DateInputFields;
 
   @ValidateNested()
-  @Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;

@@ -97,9 +97,7 @@ describe('Upload a single file', () => {
       .field('buttonPressed', 'documentsForDisclosure[0][uploadButton]')
       .field('documentsForDisclosure[0][typeOfDocument]', 'test document')
       .field('documentsForDisclosure[0][caseDocument]', '')
-      .field('documentsForDisclosure[0][date-day]', '')
-      .field('documentsForDisclosure[0][date-month]', '')
-      .field('documentsForDisclosure[0][date-year]', '')
+      .field('documentsForDisclosure[0][dateInputFields]', '')
       .field('documentsForDisclosure[0][fileUpload]', '')
       .attach('file', file.buffer, {
         filename: file.originalname,
@@ -406,24 +404,214 @@ describe('on POST', () => {
 
   it('should redirect to the next page when inputs are validated', async () => {
 
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'10','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const disclosureList = {'disclosureList':[{'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const disclosureList = {
+      'disclosureList': [{
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
 
-    const witnessStatement = {'witnessStatement':[{'witnessName':'witness Name', 'dateDay':'10','dateMonth':'11','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const witnessSummary = {'witnessSummary':[{'witnessName':'witness Name 1', 'dateDay':'11','dateMonth':'11','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const noticeOfIntention = {'noticeOfIntention':[{'witnessName':'witness Name 2', 'dateDay':'12','dateMonth':'11','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const documentsReferred = {'documentsReferred':[{'typeOfDocument':'Word', 'dateDay':'13','dateMonth':'11','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
+    const witnessStatement = {
+      'witnessStatement': [{
+        'witnessName': 'witness Name',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const witnessSummary = {
+      'witnessSummary': [{
+        'witnessName': 'witness Name 1',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const noticeOfIntention = {
+      'noticeOfIntention': [{
+        'witnessName': 'witness Name 2',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const documentsReferred = {
+      'documentsReferred': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
 
-    const expertReport = {'expertReport':[{'expertName':'expert Name', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'12','dateYear':'2020', 'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const questionsForExperts = {'questionsForExperts':[{'expertName':'John Doe', 'otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const answersForExperts = {'answersForExperts':[{'expertName':'expert Name 2', 'otherPartyName':'Mark Smith', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
+    const expertReport = {
+      'expertReport': [{
+        'expertName': 'expert Name',
+        'fieldOfExpertise': 'field Of Expertise',
+        'questionDocumentName': 'question Document Name',
+        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const expertStatement = {
+      'expertStatement': [{
+        'expertName': 'John Dhoe',
+        'fieldOfExpertise': 'Architect',
+        'otherPartyName': 'Mark Smith',
+        'questionDocumentName': 'question Document Name',
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const questionsForExperts = {
+      'questionsForExperts': [{
+        'expertName': 'John Doe',
+        'otherPartyName': 'Mark Smith',
+        'questionDocumentName': 'question Document Name',
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const answersForExperts = {
+      'answersForExperts': [{
+        'expertName': 'expert Name 2',
+        'otherPartyName': 'Mark Smith',
+        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
 
-    const trialCaseSummary = {'trialCaseSummary':[{'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const trialSkeletonArgument = {'trialSkeletonArgument':[{'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const trialAuthorities = {'trialAuthorities':[{'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const trialCosts = {'trialCosts':[{'fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
-    const trialDocumentary = {'trialDocumentary':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'11','dateYear':'2020','fileUpload':{'fieldname': 'Evidence_02.pdf', 'originalname': 'Evidence_02.pdf', 'mimetype': 'application/pdf', 'size': '123'}}]};
+    const trialCaseSummary = {
+      'trialCaseSummary': [{
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const trialSkeletonArgument = {
+      'trialSkeletonArgument': [{
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const trialAuthorities = {
+      'trialAuthorities': [{
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const trialCosts = {
+      'trialCosts': [{
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
+    const trialDocumentary = {
+      'trialDocumentary': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': {
+          'fieldname': 'Evidence_02.pdf',
+          'originalname': 'Evidence_02.pdf',
+          'mimetype': 'application/pdf',
+          'size': '123',
+        },
+      }],
+    };
 
     const sections = Object.assign(documentForDisclosureModel, disclosureList, witnessStatement, witnessSummary, noticeOfIntention,
       documentsReferred, expertReport, expertStatement, questionsForExperts, answersForExperts, trialCaseSummary, trialSkeletonArgument,
