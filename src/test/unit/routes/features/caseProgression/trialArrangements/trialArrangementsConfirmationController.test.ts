@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL} from 'routes/urls';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
@@ -40,6 +40,7 @@ describe('Confirm trial arrangements - On GET', () => {
   it('should render page successfully with IsCaseReady yes', async () => {
     mockGetClaimById.mockImplementation(async () => {
       claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
+      claim.totalClaimAmount = 15000;
       return claim;
     });
     await request(app).get(confirmationUrl).expect((res) => {
@@ -51,11 +52,24 @@ describe('Confirm trial arrangements - On GET', () => {
   it('should render page successfully with IsCaseReady No', async () => {
     mockGetClaimById.mockImplementation(async () => {
       claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
+      claim.totalClaimAmount = 15000;
       return claim;
     });
     await request(app).get(confirmationUrl).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT'));
+    });
+  });
+
+  it('should redirect to latestUpload screen when is small claim', async () => {
+    mockGetClaimById.mockImplementation(async () => {
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
+      claim.totalClaimAmount = 1000;
+      return claim;
+    });
+    await request(app).get(confirmationUrl).expect((res) => {
+      expect(res.status).toBe(302);
+      expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
     });
   });
 
