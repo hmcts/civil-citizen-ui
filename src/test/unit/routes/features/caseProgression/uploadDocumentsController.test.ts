@@ -88,13 +88,20 @@ describe('Upload document- upload document controller', () => {
     const disclosureUpload =
         {'documentsForDisclosure':
             [
-              {'dateDay': '01', 'dateMonth': '01', 'dateYear': '2023', 'fileUpload':
+              {
+                'dateInputFields':
+                    {
+                      'dateDay': '01',
+                      'dateMonth': '01',
+                      'dateYear': '2023',
+                    },
+                'fileUpload':
                   {'fieldname': 'field name',
                     'mimetype': 'application/pdf',
                     'originalname': 'original name',
                     'size': 1234,
                   },
-              'typeOfDocument': 'type',
+                'typeOfDocument': 'type',
               },
             ],
         } as UploadDocumentsUserForm;
