@@ -238,4 +238,3 @@ export const HAS_ANYTHING_CHANGED_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/h
 export const HEARING_DURATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/hearing-duration`;
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/confirmation`;
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
-

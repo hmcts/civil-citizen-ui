@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {t} from 'i18next';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 
 jest.mock('i18next');
 const mockTranslate = t as jest.Mock;
@@ -23,8 +23,8 @@ describe('getBundlesContent', () =>{
   const creationDate = new Date('01-01-2023');
   const hearingDate = new Date('01-01-2022');
 
-  const documentUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234').replace(':documentId', binary);
-  const documentUrlElement = `<a class="govuk-link" href="${documentUrl}">${document.document_filename}</a>`;
+  const documentUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', '1234').replace(':documentId', binary);
+  const documentUrlElement = `<a class="govuk-link" target="_blank" href="${documentUrl}">${document.document_filename}</a>`;
 
   const bundle = new Bundle(title, document, creationDate, hearingDate);
   const bundleWithoutDocument = new Bundle(title, null, creationDate, hearingDate);

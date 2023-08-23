@@ -651,6 +651,36 @@ export class Claim {
     return undefined;
   }
 
+  isBundleStitched(): boolean {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[0]?.stitchedDocument;
+  }
+
+  lastBundleCreatedDate(): Date {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return undefined;
+    }
+
+    BundlesFormatter.orderBundlesNewToOld(caseBundles);
+
+    for(const bundle of caseBundles)
+    {
+      if(bundle.createdOn)
+      {
+        return bundle.createdOn;
+      }
+    }
+
+    return undefined;
+  }
+
   hasClaimTakenOffline() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement;
   }
