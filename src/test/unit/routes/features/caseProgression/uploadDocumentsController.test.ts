@@ -67,16 +67,16 @@ describe('on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
-  it('Type Of Document Section - enter a valid type of document', async () => {
-    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+  it('should display documentForDisclosure validation error when invalid', async () => {
     const documentForDisclosureModel = {
       'documentsForDisclosure': [{
         'typeOfDocument': '',
-        'caseDocument': `${caseDoc}`,
-        'date-day': '',
-        'date-month': '',
-        'date-year': '',
-        'file_upload': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
       }],
     };
 
@@ -102,7 +102,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when Day month and year is invalid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'45','dateMonth':'17','dateYear':'202','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '45',
+          'dateMonth': '17',
+          'dateYear': '202',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -117,7 +127,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when day is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'','dateMonth':'11','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -130,7 +150,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when month is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -143,7 +173,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when year is blank', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -156,7 +196,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when date is in future', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':mockFutureYear,'fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': mockFutureYear,
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -169,7 +219,17 @@ describe('on POST', () => {
   });
 
   it('should not display documentForDisclosure validation error when date is valid', async () => {
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'', 'dateDay':'12','dateMonth':'11','dateYear':'2022','fileUpload':''}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': '',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2022',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -182,7 +242,17 @@ describe('on POST', () => {
   });
 
   it('should display witness validation error when invalid', async () => {
-    const model = {'witnessStatement':[{'witnessName':'', 'dateDay':'','dateMonth':'','dateYear':'','fileUpload':''}]};
+    const model = {
+      'witnessStatement': [{
+        'witnessName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -195,7 +265,19 @@ describe('on POST', () => {
   });
 
   it('should display all expert validation errors', async () => {
-    const model = {'expertReport':[{'expertName':'', 'fieldOfExpertise':'', 'questionDocumentName':'', 'otherPartyQuestionsDocumentName':'', 'dateDay':'','dateMonth':'','dateYear':''}]};
+    const model = {
+      'expertReport': [{
+        'expertName': '',
+        'fieldOfExpertise': '',
+        'questionDocumentName': '',
+        'otherPartyQuestionsDocumentName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+      }],
+    };
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
@@ -242,24 +324,123 @@ describe('on POST', () => {
 
   it('should redirect to the next page when inputs are validated', async () => {
 
-    const documentForDisclosureModel = {'documentsForDisclosure':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'10','dateYear':'2020','fileUpload':'Evidence_01.pdf'}]};
+    const documentForDisclosureModel = {
+      'documentsForDisclosure': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '14',
+          'dateMonth': '10',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_01.pdf',
+      }],
+    };
     const disclosureList = {'disclosureList':[{'fileUpload':'Evidence_02.pdf'}]};
 
-    const witnessStatement = {'witnessStatement':[{'witnessName':'witness Name', 'dateDay':'10','dateMonth':'11','dateYear':'2020','fileUpload':'Evidence_03.pdf'}]};
-    const witnessSummary = {'witnessSummary':[{'witnessName':'witness Name 1', 'dateDay':'11','dateMonth':'11','dateYear':'2020','fileUpload':'Evidence_04.pdf'}]};
-    const noticeOfIntention = {'noticeOfIntention':[{'witnessName':'witness Name 2', 'dateDay':'12','dateMonth':'11','dateYear':'2020','fileUpload':'Evidence_05.pdf'}]};
-    const documentsReferred = {'documentsReferred':[{'typeOfDocument':'Word', 'dateDay':'13','dateMonth':'11','dateYear':'2020','fileUpload':'Evidence_06.pdf'}]};
+    const witnessStatement = {
+      'witnessStatement': [{
+        'witnessName': 'witness Name',
+        'dateInputFields': {
+          'dateDay': '10',
+          'dateMonth': '11',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_03.pdf',
+      }],
+    };
+    const witnessSummary = {
+      'witnessSummary': [{
+        'witnessName': 'witness Name 1',
+        'dateInputFields': {
+          'dateDay': '11',
+          'dateMonth': '11',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_04.pdf',
+      }],
+    };
+    const noticeOfIntention = {
+      'noticeOfIntention': [{
+        'witnessName': 'witness Name 2',
+        'dateInputFields': {
+          'dateDay': '12',
+          'dateMonth': '11',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_05.pdf',
+      }],
+    };
+    const documentsReferred = {
+      'documentsReferred': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '13',
+          'dateMonth': '11',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_06.pdf',
+      }],
+    };
 
-    const expertReport = {'expertReport':[{'expertName':'expert Name', 'fieldOfExpertise':'field Of Expertise', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'dateDay':'11','dateMonth':'12','dateYear':'2020', 'fileUpload':'Evidence_12.pdf'}]};
-    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_13.pdf'}]};
-    const questionsForExperts = {'questionsForExperts':[{'expertName':'John Doe', 'otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'fileUpload':'Evidence_14.pdf'}]};
-    const answersForExperts = {'answersForExperts':[{'expertName':'expert Name 2', 'otherPartyName':'Mark Smith', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_15.pdf'}]};
+    const expertReport = {
+      'expertReport': [{
+        'expertName': 'expert Name',
+        'fieldOfExpertise': 'field Of Expertise',
+        'questionDocumentName': 'question Document Name',
+        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
+        'dateInputFields': {
+          'dateDay': '11',
+          'dateMonth': '12',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_12.pdf',
+      }],
+    };
+    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_13.pdf'}]};
+    const questionsForExperts = {
+      'questionsForExperts': [{
+        'expertName': 'expert Name 1',
+        'fieldOfExpertise': 'field Of Expertise',
+        'questionDocumentName': 'question Document Name',
+        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
+        'dateInputFields': {
+          'dateDay': '10',
+          'dateMonth': '10',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_14.pdf',
+      }],
+    };
+    const answersForExperts = {
+      'answersForExperts': [{
+        'expertName': 'expert Name 2',
+        'fieldOfExpertise': 'field Of Expertise',
+        'questionDocumentName': 'question Document Name',
+        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
+        'dateInputFields': {
+          'dateDay': '11',
+          'dateMonth': '10',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_15.pdf',
+      }],
+    };
 
     const trialCaseSummary = {'trialCaseSummary':[{'fileUpload':'Evidence_07.pdf'}]};
     const trialSkeletonArgument = {'trialSkeletonArgument':[{'fileUpload':'Evidence_08.pdf'}]};
     const trialAuthorities = {'trialAuthorities':[{'fileUpload':'Evidence_09.pdf'}]};
     const trialCosts = {'trialCosts':[{'fileUpload':'Evidence_10.pdf'}]};
-    const trialDocumentary = {'trialDocumentary':[{'typeOfDocument':'Word', 'dateDay':'14','dateMonth':'11','dateYear':'2020','fileUpload':'Evidence_11.pdf'}]};
+    const trialDocumentary = {
+      'trialDocumentary': [{
+        'typeOfDocument': 'Word',
+        'dateInputFields': {
+          'dateDay': '14',
+          'dateMonth': '11',
+          'dateYear': '2020',
+        },
+        'fileUpload': 'Evidence_11.pdf',
+      }],
+    };
 
     const sections = Object.assign(documentForDisclosureModel, disclosureList, witnessStatement, witnessSummary, noticeOfIntention,
       documentsReferred, expertReport, expertStatement, questionsForExperts, answersForExperts, trialCaseSummary, trialSkeletonArgument,
