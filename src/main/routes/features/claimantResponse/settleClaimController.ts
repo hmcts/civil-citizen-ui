@@ -11,7 +11,7 @@ import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {convertToPoundsFilter} from "common/utils/currencyFormat";
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';
