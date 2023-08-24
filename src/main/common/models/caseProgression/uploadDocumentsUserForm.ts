@@ -89,7 +89,6 @@ export class FileUpload {
 
 export class FileOnlySection {
   @ValidateNested()
-  //@Type(() => FileUpload)
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;

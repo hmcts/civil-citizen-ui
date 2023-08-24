@@ -39,9 +39,9 @@ export const buildJointStatementSection = (section: ExpertSection = null, index 
     invalidMonthError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateMonth]`, expertStatement),
     invalidYearError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateYear]`, expertStatement),
     invalidDateError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, expertStatement),
-    invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, expertReport)
-      || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, expertReport)
-      || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, expertReport),
+    invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, expertStatement)
+      || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, expertStatement)
+      || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, expertStatement),
   };
   return new UploadDocumentsSectionBuilder()
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT', null, 'govuk-!-width-three-quarters')
