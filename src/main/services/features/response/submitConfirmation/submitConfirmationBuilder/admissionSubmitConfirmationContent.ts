@@ -139,8 +139,7 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
     },
   ];
   const rejectedOfferContent = getFARejectOfferContent(claim, lang);
-  const notPayImmediatelyContent = getNotPayImmediatelyContent(claim, lang);
-  return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
+  return [...acceptedOfferContent, ...rejectedOfferContent];
 }
 
 export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, lang:string): ClaimSummarySection[] {
@@ -161,8 +160,7 @@ export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, l
     },
   ];
   const rejectedOfferContent = getFARejectOfferContent(claim, lang);
-  const notPayImmediatelyContent = getNotPayImmediatelyContent(claim, lang);
-  return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
+  return [...acceptedOfferContent, ...rejectedOfferContent];
 }
 
 export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSummarySection[]{
