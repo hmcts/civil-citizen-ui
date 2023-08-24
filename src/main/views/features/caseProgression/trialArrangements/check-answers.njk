@@ -28,6 +28,9 @@
             {% if section.summaryList.rows %}
               <div class="govuk-!-margin-bottom-9">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                {% for content in caseInfoContents %}
+                  {{ itemContent(content,t) }}
+                {% endfor %}
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
                     rows: section.summaryList.rows
