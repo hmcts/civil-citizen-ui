@@ -18,6 +18,7 @@ export const buildExpertReportSection = (section: ExpertSection = null, index = 
     invalidDayError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateDay]`, expertReport),
     invalidMonthError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateMonth]`, expertReport),
     invalidYearError: form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateYear]`, expertReport),
+    invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, expertReport),
     invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, expertReport)
       || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, expertReport)
       || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, expertReport),
