@@ -4,7 +4,7 @@ import {
   buildCaseInfoContents,
   buildIsCaseReadyForTrialOrHearing,
 } from 'services/features/response/checkAnswers/caseProgression/trialArrangements/buildTrialReadyConfirmationSection';
-import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {
@@ -18,6 +18,6 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getCaseInfoContents = (claimId: string, claim: Claim, lang?: string | unknown): PageSectionBuilder => {
+export const getCaseInfoContents = (claimId: string, claim: Claim, lang?: string | unknown): ClaimSummarySection[] => {
   return buildCaseInfoContents(claim, claimId, lang);
 };
