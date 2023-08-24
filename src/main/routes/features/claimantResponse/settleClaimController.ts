@@ -26,7 +26,7 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const amount = convertToPoundsFilter(1000);
+    const amount = convertToPoundsFilter(claim.partialAdmissionPaidAmount());
     renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, amount);
   } catch (error) {
     next(error);
