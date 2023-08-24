@@ -102,11 +102,8 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU');
-      expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
-      expect(nextStepsSection[4].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
+      expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
+      expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
     });
   });
 
@@ -143,11 +140,8 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT');
-      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU');
-      expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
-      expect(nextStepsSection[4].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
+      expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
+      expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
     });
   });
 
@@ -240,7 +234,6 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
@@ -260,7 +253,6 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
