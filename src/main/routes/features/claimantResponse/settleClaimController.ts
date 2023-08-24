@@ -11,6 +11,7 @@ import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../services/features/claimantResponse/claimantResponseService';
 import {YesNo} from '../../../common/form/models/yesNo';
+import {convertToPoundsFilter} from "common/utils/currencyFormat";
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';
@@ -25,7 +26,8 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
-    renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, claim.partialAdmissionPaidAmount());
+    const amount = convertToPoundsFilter(1000);
+    renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, amount);
   } catch (error) {
     next(error);
   }
