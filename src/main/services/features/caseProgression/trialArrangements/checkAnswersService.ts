@@ -4,7 +4,7 @@ import {
   buildCaseInfoContents,
   buildIsCaseReadyForTrialOrHearing,
 } from 'services/features/response/checkAnswers/caseProgression/trialArrangements/buildTrialReadyConfirmationSection';
-import {PageSectionBuilder} from "common/utils/pageSectionBuilder";
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {

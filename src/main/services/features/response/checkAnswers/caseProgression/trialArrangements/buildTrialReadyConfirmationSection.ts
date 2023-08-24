@@ -8,8 +8,8 @@ import {
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
-import {PageSectionBuilder} from "common/utils/pageSectionBuilder";
-import {caseNumberPrettify} from "common/utils/stringUtils";
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
