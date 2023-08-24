@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  CLAIMANT_RESPONSE_REJECTION_REASON_URL ,
+  CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../urls';
@@ -26,8 +26,12 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const amount = convertToPoundsFilter(claim.partialAdmissionPaidAmount());
-    renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, amount);
+    if (claim.isFullDefence()) {
+      const rejectAmount = convertToPoundsFilter(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount);
+      renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, rejectAmount);
+    } else {
+      renderView(new GenericForm(claim.claimantResponse?.hasPartPaymentBeenAccepted), res, claim.partialAdmissionPaidAmount());
+    }
   } catch (error) {
     next(error);
   }
@@ -45,7 +49,7 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
       if (form.model.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL ));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL));
       }
     }
   } catch (error) {
