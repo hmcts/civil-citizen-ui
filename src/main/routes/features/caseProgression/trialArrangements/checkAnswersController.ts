@@ -10,7 +10,7 @@ import {
 } from 'routes/urls';
 import {
   getCaseInfoContents,
-  getSummarySections
+  getSummarySections,
 } from 'services/features/caseProgression/trialArrangements/checkAnswersService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import config from 'config';
