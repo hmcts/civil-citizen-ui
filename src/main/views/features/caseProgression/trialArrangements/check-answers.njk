@@ -25,13 +25,14 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
 
+          {% for content in caseInfoContents %}
+            {{ itemContent(content) }}
+          {% endfor %}
+
           {% for section in summarySections.sections %}
             {% if section.summaryList.rows %}
               <div class="govuk-!-margin-bottom-9">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
-                {% for content in caseInfoContents %}
-                  {{ itemContent(content,t) }}
-                {% endfor %}
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
                     rows: section.summaryList.rows

@@ -43,7 +43,10 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
 hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const otherInfo = req.body.otherInformation;
+    let otherInfo = req.body.otherInformation;
+    if(!otherInfo.replace(/\s/g, '').length) {
+      otherInfo = '';
+    }
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
 
