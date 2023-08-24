@@ -8,6 +8,8 @@ import {
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
+import {PageSectionBuilder} from "common/utils/pageSectionBuilder";
+import {caseNumberPrettify} from "common/utils/stringUtils";
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
@@ -25,3 +27,12 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
   return trialReadySummarySections;
 };
 
+export const buildCaseInfoContents = (claim: Claim, claimId: string, lang: string | unknown): PageSectionBuilder => {
+  return new PageSectionBuilder()
+    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE',
+      {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PARTIES', {
+      claimantName: claim.getClaimantFullName(),
+      defendantName: claim.getDefendantFullName(),
+    });
+};

@@ -8,7 +8,10 @@ import {
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
-import {getSummarySections} from 'services/features/caseProgression/trialArrangements/checkAnswersService';
+import {
+  getCaseInfoContents,
+  getSummarySections
+} from 'services/features/caseProgression/trialArrangements/checkAnswersService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -25,8 +28,9 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
   const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   const hearingDurationTrialArrangementsUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
+  const caseInfoContents = getCaseInfoContents(claimId, claim, lang);
   const summarySections = getSummarySections(claimId, claim, lang);
-  res.render(checkAnswersViewPath, {summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl});
+  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl});
 }
 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
