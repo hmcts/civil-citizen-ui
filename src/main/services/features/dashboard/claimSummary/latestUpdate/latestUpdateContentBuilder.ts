@@ -237,6 +237,19 @@ function getPartAdmitAlreadyPaidNotAccepted(claim: Claim) {
     .build();
 }
 
+function getPartAdmitNotPaidNotAccepted(claim: Claim) {
+  const fullAmount = claim.totalClaimAmount;
+  const partAmount = claim.partAdmitPaidValuePounds;
+  const claimantFullName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_ADMISSION`, { claimantFullName, partAmount })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_BELIEVE_FULL_AMOUNT_CLAIMED`, { fullAmount })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
+    .build();
+}
+
 function getStatusFDClaimDispute(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   if(claim.hasRespondent1NotAgreedMediation()) {
@@ -276,6 +289,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),
     [ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED]: getPartAdmitAlreadyPaidNotAccepted(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_NOT_ACCEPTED]: getPartAdmitNotPaidNotAccepted(claim),
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
@@ -416,7 +430,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lng);
   const respondToClaimLink = getRespondToClaimLink(claimId, lng);
   const responseStatus = claim.responseStatus;
-
+  console.log(responseStatus);
   if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
@@ -438,6 +452,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   } else if(claim.hasClaimantRequestedCCJ() && !claim.isClaimSettled()) {
     sectionContent.push(generateCCJRequestedLatestUpdate(claim, lng));
   } else if (claim.isClaimSettled()) {
+    console.log('settled');
     sectionContent.push(generateClaimSettledLatestUpdate(claim, lng));
   } else if (claim.hasApplicant1DeadlinePassed()) {
     sectionContent.push(getLastUpdateForClaimDismissed(claim));
