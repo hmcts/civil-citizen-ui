@@ -52,7 +52,6 @@ describe('Trial Arrangements check answers - On GET', () => {
       });
     const dom = new JSDOM(response.text);
     const htmlDocument = dom.window.document;
-
     const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
     const isCaseReady = getElementsByXPath(
       "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Is the case ready for trial')]]", htmlDocument);
