@@ -139,7 +139,8 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
     },
   ];
   const rejectedOfferContent = getFARejectOfferContent(claim, lang);
-  return [...acceptedOfferContent, ...rejectedOfferContent];
+  const notPayImmediatelyContent = getNotPayImmediatelyContent(claim, lang);
+  return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
 }
 
 export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, lang:string): ClaimSummarySection[] {
@@ -160,7 +161,8 @@ export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, l
     },
   ];
   const rejectedOfferContent = getFARejectOfferContent(claim, lang);
-  return [...acceptedOfferContent, ...rejectedOfferContent];
+  const notPayImmediatelyContent = getNotPayImmediatelyContent(claim, lang);
+  return [...acceptedOfferContent, ...notPayImmediatelyContent, ...rejectedOfferContent];
 }
 
 export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSummarySection[]{
@@ -169,7 +171,7 @@ export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSu
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</p>`,
         variables: {claimantName: claimantName},
       },
     },

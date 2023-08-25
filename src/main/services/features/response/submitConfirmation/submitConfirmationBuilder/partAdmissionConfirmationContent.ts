@@ -183,10 +183,11 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
           </li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li>
         </ul>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT', {lng: lang})}</li>
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', {partialAmount, lng: lang})}</li>
-        </ul>`,
+        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {
+    claimantName,
+    lng: lang,
+  })} ${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', {partialAmount, lng: lang})}
+        </p>`,
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
