@@ -58,5 +58,4 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
 
 });
 
-
 export default settleClaimController;
