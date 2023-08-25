@@ -40,7 +40,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
 
 async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
-  const caseProgressionEnabled = await isCaseProgressionV1Enable() && claim.hasCaseProgressionHearingDocuments();
+  const caseProgressionEnabled = await isCaseProgressionV1Enable();
   const tabItems = [] as TabItem[];
 
   let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
