@@ -9,9 +9,6 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
   UploadDocumentTypes,
-  UploadEvidenceDocumentType,
-  UploadEvidenceExpert,
-  UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
@@ -25,28 +22,9 @@ jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   setLanguage: jest.fn(),
 }));
 
-const documentForWitness = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'witness_document.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
-
-const documentForExpert = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'expert_document.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
-
-const documentForType = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'document_type.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
-
-const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
-const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
-const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
-
+const documentTypeAsParameter = mockTypeDocument;
+const witnessAsParameter = mockWitnessDocument;
+const expertAsParameter = mockExpertDocument;
 describe('toCUIEvidenceUpload', () => {
   it('should convert CCDClaim to CaseProgression', () => {
 

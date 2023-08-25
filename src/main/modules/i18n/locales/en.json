@@ -758,7 +758,12 @@
         "BUNDLE_HEADER": "Trial Bundle",
         "CREATED_DATE_HEADER": "Created On",
         "HEARING_DATE_HEADER": "Hearing Date",
-        "URL_HEADER": "Document URL"
+        "URL_HEADER": "Document URL",
+        "UPLOADED_AFTER_DATE_UPLOADED": "Date uploaded",
+        "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents below have been uploaded since the trial bundle was created.",
+        "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
+        "UPLOADED_AFTER_DOCUMENT": "Document",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
       },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
@@ -1691,6 +1696,7 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in the statement",
       "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Documents you or your witness refer to in the statement, including emails, receipts, invoices, contracts and photos",
       "EXPERT_EVIDENCE": "Expert evidence",
+      "EXPERT_REPORT": "Expert report",
       "EXPERTS_REPORT": "Expert's report",
       "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work. An expert is not a legal representative",
       "HEARING_DOCUMENTS": "Hearing documents",

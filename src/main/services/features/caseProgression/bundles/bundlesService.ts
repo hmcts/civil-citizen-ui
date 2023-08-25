@@ -6,11 +6,25 @@ import {t} from 'i18next';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {
+  UploadedEvidenceFormatter,
+} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 
 export function getBundlesContent(claim: Claim, lang: string): ClaimSummaryContent[] {
 
-  const tableHeaders = getTableHeaders(lang);
-  const tableRows = getTableRows(claim);
+  const claimSummaryContent = [] as ClaimSummaryContent[];
+  claimSummaryContent.push(getBundles(claim, lang));
+  claimSummaryContent.push(getUploadedAfterBundle(claim, lang, true));
+  claimSummaryContent.push(getUploadedAfterBundle(claim, lang, false));
+
+  return claimSummaryContent;
+}
+
+function getBundles(claim: Claim, lang: string): ClaimSummaryContent {
+
+  const tableHeaders = getBundleTableHeaders(lang);
+  const tableRows = getBundleTableRows(claim);
 
   const bundlesSection = new TabSectionBuilder()
     .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW')
@@ -19,10 +33,32 @@ export function getBundlesContent(claim: Claim, lang: string): ClaimSummaryConte
     .addTable(tableHeaders, tableRows, 'tableWrap')
     .build();
 
-  return [{contentSections: bundlesSection, hasDivider: false}];
+  return {contentSections: bundlesSection, hasDivider: false};
 }
 
-function getTableHeaders(lang: string): TableCell[]{
+function getUploadedAfterBundle(claim: Claim, lang: string, isClaimant: boolean): ClaimSummaryContent {
+
+  const claimantLastUploadDate = claim.caseProgression?.claimantLastUploadDate;
+  const defendantLastUploadDate = claim.caseProgression?.defendantLastUploadDate;
+
+  if(isClaimant && (!claimantLastUploadDate || claim.lastBundleCreatedDate() > claimantLastUploadDate)){
+    return undefined;
+  } else if (!isClaimant && (!defendantLastUploadDate || claim.lastBundleCreatedDate() > defendantLastUploadDate)){
+    return undefined;
+  }
+
+  const documentUploadedBy = isClaimant ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
+
+  const uploadedAfterBundlesSection = new TabSectionBuilder()
+    .addTitle(documentUploadedBy+t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS', {lng: lang}))
+    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW')
+    .addTable(getUploadedAfterTableHeaders(lang), getUploadedAfterTableRows(claim, isClaimant, lang), 'tableWrap')
+    .build();
+
+  return {contentSections: uploadedAfterBundlesSection, hasDivider: false};
+}
+
+function getBundleTableHeaders(lang: string): TableCell[]{
   const tableHeaders = [] as TableCell[];
 
   tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.BUNDLE_HEADER', {lng:lang})});
@@ -33,7 +69,7 @@ function getTableHeaders(lang: string): TableCell[]{
   return tableHeaders;
 }
 
-function getTableRows(claim: Claim): TableCell[][] {
+function getBundleTableRows(claim: Claim): TableCell[][] {
 
   const tableRows = [] as TableCell[][];
   const bundles = claim.caseProgression?.caseBundles;
@@ -55,4 +91,66 @@ function getTableRows(claim: Claim): TableCell[][] {
   }
 
   return tableRows;
+}
+
+function getUploadedAfterTableHeaders(lang: string): TableCell[]{
+  const tableHeaders = [] as TableCell[];
+
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENT_NAME', {lng:lang})});
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DATE_UPLOADED', {lng:lang})});
+  tableHeaders.push({html: t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENT', {lng:lang})});
+
+  return tableHeaders;
+}
+
+function getUploadedAfterTableRows(claim: Claim, isClaimant: boolean, lang: string): TableCell[][] {
+
+  const tableRows = [] as TableCell[][];
+
+  let uploadedDocuments: UploadDocuments;
+
+  if(isClaimant){
+    uploadedDocuments = claim.caseProgression?.claimantUploadDocuments;
+  } else {
+    uploadedDocuments = claim.caseProgression?.defendantUploadDocuments;
+  }
+
+  if(!uploadedDocuments) {
+    return undefined;
+  }
+
+  if(uploadedDocuments.disclosure && uploadedDocuments.disclosure.length > 0) {
+    uploadedDocuments.disclosure?.forEach(element => {
+      addUploadedAfterBundleToTable(element, claim, tableRows, lang);
+    });
+  }
+
+  if(uploadedDocuments.witness && uploadedDocuments.witness.length > 0) {
+    uploadedDocuments.witness?.forEach(element => {
+      addUploadedAfterBundleToTable(element, claim, tableRows, lang);
+    });
+  }
+
+  if(uploadedDocuments.expert && uploadedDocuments.expert.length > 0) {
+    uploadedDocuments.expert?.forEach(element => {
+      addUploadedAfterBundleToTable(element, claim, tableRows, lang);
+    });
+  }
+
+  if(uploadedDocuments.trial && uploadedDocuments.trial.length > 0) {
+    uploadedDocuments.trial?.forEach(element => {
+      addUploadedAfterBundleToTable(element, claim, tableRows, lang);
+    });
+  }
+
+  return tableRows;
+}
+
+function addUploadedAfterBundleToTable(document: UploadDocumentTypes, claim: Claim, tableRows: TableCell[][], lang: string){
+  if(document.caseDocument?.createdDatetime > claim.lastBundleCreatedDate()){
+    const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(document.documentType, lang);
+    const documentLink = UploadedEvidenceFormatter.getDocumentLink(document, claim.id);
+
+    tableRows.push([{html: documentTypeName}, {html: document.createdDateTimeFormatted}, {html: documentLink}]);
+  }
 }
