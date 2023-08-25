@@ -82,8 +82,7 @@ describe('Hearing duration & other information - on POST', () => {
       });
   });
 
-  it('should redirect when otherInformation is not filled in', async () => {
-
+  it('should return "Something went wrong" page when nothing filled in', async () => {
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
@@ -94,8 +93,8 @@ describe('Hearing duration & other information - on POST', () => {
       .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 

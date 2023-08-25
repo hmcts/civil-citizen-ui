@@ -2,7 +2,7 @@ import {getSummarySections} from 'services/features/caseProgression/trialArrange
 import {getClaimWithDefendantTrialArrangements} from '../../../../../utils/mockClaimForCheckAnswers';
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 
-const HAS_ANYTHING_CHANGED_HTML = '<p>yes</p><hr class="govuk-section-break--visible" ><p>Changed</p>';
+const HAS_ANYTHING_CHANGED_HTML = '<p>COMMON.YES</p><hr class="govuk-section-break--visible--l" ><p>Changed</p>';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
@@ -18,7 +18,7 @@ describe('check your answers trial ready', () => {
 
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(3);
-    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('yes');
+    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[0].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[0].summaryList.rows[0].actions?.items[0].href).toBe(IS_CASE_READY_URL.replace(':id', claim.id));
     expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(HAS_ANYTHING_CHANGED_HTML);
