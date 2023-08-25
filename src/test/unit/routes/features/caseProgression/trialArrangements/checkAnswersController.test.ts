@@ -1,6 +1,4 @@
-import {
-  mockCivilClaim,
-} from '../../../../../utils/mockDraftStore';
+import { mockCivilClaimFastTrack } from '../../../../../utils/mockDraftStore';
 import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   HAS_ANYTHING_CHANGED_URL,
@@ -41,7 +39,7 @@ describe('Trial Arrangements check answers - On GET', () => {
 
   it('should render page successfully with all summary rows', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
     mockGetSummarySections.mockImplementation(() => {
       return createSummaryListWithAllSectionDetails();
     });
@@ -91,7 +89,7 @@ describe('Trial Arrangements check answers - On GET', () => {
 
 describe('Trial Arrangements check answers - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
   });
 
   it('should call ccd when submitted and redirected to the confirmation page', async () => {

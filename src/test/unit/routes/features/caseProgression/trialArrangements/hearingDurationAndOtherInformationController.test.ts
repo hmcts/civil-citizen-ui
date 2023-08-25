@@ -65,7 +65,6 @@ describe('Hearing duration & other information - on POST', () => {
   });
 
   it('should redirect when other information is filled in', async () => {
-
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
