@@ -35,6 +35,17 @@
   }
 }
 
+.govuk-section-break--visible--l {
+  border-bottom: 1px solid #b1b4b6;
+}
+@media (min-width: 40.0625em) {
+  .govuk-section-break--visible--l {
+    border-bottom: 1px solid #b1b4b6;
+    width: 120%;
+  }
+}
+
+
 .hide {
   display: none;
 }
