@@ -1577,6 +1577,16 @@
           "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad",
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+        },
+        "FINALISE_TRIAL_ARRANGEMENTS": {
+          "TITLE": "Finalise your trial arrangements for your upcoming trial",
+          "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
+          "DUE_BY": "Due by: Midnight, {{ finalisingTrialArrangementsDeadline }}",
+          "IF_THERE_ARE_CHANGES_BEGINNING": "If there are changes to your trial arrangements, you should let us know by",
+          "IF_THERE_ARE_CHANGES_END": "midnight, {{ finalisingTrialArrangementsDeadline }}",
+          "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
+          "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
+          "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -1641,7 +1651,13 @@
       "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
       "WE_WILL_CONTACT_YOU": "We’ll contact you to let you know how they respond. They can confirm you’ve paid and the claim is settled, or they can proceed with it.",
       "WE_WILL_POST_COPY": "Otherwise we’ll post a copy of the CCJ to you and to {{ claimantName }} and explain what to do next.",
-      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm."
+      "WORKING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG1": "You have rejected the claim. You’ve suggested mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG2": "We’ll ask {{ claimantName }} if they agree to take part in mediation.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG3": "If they say yes, we’ll arrange a date for mediation. If they say no we’ll send you a directions questionnaire this is a form you complete to tell us more about the claim.",
+      "YOU_HAVE_REJECTED_CLAIM": "You’ve rejected the claim.",
+      "NO_MEDIATION_REQUIRED": "You said you don’t want to use mediation to solve it. You might have to go to a hearing",
+      "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "We’ll contact you when the claimant responds"
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
@@ -2294,6 +2310,7 @@
       "WE_CONTACT_YOU": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "SETUP_REPAYMENT_PLAN": "sefydlwch eich cynllun ad-dalu i ddechrau pan ddywedoch chi y byddai’n dechrau",
       "THE_CLAIM_WILL_BE_SETTLED": "Bydd yr honiad yn cael ei setlo",
+      "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
@@ -2917,6 +2934,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
     "VALID_DAY": "Rhowch ddydd dilys",
+    "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Rhowch swm dilys o Dreth Gyngor neu Dreth Gymunedol, uchafswm dau le degol",
       "ELECTRICITY": "Rhowch swm Trydan dilys, uchafswm dau le degol",
@@ -2994,6 +3012,6 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT":"Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
   }
 }
