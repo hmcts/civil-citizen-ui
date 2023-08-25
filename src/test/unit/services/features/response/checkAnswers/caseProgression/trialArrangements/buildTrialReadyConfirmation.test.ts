@@ -15,7 +15,7 @@ jest.mock('i18next', () => ({
 }));
 
 const claimId = '11';
-const HAS_ANYTHING_CHANGED_HTML = '<p>yes</p><hr class="govuk-section-break--visible" ><p>Changed</p>';
+const HAS_ANYTHING_CHANGED_HTML = '<p>COMMON.YES</p><hr class="govuk-section-break--visible--l" ><p>Changed</p>';
 describe('Trial ready summary details section', () => {
   const claim = getClaimWithDefendantTrialArrangements();
   it('should return trial ready summary sections', async () => {
@@ -23,7 +23,7 @@ describe('Trial ready summary details section', () => {
     const summarySections = await buildIsCaseReadyForTrialOrHearing(claim, claimId, 'en');
     //Then
     expect(summarySections.summaryList.rows.length).toBe(3);
-    expect(summarySections.summaryList.rows[0].value.html).toBe('yes');
+    expect(summarySections.summaryList.rows[0].value.html).toBe('COMMON.YES');
     expect(summarySections.summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.summaryList.rows[0].actions?.items[0].href).toBe(IS_CASE_READY_URL.replace(':id', claimId));
     expect(summarySections.summaryList.rows[1].value.html).toBe(HAS_ANYTHING_CHANGED_HTML);
