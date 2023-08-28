@@ -35,12 +35,11 @@
   }
 }
 
-.govuk-section-break-larger {
-  border-bottom: 1px solid #b1b4b6;
+.govuk-section-break--visible--l {
+    width: 100%;
 }
 @media (min-width: 40.0625em) {
-  .govuk-section-break-larger {
-    border-bottom: 1px solid #b1b4b6;
+  .govuk-section-break--visible--l {
     width: 120%;
   }
 }
