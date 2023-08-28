@@ -154,7 +154,7 @@ export class Claim {
     }
 
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO && this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_NOT_ACCEPTED;
+      return ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED;
     }
 
     if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
