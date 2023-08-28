@@ -1,18 +1,20 @@
-import {getSummarySections} from 'services/features/caseProgression/trialArrangements/checkAnswersService';
+import {
+  getSummarySections,
+} from 'services/features/caseProgression/trialArrangements/checkAnswersService';
 import {getClaimWithDefendantTrialArrangements} from '../../../../../utils/mockClaimForCheckAnswers';
 import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 
 const HAS_ANYTHING_CHANGED_HTML = '<p>COMMON.YES</p><hr class="govuk-section-break--visible--l" ><p>Changed</p>';
-
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-describe('check your answers trial ready', () => {
 
+describe('check your answers trial ready', () => {
   it('should return all the summary sections', () => {
     //Given
     const claim = getClaimWithDefendantTrialArrangements();
+
     //when
     const summarySections = getSummarySections(claim.id, claim, 'en');
 

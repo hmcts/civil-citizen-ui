@@ -44,7 +44,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
 export const buildCaseInfoContents = (claim: Claim, claimId: string, lang: string | unknown): ClaimSummarySection[] => {
   return new PageSectionBuilder()
     .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE',
-      {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
+      {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),
