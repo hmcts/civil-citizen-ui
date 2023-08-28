@@ -28,7 +28,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
     '<p>'+t(`COMMON.${claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.option.toUpperCase()}`, { lng: getLng(lang) })
-    +'</p><hr class="govuk-section-break--visible--l" ><p>'
+    +'</p><hr class="govuk-section-break-larger" ><p>'
     + t(`${claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.textArea}`, { lng: getLng(lang) })
     +'</p>', constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL), changeLabel(lang)));
 

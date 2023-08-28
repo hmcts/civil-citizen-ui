@@ -15,7 +15,7 @@ jest.mock('i18next', () => ({
 }));
 
 const claimId = '11';
-const HAS_ANYTHING_CHANGED_HTML = '<p>COMMON.YES</p><hr class="govuk-section-break--visible--l" ><p>Changed</p>';
+const HAS_ANYTHING_CHANGED_HTML = '<p>COMMON.YES</p><hr class="govuk-section-break-larger" ><p>Changed</p>';
 describe('Trial ready summary details section', () => {
   const claim = getClaimWithDefendantTrialArrangements();
   it('should return trial ready summary sections', async () => {
