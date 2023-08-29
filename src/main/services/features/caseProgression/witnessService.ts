@@ -38,7 +38,7 @@ export const getWitnessContent = (claim: Claim, form: GenericForm<UploadDocument
 const getWitnessStatement = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.witnessStatement.length != 0) {
     form.model.witnessStatement.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildWitnessStatement(witnessSection, index, form)]);
     });
@@ -55,7 +55,7 @@ const getWitnessStatement = (form: GenericForm<UploadDocumentsUserForm>): ClaimS
 const getWitnessSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.witnessSummary.length != 0) {
     form.model.witnessSummary.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildWitnessSummary(witnessSection, index, form)]);
     });
@@ -72,7 +72,7 @@ const getWitnessSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSum
 const getNoticeOfIntention = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.noticeOfIntention.length != 0) {
     form.model.noticeOfIntention.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildNoticeOfIntention(witnessSection, index, form)]);
     });
@@ -89,7 +89,7 @@ const getNoticeOfIntention = (form: GenericForm<UploadDocumentsUserForm>): Claim
 const getDocumentsReferred = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.documentsReferred.length != 0) {
     form.model.documentsReferred.forEach(function (documentsReferred: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildDocumentsReferred(documentsReferred, index, form)]);
     });
