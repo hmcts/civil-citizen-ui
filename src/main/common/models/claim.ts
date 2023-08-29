@@ -613,10 +613,15 @@ export class Claim {
   }
 
   get bundleStitchingDeadline(): string {
-    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
-    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+    return this.threeWeeksBeforeHearingDate();
+  }
+
+  get finalisingTrialArrangementsDeadline(): string {
+    return this.threeWeeksBeforeHearingDate();
+  }
+
+  isSixWeeksOrLessFromTrial(): boolean {
+    return new Date() >= this.sixWeeksBeforeHearingDate();
   }
 
   hasClaimTakenOffline() {
@@ -645,6 +650,19 @@ export class Claim {
 
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
+  }
+  
+  threeWeeksBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+  }
+
+  private  sixWeeksBeforeHearingDate(): Date {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
+    return new Date(hearingDateTime - sixWeeksMilli);
   }
 
   hasRespondent1NotAgreedMediation() {
