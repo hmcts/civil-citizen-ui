@@ -1,10 +1,7 @@
 import { mockCivilClaimFastTrack } from '../../../../../utils/mockDraftStore';
 import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
-  HAS_ANYTHING_CHANGED_URL,
-  IS_CASE_READY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -12,8 +9,6 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {t} from 'i18next';
 import {getElementsByXPath} from '../../../../../utils/xpathExtractor';
-import {SummarySections} from 'models/summaryList/summarySections';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimWithDefendantTrialArrangements} from '../../../../../utils/mockClaimForCheckAnswers';
@@ -107,57 +102,3 @@ describe('Trial Arrangements check answers - on POST', () => {
       });
   });
 });
-
-export function createSummaryListWithAllSectionDetails(): SummarySections {
-  return {
-    sections: [{
-      title: t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE'),
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: t('PAGES.IS_CASE_READY.IS_CASE_READY'),
-            },
-            value: {
-              text: 'no',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL),
-                text: 'Change',
-              }],
-            },
-          },
-          {
-            key: {
-              text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES'),
-            },
-            value: {
-              text: '<p>no</p><hr class="govuk-section-break--visible" ><p>changes</p>',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL),
-                text: 'Change',
-              }],
-            },
-          },
-          {
-            key: {
-              text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE'),
-            },
-            value: {
-              text: 'other information',
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION),
-                text: 'Change',
-              }],
-            },
-          },
-        ],
-      },
-    }],
-  };
-}

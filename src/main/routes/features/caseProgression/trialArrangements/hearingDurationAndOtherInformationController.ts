@@ -7,7 +7,7 @@ import {
 import {
   getHearingDurationAndOtherInformation,
 } from 'services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation';
-import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {caseNumberPrettify, removeWhiteSpacesIfNoText} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -44,7 +44,7 @@ hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (re
   try {
     const claimId = req.params.id;
     let otherInfo = req.body.otherInformation;
-    otherInfo = removeWhiteSpaces(otherInfo);
+    otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
 
@@ -55,11 +55,4 @@ hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (re
   }
 })as RequestHandler);
 
-function removeWhiteSpaces(otherInfo:string): string {
-  if(!otherInfo.replace(/\s/g, '').length) {
-    return '';
-  } else {
-    return otherInfo;
-  }
-}
 export default hearingDurationController;
