@@ -38,8 +38,9 @@ function createLoading(event) {
 function removeLoading(event) {
   const eventId = event.target.id;
   const loadingContainer = document.getElementById(`${eventId}-loadingContainer`);
-  loadingContainer.remove();
-
+  if (loadingContainer) {
+    loadingContainer.remove();
+  }
 }
 
 function elementExists(element) {

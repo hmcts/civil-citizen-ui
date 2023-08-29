@@ -42,6 +42,7 @@ export enum CaseState {
   CASE_STAYED = 'CASE_STAYED',
   CASE_SETTLED = 'CASE_SETTLED',
   IN_MEDIATION = 'IN_MEDIATION',
+  JUDICIAL_REFERRAL = 'JUDICIAL_REFERRAL',
 }
 
 export interface ClaimantMediationLip {
