@@ -60,6 +60,7 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {CaseRole} from 'form/models/caseRoles';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -116,6 +117,7 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseRole?: CaseRole;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -651,7 +653,7 @@ export class Claim {
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
-  
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
@@ -672,6 +674,11 @@ export class Claim {
   hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
+
+  isClaimant(){
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE;
+  }
+
 }
 
 export interface StatementOfTruth {

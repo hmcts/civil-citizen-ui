@@ -54,6 +54,7 @@ import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsTy
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {CaseRole} from 'form/models/caseRoles';
 
 export class CivilClaimResponse {
   id: string;
@@ -217,6 +218,7 @@ export interface CCDClaim extends ClaimUpdate {
   lastModifiedDate?: Date;
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  caseRole?: CaseRole;
 }
 
 export interface ClaimFeeData {

@@ -41,6 +41,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
     claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
   }
   claim.claimantResponse = claimantResponse;
+  claim.caseRole = ccdClaim?.caseRole;
+
   return claim;
 };
 

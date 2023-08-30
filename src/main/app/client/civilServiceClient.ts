@@ -12,7 +12,7 @@ import {
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -27,6 +27,7 @@ import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/
 import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
+import {CaseRole} from 'form/models/caseRoles';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -115,6 +116,8 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       logger.info('----ccd-caseDetails----', caseDetails);
+
+      caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
@@ -281,6 +284,22 @@ export class CivilServiceClient {
     } catch (error: unknown) {
       logger.error(error);
       throw error;
+    }
+  }
+
+  async getUserCaseRoles(documentId: string, req: AppRequest) {
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_USER_CASE_ROLE
+        .replace(':documentId', documentId)
+      , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      const responseRoles = response.data as string[];
+      return responseRoles
+        .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
+        .at(0);
+
+    } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
     }
   }
 }
