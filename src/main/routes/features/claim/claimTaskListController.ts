@@ -11,24 +11,26 @@ import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
-  try {
-    const userId = req.session?.user?.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getCaseDataFromStore(userId);
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (req: AppRequest, res: Response, next: NextFunction): void => {
+  (async () => {
+    try {
+      const userId = req.session?.user?.id;
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const caseData: Claim = await getCaseDataFromStore(userId);
 
-    if(caseData === undefined || caseData.id === undefined) {
-      await saveDraftClaim(userId, new Claim());
+      if(caseData === undefined || caseData.id === undefined) {
+        await saveDraftClaim(userId, new Claim());
+      }
+
+      const taskLists = getTaskLists(caseData, userId, lang);
+      const {completed, total} = calculateTotalAndCompleted(taskLists);
+      const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
+      const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
+      res.render(taskListViewPath, {taskLists, title, description});
+    } catch (error) {
+      next(error);
     }
-
-    const taskLists = getTaskLists(caseData, userId, lang);
-    const {completed, total} = calculateTotalAndCompleted(taskLists);
-    const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
-    const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
-    res.render(taskListViewPath, {taskLists, title, description});
-  } catch (error) {
-    next(error);
-  }
+  })();
 });
 
 export default claimTaskListController;
