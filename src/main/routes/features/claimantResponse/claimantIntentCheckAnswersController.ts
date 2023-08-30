@@ -13,10 +13,9 @@ import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-sto
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {submitResponse} from 'services/features/response/submission/submitResponse';
-import {AppRequest} from 'models/AppRequest';
+import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
+import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantIntentCheckAnswersController = Router();
@@ -43,6 +42,7 @@ claimantIntentCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
 
 claimantIntentCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // TODO : check if it's required
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
@@ -53,7 +53,7 @@ claimantIntentCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, a
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      await submitResponse(<AppRequest>req);
+      await submitClaimantResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(req.params.id);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
@@ -63,4 +63,5 @@ claimantIntentCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, a
 });
 
 export default claimantIntentCheckAnswersController;
+
 
