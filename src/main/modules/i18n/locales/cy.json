@@ -2180,7 +2180,7 @@
         "TITLE": "Hawliadau am Arian yn y Llys Sifil"
       },
       "WE_MUST_RECEIVE_COMPLETED_FORM": "Rhaid i ni gael eich ffurflen wedi'i llenwi cyn <span class=\"govuk-body govuk-!-font-weight-bold\">4pm ar {{ deadline }}</span>. Bydd yr hawliad yn eich erbyn yn mynd yn ei flaen os na fyddwn yn cael eich ffurflen.",
-      "CLAIM_FEE": "% of claim value"
+      "CLAIM_FEE": "% o werth hawliad"
     },
     "SENT_EXPERT_REPORTS": {
       "OPTION_NOT_RECEIVED": "Naddo, nid wyf wedi’u cael eto",
@@ -3004,8 +3004,8 @@
     "VALID_MIME_TYPE_FILE": "Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Document must be less than 100MB",
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
-    "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
-    "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
+    "QUESTION_1_REQUIRED": "Dewiswch oes os yw rhywun yn fregus mewn ffordd y mar angen i’r llys ei hystyried",
+    "QUESTION_2_REQUIRED": "Dywedwch wrthym pwy sy'n agored i niwed a pha gefnogaeth sydd ei hangen arnynt",
     "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Enter why you rejected repayment plan",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Date of document must include a day",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Date of document must include a month",
