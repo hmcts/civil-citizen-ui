@@ -64,10 +64,13 @@
           {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
             {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
           {% endif %}
-          {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE'),
-              href: continueLink
-          }) }}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE'),
+                href: continueLink
+              }) }}
+            </form>
           {{ contactUsForHelp(t) }}
         </div>
       </div>
