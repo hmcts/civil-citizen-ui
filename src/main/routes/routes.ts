@@ -210,6 +210,7 @@ import hearingDurationController from 'routes/features/caseProgression/trialArra
 import documentViewController from 'routes/features/document/documentViewController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
+import claimantIntentCheckAnswersController from './features/claimantResponse/claimantIntentCheckAnswersController';
 
 export default [
   homeController,
@@ -407,4 +408,5 @@ export default [
   hearingDurationController,
   documentViewController,
   trialArrangementsConfirmationController,
+  claimantIntentCheckAnswersController,
 ];
