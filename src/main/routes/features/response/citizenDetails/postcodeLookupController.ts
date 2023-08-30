@@ -1,10 +1,7 @@
 import {NextFunction, Router} from 'express';
-import {AddressInfoResponse, OSPlacesClient} from '@hmcts/os-places-client';
+import { AddressInfoResponse } from '@hmcts/os-places-client';
 import {POSTCODE_LOOKUP_URL} from '../../../urls';
-import config from 'config';
-
-const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
-const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
+import { getOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
 
 export default Router()
   .get(POSTCODE_LOOKUP_URL, (req, res, next: NextFunction) => {
@@ -16,6 +13,7 @@ export default Router()
         },
       });
     }
+    const osPlacesClient = getOSPlacesClientInstance();
     osPlacesClient.lookupByPostcodeAndDataSet(req.query.postcode as string, 'DPA,LPI')
       .then((addressInfoResponse: AddressInfoResponse) => {
         if (!addressInfoResponse.isValid) {

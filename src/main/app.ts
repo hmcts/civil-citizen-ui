@@ -29,6 +29,7 @@ import {
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
+import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -54,6 +55,9 @@ new PropertiesVolume().enableFor(app);
 
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+
+logger.info('Creating OSplaces Client Instance');
+createOSPlacesClientInstance();
 
 logger.info('Adding configuration for session store');
 const sessionStore = getRedisStoreForSession();
