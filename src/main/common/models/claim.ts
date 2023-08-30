@@ -81,7 +81,7 @@ export class Claim {
   timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
-  claimantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
+  claimantStatementOfTruth?: StatementOfTruthForm;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
@@ -652,7 +652,7 @@ export class Claim {
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
-  
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
