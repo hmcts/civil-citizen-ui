@@ -149,6 +149,7 @@ export const enum TestMessages {
   VALID_AMOUNT_BREAKDOWN = 'Enter an amount of money',
   VALID_DATE_IN_PAST = 'Enter date before',
   VALID_DATE_NOT_IN_PAST = 'Enter a date that is today or in the future',
+  FIRST_PAYMENT_MESSAGE = 'Date must not be sooner than',
   VALID_VALUE = 'Are you sure this is a valid value?',
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
