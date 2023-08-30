@@ -27,26 +27,38 @@ const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledCh
 const mockWithoutOtherDependents = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutOtherDependent)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockWithOption1ToRedirectToCarer = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseOption1ToRedirectToCarer)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockWithOption2ToRedirectToCarer = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseOption2ToRedirectToCarer)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 export const mockWithSeverelyDisabledDefendant = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseSeverelyDisabledDefendant)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockWithDisabledPartner = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledChildrenMock)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockWithDisabledChildren = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledPartnerMock)),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 jest.mock('../../../../../../../main/modules/oidc');

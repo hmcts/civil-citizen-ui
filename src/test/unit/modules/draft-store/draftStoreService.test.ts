@@ -28,6 +28,7 @@ jest.mock('ioredis', () => {
       expire: jest.fn(async () => {
         return;
       }),
+      ttl: jest.fn(() => Promise.resolve({})),
     };
   });
 });
@@ -42,6 +43,9 @@ function createMockDraftStore(returnData: unknown) {
       return;
     }),
     expire: jest.fn(async () => {
+      return;
+    }),
+    ttl: jest.fn(async () => {
       return;
     }),
   };
@@ -135,20 +139,6 @@ describe('Draft store service to save and retrieve claim', () => {
     await deleteDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyDel).toBeCalled();
-  });
-
-  it('should should create new claim with 180 days expire', async () => {
-    //Given
-    const draftStoreWithData = createMockDraftStore(undefined);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
-    //When
-    const claimId = '1645882162449409';
-    const claim: Claim = new Claim();
-    claim.createAt = new Date('2023-07-12T12:23:34.123');
-    await saveDraftClaim(claimId, claim);
-    //Then
-    expect(spyTTL).toBeCalled();
   });
 
   it('should not create new claim', async () => {

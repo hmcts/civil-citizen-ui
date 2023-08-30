@@ -45,16 +45,22 @@ const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
 const mockEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockEmployedAndSelfEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockSelfEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 jest.mock('../../../../../../../main/modules/oidc');

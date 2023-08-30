@@ -28,64 +28,91 @@ const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
   del: jest.fn(() => Promise.resolve({})),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimFastTrack = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFastTrackMock))),
   del: jest.fn(() => Promise.resolve({})),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUndefined = {
   set: jest.fn(() => Promise.resolve(undefined)),
   get: jest.fn(() => Promise.resolve(undefined)),
   expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockNoStatementOfMeans = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(noStatementOfMeansMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimOptionNo = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseOptionNoMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUnemploymentRetired = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseUnemploymentRetired))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimUnemploymentOther = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseUnemploymentOther))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockRedisWithMediationProperties = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantWithMediation))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockRedisWithoutAdmittedPaymentAmount = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseNoAdmittedPaymentAmountMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockRedisWithPaymentAmount = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithAdmittedPaymentAmountMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockRedisFullAdmission = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFullAdmissionMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimWithTimelineAndEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithTimelineAndEvidenceMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimantIntention = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockResponseFullAdmitPayBySetDate = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(fullAdmitPayBySetDateMock))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockRedisFailure = {
@@ -96,6 +123,8 @@ const mockRedisFailure = {
   get: jest.fn(() => {
     throw new Error(TestMessages.REDIS_FAILURE);
   }),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockLogger = {
@@ -111,27 +140,37 @@ const mockCivilClaimApplicantCompanyType = {
 const mockCivilClaimApplicantIndividualType = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithoutPhoneNumber))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimPDFTimeline = {
   del: jest.fn(() => Promise.resolve({})),
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockClaimantClaims = {
@@ -142,6 +181,8 @@ const mockClaimantClaims = {
 const mockCivilClaimWithExpertAndWitness = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithWithExpertAndWitness))),
+  expire: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 export {
