@@ -216,6 +216,8 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
 }
 
 export interface ClaimFeeData {

@@ -13,9 +13,12 @@ import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
+import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
+  const claimantResponse: ClaimantResponse = new ClaimantResponse();
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
   claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
@@ -32,9 +35,12 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.specClaimTemplateDocumentFiles = ccdClaim?.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
   if (claim.isFullAdmission()) {
     claim.fullAdmission = toCUIFullAdmission(ccdClaim);
+    claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptFullAdmitPaymentPlanSpec);
   } else if (claim.isPartialAdmission()) {
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+    claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
   }
+  claim.claimantResponse = claimantResponse;
   return claim;
 };
 
