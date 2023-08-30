@@ -20,10 +20,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
     }
   }
 
-  if(claim.hasSdoOrderDocument())
-  {
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
-  }
+  sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
 
   return getClaimSummaryContent(sectionContent.flat());
 };

@@ -55,26 +55,24 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
   let evidenceUploadTabId: TabId;
   let evidenceUploadContent: ClaimSummaryContent[];
 
-  if(caseProgressionEnabled) {
+  if(caseProgressionEnabled && claim.hasSdoOrderDocument()) {
     latestUpdateContent = getCaseProgressionLatestUpdates(claim, lang);
 
-    if(claim.hasSdoOrderDocument()) {
-      latestUpdateTabLabel = TabLabel.UPDATES;
-      latestUpdateTabId = TabId.UPDATES;
+    latestUpdateTabLabel = TabLabel.UPDATES;
+    latestUpdateTabId = TabId.UPDATES;
 
-      noticesTabLabel = TabLabel.NOTICES;
-      noticesTabId = TabId.NOTICES;
+    noticesTabLabel = TabLabel.NOTICES;
+    noticesTabId = TabId.NOTICES;
 
-      evidenceUploadTabLabel = TabLabel.DOCUMENTS;
-      evidenceUploadTabId = TabId.DOCUMENTS;
-      evidenceUploadContent = getEvidenceUploadContent(claim);
-    }
+    evidenceUploadTabLabel = TabLabel.DOCUMENTS;
+    evidenceUploadTabId = TabId.DOCUMENTS;
+    evidenceUploadContent = getEvidenceUploadContent(claim);
   }
 
   tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
   tabItems.push(new TabItem(noticesTabLabel, noticesTabId, noticesContent));
 
-  if (caseProgressionEnabled) {
+  if (caseProgressionEnabled && claim.hasSdoOrderDocument()) {
     tabItems.push(new TabItem(evidenceUploadTabLabel, evidenceUploadTabId, evidenceUploadContent));
   }
 
