@@ -12,10 +12,6 @@
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE') }}
 {% endblock %}
 
-{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
-                    + '<p class="govuk-!-margin-top-2">'
-                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
-                    +'</p>' %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -40,6 +36,9 @@
           {% endfor %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+            <input type="hidden" name="type" value="{{ form.model.type }}">
+            <input type="hidden" name="isClaimantRejectedDefendantOffer" value="{{ form.model.isFullAmountRejected }}">
+            {% if form.model.isFullAmountRejected === true %}
             {{ govukCheckboxes({
               idPrefix: 'directionsQuestionnaireSigned',
               name: 'directionsQuestionnaireSigned',
@@ -54,6 +53,7 @@
               text:t(form.errorFor(directionsQuestionnaireSigned))
               } if form.errorFor(directionsQuestionnaireSigned)
             }) }}
+            {% endif %}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')

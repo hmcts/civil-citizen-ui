@@ -23,7 +23,7 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    claim.claimantStatementOfTruth = claimantStatementOfTruth;
+    claim.claimantResponse.claimantStatementOfTruth = claimantStatementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

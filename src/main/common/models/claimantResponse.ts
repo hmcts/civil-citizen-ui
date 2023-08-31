@@ -10,6 +10,7 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -28,6 +29,7 @@ export class ClaimantResponse {
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
+  claimantStatementOfTruth?: StatementOfTruthForm;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;

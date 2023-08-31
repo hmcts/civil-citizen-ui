@@ -17,34 +17,40 @@ import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
+import {YesNo} from 'common/form/models/yesNo';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
-const claimantIntentCheckAnswersController = Router();
+const claimantResponseCheckAnswersController = Router();
 
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
+
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
   });
 }
 
-claimantIntentCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      const form = new GenericForm(new StatementOfTruthForm());
+      // TODO: verify this and check if there is already existing method
+      const isClaimantRejectedDefendantOffer = claim?.claimantResponse.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+      const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);
     } catch (error) {
       next(error);
     }
   });
 
-claimantIntentCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const form = new GenericForm(new StatementOfTruthForm(true, req.body.type, true, req.body.directionsQuestionnaireSigned));
+    const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
+    const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
+
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
       renderView(req, res, form, claim);
@@ -59,6 +65,6 @@ claimantIntentCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, a
   }
 });
 
-export default claimantIntentCheckAnswersController;
+export default claimantResponseCheckAnswersController;
 
 
