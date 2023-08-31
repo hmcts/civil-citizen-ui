@@ -1,6 +1,7 @@
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 
 export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
@@ -10,4 +11,6 @@ export class CaseProgression{
   claimantTrialArrangements?: TrialArrangements;
   defendantTrialArrangements?: TrialArrangements;
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  defendantDocuments?: UploadDocumentsUserForm;
+  claimantDocuments?: UploadDocumentsUserForm;
 }
