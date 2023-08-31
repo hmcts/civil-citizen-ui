@@ -6,11 +6,9 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (): SummarySections => {
-  // TODO : develop genearting sections for different scenarios
-
-
   return {
     sections: [
+    // TODO : This part will be developed as part of other future tasks for different scenarios
     ],
   };
 };

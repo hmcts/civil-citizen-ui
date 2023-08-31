@@ -36,7 +36,6 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      // TODO: verify this and check if there is already existing method
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);
@@ -66,5 +65,3 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
 });
 
 export default claimantResponseCheckAnswersController;
-
-

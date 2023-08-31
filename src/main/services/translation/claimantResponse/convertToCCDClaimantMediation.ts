@@ -10,7 +10,7 @@ export const toCCDClaimantMediation = (mediation: Mediation): CCDClaimantMediati
   const ccdMediation = toCCDMediation(mediation)
   return {
     ...ccdMediation, hasAgreedFreeMediation: toAgreedMediation(mediation),
-    // TODO : include all below fields to ccd and civilk-service under ClaimantMediationLip
+    // TODO : include all below fields to ccd and civil-service under ClaimantMediationLip inside `R2-CUI-nonprod.json`
     // canWeUseMediationLiP: toCCDYesNo(mediation?.canWeUse?.option),
     // canWeUseMediationPhoneLiP: mediation?.canWeUse?.mediationPhoneNumber,
     // mediationDisagreementLiP: toCCDYesNoFromGenericYesNo(mediation?.mediationDisagreement),
