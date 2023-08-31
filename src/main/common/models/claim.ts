@@ -681,7 +681,7 @@ export class Claim {
   }
 
   isClaimant(){
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE;
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
   }
 
 }

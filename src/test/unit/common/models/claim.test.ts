@@ -1342,7 +1342,7 @@ describe('Documents', () => {
   describe('test of method isClaimant', () => {
     const claim = new Claim();
 
-    it('should return true if a date is exactly six weeks from trial', () => {
+    it('should return true when APPLICANTSOLICITORONE', () => {
       //Given
       claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
       //When
@@ -1350,8 +1350,16 @@ describe('Documents', () => {
       //Then
       expect(isClaimant).toBeTruthy();
     });
+    it('should return true when CLAIMANT', () => {
+      //Given
+      claim.caseRole = CaseRole.CLAIMANT;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
 
-    it('should return true if a date is less than six weeks from trial', () => {
+    it('should return true when is not APPLICANTSOLICITORONE', () => {
       //Given
       claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
       //When
