@@ -282,10 +282,6 @@
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
-    "HOW_THEY_RESPONDED": {
-      "TITLE": "How they responded",
-      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
-    },
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
@@ -295,6 +291,16 @@
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
       "TITLE": "Choose what to do next"
+    },
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "YOUR_RESPONSE": {
+      "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }} ?",
+      "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }} ?",
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "TITLE": "Your response"
     }
   },
   "TASK_LIST": {
