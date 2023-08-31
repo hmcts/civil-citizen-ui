@@ -27,6 +27,7 @@ import {FileUpload} from 'models/caseProgression/fileUpload';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CaseState} from 'form/models/claimDetails';
+import {getDisclosureContent} from 'services/features/caseProgression/disclosureService';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
