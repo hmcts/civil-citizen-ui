@@ -31,7 +31,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression @test', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);
@@ -56,7 +56,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   }
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @test', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);

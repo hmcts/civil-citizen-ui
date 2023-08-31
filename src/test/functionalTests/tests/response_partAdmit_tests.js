@@ -36,7 +36,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @test', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);
@@ -61,7 +61,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression 
   }
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @test', async ({api}) => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);
@@ -87,7 +87,7 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   }
 });
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression @test', async ({api}) => {
+Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);
@@ -114,7 +114,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   }
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @test', async ({api}) => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @test', async () => {
   const defenceRoutes = ['FULL_DEFENCE', 'FULL_ADMISSION', 'PART_ADMISSION'];
   for (let i = 0; i < defenceRoutes.length; i++) {
     await ResponseSteps.RespondToClaim(claimRef);
