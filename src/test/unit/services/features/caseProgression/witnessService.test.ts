@@ -1,10 +1,8 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {
-  UploadDocumentsUserForm,
-  WitnessSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockWitnessSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
 
 describe('Witness service', () => {
   let mockClaim;
@@ -179,10 +177,3 @@ describe('Witness service', () => {
   });
 
 });
-
-const getMockWitnessSectionArray = () => {
-  const sectionArray: WitnessSection[] = [];
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
-  return sectionArray;
-};

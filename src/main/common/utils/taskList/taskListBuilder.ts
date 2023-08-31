@@ -119,7 +119,7 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
     whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
   }
 
-  if (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData)) {
+  if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
