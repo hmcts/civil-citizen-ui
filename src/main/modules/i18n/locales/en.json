@@ -2321,7 +2321,7 @@
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SHOULD": "You should:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
-      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can ",
       "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
     },
     "TASK_LIST": {
