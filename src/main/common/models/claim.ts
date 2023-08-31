@@ -301,6 +301,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
   }
 
+  isPartialAdmissionNotPaid(): boolean {
+    return this.respondent1?.responseType === ResponseType.PART_ADMISSION && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
+  }
+  
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
