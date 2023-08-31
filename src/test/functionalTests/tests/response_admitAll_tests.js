@@ -51,7 +51,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   }
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @test', async ({api}) => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @test', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
