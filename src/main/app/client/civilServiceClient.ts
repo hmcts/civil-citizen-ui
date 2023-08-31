@@ -221,7 +221,12 @@ export class CivilServiceClient {
   }
 
   async submitClaimAfterPayment(claimId: string, claim: Claim, req: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId, { issueDate : claim.issueDate, respondent1ResponseDeadline: claim.respondent1ResponseDeadline}, req);
+    return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId,
+      {
+        issueDate : claim.issueDate,
+        respondent1ResponseDeadline: claim.respondent1ResponseDeadline
+      }
+      , req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
