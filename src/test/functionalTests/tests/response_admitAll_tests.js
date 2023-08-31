@@ -51,7 +51,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   }
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @test', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -60,11 +60,11 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-  }
+  // if (['preview', 'demo'  ].includes(config.runningEnv)) {
+  //   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  //   // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  //   // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  //   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+  // }
 });
 
