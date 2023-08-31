@@ -3,26 +3,26 @@ const config = require('../../../../config');
 
 const respondent1 = {
   type: 'INDIVIDUAL',
-  individualFirstName: 'John',
-  individualLastName: 'Doe',
-  individualTitle: 'Sir',
+  individualFirstName: 'Raja',
+  individualLastName: 'Test',
+  individualTitle: 'Mr',
   primaryAddress: buildAddress('respondent'),
   partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const respondent1WithPartyName = {
   ...respondent1,
-  partyName: 'Sir John Doe',
+  partyName: 'Mr Raja Test',
   partyTypeDisplayValue: 'Individual',
 };
 const applicant1 = {
   type: 'COMPANY',
-  companyName: 'Test Inc',
+  companyName: 'Test RPA Inc',
   primaryAddress: buildAddress('applicant'),
   partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const applicant1WithPartyName = {
   ...applicant1,
-  partyName: 'Test Inc',
+  partyName: 'Test RPA Inc',
   partyTypeDisplayValue: 'Company',
 };
 
