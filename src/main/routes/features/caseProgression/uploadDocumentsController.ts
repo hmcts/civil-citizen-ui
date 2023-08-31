@@ -8,9 +8,7 @@ import {
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {
-  getUploadDocumentsForm,
-} from 'services/features/caseProgression/caseProgressionService';
+import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
@@ -22,6 +20,7 @@ import config from 'config';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
+const dqPropertyName = 'defendantDocuments';
 
 const multer = require('multer');
 const fileSize = Infinity;
@@ -69,6 +68,12 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   const currentUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
+  //TODO: This will need to distinguish between claimant and defendant once claimant is implemented.
+  if(!form && claim.caseProgression?.defendantDocuments)
+  {
+    form = new GenericForm(claim.caseProgression?.defendantDocuments);
+  }
+
   if (claim && !claim.isEmpty()) {
     const disclosureContent = getDisclosureContent(claim, form);
     const witnessContent = getWitnessContent(claim, form);
@@ -92,6 +97,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+
     await renderView(res, claimId, null);
   } catch (error) {
     next(error);
@@ -111,8 +117,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.single('file'), (
       if (form.hasErrors()) {
         await renderView(res, claimId, form);
       } else {
-        console.log('Evidence upload form validated');
-        //todo: go to next page and save to redis
+        await saveCaseProgression(claimId, form.model, dqPropertyName);
         res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
       }
     }
