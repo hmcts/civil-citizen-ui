@@ -24,7 +24,7 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
@@ -36,6 +36,7 @@ import {
 } from '../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {Mediation} from 'models/mediation/mediation';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -75,6 +76,7 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     firstRepaymentDate: new Date(Date.now()),
   };
   claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100);
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = paymentOptionType;
   claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
@@ -830,6 +832,29 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
+    });
+  });
+
+  describe('Part admit not paid - Fast track or No Mediation', () => {
+    it('should have build judicial referral section part admit not paid scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, undefined);
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
+      claim.applicant1AcceptAdmitAmountPaidSpec = YesNoUpperCamelCase.NO;
+      const fullAmount = claim.totalClaimAmount;
+      const partAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount;
+      const claimantName = claim.getClaimantFullName();
+      const lastUpdateExpected = new LatestUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_ADMISSION`, { claimantName, partAmount })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_BELIEVE_FULL_AMOUNT_CLAIMED`, { fullAmount })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+        .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, docId)
+        .build();
+
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(lastUpdateExpected.flat()).toEqual(responseToClaimSection);
     });
   });
 });

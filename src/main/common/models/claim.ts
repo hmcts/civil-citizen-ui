@@ -153,6 +153,10 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO && this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO) {
+      return ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED;
+    }
+
     if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
       if (this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES) {
         return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED;
@@ -179,6 +183,7 @@ export class Claim {
     if (this.isFullDefence() && this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
+
   }
 
   getClaimantFullName(): string {
