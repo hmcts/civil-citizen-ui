@@ -2307,7 +2307,7 @@
       "PAGE_TITLE": "Submit Confirmation",
       "PAY_CLAIM_FEE": "Pay claim fee",
       "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
-      "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgement against you",
+      "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
       "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ partialAmount }}",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
