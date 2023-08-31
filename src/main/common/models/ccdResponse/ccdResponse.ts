@@ -80,4 +80,12 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
+  applicant1DQLanguage?: CCDWelshLanguageRequirements;
+  applicant1DQVulnerabilityQuestions?: CCDVulnerability;
+  applicant1DQRequestedCourt?: CCDSpecificCourtLocations;
+  applicant1DQWitnesses?: CCDWitnesses;
+  applicant1DQSmallClaimHearing?: CCDSmallClaimHearing;
+  applicant1LiPResponse?: CCDRespondentLiPResponse;
+  applicant1ClaimExpertSpecRequired?: YesNoUpperCamelCase;
+  applicant1DQExperts?: CCDExpert;
 }
