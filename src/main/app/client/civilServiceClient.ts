@@ -287,10 +287,10 @@ export class CivilServiceClient {
     }
   }
 
-  async getUserCaseRoles(documentId: string, req: AppRequest) {
+  async getUserCaseRoles(claimId: string, req: AppRequest) {
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_USER_CASE_ROLE
-        .replace(':documentId', documentId)
+        .replace(':claimId', claimId)
       , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
       return responseRoles
