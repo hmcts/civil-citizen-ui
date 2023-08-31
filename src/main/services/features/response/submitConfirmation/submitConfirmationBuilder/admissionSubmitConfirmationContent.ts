@@ -171,7 +171,7 @@ export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSu
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</p>`,
         variables: {claimantName: claimantName},
       },
     },
