@@ -22,6 +22,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -387,6 +388,30 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getUserCaseRoles', () => {
+    it('should return User Case Roles successfully', async () => {
+      //Given
+      const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
+      const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const caseRoleResult= await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
+      //Then
+      expect(caseRoleResult).toStrictEqual(caseRoleExpected[0]);
+    });
+
+    it('should throw error when there is an error calling civil service getting User roles', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getUserCaseRoles('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

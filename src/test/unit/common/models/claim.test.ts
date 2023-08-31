@@ -36,6 +36,7 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1335,6 +1336,28 @@ describe('Documents', () => {
       const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
+  describe('test of method isClaimant', () => {
+    const claim = new Claim();
+
+    it('should return true if a date is exactly six weeks from trial', () => {
+      //Given
+      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+
+    it('should return true if a date is less than six weeks from trial', () => {
+      //Given
+      claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeFalsy();
     });
   });
 
