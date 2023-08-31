@@ -15,6 +15,9 @@ import {
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {
+  getHaveYouBeenPaidTask, getSettleTheClaimForTask,
+} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -63,6 +66,21 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   }
 
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
+}
+
+export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
+  const tasks: Task[] = [];
+  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+  tasks.push(haveYouBeenPaidTask);
+  if (claim.isPartialAdmissionPaid()) {
+    if(claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES){
+      tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
+    } else if(claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO){
+      tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
+    }
+  }
+
+  return {title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', {lng: lang}), tasks};
 }
 
 export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
