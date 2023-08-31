@@ -1,9 +1,9 @@
 import {NextFunction, Router} from 'express';
 import {CLAIM_FEE_URL} from '../../urls';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from "models/AppRequest";
-import config from "config";
+import {AppRequest} from 'models/AppRequest';
+import config from 'config';
 const claimFeeController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

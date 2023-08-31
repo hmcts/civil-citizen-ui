@@ -224,7 +224,7 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId,
       {
         issueDate : claim.issueDate,
-        respondent1ResponseDeadline: claim.respondent1ResponseDeadline
+        respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
       }
       , req);
   }
