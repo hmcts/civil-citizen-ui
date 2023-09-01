@@ -1,11 +1,9 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {Claim} from 'models/claim';
-import {
-  ExpertSection,
-  UploadDocumentsUserForm,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockExpertSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
 
 describe('Expert service', () => {
   let mockClaim;
@@ -226,10 +224,3 @@ describe('Expert service', () => {
     expect(actualExpertContent.length).toEqual(0);
   });
 });
-
-const getMockExpertSectionArray = () => {
-  const sectionArray: ExpertSection[] = [];
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  return sectionArray;
-};
