@@ -28,8 +28,6 @@ describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
-  // const claimId = '1111111111';
-
   beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
