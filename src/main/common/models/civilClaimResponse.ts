@@ -55,7 +55,6 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
-import {HearingDuration} from './caseProgression/hearingDuration';
 import {
   CCDTrialArrangementsHearingRequirements,
   CCDTrialArrangementsOtherComments,
