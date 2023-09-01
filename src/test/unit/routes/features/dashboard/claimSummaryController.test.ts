@@ -95,7 +95,7 @@ describe('Claim Summary Controller Defendant', () => {
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
 
-      const claimWithoutSDO = claim;
+      const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
       claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
         'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
         'value': {
