@@ -778,8 +778,9 @@
       "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
+      "ORDERS": "Orders",
       "RESPONSE_DEADLINE": "Response deadline:",
-      "TOTAL_CLAIM_AMOUNT":"Total claim amount:",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
