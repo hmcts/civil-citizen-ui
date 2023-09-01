@@ -12,10 +12,10 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
-  if(claim.isPartialAdmissionPaid()) {
+  if(claim.isPartialAdmissionNotPaid()) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
-  if(claim.isPartialAdmissionNotPaid()){
+  if(claim.isPartialAdmissionPaid()){
     taskGroups.push(buildYourResponseSection(claim, claimId, lang));
   }
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
