@@ -1,7 +1,8 @@
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {CaseState} from 'form/models/claimDetails';
-import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
 
 describe('Trial service', () => {
   let mockClaim;
@@ -348,10 +349,3 @@ describe('Trial service', () => {
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
 });
-
-const getMockSectionArray = () => {
-  const sectionArray: TypeOfDocumentSection[] = [];
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
-  return sectionArray;
-};

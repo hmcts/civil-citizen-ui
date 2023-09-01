@@ -4,17 +4,19 @@ import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addDaysToDate} from '../../../../../common/utils/dateUtils';
+import { isDecimal } from 'common/utils/numberConverter';
 import {YesNo} from 'common/form/models/yesNo';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
   const amount = claim.partialAdmissionPaidAmount();
+  const formatAmount = isDecimal(amount) ? amount.toFixed(2) : amount;
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: t('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_EMAILED_CLAIMANT_YOUR_INTENTION', {lng: lang}),
-        variables: {claimantName: claimantName, amount: amount},
+        variables: { claimantName: claimantName, amount: formatAmount },
       },
     },
   ];
@@ -183,14 +185,11 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
           </li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li>
         </ul>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY', {
+        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {
     claimantName,
     lng: lang,
-  })}</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT', {lng: lang})}</li>
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', {partialAmount, lng: lang})}</li>
-        </ul>`,
+  })} ${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', {partialAmount, lng: lang})}
+        </p>`,
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},

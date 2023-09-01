@@ -1,18 +1,12 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  CP_UPLOAD_DOCUMENTS_URL,
-  DEFENDANT_SUMMARY_URL,
-  TYPES_OF_DOCUMENTS_URL,
-} from '../../urls';
+import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL, TYPES_OF_DOCUMENTS_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  getDocuments,
-  getTypeDocumentForm,
-  saveCaseProgression,
+  deleteUntickedDocumentsFromStore, getDocuments, getTypeDocumentForm, saveCaseProgression,
 } from 'services/features/caseProgression/caseProgressionService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
@@ -59,6 +53,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
       await renderView(res, claimId,form);
     } else {
       await saveCaseProgression(claimId, form.model, dqPropertyName);
+      await deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {

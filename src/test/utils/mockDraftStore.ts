@@ -20,6 +20,7 @@ import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimRes
 import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimResponseExpertAndWitnessMock.json';
 import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTelephoneClaimantIntentionMock.json';
 import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
+import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDocumentUploadedMock.json';
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 
 import {LoggerInstance} from 'winston';
@@ -185,6 +186,12 @@ const mockCivilClaimWithExpertAndWitness = {
   ttl: jest.fn(() => Promise.resolve({})),
 };
 
+const mockCivilClaimDocumentUploaded = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDocumentUploadedMock))),
+  del: jest.fn(() => Promise.resolve({})),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -209,5 +216,6 @@ export {
   mockCivilClaimWithExpertAndWitness,
   mockCivilClaimantIntention,
   mockResponseFullAdmitPayBySetDate,
+  mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
 };
