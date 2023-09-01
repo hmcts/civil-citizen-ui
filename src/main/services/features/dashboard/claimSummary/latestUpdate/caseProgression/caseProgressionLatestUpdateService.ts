@@ -18,8 +18,10 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
     if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
       sectionContent.push(getFinaliseTrialArrangementsContent(claim));
     }
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
   }
+
+  sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+
   return getClaimSummaryContent(sectionContent.flat());
 };
 
