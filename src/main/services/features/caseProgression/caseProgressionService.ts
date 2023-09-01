@@ -1,8 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {
-  UploadDocuments,
-  UploadDocumentTypes,
-} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
@@ -17,9 +14,11 @@ import {
   FileOnlySection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-  WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+  WitnessSection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -72,6 +71,44 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
   } catch (error) {
     logger.error(error);
     throw error;
+  }
+};
+
+export const deleteUntickedDocumentsFromStore = async (claimId: string, claimantOrDefendant: ClaimantOrDefendant) => {
+  const claim: Claim = await getCaseDataFromStore(claimId);
+  let documentsTicked: UploadDocuments;
+  let documentsSaved: UploadDocumentsUserForm;
+  let propertyName: string;
+  const documentsToSave: UploadDocumentsUserForm = new UploadDocumentsUserForm();
+
+  if(claimantOrDefendant === ClaimantOrDefendant.DEFENDANT){
+    documentsTicked = claim.caseProgression.defendantUploadDocuments;
+    documentsSaved = claim.caseProgression.defendantDocuments;
+    propertyName = 'defendantDocuments';
+  }
+
+  if(documentsSaved)
+  {
+    documentsToSave.documentsForDisclosure = documentsTicked.disclosure[0].selected ? documentsSaved.documentsForDisclosure : [];
+    documentsToSave.disclosureList = documentsTicked.disclosure[1].selected ? documentsSaved.disclosureList : [];
+
+    documentsToSave.witnessStatement = documentsTicked.witness[0].selected ? documentsSaved.witnessStatement : [];
+    documentsToSave.witnessSummary = documentsTicked.witness[1].selected ? documentsSaved.witnessSummary : [];
+    documentsToSave.noticeOfIntention = documentsTicked.witness[2].selected ? documentsSaved.noticeOfIntention : [];
+    documentsToSave.documentsReferred = documentsTicked.witness[3].selected ? documentsSaved.documentsReferred : [];
+
+    documentsToSave.expertReport = documentsTicked.expert[0].selected ? documentsSaved.expertReport : [];
+    documentsToSave.expertStatement = documentsTicked.expert[1].selected ? documentsSaved.expertStatement : [];
+    documentsToSave.questionsForExperts = documentsTicked.expert[2].selected ? documentsSaved.questionsForExperts : [];
+    documentsToSave.answersForExperts = documentsTicked.expert[3].selected ? documentsSaved.answersForExperts : [];
+
+    documentsToSave.trialCaseSummary = documentsTicked.trial[0].selected ? documentsSaved.trialCaseSummary : [];
+    documentsToSave.trialSkeletonArgument = documentsTicked.trial[1].selected ? documentsSaved.trialSkeletonArgument : [];
+    documentsToSave.trialAuthorities = documentsTicked.trial[2].selected ? documentsSaved.trialAuthorities : [];
+    documentsToSave.trialCosts = documentsTicked.trial[3].selected ? documentsSaved.trialCosts : [];
+    documentsToSave.trialDocumentary = documentsTicked.trial[4].selected ? documentsSaved.trialDocumentary : [];
+
+    await saveCaseProgression(claim.id, documentsToSave, propertyName);
   }
 };
 
