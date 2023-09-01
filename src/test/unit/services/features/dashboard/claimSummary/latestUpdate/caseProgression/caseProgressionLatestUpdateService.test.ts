@@ -25,12 +25,12 @@ describe('Case Progression Latest Update Content service', () => {
 
   it('getEvidenceUploadLatestUpdateContent: evidence upload should have additional content with hearing', () => {
     //Given:
-    claimWithSdo.caseProgressionHearing = getCaseProgressionHearingMock();
     const claimWithSdoAndHearing = {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
       isSixWeeksOrLessFromTrial: () => false,
+      caseProgressionHearing: getCaseProgressionHearingMock(),
     };
 
     //When
@@ -65,6 +65,23 @@ describe('Case Progression Latest Update Content service', () => {
     //Then
     expect(finaliseTrialArrangementsSectionExpected).toMatchObject(finaliseTrialArrangementsSectionResult);
     expect(finaliseTrialArrangementsSectionResult[0][0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS.TITLE');
+  });
+
+  it('getCaseProgressionLatestUpdates: if no hearingscheduled, but SDO then return evidence upload contents, but not hearing notice or new upload contents', () => {
+    //Given:
+    const claimWithSdoNoHearing = {
+      ...claimWithSdo,
+      hasCaseProgressionHearingDocuments: () => false,
+      hasSdoOrderDocument: () => true,
+    } as Claim;
+
+    //When
+    const result = getCaseProgressionLatestUpdates(claimWithSdoNoHearing, 'en');
+
+    //Then
+    expect(result.length).toEqual(1);
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[0].contentSections.length).toEqual(5);
   });
 
   it('getCaseProgressionLatestUpdates: should return hearing notice and evidence upload contents, but not new upload contents', () => {
