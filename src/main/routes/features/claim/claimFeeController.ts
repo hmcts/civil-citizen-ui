@@ -17,6 +17,7 @@ claimFeeController.get(CLAIM_FEE_URL, (async (req, res, next: NextFunction) => {
     const date = new Date();
     date.setDate(date.getDate() + 28);
     claim.respondent1ResponseDeadline = date;
+    // TODO: Need to create a separate service when we do the fee and pay page
     await civilServiceClient.submitClaimAfterPayment(claimId, claim, <AppRequest>req);
   } catch (error) {
     next(error);
