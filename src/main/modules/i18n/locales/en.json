@@ -530,6 +530,7 @@
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
       "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
+      "UNEMPLOYMENT_FOR": "Unemployed for {{ unemployedYears }} years {{ unemployedMonths }} months",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
@@ -778,8 +779,9 @@
       "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
+      "ORDERS": "Orders",
       "RESPONSE_DEADLINE": "Response deadline:",
-      "TOTAL_CLAIM_AMOUNT":"Total claim amount:",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
