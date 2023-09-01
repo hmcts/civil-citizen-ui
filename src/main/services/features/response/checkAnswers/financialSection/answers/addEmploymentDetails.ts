@@ -71,11 +71,10 @@ const showUnemploymentDetails = (financialSection: SummarySection, unemployment:
   let unemploymentLengthOrOther: string;
   const years = unemployment?.unemploymentDetails?.years;
   const months = unemployment?.unemploymentDetails?.months;
-  const getUnemploymentLength = (val: number, length: string) => val > 1 ? val + ' ' + length + 's' : val + ' ' + length;
 
   switch (unemployment?.option) {
     case UnemploymentCategory.UNEMPLOYED:
-      unemploymentLengthOrOther = UnemploymentCategory.UNEMPLOYED + ' for ' + getUnemploymentLength(years, 'year') + ' ' + getUnemploymentLength(months, 'month');
+      unemploymentLengthOrOther = t('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR', {lng: getLng(lang), unemployedYears: years, unemployedMonths: months});
       break;
     case UnemploymentCategory.OTHER:
       unemploymentLengthOrOther = unemployment?.otherDetails?.details;

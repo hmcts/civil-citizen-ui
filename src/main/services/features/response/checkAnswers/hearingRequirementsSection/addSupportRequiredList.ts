@@ -8,22 +8,22 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {SUPPORT_REQUIRED_URL} from '../../../../../routes/urls';
 import {changeLabel} from '../../../../../common/utils/checkYourAnswer/changeButton';
 
-export const generateSupportDetails = (item: SupportRequired) => {
+export const generateSupportDetails = (item: SupportRequired, lng: string) => {
   const supportDetails = [];
   if (item.disabledAccess) {
-    supportDetails.push(t('PAGES.SUPPORT_REQUIRED.DISABLE'));
+    supportDetails.push(t('PAGES.SUPPORT_REQUIRED.DISABLE', {lng}));
   }
   if (item.hearingLoop) {
-    supportDetails.push(t('PAGES.SUPPORT_REQUIRED.HEARING'));
+    supportDetails.push(t('PAGES.SUPPORT_REQUIRED.HEARING', {lng}));
   }
   if (item.signLanguageInterpreter?.selected) {
-    supportDetails.push(item.signLanguageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER'));
+    supportDetails.push(item.signLanguageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER', {lng}));
   }
   if (item.languageInterpreter?.selected) {
-    supportDetails.push(item.languageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER'));
+    supportDetails.push(item.languageInterpreter.content + ' ' + t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER', {lng}));
   }
   if (item.otherSupport?.selected) {
-    supportDetails.push(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER') + ` : ${item.otherSupport.content}`);
+    supportDetails.push(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER', {lng}) + ` : ${item.otherSupport.content}`);
   }
   return supportDetails.join('<br>');
 };
@@ -41,7 +41,7 @@ export const addSupportRequiredList = (claim: Claim, hearingRequirementsSection:
       const row = index + 1;
       hearingRequirementsSection.summaryList.rows.push(summaryRow(`${t('PAGES.SUPPORT_REQUIRED.PERSON_TEXT', {lng})} ${row}`));
       hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_NAME', {lng}), item.fullName, supportRequiredHref, changeLabel(lng)));
-      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item), supportRequiredHref, changeLabel(lng)));
+      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item, lng), supportRequiredHref, changeLabel(lng)));
     });
   } else {
     hearingRequirementsSection.summaryList.rows.push(
