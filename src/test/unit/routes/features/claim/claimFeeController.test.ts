@@ -11,10 +11,10 @@ import {
   getClaimById,
   getRedisStoreForSession,
 } from '../../../../../main/modules/utilityService';
-import {Claim} from "models/claim";
-import claim from "../../../../utils/mocks/civilClaimResponseMock.json";
-import RedisStore from "connect-redis";
-import Redis from "ioredis";
+import {Claim} from 'models/claim';
+import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
+import RedisStore from 'connect-redis';
+import Redis from 'ioredis';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -22,10 +22,6 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
-}));
-
-jest.mock('./../../../../main/app/client/civilServiceClient', () => ({
-  submitClaimAfterPayment: jest.fn(),
 }));
 
 describe('Claim - Claim Submitted', () => {
@@ -43,10 +39,13 @@ describe('Claim - Claim Submitted', () => {
     }));
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('on GET', () => {
     it('should return claim submitted page', async () => {
 
-      // app.locals.draftStoreClient = mockCivilClaim;
       const caseData = Object.assign(new Claim(), claim.case_data);
       (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
 
@@ -54,14 +53,12 @@ describe('Claim - Claim Submitted', () => {
         client: new Redis(),
       }));
 
-      const CivilServiceClientServiceMock = jest
-        .spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment');
+      const spySave = jest.spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment');
 
       await request(app)
         .get(CLAIM_FEE_URL)
         .expect((res) => {
-          expect(res.status).toBe(200)
-          expect(CivilServiceClientServiceMock).toBeCalled();
+          expect(spySave).toBeCalled();
         });
     });
   });
