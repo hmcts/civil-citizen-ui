@@ -53,6 +53,8 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {HearingDuration} from './caseProgression/hearingDuration';
 import {
   CCDTrialArrangementsHearingRequirements,
@@ -221,6 +223,7 @@ export interface CCDClaim extends ClaimUpdate {
   lastModifiedDate?: Date;
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
