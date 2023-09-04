@@ -69,12 +69,12 @@ describe('Civil Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockGet.mock.calls[0][0]).toContain(CIVIL_SERVICE_CLAIMANT);
-      expect(claimantDashboardItems.length).toEqual(1);
-      expect(claimantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
-      expect(claimantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
-      expect(claimantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
-      expect(claimantDashboardItems[0].claimAmount).toEqual(data[0].claimAmount);
-      expect(claimantDashboardItems[0].responseDeadline).toEqual(data[0].responseDeadline);
+      expect(claimantDashboardItems.claims.length).toEqual(1);
+      expect(claimantDashboardItems.claims[0].claimNumber).toEqual(data.claims[0].claimNumber);
+      expect(claimantDashboardItems.claims[0].claimantName).toEqual(data.claims[0].claimantName);
+      expect(claimantDashboardItems.claims[0].defendantName).toEqual(data.claims[0].defendantName);
+      expect(claimantDashboardItems.claims[0].claimAmount).toEqual(data.claims[0].claimAmount);
+      expect(claimantDashboardItems.claims[0].responseDeadline).toEqual(data.claims[0].responseDeadline);
     });
   });
   describe('retrieveByDefendantId', () => {
