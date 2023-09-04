@@ -118,7 +118,7 @@ describe('Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DATE_NOT_IN_PAST);
+          expect(res.text).toContain(TestMessages.FIRST_PAYMENT_MESSAGE);
         });
     });
     it('should return error on incorrect input', async () => {

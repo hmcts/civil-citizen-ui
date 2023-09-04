@@ -16,13 +16,16 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
 const sendYourResponseByEmailController = Router();
 
-function renderView(res: Response, form: Claim, fees: [TableItem[]]): void {
+function renderView(res: Response, form: Claim, fees: [TableItem[]], lang: string): void {
+  const responseDeadline = form.formattedResponseDeadline(lang);
+
   res.render(sendYourResponseByEmailViewPath, {
     form,
     fees,
     ResponseType,
     RejectAllOfClaimType,
     partyType: PartyType,
+    responseDeadline,
   });
 }
 
@@ -32,7 +35,7 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
     const form = await getCaseDataFromStore(req.params.id);
     const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges, lang);
-    renderView(res, form, formattedFeesRanges);
+    renderView(res, form, formattedFeesRanges, lang);
   } catch (error) {
     next(error);
   }

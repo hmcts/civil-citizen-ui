@@ -1,7 +1,10 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection, buildNewUploadSection,
+  buildEvidenceUploadSection,
+  buildHearingTrialLatestUploadSection,
+  buildNewUploadSection,
+  buildFinaliseTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
@@ -12,8 +15,13 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   }
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+    if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
+      sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    }
   }
+
+  sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+
   return getClaimSummaryContent(sectionContent.flat());
 };
 
@@ -42,4 +50,8 @@ export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : Claim
     contentSections: sectionContent,
     hasDivider: index < section.length - 1,
   }));
+};
+
+export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildFinaliseTrialArrangements(claim);
 };
