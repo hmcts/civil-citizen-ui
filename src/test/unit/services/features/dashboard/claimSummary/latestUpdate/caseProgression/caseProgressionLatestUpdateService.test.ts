@@ -73,6 +73,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => false,
       hasSdoOrderDocument: () => true,
+      isBundleStitched: () => false,
     } as Claim;
 
     //When
@@ -126,7 +127,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
-      isBundleStitched: () => true,
+      isBundleStitched: () => false,
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
       caseProgression: {
@@ -159,6 +160,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => true,
+      isBundleStitched: () => true,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -190,6 +192,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       isFastTrackClaim: true,
       isSixWeeksOrLessFromTrial: () => false,
+      isBundleStitched: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -232,6 +235,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       isFastTrackClaim: true,
       isSixWeeksOrLessFromTrial: () => true,
+      isBundleStitched: () => false,
       caseProgression: {
         claimantLastUploadDate: fakeDayBeforeDate,
       },
