@@ -28,37 +28,23 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
   if (claim.isFullAdmission()) {
 
-
-    // if (claim.isFAPaymentOptionBySetDate()) {
-
-    // } else if (claim.isFAPaymentOptionInstallments()) {
-
-    // }
-
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    
     const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
     
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
+      if (claim.isSignASettlementAgreement()) {
+        const getSsignSettlementAgreementTask = getSignSettlementAgreementTask(claim, claimId, lang);
+        tasks.push(getSsignSettlementAgreementTask);
+      } else if (claim.isRequestACCJ()) {
+        const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+        tasks.push(countyCourtJudgmentTask);
+      }
     } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
       const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       tasks.push(proposeAlternativeRepaymentTask);
-
-      // AND Court calculator says Defendant can't afford your plan 
-      // AND select "yes" radio button and click "Save and continue" under "The defendant can’t pay by your proposed date" screen (/claimant-response/court-offered-set-date
-      // tasks.push(chooseHowToFormaliseRepaymentPlanTask);
     }
-    
-    if (claim.isSignASettlementAgreement()) {
-      const getSsignSettlementAgreementTask = getSignSettlementAgreementTask(claim, claimId, lang);
-      tasks.push(getSsignSettlementAgreementTask);
-    } else if (claim.isRequestACCJ()) {
-      const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
-      tasks.push(countyCourtJudgmentTask);
-    }
-    
 
   } else if (claim.isPartialAdmission()) {
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
