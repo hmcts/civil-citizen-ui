@@ -1662,6 +1662,7 @@
       "YOU_HAVE_REJECTED_CLAIM_MSG1": "Rydych chi wedi gwrthod yr hawliad. Rydych chi wedi awgrymu cyfryngu.",
       "YOU_HAVE_REJECTED_CLAIM_MSG2": "Byddwn yn gofyn i {{claimantName}} os ydyn nhw'n cytuno i gymryd rhan mewn cyfryngu.",
       "YOU_HAVE_REJECTED_CLAIM_MSG3": "Os ydyn nhw'n cytuno i hynny, byddwn ni'n trefnu dyddiad ar gyfer cyfryngu. Os byddant yn dweud na byddwn yn anfon holiadur cyfarwyddiadau atoch chi. Mae hon yn ffurflen rydych yn ei llenwi i ddweud mwy wrthym am yr hawliad.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG4": "Rydych chi wedi gwrthod yr hawliad. Efallai y bydd yn rhaid i chi fynd i wrandawiad.",
       "YOU_HAVE_REJECTED_CLAIM": "Rydych chi wedi gwrthod yr hawliad.",
       "NO_MEDIATION_REQUIRED": "Fe ddywedoch chi nad ydych chi eisiau defnyddio cyfryngu i'w datrys. Efallai y bydd yn rhaid i chi fynd i wrandawiad",
       "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "Byddwn yn cysylltu â chi pan fydd y ceisydd yn ymateb"
