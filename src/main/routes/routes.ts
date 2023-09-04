@@ -67,6 +67,7 @@ import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/admission/fullRejection/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
+import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
@@ -274,6 +275,7 @@ export default [
   youHavePaidLessController,
   yourDefenceController,
   incompleteSubmissionController,
+  incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
   paymentDatePAController,
