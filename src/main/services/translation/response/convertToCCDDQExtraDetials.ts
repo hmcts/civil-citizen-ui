@@ -16,7 +16,6 @@ export const toCCDDQExtraDetails = (directionQuestionnaire: DirectionQuestionnai
     considerClaimantDocuments: toCCDYesNo(directionQuestionnaire?.hearing?.considerClaimantDocuments?.option),
     considerClaimantDocumentsDetails: directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES ? directionQuestionnaire?.hearing?.considerClaimantDocuments?.details : '',
     respondent1DQLiPExpert: toCCDLiPExpert(directionQuestionnaire?.experts),
-    // TODO : include this field to existing field civil service and ccd-def
-    claimant1DQLiPExpert: toCCDLiPExpert(directionQuestionnaire?.experts),
+    applicant1DQLiPExpert: toCCDLiPExpert(directionQuestionnaire?.experts),
   };
 };

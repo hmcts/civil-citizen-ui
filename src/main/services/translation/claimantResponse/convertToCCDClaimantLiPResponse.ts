@@ -1,12 +1,10 @@
 import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQExtraDetials';
 import {toCCDSHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
-import {CCDMediation} from 'common/models/ccdResponse/ccdMediation';
 import {CCDDQExtraDetails} from 'common/models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'common/models/ccdResponse/ccdHearingSupport';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export interface CCDClaimantLiPResponse {
-  applicant1MediationLiPResponse?: CCDMediation,
   applicant1DQExtraDetails?: CCDDQExtraDetails,
   applicant1DQHearingSupportLip?: CCDHearingSupport,
 }

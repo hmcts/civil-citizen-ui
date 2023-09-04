@@ -211,6 +211,7 @@ import documentViewController from 'routes/features/document/documentViewControl
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
+import claimFeeController from 'routes/features/claim/claimFeeController';
 
 export default [
   homeController,
@@ -409,4 +410,5 @@ export default [
   documentViewController,
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
+  claimFeeController,
 ];
