@@ -39,8 +39,8 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
-    const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : ''
-    const defendantPage = req.query?.defendantPage ? 'defendantPage=' + req.query?.defendantPage : ''
+    const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
+    const defendantPage = req.query?.defendantPage ? 'defendantPage=' + req.query?.defendantPage : '';
     const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
 
     const responseDraftSaved = false;
