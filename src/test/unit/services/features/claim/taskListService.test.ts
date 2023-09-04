@@ -12,27 +12,27 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'common/form/models/claimDetails';
-import { Claim } from 'common/models/claim';
-import { TaskStatus } from 'common/models/taskList/TaskStatus';
-import { TaskList } from 'common/models/taskList/taskList';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { t } from 'i18next';
-import { getTaskLists } from 'services/features/claim/taskListService';
-import { Party } from 'common/models/party';
-import { PartyType } from 'common/models/partyType';
-import { PartyDetails } from 'common/form/models/partyDetails';
-import { YesNo } from 'common/form/models/yesNo';
-import { ClaimDetails } from 'common/form/models/claim/details/claimDetails';
-import { Reason } from 'common/form/models/claim/details/reason';
-import { ClaimantTimeline } from 'common/form/models/timeLineOfEvents/claimantTimeline';
-import { TimelineRow } from 'common/form/models/timeLineOfEvents/timelineRow';
-import { HelpWithFees } from 'common/form/models/claim/details/helpWithFees';
-import { CitizenDate } from 'common/form/models/claim/claimant/citizenDate';
-import { Interest } from 'common/form/models/interest/interest';
-import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
-import { TotalInterest } from 'common/form/models/interest/totalInterest';
-import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
-import {outstandingTasksFromCase} from 'services/features/common/taskListService';
+import {Claim} from 'common/models/claim';
+import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {TaskList} from 'common/models/taskList/taskList';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {getTaskLists} from 'services/features/claim/taskListService';
+import {Party} from 'common/models/party';
+import {PartyType} from 'common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {YesNo} from 'common/form/models/yesNo';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {Reason} from 'common/form/models/claim/details/reason';
+import {ClaimantTimeline} from 'common/form/models/timeLineOfEvents/claimantTimeline';
+import {TimelineRow} from 'common/form/models/timeLineOfEvents/timelineRow';
+import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
+import {Interest} from 'common/form/models/interest/interest';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {TotalInterest} from 'common/form/models/interest/totalInterest';
+import {InterestStartDate} from 'common/form/models/interest/interestStartDate';
+import {outstandingTasksFromCase} from 'services/features/claim/taskListService';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -120,21 +120,17 @@ describe('Claim Task List service', () => {
       //Then
       expect(taskList).toMatchObject(expectedTaskList);
     });
-  });
 
-  describe('Claim outstanding Task List service', () => {
-    describe('TaskList incomplete check', () => {
-      it('should return incompleted task list', () => {
-        //Given
-        const caseData = new Claim();
-        //When
-        const taskList = outstandingTasksFromCase(caseData, userId, lng);
-        //Then
-        expect(taskList).toHaveLength(3);
-      });
+    it('should return incompleted task list', () => {
+      //Given
+      const caseData = new Claim();
+      //When
+      const taskList = outstandingTasksFromCase(caseData, userId, lng);
+      //Then
+      expect(taskList).toHaveLength(7);
     });
-  });
 
+  });
   describe('TaskList service Prepare your claim section', () => {
     it('should complete Prepare your claim section', () => {
       //Given
