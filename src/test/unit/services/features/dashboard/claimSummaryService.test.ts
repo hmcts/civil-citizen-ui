@@ -29,6 +29,8 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
+const lang = 'en';
+
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 
 function getTable(isClaimant: boolean, sectionText: string, documentText: string[] ): ClaimSummarySection {
@@ -50,11 +52,11 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
       classes: 'tableWrap',
       head: [
         {
-          text: isClaimantString + sectionText,
+          html: isClaimantString + sectionText,
           classes: 'govuk-!-width-one-half',
         },
         {
-          text: '',
+          html: '',
           classes: 'govuk-!-width-one-half',
         },
       ],
@@ -188,7 +190,7 @@ describe('getEvidenceUploadContent', () => {
     // Given
 
     // When
-    const result = getEvidenceUploadContent(new Claim());
+    const result = getEvidenceUploadContent(new Claim(), lang);
 
     // Then
     expect(result).toHaveLength(1);
@@ -203,7 +205,7 @@ describe('getEvidenceUploadContent', () => {
     claim.caseProgression = toCUICaseProgression(ccdClaim);
 
     // When
-    const result = getEvidenceUploadContent(claim);
+    const result = getEvidenceUploadContent(claim, lang);
 
     // Then
     expect(result).toHaveLength(1);

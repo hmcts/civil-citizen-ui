@@ -19,6 +19,7 @@ import {
   createCCDClaimForEvidenceUpload, mockExpertDocument,
   mockTypeDocument, mockUUID, mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {
   mockFinalOrderDocument1,
@@ -125,6 +126,7 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.finalOrderDocumentCollection = undefined;
@@ -146,6 +148,7 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: [mockFinalOrderDocument1, mockFinalOrderDocument2],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant'),
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant')],
@@ -168,6 +171,7 @@ describe('toCUICaseProgression', () => {
 
 function createCUIClaim(): CaseProgression {
   return {
+    caseBundles: [] as Bundle[],
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     defendantUploadDocuments:

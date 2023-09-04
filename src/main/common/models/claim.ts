@@ -60,6 +60,8 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -630,7 +632,33 @@ export class Claim {
   }
 
   isBundleStitched(): boolean {
-    return true; // TODO - add the actual logic once the details of bundle functionality discussed within the team
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[0]?.stitchedDocument;
+  }
+
+  lastBundleCreatedDate(): Date {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return undefined;
+    }
+
+    BundlesFormatter.orderBundlesNewToOld(caseBundles);
+
+    for(const bundle of caseBundles)
+    {
+      if(bundle.createdOn)
+      {
+        return bundle.createdOn;
+      }
+    }
+
+    return undefined;
   }
 
   hasClaimTakenOffline() {
@@ -660,7 +688,7 @@ export class Claim {
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
-  
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
