@@ -1,11 +1,11 @@
 import {NextFunction, Router} from 'express';
 import {
-  CLAIM_ISSUE_INCOMPLETE_SUBMISSION_URL, CLAIMANT_TASK_LIST_URL
+  CLAIM_ISSUE_INCOMPLETE_SUBMISSION_URL, CLAIMANT_TASK_LIST_URL,
 } from '../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {AppRequest} from "models/AppRequest";
-import {outstandingTasksFromCase} from "services/features/claim/taskListService";
+import {AppRequest} from 'models/AppRequest';
+import {outstandingTasksFromCase} from 'services/features/claim/taskListService';
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteClaimIssueSubmissionController = Router();
 

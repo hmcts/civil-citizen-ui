@@ -14,7 +14,7 @@ import {
   CLAIM_RESOLVING_DISPUTE_URL,
 } from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
-import {Task} from "models/taskList/task";
+import {Task} from 'models/taskList/task';
 
 export const getTaskLists = (caseData: Claim, userId: string, lang: string): TaskList[] => {
   const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions( caseData, userId, lang);
