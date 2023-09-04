@@ -38,8 +38,8 @@ export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySectio
   return sectionContent;
 };
 
-export const buildViewBundleSection = (): ClaimSummarySection[][] => {
+export const buildViewBundleSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
-  sectionContent.push(getViewBundle());
+  sectionContent.push(getViewBundle(claim));
   return sectionContent;
 };

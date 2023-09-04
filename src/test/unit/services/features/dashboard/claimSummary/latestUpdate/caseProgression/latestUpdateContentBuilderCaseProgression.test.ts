@@ -149,11 +149,11 @@ describe('Latest Update Content Builder Case Progression', () => {
         .addTitle(`${BUNDLE_CONTENT}.TITLE`)
         .addParagraph(`${BUNDLE_CONTENT}.BUNDLE_CONTAINS_ALL_DOCUMENTS`)
         .addParagraph(`${BUNDLE_CONTENT}.YOU_ARE_REMINDED`)
-        .addButton(`${BUNDLE_CONTENT}.VIEW_BUNDLE`, 'href') // TODO - add an actual href once available after work on CIV-9800 is done;
+        .addButton(`${BUNDLE_CONTENT}.VIEW_BUNDLE`, DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.BUNDLES))
         .build();
 
       //When
-      const viewBundleContent = buildViewBundleSection();
+      const viewBundleContent = buildViewBundleSection(claim);
 
       //Then
       expect(viewBundleContent).toEqual([viewBundleContentExpected]);
