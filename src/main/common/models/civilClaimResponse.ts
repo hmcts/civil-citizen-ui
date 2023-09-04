@@ -55,6 +55,7 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 
 export class CivilClaimResponse {
   id: string;
@@ -217,6 +218,9 @@ export interface CCDClaim extends ClaimUpdate {
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
   caseBundles?: CCDBundle[];
+  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
 }
 
 export interface ClaimFeeData {
