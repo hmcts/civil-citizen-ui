@@ -530,6 +530,7 @@
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
       "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
+      "UNEMPLOYMENT_FOR": "Unemployed for {{ unemployedYears }} years {{ unemployedMonths }} months",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
@@ -778,8 +779,9 @@
       "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
+      "ORDERS": "Orders",
       "RESPONSE_DEADLINE": "Response deadline:",
-      "TOTAL_CLAIM_AMOUNT":"Total claim amount:",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
@@ -1660,6 +1662,7 @@
       "YOU_HAVE_REJECTED_CLAIM_MSG1": "You have rejected the claim. You’ve suggested mediation.",
       "YOU_HAVE_REJECTED_CLAIM_MSG2": "We’ll ask {{ claimantName }} if they agree to take part in mediation.",
       "YOU_HAVE_REJECTED_CLAIM_MSG3": "If they say yes, we’ll arrange a date for mediation. If they say no we’ll send you a directions questionnaire this is a form you complete to tell us more about the claim.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG4": "You’ve rejected the claim. You might have to go to a hearing.",
       "YOU_HAVE_REJECTED_CLAIM": "You’ve rejected the claim.",
       "NO_MEDIATION_REQUIRED": "You said you don’t want to use mediation to solve it. You might have to go to a hearing",
       "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "We’ll contact you when the claimant responds"
