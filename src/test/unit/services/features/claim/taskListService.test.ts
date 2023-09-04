@@ -32,6 +32,7 @@ import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
+import {outstandingTasksFromCase, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -118,6 +119,19 @@ describe('Claim Task List service', () => {
       const taskList = getTaskLists(caseData, userId, lng);
       //Then
       expect(taskList).toMatchObject(expectedTaskList);
+    });
+  });
+
+  describe('Claim outstanding Task List service', () => {
+    describe('TaskList incomplete check', () => {
+      it('should return incompleted task list', () => {
+        //Given
+        const caseData = new Claim();
+        //When
+        const taskList = outstandingTasksFromCase(caseData, userId, lng);
+        //Then
+        expect(taskList).toHaveLength(3);
+      });
     });
   });
 
