@@ -32,7 +32,7 @@ import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
-import {outstandingTasksFromCase, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
+import {outstandingTasksFromCase} from 'services/features/common/taskListService';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
