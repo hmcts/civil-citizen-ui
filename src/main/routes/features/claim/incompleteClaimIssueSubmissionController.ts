@@ -1,6 +1,6 @@
 import {NextFunction, Router} from 'express';
 import {
-  CLAIM_ISSUE_INCOMPLETE_SUBMISSION_URL, CLAIMANT_TASK_LIST_URL,
+  CLAIM_INCOMPLETE_SUBMISSION_URL, CLAIMANT_TASK_LIST_URL,
 } from '../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -9,7 +9,7 @@ import {outstandingTasksFromCase} from 'services/features/claim/taskListService'
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteClaimIssueSubmissionController = Router();
 
-incompleteClaimIssueSubmissionController.get(CLAIM_ISSUE_INCOMPLETE_SUBMISSION_URL, async (req, res, next: NextFunction) => {
+incompleteClaimIssueSubmissionController.get(CLAIM_INCOMPLETE_SUBMISSION_URL, async (req, res, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
