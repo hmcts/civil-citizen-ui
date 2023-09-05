@@ -11,6 +11,8 @@ export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
+        console.time('CHECK_ANSWERS AllResponseTasksCompletedGuard');
+
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         const caseData: Claim = await getClaimById(appReq.session.claimId, req);
@@ -25,6 +27,7 @@ export class AllResponseTasksCompletedGuard {
         }
 
         res.redirect(constructResponseUrlWithIdParams(appReq.session.claimId, redirectUrl));
+        console.timeEnd('CHECK_ANSWERS AllResponseTasksCompletedGuard');
       } catch (error) {
         next(error);
       }

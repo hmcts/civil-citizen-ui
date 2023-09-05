@@ -22,7 +22,10 @@ const checkAnswersController = Router();
 
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  console.time('CHECK_ANSWERS getSummarySections');
   const summarySections = getSummarySections(req.params.id, claim, lang);
+  console.timeEnd('CHECK_ANSWERS getSummarySections');
+
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
@@ -34,9 +37,18 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.time('CHECK_ANSWERS');
+
+      console.time('CHECK_ANSWERS getCaseDataFromStore');
       const claim = await getCaseDataFromStore(req.params.id);
+      console.timeEnd('CHECK_ANSWERS getCaseDataFromStore');
+
+      console.time('CHECK_ANSWERS getStatementOfTruth');
       const form = new GenericForm(getStatementOfTruth(claim));
+      console.timeEnd('CHECK_ANSWERS getStatementOfTruth');
+
       renderView(req, res, form, claim);
+      console.timeEnd('CHECK_ANSWERS');
     } catch (error) {
       next(error);
     }

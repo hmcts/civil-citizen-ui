@@ -17,9 +17,16 @@ const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('isFirstTimeInPCQ');
+    
+    console.time('CHECK_ANSWERS isFirstTimeInPCQ getCaseDataFromStore');
     const caseData: Claim = await getCaseDataFromStore(req.params.id);
-    const pcqShutterOn = await isPcqShutterOn();
+    console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ getCaseDataFromStore');
 
+    console.time('CHECK_ANSWERS isFirstTimeInPCQ isPcqShutterOn');
+    const pcqShutterOn = await isPcqShutterOn();
+    console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ isPcqShutterOn');
+    
     if (pcqShutterOn || caseData.pcqId) {
       return next();
     }
@@ -29,12 +36,22 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const claimId = req.params.id;
     const defendantEmail = caseData.respondent1.emailAddress?.emailAddress;
 
+    console.time('CHECK_ANSWERS isFirstTimeInPCQ isPcqHealthy');
     const isHealthy = await isPcqHealthy();
+    console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ isPcqHealthy');
+
+    console.time('CHECK_ANSWERS isFirstTimeInPCQ isPcqElegible');
     const isElegible = isPcqElegible(type);
+    console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ isPcqElegible');
 
     if (isHealthy && isElegible) {
+      console.time('CHECK_ANSWERS isFirstTimeInPCQ generatePcqId');
       const pcqId = generatePcqId();
+      console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ generatePcqId');
+
+      console.time('CHECK_ANSWERS isFirstTimeInPCQ savePcqIdClaim');
       await savePcqIdClaim(pcqId, claimId);
+      console.timeEnd('CHECK_ANSWERS isFirstTimeInPCQ savePcqIdClaim');
       
       const pcqUrl = generatePcqUrl(
         pcqId,
