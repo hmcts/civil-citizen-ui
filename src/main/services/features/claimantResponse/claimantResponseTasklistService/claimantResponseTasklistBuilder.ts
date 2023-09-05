@@ -30,9 +30,9 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
     
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+      const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
       if (claim.isSignASettlementAgreement()) {
         const getSsignSettlementAgreementTask = getSignSettlementAgreementTask(claim, claimId, lang);

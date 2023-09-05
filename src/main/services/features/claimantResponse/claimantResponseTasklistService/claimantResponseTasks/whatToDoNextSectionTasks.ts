@@ -108,15 +108,6 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
-  // else if (claim.isFAPaymentOptionBySetDate() || claim.isFAPaymentOptionInstallments()) {
-  //   if (
-  //     claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE || 
-  //     (claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE &&
-  //       claim.claimantResponse?.rejectionReason?.text)
-  //   ) {
-  //     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
-  //   }
-  // }
   return proposeAlternativeRepaymentTask;
 }
 
