@@ -17,7 +17,6 @@ import {YesNo} from 'common/form/models/yesNo';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
-import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 const claimCheckAnswersController = Router();
@@ -36,7 +35,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
 }
 
 claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
-  checkYourAnswersClaimGuard,isFirstTimeInPCQ,
+  checkYourAnswersClaimGuard,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.session?.user?.id;
