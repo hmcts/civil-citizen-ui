@@ -14,10 +14,10 @@ import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {Party} from "models/party";
-import {PartyType} from "models/partyType";
-import {Email} from "models/Email";
-import axios from "axios";
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {Email} from 'models/Email';
+import axios from 'axios';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
