@@ -793,7 +793,7 @@ describe('Latest Update Content Builder', () => {
     });
   });
 
-  describe('test FD with/without mediation buildResponseToClaimSection', () => {
+  describe('Test FD with/without mediation  and for FT claim buildResponseToClaimSection', () => {
     it('FD and dispute all and respondant rejected free mediation', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
@@ -832,6 +832,25 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
+    });
+
+    it('Its a Fast Track Claim and Defendant responded with FD + dispute the claim', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.totalClaimAmount = 15000;
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.mediation = new Mediation(undefined, undefined, undefined, {option: YesNo.NO});
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM_MSG4');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
     });
   });
 
