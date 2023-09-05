@@ -329,6 +329,15 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  getPaidAmount(): number {
+    if(this.hasConfirmedAlreadyPaid()){
+      return this.isRejectAllOfClaimAlreadyPaid();
+    }
+    if(this.isPartialAdmissionPaid()){
+      return this.partialAdmissionPaidAmount();
+    }
+  }
+
   isRejectAllOfClaimDispute(): boolean {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
   }
