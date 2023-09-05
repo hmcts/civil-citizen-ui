@@ -1,5 +1,6 @@
 import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
+import civilClaimResponseClaimantIntentMock from './mocks/civilClaimResponseClaimantIntentionMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
@@ -31,6 +32,11 @@ const mockCivilClaim = {
   del: jest.fn(() => Promise.resolve({})),
 };
 
+const mockCivilClaimClaimantIntention = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseClaimantIntentMock))),
+  del: jest.fn(() => Promise.resolve({})),
+};
 const mockCivilClaimFastTrack = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFastTrackMock))),
@@ -152,6 +158,7 @@ const mockCivilClaimDocumentUploaded = {
 
 export {
   mockCivilClaim,
+  mockCivilClaimClaimantIntention,
   mockCivilClaimUndefined,
   mockNoStatementOfMeans,
   mockCivilClaimOptionNo,
