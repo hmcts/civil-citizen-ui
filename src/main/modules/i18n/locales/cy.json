@@ -1289,7 +1289,7 @@
     },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
       "PAGE_TITLE": "Defendant Address in England or Wales",
-      "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
+      "TITLE": "A oes gan yr unigolyn neu'r sefydliad rydych chi'n hawlio yn ei erbyn gyfeiriad post yng Nghymru neu Loegr?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "Rydw i'n hawlio yn erbyn cwmni neu sefydliad",
@@ -1314,7 +1314,7 @@
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
-      "TITLE": "Is this claim against more than one person or organisation?"
+      "TITLE": "A yw'r hawliad hwn yn erbyn mwy nag un unigolyn neu sefydliad?"
     },
     "ELIGIBILITY_TOTAL_AMOUNT": {
       "DONT_KNOW": "Dydw i ddim yn gwybod y swm",
@@ -2397,10 +2397,10 @@
       "TITLE": "Tried to settle this claim?"
     },
     "TRY_NEW_SERVICE": {
-      "PAGE_TITLE": "Try the new online service",
-      "TITLE": "Try the new online service",
-      "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
-      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
+      "PAGE_TITLE": "Rhowch gynnig ar y gwasanaeth ar-lein newydd",
+      "TITLE": "Rhowch gynnig ar y gwasanaeth ar-lein newydd",
+      "WE_ARE_BUILDING": "Rydym yn datblygu gwasanaeth newydd. Mae dyluniadau gwahanol yn cael eu profi a'u newid yn seiliedig ar adborth gan ddefnyddwyr.",
+      "YOU_WILL_BE_ASKED": "Gofynnir rhai cwestiynau i chi wirio eich bod yn gymwys i ddefnyddio'r gwasanaeth hwn."
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Ychwanegu unigolyn arall",
