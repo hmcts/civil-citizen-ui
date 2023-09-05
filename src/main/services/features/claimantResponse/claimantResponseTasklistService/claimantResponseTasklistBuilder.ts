@@ -75,7 +75,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   if (claim.isPartialAdmissionPaid()) {
     if(claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
-    } else if(claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO){
+    } else if(claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO || claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO){
       tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
     }
   }
@@ -92,7 +92,7 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  if ((claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) || (claim.isPartialAdmissionPaid() && claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) ) {
+  if ((claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) || (claim.isPartialAdmissionPaid() && (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO || claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO) )) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
