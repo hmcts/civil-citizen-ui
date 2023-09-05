@@ -1,17 +1,14 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  CONFIRMATION_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+  CLAIMANT_RESPONSE_CONFIRMATION_URL,
 } from '../../urls';
 import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {
-  deleteDraftClaimFromStore,
-  getCaseDataFromStore
-} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -36,7 +33,7 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      const isClaimantRejectedDefendantOffer = claim?.claimantResponse.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+      const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);
     } catch (error) {
@@ -49,15 +46,13 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
-
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(req.params.id);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
