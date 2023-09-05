@@ -24,6 +24,12 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {Party} from 'common/models/party';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
+import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
+import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
+import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -66,7 +72,81 @@ describe('Claimant Response Task List builder', () => {
   });
 
   describe('Choose what to do next section', () => {
+    describe('Choose what to do next section Full Admission', () => {
+      it('should display Accept or reject Repayment Plan task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Choose how to formalise task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Sign Settlement as complete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT)
+        claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.SIGN_SETTLEMENT');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      });
+      it('should display Request a CCJ as complete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ)
+        claim.claimantResponse.ccjRequest = new CCJRequest()
+        claim.claimantResponse.ccjRequest.paidAmount =  new PaidAmount(YesNo.YES, 10);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      });
+      it('should display Propose Alternative Repayment Plan as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+    });
     it('should display Accept or reject the amount task as incomplete', () => {
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
