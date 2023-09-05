@@ -36,7 +36,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+//const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
@@ -66,10 +66,10 @@ app.use(session({
   name: 'citizen-ui-session',
   store: sessionStore,
   secret: 'local',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie : {
-    secure: productionMode,
+    secure: false,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
