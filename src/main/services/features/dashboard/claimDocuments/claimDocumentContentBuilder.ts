@@ -6,16 +6,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {t} from 'i18next';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
-import {CaseDocument} from 'models/document/caseDocument';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-
-const buildDownloadSealedClaimSectionTitle = (): ClaimSummarySection => {
-  return {type: ClaimSummaryType.TITLE,
-    data:{
-      text: t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS'),
-    },
-  };
-};
+import {generateDocumentSection} from 'services/features/dashboard/documentBuilderService';
 
 const buildSystemGeneratedDocumentSections = (claim: Claim, claimId: string, lang: string): ClaimSummarySection [] => {
   const claimDocuments = claim.systemGeneratedCaseDocuments;
@@ -26,13 +17,14 @@ const buildSystemGeneratedDocumentSections = (claim: Claim, claimId: string, lan
   return claimDocumentsSections;
 };
 
-const generateDocumentSection = (document: CaseDocument, claimId: string, lang:string): ClaimSummarySection => {
+const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
+  const document = claim.getDocumentDetails(DocumentType.HEARING_FORM);
+  const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
   if (document) {
-    const createdLabel = 'PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED';
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(document.documentLink?.document_binary_url)),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
         text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
@@ -50,8 +42,8 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
       type: ClaimSummaryType.LINK,
       data: {
         href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
-        text: `${t(downloadClaimLabel, lang)} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
-        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
+        text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },
     };
   }
@@ -60,5 +52,5 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
 export {
   buildSystemGeneratedDocumentSections,
   buildDownloadSealedResponseSection,
-  buildDownloadSealedClaimSectionTitle,
+  buildDownloadHearingNoticeSection,
 };

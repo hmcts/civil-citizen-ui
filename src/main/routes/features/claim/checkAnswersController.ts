@@ -14,6 +14,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from 'common/form/models/yesNo';
+import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 
@@ -34,7 +35,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
 }
 
 claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
-  // AllResponseTasksCompletedGuard.apply(CLAIM_INCOMPLETE_SUBMISSION_URL), TODO implement guard
+  checkYourAnswersClaimGuard,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.session?.user?.id;
