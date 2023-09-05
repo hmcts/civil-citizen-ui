@@ -12,10 +12,8 @@ import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 
 export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
   return {
-    // TODO: give citizen profile to existing fields `CITIZEN-DEFENDANT-PROFILE`
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
     applicant1ClaimMediationSpecRequiredLip: toCCDClaimantMediation(claim.claimantResponse?.mediation),
-    // TODO : create this field on civil-service and ccd-def like respondent1LiPResponse inside `R2-CUI-nonprod.json` files with auth as well
     applicant1LiPResponse: toCCDClaimantLiPResponse(claim.claimantResponse),
     applicant1DQLanguage: toCCDWelshLanguageRequirements(claim.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements),
     applicant1DQVulnerabilityQuestions: toCCDVulnerability(claim.claimantResponse?.directionQuestionnaire?.vulnerabilityQuestions),

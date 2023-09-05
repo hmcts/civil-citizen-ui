@@ -11,7 +11,7 @@ export interface CCDClaimantLiPResponse {
 
 export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CCDClaimantLiPResponse => {
   return {
-    applicant1DQExtraDetails: toCCDDQExtraDetails(claimantResponse?.directionQuestionnaire),
+    applicant1DQExtraDetails: toCCDDQExtraDetails(claimantResponse?.directionQuestionnaire, true),
     applicant1DQHearingSupportLip: toCCDSHearingSupport(claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList),
   };
 };
