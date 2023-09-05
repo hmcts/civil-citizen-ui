@@ -19,6 +19,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   const claimantResponse: ClaimantResponse = new ClaimantResponse();
+  console.log('ccdClaim',ccdClaim);
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
   claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
@@ -39,6 +40,9 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   } else if (claim.isPartialAdmission()) {
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
     claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
+  } else if (claim.isFullDefence()) {
+    console.log('I am here...');
+    claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
   }
   claim.claimantResponse = claimantResponse;
   return claim;
