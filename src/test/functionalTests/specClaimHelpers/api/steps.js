@@ -7,6 +7,7 @@ const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantRes
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
+const drawDirectionsOrderRequired = require('../fixtures/events/sdoDocumentMidEventPayloads/drawDirectionsOrderRequired');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -47,6 +48,13 @@ module.exports = {
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performCaseProgressedToHearingInitiated()');
+  },
+
+  getSDODocumentDetails :async (user) => {
+    eventName = 'CREATE_SDO';
+    const payload = drawDirectionsOrderRequired.drawDirectionsOrderRequired();
+    await apiRequest.setupTokens(user);
+    await getSDODocument();
   },
 
   performCaseProgressedToSDO: async (user, caseId) => {
@@ -363,6 +371,18 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
   }
 }
 
+const getSDODocument = async () => {
+  await apiRequest.startEvent(eventName, caseId);
+
+  const response = await apiRequest.validatePage(eventName, caseData, caseId);
+  const responseBody = await response.json();
+  assert.equal(response.status, 201);
+  if (hasSubmittedCallback && submittedCallbackResponseContains) {
+    assert.equal(responseBody.callback_response_status_code, 200);
+    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
+    assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
+  }
+}
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
 
