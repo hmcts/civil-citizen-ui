@@ -36,6 +36,7 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1081,6 +1082,85 @@ describe('Documents', () => {
       const result = claim.isPartialAdmissionNotPaid();
       //Then
       expect(result).toBe(true);
+    });
+  });
+
+  describe('hasClaimantConfirmedDefendantPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantConfirmedDefendantPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false when not confirmed', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.NO}};
+      //When
+      const result = claim.hasClaimantConfirmedDefendantPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true if accepted', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
+      //When
+      const result = claim.hasClaimantConfirmedDefendantPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+
+  });
+
+  describe('hasClaimantRejectedDefendantPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedDefendantPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when not confirmed', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.NO}};
+      //When
+      const result = claim.hasClaimantRejectedDefendantPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false if accepted', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
+      //When
+      const result = claim.hasClaimantRejectedDefendantPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('hasClaimantRejectedPartAdmitPayment', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedPartAdmitPayment();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when not accepted', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasPartPaymentBeenAccepted: {option: YesNo.NO}};
+      //When
+      const result = claim.hasClaimantRejectedPartAdmitPayment();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false if accepted', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasPartPaymentBeenAccepted: {option: YesNo.YES}};
+      //When
+      const result = claim.hasClaimantRejectedPartAdmitPayment();
+      //Then
+      expect(result).toBe(false);
     });
   });
 

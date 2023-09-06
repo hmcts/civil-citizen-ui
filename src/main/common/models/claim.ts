@@ -305,6 +305,18 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
   }
 
+  hasClaimantConfirmedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedPartAdmitPayment(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
+  }
+
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
