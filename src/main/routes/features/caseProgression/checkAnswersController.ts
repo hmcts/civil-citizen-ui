@@ -3,7 +3,7 @@ import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../url
 import {
   getBottomElements,
   getSummarySections,
-  getTopElements, saveDocuments,
+  getTopElements, saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
@@ -11,15 +11,22 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {documentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 
-function renderView(res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, lang: string) {
+function renderView(res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
   const topPageContents = getTopElements(claim);
-  const summarySections = getSummarySections(claim, claimId, lang);
-  const bottomPageContents = getBottomElements();
+  let summarySections: documentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
+
+  if(isClaimant) {
+    summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
+  } else {
+    summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
+  }
+  const bottomPageContents = getBottomElements();
 
   res.render(checkAnswersViewPath, {
     form, topPageContents, summarySections, bottomPageContents, isSmallClaims,
@@ -33,7 +40,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL,
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(claimId);
       const form = new GenericForm(new documentUploadSubmissionForm());
-      renderView(res, form, claim, claimId, lang);
+      renderView(res, form, claim, claimId, false, lang);
     } catch (error) {
       next(error);
     }
@@ -48,9 +55,10 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, async (req: Reque
     await form.validate();
 
     if (form.hasErrors()) {
-      renderView(res, form, claim, claimId, lang);
+      const isSmallClaims = claim.isSmallClaimsTrackDQ;
+      renderView(res, form, claim, claimId, isSmallClaims, lang);
     } else {
-      await saveDocuments(claim, <AppRequest>req, false);
+      await saveUploadedDocuments(claim, <AppRequest>req, false);
       await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }

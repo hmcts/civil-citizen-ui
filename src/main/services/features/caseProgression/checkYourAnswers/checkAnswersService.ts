@@ -36,13 +36,13 @@ import {CaseEvent} from 'models/events/caseEvent';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claim: Claim, claimId: string, lang: string | unknown): documentUploadSections => {
+export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string | unknown): documentUploadSections => {
 
   return {
-    witnessEvidenceSection: getWitnessSummarySection(claim, claimId, lang),
-    disclosureEvidenceSection: getDisclosureSummarySection(claim, claimId, lang),
-    expertEvidenceSection: getExpertSummarySection(claim, claimId, lang),
-    trialEvidenceSection: getTrialSummarySection(claim, claimId, lang),
+    witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
+    disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
+    expertEvidenceSection: getExpertSummarySection(uploadedDocuments, claimId, lang),
+    trialEvidenceSection: getTrialSummarySection(uploadedDocuments, isSmallClaims, claimId, lang),
   };
 };
 
@@ -64,32 +64,26 @@ export const getBottomElements = (): ClaimSummarySection[] => {
     .build();
 };
 
-export const saveDocuments = async (claim: Claim, req: AppRequest,  isClaimant: boolean): Promise<Claim> => {
-  try {
+export const saveUploadedDocuments = async (claim: Claim, req: AppRequest, isClaimant: boolean): Promise<Claim> => {
+  let newUploadDocuments: UploadDocumentsUserForm;
+  let existingUploadDocuments: UploadDocuments;
+  const caseProgression = new CaseProgression();
+  let updatedCcdClaim = {} as CCDClaim;
+  const oldClaim = await civilServiceClient.retrieveClaimDetails(claim.id, req);
 
-    let newUploadDocuments: UploadDocumentsUserForm;
-    let existingUploadDocuments: UploadDocuments;
-    const caseProgression = new CaseProgression();
-    let updatedCcdClaim = {} as CCDClaim;
-    const oldClaim = await civilServiceClient.retrieveClaimDetails(claim.id, req);
-
-    if(isClaimant)
-    {
-      newUploadDocuments = claim.caseProgression.claimantDocuments;
-      existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
-      caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
-      updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
-      return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, claim.id, updatedCcdClaim, req);
-    } else {
-      newUploadDocuments = claim.caseProgression.defendantDocuments;
-      existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
-      caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
-      updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
-      return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, claim.id, updatedCcdClaim, req);
-    }
-
-  } catch (error) {
-    throw error;
+  if(isClaimant)
+  {
+    newUploadDocuments = claim.caseProgression.claimantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
+    caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
+    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, claim.id, updatedCcdClaim, req);
+  } else {
+    newUploadDocuments = claim.caseProgression.defendantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
+    caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
+    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, claim.id, updatedCcdClaim, req);
   }
 };
 

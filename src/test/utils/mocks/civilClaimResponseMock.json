@@ -303,6 +303,7 @@
       "defendantLastUploadDate": "2022-06-21T14:15:19",
       "defendantTrialArrangements": "",
       "claimantTrialArrangements": "",
+      "defendantDocuments": "",
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
