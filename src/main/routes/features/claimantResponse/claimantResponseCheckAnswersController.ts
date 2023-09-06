@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   CLAIMANT_RESPONSE_CONFIRMATION_URL,
@@ -30,7 +30,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 }
 
 claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
@@ -39,9 +39,9 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
-claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
@@ -57,6 +57,6 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimantResponseCheckAnswersController;
