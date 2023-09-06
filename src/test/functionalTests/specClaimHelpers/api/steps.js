@@ -7,7 +7,7 @@ const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantRes
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
-const drawDirectionsOrderRequired = require('../fixtures/events/sdoDocumentMidEventPayloads/drawDirectionsOrderRequired');
+const sdoMidEventPayload = require('../fixtures/events/SDOMidEventPayloads');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -50,9 +50,8 @@ module.exports = {
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
 
-  getSDODocumentDetails :async (user) => {
+  getSDODocumentDetails: async (user) => {
     eventName = 'CREATE_SDO';
-    const payload = drawDirectionsOrderRequired.drawDirectionsOrderRequired();
     await apiRequest.setupTokens(user);
     await getSDODocument();
   },
@@ -71,7 +70,7 @@ module.exports = {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       payload = defendantResponse.createDefendantResponse('15000');
     } else {
@@ -91,7 +90,7 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
     } else {
@@ -115,7 +114,7 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    if(claimType !== 'pinInPost'){
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
     await waitForFinishedBusinessProcess(caseId);
@@ -131,7 +130,7 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('Creating LRvLR FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACKLRvLR(multipartyScenario);
     } else {
@@ -155,7 +154,7 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    if(claimType !== 'pinInPost'){
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
     }
     await waitForFinishedBusinessProcess(caseId);
@@ -165,7 +164,7 @@ module.exports = {
     return caseId;
   },
 
-  retrieveCaseData: async(user, caseId) => {
+  retrieveCaseData: async (user, caseId) => {
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
   },
@@ -191,7 +190,7 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState) => {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
@@ -221,7 +220,7 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  enterBreathingSpace: async (user)=> {
+  enterBreathingSpace: async (user) => {
     const enterBreathingSpacePayload = breathingSpace.enterBreathingSpacePayload();
     eventName = enterBreathingSpacePayload['event'];
     caseData = enterBreathingSpacePayload['caseData'];
@@ -230,7 +229,7 @@ module.exports = {
     console.log('End of enterBreathingSpace()');
   },
 
-  mediationSuccessful: async (user)=> {
+  mediationSuccessful: async (user) => {
     const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
     eventName = mediationSuccessfulPayload['event'];
     caseData = mediationSuccessfulPayload['caseData'];
@@ -239,7 +238,7 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user)=> {
+  mediationUnsuccessful: async (user) => {
     const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
@@ -372,16 +371,25 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
 }
 
 const getSDODocument = async () => {
+  console.log('Inside the getSDODocument()');
   await apiRequest.startEvent(eventName, caseId);
+  const drawDirectionsOrderRequiredPayload = sdoMidEventPayload.drawDirectionsOrderRequired();
+  caseData = drawDirectionsOrderRequiredPayload['caseDataUpdate'];
+  const responseForDrawDirections = await apiRequest.validatePageForMidEvent(eventName, 'SDO', caseData, caseId);
+  assert.equal(responseForDrawDirections.status, 200);
 
-  const response = await apiRequest.validatePage(eventName, caseData, caseId);
-  const responseBody = await response.json();
-  assert.equal(response.status, 201);
-  if (hasSubmittedCallback && submittedCallbackResponseContains) {
-    assert.equal(responseBody.callback_response_status_code, 200);
-    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
-    assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
-  }
+  const SDOClaimsTrackPayload = sdoMidEventPayload.SDOClaimsTrack();
+  caseData = SDOClaimsTrackPayload['caseDataUpdate'];
+  const responseForSDOClaimsTrack = await apiRequest.validatePageForMidEvent(eventName, 'SDOClaimsTrack', caseData, caseId);
+  assert.equal(responseForSDOClaimsTrack.status, 200);
+
+  const SDOClaimsFastTrackPayload = sdoMidEventPayload.SDOFastTrack();
+  caseData = SDOClaimsFastTrackPayload['caseDataUpdate'];
+  const responseForSDOFastTrack = await apiRequest.validatePageForMidEvent(eventName, 'SDOFastTrack', caseData, caseId);
+  assert.equal(responseForSDOFastTrack.status, 200);
+  console.log(responseForSDOFastTrack.body);
+
+
 }
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
@@ -427,9 +435,9 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 }
 
 const assignSpecCase = async (caseId, type) => {
-  if(type === 'lrvlr'){
+  if (type === 'lrvlr') {
     await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantLRCitizenUser);
-  }else{
+  } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
   }
 };
