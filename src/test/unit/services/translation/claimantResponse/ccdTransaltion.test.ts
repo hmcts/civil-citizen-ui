@@ -103,7 +103,7 @@ function getClaimantResponseDQ(claim: Claim): Claim {
   claim.claimantResponse.directionQuestionnaire.witnesses = {
     otherWitnesses: {
       option: YesNo.NO,
-    }
+    },
   };
   claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = {
     vulnerability: new GenericYesNo(YesNo.NO),
@@ -112,7 +112,7 @@ function getClaimantResponseDQ(claim: Claim): Claim {
     language: {
       speakLanguage: LanguageOptions.WELSH,
       documentsLanguage: LanguageOptions.ENGLISH,
-    }
+    },
   };
   return claim;
 }
