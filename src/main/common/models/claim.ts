@@ -184,6 +184,12 @@ export class Claim {
       return ClaimResponseStatus.RC_DISPUTE;
     }
 
+    if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
+      &&  (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
+      && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
+      return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
+    }
+
   }
 
   getClaimantFullName(): string {
