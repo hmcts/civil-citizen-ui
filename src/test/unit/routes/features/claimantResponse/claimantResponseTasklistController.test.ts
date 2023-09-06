@@ -25,7 +25,6 @@ describe('Claimant response task list', () => {
       await request(app)
         .get(CLAIMANT_RESPONSE_TASK_LIST_URL)
         .expect((res) => {
-          console.log(res);
           expect(res.status).toBe(200);
           expect(res.text).toContain('Your response');
           expect(res.text).toContain('How they responded');
