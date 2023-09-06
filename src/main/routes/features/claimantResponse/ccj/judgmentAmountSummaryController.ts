@@ -38,11 +38,7 @@ judgmentAmountSummaryController.get([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PA
 });
 
 judgmentAmountSummaryController.post([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
-  try {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
-  } catch (error) {
-    next(error);
-  }
+  res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
 });
 
 export default judgmentAmountSummaryController;
