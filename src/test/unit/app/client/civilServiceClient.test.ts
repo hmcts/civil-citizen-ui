@@ -400,7 +400,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const caseRoleResult= await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
+      const caseRoleResult = await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
       //Then
       expect(caseRoleResult).toStrictEqual(caseRoleExpected[0]);
     });
@@ -413,8 +413,8 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', mockedAppRequest)).rejects.toThrow('error');
-    });  
-
+    });
+  });
   describe('submitDefendantResponseEvent', () => {
     it('should submit defendant response successfully', async () => {
       //Given
