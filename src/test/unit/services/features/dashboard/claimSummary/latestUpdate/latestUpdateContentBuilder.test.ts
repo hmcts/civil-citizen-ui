@@ -24,7 +24,7 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
@@ -36,6 +36,7 @@ import {
 } from '../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {Mediation} from 'models/mediation/mediation';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -75,6 +76,7 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     firstRepaymentDate: new Date(Date.now()),
   };
   claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100);
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = paymentOptionType;
   claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
@@ -791,7 +793,7 @@ describe('Latest Update Content Builder', () => {
     });
   });
 
-  describe('test FD with/without mediation buildResponseToClaimSection', () => {
+  describe('Test FD with/without mediation  and for FT claim buildResponseToClaimSection', () => {
     it('FD and dispute all and respondant rejected free mediation', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
@@ -831,5 +833,93 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
     });
+
+    it('Its a Fast Track Claim and Defendant responded with FD + dispute the claim', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.totalClaimAmount = 15000;
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.mediation = new Mediation(undefined, undefined, undefined, {option: YesNo.NO});
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOUR_RESPONSE_TO_THE_CLAIM');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM_MSG4');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
+    });
   });
+
+  describe('Part admit not paid - Fast track or No Mediation', () => {
+    it('should have build judicial referral section part admit not paid scenario', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, undefined);
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
+      claim.applicant1AcceptAdmitAmountPaidSpec = YesNoUpperCamelCase.NO;
+      const fullAmount = claim.totalClaimAmount;
+      const partAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount;
+      const claimantName = claim.getClaimantFullName();
+      const lastUpdateExpected = new LatestUpdateSectionBuilder()
+        .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_ADMISSION`, { claimantName, partAmount })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_BELIEVE_FULL_AMOUNT_CLAIMED`, { fullAmount })
+        .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+        .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, docId)
+        .build();
+
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(lastUpdateExpected.flat()).toEqual(responseToClaimSection);
+    });
+  });
+
+  describe('Full Defence -  Claimant intention to proceed ', () => {
+    it('Small Claim - FD and respondent reject free mediation. ', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.totalClaimAmount = 1500;
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.ccdState = CaseState.JUDICIAL_REFERRAL;
+      claim.claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+
+      claim.mediation = new Mediation(undefined, {option: YesNo.NO}, undefined, undefined);
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.REJECTED_YOUR_RESPONSE');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.THE_COURT_WILL_REVIEW_THE_CASE');
+    });
+
+    it('Fast Track Claim - FD', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.totalClaimAmount = 15000;
+      claim.rejectAllOfClaim = {
+        'option': 'dispute',
+        'defence': {'text': 'disagree statement'},
+      };
+
+      claim.ccdState = CaseState.JUDICIAL_REFERRAL;
+      claim.claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.REJECTED_YOUR_RESPONSE');
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.THE_COURT_WILL_REVIEW_THE_CASE');
+    });
+  });
+
 });

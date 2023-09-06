@@ -40,7 +40,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
 
 async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
-  const caseProgressionEnabled = await isCaseProgressionV1Enable() && claim.hasCaseProgressionHearingDocuments();
+  const caseProgressionEnabled = await isCaseProgressionV1Enable();
   const tabItems = [] as TabItem[];
 
   let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
@@ -55,10 +55,11 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
   let evidenceUploadTabId: TabId;
   let evidenceUploadContent: ClaimSummaryContent[];
 
-  if(caseProgressionEnabled) {
+  if(caseProgressionEnabled && claim.hasSdoOrderDocument()) {
+    latestUpdateContent = getCaseProgressionLatestUpdates(claim, lang);
+
     latestUpdateTabLabel = TabLabel.UPDATES;
     latestUpdateTabId = TabId.UPDATES;
-    latestUpdateContent = getCaseProgressionLatestUpdates(claim, lang);
 
     noticesTabLabel = TabLabel.NOTICES;
     noticesTabId = TabId.NOTICES;
@@ -71,7 +72,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string): Promise<Tab
   tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
   tabItems.push(new TabItem(noticesTabLabel, noticesTabId, noticesContent));
 
-  if (caseProgressionEnabled) {
+  if (caseProgressionEnabled && claim.hasSdoOrderDocument()) {
     tabItems.push(new TabItem(evidenceUploadTabLabel, evidenceUploadTabId, evidenceUploadContent));
   }
 
