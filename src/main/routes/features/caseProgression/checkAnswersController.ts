@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../urls';
 import {
   getBottomElements,
@@ -33,20 +33,19 @@ function renderView(res: Response, form: GenericForm<documentUploadSubmissionFor
   });
 }
 
-documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL,
-  async (req: AppRequest, res: Response, next: NextFunction) => {
-    try {
-      const claimId = req.params.id;
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(claimId);
-      const form = new GenericForm(new documentUploadSubmissionForm());
-      renderView(res, form, claim, claimId, false, lang);
-    } catch (error) {
-      next(error);
-    }
-  });
+documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
+    const claimId = req.params.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const claim = await getCaseDataFromStore(claimId);
+    const form = new GenericForm(new documentUploadSubmissionForm());
+    renderView(res, form, claim, claimId, false, lang);
+  } catch (error) {
+    next(error);
+  }
+})as RequestHandler);
 
-documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -66,6 +65,6 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, async (req: Reque
     next(error);
   }
 
-});
+})as RequestHandler);
 
 export default documentUploadCheckAnswerController;

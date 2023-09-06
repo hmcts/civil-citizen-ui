@@ -34,16 +34,26 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
   witnessSummarySection.summaryList.rows = [] as SummaryRow[];
 
   const witnessSummary = uploadedDocuments.witnessSummary;
-  witnessSummary != null ? getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', witnessSummary, witnessSummarySection.summaryList, claimId, lang) : null;
+  if(witnessSummary)
+  {
+    getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', witnessSummary, witnessSummarySection.summaryList, claimId, lang);
+  }
 
   const witnessStatement = uploadedDocuments.witnessStatement;
-  witnessStatement != null ? getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT',witnessStatement, witnessSummarySection.summaryList, claimId, lang) : null;
+  if(witnessStatement)
+  {
+    getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT',witnessStatement, witnessSummarySection.summaryList, claimId, lang);
+  }
 
   const noticeOfIntention = uploadedDocuments.noticeOfIntention;
-  noticeOfIntention != null ? getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', noticeOfIntention, witnessSummarySection.summaryList, claimId, lang) : null;
+  if(noticeOfIntention){
+    getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', noticeOfIntention, witnessSummarySection.summaryList, claimId, lang);
+  }
 
   const documentsReferred = uploadedDocuments.documentsReferred;
-  documentsReferred != null ? getDocumentTypeSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT', documentsReferred, witnessSummarySection.summaryList, claimId, lang) : null;
+  if(documentsReferred){
+    getDocumentTypeSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT', documentsReferred, witnessSummarySection.summaryList, claimId, lang);
+  }
 
   if(witnessSummarySection.summaryList.rows.length > 0)
   {
@@ -61,16 +71,24 @@ export const getExpertSummarySection = (uploadedDocuments: UploadDocumentsUserFo
   expertSummarySection.summaryList.rows = [] as SummaryRow[];
 
   const expertReport = uploadedDocuments.expertReport;
-  expertReport != null ? getExpertSummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE_REPORT_WAS', expertReport, expertSummarySection.summaryList, claimId, lang) : null;
+  if(expertReport){
+    getExpertSummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE_REPORT_WAS', expertReport, expertSummarySection.summaryList, claimId, lang);
+  }
 
   const expertStatement = uploadedDocuments.expertStatement;
-  expertReport != null ? getExpertSummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES', 'PAGES.UPLOAD_DOCUMENTS.DATE', expertStatement, expertSummarySection.summaryList, claimId, lang) : null;
+  if(expertStatement){
+    getExpertSummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERTS_NAMES', 'PAGES.UPLOAD_DOCUMENTS.DATE', expertStatement, expertSummarySection.summaryList, claimId, lang);
+  }
 
   const questionsForExperts = uploadedDocuments.questionsForExperts;
-  questionsForExperts != null ? getExpertOtherPartySummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU', true, questionsForExperts, expertSummarySection.summaryList, claimId, lang) : null;
+  if(questionsForExperts){
+    getExpertOtherPartySummaryRows('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_YOU', true, questionsForExperts, expertSummarySection.summaryList, claimId, lang);
+  }
 
   const answersForExperts = uploadedDocuments.answersForExperts;
-  answersForExperts != null ? getExpertOtherPartySummaryRows( 'PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_WITH', false, answersForExperts, expertSummarySection.summaryList, claimId, lang) : null;
+  if(answersForExperts){
+    getExpertOtherPartySummaryRows( 'PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS', 'PAGES.UPLOAD_DOCUMENTS.EXPERT.NAME_DOCUMENT_WITH', false, answersForExperts, expertSummarySection.summaryList, claimId, lang);
+  }
 
   if(expertSummarySection.summaryList.rows.length > 0){
     expertEvidenceSection.sections.push(expertSummarySection);
@@ -87,10 +105,14 @@ export const getDisclosureSummarySection = (uploadedDocuments: UploadDocumentsUs
   disclosureSummarySection.summaryList.rows = [] as SummaryRow[];
 
   const documentsForDisclosure = uploadedDocuments.documentsForDisclosure;
-  documentsForDisclosure != null ? getDocumentTypeSummaryRows('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS', documentsForDisclosure, disclosureSummarySection.summaryList, claimId, lang) : null;
+  if(documentsForDisclosure){
+    getDocumentTypeSummaryRows('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS', documentsForDisclosure, disclosureSummarySection.summaryList, claimId, lang);
+  }
 
   const disclosureList = uploadedDocuments.disclosureList;
-  disclosureList != null ? getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST', disclosureList, disclosureSummarySection.summaryList, claimId, lang) : null;
+  if(disclosureList){
+    getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST', disclosureList, disclosureSummarySection.summaryList, claimId, lang);
+  }
 
   if(disclosureSummarySection.summaryList.rows.length > 0) {
     disclosureEvidenceSection.sections.push(disclosureSummarySection);
@@ -107,20 +129,30 @@ export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserFor
   trialSummarySection.summaryList.rows = [] as SummaryRow[];
 
   const trialCaseSummary = uploadedDocuments.trialCaseSummary;
-  trialCaseSummary != null ?getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY', trialCaseSummary, trialSummarySection.summaryList, claimId, lang) : null;
+  if(trialCaseSummary){
+    getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY', trialCaseSummary, trialSummarySection.summaryList, claimId, lang);
+  }
 
   const trialSkeletonArgument = uploadedDocuments.trialSkeletonArgument;
-  trialSkeletonArgument != null ? getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON', trialSkeletonArgument, trialSummarySection.summaryList, claimId, lang) : null;
+  if(trialSkeletonArgument){
+    getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON', trialSkeletonArgument, trialSummarySection.summaryList, claimId, lang);
+  }
 
   const trialAuthorities = uploadedDocuments.trialAuthorities;
-  trialAuthorities != null ? getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL', trialAuthorities, trialSummarySection.summaryList, claimId, lang) : null;
+  if(trialAuthorities){
+    getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL', trialAuthorities, trialSummarySection.summaryList, claimId, lang);
+  }
 
   const trialCosts = uploadedDocuments.trialCosts;
-  trialCosts != null ? getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS', trialCosts, trialSummarySection.summaryList, claimId, lang) : null;
+  if(trialCosts){
+    getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS', trialCosts, trialSummarySection.summaryList, claimId, lang);
+  }
 
   const trialDocumentary = uploadedDocuments.trialDocumentary;
-  const hearingOrTrialTitle = isSmallClaims ? 'PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY' : 'PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY';
-  trialDocumentary != null ? getDocumentTypeSummaryRows(hearingOrTrialTitle, trialDocumentary, trialSummarySection.summaryList, claimId, lang) : null;
+  if(trialDocumentary){
+    const hearingOrTrialTitle = isSmallClaims ? 'PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY' : 'PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY';
+    getDocumentTypeSummaryRows(hearingOrTrialTitle, trialDocumentary, trialSummarySection.summaryList, claimId, lang);
+  }
 
   if(trialSummarySection.summaryList.rows.length > 0){
     trialEvidenceSection.sections.push(trialSummarySection);
