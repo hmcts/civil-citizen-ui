@@ -8,7 +8,6 @@ import {
 } from 'routes/urls';
 import config from 'config';
 import nock from 'nock';
-import {t} from 'i18next';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
