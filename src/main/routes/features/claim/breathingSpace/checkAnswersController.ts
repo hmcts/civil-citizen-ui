@@ -5,6 +5,8 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -29,6 +31,8 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
 breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
+    await submitBreathingSpace(<AppRequest>req);
+    await deleteDraftClaimFromStore(userId);
     res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

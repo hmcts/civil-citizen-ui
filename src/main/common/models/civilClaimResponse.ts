@@ -55,6 +55,7 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class CivilClaimResponse {
   id: string;
@@ -221,6 +222,7 @@ export interface CCDClaim extends ClaimUpdate {
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {
