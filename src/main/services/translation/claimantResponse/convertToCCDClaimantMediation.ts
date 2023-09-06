@@ -6,8 +6,8 @@ import {toCCDMediation} from '../response/convertToCCDMediation';
 export const toCCDClaimantMediation = (mediation: Mediation): CCDClaimantMediationLip => {
   if (!mediation) {
     return undefined;
-  };
-  const ccdMediation = toCCDMediation(mediation)
+  }
+  const ccdMediation = toCCDMediation(mediation);
   return {
     ...ccdMediation,
     hasAgreedFreeMediation: toAgreedMediation(mediation),

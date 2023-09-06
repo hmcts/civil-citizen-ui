@@ -6,13 +6,8 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {Mediation} from 'common/models/mediation/mediation';
 import {mockExpertDetailsList} from '../../features/directionsQuestionnaire/experts/expertDetailsService.test';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
-import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
-import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {CaseState} from 'common/form/models/claimDetails';
 
 describe('Translate claimant response to ccd version', () => {
@@ -21,7 +16,7 @@ describe('Translate claimant response to ccd version', () => {
     claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     claim.claimantResponse = new ClaimantResponse();
-  })
+  });
   it('should translate hasPartAdmittedBeenAccepted to ccd', () => {
     //Given
     claim.claimantResponse.hasPartAdmittedBeenAccepted = <GenericYesNo>{option: YesNo.NO};
@@ -37,8 +32,8 @@ describe('Translate claimant response to ccd version', () => {
         iDoNotWantMediationReason: 'NO_DELAY_IN_HEARING',
       },
       mediationDisagreement: {
-        option: YesNo.NO
-      }
+        option: YesNo.NO,
+      },
     };
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
@@ -49,27 +44,7 @@ describe('Translate claimant response to ccd version', () => {
   });
   it('should translate small claim DQ to ccd', () => {
     //Given
-    claim.totalClaimAmount = 1500;
-    claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
-    claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
-    claim.claimantResponse.directionQuestionnaire.witnesses = new Witnesses();
-    claim.claimantResponse.directionQuestionnaire.experts = new Experts();
-    claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
-    claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
-    claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
-    claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
-    claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
-    claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
-    claim.claimantResponse.directionQuestionnaire.experts.expertRequired = true;
-    claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {option: YesNo.NO};
-    claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.YES};
-    claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.YES, details: 'test'};
-    claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
+    claim = getClaimantResponseDQ(claim);
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
     //Then
@@ -85,8 +60,59 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.giveEvidenceYourSelf).toBe(YesNoUpperCamelCase.YES);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.applicant1DQLiPExpert.expertReportRequired).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.applicant1DQLiPExpert.expertCanStillExamineDetails).toBe('test');
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.wantPhoneOrVideoHearing).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.YES);
+    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.wantPhoneOrVideoHearing).toBe(YesNoUpperCamelCase.YES);
+    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.whyPhoneOrVideoHearing).toBe('Need Phone hearing');
+    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
+    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
   });
 });
+
+function getClaimantResponseDQ(claim: Claim): Claim {
+  claim.totalClaimAmount = 1500;
+  claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+  claim.claimantResponse.directionQuestionnaire.hearing = {
+    phoneOrVideoHearing: {
+      option: YesNo.YES,
+      details: 'Need Phone hearing',
+    },
+    cantAttendHearingInNext12Months: new GenericYesNo(YesNo.NO),
+    supportRequiredList: {option: YesNo.NO},
+    whyUnavailableForHearing: {
+      reason: 'out of city',
+    },
+    determinationWithoutHearing: {
+      option: YesNo.NO,
+      reasonForHearing: 'reasonForHearing',
+    },
+    specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
+  };
+
+  claim.claimantResponse.directionQuestionnaire.experts = {
+    expertRequired: true,
+    expertReportDetails: {option: YesNo.NO},
+    permissionForExpert: new GenericYesNo(YesNo.YES),
+    expertCanStillExamine: {
+      option: YesNo.YES,
+      details: 'test',
+    },
+    expertDetailsList: mockExpertDetailsList,
+    expertEvidence: new GenericYesNo('Yes'),
+  };
+  claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = new GenericYesNo(YesNo.YES);
+  claim.claimantResponse.directionQuestionnaire.witnesses = {
+    otherWitnesses: {
+      option: YesNo.NO,
+    }
+  };
+  claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = {
+    vulnerability: new GenericYesNo(YesNo.NO),
+  };
+  claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = {
+    language: {
+      speakLanguage: LanguageOptions.WELSH,
+      documentsLanguage: LanguageOptions.ENGLISH,
+    }
+  };
+  return claim;
+}
