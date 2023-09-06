@@ -17,12 +17,12 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
-      const claimFeeUrl = CLAIM_FEE_URL;
+      const claimFeeUrl = CLAIM_FEE_URL.replace(':id', claimId);
       res.render(claimSubmittedView, {
-        claimNumber, 
-        defendantFullName, 
+        claimNumber,
+        defendantFullName,
         defendantResponseLimit,
-        helpWithFee, 
+        helpWithFee,
         claimFeeUrl,
       });
     }
