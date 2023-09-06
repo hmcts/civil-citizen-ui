@@ -1006,6 +1006,148 @@ describe('Documents', () => {
     });
   });
 
+  describe('isPartialAdmissionPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and already paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isPartialAdmissionNotPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionNotPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionNotPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and not paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isPartialAdmissionNotPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Claim getPaidAmount', () => {
+    const claim = new Claim();
+    it('should return undefined with empty claim', () => {
+      //When
+      const result = claim.getPaidAmount();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return undefined with different states', () => {
+      //Given
+      claim.rejectAllOfClaim = new RejectAllOfClaim(RejectAllOfClaimType.DISPUTE);
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.getPaidAmount();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return partialAdmission paid amount', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid(
+        {
+          amount: 150,
+          totalClaimAmount: 1000,
+          year: '2022',
+          month: '2',
+          day: '10',
+          text: 'Some text',
+        },
+      );
+
+      //When
+      const result = claim.getPaidAmount();
+      //Then
+      expect(result).toBe(150);
+    });
+    it('should return reject all of claim amount', () => {
+      //Given
+      claim.rejectAllOfClaim = new RejectAllOfClaim(
+        RejectAllOfClaimType.ALREADY_PAID,
+        new HowMuchHaveYouPaid({
+          amount: 180,
+          totalClaimAmount: 1000,
+          year: '2022',
+          month: '2',
+          day: '10',
+          text: 'Some text',
+        }),
+        new WhyDoYouDisagree(''),
+        new Defence(),
+      );
+      //When
+      const result = claim.getPaidAmount();
+      //Then
+      expect(result).toEqual(180);
+    });
+  });
+
   describe('isBusiness', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
