@@ -221,6 +221,7 @@ export interface CCDClaim extends ClaimUpdate {
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
 }
 
