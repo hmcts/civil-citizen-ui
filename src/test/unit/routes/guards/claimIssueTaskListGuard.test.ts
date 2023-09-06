@@ -51,6 +51,7 @@ describe('Claim Issue TaskList Guard', () => {
   it('should access to claim/task-list  page when eligibility questions completed', async () => {
     //Given
     const mockClaim = new Claim();
+    mockClaim.id='1';
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
