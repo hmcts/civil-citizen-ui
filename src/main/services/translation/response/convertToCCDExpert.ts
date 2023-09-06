@@ -8,7 +8,7 @@ import {Claim} from 'models/claim';
 import {YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const toCCDExpert = (claim: Claim) => {
-  const referenceDQ = claim.isClaimantIntentionPending ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
+  const referenceDQ = claim.isClaimantIntentionPending() ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
   return{
     expertRequired: toCCDExpertRequiredResponse(claim),
     details: toCCDExpertRequiredResponse(claim) === YesNoUpperCamelCase.YES ? toCCDExpertDetails(referenceDQ?.experts?.expertDetailsList?.items) : undefined,
@@ -18,7 +18,7 @@ export const toCCDExpert = (claim: Claim) => {
 };
 
 const toCCDExpertRequiredResponse = (claim: Claim) => {
-  const referenceDQ = claim.isClaimantIntentionPending ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
+  const referenceDQ = claim.isClaimantIntentionPending() ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
   if (claim.isFastTrackClaim) {
     return toCCDYesNo(referenceDQ?.experts?.expertEvidence?.option);
   } else {
