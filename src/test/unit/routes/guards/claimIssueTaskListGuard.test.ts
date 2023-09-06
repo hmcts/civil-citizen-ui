@@ -8,6 +8,8 @@ import {
 } from 'routes/urls';
 import config from 'config';
 import nock from 'nock';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -25,6 +27,7 @@ describe('Claim Issue TaskList Guard', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   it('should redirect if claim not exists and eligibility not completed', async () => {
     //Given
 
@@ -48,7 +51,8 @@ describe('Claim Issue TaskList Guard', () => {
     //Then
     expect(res.status).toBe(200);
   });
-  it('should access to claim/task-list  page when eligibility questions completed', async () => {
+
+  it('should access to incomplete ', async () => {
     //Given
     const testClaim = new Claim();
     testClaim.id='1';
@@ -60,6 +64,7 @@ describe('Claim Issue TaskList Guard', () => {
     //Then
     expect(res.status).toBe(200);
   });
+
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
     const mockClaim = new Claim();
@@ -71,5 +76,17 @@ describe('Claim Issue TaskList Guard', () => {
     //Then
     expect(res.status).toBe(200);
   });
-
+  it('should access the claim ', async () => {
+    const mockClaim = new Claim();
+    mockClaim.id = '1';
+    mockGetCaseData.mockImplementation(async () => mockClaim);
+    const res = { redirect: jest.fn() } as any
+    const req = { query: { lang: 'en' }, cookies: { 'eligibilityCompleted': 'done' }, session: { claimId: '1' } };
+    const next = jest.fn();
+    await claimIssueTaskListGuard(req as any, res as any, next)
+    expect(res.redirect).toHaveBeenCalledWith(
+      constructResponseUrlWithIdParams(req.session.claimId, CLAIM_INCOMPLETE_SUBMISSION_URL)
+    );
+    expect(next).not.toHaveBeenCalled();
+  })
 });
