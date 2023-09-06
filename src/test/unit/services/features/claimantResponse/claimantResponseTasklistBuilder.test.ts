@@ -100,7 +100,7 @@ describe('Claimant Response Task List builder', () => {
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
-        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT)
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
         claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
         //When
         const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -117,8 +117,8 @@ describe('Claimant Response Task List builder', () => {
         claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
-        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ)
-        claim.claimantResponse.ccjRequest = new CCJRequest()
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+        claim.claimantResponse.ccjRequest = new CCJRequest();
         claim.claimantResponse.ccjRequest.paidAmount =  new PaidAmount(YesNo.YES, 10);
         //When
         const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
