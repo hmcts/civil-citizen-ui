@@ -1,7 +1,6 @@
 export const PageUrls = {
 
   //Page URL's for the CUI Common Pages.
-  HOME: '/',
   DASHBOARD: '/dashboard',
   //Page URL's for the CUI Functional Pages.
   DEFENDANT : '/dashboard/:cuiCaseId/defendant',
