@@ -42,7 +42,7 @@ export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] 
 
 function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isClaimant: boolean) : ClaimSummarySection {
 
-  if (!rows) return undefined;
+  if (!rows || rows.length == 0) return undefined;
 
   const tableRows = [] as TableCell[][];
 
