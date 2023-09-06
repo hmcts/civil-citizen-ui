@@ -125,8 +125,10 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
-    expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
-    expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    expectedOutput.defendantLastUploadDate = undefined;
+    expectedOutput.claimantLastUploadDate = undefined;
+    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], []);
+    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
@@ -146,6 +148,8 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: [mockFinalOrderDocument1, mockFinalOrderDocument2],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.defendantLastUploadDate = undefined;
+    expectedOutput.claimantDocuments = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant'),
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant')],
@@ -156,7 +160,7 @@ describe('toCUICaseProgression', () => {
     expectedOutput.defendantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, 'Defendant')],
       [new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_SUMMARY, 'Defendant')],
-      undefined,
+      [],
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
