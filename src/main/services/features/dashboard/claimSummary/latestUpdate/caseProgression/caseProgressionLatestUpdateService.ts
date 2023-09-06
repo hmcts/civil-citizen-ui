@@ -5,11 +5,15 @@ import {
   buildHearingTrialLatestUploadSection,
   buildNewUploadSection,
   buildFinaliseTrialArrangements,
+  buildViewBundleSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
+  if (claim.isBundleStitched()) {
+    sectionContent.push(getViewBundleLatestUpdateContent(claim));
+  }
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
   }
@@ -43,6 +47,10 @@ export const getEvidenceUploadLatestUpdateContent = (claimId: string, claim: Cla
 
 export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: string): ClaimSummarySection[][] => {
   return buildHearingTrialLatestUploadSection(claim, lang);
+};
+
+export const getViewBundleLatestUpdateContent = (claim: Claim) : ClaimSummarySection[][] => {
+  return buildViewBundleSection(claim);
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {

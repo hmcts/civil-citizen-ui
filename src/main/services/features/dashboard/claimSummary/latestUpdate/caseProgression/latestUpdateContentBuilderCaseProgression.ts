@@ -11,6 +11,9 @@ import {
   getFinaliseTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/finaliseTrialArrangementsContent';
 
+import {
+  getViewBundle,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/viewBundleContent';
 export const buildNewUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getNewUpload(claim));
@@ -32,5 +35,11 @@ export const buildHearingTrialLatestUploadSection = (claim: Claim, lang: string)
 export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getFinaliseTrialArrangements(claim));
+  return sectionContent;
+};
+
+export const buildViewBundleSection = (claim: Claim): ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getViewBundle(claim));
   return sectionContent;
 };
