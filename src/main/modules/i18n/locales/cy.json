@@ -561,7 +561,7 @@
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
-      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
+      "CONTACT_PERSON_HINT": "Gall y diffynnydd gysylltu â'r unigolyn yma i drafod yr hawliad",
       "COMPANY_ADDRESS": "Cyfeiriad y Cwmni",
       "COMPANY_DETAILS": "Rhowch fanylion y cwmni",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
@@ -865,21 +865,21 @@
       "TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
-      "CLAIMING_AS_HEADER": "I'm claiming as:",
+      "CLAIMING_AS_HEADER": "Dwi'n hawlio fel:",
       "CLAIMING_AS_AN_INDIVIDUAL": "Unigolyn",
       "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
       "CLAIMING_AS_LIMITED_COMPANY": "Cwmni cyfyngedig",
       "CLAIMING_AS_ORGANISATION": "Math arall o sefydliad",
-      "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
-      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
-      "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
+      "CLAIMING_FOR_YOURSELF": "Rydych chi'n hawlio drosoch eich hun",
+      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "Er enghraifft crefftwr",
+      "CLAIMING_FOR_EXAMPLE_COMPANY": "Er enghraifft cwmni sy'n gwerthu nwyddau neu wasanaethau",
       "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
       "PAGE_TITLE": "About you and this claim",
-      "TITLE": "About you and this claim"
+      "TITLE": "Amdanoch chi a'r hawliad hwn"
     },
     "CLAIMANT_PHONE": {
       "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
-      "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
+      "NUMBER_INFORMATION": "Byddwn hefyd yn rhoi eich rhif i'r unigolyn, y busnes, neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn.",
       "PAGE_TITLE": "Eich rhif ffôn",
       "TITLE": "Enter a phone number (optional)"
     },
@@ -945,7 +945,7 @@
       "CLAIMANT_PAGE_TITLE": "Enter company details",
       "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
-      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
+      "COMPANY_REGISTERED_OFFICE": "Rhowch swyddfa gofrestredig y cwmni neu gyfeiriad cwmni sydd â chysylltiad â'r hawliad.",
       "COMPANY_NAME": "Enw'r cwmni",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
@@ -1767,10 +1767,10 @@
       "TITLE": "4pm ar {{ responseDeadline }}"
     },
     "ORGANISATION_DETAILS": {
-      "ADDRESS": "Organisation address",
+      "ADDRESS": "Cyfeiriad y sefydliad",
       "MAIN_OFFICE": "Enter the organisation’s main office or an organisation’s address that has a connection with the claim.",
       "PAGE_TITLE": "Enter organisation details",
-      "TITLE": "Enter organisation details"
+      "TITLE": "Rhowch fanylion y sefydliad"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
