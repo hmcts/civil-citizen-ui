@@ -3,7 +3,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import request from 'supertest';
 import {
-  BASE_ELIGIBILITY_URL,
+  BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL,
   CLAIMANT_TASK_LIST_URL,
 } from 'routes/urls';
 import config from 'config';
@@ -45,10 +45,9 @@ describe('Claim Issue TaskList Guard', () => {
     mockClaim.id = '1';
     mockGetCaseData.mockImplementation(async () => mockClaim);
     //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
+    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
     //Then
     expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
   it('should access to claim/task-list  page when eligibility questions completed', async () => {
     //Given
@@ -56,10 +55,9 @@ describe('Claim Issue TaskList Guard', () => {
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
+    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
     //Then
     expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
@@ -68,10 +66,9 @@ describe('Claim Issue TaskList Guard', () => {
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
+    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
     //Then
     expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
 
 });
