@@ -308,6 +308,17 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
     });
+    it('should display settle the claim task as complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}, hasPartPaymentBeenAccepted: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+    });
   });
 
   describe('Your hearing requirements section', () => {
