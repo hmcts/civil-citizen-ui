@@ -80,13 +80,13 @@ describe('Claim Issue TaskList Guard', () => {
     const mockClaim = new Claim();
     mockClaim.id = '1';
     mockGetCaseData.mockImplementation(async () => mockClaim);
-    const res = { redirect: jest.fn() } as any
+    const res = { redirect: jest.fn() } as any;
     const req = { query: { lang: 'en' }, cookies: { 'eligibilityCompleted': 'done' }, session: { claimId: '1' } };
     const next = jest.fn();
-    await claimIssueTaskListGuard(req as any, res as any, next)
+    await claimIssueTaskListGuard(req as any, res as any, next);
     expect(res.redirect).toHaveBeenCalledWith(
-      constructResponseUrlWithIdParams(req.session.claimId, CLAIM_INCOMPLETE_SUBMISSION_URL)
+      constructResponseUrlWithIdParams(req.session.claimId, CLAIM_INCOMPLETE_SUBMISSION_URL),
     );
     expect(next).not.toHaveBeenCalled();
-  })
+  });
 });
