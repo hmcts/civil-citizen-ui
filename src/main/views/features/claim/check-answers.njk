@@ -16,12 +16,6 @@
                     + '<p class="govuk-!-margin-top-2">'
                     + t('PAGES.CHECK_YOUR_ANSWER.CLAIM_CHECKBOX_PROCEEDINGS')
                     +'</p>' %}
-{% if payment %}
-  {% set submitText = t('COMMON.BUTTONS.SUBMIT_CLAIM') %}
-      {% if signatureType === SignatureType.BASIC %}
-        {% set labelHtml = t('COMMON.STATEMENT_OF_TRUTH.DETAILS_TRUTHY') %}
-      {% endif %}
-{% endif %}
 
 {% block content %}
   <div class="govuk-width-container">
