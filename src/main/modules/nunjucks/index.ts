@@ -37,6 +37,7 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import config from 'config';
+import crypto from 'crypto';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -105,6 +106,8 @@ export class Nunjucks {
     const nextMonth = new Date();
     nextMonth.setMonth(nextMonth.getMonth() + 1);
 
+    const nonceValue = crypto.randomBytes(16).toString('base64');
+
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
@@ -150,9 +153,13 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
     nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
     nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
+    nunjucksEnv.addGlobal('nonceValue', nonceValue);
+    // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
+    nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
+      req.cookies.nonceValue = nonceValue;
       next();
     });
   }
