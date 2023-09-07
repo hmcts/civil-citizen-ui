@@ -28,6 +28,7 @@ export class ClaimantResponse {
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
+  hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
