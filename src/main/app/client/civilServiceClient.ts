@@ -17,15 +17,16 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
-import {CaseDocument} from 'models/document/caseDocument';
-import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import { DashboardClaimantItem, DashboardDefendantItem } from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {FileResponse} from 'models/FileResponse';
+import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -75,12 +76,14 @@ export class CivilServiceClient {
     }
   }
 
-  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantItem[]> {
+  async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
+    const currentPage = req.query?.page ?? 1;
     try {
-      const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      return plainToInstance(DashboardDefendantItem, response.data as object[]);
+      const response = await this.client.get('/cases/defendant/' + submitterId + '?page=' + currentPage, config);
+      const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
+      return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
       throw err;
@@ -111,6 +114,7 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
+      logger.info('----ccd-caseDetails----', caseDetails);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
@@ -176,7 +180,13 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
-      return response.data as CaseDocument;
+      if (response.data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8');
+        const decodedString = decoder.decode(response.data);
+        return JSON.parse(decodedString) as CaseDocument;
+      } else {
+        return response.data as CaseDocument;
+      }
     } catch (err: unknown) {
       logger.error(err);
       throw err;
@@ -210,6 +220,15 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
 
+  async submitClaimAfterPayment(claimId: string, claim: Claim, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId,
+      {
+        issueDate : claim.issueDate,
+        respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
+      }
+      , req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
@@ -223,7 +242,7 @@ export class CivilServiceClient {
         .replace(':caseId', claimId), data, config);// nosonar
       logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
-      return translateCCDCaseDataToCUIModel(claimResponse.case_data);
+      return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(err);
       throw err;

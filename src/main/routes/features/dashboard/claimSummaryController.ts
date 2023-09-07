@@ -1,16 +1,22 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
-import {
-  getLatestUpdateContent,
-} from 'services/features/dashboard/claimSummary/latestUpdateService';
-import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {AppRequest} from 'models/AppRequest';
-import {DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
+import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
+import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
+import {TabItem} from 'models/dashboard/tabItem';
+import {TabId, TabLabel} from 'routes/tabs';
+import {Claim} from 'models/claim';
+import {ClaimSummaryContent} from 'form/models/claimSummarySection';
+import {DocumentType} from 'common/models/document/documentType';
+import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
+
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -22,22 +28,55 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
-      let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      let documentsContent = getDocumentsContent(claim, claimId);
-      const caseProgressionEnabled = await isCaseProgressionV1Enable();
-      if (caseProgressionEnabled && claim.hasCaseProgressionHearingDocuments()) {
-        latestUpdateContent = [];
-        documentsContent = [];
-        const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        getCaseProgressionLatestUpdates(claim, lang)
-          .forEach(items => latestUpdateContent.push(items));
-        documentsContent = getEvidenceUploadContent(claim);
-      }
-      res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent, caseProgressionEnabled});
+      await saveDocumentsToExistingClaim(claimId, claim);
+      const tabContent = await getTabs(claimId, claim, lang);
+      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+      res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
     }
   } catch (error) {
     next(error);
   }
 });
+
+async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
+{
+  const caseProgressionEnabled = await isCaseProgressionV1Enable();
+  const tabItems = [] as TabItem[];
+
+  let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
+  let latestUpdateTabId = TabId.LATEST_UPDATE;
+  let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
+
+  let noticesTabLabel= TabLabel.DOCUMENTS;
+  let noticesTabId = TabId.DOCUMENTS;
+  const noticesContent: ClaimSummaryContent[] = await getDocumentsContent(claim, claimId, lang);
+
+  let evidenceUploadTabLabel: TabLabel;
+  let evidenceUploadTabId: TabId;
+  let evidenceUploadContent: ClaimSummaryContent[];
+
+  if(caseProgressionEnabled && claim.hasSdoOrderDocument()) {
+    latestUpdateContent = getCaseProgressionLatestUpdates(claim, lang);
+
+    latestUpdateTabLabel = TabLabel.UPDATES;
+    latestUpdateTabId = TabId.UPDATES;
+
+    noticesTabLabel = TabLabel.NOTICES;
+    noticesTabId = TabId.NOTICES;
+
+    evidenceUploadTabLabel = TabLabel.DOCUMENTS;
+    evidenceUploadTabId = TabId.DOCUMENTS;
+    evidenceUploadContent = getEvidenceUploadContent(claim);
+  }
+
+  tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
+  tabItems.push(new TabItem(noticesTabLabel, noticesTabId, noticesContent));
+
+  if (caseProgressionEnabled && claim.hasSdoOrderDocument()) {
+    tabItems.push(new TabItem(evidenceUploadTabLabel, evidenceUploadTabId, evidenceUploadContent));
+  }
+
+  return tabItems;
+}
 
 export default claimSummaryController;

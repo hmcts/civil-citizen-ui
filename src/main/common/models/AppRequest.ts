@@ -19,6 +19,8 @@ export interface AppSession extends Session {
 
   claimId: string;
   taskLists: TaskList[];
+  assignClaimId: string;
+  claimIssueTasklist: boolean;
 }
 
 export interface UserDetails {
@@ -29,3 +31,4 @@ export interface UserDetails {
   familyName: string;
   roles: string[];
 }
+
