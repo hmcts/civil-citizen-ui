@@ -281,9 +281,9 @@ describe('Claimant Response Task List builder', () => {
       claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
       claim.rejectAllOfClaim = {
         option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
-          amount: 900000
-        } as any
-      }
+          amount: 900000,
+        } as any,
+      };
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.totalClaimAmount = 9000;
       claim.claimantResponse = {
@@ -314,7 +314,7 @@ describe('Claimant Response Task List builder', () => {
           amount: 900000,
         } as any,
       };
-      claim.totalClaimAmount = 9000
+      claim.totalClaimAmount = 9000;
       claim.claimantResponse = {
         hasFullDefenceStatesPaidClaimSettled: {
           option: 'yes',
