@@ -32,6 +32,69 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
+describe('Full Defence', () => {
+  const claimId = '5129';
+  const lang = 'en';
+  it('should display decide wether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
+    //Given
+    const claim = {
+      isPartialAdmission: jest.fn(),
+      isFullDefence: jest.fn(),
+      hasConfirmedAlreadyPaid: jest.fn(),
+      claimantResponse: {
+        hasFullDefenceStatesPaidClaimSettled: {
+          option: 'no',
+        },
+      },
+      totalClaimAmount: 9000,
+      rejectAllOfClaim: {
+        howMuchHaveYouPaid: {
+          amount: 900000,
+        },
+      },
+      isClaimantIntentionPending: jest.fn(),
+    } as any;
+    claim.isFullDefence.mockReturnValue(true);
+    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
+    claim.isClaimantIntentionPending.mockReturnValue(true);
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(2);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    expect(whatToDoNext.tasks[1].description).toEqual(
+      'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+    expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    expect(hearingRequirement.tasks.length).toBe(1);
+    expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+    expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+  });
+  it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+    claim.rejectAllOfClaim = {
+      option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+        amount: 900000,
+      } as any,
+    };
+    claim.totalClaimAmount = 9000;
+    claim.claimantResponse = {
+      hasFullDefenceStatesPaidClaimSettled: {
+        option: 'yes',
+      },
+    } as ClaimantResponse;
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(1);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+  });
+});
+
 describe('Claimant Response Task List builder', () => {
   const claimId = '5129';
   const lang = 'en';
@@ -617,59 +680,3 @@ describe('Claimant Response Task List builder', () => {
   });
 });
 
-describe('Full Defence', () => {
-  const claimId = '5129';
-  const lang = 'en';
-  it('should display decide wether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
-    //Given
-    const claim = new Claim();
-    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
-    claim.rejectAllOfClaim = {
-      option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
-        amount: 900000,
-      } as any,
-    };
-    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-    claim.totalClaimAmount = 9000;
-    claim.claimantResponse = {
-      hasFullDefenceStatesPaidClaimSettled: {
-        option: 'no',
-      },
-    } as ClaimantResponse;
-    //When
-    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
-    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
-    //Then
-    expect(whatToDoNext.tasks.length).toBe(2);
-    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
-    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-    expect(whatToDoNext.tasks[1].description).toEqual(
-      'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
-    expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
-    expect(hearingRequirement.tasks.length).toBe(1);
-    expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
-    expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
-  });
-  it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
-    //Given
-    const claim = new Claim();
-    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
-    claim.rejectAllOfClaim = {
-      option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
-        amount: 900000,
-      } as any,
-    };
-    claim.totalClaimAmount = 9000;
-    claim.claimantResponse = {
-      hasFullDefenceStatesPaidClaimSettled: {
-        option: 'yes',
-      },
-    } as ClaimantResponse;
-    //When
-    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
-    //Then
-    expect(whatToDoNext.tasks.length).toBe(1);
-    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
-    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-  });
-});
