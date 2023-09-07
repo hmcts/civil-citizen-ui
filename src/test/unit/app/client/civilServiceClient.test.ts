@@ -8,8 +8,7 @@ import {
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_EVENT,
-  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -23,6 +22,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {Claim} from 'models/claim';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('axios');
@@ -396,6 +396,54 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('submitDefendantResponseEvent', () => {
+    it('should submit defendant response successfully', async () => {
+      //Given
+      const date = new Date();
+      const data = new Claim();
+      data.issueDate = date;
+      data.respondent1ResponseDeadline = date;
+
+      const mockResponse = new CivilClaimResponse();
+      mockResponse.id = '1';
+      mockResponse.case_data = {
+        respondent1ResponseDeadline : date,
+        issueDate: date,
+      };
+      mockResponse.state = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
+      const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const claim = await civilServiceClient.submitClaimAfterPayment('123', data, mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId', 'undefined')
+        .replace(':caseId', '123'));
+      expect(claim.issueDate).toEqual(date);
+      expect(claim.respondent1ResponseDeadline).toEqual(date);
+    });
+    it('should throw error when there is an error with api', async () => {
+      //Given
+      const date = new Date();
+      const data = new Claim();
+      data.issueDate = date;
+      data.respondent1ResponseDeadline = date;
+
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitClaimAfterPayment('123', data, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
