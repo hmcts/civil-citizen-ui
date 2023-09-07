@@ -275,7 +275,10 @@ describe("Defendant's response summary service", () => {
   describe('Full dispute Paid full scenario', () => {
     // Given
     const claim = mockClaim;
-    const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(40, 40, '2040', '1', '1', 'Cash');
+    const totalClaimAmount = 40;
+    const paidAmountInPence = 4000;
+    claim.totalClaimAmount = totalClaimAmount;
+    const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(paidAmountInPence, totalClaimAmount, '2040', '1', '1', 'Cash');
     claim.rejectAllOfClaim = {
       'option': 'alreadyPaid',
       'howMuchHaveYouPaid': howMuchHaveYouPaid,
