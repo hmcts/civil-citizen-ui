@@ -14,7 +14,7 @@ import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'models/AppRequest';
 
-const ACTOR = 'respondent';
+const ACTOR = 'CLAIMANT';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,16 +22,26 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const caseData: Claim = await getCaseDataFromStore(userId);
     const pcqShutterOn = await isPcqShutterOn();
 
+    console.log('pcqShutterOn');
+    console.log(pcqShutterOn);
+    console.log('caseData.pcqId');
+    console.log(caseData.pcqId);
     if (pcqShutterOn || caseData.pcqId) {
       return next();
     }
     const type: PartyType = caseData.applicant1.type;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const defendantEmail = caseData.respondent1.emailAddress?.emailAddress;
+    const claimantEmail = caseData.applicant1.emailAddress?.emailAddress;
 
     const isHealthy = await isPcqHealthy();
     const isEligible = isPcqElegible(type);
+    console.log('isHealthy');
+    console.log(isHealthy);
+    console.log('isEligible');
+    console.log(isEligible);
+    console.log('url info');
+    console.log(getRedirectionUrl(req.headers.host, claimId));
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
       await savePcqIdClaim(pcqId, claimId);
@@ -40,11 +50,12 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         pcqId,
         ACTOR,
         claimId,
-        defendantEmail,
+        claimantEmail,
         getRedirectionUrl(req.headers.host, claimId),
         lang,
       );
-
+      console.log('pcq url info');
+      console.log(pcqUrl);
       res.redirect(pcqUrl);
     } else {
       next();
