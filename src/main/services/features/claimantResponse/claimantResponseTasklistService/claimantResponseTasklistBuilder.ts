@@ -64,7 +64,6 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
   }
 
-
   if (claim?.isFullDefence()) {
     if (claim?.hasConfirmedAlreadyPaid() && (toNumberOrUndefined(claim?.rejectAllOfClaim.howMuchHaveYouPaid?.amount as unknown as string) === (claim.totalClaimAmount * 100))) {
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
