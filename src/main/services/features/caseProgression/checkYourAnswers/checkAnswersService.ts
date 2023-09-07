@@ -59,7 +59,7 @@ export const getTopElements = (claim:Claim): ClaimSummarySection[] => {
 export const getBottomElements = (): ClaimSummarySection[] => {
 
   return new FinaliseYourTrialSectionBuilder()
-    .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT')
+    .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CONFIRMATION')
     .addWarning('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT')
     .build();
 };

@@ -8,10 +8,10 @@ import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
-const documentTitle = 'PAGES.UPLOAD_DOCUMENTS.UPLOAD';
+const documentTitle = 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED';
 export const mockNameValue = 'John Smith';
 export const mockDocumentNameValue = 'document type';
-export const mockDateValue = '12 Dec 2022';
+export const mockDateValue = '12/12/2022';
 
 export const mockExpertiseValue = 'expertise';
 export const mockDocumentValue = '<a class="govuk-link" target="_blank" href="/case/1234/view-documents/test">test.png</a>';

@@ -103,7 +103,7 @@ describe('checkAnswersServiceTest', () => {
 
       //then
       const bottomElementsExpected = [
-        {type: ClaimSummaryType.MAINTITLE, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT'}},
+        {type: ClaimSummaryType.MAINTITLE, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CONFIRMATION'}},
         {type: ClaimSummaryType.WARNING, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT'}},
       ];
       expect(bottomElementsActual).toEqual(bottomElementsExpected);
