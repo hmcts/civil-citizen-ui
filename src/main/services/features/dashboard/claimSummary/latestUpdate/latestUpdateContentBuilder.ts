@@ -281,6 +281,15 @@ function getStatusFDClaimDispute(claim: Claim, lng: string) {
 
 }
 
+function getStatusFDClaimantIntentToProceed(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, {lng}), { claimantName: claimantFullName })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_WILL_REVIEW_THE_CASE`)
+    .build();
+}
+
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
@@ -293,6 +302,7 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.RC_PAID_FULL]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_PAID_LESS]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_DISPUTE]: getStatusFDClaimDispute(claim, lng),
+    [ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED]: getStatusFDClaimantIntentToProceed(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED]: getPartAdmitPaidPayImmediatelyAccepted(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),
