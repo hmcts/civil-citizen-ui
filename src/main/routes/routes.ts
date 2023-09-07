@@ -207,6 +207,7 @@ import documentUploadCheckAnswerController from 'routes/features/caseProgression
 import claimTaskListController from './features/claim/claimTaskListController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakDownController';
 import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
 import documentViewController from 'routes/features/document/documentViewController';
 import trialArrangementsConfirmationController
@@ -407,6 +408,7 @@ export default [
   claimTaskListController,
   isCaseReadyController,
   hasAnythingChangedController,
+  claimFeeBreakDownController,
   hearingDurationController,
   documentViewController,
   trialArrangementsConfirmationController,
