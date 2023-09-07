@@ -3,13 +3,12 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import request from 'supertest';
 import {
-  BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL,
+  BASE_ELIGIBILITY_URL,
   CLAIMANT_TASK_LIST_URL,
 } from 'routes/urls';
 import config from 'config';
 import nock from 'nock';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {t} from 'i18next';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -27,7 +26,6 @@ describe('Claim Issue TaskList Guard', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
   it('should redirect if claim not exists and eligibility not completed', async () => {
     //Given
 
@@ -47,24 +45,22 @@ describe('Claim Issue TaskList Guard', () => {
     mockClaim.id = '1';
     mockGetCaseData.mockImplementation(async () => mockClaim);
     //When
-    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
+    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then
     expect(res.status).toBe(200);
+    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-
-  it('should access to incomplete ', async () => {
+  it('should access to claim/task-list  page when eligibility questions completed', async () => {
     //Given
-    const testClaim = new Claim();
-    testClaim.id='1';
-    const mockClaim=testClaim as Claim;
+    const mockClaim = new Claim();
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
-    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
+    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then
     expect(res.status).toBe(200);
+    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
     const mockClaim = new Claim();
@@ -72,21 +68,10 @@ describe('Claim Issue TaskList Guard', () => {
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
-    const res = await request(app).get(CLAIM_INCOMPLETE_SUBMISSION_URL).send();
+    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then
     expect(res.status).toBe(200);
+    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-  it('should access the claim ', async () => {
-    const mockClaim = new Claim();
-    mockClaim.id = '1';
-    mockGetCaseData.mockImplementation(async () => mockClaim);
-    const res = { redirect: jest.fn() } as any;
-    const req = { query: { lang: 'en' }, cookies: { 'eligibilityCompleted': 'done' }, session: { claimId: '1' } };
-    const next = jest.fn();
-    await claimIssueTaskListGuard(req as any, res as any, next);
-    expect(res.redirect).toHaveBeenCalledWith(
-      constructResponseUrlWithIdParams(req.session.claimId, CLAIM_INCOMPLETE_SUBMISSION_URL),
-    );
-    expect(next).not.toHaveBeenCalled();
-  });
+
 });
