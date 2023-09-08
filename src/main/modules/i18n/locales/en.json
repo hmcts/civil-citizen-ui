@@ -2078,7 +2078,7 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
