@@ -85,8 +85,8 @@ export const formatStringDate = (text: string) => {
 
 export const formatStringDateSlash = (text: string) => {
   const date = new Date(Date.parse(text));
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString();
+  const month = (date.getUTCMonth() + 1).toString();
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;
