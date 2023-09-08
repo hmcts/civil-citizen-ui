@@ -3,7 +3,7 @@ import express from 'express';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
-import { CLAIM_FEE_URL } from 'routes/urls';
+import { CLAIM_FEE_BREAKUP } from 'routes/urls';
 import { mockRedisFailure } from '../../../../../utils/mockDraftStore';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 
@@ -28,7 +28,7 @@ describe('on GET', () => {
     (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(mockClaimData);
     (CivilServiceClient.prototype.getClaimAmountFee as jest.Mock).mockResolvedValueOnce(mockClaimFee);
     await request(app)
-      .get(CLAIM_FEE_URL).expect((res) => {
+      .get(CLAIM_FEE_BREAKUP).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
           totalClaimAmount: mockClaimData.totalClaimAmount,
@@ -43,7 +43,7 @@ describe('on GET', () => {
   it('should return 500 status code when error occurs', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .get(CLAIM_FEE_URL)
+      .get(CLAIM_FEE_BREAKUP)
       .expect((res) => {
         expect(res.status).toBe(500);
       });
