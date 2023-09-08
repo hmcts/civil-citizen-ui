@@ -65,10 +65,11 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
   if (claim.isFullDefence() && claim?.hasConfirmedAlreadyPaid() && claim.hasPaidInFull()) {
     tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
-    if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
-      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
-      tasks.push(freeTelephoneMediationTask);
-    }
+  }
+
+  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
+    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+    tasks.push(freeTelephoneMediationTask);
   }
 
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
