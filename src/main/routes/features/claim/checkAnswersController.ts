@@ -5,7 +5,10 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  getCaseDataFromStore,
+} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -20,6 +23,7 @@ import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
+const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
 function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
@@ -69,8 +73,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
-      await deleteDraftClaimFromStore(userId);
-      res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+        const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+        res.redirect(paymentUrlWithId);
+      } else {
+        await deleteDraftClaimFromStore(userId);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+      }
     }
   } catch (error) {
     next(error);
