@@ -65,7 +65,8 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   }
 
   if (claim?.isFullDefence()) {
-    if (claim?.hasConfirmedAlreadyPaid() && (toNumberOrUndefined(claim?.rejectAllOfClaim.howMuchHaveYouPaid?.amount as unknown as string) === (claim.totalClaimAmount * 100))) {
+    const isFullAmount = toNumberOrUndefined(claim?.rejectAllOfClaim.howMuchHaveYouPaid?.amount as unknown as string) === (claim.totalClaimAmount * 100);
+    if (claim?.hasConfirmedAlreadyPaid() && isFullAmount) {
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     }
     if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
