@@ -15,8 +15,7 @@ import {
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
-import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-import { toNumberOrUndefined } from 'common/utils/numberConverter';
+import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -64,16 +63,14 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
   }
 
-  if (claim?.isFullDefence()) {
-    const isFullAmount = toNumberOrUndefined(claim?.rejectAllOfClaim.howMuchHaveYouPaid?.amount as unknown as string) === (claim.totalClaimAmount * 100);
-    if (claim?.hasConfirmedAlreadyPaid() && isFullAmount) {
-      tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
-    }
+  if (claim.isFullDefence() && claim?.hasConfirmedAlreadyPaid() && claim.hasPaidInFull()) {
+    tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }
   }
+
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 

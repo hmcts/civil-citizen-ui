@@ -60,6 +60,7 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import { convertToPound } from 'services/translation/claim/moneyConversation';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -336,7 +337,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+    return convertToPound(this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount) === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {

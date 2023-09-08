@@ -40,6 +40,7 @@ describe('Full Defence', () => {
     const claim = {
       isPartialAdmission: jest.fn(),
       isFullDefence: jest.fn(),
+      hasPaidInFull: jest.fn(),
       hasConfirmedAlreadyPaid: jest.fn(),
       claimantResponse: {
         hasFullDefenceStatesPaidClaimSettled: {
@@ -49,7 +50,7 @@ describe('Full Defence', () => {
       totalClaimAmount: 9000,
       rejectAllOfClaim: {
         howMuchHaveYouPaid: {
-          amount: 900000,
+          amount: '900000',
         },
       },
       isClaimantIntentionPending: jest.fn(),
@@ -57,6 +58,7 @@ describe('Full Defence', () => {
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
+    claim.hasPaidInFull.mockReturnValue(true);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
