@@ -26,7 +26,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const downloadResponseLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE));;
+    const downloadResponseLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE));
     const financialDetails = getFinancialDetails(claim, lang);
     const defendantsResponseContent = getDefendantsResponseContent(claim, getLng(lang));
     const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
