@@ -14,7 +14,7 @@ import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'models/AppRequest';
 
-const ACTOR = 'CLAIMANT';
+const ACTOR = 'applicant';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
