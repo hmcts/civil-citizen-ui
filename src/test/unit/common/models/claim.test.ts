@@ -1359,7 +1359,7 @@ describe('Documents', () => {
       expect(isClaimant).toBeTruthy();
     });
 
-    it('should return true when is not APPLICANTSOLICITORONE', () => {
+    it('should return false when is not APPLICANTSOLICITORONE', () => {
       //Given
       claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
       //When
