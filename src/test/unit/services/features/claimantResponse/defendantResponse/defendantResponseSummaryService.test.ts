@@ -67,6 +67,34 @@ describe("Defendant's response summary service", () => {
     });
   });
 
+  describe('Full admission pay by installment', () => {
+    const claim = new Claim();
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.respondent1 = new Party();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.fullAdmission.paymentIntention.repaymentPlan = {
+      paymentAmount: 100,
+      repaymentFrequency: 'MONTH',
+      firstRepaymentDate: new Date(Date.now()),
+    };
+
+    it('should display for individual', () => {
+      // Given
+      const reason = "I don't agree with the claim";
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = {partyName: 'Mr. John Doe'};
+      claim.statementOfMeans.explanation = {text: reason};
+      // When
+      const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
+      // Then
+      expect(defendantsResponseContent[0].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.DEFENDANT_ADMITS');
+      expect(defendantsResponseContent[1].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.THEY_OFFERED_PAY');
+    });
+  });
+
   describe('Full dispute scenario', () => {
     // Given
     const claim = mockClaim;
