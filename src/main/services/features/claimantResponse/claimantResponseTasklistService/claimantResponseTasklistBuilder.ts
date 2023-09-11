@@ -63,17 +63,12 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     }
   }
 
-
-  // if (claim.isFullDefence() && claim?.hasConfirmedAlreadyPaid() && claim.hasPaidInFull()) {
-  //   tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
-  // }
-
   if (claim.isFullDefence()) {
     if (claim?.hasConfirmedAlreadyPaid() && claim.hasPaidInFull()) {
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     } else {
-    const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
-    tasks.push(decideWetherToProceed); 
+      const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
+      tasks.push(decideWetherToProceed); 
     }
   }
 
