@@ -107,12 +107,13 @@
               } if form.errorFor(signed)
             }) }}
 
-            <div class="govuk-form-group">
+            <div class="govuk-button-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SUBMIT')
               }) }}
-              {{ contactUsForHelp(t) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
+            {{ contactUsForHelp(t) }}
           </form>
         </div>
       </div>

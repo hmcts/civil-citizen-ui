@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../urls';
+import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../urls';
 import {
   getBottomElements,
   getSummarySections,
@@ -27,9 +27,10 @@ function renderView(res: Response, form: GenericForm<documentUploadSubmissionFor
     summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
   }
   const bottomPageContents = getBottomElements();
+  const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
-    form, topPageContents, summarySections, bottomPageContents, isSmallClaims,
+    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl,
   });
 }
 
