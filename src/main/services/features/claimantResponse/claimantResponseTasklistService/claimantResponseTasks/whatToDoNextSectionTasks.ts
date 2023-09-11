@@ -3,16 +3,17 @@ import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
+  CCJ_EXTENDED_PAID_AMOUNT_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
-import {YesNo} from 'common/form/models/yesNo';
+import { YesNo } from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
@@ -28,6 +29,21 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
     accceptOrRejectDefendantAdmittedTask.status = TaskStatus.COMPLETE;
   }
   return accceptOrRejectDefendantAdmittedTask;
+}
+
+export function getFullDefenceTask(claim: Claim, claimId: string, lang: string): Task {
+  const decideWetherToProceed = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED', {
+      lng: lang,
+    }),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+
+  if (claim?.claimantResponse?.intentionToProceed?.option) {
+    decideWetherToProceed.status = TaskStatus.COMPLETE;
+  }
+  return decideWetherToProceed;
 }
 
 export function getAcceptOrRejectRepaymentTask(claim: Claim, claimId: string, lang: string): Task {
@@ -101,7 +117,7 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT', {
       lng: lang,
     }),
-    url: constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
@@ -116,7 +132,7 @@ export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: 
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT', {
       lng: lang,
     }),
-    url: constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL),
+    url: constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
   if (claim.claimantResponse?.ccjRequest?.paidAmount?.option) {
