@@ -64,7 +64,6 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import { ChooseHowProceed } from './chooseHowProceed';
 
-
 export class Claim {
   resolvingDispute: boolean;
   completingClaimConfirmed: boolean;
