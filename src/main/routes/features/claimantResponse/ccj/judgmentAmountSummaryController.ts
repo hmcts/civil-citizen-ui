@@ -1,9 +1,9 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {
-  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
-  CCJ_PAID_AMOUNT_SUMMARY_URL,
-  CCJ_PAYMENT_OPTIONS_URL,
-} from 'routes/urls';
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, 
+  CCJ_PAID_AMOUNT_SUMMARY_URL, 
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
+} from '../../../urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -37,13 +37,8 @@ judgmentAmountSummaryController.get([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PA
   }
 });
 
-judgmentAmountSummaryController.post([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const claimId = req.params.id;
-    res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAYMENT_OPTIONS_URL));
-  } catch (error) {
-    next(error);
-  }
+judgmentAmountSummaryController.post([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
+  res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
 });
 
 export default judgmentAmountSummaryController;
