@@ -6,9 +6,7 @@ import {calculateTotalAndCompleted} from 'services/features/common/taskListServi
 import {t} from 'i18next';
 import {
   creteDraftClaimInStoreWithExpiryTime,
-  // getCaseDataFromStore,
   getDraftClaimFromStore,
-  // saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
