@@ -661,7 +661,11 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
-  isClaimantRejectedPaymentPlan(){
+  isDefendantAgreedForMediation() {
+    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+  }
+  
+  isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 
