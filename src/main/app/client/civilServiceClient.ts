@@ -26,7 +26,10 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
+import {
+  DashboardClaimantResponse,
+  DashboardDefendantResponse,
+} from 'common/models/dashboard/dashboarddefendantresponse';
 import {CaseRole} from 'form/models/caseRoles';
 
 const {Logger} = require('@hmcts/nodejs-logging');
