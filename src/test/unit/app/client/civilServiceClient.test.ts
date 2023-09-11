@@ -8,8 +8,7 @@ import {
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_EVENT,
-  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -284,6 +283,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
+
   describe('getClaimsForDefendant', () => {
     it('should return claims for defendant successfully', async () => {
       //Given

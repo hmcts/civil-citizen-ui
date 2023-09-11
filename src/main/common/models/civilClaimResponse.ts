@@ -55,6 +55,8 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
 import {
   CCDTrialArrangementsHearingRequirements,
   CCDTrialArrangementsOtherComments,
@@ -225,6 +227,14 @@ export interface CCDClaim extends ClaimUpdate {
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
+  partialPayment?: YesNoUpperCamelCase;
+  partialPaymentAmount?: string;
+  paymentTypeSelection?: CCDDJPaymentOption;
+  paymentSetDate?: Date;
+  repaymentDue?: string;
+  repaymentDate?: Date;
+  repaymentFrequency?: CCDPaymentFrequency;
+  repaymentSuggestion?: string;
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
