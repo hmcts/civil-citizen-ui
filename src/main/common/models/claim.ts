@@ -185,6 +185,12 @@ export class Claim {
       return ClaimResponseStatus.RC_DISPUTE;
     }
 
+    if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
+      &&  (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
+      && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
+      return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
+    }
+
   }
 
   getClaimantFullName(): string {
@@ -657,7 +663,7 @@ export class Claim {
   isClaimantRejectedPaymentPlan(){
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
-  
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
