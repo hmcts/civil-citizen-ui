@@ -683,6 +683,12 @@ export class Claim {
   hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
+
+  getFormattedCaseReferenceNumber(claimId: string): string {
+    const parts = claimId.match(/.{1,4}/g);
+    const claimId_new = parts.join('-');
+    return claimId_new;
+  }
 }
 
 export interface StatementOfTruth {
