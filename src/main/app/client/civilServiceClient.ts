@@ -24,7 +24,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {FileResponse} from 'models/FileResponse';
+import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 
@@ -180,7 +180,13 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
-      return response.data as CaseDocument;
+      if (response.data instanceof Uint8Array) {
+        const decoder = new TextDecoder('utf-8');
+        const decodedString = decoder.decode(response.data);
+        return JSON.parse(decodedString) as CaseDocument;
+      } else {
+        return response.data as CaseDocument;
+      }
     } catch (err: unknown) {
       logger.error(err);
       throw err;
@@ -212,6 +218,19 @@ export class CivilServiceClient {
 
   async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
+  }
+
+  async submitClaimAfterPayment(claimId: string, claim: Claim, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId,
+      {
+        issueDate : claim.issueDate,
+        respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
+      }
+      , req);
+  }
+
+  async submitClaimantResponseDJEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {

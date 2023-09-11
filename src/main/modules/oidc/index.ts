@@ -1,20 +1,25 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
-import {AppRequest} from '../../common/models/AppRequest';
+import {AppRequest} from 'models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL,
   BASE_ELIGIBILITY_URL,
   BASE_FIRST_CONTACT_URL,
   CALLBACK_URL,
+  CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
-} from '../../routes/urls';
+} from 'routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
+};
+
+const requestIsForClaimIssueTaskList = (req: Request): boolean => {
+  return req.originalUrl.startsWith(CLAIMANT_TASK_LIST_URL);
 };
 
 const requestIsForPinAndPost = (req: Request): boolean => {
@@ -58,6 +63,11 @@ export class OidcMiddleware {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
+        if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
+          req.session.claimIssueTasklist = undefined;
+          app.locals.claimIssueTasklist = undefined;
+          return res.redirect(CLAIMANT_TASK_LIST_URL);
+        }
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
@@ -95,6 +105,9 @@ export class OidcMiddleware {
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
         app.locals.assignClaimId = appReq.session.assignClaimId = <string>req.query.id;
+      }
+      if (requestIsForClaimIssueTaskList(req) ) {
+        app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
       }
       return res.redirect(SIGN_IN_URL);
     });

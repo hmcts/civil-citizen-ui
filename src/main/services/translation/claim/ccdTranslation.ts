@@ -39,5 +39,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestClaimUntil: claim.interest?.interestEndDate,
     claimantUserDetails: getClaimantIdamDetails(req.session?.user),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    specRespondent1Represented: YesNoUpperCamelCase.NO,
+    respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
   };
 };
