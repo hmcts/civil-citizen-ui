@@ -1,4 +1,5 @@
 import {
+  creteDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
   getCaseDataFromStore,
   getDraftClaimFromStore,
@@ -6,14 +7,9 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from 'models/claim';
-import {isCUIReleaseTwoEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
-
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
-const mockIsCUIReleasedTwoEnabled = isCUIReleaseTwoEnabled as jest.Mock;
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -23,9 +19,6 @@ jest.mock('ioredis', () => {
         return;
       }),
       on: jest.fn(async () => {
-        return;
-      }),
-      expire: jest.fn(async () => {
         return;
       }),
       ttl: jest.fn(() => Promise.resolve({})),
@@ -42,19 +35,13 @@ function createMockDraftStore(returnData: unknown) {
     del: jest.fn(async () => {
       return;
     }),
-    expire: jest.fn(async () => {
-      return;
-    }),
     ttl: jest.fn(async () => {
-      return;
+      return 60;
     }),
   };
 }
 
 describe('Draft store service to save and retrieve claim', () => {
-  beforeAll(() => {
-    mockIsCUIReleasedTwoEnabled.mockImplementation(async () => false);
-  });
 
   it('should get claim data successfully when data exists', async () => {
     //Given
@@ -141,28 +128,15 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyDel).toBeCalled();
   });
 
-  it('should not create new claim', async () => {
+  it('should create draft claim with expiry time', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'expire');
-    //When
-    const claimId = '1645882162449409';
-    const claim: Claim = new Claim();
-    await saveDraftClaim(claimId, claim);
-    //Then
-    expect(spyTTL).toHaveBeenCalledTimes(0);
-  });
-
-  it('should return undefined when Release 2 when claim undefined', async () => {
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
-    mockIsCUIReleasedTwoEnabled.mockImplementation(async () => true);
+    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
-    const result = await getCaseDataFromStore(CLAIM_ID);
+    await creteDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
-    expect(spyGet).toBeCalled();
-    expect(result).toEqual(undefined);
+    expect(spyTTL).toBeCalled();
+    expect(await app.locals.draftStoreClient.ttl(CLAIM_ID)).toBe(60);
   });
 });

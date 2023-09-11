@@ -36,7 +36,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.resolvingDispute) {
+  if (caseData?.resolvingDispute) {
     considerOtherOptionsTask.status = TaskStatus.COMPLETE;
   }
 

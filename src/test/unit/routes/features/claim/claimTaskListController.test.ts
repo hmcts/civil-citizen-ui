@@ -42,7 +42,7 @@ describe('Claim TaskList page', () => {
       expect(createDraftClaimSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should create a new draft claim when not after completing eligibility', async () => {
+    it('should create a new draft claim after completing eligibility', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
       (getDraftClaimFromStore as jest.Mock).mockResolvedValue({});

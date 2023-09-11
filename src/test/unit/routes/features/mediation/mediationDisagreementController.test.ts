@@ -47,7 +47,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(mediationMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -85,7 +84,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(individualTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -102,7 +100,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -119,7 +116,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(organisationTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -136,7 +132,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -155,7 +150,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
@@ -175,7 +169,6 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        expire: jest.fn(() => Promise.resolve({})),
         ttl: jest.fn(() => Promise.resolve({})),
       };
       await request(app)

@@ -15,7 +15,7 @@ const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRe
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
-  expire: jest.fn(() => Promise.resolve({})),
+
   ttl: jest.fn(() => Promise.resolve({})),
 };
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');
@@ -24,7 +24,6 @@ const civilClaimResponseMockWithRespondentPhone: string = JSON.stringify(noRespo
 const mockWithRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithRespondentPhone)),
-  expire: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve({})),
 };
 describe('Repayment Plan', () => {
