@@ -13,7 +13,10 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {
-      const claimNumber = claim.legacyCaseReference;
+      //format claim id to be displayed in the view like this: 0000-0000-0000-0000
+      const parts = claimId.match(/.{1,4}/g);
+      const new_value = parts.join('-');
+      const claimNumber = new_value;
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
