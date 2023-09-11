@@ -42,7 +42,6 @@ function createMockDraftStore(returnData: unknown) {
 }
 
 describe('Draft store service to save and retrieve claim', () => {
-
   it('should get claim data successfully when data exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
@@ -54,7 +53,6 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(id).toBe(Number(CLAIM_ID));
   });
-
   it('should return empty result', async () => {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
@@ -66,7 +64,6 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(id).toBeUndefined();
   });
-
   it('should update existing claim when data exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
@@ -79,7 +76,6 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
-
   it('should save new claim when data does not exists', async () => {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
@@ -92,7 +88,6 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
-
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(REDIS_DATA);
@@ -104,7 +99,6 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
   });
-
   it('should return undefined when getting case data and data in redis exists', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
@@ -127,7 +121,6 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyDel).toBeCalled();
   });
-
   it('should create draft claim with expiry time', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);

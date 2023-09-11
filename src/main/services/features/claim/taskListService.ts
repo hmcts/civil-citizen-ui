@@ -65,7 +65,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.isClaimantDetailsCompleted()) {
+  if (caseData?.isClaimantDetailsCompleted()) {
     yourDetailsTask.status = TaskStatus.COMPLETE;
   }
 

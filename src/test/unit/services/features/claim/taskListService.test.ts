@@ -328,7 +328,7 @@ describe('Claim Task List service', () => {
       expect(taskList).toMatchObject(expectedTaskList);
     });
 
-    it('should return incomplete task list', () => {
+    it('should return incomplete task list with empty draft claim', () => {
       //Given
 
       //When

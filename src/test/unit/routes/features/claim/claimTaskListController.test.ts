@@ -3,9 +3,6 @@ import config from 'config';
 import request from 'supertest';
 import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {t} from 'i18next';
-import {
-  mockCivilClaim,
-} from '../../../../utils/mockDraftStore';
 import nock from 'nock';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
@@ -43,7 +40,6 @@ describe('Claim TaskList page', () => {
     });
 
     it('should create a new draft claim after completing eligibility', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
       (getDraftClaimFromStore as jest.Mock).mockResolvedValue({});
       await request(app)
