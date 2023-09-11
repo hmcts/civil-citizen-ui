@@ -30,6 +30,7 @@ import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowT
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
+import { Mediation } from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
