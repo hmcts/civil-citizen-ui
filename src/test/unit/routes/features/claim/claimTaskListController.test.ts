@@ -16,7 +16,7 @@ jest.mock('modules/draft-store/draftStoreService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
-  })
+  }),
 }));
 
 describe('Claim TaskList page', () => {
@@ -30,31 +30,29 @@ describe('Claim TaskList page', () => {
   });
 
   describe('on GET', () => {
+    const createDraftClaimSpy = jest.spyOn(draftStoreService, 'creteDraftClaimInStoreWithExpiryTime');
     it('should return claim tasklist page with existing draft claim', async () => {
       (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: new Claim()});
-
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
         });
+      expect(createDraftClaimSpy).toHaveBeenCalledTimes(0);
     });
 
     it('should create a new draft claim when not after completing eligibility', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
       (getDraftClaimFromStore as jest.Mock).mockResolvedValue({});
-      const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'creteDraftClaimInStoreWithExpiryTime');
-
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
         });
-
-      expect(saveDraftClaimSpy).toBeCalled();
+      expect(createDraftClaimSpy).toBeCalled();
     });
   });
 });
