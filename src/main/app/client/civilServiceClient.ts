@@ -26,7 +26,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import {DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
+import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -65,12 +65,14 @@ export class CivilServiceClient {
     };
   }
 
-  async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantItem[]> {
+  async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
+    const currentPage = req.query?.claimantPage ?? 1;
     try {
-      const response = await this.client.get('/cases/claimant/' + submitterId, config);
-      return plainToInstance(DashboardClaimantItem, response.data as object[]);
+      const response = await this.client.get('/cases/claimant/' + submitterId + '?page=' + currentPage, config);
+      const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
+      return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
     }
@@ -79,7 +81,7 @@ export class CivilServiceClient {
   async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
-    const currentPage = req.query?.page ?? 1;
+    const currentPage = req.query?.defendantPage ?? 1;
     try {
       const response = await this.client.get('/cases/defendant/' + submitterId + '?page=' + currentPage, config);
       const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
@@ -227,6 +229,10 @@ export class CivilServiceClient {
         respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
       }
       , req);
+  }
+
+  async submitClaimantResponseDJEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
