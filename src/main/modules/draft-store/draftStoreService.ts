@@ -37,7 +37,7 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  * Gets only case data.
  * @param claimId
  */
-export const getCaseDataFromStore = async (claimId: string): Promise<Claim|undefined> => {
+export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
@@ -80,5 +80,5 @@ export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
   draftClaim.case_data = {} as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;
   await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', 60);
-  logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
+  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
 }
