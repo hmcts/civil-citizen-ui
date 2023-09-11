@@ -15,22 +15,22 @@ const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
-    try {
-      const userId = req.session?.user?.id;
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const civilCase = await getDraftClaimFromStore(userId);
-      if (!civilCase?.case_data) {
-        await creteDraftClaimInStoreWithExpiryTime(userId)
-      }
-      const caseData: Claim = Object.assign(new Claim, civilCase.case_data);
-      const taskLists = getTaskLists(caseData, userId, lang);
-      const {completed, total} = calculateTotalAndCompleted(taskLists);
-      const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
-      const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
-      res.render(taskListViewPath, {taskLists, title, description});
-    } catch (error) {
-      next(error);
+  try {
+    const userId = req.session?.user?.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const civilCase = await getDraftClaimFromStore(userId);
+    if (!civilCase?.case_data) {
+      await creteDraftClaimInStoreWithExpiryTime(userId);
     }
-  }) as RequestHandler);
+    const caseData: Claim = Object.assign(new Claim, civilCase.case_data);
+    const taskLists = getTaskLists(caseData, userId, lang);
+    const {completed, total} = calculateTotalAndCompleted(taskLists);
+    const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
+    const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
+    res.render(taskListViewPath, {taskLists, title, description});
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
 
 export default claimTaskListController;

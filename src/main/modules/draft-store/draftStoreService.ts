@@ -2,7 +2,7 @@ import config from 'config';
 import {app} from '../../app';
 import {
   CCDClaim,
-  CivilClaimResponse
+  CivilClaimResponse,
 } from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
@@ -60,7 +60,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   }
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
-  const expiryTime = await draftStoreClient.ttl(claimId)
+  const expiryTime = await draftStoreClient.ttl(claimId);
   await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiryTime);
 };
 
@@ -75,10 +75,10 @@ export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> 
 };
 
 export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
-  console.log('----create-new-claim----', DRAFT_EXPIRE_TIME_IN_DAYS, DAY_TO_SECONDS_UNIT)
+  console.log('----create-new-claim----', DRAFT_EXPIRE_TIME_IN_DAYS, DAY_TO_SECONDS_UNIT);
   const draftClaim = createNewCivilClaimResponse(claimId);
   draftClaim.case_data = {} as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;
   await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', 60);
-  logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
+  logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
 }
