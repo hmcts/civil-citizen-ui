@@ -75,7 +75,8 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   if (claim.isPartialAdmissionPaid()) {
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
-    } else if(claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()){
+    }
+    if(claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()){
       tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
     }
   }
