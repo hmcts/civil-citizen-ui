@@ -149,7 +149,6 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     const claimId = '1645882162449409';
     const claim: Claim = new Claim();
-    claim.createAt = new Date('2023-07-12T12:23:34.123');
     await saveDraftClaim(claimId, claim);
     //Then
     expect(spyTTL).toHaveBeenCalledTimes(0);

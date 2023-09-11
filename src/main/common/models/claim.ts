@@ -62,7 +62,6 @@ import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 
 export class Claim {
-  createAt: Date;
   resolvingDispute: boolean;
   completingClaimConfirmed: boolean;
   legacyCaseReference: string;

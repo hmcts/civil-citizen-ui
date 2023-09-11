@@ -1,27 +1,30 @@
-import {Router, Response, NextFunction} from 'express';
+import {Router, Response, NextFunction, RequestHandler} from 'express';
 import {CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
 import {t} from 'i18next';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  creteDraftClaimInStoreWithExpiryTime,
+  // getCaseDataFromStore,
+  getDraftClaimFromStore,
+  // saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
 
-claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (req: AppRequest, res: Response, next: NextFunction): void => {
-  (async () => {
+claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const caseData: Claim = await getCaseDataFromStore(userId);
-
-      if(caseData === undefined || caseData.id === undefined) {
-        await saveDraftClaim(userId, new Claim());
+      const civilCase = await getDraftClaimFromStore(userId);
+      if (!civilCase?.case_data) {
+        await creteDraftClaimInStoreWithExpiryTime(userId)
       }
-
+      const caseData: Claim = Object.assign(new Claim, civilCase.case_data);
       const taskLists = getTaskLists(caseData, userId, lang);
       const {completed, total} = calculateTotalAndCompleted(taskLists);
       const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
@@ -30,7 +33,6 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (re
     } catch (error) {
       next(error);
     }
-  })();
-});
+  }) as RequestHandler);
 
 export default claimTaskListController;

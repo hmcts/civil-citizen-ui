@@ -1,15 +1,20 @@
+import config from 'config';
 import {app} from '../../app';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {
+  CCDClaim,
+  CivilClaimResponse
+} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
-import {addDaysToDate} from 'common/utils/dateUtils';
-import config from 'config';
-import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+// import {addDaysToDate} from 'common/utils/dateUtils';
+
+// import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
 const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
+const DAY_TO_SECONDS_UNIT = 24 * 86400;
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -35,13 +40,13 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  * Gets only case data.
  * @param claimId
  */
-export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
+export const getCaseDataFromStore = async (claimId: string): Promise<Claim|undefined> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
-  const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
+  // const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
 
-  if(isReleasedTwoEnabled && isUndefined(civilClaimResponse?.case_data)) {
-    return undefined;
-  }
+  // if (isReleasedTwoEnabled && isUndefined(civilClaimResponse?.case_data)) {
+  //   return undefined;
+  // }
 
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
@@ -59,27 +64,42 @@ export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
  */
 export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId);
-  const draftStoreClient = app.locals.draftStoreClient;
-
-  if (isUndefined(storedClaimResponse?.case_data)) {
+  if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-
   storedClaimResponse.case_data = claim;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-
-  if (await draftStoreClient.ttl(claimId) === -1) {
-    await draftStoreClient.expire(claimId, addDaysToDate(storedClaimResponse.createAt, DRAFT_EXPIRE_TIME_IN_DAYS).getTime());
-  }
+  const draftStoreClient = app.locals.draftStoreClient;
+  const expiryTime = await draftStoreClient.ttl(claimId)
+  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiryTime);
 };
 
-const createNewCivilClaimResponse = (claimId: string) => {
+export const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
-  storedClaimResponse.createAt = new Date();
   return storedClaimResponse;
 };
 
 export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
   await app.locals.draftStoreClient.del(claimId);
 };
+
+export async function setClaimIdAndExpireTimeIfDraftClaim(claimId: string, storedClaimResponse: any) {
+  const draftStoreClient = app.locals.draftStoreClient;
+  const expiry = await draftStoreClient.ttl(claimId)
+  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiry);
+
+  if (await draftStoreClient.ttl(claimId) === -1) {
+    // await draftStoreClient.expire(claimId, DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT );
+    await draftStoreClient.expire(claimId, 60);
+    logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
+  }
+}
+
+export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
+  console.log('----create-new-claim----', DRAFT_EXPIRE_TIME_IN_DAYS, DAY_TO_SECONDS_UNIT)
+  const draftClaim = createNewCivilClaimResponse(claimId);
+  draftClaim.case_data = {} as unknown as CCDClaim;
+  const draftStoreClient = app.locals.draftStoreClient;
+  await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', 60);
+  logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
+}
