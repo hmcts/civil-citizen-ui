@@ -36,7 +36,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData?.resolvingDispute) {
+  if (caseData.resolvingDispute) {
     considerOtherOptionsTask.status = TaskStatus.COMPLETE;
   }
 
@@ -65,7 +65,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData?.isClaimantDetailsCompleted()) {
+  if (caseData.isClaimantDetailsCompleted()) {
     yourDetailsTask.status = TaskStatus.COMPLETE;
   }
 
@@ -75,7 +75,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData?.isDefendantDetailsCompleted()) {
+  if (caseData.isDefendantDetailsCompleted()) {
     theirDetailsTask.status = TaskStatus.COMPLETE;
   }
 
@@ -86,9 +86,9 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   };
 
   if (
-    caseData?.claimAmountBreakup &&
-    caseData?.claimDetails?.helpWithFees?.option &&
-    (caseData?.claimInterest === YesNo.NO || caseData?.isInterestCompleted())
+    caseData.claimAmountBreakup &&
+    caseData.claimDetails?.helpWithFees?.option &&
+    (caseData.claimInterest === YesNo.NO || caseData.isInterestCompleted())
   ) {
     claimAmountTask.status = TaskStatus.COMPLETE;
   }
@@ -99,7 +99,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
     status: TaskStatus.INCOMPLETE,
   };
 
-  if(caseData?.claimDetails?.reason?.text && caseData?.claimDetails?.timeline?.rows?.length) {
+  if(caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
     claimDetailsTask.status = TaskStatus.COMPLETE;
   }
 

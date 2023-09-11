@@ -6,9 +6,6 @@ import {
 } from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
-// import {addDaysToDate} from 'common/utils/dateUtils';
-
-// import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -42,12 +39,6 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  */
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim|undefined> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
-  // const isReleasedTwoEnabled: boolean = await isCUIReleaseTwoEnabled();
-
-  // if (isReleasedTwoEnabled && isUndefined(civilClaimResponse?.case_data)) {
-  //   return undefined;
-  // }
-
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
   claim.id = civilClaimResponse?.id;
@@ -73,7 +64,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiryTime);
 };
 
-export const createNewCivilClaimResponse = (claimId: string) => {
+const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
   return storedClaimResponse;
@@ -82,18 +73,6 @@ export const createNewCivilClaimResponse = (claimId: string) => {
 export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
   await app.locals.draftStoreClient.del(claimId);
 };
-
-export async function setClaimIdAndExpireTimeIfDraftClaim(claimId: string, storedClaimResponse: any) {
-  const draftStoreClient = app.locals.draftStoreClient;
-  const expiry = await draftStoreClient.ttl(claimId)
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiry);
-
-  if (await draftStoreClient.ttl(claimId) === -1) {
-    // await draftStoreClient.expire(claimId, DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT );
-    await draftStoreClient.expire(claimId, 60);
-    logger.info(`Draft claim expiry expiry time is ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
-  }
-}
 
 export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
   console.log('----create-new-claim----', DRAFT_EXPIRE_TIME_IN_DAYS, DAY_TO_SECONDS_UNIT)
