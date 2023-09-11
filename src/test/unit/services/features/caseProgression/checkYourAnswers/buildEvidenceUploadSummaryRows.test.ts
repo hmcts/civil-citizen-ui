@@ -36,10 +36,9 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       const witnessSummarySection = {} as SummarySection;
       witnessSummarySection.summaryList = {} as SummaryList;
       witnessSummarySection.summaryList.rows = [
-        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
-        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
-        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getDocumentTypeSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT'+' '+1,  '1234'),
@@ -136,16 +135,10 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       const disclosureSummarySection = {} as SummarySection;
       disclosureSummarySection.summaryList = {} as SummaryList;
       disclosureSummarySection.summaryList.rows = [
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY'+' '+1,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY'+' '+2,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON'+' '+1,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON'+' '+2,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL'+' '+1,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL'+' '+2,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS'+' '+1,  '1234'),
-        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS'+' '+2,  '1234'),
         getDocumentTypeSummaryRow('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY'+' '+1,  '1234'),
         getDocumentTypeSummaryRow('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY'+' '+2,  '1234'),
+        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL'+' '+1,  '1234'),
+        getFileOnlySummaryRow('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL'+' '+2,  '1234'),
       ] as SummaryRow[];
       expectedDisclosureEvidenceSection.sections.push(disclosureSummarySection);
 
