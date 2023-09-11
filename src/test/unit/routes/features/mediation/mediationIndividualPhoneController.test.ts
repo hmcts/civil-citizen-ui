@@ -15,7 +15,6 @@ const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRe
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
-
   ttl: jest.fn(() => Promise.resolve({})),
 };
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');

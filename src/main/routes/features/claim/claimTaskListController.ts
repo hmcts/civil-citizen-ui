@@ -18,11 +18,11 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
   try {
     const userId = req.session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const civilCase = await getDraftClaimFromStore(userId);
-    if (!civilCase?.case_data) {
+    const draftClaim = await getDraftClaimFromStore(userId);
+    if (!draftClaim?.case_data) {
       await creteDraftClaimInStoreWithExpiryTime(userId);
     }
-    const caseData: Claim = Object.assign(new Claim, civilCase.case_data);
+    const caseData: Claim = Object.assign(new Claim, draftClaim.case_data);
     const taskLists = getTaskLists(caseData, userId, lang);
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
