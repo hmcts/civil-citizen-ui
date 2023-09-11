@@ -5,6 +5,7 @@ import {app} from '../../../../../../main/app';
 import {
   CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAID_AMOUNT_SUMMARY_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -54,6 +55,14 @@ describe('Judgment Amount Summary', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+  });
+
+  describe('on POST', () => {
+    it('should redirect to claimant response TaskList', async () => {
+      const res = await request(app).post(CCJ_PAID_AMOUNT_SUMMARY_URL).send();
+      expect(res.status).toBe(302);
+      expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
     });
   });
 

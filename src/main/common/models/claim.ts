@@ -61,6 +61,7 @@ import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import { convertToPound } from 'services/translation/claim/moneyConversation';
+import { ChooseHowProceed } from './chooseHowProceed';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -330,6 +331,14 @@ export class Claim {
 
   isRejectAllOfClaimDispute(): boolean {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
+  }
+
+  isSignASettlementAgreement(): boolean {
+    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+  }
+
+  isRequestACCJ(): boolean {
+    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
   hasConfirmedAlreadyPaid(): boolean {
