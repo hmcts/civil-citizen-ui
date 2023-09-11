@@ -10,9 +10,10 @@ import {
   CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
-import {YesNo} from 'common/form/models/yesNo';
+import { YesNo } from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
@@ -28,6 +29,21 @@ export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: st
     accceptOrRejectDefendantAdmittedTask.status = TaskStatus.COMPLETE;
   }
   return accceptOrRejectDefendantAdmittedTask;
+}
+
+export function getFullDefenceTask(claim: Claim, claimId: string, lang: string): Task {
+  const decideWetherToProceed = {
+    description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED', {
+      lng: lang,
+    }),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL),
+    status: TaskStatus.INCOMPLETE,
+  };
+
+  if (claim?.claimantResponse?.intentionToProceed?.option) {
+    decideWetherToProceed.status = TaskStatus.COMPLETE;
+  }
+  return decideWetherToProceed;
 }
 
 export function getAcceptOrRejectRepaymentTask(claim: Claim, claimId: string, lang: string): Task {
