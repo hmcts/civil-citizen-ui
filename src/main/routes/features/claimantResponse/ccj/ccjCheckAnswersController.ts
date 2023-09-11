@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CCJ_CHECK_AND_SEND_URL, CCJ_CONFIRMATION_URL} from 'routes/urls';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -12,6 +12,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
@@ -51,7 +52,8 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(claimId, form.model);
-      // TODO implement submit ccj claimant response and delete from draftstore;
+      await submitClaimantResponse(<AppRequest>req);
+      await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }
   } catch (error) {
