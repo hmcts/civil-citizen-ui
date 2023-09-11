@@ -66,12 +66,14 @@ export class CivilServiceClient {
     };
   }
 
-  async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantItem[]> {
+  async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
+    const currentPage = req.query?.claimantPage ?? 1;
     try {
-      const response = await this.client.get('/cases/claimant/' + submitterId, config);
-      return plainToInstance(DashboardClaimantItem, response.data as object[]);
+      const response = await this.client.get('/cases/claimant/' + submitterId + '?page=' + currentPage, config);
+      const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
+      return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
     }
@@ -80,7 +82,7 @@ export class CivilServiceClient {
   async getClaimsForDefendant(req: AppRequest): Promise<DashboardDefendantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
-    const currentPage = req.query?.page ?? 1;
+    const currentPage = req.query?.defendantPage ?? 1;
     try {
       const response = await this.client.get('/cases/defendant/' + submitterId + '?page=' + currentPage, config);
       const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
