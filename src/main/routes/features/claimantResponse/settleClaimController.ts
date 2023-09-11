@@ -11,7 +11,6 @@ import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {YesNo} from 'form/models/yesNo';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';
@@ -30,7 +29,7 @@ settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reques
     let hasPaidInFull: boolean;
     if (claim.isFullDefence()) {
       hasPaidInFull = claim.hasPaidInFull();
-      paidAmount = convertToPoundsFilter(claim.isRejectAllOfClaimAlreadyPaid());
+      paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
     } else if(claim.isPartialAdmissionPaid()){
       paidAmount = claim.partialAdmissionPaidAmount();
     }

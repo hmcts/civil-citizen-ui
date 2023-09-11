@@ -404,6 +404,7 @@ describe('Submit Confirmation service', () => {
 
     describe('Paid Equal Scenario', () => {
       const claim = getClaim();
+      claim.totalClaimAmount = 1000;
       claim.rejectAllOfClaim = new RejectAllOfClaim(
         RejectAllOfClaimType.ALREADY_PAID,
         new HowMuchHaveYouPaid({
