@@ -333,7 +333,7 @@ export class Claim {
   }
 
   hasConfirmedAlreadyPaid(): boolean {
-    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID;
   }
 
   hasPaidInFull(): boolean {
