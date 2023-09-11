@@ -1006,6 +1006,45 @@ describe('Documents', () => {
     });
   });
 
+  describe('isPartialAdmissionPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and already paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('isBusiness', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
