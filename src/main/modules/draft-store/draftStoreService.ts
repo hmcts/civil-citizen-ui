@@ -80,5 +80,5 @@ export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
   draftClaim.case_data = {} as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;
   await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', 60);
-  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`)
+  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
 }

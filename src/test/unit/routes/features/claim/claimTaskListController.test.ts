@@ -8,18 +8,16 @@ import {
 } from '../../../../utils/mockDraftStore';
 import nock from 'nock';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('modules/draft-store/draftStoreService');
-
-const {isCUIReleaseTwoEnabled} = require('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockIsCUIReleaseTwoEnabled = isCUIReleaseTwoEnabled as jest.Mock;
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => {
+    next();
+  })
+}));
 
 describe('Claim TaskList page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,11 +30,8 @@ describe('Claim TaskList page', () => {
   });
 
   describe('on GET', () => {
-    it('should return claim tasklist page', async () => {
-      const mockClaim = new Claim();
-      mockClaim.id = '1';
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => false);
+    it('should return claim tasklist page with existing draft claim', async () => {
+      (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: new Claim()});
 
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
@@ -46,13 +41,11 @@ describe('Claim TaskList page', () => {
         });
     });
 
-    it('should create and return new Claim when not Release 2', async () => {
+    it('should create a new draft claim when not after completing eligibility', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = {eligibilityCompleted: true};
-
-      mockGetCaseData.mockImplementation(async () => undefined);
-      mockIsCUIReleaseTwoEnabled.mockImplementation(async () => true);
-      const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      (getDraftClaimFromStore as jest.Mock).mockResolvedValue({});
+      const saveDraftClaimSpy = jest.spyOn(draftStoreService, 'creteDraftClaimInStoreWithExpiryTime');
 
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
