@@ -15,7 +15,7 @@ import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertTo
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {
   getAdditionalClaimantDetails,
-  getAdditionalRespondentDetails
+  getAdditionalRespondentDetails,
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {

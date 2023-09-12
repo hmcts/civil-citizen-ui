@@ -1,6 +1,6 @@
 import {
   getAdditionalClaimantDetails,
-  getAdditionalRespondentDetails
+  getAdditionalRespondentDetails,
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {mockClaim} from '../../../../utils/mockClaim';
 
