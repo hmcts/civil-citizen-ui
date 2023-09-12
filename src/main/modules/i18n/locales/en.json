@@ -295,7 +295,8 @@
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next"
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
     }
   },
   "TASK_LIST": {
@@ -426,6 +427,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
       "CLAIM_INTEREST": "Claim Interest",
+      "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
@@ -2649,6 +2651,7 @@
       "OTHER_INFORMATION_TITLE": "Other information",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
+      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",

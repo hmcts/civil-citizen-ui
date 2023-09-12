@@ -406,7 +406,7 @@ describe('Submit Confirmation service', () => {
       const totalClaimAmount = 100;
       const paidAmountInPence = 10000;
       const claim = getClaim();
-      claim.totalClaimAmount  = totalClaimAmount;
+      claim.totalClaimAmount = totalClaimAmount;
       claim.rejectAllOfClaim = new RejectAllOfClaim(
         RejectAllOfClaimType.ALREADY_PAID,
         new HowMuchHaveYouPaid({
