@@ -24,6 +24,7 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import { RejectAllOfClaimType } from 'common/form/models/rejectAllOfClaimType';
 import {Party} from 'common/models/party';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
@@ -37,6 +38,72 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+
+describe('Full Defence', () => {
+  const claimId = '5129';
+  const lang = 'en';
+  it('should display decide wether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
+    //Given
+    const claim = {
+      isPartialAdmission: jest.fn(),
+      isFullDefence: jest.fn(),
+      hasPaidInFull: jest.fn(),
+      hasConfirmedAlreadyPaid: jest.fn(),
+      isFullAdmission:jest.fn(),
+      claimantResponse: {
+        hasFullDefenceStatesPaidClaimSettled: {
+          option: 'no',
+        },
+      },
+      totalClaimAmount: 9000,
+      rejectAllOfClaim: {
+        howMuchHaveYouPaid: {
+          amount: '900000',
+        },
+      },
+      isClaimantIntentionPending: jest.fn(),
+    } as any;
+    claim.isFullDefence.mockReturnValue(true);
+    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
+    claim.isClaimantIntentionPending.mockReturnValue(true);
+    claim.hasPaidInFull.mockReturnValue(true);
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(2);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    expect(whatToDoNext.tasks[1].description).toEqual(
+      'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+    expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    expect(hearingRequirement.tasks.length).toBe(1);
+    expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+    expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+  });
+  it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+    claim.rejectAllOfClaim = {
+      option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+        amount: 900000,
+      } as any,
+    };
+    claim.totalClaimAmount = 9000;
+    claim.claimantResponse = {
+      hasFullDefenceStatesPaidClaimSettled: {
+        option: 'yes',
+      },
+    } as ClaimantResponse;
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(1);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+  });
+});
 
 describe('Claimant Response Task List builder', () => {
   const claimId = '5129';
@@ -771,28 +838,3 @@ describe('Claimant Response Task List builder', () => {
     });
   });
 });
-
-function getCommonJourneyCompleted() {
-  return {
-    defendantYourselfEvidence: {option: YesNo.NO},
-    hearing: <Hearing>{
-      phoneOrVideoHearing: {option: YesNo.NO},
-      supportRequiredList: {option: YesNo.NO},
-      specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
-      cantAttendHearingInNext12Months: {option: YesNo.NO},
-    },
-    witnesses: <Witnesses>{
-      otherWitnesses: {option: YesNo.NO},
-    },
-    vulnerabilityQuestions: <VulnerabilityQuestions>{
-      vulnerability: {option: YesNo.NO},
-    },
-    welshLanguageRequirements: <WelshLanguageRequirements>{
-      language: {
-        speakLanguage: LanguageOptions.WELSH,
-        documentsLanguage: LanguageOptions.ENGLISH,
-      },
-    },
-    experts: new Experts(),
-  };
-}
