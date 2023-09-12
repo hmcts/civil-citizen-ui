@@ -15,7 +15,7 @@ const mediationIndividualPhoneController = Router();
 
 async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  res.render(mediationIndividualPhoneViewPath, {form, respondentTelNumber: claim.respondent1?.partyPhone?.phone});
+  res.render(mediationIndividualPhoneViewPath, { form, respondentTelNumber: (claim.isClaimantIntentionPending() ? claim.applicant1?.partyPhone?.phone : claim.respondent1?.partyPhone?.phone) });
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhoneNumber) => {
