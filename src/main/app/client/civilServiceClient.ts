@@ -307,9 +307,9 @@ export class CivilServiceClient {
 
   async getUserCaseRoles(claimId: string, req: AppRequest) {
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_USER_CASE_ROLE
-        .replace(':claimId', claimId)
-      , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', claimId)}`));
+      const response: AxiosResponse<object> = await this.client.get(userCaseRolesUrl.toString()
+        , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
       return responseRoles
         .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
