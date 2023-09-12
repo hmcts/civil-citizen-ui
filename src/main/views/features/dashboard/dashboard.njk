@@ -60,6 +60,13 @@
       </div>
     </div>
   {% endif %}
+   {% if paginationArgumentClaimant %}
+    {{ govukPagination({
+      previous: paginationArgumentClaimant.previous,
+      next: paginationArgumentClaimant.next,
+      items: paginationArgumentClaimant.items
+    }) }}
+  {% endif %}
   {% if claimsAsDefendant | length %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
