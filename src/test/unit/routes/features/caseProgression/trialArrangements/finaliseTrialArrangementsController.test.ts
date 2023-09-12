@@ -7,6 +7,7 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {CaseRole} from 'form/models/caseRoles';
 import {DocumentType} from 'models/document/documentType';
 const session = require('supertest-session');
 const testSession = session(app);
@@ -83,6 +84,9 @@ describe('"finalise trial arrangements" page test', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //When
       await testSession
         .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
