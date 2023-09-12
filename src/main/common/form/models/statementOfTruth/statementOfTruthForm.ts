@@ -13,7 +13,7 @@ export class StatementOfTruthForm {
   @IsDefined({message: 'ERRORS.DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE'})
     directionsQuestionnaireSigned?: boolean;
 
-  constructor(isFullAmountRejected: boolean, type?: SignatureType, signed?: boolean, directionsQuestionnaireSigned?: boolean) {
+  constructor(isFullAmountRejected?: boolean, type?: SignatureType, signed?: boolean, directionsQuestionnaireSigned?: boolean) {
     this.isFullAmountRejected = isFullAmountRejected;
     this.type = (type) ? type : SignatureType.BASIC;
     this.signed = signed;
