@@ -299,4 +299,29 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[13].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
     expect(defendantsResponseContent[14].data?.text).toEqual('evidence comments');
   });
+
+  describe('Full dispute Paid full scenario', () => {
+    // Given
+    const claim = mockClaim;
+    const totalClaimAmount = 40;
+    const paidAmountInPence = 4000;
+    claim.totalClaimAmount = totalClaimAmount;
+    const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(paidAmountInPence, totalClaimAmount, '2040', '1', '1', 'Cash');
+    claim.rejectAllOfClaim = {
+      'option': 'alreadyPaid',
+      'howMuchHaveYouPaid': howMuchHaveYouPaid,
+
+    };
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+
+    // When
+    const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
+    // Then
+    expect(defendantsResponseContent[0].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT');
+    expect(defendantsResponseContent[1].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT');
+    expect(defendantsResponseContent[2].data?.text).toEqual('1 January 2040');
+    expect(defendantsResponseContent[3].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID');
+    expect(defendantsResponseContent[4].data?.text).toEqual('Cash');
+    expect(defendantsResponseContent[5]).toBeUndefined();
+  });
 });
