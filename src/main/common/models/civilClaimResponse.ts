@@ -62,6 +62,7 @@ import {
   CCDTrialArrangementsHearingRequirements,
   CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
+import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
 
 export class CivilClaimResponse {
   id: string;
@@ -229,6 +230,8 @@ export interface CCDClaim extends ClaimUpdate {
   caseRole?: CaseRole;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
+  respondent1AdditionalLipPartyDetails?: CCDAdditionalPartyDetails;
+  applicant1AdditionalLipPartyDetails?:CCDAdditionalPartyDetails;
   partialPayment?: YesNoUpperCamelCase;
   partialPaymentAmount?: string;
   paymentTypeSelection?: CCDDJPaymentOption;
