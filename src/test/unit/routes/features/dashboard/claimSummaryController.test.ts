@@ -10,6 +10,7 @@ import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/l
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {TabId, TabLabel} from 'routes/tabs';
 import {t} from 'i18next';
+import {CaseRole} from 'form/models/caseRoles';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -80,6 +81,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -94,10 +98,31 @@ describe('Claim Summary Controller Defendant', () => {
       //given
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
+
+      const claimWithoutSDO = claim;
+      claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
+        'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+            'document_filename': 'sealed_claim_form_000MC001.pdf',
+            'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+          },
+          'documentName': 'sealed_claim_form_000MC001.pdf',
+          'documentSize': 45794,
+          'documentType': 'SEALED_CLAIM',
+          'createdDatetime': '2022-06-21T14:15:19',
+        },
+      }];
+
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
+        .reply(200, claimWithoutSDO);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -117,15 +142,18 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Upload documents');
-          expect(res.text).toContain(t(TabLabel.LATEST_UPDATE));
-          expect(res.text).not.toContain(t(TabLabel.NOTICES));
-          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+          expect(res.text).toContain('Upload documents');
+          expect(res.text).toContain(t(TabLabel.UPDATES));
+          expect(res.text).toContain(t(TabLabel.NOTICES));
+          expect(res.text).not.toContain('A hearing has been scheduled for your case');
         });
     });
 
@@ -137,6 +165,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -154,7 +185,7 @@ describe('Claim Summary Controller Defendant', () => {
         ...claim,
         state: CaseState.AWAITING_APPLICANT_INTENTION,
         case_data: {
-          ...claim.case_data,
+          ...claimWithSdo.case_data,
           hearingDate: caseProgressionHearing.hearingDate,
           hearingLocation: caseProgressionHearing.hearingLocation,
           hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
@@ -168,6 +199,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)

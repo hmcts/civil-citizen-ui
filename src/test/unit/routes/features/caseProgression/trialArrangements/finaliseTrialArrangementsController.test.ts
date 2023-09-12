@@ -1,12 +1,13 @@
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from 'routes/urls';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {CaseRole} from 'form/models/caseRoles';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -47,6 +48,25 @@ describe('"finalise trial arrangements" page test', () => {
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
       //Given
+      app.locals.draftStoreClient = mockCivilClaimFastTrack;
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //When
+      await testSession
+        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
+      //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE'));
+        });
+    });
+
+    it('should redirect to latestUpload screen when is small claim', async () => {
+      //Given
       app.locals.draftStoreClient = mockCivilClaim;
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -55,9 +75,9 @@ describe('"finalise trial arrangements" page test', () => {
       await testSession
         .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
       //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE'));
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
         });
     });
 
