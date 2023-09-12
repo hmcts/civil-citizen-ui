@@ -30,6 +30,7 @@ export class ClaimantResponse {
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
   claimantStatementOfTruth?: StatementOfTruthForm;
+  hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;

@@ -60,6 +60,7 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import { convertToPound } from 'services/translation/claim/moneyConversation';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 
@@ -343,11 +344,11 @@ export class Claim {
   }
 
   hasConfirmedAlreadyPaid(): boolean {
-    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID;
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+    return convertToPound(this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount) === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
