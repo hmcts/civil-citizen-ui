@@ -22,7 +22,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     if (!draftClaim?.case_data) {
       await creteDraftClaimInStoreWithExpiryTime(userId);
     }
-    const caseData: Claim = Object.assign(new Claim, draftClaim.case_data);
+    const caseData: Claim = Object.assign(new Claim(), draftClaim.case_data);
     const taskLists = getTaskLists(caseData, userId, lang);
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
