@@ -246,6 +246,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHearingAndBundleDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
