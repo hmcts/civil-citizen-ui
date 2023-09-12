@@ -62,6 +62,7 @@ import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
+import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 
 export class Claim {
@@ -119,6 +120,7 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseRole?: CaseRole;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -728,6 +730,11 @@ export class Claim {
   hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
+
+  isClaimant(){
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+  }
+
 }
 
 export interface StatementOfTruth {

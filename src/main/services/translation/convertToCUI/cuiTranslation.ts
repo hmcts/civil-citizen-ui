@@ -43,6 +43,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
     claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
   }
   claim.claimantResponse = claimantResponse;
+  claim.caseRole = ccdClaim?.caseRole;
+
   return claim;
 };
 
