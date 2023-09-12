@@ -136,19 +136,19 @@
       "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow",
+      "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
       "EXAMPLE": {
         "EXAMPLE": "Enghraifft",
-        "OWED": "If you were owed £,1000:",
-        "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
+        "OWED": "Roedd £,1000 yn ddyledus i chi:",
+        "ANNUAL_INTEREST": "y llog blynyddol fyddai £80 (1000 x 0.08 = 80) byddech yn rhannu £80 gyda 365 i gael y llog dyddiol: tua 22p y diwrnod (80 / 365 = 0.22) ar ôl 50 diwrnod byddai hyn yn £11 (50 x 0.22 = 11)"
       },
       "STEPS": {
-        "DAILY_INTEREST": "Work out the daily interest: divide your yearly interest from step 1 by 365 (the number of days in a year).",
-        "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
-        "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
+        "DAILY_INTEREST": "Cyfrifwch y llog dyddiol: rhannwch eich llog blynyddol o gam 1 gyda 365 (y nifer o ddyddiau mewn blwyddyn).",
+        "TOTAL_INTEREST": "Cyfrifwch gyfanswm y llog: lluoswch y llog dyddiol o gam 2 gyda’r nifer o ddyddiau y mae’r ddyled wedi bod yn ddyledus.",
+        "YEARLY_INTEREST": "Cyfrifwch y llog blynyddol: cymerwch y swm rydych yn ei hawlio â’i luosi gyda 0.08 (sy’n 8%)."
       },
-      "TITLE": "Help calculating interest",
-      "USUAL_RATE": "For most types of debt the rate is usually 8%"
+      "TITLE": "Help i gyfrifo llog",
+      "USUAL_RATE": "Ar gyfer y mwyafrif o ddyled y gyfradd fel arfer yw 8%"
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "Bydd y llys yn penderfynu os oes gennych hawl i rywfaint o’r llog a hawlir neu’r llog cyfan.",
@@ -1167,7 +1167,7 @@
       "CONTACT_PERSON_HINT": "Efallai bod hwn yn rhywun rydych wedi trafod yr hawliad gydag ef.",
       "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "NO_WORK_ADDRESS": "You cannot use their work address.",
+      "NO_WORK_ADDRESS": "Ni allwch ddefnyddio ei gyfeiriad gwaith.",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
       "ORGANISATION_NAME": "Enw'r sefydliad",
@@ -1180,7 +1180,7 @@
       "PAYING_EXTRA": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw unrhyw un sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
       "PAYING_EXTRA_ORGANISATION": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw sefydliad sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
       "THEIR_ADDRESS": "Ei gyfeiriad",
-      "USUAL_ADDRESS": "You must enter their usual or last known home address."
+      "USUAL_ADDRESS": "Rhaid i chi fynd i mewn i'w gyfeiriad cartref arferol neu olaf y gwyddys amdano."
     },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "Unigolyn",
@@ -1514,10 +1514,10 @@
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
     "INTEREST_CLAIM_OPTIONS": {
-      "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
-      "PAGE_TITLE": "How do you want to claim interest?",
-      "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
+      "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
+      "TITLE": "Sut ydych chi am hawlio llog?"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
@@ -1539,7 +1539,7 @@
     "JUDGMENT_AMOUNT": {
       "TITLE": "Judgment amount",
       "PAGE_TITLE": "Judgment amount",
-      "INTEREST_TO_DATE": "Interest to date",
+      "INTEREST_TO_DATE": "Llog hyd yma",
       "CLAIM_FEE_AMOUNT": "Claim fee amount",
       "SUBTOTAL": "Subtotal",
       "AMOUNT_ALREADY_PAID": "Minus amount already paid",
@@ -2357,23 +2357,23 @@
       "TITLE": "Llinell amser o ddigwyddiadau"
     },
     "TOTAL_AMOUNT": {
-      "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
-      "CLAIM_FEE": "Claim fee",
-      "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
-      "HEARING_FEE": "Hearing fee",
+      "ADDITIONAL_FEES": "Efallai y bydd ffioedd ychwanegol wrth i'ch achos fynd yn ei flaen.",
+      "CLAIM_FEE": "Ffi hawliad",
+      "FIND_OUT_MORE": "Mwy o wybodaeth am ffioedd llys (Agor mewn tab newydd)",
+      "HEARING_FEE": "Ffi gwrandawiad",
       "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated?",
       "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
       "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
-      "IF_YOU_SETTLE": "If you settle out of court",
+      "IF_YOU_SETTLE": "Os ydych yn setlo y tu allan i’r llys",
       "INTEREST_TO_DATE": "Interest to date",
-      "OTHER_FEES": "Other fees",
+      "OTHER_FEES": "Ffioedd eraill",
       "PAGE_TITLE": "Total amount you’re claiming",
-      "TITLE": "Total amount you’re claiming",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount",
+      "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad",
       "TOTAL_WOULD_BE_LOWER": "That would mean the total claim amount would be lower than the amount shown on this page.",
       "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
-      "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
-      "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
+      "WE_WONT_REFOUND": "Ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
+      "YOU_DONT_HAVE_TO_PAY": "Does dim rhaid i chi dalu ffi’r gwrandawiad oni bai bod yr hawliad yn mynd i wrandawiad."
     },
     "FEE_AMOUNT": {
       "TITLE": "Pay your claim fee",
@@ -2381,12 +2381,12 @@
       "CONTINUE_TO_PAYMENT": "continue to payment"
     },
     "TOTAL_INTEREST": {
-      "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
-      "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
-      "CALCULATION_PROOF": "Show how you calculated the amount",
+      "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
+      "CALCULATE_INTEREST": "Mae angen i chi gyfrifo llog ar gyfer y gwahanol gyfnodau neu eitemau amser a rhoi gwybod i ni am y cyfanswm.",
+      "CALCULATION_PROOF": "Dangos sut y gwnaethoch gyfrifo’r swm",
       "PAGE_TITLE": "Claim total interest",
-      "TITLE": "What is the total interest for your claim?",
-      "TOTAL_AMOUNT": "Total interest amount"
+      "TITLE": "Beth yw'r llog cyfan ar gyfer eich cais?",
+      "TOTAL_AMOUNT": "Cyfanswm swm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial arrangements",
@@ -2823,7 +2823,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Rhoi manylion y dogfennau",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
     "INVALID_AMOUNT": "Swm annilys",
-    "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
+    "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
