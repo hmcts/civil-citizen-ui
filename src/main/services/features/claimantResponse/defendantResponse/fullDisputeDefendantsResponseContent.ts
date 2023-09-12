@@ -5,6 +5,7 @@ import {EvidenceItem} from 'form/models/evidence/evidenceItem';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {convertToPound} from 'services/translation/claim/moneyConversation';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
@@ -229,3 +230,12 @@ export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: strin
     ...getDisagreementStatementWithEvidence(claim),
   ];
 };
+
+export const buildFullDisputePaidFullResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  return [
+    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', convertToPound(claim.isRejectAllOfClaimAlreadyPaid())),
+    ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
+    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
+  ];
+};
+

@@ -2081,7 +2081,7 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -2137,6 +2137,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
