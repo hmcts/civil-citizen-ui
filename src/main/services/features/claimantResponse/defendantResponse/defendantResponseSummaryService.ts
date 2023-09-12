@@ -8,11 +8,14 @@ import {
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
 import {buildPartAdmitNotPaidResponseContent} from './partAdmitNotPaidDefendantsResponseContent';
 import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPaidDefendantsResponseContent';
+import {buildFullAdmissionInstallmentsResponseContent} from './fullAdmissionPayInstallmentsDefendantResponseContent';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_BY_DATE:
       return buildFullAdmissionResponseContent(claim, lang);
+    case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
+      return buildFullAdmissionInstallmentsResponseContent(claim, lang);
     case ClaimResponseStatus.RC_DISPUTE:
       return buildFullDisputeResponseContent(claim, lang);
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
