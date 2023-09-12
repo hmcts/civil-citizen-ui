@@ -212,6 +212,7 @@ import trialCheckAnswersController from 'routes/features/caseProgression/trialAr
 import documentViewController from 'routes/features/document/documentViewController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
+import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 
 export default [
@@ -412,5 +413,6 @@ export default [
   trialCheckAnswersController,
   documentViewController,
   trialArrangementsConfirmationController,
+  claimantResponseCheckAnswersController,
   claimFeeController,
 ];
