@@ -208,6 +208,7 @@ import isCaseReadyController from 'routes/features/caseProgression/trialArrangem
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
 import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakDownController';
 import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
+import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import documentViewController from 'routes/features/document/documentViewController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
@@ -408,6 +409,7 @@ export default [
   hasAnythingChangedController,
   claimFeeBreakDownController,
   hearingDurationController,
+  trialCheckAnswersController,
   documentViewController,
   trialArrangementsConfirmationController,
   claimFeeController,
