@@ -8,6 +8,7 @@ import Module from 'module';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {CaseRole} from 'form/models/caseRoles';
+import {DocumentType} from 'models/document/documentType';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,6 +26,37 @@ jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
 describe('"finalise trial arrangements" page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
+  claim.case_data.systemGeneratedCaseDocuments= [
+    {
+      id: '1',
+      value: {
+        createdBy: 'cui',
+        documentType: DocumentType.DEFENDANT_DEFENCE,
+        documentLink:  {
+          document_url: 'url1',
+          document_filename: 'filename1',
+          document_binary_url: 'documents/123/binary',
+        },
+        documentName: 'documentName',
+        createdDatetime: new Date(Date.now()),
+        documentSize: 1,
+      },
+    },
+    {
+      id: '1',
+      value: {
+        createdBy: 'cui',
+        documentType: DocumentType.SDO_ORDER,
+        documentLink: {
+          document_url: 'url1',
+          document_filename: 'filename1',
+          document_binary_url: 'documents/123/binary',
+        },
+        documentName: 'documentName',
+        createdDatetime: new Date(Date.now()),
+        documentSize: 1,
+      },
+    }];
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
 
