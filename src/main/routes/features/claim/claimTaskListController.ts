@@ -5,7 +5,7 @@ import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
 import {t} from 'i18next';
 import {
-  creteDraftClaimInStoreWithExpiryTime,
+  createDraftClaimInStoreWithExpiryTime,
   getDraftClaimFromStore,
 } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -20,7 +20,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const draftClaim = await getDraftClaimFromStore(userId);
     if (!draftClaim?.case_data) {
-      await creteDraftClaimInStoreWithExpiryTime(userId);
+      await createDraftClaimInStoreWithExpiryTime(userId);
     }
     const caseData: Claim = Object.assign(new Claim(), draftClaim.case_data);
     const taskLists = getTaskLists(caseData, userId, lang);

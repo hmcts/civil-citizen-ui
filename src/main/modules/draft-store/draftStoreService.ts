@@ -74,7 +74,7 @@ export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> 
   await app.locals.draftStoreClient.del(claimId);
 };
 
-export async function creteDraftClaimInStoreWithExpiryTime(claimId: string) {
+export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const draftClaim = createNewCivilClaimResponse(claimId);
   draftClaim.case_data = {} as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;

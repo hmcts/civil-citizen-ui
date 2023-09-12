@@ -27,7 +27,7 @@ describe('Claim TaskList page', () => {
   });
 
   describe('on GET', () => {
-    const createDraftClaimSpy = jest.spyOn(draftStoreService, 'creteDraftClaimInStoreWithExpiryTime');
+    const createDraftClaimSpy = jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime');
     it('should return claim tasklist page with existing draft claim', async () => {
       (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: new Claim()});
       await request(app)

@@ -1,5 +1,5 @@
 import {
-  creteDraftClaimInStoreWithExpiryTime,
+  createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
   getCaseDataFromStore,
   getDraftClaimFromStore,
@@ -127,7 +127,7 @@ describe('Draft store service to save and retrieve claim', () => {
     app.locals.draftStoreClient = draftStoreWithData;
     const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
-    await creteDraftClaimInStoreWithExpiryTime(CLAIM_ID);
+    await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
     expect(spyTTL).toBeCalled();
     expect(await app.locals.draftStoreClient.ttl(CLAIM_ID)).toBe(60);
