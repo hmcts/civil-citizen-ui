@@ -398,7 +398,9 @@ describe('Civil Service Client', () => {
       //Given
       const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
       const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
-      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {
+        baseURL: baseUrl,
+      }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
       const caseRoleResult = await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
@@ -410,7 +412,9 @@ describe('Civil Service Client', () => {
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
       });
-      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {
+        baseURL: baseUrl,
+      }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', mockedAppRequest)).rejects.toThrow('error');
