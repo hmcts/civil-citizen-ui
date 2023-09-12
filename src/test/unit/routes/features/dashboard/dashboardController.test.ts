@@ -40,7 +40,7 @@ describe('Dashboard page', () => {
     .get('/drafts')
     .reply(200, {});
   nock(civilServiceUrl)
-    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined')
+    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
     .reply(200, {});
   beforeAll((done) => {
     testSession
