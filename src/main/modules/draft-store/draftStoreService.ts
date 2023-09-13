@@ -63,7 +63,7 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   const expiryTime = await draftStoreClient.ttl(claimId);
   await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (expiryTime !== -1) {
-    await draftStoreClient.expiry(claimId, expiryTime);
+    await draftStoreClient.expire(claimId, expiryTime);
   }
 };
 

@@ -22,6 +22,7 @@ jest.mock('ioredis', () => {
         return;
       }),
       ttl: jest.fn(() => Promise.resolve({})),
+      expire: jest.fn(() => Promise.resolve({})),
     };
   });
 });
@@ -38,6 +39,7 @@ function createMockDraftStore(returnData: unknown) {
     ttl: jest.fn(async () => {
       return 60;
     }),
+    expire: jest.fn(() => Promise.resolve({})),
   };
 }
 
