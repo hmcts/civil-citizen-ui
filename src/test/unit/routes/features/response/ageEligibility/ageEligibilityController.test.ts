@@ -13,6 +13,8 @@ jest.mock('ioredis', () => {
       on: jest.fn(async () => {
         return;
       }),
+      ttl: jest.fn(() => Promise.resolve({})),
+      expire: jest.fn(() => Promise.resolve({})),
     };
   });
 });

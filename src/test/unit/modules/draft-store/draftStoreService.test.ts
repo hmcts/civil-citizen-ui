@@ -1,4 +1,5 @@
 import {
+  createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
   getCaseDataFromStore,
   getDraftClaimFromStore,
@@ -20,6 +21,8 @@ jest.mock('ioredis', () => {
       on: jest.fn(async () => {
         return;
       }),
+      ttl: jest.fn(() => Promise.resolve({})),
+      expire: jest.fn(() => Promise.resolve({})),
     };
   });
 });
@@ -33,6 +36,8 @@ function createMockDraftStore(returnData: unknown) {
     del: jest.fn(async () => {
       return;
     }),
+    ttl: jest.fn(() => Promise.resolve({})),
+    expire: jest.fn(() => Promise.resolve({})),
   };
 }
 
@@ -116,5 +121,15 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spyDel).toBeCalled();
   });
-
+  it('should create draft claim with expiry time', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(undefined);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'set');
+    //When
+    await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
+    //Then
+    expect(spyTTL).toBeCalled();
+    expect(await app.locals.draftStoreClient.ttl(CLAIM_ID)).toBe(60);
+  });
 });

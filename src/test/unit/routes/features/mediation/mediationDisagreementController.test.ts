@@ -47,6 +47,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(mediationMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .get(MEDIATION_DISAGREEMENT_URL)
@@ -83,6 +85,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(individualTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -98,6 +102,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -113,6 +119,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(organisationTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -128,6 +136,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -145,6 +155,8 @@ describe('Mediation Disagreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -158,11 +170,13 @@ describe('Mediation Disagreement', () => {
       applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
       applicantTypeMock.case_data.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       applicantTypeMock.case_data.claimantResponse = new ClaimantResponse();
-      applicantTypeMock.case_data.claimantResponse.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '6000000'},{option: YesNo.YES});
+      applicantTypeMock.case_data.claimantResponse.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '6000000'}, {option: YesNo.YES});
       const companyTypeMock: string = JSON.stringify(applicantTypeMock);
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
+        ttl: jest.fn(() => Promise.resolve({})),
+        expire: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
