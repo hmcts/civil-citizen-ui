@@ -16,7 +16,7 @@ import {
 import {YesNo} from 'common/form/models/yesNo';
 
 export const getTaskLists = (caseData: Claim, userId: string, lang: string): TaskList[] => {
-  const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions( caseData, userId, lang);
+  const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions(caseData, userId, lang);
   const taskListPrepareYourClaim: TaskList = buildPrepareYourClaimSection(caseData, userId, lang);
   const taskListSubmit: TaskList = buildSubmitSection(caseData, userId, lang);
 
@@ -31,7 +31,7 @@ export const getTaskLists = (caseData: Claim, userId: string, lang: string): Tas
 
 export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang: string): TaskList => {
   const considerOtherOptionsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_RESOLVING_DISPUTE_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -50,7 +50,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
 
 export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, lang: string): TaskList => {
   const completingYourClaimTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.COMPLETING_CLAIM', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.COMPLETING_CLAIM', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_COMPLETING_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -60,7 +60,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const yourDetailsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.YOUR_DETAILS', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.YOUR_DETAILS', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIMANT_PARTY_TYPE_SELECTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -70,7 +70,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const theirDetailsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_DEFENDANT_PARTY_TYPE_URL),
     status: TaskStatus.INCOMPLETE,
   };
@@ -80,13 +80,13 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const claimAmountTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_AMOUNT', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_AMOUNT', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
   if (
-    caseData.claimAmountBreakup && 
+    caseData.claimAmountBreakup &&
     caseData.claimDetails?.helpWithFees?.option &&
     (caseData.claimInterest === YesNo.NO || caseData.isInterestCompleted())
   ) {
@@ -94,12 +94,12 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const claimDetailsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS', { lng: getLng(lang)}),
+    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_REASON_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
-  if(caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
+  if (caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
     claimDetailsTask.status = TaskStatus.COMPLETE;
   }
 
@@ -119,7 +119,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
 
 export const buildSubmitSection = (caseData: Claim, userId: string, lang: string): TaskList => {
   const considerOtherOptionsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.CHECK_AND_SUBMIT', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_CHECK_ANSWERS_URL),
     status: TaskStatus.INCOMPLETE,
   };
