@@ -1,4 +1,3 @@
-import {Claim} from 'models/claim';
 import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import request from 'supertest';
@@ -24,9 +23,9 @@ describe('Claim Issue TaskList Guard', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should redirect if claim has no id and eligibility not completed', async () => {
+  it('should redirect if draft claim has no case_data and eligibility not completed', async () => {
     //Given
-    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: new Claim()});
+    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({});
     app.request.cookies = {};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -48,10 +47,8 @@ describe('Claim Issue TaskList Guard', () => {
 
   it('should access to claim/task-list page when claim exist', async () => {
     //Given
-    const mockClaim = new Claim();
-    mockClaim.id = '1';
-    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: mockClaim});
-    app.request.cookies = {eligibilityCompleted: true};
+    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: {}});
+    app.request.cookies = {};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then
@@ -61,7 +58,7 @@ describe('Claim Issue TaskList Guard', () => {
 
   it('should access to claim/task-list page when eligibility questions completed', async () => {
     //Given
-    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: new Claim()});
+    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: {}});
     app.request.cookies = {eligibilityCompleted: true};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -72,9 +69,7 @@ describe('Claim Issue TaskList Guard', () => {
 
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
-    const mockClaim = new Claim();
-    mockClaim.id = '1';
-    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: mockClaim});
+    (getDraftClaimFromStore as jest.Mock).mockResolvedValue({case_data: {}});
     app.request.cookies = {eligibilityCompleted: true};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
