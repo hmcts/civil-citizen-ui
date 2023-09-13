@@ -30,7 +30,7 @@ function mockDraftStore(mockData: string) {
     get: jest.fn(() => Promise.resolve(mockData)),
     ttl: jest.fn(() => Promise.resolve({})),
     expire: jest.fn(() => Promise.resolve({})),
-  }
+  };
 }
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -158,7 +158,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption1ToRedirectToCarer)
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption1ToRedirectToCarer);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
