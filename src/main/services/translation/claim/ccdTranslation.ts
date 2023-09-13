@@ -14,8 +14,7 @@ import {getClaimantIdamDetails} from 'services/translation/response/claimantIdam
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {
-  getAdditionalClaimantDetails,
-  getAdditionalRespondentDetails,
+  getAdditionalPartyDetails,
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
@@ -43,8 +42,8 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     claimantUserDetails: getClaimantIdamDetails(req.session?.user),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
-    respondent1AdditionalLipPartyDetails: getAdditionalRespondentDetails(claim),
-    applicant1AdditionalLipPartyDetails: getAdditionalClaimantDetails(claim),
+    respondent1AdditionalLipPartyDetails: getAdditionalPartyDetails(claim.respondent1),
+    applicant1AdditionalLipPartyDetails: getAdditionalPartyDetails(claim.applicant1),
 
   };
 };
