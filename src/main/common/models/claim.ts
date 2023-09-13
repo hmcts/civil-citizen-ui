@@ -60,7 +60,6 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import { convertToPound } from 'services/translation/claim/moneyConversation';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 
