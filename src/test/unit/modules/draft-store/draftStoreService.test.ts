@@ -36,7 +36,7 @@ function createMockDraftStore(returnData: unknown) {
     del: jest.fn(async () => {
       return;
     }),
-    ttl: jest.fn(() => Promise.resolve({})),
+    ttl: jest.fn(() => Promise.resolve(60)),
     expire: jest.fn(() => Promise.resolve({})),
   };
 }
