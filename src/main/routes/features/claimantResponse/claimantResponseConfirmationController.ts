@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import {RequestHandler, Router} from 'express';
 import {CLAIMANT_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
@@ -7,7 +7,7 @@ import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseC
 
 const claimantResponseConfirmationController = Router();
 
-claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, claimantResponseConfirmationGuard, async (req, res, next) => {
+claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, claimantResponseConfirmationGuard, (async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(req.params.id, req);
@@ -18,6 +18,6 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimantResponseConfirmationController;
