@@ -46,6 +46,7 @@ describe('Full Defence', () => {
     //Given
     const claim = {
       isPartialAdmission: jest.fn(),
+      isPartialAdmissionPaid: jest.fn(),
       isFullDefence: jest.fn(),
       hasPaidInFull: jest.fn(),
       hasConfirmedAlreadyPaid: jest.fn(),
