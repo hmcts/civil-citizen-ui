@@ -60,11 +60,24 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   }
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
+  // const expiryTime = await draftStoreClient.ttl(claimId);
+  // await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  // if (expiryTime !== -1) {
+  //   await draftStoreClient.expire(claimId, expiryTime);
+  // }
+  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+};
+
+export const saveDraftClaimX = async (claimId: string, claim: Claim) => {
+  let storedClaimResponse = await getDraftClaimFromStore(claimId);
+  storedClaimResponse.case_data = claim;
+  const draftStoreClient = app.locals.draftStoreClient;
   const expiryTime = await draftStoreClient.ttl(claimId);
   await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (expiryTime !== -1) {
     await draftStoreClient.expire(claimId, expiryTime);
   }
+  // draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
@@ -81,6 +94,8 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const draftClaim = createNewCivilClaimResponse(claimId);
   draftClaim.case_data = {} as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;
-  await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
+  // await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
+  await draftStoreClient.set(claimId, JSON.stringify(draftClaim));
+  await draftStoreClient.expire(claimId, DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
   logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
 }
