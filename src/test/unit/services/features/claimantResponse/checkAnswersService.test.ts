@@ -50,72 +50,72 @@ describe('Check Answers service', () => {
     it('should check answers for part admit pay immediately for yes option', () => {
       const expectedResult = {
         sections: [{
-          title: "PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER",
+          title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
           summaryList: {
             rows: [
               {
                 key: {
-                  text: "PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION",
+                  text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
                 },
                 value: {
-                  html: "PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT",
+                  html: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT',
                 },
                 actions: {
                   items: [
                     {
-                      href: "/case/12345/claimant-response/settle-admitted",
-                      text: "COMMON.BUTTONS.CHANGE",
-                      visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION",
+                      href: '/case/12345/claimant-response/settle-admitted',
+                      text: 'COMMON.BUTTONS.CHANGE',
+                      visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
                     },
                   ],
                 },
               },
             ],
           },
-        }]
-      }
+        }],
+      };
       const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.IMMEDIATELY } };
       claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.YES } } as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result)
-    })
+      expect(expectedResult).toEqual(result);
+    });
     it('should check answers for part admit pay immediately for no option', () => {
       const expectedResult = {
         sections: [{
-          title: "PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER",
+          title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
           summaryList: {
             rows: [
               {
                 key: {
-                  text: "PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION",
+                  text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
                 },
                 value: {
-                  html: "PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT",
+                  html: 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT',
                 },
                 actions: {
                   items: [
                     {
-                      href: "/case/12345/claimant-response/settle-admitted",
-                      text: "COMMON.BUTTONS.CHANGE",
-                      visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION",
+                      href: '/case/12345/claimant-response/settle-admitted',
+                      text: 'COMMON.BUTTONS.CHANGE',
+                      visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
                     },
                   ],
                 },
               },
             ],
           },
-        }]
-      }
+        }],
+      };
       const claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.IMMEDIATELY } };
       claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.NO } } as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result)
-    })
-  })
+      expect(expectedResult).toEqual(result);
+    });
+  });
 
-})
+});
 

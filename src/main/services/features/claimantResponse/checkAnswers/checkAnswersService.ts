@@ -19,7 +19,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
     // TODO : This part will be developed as part of other future tasks for different scenarios
-      buildDetailsSection(claim, claimId, lang)
+      buildDetailsSection(claim, claimId, lang),
     ],
   };
 };
@@ -33,7 +33,7 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY) {
     return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
   }
-}
+};
 
 const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: string, lang: string | unknown) => {
   const lng = getLng(lang);
@@ -46,7 +46,7 @@ const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: st
       ],
     });
   }
-}
+};
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
