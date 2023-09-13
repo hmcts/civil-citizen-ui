@@ -6,7 +6,7 @@ import {
   CLAIMANT_RESPONSE_REJECTION_REASON_URL ,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -28,7 +28,36 @@ describe('Claimant Response - Settle Claim Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want to settle the claim for the');
+        expect(res.text).toContain('Do you want to settle the claim for the £20 the defendant has paid?');
+      });
+    });
+
+    it('should return settle claim page when defendant paid full amount', async () => {
+      const civilClaimResponseMockData = {
+        'id': 1645882162449409,
+        'case_data': {
+          'rejectAllOfClaim': {
+            'howMuchHaveYouPaid': {
+              'amount': 110,
+              'totalClaimAmount': 110,
+              'date': '2022-01-01T00:00:00.000Z',
+              'day': '1',
+              'month': '1',
+              'year': '2022',
+              'text': 'text',
+            },
+          },
+        },
+      };
+      app.locals.draftStoreClient = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMockData))),
+        del: jest.fn(() => Promise.resolve({})),
+      };
+
+      await request(app).get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Do you agree the defendant has paid the £110 in full?');
       });
     });
 
@@ -51,7 +80,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
     it('should return error on empty post', async () => {
       await request(app).post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+        expect(res.text).toContain(TestMessages.VALID_YES_OR_NO_OPTION);
       });
     });
 
