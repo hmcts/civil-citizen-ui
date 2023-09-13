@@ -403,8 +403,8 @@ describe('Submit Confirmation service', () => {
     });
 
     describe('Paid Equal Scenario', () => {
-      const totalClaimAmount = 100;
-      const paidAmountInPence = 10000;
+      const totalClaimAmount = 1000;
+      const paidAmountInPence = 1000;
       const claim = getClaim();
       claim.totalClaimAmount = totalClaimAmount;
       claim.rejectAllOfClaim = new RejectAllOfClaim(
