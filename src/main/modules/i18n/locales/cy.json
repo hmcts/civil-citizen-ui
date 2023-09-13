@@ -1790,7 +1790,7 @@
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
       },
-      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CANT_CALCULATE_THE_AMOUNT": "Os na allwch gyfrifo'r swm a hawlir, er enghraifft oherwydd eich bod yn hawlio am anaf neu ddamwain, defnyddiwch y ",
       "CLAIM_AGAINST_GOVERNMENT": {
         "CANT_USE_SERVICE": "You can’t use this service to claim against",
         "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
@@ -1807,12 +1807,12 @@
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
-        "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
-        "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
-        "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
-        "FORM_N510": "form N510",
-        "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+        "AND": "a",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "Dim ond i hawlio yn erbyn unigolyn neu sefydliad sydd â chyfeiriad yng Nghymru neu Loegr y gallwch ddefnyddio'r gwasanaeth hwn.",
+        "COMPLETE_FORMS_AND_RETURN": ". Cwblhewch y ffurflenni a'u dychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwytho ffurflen bapur N1",
+        "FORM_N510": "ffurflen N510",
+        "USING_PAPER_FORM": "Yn dibynnu ar ble byddwch yn anfon yr hawliad, efallai y byddwch yn gallu gwneud hawliad gan ddefnyddio ffurflen bapur."
       },
       "DEFENDANT_UNDER_18": {
         "ABOUT_MAKING_CLAIM": " about making a claim.",
@@ -1834,13 +1834,13 @@
         "CANT_USE_IF_MULTIPLE_CLAIMANTS": "Ni allwch ddefnyddio'r gwasanaeth hwn os oes mwy nag un unigolyn neu sefydliad yn gwneud yr hawliad."
       },
       "MULTIPLE_DEFENDANTS": {
-        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
-        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
-        "MCOL_ONLINE": "Money Claim Online (MCOL)",
-        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
-        "USE": "Use "
+        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "am hawliadau yn erbyn 3 neu fwy o bobl neu sefydliadau. Cwblhewch a dychwelwch y ffurflen i wneud eich hawliad.",
+        "AGAINST_TWO_PEOPLE_ORG": "am hawliadau yn erbyn 2 unigolyn neu sefydliadau.",
+        "MCOL_ONLINE": "Hawliadau am Arian Ar-lein (MCOL)",
+        "MORE_THAN_ONE_PERSON_ORG": "Ni allwch ddefnyddio'r gwasanaeth hwn os yw'r hawliad hwn yn erbyn mwy nag un unigolyn neu sefydliad.",
+        "USE": "Defnyddiwch "
       },
-      "N1_PAPER_FORM": "N1 paper form",
+      "N1_PAPER_FORM": "Ffurflen bapur N1",
       "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
       "PAGE_TITLE": "Ni allwch ddefnyddio'r gwasanaeth hwn",
       "TENANCY_DEPOSIT": {
@@ -1851,7 +1851,7 @@
       },
       "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
       "WHERE_TO_SEND_PAPER_FORMS": "Ble i anfon ffurflenni papur",
-      "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
+      "YOU_NEED_TO_KNOW_AMOUNT": "Mae angen i chi wybod swm yr hawliad i ddefnyddio'r gwasanaeth hwn."
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
