@@ -34,7 +34,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    
+
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
@@ -53,7 +53,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   } else if (claim.isPartialAdmission()) {
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-    
+
     if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
@@ -123,7 +123,7 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  if ((claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) || (claim.isPartialAdmissionPaid() && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()) )) {
+  if ((claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) || (claim.isPartialAdmissionPaid() && ((claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) )) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
