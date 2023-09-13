@@ -5,21 +5,27 @@ import {
   buildHearingTrialLatestUploadSection,
   buildNewUploadSection,
   buildViewFinalGeneralOrderContent,
+  buildFinaliseTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
   if (claim.isFinalGeneralOrderIssued()) {
-    sectionContent.push(getViewFinalGeneralOrderContent());
+    sectionContent.push(getViewFinalGeneralOrderContent(claim));
   }
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
   }
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+    if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
+      sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    }
   }
+
+  sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+
   return getClaimSummaryContent(sectionContent.flat());
 };
 
@@ -43,8 +49,8 @@ export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: str
   return buildHearingTrialLatestUploadSection(claim, lang);
 };
 
-export const getViewFinalGeneralOrderContent = (): ClaimSummarySection[][] => {
-  return buildViewFinalGeneralOrderContent();
+export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildViewFinalGeneralOrderContent(claim);
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {
@@ -52,4 +58,8 @@ export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : Claim
     contentSections: sectionContent,
     hasDivider: index < section.length - 1,
   }));
+};
+
+export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildFinaliseTrialArrangements(claim);
 };

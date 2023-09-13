@@ -7,7 +7,7 @@ import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashb
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
-import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -36,15 +36,18 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const user: UserDetails = appRequest.session.user;
   try{
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken);
-    const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
-    const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.page as string, lang);
+    const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
+    const defendantPage = req.query?.defendantPage ? 'defendantPage=' + req.query?.defendantPage : '';
+    const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
+
     const responseDraftSaved = false;
-    const paginationArgumentClaimant: object = {};
+    const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
 
-    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
   }

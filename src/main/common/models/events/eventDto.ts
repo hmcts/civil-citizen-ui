@@ -9,4 +9,6 @@ export interface EventDto {
 export interface ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  issueDate?: Date;
+  respondent1ResponseDeadline?: Date;
 }

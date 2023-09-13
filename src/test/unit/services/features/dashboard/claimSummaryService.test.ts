@@ -4,7 +4,6 @@ import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/d
 import {
   buildDownloadHearingNoticeSection,
   buildSystemGeneratedDocumentSections,
-  buildDownloadSealedClaimSectionTitle,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
@@ -13,8 +12,14 @@ import {t} from 'i18next';
 import {TableCell} from 'models/summaryList/summaryList';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {createCCDClaimForEvidenceUpload} from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
-import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUIEvidenceUpload';
 import {DocumentType} from 'models/document/documentType';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
+import {buildDownloadSectionTitle} from 'services/features/dashboard/documentBuilderService';
+import {
+  buildDownloadFinalOrderSection,
+} from 'services/features/dashboard/finalOrderDocuments/finalOrderDocumentContentBuilder';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -35,13 +40,14 @@ function getTable(isClaimant: boolean, sectionText: string, documentText: string
   for(let i = documentText.length-1; i >= 0; i--){
     tableRows.push([
       {html: getDocumentSectionName(isClaimantString, documentText[i]) + '<br>' + 'PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED' + '01 Jan 1970', classes: 'govuk-!-width-one-half'},
-      {html: '<a class="govuk-link" href="href will need to be connected to document">'+getDocumentName(sectionText, documentText[i])+'</a>', classes: 'govuk-!-width-one-half govuk-table__cell--numeric'},
+      {html: '<a class="govuk-link" href="/case/undefined/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6">'+getDocumentName(sectionText, documentText[i])+'</a>', classes: 'govuk-!-width-one-half govuk-table__cell--numeric'},
     ]);
   }
 
   return {
     type: ClaimSummaryType.TABLE,
     data: {
+      classes: 'tableWrap',
       head: [
         {
           text: isClaimantString + sectionText,
@@ -77,6 +83,23 @@ function getDocumentSectionName(isClaimantString: string, documentTypeText: stri
     return isClaimantString + t(documentTypeText);
   }
 }
+const claimContainingFinalOrder = new Claim();
+claimContainingFinalOrder.caseProgression = new CaseProgression();
+claimContainingFinalOrder.caseProgression.finalOrderDocumentCollection = [{
+  id: '1234',
+  value: {
+    createdBy: 'some one',
+    documentLink: {
+      document_url: 'url',
+      document_filename: 'filename',
+      document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+    },
+    documentName: 'some name',
+    documentType: DocumentType.JUDGE_FINAL_ORDER,
+    documentSize: 123,
+    createdDatetime: FIXED_DATE,
+  },
+}];
 
 describe('getDocumentsContent', () => {
   it('should return an array with one ClaimSummaryContent object with one content section containing the download claim section', async () => {
@@ -109,13 +132,53 @@ describe('getDocumentsContent', () => {
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(3);
 
-    const downloadClaimTitle = buildDownloadSealedClaimSectionTitle(lang);
+    const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
     const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(claim, claimId, lang);
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
     expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
+  });
+
+  it('should return an array with one ClaimSummaryContent object with one content section containing the Final Orders section', async () => {
+    // Given
+    const claimId = '123';
+    const lang = 'en';
+    isCaseProgressionV1EnableMock.mockResolvedValue(true);
+
+    // When
+    const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
+
+    // Then
+    expect(result).toHaveLength(1);
+    expect(result[0].contentSections).toHaveLength(4);
+
+    const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[0];
+    const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[1];
+
+    expect(result[0].contentSections[0]).toEqual(downloadFinalOrderSectionTitle);
+    expect(result[0].contentSections[1]).toEqual(downloadFinalOrderSectionLink);
+  });
+
+  it('should not return an array with the Final Orders section if CaseProgressionV1 disabled', async () => {
+  // Given
+    const claimId = '123';
+    const lang = 'en';
+    isCaseProgressionV1EnableMock.mockResolvedValue(false);
+
+    // When
+    const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
+
+    // Then
+    expect(result).toHaveLength(1);
+    expect(result[0].contentSections).toHaveLength(2);
+
+    const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
+    const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
+
+    expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
+    expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
   });
 });
 
