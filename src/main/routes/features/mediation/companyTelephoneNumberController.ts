@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/companyTelephoneNumber';
-import {CAN_WE_USE_COMPANY_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
+import {CAN_WE_USE_COMPANY_URL, CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData,
@@ -10,6 +10,8 @@ import {
 import {YesNo} from '../../../common/form/models/yesNo';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
 const companyTelephoneNumberController = Router();
 
@@ -49,7 +51,9 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
         await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
       }
       await saveCompanyTelephoneNumberData(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const redirectUrl = constructResponseUrlWithIdParams(req.params.id, claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL);
+      res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);
