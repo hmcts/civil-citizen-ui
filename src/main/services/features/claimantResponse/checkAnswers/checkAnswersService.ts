@@ -16,10 +16,11 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+  const lng = getLng(lang);
   return {
     sections: [
     // TODO : This part will be developed as part of other future tasks for different scenarios
-      buildDetailsSection(claim, claimId, lang),
+      buildDetailsSection(claim, claimId, lng),
     ],
   };
 };
@@ -36,13 +37,13 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
 };
 
 const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: string, lang: string | unknown) => {
-  const lng = getLng(lang);
-  const selectOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option;
-  if (selectOption) {
+
+  const selectedOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option;
+  if (selectedOption) {
     return summarySection({
-      title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', { lng }),
+      title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', { lang }),
       summaryRows: [
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', { lng }), t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectOption], { lng }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL), changeLabel(lang as string)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', { lang }), t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectedOption], { lang }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL), changeLabel(lang as string)),
       ],
     });
   }
