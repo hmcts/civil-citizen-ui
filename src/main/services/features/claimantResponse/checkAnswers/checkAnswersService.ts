@@ -1,22 +1,52 @@
-import {SummarySections} from 'common/models/summaryList/summarySections';
+import { SummarySection, SummarySections, summarySection } from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import { summaryRow } from 'common/models/summaryList/summaryList';
+import { t } from 'i18next';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL } from 'routes/urls';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
+import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
+import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {
     sections: [
     // TODO : This part will be developed as part of other future tasks for different scenarios
+      buildDetailsSection(claim, claimId, lang)
     ],
   };
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections();
+  return buildSummarySections(claim, claimId, lang);
 };
+
+const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+
+  if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY) {
+    return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
+  }
+}
+
+const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: string, lang: string | unknown) => {
+  const lng = getLng(lang);
+  const selectOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option;
+  if (selectOption) {
+    return summarySection({
+      title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', { lng }),
+      summaryRows: [
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', { lng }), t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectOption], { lng }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL), changeLabel(lang as string)),
+      ],
+    });
+  }
+}
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
