@@ -68,18 +68,6 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
 };
 
-export const saveDraftClaimX = async (claimId: string, claim: Claim) => {
-  const storedClaimResponse = await getDraftClaimFromStore(claimId);
-  storedClaimResponse.case_data = claim;
-  const draftStoreClient = app.locals.draftStoreClient;
-  const expiryTime = await draftStoreClient.ttl(claimId);
-  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if (expiryTime !== -1) {
-    await draftStoreClient.expire(claimId, expiryTime);
-  }
-  // draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-};
-
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;

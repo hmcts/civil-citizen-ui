@@ -1,8 +1,4 @@
-import {
-  getCaseDataFromStore,
-  // saveDraftClaim,
-  saveDraftClaimX,
-} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
 import {Claim} from '../../../../common/models/claim';
 
@@ -29,7 +25,7 @@ const saveClaimDetails = async (claimId: string, value: any, claimDetailsPropert
       claimDetails[claimDetailsPropertyName as keyof ClaimDetails] = value;
       claim.claimDetails = claimDetails;
     }
-    await saveDraftClaimX(claimId, claim);
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
