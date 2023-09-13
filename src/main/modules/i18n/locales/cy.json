@@ -285,6 +285,7 @@
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
       "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
       "HOW_FORMALISE": "Choose how to formalise repayment",
@@ -300,8 +301,7 @@
     "YOUR_RESPONSE": {
       "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }} ?",
       "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }} ?",
-      "TITLE": "Your response",
-      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
+      "TITLE": "Your response"
     }
   },
   "TASK_LIST": {
