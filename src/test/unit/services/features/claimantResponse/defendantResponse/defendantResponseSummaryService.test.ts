@@ -303,7 +303,7 @@ describe("Defendant's response summary service", () => {
   describe('Full dispute Paid full scenario', () => {
     // Given
     const claim = mockClaim;
-    const totalClaimAmount = 40;
+    const totalClaimAmount = 4000;
     const paidAmountInPence = 4000;
     claim.totalClaimAmount = totalClaimAmount;
     const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(paidAmountInPence, totalClaimAmount, '2040', '1', '1', 'Cash');

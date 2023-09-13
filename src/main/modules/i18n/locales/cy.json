@@ -901,6 +901,14 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+    "CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID": {
+      "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PAGE_TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "YES_HINT": "Settle the claim",
+      "NO_HINT": "Proceed with the claim"
+    },
     "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
       "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
       "PAGE_TITLE": "Why did you reject the repayment plan?",
@@ -1504,7 +1512,8 @@
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
-      "TITLE": "Sut mae am dalu?"
+      "TITLE": "Sut mae am dalu?",
+      "NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
@@ -1675,9 +1684,16 @@
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
       "ANSWERS_TO_QUESTIONS_HINT": "Your expert's answers to questions put by the other party",
-      "CASE_REFERENCE_NUMBER": "Case reference:",
+      "CASE_REFERENCE_NUMBER": "Case reference: {{ caseNumber }}",
       "CASE_SUMMARY": "Case summary",
       "CASE_SUMMARY_HINT": "Overview of your whole case",
+      "CHECK_YOUR_ANSWERS_TITLE": "Check your answers",
+      "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Warning</span> </br> You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_WARNING_SHORT": "You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_CONFIRMATION": "Confirmation",
+      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.",
+      "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
+      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
       "COSTS": "Costs",
       "COSTS_HINT": "A detailed list of the costs you have incurred in making or defending the claim, for example photocopying, getting copies of contracts, include receipts",
       "DISCLOSURE": "Disclosure",
@@ -1789,7 +1805,7 @@
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
       },
-      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CANT_CALCULATE_THE_AMOUNT": "Os na allwch gyfrifo'r swm a hawlir, er enghraifft oherwydd eich bod yn hawlio am anaf neu ddamwain, defnyddiwch y ",
       "CLAIM_AGAINST_GOVERNMENT": {
         "CANT_USE_SERVICE": "You can’t use this service to claim against",
         "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
@@ -1797,21 +1813,21 @@
       },
       "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
-        "COMPLETE_RETURN": ", complete and return it to make your claim.",
-        "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE": "If you’re a legal representative ",
-        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
-        "OR": " or "
+        "CURRENTLY_SERVICE": "Ar hyn o bryd mae'r gwasanaeth hwn ar gyfer hawlwyr sy'n cynrychioli eu hunain.",
+        "COMPLETE_RETURN": ", ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_LINK": "Lawrlwytho ffurflen bapur",
+        "LEGAL_REPRESENTATIVE": "Os ydych yn gynrychiolydd cyfreithiol ",
+        "MCOL_LINK": "defnyddio'r gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
+        "OR": " neu "
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
-        "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
-        "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
-        "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
-        "FORM_N510": "form N510",
-        "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+        "AND": "a",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "Dim ond i hawlio yn erbyn unigolyn neu sefydliad sydd â chyfeiriad yng Nghymru neu Loegr y gallwch ddefnyddio'r gwasanaeth hwn.",
+        "COMPLETE_FORMS_AND_RETURN": ". Cwblhewch y ffurflenni a'u dychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwytho ffurflen bapur N1",
+        "FORM_N510": "ffurflen N510",
+        "USING_PAPER_FORM": "Yn dibynnu ar ble byddwch yn anfon yr hawliad, efallai y byddwch yn gallu gwneud hawliad gan ddefnyddio ffurflen bapur."
       },
       "DEFENDANT_UNDER_18": {
         "ABOUT_MAKING_CLAIM": " about making a claim.",
@@ -1821,7 +1837,7 @@
       },
       "CITIZENS_ADVICE": "Citizens Advice",
       "CLAIMANT_ADDRESS": {
-        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+        "NEED_UK_ADDRESS": "Mae angen i chi gael cyfeiriad yn y DU i wneud hawliad am arian."
       },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
@@ -1830,27 +1846,27 @@
       "FOR_CLAIMS_LESS_THAN_25000": "Mae'r gwasanaeth hwn ar gyfer hawliadau am £25,000 neu lai.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "Ar gyfer hawliadau rhwng £25,001 a £100,000 efallai y byddwch yn gallu ",
       "MULTIPLE_CLAIMANTS": {
-        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
+        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "Ni allwch ddefnyddio'r gwasanaeth hwn os oes mwy nag un unigolyn neu sefydliad yn gwneud yr hawliad."
       },
       "MULTIPLE_DEFENDANTS": {
-        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
-        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
-        "MCOL_ONLINE": "Money Claim Online (MCOL)",
-        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
-        "USE": "Use "
+        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "am hawliadau yn erbyn 3 neu fwy o bobl neu sefydliadau. Cwblhewch a dychwelwch y ffurflen i wneud eich hawliad.",
+        "AGAINST_TWO_PEOPLE_ORG": "am hawliadau yn erbyn 2 unigolyn neu sefydliadau.",
+        "MCOL_ONLINE": "Hawliadau am Arian Ar-lein (MCOL)",
+        "MORE_THAN_ONE_PERSON_ORG": "Ni allwch ddefnyddio'r gwasanaeth hwn os yw'r hawliad hwn yn erbyn mwy nag un unigolyn neu sefydliad.",
+        "USE": "Defnyddiwch "
       },
-      "N1_PAPER_FORM": "N1 paper form",
+      "N1_PAPER_FORM": "Ffurflen bapur N1",
       "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
       "PAGE_TITLE": "Ni allwch ddefnyddio'r gwasanaeth hwn",
       "TENANCY_DEPOSIT": {
-        "GET": "Get",
-        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
-        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
+        "GET": "Cael",
+        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help i ddatrys eich anghydfod",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud cais am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
+        "WITH_A_LANLORD_OR_TENANT": "gyda landlord neu denant."
       },
       "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
       "WHERE_TO_SEND_PAPER_FORMS": "Ble i anfon ffurflenni papur",
-      "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
+      "YOU_NEED_TO_KNOW_AMOUNT": "Mae angen i chi wybod swm yr hawliad i ddefnyddio'r gwasanaeth hwn."
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
@@ -3011,6 +3027,7 @@
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
+    "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
