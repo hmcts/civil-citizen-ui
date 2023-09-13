@@ -60,6 +60,8 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import { convertToPound } from 'services/translation/claim/moneyConversation';
+import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 
 export class Claim {
@@ -117,6 +119,7 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseRole?: CaseRole;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -374,7 +377,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+    return convertToPound(this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount) === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -700,7 +703,7 @@ export class Claim {
   isDefendantAgreedForMediation() {
     return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
   }
-  
+
   isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
@@ -725,6 +728,11 @@ export class Claim {
   hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
+
+  isClaimant(){
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+  }
+
 }
 
 export interface StatementOfTruth {

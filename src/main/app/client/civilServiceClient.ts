@@ -12,7 +12,7 @@ import {
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -26,7 +26,11 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'common/models/FileResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import {
+  DashboardClaimantResponse,
+  DashboardDefendantResponse,
+} from 'common/models/dashboard/dashboarddefendantresponse';
+import {CaseRole} from 'form/models/caseRoles';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -117,6 +121,8 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       logger.info('----ccd-caseDetails----', caseDetails);
+
+      caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
@@ -214,6 +220,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_CUI, claimId, updatedClaim, req);
   }
 
+  async submitClaimantResponseEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.CLAIMANT_RESPONSE_CUI, claimId, updatedClaim, req);
+  }
+
   async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
@@ -233,6 +243,10 @@ export class CivilServiceClient {
 
   async submitClaimantResponseDJEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
+  }
+
+  async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
@@ -296,6 +310,22 @@ export class CivilServiceClient {
     } catch (error: unknown) {
       logger.error(error);
       throw error;
+    }
+  }
+
+  async getUserCaseRoles(claimId: string, req: AppRequest) {
+    try {
+      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', claimId)}`));
+      const response: AxiosResponse<object> = await this.client.get(userCaseRolesUrl.toString()
+        , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      const responseRoles = response.data as string[];
+      return responseRoles
+        .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
+        .at(0);
+
+    } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
     }
   }
 }

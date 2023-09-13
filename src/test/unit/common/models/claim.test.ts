@@ -36,6 +36,7 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
@@ -1557,6 +1558,36 @@ describe('Documents', () => {
       const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
+  describe('test of method isClaimant', () => {
+    const claim = new Claim();
+
+    it('should return true when APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+    it('should return true when CLAIMANT', () => {
+      //Given
+      claim.caseRole = CaseRole.CLAIMANT;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+
+    it('should return false when is not APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeFalsy();
     });
   });
 

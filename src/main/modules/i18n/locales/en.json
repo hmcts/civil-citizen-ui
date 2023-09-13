@@ -136,7 +136,7 @@
       "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
+      "CALCULATE_THIS": "To calculate this, use the steps below.",
       "EXAMPLE": {
         "EXAMPLE": "Example",
         "OWED": "If you were owed £1,000:",
@@ -285,13 +285,14 @@
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
       "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
       "HOW_FORMALISE": "Choose how to formalise repayment",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next"
+      "TITLE": "Choose what to do next",
     },
     "HOW_THEY_RESPONDED": {
       "TITLE": "How they responded",
@@ -431,6 +432,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
       "CLAIM_INTEREST": "Claim Interest",
+      "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
@@ -1507,7 +1509,8 @@
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
-      "TITLE": "How they want to pay?"
+      "TITLE": "How they want to pay?",
+      "NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
@@ -2084,7 +2087,7 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -2140,6 +2143,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2653,6 +2657,7 @@
       "OTHER_INFORMATION_TITLE": "Other information",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
+      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",

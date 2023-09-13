@@ -10,6 +10,7 @@ import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/l
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {TabId, TabLabel} from 'routes/tabs';
 import {t} from 'i18next';
+import {CaseRole} from 'form/models/caseRoles';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -80,6 +81,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -116,6 +120,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithoutSDO);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -135,6 +142,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -155,6 +165,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -186,6 +199,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
