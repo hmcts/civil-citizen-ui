@@ -60,7 +60,6 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import { convertToPound } from 'services/translation/claim/moneyConversation';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 
@@ -307,6 +306,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isPartialAdmissionPaid(): boolean {
+    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
+  }
+
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
@@ -348,7 +351,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return convertToPound(this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount) === this.totalClaimAmount;
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {

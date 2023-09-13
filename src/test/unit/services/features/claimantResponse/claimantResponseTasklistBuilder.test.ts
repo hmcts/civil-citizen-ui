@@ -87,7 +87,7 @@ describe('Full Defence', () => {
     claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
     claim.rejectAllOfClaim = {
       option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
-        amount: 900000,
+        amount: 9000,
       } as any,
     };
     claim.totalClaimAmount = 9000;
