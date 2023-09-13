@@ -136,19 +136,19 @@
       "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow",
+      "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
       "EXAMPLE": {
         "EXAMPLE": "Enghraifft",
-        "OWED": "If you were owed £,1000:",
-        "ANNUAL_INTEREST": "the annual interest would be £80 (1000 x 0.08 = 80) you’d divide £80 by 365 to get the daily interest: about 22p a day (80 / 365 = 0.22) after 50 days this would be £11 (50 x 0.22 = 11)"
+        "OWED": "Roedd £,1000 yn ddyledus i chi:",
+        "ANNUAL_INTEREST": "y llog blynyddol fyddai £80 (1000 x 0.08 = 80) byddech yn rhannu £80 gyda 365 i gael y llog dyddiol: tua 22p y diwrnod (80 / 365 = 0.22) ar ôl 50 diwrnod byddai hyn yn £11 (50 x 0.22 = 11)"
       },
       "STEPS": {
-        "DAILY_INTEREST": "Work out the daily interest: divide your yearly interest from step 1 by 365 (the number of days in a year).",
-        "TOTAL_INTEREST": "Work out the total amount of interest: multiply the daily interest from step 2 by the number of days the debt has been overdue.",
-        "YEARLY_INTEREST": "Work out the yearly interest: take the amount you’re claiming and multiply it by 0.08 (which is 8%)."
+        "DAILY_INTEREST": "Cyfrifwch y llog dyddiol: rhannwch eich llog blynyddol o gam 1 gyda 365 (y nifer o ddyddiau mewn blwyddyn).",
+        "TOTAL_INTEREST": "Cyfrifwch gyfanswm y llog: lluoswch y llog dyddiol o gam 2 gyda’r nifer o ddyddiau y mae’r ddyled wedi bod yn ddyledus.",
+        "YEARLY_INTEREST": "Cyfrifwch y llog blynyddol: cymerwch y swm rydych yn ei hawlio â’i luosi gyda 0.08 (sy’n 8%)."
       },
-      "TITLE": "Help calculating interest",
-      "USUAL_RATE": "For most types of debt the rate is usually 8%"
+      "TITLE": "Help i gyfrifo llog",
+      "USUAL_RATE": "Ar gyfer y mwyafrif o ddyled y gyfradd fel arfer yw 8%"
     },
     "HELP_WITH_INTEREST_RATES": {
       "THE_COURT_WILL_DECIDE": "Bydd y llys yn penderfynu os oes gennych hawl i rywfaint o’r llog a hawlir neu’r llog cyfan.",
@@ -295,7 +295,8 @@
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next"
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
     }
   },
   "TASK_LIST": {
@@ -426,6 +427,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
       "CLAIM_INTEREST": "Hawlio llog",
+      "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
@@ -564,7 +566,7 @@
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
-      "CONTACT_PERSON_HINT": "The defendant can contact this person to discuss the claim",
+      "CONTACT_PERSON_HINT": "Gall y diffynnydd gysylltu â'r unigolyn yma i drafod yr hawliad",
       "COMPANY_ADDRESS": "Cyfeiriad y Cwmni",
       "COMPANY_DETAILS": "Rhowch fanylion y cwmni",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer gohebiaeth",
@@ -868,23 +870,23 @@
       "TITLE": "Ydych chi am fwrw ymlaen â’r hawliad?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
-      "CLAIMING_AS_HEADER": "I'm claiming as:",
+      "CLAIMING_AS_HEADER": "Dwi'n hawlio fel:",
       "CLAIMING_AS_AN_INDIVIDUAL": "Unigolyn",
       "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "Unig fasnachwr neu unigolyn hunangyflogedig",
       "CLAIMING_AS_LIMITED_COMPANY": "Cwmni cyfyngedig",
       "CLAIMING_AS_ORGANISATION": "Math arall o sefydliad",
-      "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
-      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
-      "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
+      "CLAIMING_FOR_YOURSELF": "Rydych chi'n hawlio drosoch eich hun",
+      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "Er enghraifft crefftwr",
+      "CLAIMING_FOR_EXAMPLE_COMPANY": "Er enghraifft cwmni sy'n gwerthu nwyddau neu wasanaethau",
       "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
       "PAGE_TITLE": "About you and this claim",
-      "TITLE": "About you and this claim"
+      "TITLE": "Amdanoch chi a'r hawliad hwn"
     },
     "CLAIMANT_PHONE": {
       "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
-      "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
+      "NUMBER_INFORMATION": "Byddwn hefyd yn rhoi eich rhif i'r unigolyn, y busnes, neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
@@ -948,7 +950,7 @@
       "CLAIMANT_PAGE_TITLE": "Enter company details",
       "CLAIMANT_TITLE": "Enter company details",
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
-      "COMPANY_REGISTERED_OFFICE": "Enter the company's registered office or a company address that has a connection with the claim.",
+      "COMPANY_REGISTERED_OFFICE": "Rhowch swyddfa gofrestredig y cwmni neu gyfeiriad cwmni sydd â chysylltiad â'r hawliad.",
       "COMPANY_NAME": "Enw'r cwmni",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
@@ -1165,7 +1167,7 @@
       "CONTACT_PERSON_HINT": "Efallai bod hwn yn rhywun rydych wedi trafod yr hawliad gydag ef.",
       "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
       "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
-      "NO_WORK_ADDRESS": "You cannot use their work address.",
+      "NO_WORK_ADDRESS": "Ni allwch ddefnyddio ei gyfeiriad gwaith.",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
       "ORGANISATION_NAME": "Enw'r sefydliad",
@@ -1178,7 +1180,7 @@
       "PAYING_EXTRA": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw unrhyw un sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
       "PAYING_EXTRA_ORGANISATION": "Bydd rhaid i chi dalu ffi ychwanegol os ydych chi am newid enw sefydliad sy'n gysylltiedig â'r hawliad yn ddiweddarach.",
       "THEIR_ADDRESS": "Ei gyfeiriad",
-      "USUAL_ADDRESS": "You must enter their usual or last known home address."
+      "USUAL_ADDRESS": "Rhaid i chi fynd i mewn i'w gyfeiriad cartref arferol neu olaf y gwyddys amdano."
     },
     "DEFENDANT_PARTY_TYPE": {
       "CLAIMING_AGAINST_AN_INDIVIDUAL": "Unigolyn",
@@ -1512,10 +1514,10 @@
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
     "INTEREST_CLAIM_OPTIONS": {
-      "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
-      "PAGE_TITLE": "How do you want to claim interest?",
-      "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
+      "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
+      "TITLE": "Sut ydych chi am hawlio llog?"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
@@ -1537,7 +1539,7 @@
     "JUDGMENT_AMOUNT": {
       "TITLE": "Judgment amount",
       "PAGE_TITLE": "Judgment amount",
-      "INTEREST_TO_DATE": "Interest to date",
+      "INTEREST_TO_DATE": "Llog hyd yma",
       "CLAIM_FEE_AMOUNT": "Claim fee amount",
       "SUBTOTAL": "Subtotal",
       "AMOUNT_ALREADY_PAID": "Minus amount already paid",
@@ -1770,10 +1772,10 @@
       "TITLE": "4pm ar {{ responseDeadline }}"
     },
     "ORGANISATION_DETAILS": {
-      "ADDRESS": "Organisation address",
+      "ADDRESS": "Cyfeiriad y sefydliad",
       "MAIN_OFFICE": "Enter the organisation’s main office or an organisation’s address that has a connection with the claim.",
       "PAGE_TITLE": "Enter organisation details",
-      "TITLE": "Enter organisation details"
+      "TITLE": "Rhowch fanylion y sefydliad"
     },
     "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau eraill neu wyliau rydych eisoes wedi trefnu",
@@ -2079,7 +2081,7 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -2135,6 +2137,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2354,23 +2357,23 @@
       "TITLE": "Llinell amser o ddigwyddiadau"
     },
     "TOTAL_AMOUNT": {
-      "ADDITIONAL_FEES": "There may be additional fees as your case progresses.",
-      "CLAIM_FEE": "Claim fee",
-      "FIND_OUT_MORE": "Find out more about court fees (opens in a new tab)",
-      "HEARING_FEE": "Hearing fee",
+      "ADDITIONAL_FEES": "Efallai y bydd ffioedd ychwanegol wrth i'ch achos fynd yn ei flaen.",
+      "CLAIM_FEE": "Ffi hawliad",
+      "FIND_OUT_MORE": "Mwy o wybodaeth am ffioedd llys (Agor mewn tab newydd)",
+      "HEARING_FEE": "Ffi gwrandawiad",
       "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated?",
       "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
       "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
-      "IF_YOU_SETTLE": "If you settle out of court",
+      "IF_YOU_SETTLE": "Os ydych yn setlo y tu allan i’r llys",
       "INTEREST_TO_DATE": "Interest to date",
-      "OTHER_FEES": "Other fees",
+      "OTHER_FEES": "Ffioedd eraill",
       "PAGE_TITLE": "Total amount you’re claiming",
-      "TITLE": "Total amount you’re claiming",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount",
+      "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad",
       "TOTAL_WOULD_BE_LOWER": "That would mean the total claim amount would be lower than the amount shown on this page.",
       "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
-      "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
-      "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
+      "WE_WONT_REFOUND": "Ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
+      "YOU_DONT_HAVE_TO_PAY": "Does dim rhaid i chi dalu ffi’r gwrandawiad oni bai bod yr hawliad yn mynd i wrandawiad."
     },
     "FEE_AMOUNT": {
       "TITLE": "Pay your claim fee",
@@ -2378,12 +2381,12 @@
       "CONTINUE_TO_PAYMENT": "continue to payment"
     },
     "TOTAL_INTEREST": {
-      "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
-      "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
-      "CALCULATION_PROOF": "Show how you calculated the amount",
+      "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
+      "CALCULATE_INTEREST": "Mae angen i chi gyfrifo llog ar gyfer y gwahanol gyfnodau neu eitemau amser a rhoi gwybod i ni am y cyfanswm.",
+      "CALCULATION_PROOF": "Dangos sut y gwnaethoch gyfrifo’r swm",
       "PAGE_TITLE": "Claim total interest",
-      "TITLE": "What is the total interest for your claim?",
-      "TOTAL_AMOUNT": "Total interest amount"
+      "TITLE": "Beth yw'r llog cyfan ar gyfer eich cais?",
+      "TOTAL_AMOUNT": "Cyfanswm swm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial arrangements",
@@ -2648,6 +2651,7 @@
       "OTHER_INFORMATION_TITLE": "Other information",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
+      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
@@ -2819,7 +2823,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Rhoi manylion y dogfennau",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
     "INVALID_AMOUNT": "Swm annilys",
-    "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
+    "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
