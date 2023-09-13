@@ -6,7 +6,7 @@ export interface CCDAdditionalPartyDetails {
   contactPerson?: string,
 }
 
-export const getAdditionalPartyDetails = (party: Party) => {
+export const toAdditionalPartyDetails = (party: Party) => {
   if (!party) return undefined;
   return {
     correspondenceAddress: party.partyDetails?.correspondenceAddress,
