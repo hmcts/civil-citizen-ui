@@ -3,7 +3,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {YesNo} from 'form/models/yesNo';
 import {toCCDLiPExpert} from 'services/translation/response/convertToCCDLiPExpert';
 
-export const toCCDDQExtraDetails = (directionQuestionnaire: DirectionQuestionnaire | undefined) => {
+export const toCCDDQExtraDetails = (directionQuestionnaire: DirectionQuestionnaire | undefined, isClaimantResponse?:boolean) => {
   return {
     wantPhoneOrVideoHearing: toCCDYesNo(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option),
     whyPhoneOrVideoHearing: directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES ? directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details : '',
@@ -15,6 +15,7 @@ export const toCCDDQExtraDetails = (directionQuestionnaire: DirectionQuestionnai
     requestExtra4weeks: toCCDYesNo(directionQuestionnaire?.hearing?.requestExtra4weeks?.option),
     considerClaimantDocuments: toCCDYesNo(directionQuestionnaire?.hearing?.considerClaimantDocuments?.option),
     considerClaimantDocumentsDetails: directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES ? directionQuestionnaire?.hearing?.considerClaimantDocuments?.details : '',
-    respondent1DQLiPExpert: toCCDLiPExpert(directionQuestionnaire?.experts),
+    respondent1DQLiPExpert: isClaimantResponse ? undefined : toCCDLiPExpert(directionQuestionnaire?.experts),
+    applicant1DQLiPExpert: isClaimantResponse ? toCCDLiPExpert(directionQuestionnaire?.experts) : undefined,
   };
 };

@@ -7,7 +7,7 @@ import {
 import {
   getHearingDurationAndOtherInformation,
 } from 'services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation';
-import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {caseNumberPrettify, removeWhiteSpacesIfNoText} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -43,11 +43,11 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
 hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const otherInfo = req.body.otherInformation;
+    let otherInfo = req.body.otherInformation;
+    otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
 
-    //TODO: check your answers URL will have to be checked as part of CIV-9201
     res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
 
   } catch (error) {
