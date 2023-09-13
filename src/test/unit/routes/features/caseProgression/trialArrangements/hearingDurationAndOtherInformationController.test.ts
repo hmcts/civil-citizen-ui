@@ -11,6 +11,8 @@ const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -41,6 +43,7 @@ describe('Hearing duration & other info - On GET', () => {
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
+        expect(res.text).toContain('Other Information');
       });
   });
 
@@ -65,7 +68,6 @@ describe('Hearing duration & other information - on POST', () => {
   });
 
   it('should redirect when other information is filled in', async () => {
-
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
@@ -82,8 +84,7 @@ describe('Hearing duration & other information - on POST', () => {
       });
   });
 
-  it('should redirect when otherInformation is not filled in', async () => {
-
+  it('should return "Something went wrong" page when nothing filled in', async () => {
     //Given
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
@@ -94,9 +95,28 @@ describe('Hearing duration & other information - on POST', () => {
       .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
+  });
+
+  it('should save an empty field when only spaces filled in', async () => {
+    //Given
+    nock(civilServiceUrl)
+      .post(CIVIL_SERVICE_CASES_URL + '1111')
+      .reply(200, claimId);
+
+    const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+    //When
+    await testSession
+      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      .send({otherInformation: '    '});
+    const testClaim = civilClaimResponseFastTrackMock;
+    testClaim.case_data.caseProgression.defendantTrialArrangements.otherTrialInformation = '';
+
+    //Then;
+    expect(spySave).toHaveBeenCalledWith(expect.anything(), expect.objectContaining(testClaim.case_data));
   });
 
   it('should return "Something went wrong" page when claim does not exist', async () => {

@@ -2,7 +2,8 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {getClaimById} from 'modules/utilityService';
 import {
   DEFENDANT_SUMMARY_URL,
-  HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -43,7 +44,7 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, n
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await renderView(res, claimId, claim, form);
     } else {
-      if(form.model.option === YesNo.NO){
+      if (form.model.option === YesNo.NO) {
         form.model.textArea = '';
       }
       await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
