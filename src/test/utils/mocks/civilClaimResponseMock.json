@@ -605,6 +605,14 @@
           true,
           true
         ]
+      },
+      "defendantTrialArrangements": {
+        "isCaseReady": "no",
+        "hasAnythingChanged": {
+          "option": "yes",
+          "textArea": "a witness requires a courtroom with step-free access."
+        },
+        "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
       }
     }
   }
