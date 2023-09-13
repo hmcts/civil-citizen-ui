@@ -15,9 +15,8 @@ import {
   getProposeAlternativeRepaymentTask,
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -28,15 +27,12 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
-  tasks.push(acceptOrRejectDefendantAdmittedTask);
-  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
 
   if (claim.isFullAdmission()) {
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    
+
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
@@ -53,12 +49,14 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     }
 
   } else if (claim.isPartialAdmission()) {
-    
+    const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
+    tasks.push(acceptOrRejectDefendantAdmittedTask);
+
     if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
-    } else if (claimantResponse?.isClaimantAcceptedPartAdmittedAmount && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
+    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
@@ -92,7 +90,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     } else {
       const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
-      tasks.push(decideWetherToProceed); 
+      tasks.push(decideWetherToProceed);
     }
   }
 
