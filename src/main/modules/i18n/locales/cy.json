@@ -1797,12 +1797,12 @@
       },
       "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
-        "COMPLETE_RETURN": ", complete and return it to make your claim.",
-        "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE": "If you’re a legal representative ",
-        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
-        "OR": " or "
+        "CURRENTLY_SERVICE": "Ar hyn o bryd mae'r gwasanaeth hwn ar gyfer hawlwyr sy'n cynrychioli eu hunain.",
+        "COMPLETE_RETURN": ", ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_LINK": "Lawrlwytho ffurflen bapur",
+        "LEGAL_REPRESENTATIVE": "Os ydych yn gynrychiolydd cyfreithiol ",
+        "MCOL_LINK": "defnyddio'r gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
+        "OR": " neu "
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
@@ -1821,7 +1821,7 @@
       },
       "CITIZENS_ADVICE": "Citizens Advice",
       "CLAIMANT_ADDRESS": {
-        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+        "NEED_UK_ADDRESS": "Mae angen i chi gael cyfeiriad yn y DU i wneud hawliad am arian."
       },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
@@ -1830,7 +1830,7 @@
       "FOR_CLAIMS_LESS_THAN_25000": "Mae'r gwasanaeth hwn ar gyfer hawliadau am £25,000 neu lai.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "Ar gyfer hawliadau rhwng £25,001 a £100,000 efallai y byddwch yn gallu ",
       "MULTIPLE_CLAIMANTS": {
-        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
+        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "Ni allwch ddefnyddio'r gwasanaeth hwn os oes mwy nag un unigolyn neu sefydliad yn gwneud yr hawliad."
       },
       "MULTIPLE_DEFENDANTS": {
         "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
@@ -1843,10 +1843,10 @@
       "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
       "PAGE_TITLE": "Ni allwch ddefnyddio'r gwasanaeth hwn",
       "TENANCY_DEPOSIT": {
-        "GET": "Get",
-        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
-        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
+        "GET": "Cael",
+        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help i ddatrys eich anghydfod",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud cais am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
+        "WITH_A_LANLORD_OR_TENANT": "gyda landlord neu denant."
       },
       "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
       "WHERE_TO_SEND_PAPER_FORMS": "Ble i anfon ffurflenni papur",
