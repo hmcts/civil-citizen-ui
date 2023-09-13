@@ -8,7 +8,6 @@ import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDoc
 import {CaseDocument} from 'models/document/caseDocument';
 import {DocumentType} from 'models/document/documentType';
 import {Document} from 'models/document/document';
-import {mockTypeDocument} from '../../../../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 
 describe('test getViewFinalGeneralOrder method', () => {
   const VIEW_ORDER = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_ORDER';
