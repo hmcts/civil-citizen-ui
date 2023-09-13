@@ -61,7 +61,10 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
   const expiryTime = await draftStoreClient.ttl(claimId);
-  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse), 'EX', expiryTime);
+  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  if (expiryTime !== -1) {
+    await draftStoreClient.expiry(claimId, expiryTime);
+  }
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
