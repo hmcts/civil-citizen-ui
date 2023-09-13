@@ -13,7 +13,7 @@ describe('convert to CUI respond to claim', () => {
     // When
     const ccdResponse = toCUIRespondToClaim(ccdRespondToClaim);
     // Then
-    expect(ccdResponse.amount).toEqual(ccdRespondToClaim.howMuchWasPaid);
+    expect(ccdResponse.amount).toEqual(ccdRespondToClaim.howMuchWasPaid/100);
     expect(ccdResponse.text).toEqual(ccdRespondToClaim.howWasThisAmountPaidOther);
     expect(ccdResponse.date).toEqual(ccdRespondToClaim.whenWasThisAmountPaid);
   });

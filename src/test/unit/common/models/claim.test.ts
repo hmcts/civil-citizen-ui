@@ -36,6 +36,7 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1006,6 +1007,45 @@ describe('Documents', () => {
     });
   });
 
+  describe('isPartialAdmissionPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and already paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('isBusiness', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -1335,6 +1375,36 @@ describe('Documents', () => {
       const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
+  describe('test of method isClaimant', () => {
+    const claim = new Claim();
+
+    it('should return true when APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+    it('should return true when CLAIMANT', () => {
+      //Given
+      claim.caseRole = CaseRole.CLAIMANT;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+
+    it('should return false when is not APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeFalsy();
     });
   });
 
