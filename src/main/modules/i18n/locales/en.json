@@ -136,7 +136,7 @@
       "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
+      "CALCULATE_THIS": "To calculate this, use the steps below.",
       "EXAMPLE": {
         "EXAMPLE": "Example",
         "OWED": "If you were owed £1,000:",
@@ -290,11 +290,13 @@
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
       "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
       "HOW_FORMALISE": "Choose how to formalise repayment",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next"
+      "TITLE": "Choose what to do next",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
     }
   },
   "TASK_LIST": {
@@ -425,10 +427,11 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
       "CLAIM_INTEREST": "Claim Interest",
+      "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
-      "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
+      "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
@@ -466,7 +469,7 @@
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
-      "GIVE_DOC_DETAILS" : "Give details of the documents",
+      "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
       "INCOME_REGULAR": "Regular income",
@@ -480,7 +483,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
-      "NEED_HEARING_SUPPORT" : "Do you, your experts or witnesses need support to attend a hearing?",
+      "NEED_HEARING_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Is your partner aged 18 or over?",
@@ -499,6 +502,8 @@
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -512,7 +517,7 @@
       "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "How did you pay this amount?",
       "RESPONSE_TITLE": "Your response to the claim",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
-      "REQUEST_EXTRA_4WEEKS" : "Do you want an extra 4 weeks to try to settle the claim?",
+      "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
@@ -530,6 +535,7 @@
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
       "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
+      "UNEMPLOYMENT_FOR": "Unemployed for {{ unemployedYears }} years {{ unemployedMonths }} months",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
       "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
@@ -778,8 +784,9 @@
       "UPDATES": "Updates",
       "VIEW_CLAIM": "View claim",
       "WITNESS_EVIDENCE": "witness evidence",
+      "ORDERS": "Orders",
       "RESPONSE_DEADLINE": "Response deadline:",
-      "TOTAL_CLAIM_AMOUNT":"Total claim amount:",
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
     "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
@@ -1660,6 +1667,7 @@
       "YOU_HAVE_REJECTED_CLAIM_MSG1": "You have rejected the claim. You’ve suggested mediation.",
       "YOU_HAVE_REJECTED_CLAIM_MSG2": "We’ll ask {{ claimantName }} if they agree to take part in mediation.",
       "YOU_HAVE_REJECTED_CLAIM_MSG3": "If they say yes, we’ll arrange a date for mediation. If they say no we’ll send you a directions questionnaire this is a form you complete to tell us more about the claim.",
+      "YOU_HAVE_REJECTED_CLAIM_MSG4": "You’ve rejected the claim. You might have to go to a hearing.",
       "YOU_HAVE_REJECTED_CLAIM": "You’ve rejected the claim.",
       "NO_MEDIATION_REQUIRED": "You said you don’t want to use mediation to solve it. You might have to go to a hearing",
       "WILL_CONTACT_WHEN_CLAIMANT_RESPONDS": "We’ll contact you when the claimant responds"
@@ -2073,10 +2081,15 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
+        "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+        "HOW_THEY_WANT_PAY": "How they want to pay?",
+        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
+      },
       "FULL_RESPONSE": "Full response",
       "HOW_PAID": "How they say they paid?",
       "MONTHLY_EXPENSES": "Monthly expenses",
@@ -2124,6 +2137,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2361,6 +2375,11 @@
       "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
       "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
     },
+    "FEE_AMOUNT": {
+      "TITLE": "Pay your claim fee",
+      "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
+      "CONTINUE_TO_PAYMENT": "continue to payment"
+    },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
       "CALCULATE_INTEREST": "You need to calculate interest for the different time periods or items and let us know the total.",
@@ -2482,7 +2501,7 @@
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
-        "TITLE" : "Witness evidence",
+        "TITLE": "Witness evidence",
         "TYPE_OF_DOCUMENT": "Type of document",
         "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice, receipt, email, text message, photo, social media message",
         "YOUR_STATEMENT": "Your statement",
@@ -2632,6 +2651,7 @@
       "OTHER_INFORMATION_TITLE": "Other information",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
+      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",

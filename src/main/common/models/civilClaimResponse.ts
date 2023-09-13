@@ -54,6 +54,14 @@ import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsTy
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CaseRole} from 'form/models/caseRoles';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 
 export class CivilClaimResponse {
   id: string;
@@ -217,6 +225,21 @@ export interface CCDClaim extends ClaimUpdate {
   lastModifiedDate?: Date;
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  caseRole?: CaseRole;
+  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
+  partialPayment?: YesNoUpperCamelCase;
+  partialPaymentAmount?: string;
+  paymentTypeSelection?: CCDDJPaymentOption;
+  paymentSetDate?: Date;
+  repaymentDue?: string;
+  repaymentDate?: Date;
+  repaymentFrequency?: CCDPaymentFrequency;
+  repaymentSuggestion?: string;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
 }
 
 export interface ClaimFeeData {
