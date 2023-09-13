@@ -11,7 +11,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimUndefined, mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../../utils/mockDraftStore';
-import {civilClaimResponseSeverelyDisabledDefendant, mockDraftStore, mockWithSeverelyDisabledDefendant} from '../otherDependants/otherDependantsController.test';
+import {civilClaimResponseSeverelyDisabledDefendant, mockDraftStore} from '../otherDependants/otherDependantsController.test';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
