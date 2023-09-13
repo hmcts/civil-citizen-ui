@@ -1,7 +1,7 @@
 import {
   getCaseDataFromStore,
   // saveDraftClaim,
-  saveDraftClaimX
+  saveDraftClaimX,
 } from '../../../../modules/draft-store/draftStoreService';
 import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
 import {Claim} from '../../../../common/models/claim';
