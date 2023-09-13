@@ -20,11 +20,11 @@ const option2ToRedirectToCarerJson = require('./option2ToRedirectToCarerMock.jso
 const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
 const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
 const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
-const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
+export const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
 const civilClaimResponseDisabledPartnerMock: string = JSON.stringify(disabledPartnerMock);
 const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledChildrenMock);
 
-function mockDraftStore(mockData: string) {
+export function mockDraftStore(mockData: string) {
   return {
     set: jest.fn(() => Promise.resolve({})),
     get: jest.fn(() => Promise.resolve(mockData)),
