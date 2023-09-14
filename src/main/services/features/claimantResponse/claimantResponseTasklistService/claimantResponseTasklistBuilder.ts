@@ -17,6 +17,11 @@ import {
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import { YesNo } from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
+import {
+  getHaveYouBeenPaidTask,
+  getSettleClaimForPaidAmount,
+} from './claimantResponseTasks/yourResponseSectionTasks';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -27,12 +32,15 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-
+  //  Full Defence states Paid (when states paid amount was LESS THAN full amount)
+  if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
+    return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
+  }
   if (claim.isFullAdmission()) {
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    
+
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
@@ -51,7 +59,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   } else if (claim.isPartialAdmission()) {
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-    
+
     if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
@@ -90,7 +98,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     } else {
       const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
-      tasks.push(decideWetherToProceed); 
+      tasks.push(decideWetherToProceed);
     }
   }
 
@@ -105,6 +113,26 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   }
 
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
+}
+
+export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
+  const tasks: Task[] = [];
+  //  Full Defence states Paid (when states paid amount was LESS THAN full amount)
+  // hearing req --update the existing builder to generate it
+
+  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+  tasks.push(haveYouBeenPaidTask);
+  if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES) {
+    const settleClaimForPaidAmountTask = getSettleClaimForPaidAmount(claim, claimId, lang);
+    tasks.push(settleClaimForPaidAmountTask);
+  }
+
+  if (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO ||
+    claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
+    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+    tasks.push(freeTelephoneMediationTask);
+  }
+  return {title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', {lng: lang}), tasks};
 }
 
 export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {

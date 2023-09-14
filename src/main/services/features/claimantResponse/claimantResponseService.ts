@@ -60,6 +60,14 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
         delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
       }
     }
+    // resettin values in redis
+    if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
+      delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
+      delete claim.claimantResponse?.rejectionReason;
+    }
+    if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES) {
+      delete claim.claimantResponse?.rejectionReason;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

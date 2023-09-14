@@ -297,6 +297,11 @@
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
       "TITLE": "Choose what to do next",
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
+    },
+    "YOUR_RESPONSE": {
+      "HAVE_YOU_BEEN_PAID": "Have you been paid the £{{ statedPaidAmount }}?",
+      "SETTLE_THE_CLAIM": "Settle claim for £{{ statedPaidAmount }}?",
+      "TITLE": "Your Response"
     }
   },
   "TASK_LIST": {
