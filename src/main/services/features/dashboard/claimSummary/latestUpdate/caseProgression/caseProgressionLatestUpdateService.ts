@@ -59,7 +59,6 @@ export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: str
   return buildHearingTrialLatestUploadSection(claim, lang);
 };
 
-
 export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySection[][] => {
   return buildViewFinalGeneralOrderContent(claim);
 };  
