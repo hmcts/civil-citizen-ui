@@ -1,17 +1,27 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {
-  buildEvidenceUploadSection, buildHearingTrialLatestUploadSection,
+  CASE_DOCUMENT_DOWNLOAD_URL,
+  DEFENDANT_SUMMARY_TAB_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL, CASE_DOCUMENT_VIEW_URL,
+} from 'routes/urls';
+import {
+  buildEvidenceUploadSection,
+  buildFinaliseTrialArrangements,
+  buildHearingTrialLatestUploadSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {FAST_TRACK_CLAIM_AMOUNT, SMALL_CLAIM_AMOUNT} from 'form/models/claimType';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {t} from 'i18next';
 import {
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
 } from '../../../../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {DocumentType} from 'models/document/documentType';
+import {TabId} from 'routes/tabs';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -54,16 +64,21 @@ describe('Latest Update Content Builder Case Progression', () => {
     const TRIAL_HEARING_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT';
     claim.caseProgressionHearing = getCaseProgressionHearingMock();
 
-    it('should have Hearing upload content with fast track claim', () => {
+    it('should have Hearing upload content with Small claims', () => {
       // Given
       claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+      const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+      const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+      const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
 
       const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
         .addTitle(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`)
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
+        .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
       // when
@@ -76,12 +91,18 @@ describe('Latest Update Content Builder Case Progression', () => {
     it('should have Hearing upload content with fast track', () => {
       // Given
       claim.totalClaimAmount = FAST_TRACK_CLAIM_AMOUNT - 5;
+      const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+      const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+      const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
+
       const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
         .addTitle(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_TITLE`)
         .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_TRIAL_PARAGRAPH`, {hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang) ,
           hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
-        .addButton(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, 'href')
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
+        .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
         .build();
 
       // when
@@ -89,6 +110,32 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       // Then
       expect(evidenceUploadSection).toEqual([lastedContentBuilderExpected]);
+    });
+  });
+
+  describe('test buildFinaliseTrialArrangements', () => {
+    const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS';
+
+    it('should have trial arrangements content', () => {
+      //Given
+      const lastedContentBuilderExpected = new LatestUpdateSectionBuilder()
+        .addTitle(`${FINALISE_TRIAL_ARRANGEMENTS}.TITLE`)
+        .addWarning(`${FINALISE_TRIAL_ARRANGEMENTS}.DUE_BY`, {finalisingTrialArrangementsDeadline: claim.finalisingTrialArrangementsDeadline})
+        .addRawHtml(`<p class="govuk-body">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`)}
+                                <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: claim.finalisingTrialArrangementsDeadline})}</span>.
+                              </p>`)
+        .addLink(`${FINALISE_TRIAL_ARRANGEMENTS}.DIRECTIONS_QUESTIONNAIRE`,
+          DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),
+          `${FINALISE_TRIAL_ARRANGEMENTS}.YOU_MAY_WISH_TO_REVIEW`,
+          `${FINALISE_TRIAL_ARRANGEMENTS}.UNDER_NOTICES_AND_ORDERS`)
+        .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claim.id))
+        .build();
+
+      //When
+      const finaliseTrialArrangementsSection = buildFinaliseTrialArrangements(claim);
+
+      //Then
+      expect(finaliseTrialArrangementsSection).toEqual([lastedContentBuilderExpected]);
     });
   });
 

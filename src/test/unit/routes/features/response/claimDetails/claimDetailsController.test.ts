@@ -16,10 +16,14 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
+import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
@@ -60,9 +64,12 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
-      nock('http://localhost:4000')
+      nock(civilServiceUrl)
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + 1111 + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)

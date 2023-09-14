@@ -8,10 +8,6 @@
   {{ setPageTitle('PAGES.CONTACT_THEM.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: backUrl
-  }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
@@ -62,7 +58,7 @@
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget({header:header,lines:[{title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: otherPartyLabel, hrefContact: otherPartyName},{title: claimAmount, href: '', content:totalClaimAmount},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]}) }}
+        {{ aboutClaimWidget(t,{header:header,lines:[{title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT', href: '', content:totalClaimAmount},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: claimDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'}]}) }}
       </div>
     </main>
   </div>

@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
@@ -11,16 +12,10 @@
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 {% set submitText = t('COMMON.BUTTONS.SUBMIT_CLAIM') %}
-{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
+{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.CLAIM_CHECKBOX')
                     + '<p class="govuk-!-margin-top-2">'
-                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
+                    + t('PAGES.CHECK_YOUR_ANSWER.CLAIM_CHECKBOX_PROCEEDINGS')
                     +'</p>' %}
-{% if payment %}
-  {% set submitText = t('COMMON.BUTTONS.SUBMIT_RESPONSE_PAYMENT', { payment: payment }) %}
-      {% if signatureType === SignatureType.BASIC %}
-        {% set labelHtml = t('COMMON.STATEMENT_OF_TRUTH.DETAILS_TRUTHY') %}
-      {% endif %}
-{% endif %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -47,6 +42,22 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
+            {% if payment %}
+              {{ govukCheckboxes({
+                idPrefix: 'acceptNoChangesAllowed',
+                name: 'acceptNoChangesAllowed',
+                items: [
+                  {
+                    value: true,
+                    html: t('COMMON.STATEMENT_OF_TRUTH.MAKE_CHANGES_NOT_ALLOWED'),
+                    checked: true if form.model.acceptNoChangesAllowed
+                  }
+                ],
+                errorMessage: {
+                  text:t(form.errorFor(signed))
+                } if form.errorFor(signed)
+              }) }}
+            {% endif %}
            {{ statementOfTruth(
              t,
              form,

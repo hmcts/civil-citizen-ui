@@ -16,6 +16,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set firstPaymentDate = "now" | addDaysTranslated(30, t,'GB') %}
       {% set title = t('PAGES.REPAYMENT_PLAN.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
@@ -26,7 +27,7 @@
       {% endif %}
       {% set firstPaymentExample = t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + paymentExampleDate %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors,t) }}
+        {{ errorSummary(errors,t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
       {% endif %}
     </main>
   </div>
@@ -45,13 +46,12 @@
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-third">
+        <p class="govuk-!-margin-0 govuk-body-m"><strong>{{ t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS')}}:</strong></p>
         {{ govukInput({
           label: {
-            html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS') + ':' + '</strong></p>',
-            isPageHeading: false,
-            attributes: {
-              'aria-label': t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS')
-            }
+            text: t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS_IN_POUNDS'),
+            for: "paymentAmount",
+            classes: 'govuk-visually-hidden'
           },
           hint: {
             text: t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200'
@@ -137,7 +137,7 @@
             text: firstPaymentExample
           },
           errorMessage: {
-            html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate')) + '</p>' +
+            html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate'),{firstPaymentDate:firstPaymentDate}) + '</p>' +
             '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
             '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
             '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
