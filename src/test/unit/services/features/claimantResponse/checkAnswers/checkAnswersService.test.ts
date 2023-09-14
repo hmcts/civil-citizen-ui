@@ -1,15 +1,15 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from 'models/signatureType';
 import {Claim} from 'models/claim';
-import {CLAIM_ID} from '../../../../utils/checkAnswersConstants';
+import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {saveStatementOfTruth} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

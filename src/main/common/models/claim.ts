@@ -509,8 +509,14 @@ export class Claim {
     return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
   }
 
+  get isClaimantResponseSupportRequiredYes(): boolean {
+    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+  }
   get isSupportRequiredDetailsAvailable(): boolean {
     return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+  }
+  get isClaimantResponseSupportRequiredDetailsAvailable(): boolean {
+    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   hasExpertReportDetails(): boolean {
