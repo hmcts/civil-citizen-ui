@@ -68,17 +68,20 @@ export class CivilClaimResponse {
   case_data: CCDClaim;
   state: CaseState;
   last_modified: Date;
+  createdAt: Date;
 
   constructor(
     id?: string,
     case_data?: CCDClaim,
     state?: CaseState,
     last_modified?: Date,
+    createdAt?: Date,
   ) {
     this.id = id;
     this.case_data = case_data;
     this.state = state;
     this.last_modified = last_modified;
+    this.createdAt = createdAt;
   }
 }
 
