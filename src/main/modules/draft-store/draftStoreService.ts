@@ -65,8 +65,8 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   // if (expiryTime !== -1) {
   //   await draftStoreClient.expire(claimId, expiryTime);
   // }
-  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if (!storedClaimResponse.ccdState) {
+  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  if (storedClaimResponse?.createdAt) {
     await draftStoreClient.expireat(claimId, Math.round(new Date(storedClaimResponse.createdAt).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT));
   }
 };
@@ -88,6 +88,7 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const draftStoreClient = app.locals.draftStoreClient;
   // await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
   await draftStoreClient.set(claimId, JSON.stringify(draftClaim));
-  await draftStoreClient.expireat(claimId, Math.round(draftClaim.createdAt.getTime()/1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT));
+  // tODO : remove it from here
+  await draftStoreClient.expireat(claimId, Math.round(draftClaim.createdAt.getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT));
   logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
 }
