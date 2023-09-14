@@ -13,6 +13,9 @@ import {
 import {
   getFinaliseTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/finaliseTrialArrangementsContent';
+import {
+  getClaimDismissedHearingDueDateUploadContent,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/claimDismissedHearingDueDateUploadContent';
 
 export const buildNewUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
@@ -41,5 +44,11 @@ export const buildViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySec
 export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getFinaliseTrialArrangements(claim));
+  return sectionContent;
+};
+
+export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getClaimDismissedHearingDueDateUploadContent(claim, lang, isClaimant));
   return sectionContent;
 };
