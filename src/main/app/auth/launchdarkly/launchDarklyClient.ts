@@ -36,6 +36,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  console.log('----CUI-R2-----', await getFlagValue('cuiReleaseTwoEnabled'))
+  console.log('----CUI-R2-----', await getFlagValue('cuiReleaseTwoEnabled'));
   return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
