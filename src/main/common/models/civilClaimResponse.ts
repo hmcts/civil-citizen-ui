@@ -58,6 +58,10 @@ import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDoc
 import {CaseRole} from 'form/models/caseRoles';
 import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
 import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class CivilClaimResponse {
@@ -234,6 +238,9 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
