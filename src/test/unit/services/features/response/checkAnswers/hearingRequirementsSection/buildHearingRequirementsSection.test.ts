@@ -10,7 +10,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import { Experts } from 'common/models/directionsQuestionnaire/experts/experts';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {SentExpertReports} from 'models/directionsQuestionnaire/experts/sentExpertReports';
 import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
@@ -27,9 +27,9 @@ jest.mock('i18next', () => ({
 }));
 
 const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: YesNo,
-  considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
-  determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
-  specificCourtLocation?: YesNo,
+                       considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
+                       determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
+                       specificCourtLocation?: YesNo,
 ): Hearing => {
 
   const hearing = new Hearing();
@@ -55,7 +55,7 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   hearing.cantAttendHearingInNext12Months = {
     option: cantAttendHearingInNext12Months,
   };
-  if (cantAttendHearingInNext12Months === YesNo.YES){
+  if (cantAttendHearingInNext12Months === YesNo.YES) {
     hearing.unavailableDatesForHearing = {
       items: [{
         type: UnavailableDateType.LONGER_PERIOD,
@@ -81,8 +81,8 @@ function addTotalAmountAndYesHearing(claim: Claim) {
 }
 
 describe('Hearing Requirements Section', () => {
-  let claim:Claim;
-  beforeEach(()=>{
+  let claim: Claim;
+  beforeEach(() => {
     claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
 
@@ -97,8 +97,8 @@ describe('Hearing Requirements Section', () => {
 
     claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
     claim.directionQuestionnaire.welshLanguageRequirements.language = {
-      speakLanguage : LanguageOptions.ENGLISH,
-      documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+      speakLanguage: LanguageOptions.ENGLISH,
+      documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
     };
   });
   describe('FastTrack Claim ', () => {
@@ -196,9 +196,9 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
       expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
-    it('should not display triedToSettleRow when tried to settle is not set', ()=> {
+    it('should not display triedToSettleRow when tried to settle is not set', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
@@ -207,16 +207,16 @@ describe('Hearing Requirements Section', () => {
     });
     it('should not display request extra 4 weeks section when no answer for that is set', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(14);
       expect(summaryRows.summaryList.rows[1].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
     });
-    it('should not display consider claimant documents section when the answer is not provided', () =>{
+    it('should not display consider claimant documents section when the answer is not provided', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
@@ -311,8 +311,8 @@ describe('Hearing Requirements Section', () => {
 
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
       claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage : LanguageOptions.ENGLISH,
-        documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+        speakLanguage: LanguageOptions.ENGLISH,
+        documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
       };
 
       //When
