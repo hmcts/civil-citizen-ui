@@ -5,10 +5,93 @@ import {
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from 'models/document/documentType';
-import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
+import {
+  UploadEvidenceDocumentType,
+  UploadEvidenceElementCCD,
+  UploadEvidenceExpert,
+  UploadEvidenceWitness,
+} from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
+import {mockNameValue} from './mockEvidenceUploadSummaryRows';
 
 export const mockUUID = '1221';
+
+const document = {document_url:'http://test',document_binary_url:'http://test/binary',document_filename:'test.png',document_hash:'test'};
+
+export const mockCCDWitnessArray = (length: number) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const witnessDocument = new UploadEvidenceWitness(mockNameValue, new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: witnessDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
+
+export const mockCCDDocumentTypeArray = (length: number) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const typeOfDocument = new UploadEvidenceDocumentType('document type' ,new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: typeOfDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
+
+export const mockCCDExpertArray = (length: number) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const expertDocument = new UploadEvidenceExpert(mockNameValue, 'expertise', null, null, null, null, new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: expertDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
+
+export const mockCCDExpertQuestionsAnswersArray = (length: number, questions: boolean) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const expertDocument = new UploadEvidenceExpert(mockNameValue, 'expertise', null, mockNameValue, questions ? 'other party document' : null, questions ? null : 'other party document', new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: expertDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
+
+export const mockCCDFileUploadArray = (length: number) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const typeOfDocument = new UploadEvidenceDocumentType(null ,null, document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: typeOfDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
 
 export const mockWitnessDocument = {
   witnessOptionName: 'witness name',
@@ -72,6 +155,54 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     caseDocumentUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
   };
+}
+
+export function createCCDClaimForUploadedDocuments(length: number, isClaimant: boolean): CCDClaim {
+
+  let ccdClaim: CCDClaim;
+
+  if(isClaimant){
+    ccdClaim = {
+      documentDisclosureList: mockCCDFileUploadArray(length),
+      documentForDisclosure: mockCCDDocumentTypeArray(length),
+      documentWitnessStatement: mockCCDWitnessArray(length),
+      documentWitnessSummary: mockCCDWitnessArray(length),
+      documentHearsayNotice: mockCCDWitnessArray(length),
+      documentReferredInStatement: mockCCDDocumentTypeArray(length),
+      documentExpertReport: mockCCDExpertArray(length),
+      documentJointStatement: mockCCDExpertArray(length),
+      documentQuestions: mockCCDExpertQuestionsAnswersArray(length,true),
+      documentAnswers: mockCCDExpertQuestionsAnswersArray(length,false),
+      documentCaseSummary: mockCCDFileUploadArray(length),
+      documentSkeletonArgument: mockCCDFileUploadArray(length),
+      documentAuthorities: mockCCDFileUploadArray(length),
+      documentCosts: mockCCDFileUploadArray(length),
+      documentEvidenceForTrial: mockCCDDocumentTypeArray(length),
+      caseDocumentUploadDate: new Date('12-12-2022'),
+    };
+
+  } else {
+    ccdClaim = {
+      documentDisclosureListRes: mockCCDFileUploadArray(length),
+      documentForDisclosureRes: mockCCDDocumentTypeArray(length),
+      documentWitnessStatementRes: mockCCDWitnessArray(length),
+      documentWitnessSummaryRes: mockCCDWitnessArray(length),
+      documentHearsayNoticeRes: mockCCDWitnessArray(length),
+      documentReferredInStatementRes: mockCCDDocumentTypeArray(length),
+      documentExpertReportRes: mockCCDExpertArray(length),
+      documentJointStatementRes: mockCCDExpertArray(length),
+      documentQuestionsRes: mockCCDExpertQuestionsAnswersArray(length, true),
+      documentAnswersRes: mockCCDExpertQuestionsAnswersArray(length, false),
+      documentCaseSummaryRes: mockCCDFileUploadArray(length),
+      documentSkeletonArgumentRes: mockCCDFileUploadArray(length),
+      documentAuthoritiesRes: mockCCDFileUploadArray(length),
+      documentCostsRes: mockCCDFileUploadArray(length),
+      documentEvidenceForTrialRes: mockCCDDocumentTypeArray(length),
+      caseDocumentUploadDateRes: new Date('12-12-2022'),
+    };
+  }
+
+  return ccdClaim;
 }
 
 function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)

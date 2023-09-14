@@ -10,6 +10,9 @@ import {getNewUpload} from 'services/features/dashboard/claimSummary/latestUpdat
 import {
   getFinaliseTrialArrangements,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/finaliseTrialArrangementsContent';
+import {
+  getClaimDismissedHearingDueDateUploadContent,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/claimDismissedHearingDueDateUploadContent';
 
 import {
   getViewBundle,
@@ -41,5 +44,11 @@ export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySectio
 export const buildViewBundleSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getViewBundle(claim));
+  return sectionContent;
+};
+
+export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getClaimDismissedHearingDueDateUploadContent(claim, lang, isClaimant));
   return sectionContent;
 };

@@ -7,6 +7,7 @@ import {t} from 'i18next';
 import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
 import { UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 
+
 export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSummarySection[] {
 
   const disclosureHeading = 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS';
@@ -42,7 +43,7 @@ export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSum
 }
 
 function getTableHeaders(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, lang: string){
-  if(!rows) return null;
+  if(!rows || rows.length == 0) return null;
 
   const newHeader = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) + t(header, {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang}) + t(header, {lng: lang});
 
@@ -51,7 +52,7 @@ function getTableHeaders(header: string, rows: UploadDocumentTypes[], isClaimant
 
 function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boolean, lang: string) {
 
-  if (!rows) return null;
+  if (!rows || rows.length == 0) return null;
 
   const tableRows = [] as TableCell[][];
 
