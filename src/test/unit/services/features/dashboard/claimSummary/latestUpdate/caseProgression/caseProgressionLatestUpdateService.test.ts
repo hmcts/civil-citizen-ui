@@ -318,6 +318,7 @@ describe('Case Progression Latest Update Content service', () => {
 
     const claimDismissedHearingFeeNotPaid = {
       ...claimWithSdo,
+      isBundleStitched: () => false,
       caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00'),
     };
 
@@ -341,6 +342,7 @@ describe('Case Progression Latest Update Content service', () => {
     const claimDismissedHearingFeeNotPaid = {
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      isBundleStitched: () => false,
       ...claimWithSdo,
     };
 
