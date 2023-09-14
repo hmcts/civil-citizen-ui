@@ -25,6 +25,8 @@ import {
   mockFinalOrderDocument2,
 } from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
+import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -69,13 +71,20 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
+function getTrialArrangement() {
+  const defendantTrialArrangement = new TrialArrangements();
+  defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined),
+  defendantTrialArrangement.isCaseReady = undefined,
+  defendantTrialArrangement.otherTrialInformation = undefined;
+  return defendantTrialArrangement;
+}
 describe('toCUICaseProgression', () => {
   it('should convert CCDClaim to CaseProgression', () => {
     const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
     ccdClaim.finalOrderDocumentCollection =
       [new FinalOrderDocumentCollection(mockFinalOrderDocument1.id, mockFinalOrderDocument1.value)];
     const expectedOutput = createCUIClaim();
-
+    expectedOutput.defendantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
 
@@ -123,11 +132,17 @@ describe('toCUICaseProgression', () => {
       documentEvidenceForTrialRes: undefined,
       caseDocumentUploadDateRes: undefined,
       finalOrderDocumentCollection: undefined,
+      trialReadyRespondent1: undefined,
+      respondent1RevisedHearingRequirements: undefined,
+      respondent1HearingOtherComments: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
-    expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
-    expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    expectedOutput.defendantLastUploadDate = undefined;
+    expectedOutput.claimantLastUploadDate = undefined;
+    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], []);
+    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
+    expectedOutput.defendantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -146,6 +161,8 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: [mockFinalOrderDocument1, mockFinalOrderDocument2],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.defendantLastUploadDate = undefined;
+    expectedOutput.claimantDocuments = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant'),
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant')],
@@ -156,11 +173,12 @@ describe('toCUICaseProgression', () => {
     expectedOutput.defendantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, 'Defendant')],
       [new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_SUMMARY, 'Defendant')],
-      undefined,
+      [],
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
     );
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
       (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
+    expectedOutput.defendantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });

@@ -1,7 +1,7 @@
 import {Mediation} from '../../../common/models/mediation/mediation';
 import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 
-export const toAgreedMediation = (mediation: Mediation): string => {
+export const toAgreedMediation = (mediation: Mediation) => {
   if (mediation?.canWeUse?.option) {
     return YesNoUpperCamelCase.YES;
   } else if (mediation?.mediationDisagreement?.option) {

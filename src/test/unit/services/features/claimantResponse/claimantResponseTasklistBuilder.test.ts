@@ -1,6 +1,6 @@
 import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
-import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
+import { YesNo, YesNoNotReceived } from 'common/form/models/yesNo';
 import {
   buildClaimantHearingRequirementsSection,
   buildClaimantResponseSubmitSection,
@@ -24,12 +24,86 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import { RejectAllOfClaimType } from 'common/form/models/rejectAllOfClaimType';
+import {Party} from 'common/models/party';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
+import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
+import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
+import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
+import { Mediation } from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+
+describe('Full Defence', () => {
+  const claimId = '5129';
+  const lang = 'en';
+  it('should display decide wether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
+    //Given
+    const claim = {
+      isPartialAdmission: jest.fn(),
+      isFullDefence: jest.fn(),
+      hasPaidInFull: jest.fn(),
+      hasConfirmedAlreadyPaid: jest.fn(),
+      isFullAdmission:jest.fn(),
+      claimantResponse: {
+        hasFullDefenceStatesPaidClaimSettled: {
+          option: 'no',
+        },
+      },
+      totalClaimAmount: 9000,
+      rejectAllOfClaim: {
+        howMuchHaveYouPaid: {
+          amount: '900000',
+        },
+      },
+      isClaimantIntentionPending: jest.fn(),
+    } as any;
+    claim.isFullDefence.mockReturnValue(true);
+    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
+    claim.isClaimantIntentionPending.mockReturnValue(true);
+    claim.hasPaidInFull.mockReturnValue(true);
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(2);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    expect(whatToDoNext.tasks[1].description).toEqual(
+      'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+    expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    expect(hearingRequirement.tasks.length).toBe(1);
+    expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+    expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+  });
+  it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
+    //Given
+    const claim = new Claim();
+    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+    claim.rejectAllOfClaim = {
+      option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+        amount: 9000,
+      } as any,
+    };
+    claim.totalClaimAmount = 9000;
+    claim.claimantResponse = {
+      hasFullDefenceStatesPaidClaimSettled: {
+        option: 'yes',
+      },
+    } as ClaimantResponse;
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(1);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+  });
+});
 
 describe('Claimant Response Task List builder', () => {
   const claimId = '5129';
@@ -66,7 +140,81 @@ describe('Claimant Response Task List builder', () => {
   });
 
   describe('Choose what to do next section', () => {
+    describe('Choose what to do next section Full Admission', () => {
+      it('should display Accept or reject Repayment Plan task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Choose how to formalise task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Sign Settlement as complete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
+        claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.SIGN_SETTLEMENT');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      });
+      it('should display Request a CCJ as complete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.paidAmount =  new PaidAmount(YesNo.YES, 10);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      });
+      it('should display Propose Alternative Repayment Plan as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+    });
     it('should display Accept or reject the amount task as incomplete', () => {
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -270,6 +418,65 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.COMPLETE);
+    });
+
+    it('should display decide wether to proceed task as incomplete for full defense', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+
+    it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.mediation = {
+        canWeUse: {
+          option: 'yes',
+        },
+      } as Mediation;
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = {
+        intentionToProceed: {
+          option: 'yes',
+        },
+      } as ClaimantResponse;
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks.length).toBe(2);
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].description).toEqual(
+        'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(hearingRequirement.tasks.length).toBe(1);
+      expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+      expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+
+    it('should display decide wether to proceed task with proceed value as no as complete for full defense', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = {
+        intentionToProceed: {
+          option: 'no',
+        },
+      } as ClaimantResponse;
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks.length).toBe(1);
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
   });
 
@@ -613,3 +820,4 @@ describe('Claimant Response Task List builder', () => {
     });
   });
 });
+

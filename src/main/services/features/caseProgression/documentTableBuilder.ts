@@ -17,6 +17,8 @@ import {
   addEvidenceUploadDescription,
   addEvidenceUploadTable,
 } from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 
 export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] {
 
@@ -25,24 +27,24 @@ export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] 
 
   documentTables.push(addEvidenceUploadDescription());
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.claimantUploadDocuments?.disclosure, true));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.defendantUploadDocuments?.disclosure, false));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.claimantUploadDocuments?.disclosure, true, claim.id));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.defendantUploadDocuments?.disclosure, false, claim.id));
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.witness, true));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.witness, false));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.witness, true, claim.id));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.witness, false, claim.id));
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.expert, true));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.expert, false));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.expert, true, claim.id));
+  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.expert, false, claim.id));
 
-  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true));
-  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false));
+  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true, claim.id));
+  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false, claim.id));
 
   return documentTables;
 }
 
-function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isClaimant: boolean) : ClaimSummarySection {
+function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, claimId: string) : ClaimSummarySection {
 
-  if (!rows) return undefined;
+  if (!rows || rows.length == 0) return undefined;
 
   const tableRows = [] as TableCell[][];
 
@@ -55,7 +57,7 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
     tableRows.push([
       {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString,
         classes: 'govuk-!-width-one-half'},
-      {html: getDocumentLink(upload),
+      {html: getDocumentLink(upload, claimId),
         classes: 'govuk-!-width-one-half govuk-table__cell--numeric'}],
     );
   }
@@ -127,22 +129,26 @@ function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUp
   return documentName;
 }
 
-function getDocumentLink (document: UploadDocumentTypes) : string {
+function getDocumentLink (document: UploadDocumentTypes, claimId: string) : string {
   let documentName : string;
+  let documentId : string;
 
   if(document.caseDocument instanceof UploadEvidenceDocumentType)
   {
     documentName = document.caseDocument.documentUpload.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.documentUpload.document_binary_url);
   }
   else if(document.caseDocument instanceof  UploadEvidenceWitness)
   {
     documentName = document.caseDocument.witnessOptionDocument.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.witnessOptionDocument.document_binary_url);
   }
   else if(document.caseDocument instanceof UploadEvidenceExpert)
   {
     documentName = document.caseDocument.expertDocument.document_filename;
+    documentId = documentIdExtractor(document.caseDocument.expertDocument.document_binary_url);
   }
+  const url = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId);
+  return `<a class="govuk-link" href="${url}">${documentName}</a>`;
 
-  //TODO: href will need to be added - dependent on document download API implementation.
-  return '<a class="govuk-link" href="href will need to be connected to document">'+documentName+'</a>';
 }
