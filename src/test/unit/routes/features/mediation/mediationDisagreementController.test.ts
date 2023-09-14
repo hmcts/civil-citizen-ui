@@ -48,7 +48,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(mediationMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .get(MEDIATION_DISAGREEMENT_URL)
@@ -86,7 +86,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(individualTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -103,7 +103,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -120,7 +120,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(organisationTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -137,7 +137,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -156,7 +156,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -176,7 +176,7 @@ describe('Mediation Disagreement', () => {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(companyTypeMock)),
         ttl: jest.fn(() => Promise.resolve({})),
-        expire: jest.fn(() => Promise.resolve({})),
+        expireat: jest.fn(() => Promise.resolve({})),
       };
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)

@@ -20,7 +20,7 @@ const mockWithLessThaFourEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
   ttl: jest.fn(() => Promise.resolve({})),
-  expire: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const civilClaimResponseTwoMock = require('./evidenceListTwoMock.json');
@@ -29,7 +29,7 @@ const eMockWithFullAdmission = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithFullAdmission)),
   ttl: jest.fn(() => Promise.resolve({})),
-  expire: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Repayment Plan', () => {

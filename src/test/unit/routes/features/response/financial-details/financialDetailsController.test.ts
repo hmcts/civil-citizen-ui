@@ -30,21 +30,21 @@ const mockIndividualDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
   get: jest.fn(() => Promise.resolve(claimIndividual)),
   ttl: jest.fn(() => Promise.resolve({})),
-  expire: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const mockOrganisationDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
   get: jest.fn(() => Promise.resolve(claimOrganisation)),
   ttl: jest.fn(() => Promise.resolve({})),
-  expire: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const mockNoIndividualTypeDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
   get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
   ttl: jest.fn(() => Promise.resolve({})),
-  expire: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Citizen financial details', () => {

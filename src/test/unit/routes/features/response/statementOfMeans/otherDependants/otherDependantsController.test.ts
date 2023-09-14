@@ -29,7 +29,7 @@ export function mockDraftStore(mockData: string) {
     set: jest.fn(() => Promise.resolve({})),
     get: jest.fn(() => Promise.resolve(mockData)),
     ttl: jest.fn(() => Promise.resolve({})),
-    expire: jest.fn(() => Promise.resolve({})),
+    expireat: jest.fn(() => Promise.resolve({})),
   };
 }
 
