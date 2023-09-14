@@ -15,6 +15,7 @@ export const getDraftClaimData = async (userToken: string):Promise<DraftClaimDat
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   const draftUrl = createDraftClaimUrl(isReleaseTwoEnabled);
   const draftClaim = await getDraftClaim(userToken, isReleaseTwoEnabled);
+  console.log('----draft-claim---url----', isReleaseTwoEnabled, draftUrl);
   return {
     claimCreationUrl: draftUrl,
     draftClaim: draftClaim,
