@@ -7,7 +7,6 @@ import {t} from 'i18next';
 import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
 import { UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 
-
 export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSummarySection[] {
 
   const disclosureHeading = 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS';
