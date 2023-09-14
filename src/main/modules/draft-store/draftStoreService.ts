@@ -1,4 +1,3 @@
-import config from 'config';
 import {app} from '../../app';
 import {
   CCDClaim,
@@ -6,12 +5,11 @@ import {
 } from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
+import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
-const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
-const DAY_TO_SECONDS_UNIT = 86400;
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -60,14 +58,9 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   }
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
-  // const expiryTime = await draftStoreClient.ttl(claimId);
-  // await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  // if (expiryTime !== -1) {
-  //   await draftStoreClient.expire(claimId, expiryTime);
-  // }
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if (storedClaimResponse?.createdAt) {
-    await draftStoreClient.expireat(claimId, Math.round(new Date(storedClaimResponse.createdAt).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT));
+  if (storedClaimResponse?.draftClaimCreatedAt) {
+    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(storedClaimResponse.draftClaimCreatedAt));
   }
 };
 
@@ -84,11 +77,9 @@ export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> 
 export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const draftClaim = createNewCivilClaimResponse(claimId);
   draftClaim.case_data = {} as unknown as CCDClaim;
-  draftClaim.createdAt = new Date();
+  draftClaim.draftClaimCreatedAt = new Date();
   const draftStoreClient = app.locals.draftStoreClient;
-  // await draftStoreClient.set(claimId, JSON.stringify(draftClaim), 'EX', DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
-  await draftStoreClient.set(claimId, JSON.stringify(draftClaim));
-  // tODO : remove it from here
-  await draftStoreClient.expireat(claimId, Math.round(draftClaim.createdAt.getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT));
+  draftStoreClient.set(claimId, JSON.stringify(draftClaim));
+  await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(draftClaim.draftClaimCreatedAt));
   logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${new Date()}`);
 }

@@ -125,11 +125,13 @@ describe('Draft store service to save and retrieve claim', () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
-    const spyTTL = jest.spyOn(app.locals.draftStoreClient, 'set');
+    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
     //When
     await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
-    expect(spyTTL).toBeCalled();
+    expect(spySet).toBeCalled();
+    expect(spyExpireat).toBeCalled();
     expect(await app.locals.draftStoreClient.ttl(CLAIM_ID)).toBe(60);
   });
 });
