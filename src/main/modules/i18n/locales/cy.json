@@ -1609,6 +1609,11 @@
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
           "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
           "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
+        },
+        "CASE_DISMISSED_HEARING_DUE_DATE": {
+          "TITLE": "Claim has been struck out",
+          "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
+          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "Mae hyn oherwydd na wnaeth {{claimantName}} fwrw ymlaen ag ef cyn y dyddiad cau o 4pm ar {{deadline}}.",
