@@ -28,7 +28,7 @@ import {
   getUnavailabilityReason, getUnavailableDatesList, getWitnesses, phoneAndVideoInfo, phoneAndVideoQuestion,
   speakingLanguagePreference,
   vulnerabilityInfo,
-  vulnerabilityQuestion
+  vulnerabilityQuestion,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildCommonHearingRequirements';
 import {addSupportRequiredList} from 'services/features/claimantResponse/checkAnswers/hearing/addSupportRequiredList';
 import {Language} from 'models/directionsQuestionnaire/welshLanguageRequirements/language';

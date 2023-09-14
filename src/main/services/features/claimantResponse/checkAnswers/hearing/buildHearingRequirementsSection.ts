@@ -3,13 +3,13 @@ import {summarySection, SummarySection} from 'models/summaryList/summarySections
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {
-  buildFastTrackHearingRequirements
+  buildFastTrackHearingRequirements,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildFastTrackHearingRequirements';
 import {
-  buildSmallClaimHearingRequirements
+  buildSmallClaimHearingRequirements,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildSmallClaimHearingRequirements';
 import {
-  buildCommonHearingRequirements
+  buildCommonHearingRequirements,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildCommonHearingRequirements';
 
 export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {

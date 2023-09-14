@@ -18,7 +18,7 @@ import {
   getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
 import {
-  buildExpertsDetailsRows
+  buildExpertsDetailsRows,
 } from 'services/features/claimantResponse/checkAnswers/hearing/hearingExportsReportBuilderSection';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {

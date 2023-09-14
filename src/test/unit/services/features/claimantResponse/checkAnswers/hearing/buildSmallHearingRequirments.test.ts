@@ -7,7 +7,7 @@ import {summaryRow} from 'models/summaryList/summaryList';
 import {YesNo} from 'form/models/yesNo';
 import {DeterminationWithoutHearing} from 'models/directionsQuestionnaire/hearing/determinationWithoutHearing';
 import {
-  determinationWithoutHearingQuestion, determinationWithoutHearingReason
+  determinationWithoutHearingQuestion, determinationWithoutHearingReason,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildSmallClaimHearingRequirements';
 import {ClaimantResponse} from 'models/claimantResponse';
 

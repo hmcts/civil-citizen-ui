@@ -4,11 +4,11 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
-  buildFreeTelephoneMediationSection
+  buildFreeTelephoneMediationSection,
 } from 'services/features/claimantResponse/checkAnswers/buildFreeTelephoneMediationSection';
 import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {
-  buildHearingRequirementsSection
+  buildHearingRequirementsSection,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildHearingRequirementsSection';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');

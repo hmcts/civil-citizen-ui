@@ -11,10 +11,10 @@ import {
   getShareExpertWithClaimant,
   getUseExpertEvidence,
   requestExtra4WeeksQuestion,
-  triedToSettleQuestion
+  triedToSettleQuestion,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildFastTrackHearingRequirements';
 import {
-  getSummaryRowForDisplayEvidenceYourself
+  getSummaryRowForDisplayEvidenceYourself,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildCommonHearingRequirements';
 import {ClaimantResponse} from 'models/claimantResponse';
 jest.mock('../../../../../../../main/modules/draft-store');

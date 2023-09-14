@@ -7,7 +7,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import { Experts } from 'common/models/directionsQuestionnaire/experts/experts';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {SentExpertReports} from 'models/directionsQuestionnaire/experts/sentExpertReports';
 import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
@@ -16,7 +16,7 @@ import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expert
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {
-  buildHearingRequirementsSection
+  buildHearingRequirementsSection,
 } from 'services/features/claimantResponse/checkAnswers/hearing/buildHearingRequirementsSection';
 import {ClaimantResponse} from 'models/claimantResponse';
 
@@ -28,9 +28,9 @@ jest.mock('i18next', () => ({
 }));
 
 const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: YesNo,
-  considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
-  determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
-  specificCourtLocation?: YesNo,
+                       considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
+                       determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
+                       specificCourtLocation?: YesNo,
 ): Hearing => {
 
   const hearing = new Hearing();
@@ -56,7 +56,7 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   hearing.cantAttendHearingInNext12Months = {
     option: cantAttendHearingInNext12Months,
   };
-  if (cantAttendHearingInNext12Months === YesNo.YES){
+  if (cantAttendHearingInNext12Months === YesNo.YES) {
     hearing.unavailableDatesForHearing = {
       items: [{
         type: UnavailableDateType.LONGER_PERIOD,
@@ -82,10 +82,10 @@ function addTotalAmountAndYesHearing(claim: Claim) {
 }
 
 describe('Hearing Requirements Section', () => {
-  let claim:Claim;
-  beforeEach(()=>{
+  let claim: Claim;
+  beforeEach(() => {
     claim = new Claim();
-    claim.claimantResponse=new ClaimantResponse();
+    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
 
     claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {
@@ -99,8 +99,8 @@ describe('Hearing Requirements Section', () => {
 
     claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
     claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {
-      speakLanguage : LanguageOptions.ENGLISH,
-      documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+      speakLanguage: LanguageOptions.ENGLISH,
+      documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
     };
   });
   describe('FastTrack Claim ', () => {
@@ -157,8 +157,8 @@ describe('Hearing Requirements Section', () => {
       //Given
       claim.totalClaimAmount = 11000;
       const hearing = createHearing(YesNo.NO, YesNo.NO, YesNo.NO, YesNo.NO, undefined, YesNo.NO, YesNo.NO);
-      claim.claimantResponse=new ClaimantResponse();
-      claim.claimantResponse.directionQuestionnaire=new DirectionQuestionnaire();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
       claim.claimantResponse.directionQuestionnaire.hearing = hearing;
 
       claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {
@@ -193,12 +193,12 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
       expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
-      });
-    it('should not display triedToSettleRow when tried to settle is not set', ()=> {
+    });
+    it('should not display triedToSettleRow when tried to settle is not set', () => {
       //Given
-      claim.claimantResponse=new ClaimantResponse();
-      claim.claimantResponse.directionQuestionnaire=new DirectionQuestionnaire();
-      claim.claimantResponse.directionQuestionnaire.hearing =  createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.hearing = createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
@@ -207,18 +207,18 @@ describe('Hearing Requirements Section', () => {
     });
     it('should not display request extra 4 weeks section when no answer for that is set', () => {
       //Given
-      claim.claimantResponse=new ClaimantResponse();
-      claim.claimantResponse.directionQuestionnaire=new DirectionQuestionnaire();
-      claim.claimantResponse.directionQuestionnaire.hearing =  createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.hearing = createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(8);
       expect(summaryRows.summaryList.rows[1].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
     });
-    it('should not display consider claimant documents section when the answer is not provided', () =>{
+    it('should not display consider claimant documents section when the answer is not provided', () => {
       //Given
-      claim.claimantResponse.directionQuestionnaire.hearing =  createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
+      claim.claimantResponse.directionQuestionnaire.hearing = createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
       //When
       const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
       //Then
@@ -272,8 +272,8 @@ describe('Hearing Requirements Section', () => {
     it('should display experts when claim has experts', () => {
       //Given
       claim.totalClaimAmount = 11000;
-      claim.claimantResponse=new ClaimantResponse();
-      claim.claimantResponse.directionQuestionnaire=new DirectionQuestionnaire();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
       claim.claimantResponse.directionQuestionnaire.experts = new Experts();
       claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails();
       claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
@@ -314,8 +314,8 @@ describe('Hearing Requirements Section', () => {
 
       claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
       claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage : LanguageOptions.ENGLISH,
-        documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+        speakLanguage: LanguageOptions.ENGLISH,
+        documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
       };
 
       //When
