@@ -27,9 +27,9 @@ jest.mock('i18next', () => ({
 }));
 
 const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: YesNo,
-                       considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
-                       determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
-                       specificCourtLocation?: YesNo,
+  considerClaimantDocumentsOption: YesNo, phoneOrVideoHearing: YesNo,
+  determinationWithoutHearing: YesNo, cantAttendHearingInNext12Months?: YesNo,
+  specificCourtLocation?: YesNo,
 ): Hearing => {
 
   const hearing = new Hearing();
