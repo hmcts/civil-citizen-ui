@@ -28,6 +28,7 @@ export async function isCaseProgressionV1Enable(): Promise<boolean> {
 }
 
 export async function isServiceShuttered(): Promise<boolean> {
+  console.log('----isServiceShuttered-----', getFlagValue('shutter-cui-service'));
   return await getFlagValue('shutter-cui-service') as boolean;
 }
 
