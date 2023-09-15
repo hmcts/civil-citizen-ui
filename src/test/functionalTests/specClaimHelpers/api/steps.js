@@ -374,23 +374,29 @@ const getSDODocument = async () => {
   console.log('Inside the getSDODocument()');
   await apiRequest.startEvent(eventName, caseId);
   const drawDirectionsOrderRequiredPayload = sdoMidEventPayload.drawDirectionsOrderRequired();
-  caseData = drawDirectionsOrderRequiredPayload['caseDataUpdate'];
+  caseData = drawDirectionsOrderRequiredPayload['caseData'];
+  console.log('The value of the Case Data : ' + JSON.stringify(caseData));
   const responseForDrawDirections = await apiRequest.validatePageForMidEvent(eventName, 'SDO', caseData, caseId);
+  const responseBodyForDrawDirections = await responseForDrawDirections.json();
   assert.equal(responseForDrawDirections.status, 200);
+  console.log('The value of the JSON Body : '+JSON.stringify(responseBodyForDrawDirections));
 
   const SDOClaimsTrackPayload = sdoMidEventPayload.SDOClaimsTrack();
-  caseData = SDOClaimsTrackPayload['caseDataUpdate'];
+  caseData = SDOClaimsTrackPayload['caseData'];
+  console.log('The value of the Case Data : ' + JSON.stringify(caseData));
   const responseForSDOClaimsTrack = await apiRequest.validatePageForMidEvent(eventName, 'SDOClaimsTrack', caseData, caseId);
+  const responseBodyForSDOClaimsTrack = await responseForSDOClaimsTrack.json();
   assert.equal(responseForSDOClaimsTrack.status, 200);
+  console.log('The value of the JSON Body : '+JSON.stringify(responseBodyForSDOClaimsTrack));
 
   const SDOClaimsFastTrackPayload = sdoMidEventPayload.SDOFastTrack();
-  caseData = SDOClaimsFastTrackPayload['caseDataUpdate'];
+  caseData = SDOClaimsFastTrackPayload['caseData'];
   const responseForSDOFastTrack = await apiRequest.validatePageForMidEvent(eventName, 'SDOFastTrack', caseData, caseId);
+  const responseBodyForSDOFastTrack = await responseForSDOFastTrack.json();
   assert.equal(responseForSDOFastTrack.status, 200);
-  console.log(responseForSDOFastTrack.body);
+  console.log('The value of the JSON Body : '+JSON.stringify(responseBodyForSDOFastTrack));
 
-
-}
+};
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
 
