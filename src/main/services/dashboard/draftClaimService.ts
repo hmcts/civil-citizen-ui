@@ -1,4 +1,4 @@
-import {isCUIReleaseTwoEnabled, isCuitempflag} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
@@ -13,10 +13,10 @@ export interface DraftClaimData {
 
 export const getDraftClaimData = async (userToken: string):Promise<DraftClaimData> => {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const isTempFlagEnabled = await isCuitempflag();
+  const isTempFlagEnabled = await isCUIReleaseTwoEnabled();
   const draftUrl = createDraftClaimUrl(isReleaseTwoEnabled);
   console.log('----draft-claim---url----', isReleaseTwoEnabled, draftUrl);
-  console.log('----tempflag-dashboard---', isTempFlagEnabled);
+  console.log('----tempflag----', isTempFlagEnabled);
   const draftClaim = await getDraftClaim(userToken, isReleaseTwoEnabled);
   return {
     claimCreationUrl: draftUrl,
