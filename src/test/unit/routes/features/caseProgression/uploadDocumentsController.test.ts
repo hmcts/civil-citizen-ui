@@ -131,11 +131,12 @@ describe('Upload document- upload document controller', () => {
   });
 });
 
-const fileUploadInfo = {
+const fileUploadInfo: FileUpload = {
   'fieldname': 'fileUpload',
   'originalname': 'Evidence_01.pdf',
   'mimetype': 'application/pdf',
   'size': 1234,
+  buffer: Buffer.from('test'),
 };
 
 describe('on POST', () => {
