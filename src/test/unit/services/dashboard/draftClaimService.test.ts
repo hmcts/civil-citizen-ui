@@ -11,7 +11,7 @@ jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 const ocmcDraftClaimStore  = jest.spyOn(DraftSoreClient, 'getOcmcDraftClaims') ;
-const redisDraftClaimStore = jest.spyOn(RedisDraftStoreClient, 'getDraftClaimFromStore');
+const redisDraftClaimStore = jest.spyOn(RedisDraftStoreClient, 'getCaseDataFromStore');
 describe ('cui draft claim service', () => {
   beforeEach(
     () => {

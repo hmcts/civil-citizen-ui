@@ -3,7 +3,8 @@ import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
 import {
-  getDraftClaimFromStore
+  getCaseDataFromStore,
+  // getDraftClaimFromStore
 } from 'modules/draft-store/draftStoreService';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -33,10 +34,9 @@ const createDraftClaimUrl =  (isReleaseTwoEnabled : boolean):string => {
 
 const getDraftClaim = async (userToken: string, userId: string, isReleaseTwoEnabled : boolean): Promise<DashboardClaimantItem> => {
   if(isReleaseTwoEnabled) {
-    const claim = await getDraftClaimFromStore(userId);
-    return claim?.draftClaimCreatedAt ? toDraftClaimDashboardItem(claim.case_data) : undefined;
+    const claim = await getCaseDataFromStore(userId);
+    return toDraftClaimDashboardItem(claim);
   }
   return await getOcmcDraftClaims(userToken);
-
 };
 

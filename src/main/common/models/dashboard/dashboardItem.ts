@@ -160,15 +160,17 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
 };
 
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
-  const instanceClaim = Object.assign(new Claim(), claim);
+  if (!claim || !claim?.isDraftClaim()) {
+    return undefined;
+  }
   const draftClaim = new DashboardClaimantItem();
   draftClaim.claimId = 'draft';
   draftClaim.draft = true;
   draftClaim.ocmc = false;
   draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
   draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
-  draftClaim.claimantName = instanceClaim.getClaimantFullName();
-  draftClaim.defendantName = instanceClaim.getDefendantFullName();
+  draftClaim.claimantName = claim.getClaimantFullName();
+  draftClaim.defendantName = claim.getDefendantFullName();
   draftClaim.url = CLAIMANT_TASK_LIST_URL;
   return draftClaim;
 };
