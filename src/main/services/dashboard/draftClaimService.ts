@@ -18,6 +18,7 @@ export const getDraftClaimData = async (userToken: string):Promise<DraftClaimDat
   console.log('----draft-claim---url----', isReleaseTwoEnabled, draftUrl);
   console.log('----tempflag----', isTempFlagEnabled);
   const draftClaim = await getDraftClaim(userToken, isReleaseTwoEnabled);
+  console.log('----getDraftClaimData----', draftClaim);
   return {
     claimCreationUrl: draftUrl,
     draftClaim: draftClaim,
