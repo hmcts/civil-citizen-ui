@@ -11,7 +11,7 @@ jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 const ocmcDraftClaimStore  = jest.spyOn(DraftSoreClient, 'getOcmcDraftClaims') ;
-const redisDraftClaimStore = jest.spyOn(RedisDraftStoreClient, 'getCaseDataFromStore');
+const redisDraftClaimStore = jest.spyOn(RedisDraftStoreClient, 'getDraftClaimFromStore');
 describe ('cui draft claim service', () => {
   beforeEach(
     () => {
@@ -21,7 +21,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(false);
     //When
-    await getDraftClaimData('userToken');
+    await getDraftClaimData('userToken', 'userId');
     //Then
     expect(ocmcDraftClaimStore).toHaveBeenCalled();
     expect(redisDraftClaimStore).not.toHaveBeenCalled();
@@ -30,7 +30,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(true);
     //When
-    await getDraftClaimData('userToken');
+    await getDraftClaimData('userToken', 'userId');
     //Then
     expect(ocmcDraftClaimStore).not.toHaveBeenCalled();
     expect(redisDraftClaimStore).toHaveBeenCalled();
@@ -39,7 +39,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(false);
     //When
-    const draftClaimData = await getDraftClaimData('userToken');
+    const draftClaimData = await getDraftClaimData('userToken', 'userId');
     //Then
     expect(draftClaimData.claimCreationUrl).toContain(ocmcBaseUrl);
   });
@@ -47,7 +47,7 @@ describe ('cui draft claim service', () => {
     //Given
     isReleaseTwo.mockResolvedValue(true);
     //When
-    const draftClaimData = await getDraftClaimData('userToken');
+    const draftClaimData = await getDraftClaimData('userToken', 'userId');
     //Then
     expect(draftClaimData.claimCreationUrl).not.toContain(ocmcBaseUrl);
   });
