@@ -3,6 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -158,18 +159,16 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
-export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined  =>{
-  if(!claim || claim?.isEmpty()) {
-    return undefined;
-  }
+export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
+  const instanceClaim = Object.assign(new Claim(), claim);
   const draftClaim = new DashboardClaimantItem();
   draftClaim.claimId = 'draft';
   draftClaim.draft = true;
   draftClaim.ocmc = false;
   draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
   draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
-  draftClaim.claimantName = claim.getClaimantFullName();
-  draftClaim.defendantName = claim.getDefendantFullName();
+  draftClaim.claimantName = instanceClaim.getClaimantFullName();
+  draftClaim.defendantName = instanceClaim.getDefendantFullName();
+  draftClaim.url = CLAIMANT_TASK_LIST_URL;
   return draftClaim;
 };
-
