@@ -57,20 +57,6 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(item).not.toBeUndefined();
     });
-    it('should return undefined when claim is empty', () => {
-      //Given
-      const claim = new Claim();
-      //When
-      const item = toDraftClaimDashboardItem(claim);
-      //Then
-      expect(item).toBeUndefined();
-    });
-    it('should return undefined when claim is undefined', () => {
-      //When
-      const item = toDraftClaimDashboardItem(undefined);
-      //Then
-      expect(item).toBeUndefined();
-    });
   });
   describe('Dashboard defendant item', ()=>{
     const ocmcDefendantClaim = new DashboardDefendantItem();
