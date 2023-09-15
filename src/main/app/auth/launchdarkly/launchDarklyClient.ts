@@ -40,3 +40,8 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   console.log('----CUI-R2-----', await getFlagValue('cuiReleaseTwoEnabled'));
   return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
+
+export async function isCuitempflag(): Promise<boolean> {
+  console.log('----cuitempflag-----', await getFlagValue('cuitempflag'));
+  return await getFlagValue('cuitempflag') as boolean;
+}
