@@ -94,12 +94,12 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const claimDetailsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.CLAIM_DETAILS', { lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(userId, CLAIM_REASON_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
+  if(caseData.claimDetails?.reason?.text && caseData.claimDetails?.timeline?.rows?.length) {
     claimDetailsTask.status = TaskStatus.COMPLETE;
   }
 

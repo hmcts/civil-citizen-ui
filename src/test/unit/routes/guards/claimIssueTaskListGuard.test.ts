@@ -19,6 +19,7 @@ const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 describe('Claim Issue TaskList Guard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+
   beforeAll(() => {
     jest.resetAllMocks();
     nock(idamUrl)
@@ -47,7 +48,7 @@ describe('Claim Issue TaskList Guard', () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-  it('should access to claim/task-list page when eligibility questions completed', async () => {
+  it('should access to claim/task-list  page when eligibility questions completed', async () => {
     //Given
     mockGetCaseData.mockImplementation(async () => new Claim());
     app.request.cookies = {eligibilityCompleted: true};
@@ -61,8 +62,8 @@ describe('Claim Issue TaskList Guard', () => {
     //Given
     const mockClaim = new Claim();
     mockClaim.draftClaimCreatedAt = new Date();
-    app.request.cookies = {eligibilityCompleted: true};
     mockGetCaseData.mockImplementation(async () => mockClaim);
+    app.request.cookies = {eligibilityCompleted: true};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then

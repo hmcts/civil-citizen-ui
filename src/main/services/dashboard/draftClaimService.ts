@@ -2,10 +2,7 @@ import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyCl
 import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
-import {
-  getCaseDataFromStore,
-  // getDraftClaimFromStore
-} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 

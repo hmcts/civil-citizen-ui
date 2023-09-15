@@ -1,8 +1,8 @@
-import {NextFunction, Request, RequestHandler, Response} from 'express';
+import {NextFunction, Request, Response, RequestHandler} from 'express';
+import {Claim} from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {BASE_ELIGIBILITY_URL} from 'routes/urls';
-import {Claim} from 'common/models/claim';
 
 export const claimIssueTaskListGuard = (async (req: Request, res: Response, next: NextFunction) => {
   try {
