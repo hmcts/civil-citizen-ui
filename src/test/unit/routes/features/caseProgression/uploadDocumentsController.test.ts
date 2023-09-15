@@ -131,6 +131,13 @@ describe('Upload document- upload document controller', () => {
   });
 });
 
+const fileUploadInfo = {
+  'fieldname': 'fileUpload',
+  'originalname': 'Evidence_01.pdf',
+  'mimetype': 'application/pdf',
+  'size': 1234,
+};
+
 describe('on POST', () => {
   const mockFutureYear = getNextYearValue().toString();
   beforeEach(() => {
@@ -401,7 +408,7 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_01.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const disclosureList = {'disclosureList':[{'fileUpload':'Evidence_02.pdf'}]};
@@ -414,7 +421,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_03.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const witnessSummary = {
@@ -425,7 +432,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_04.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const noticeOfIntention = {
@@ -436,7 +443,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_05.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const documentsReferred = {
@@ -447,7 +454,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_06.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
 
@@ -462,7 +469,7 @@ describe('on POST', () => {
           'dateMonth': '12',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_12.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_13.pdf'}]};
@@ -477,7 +484,7 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_14.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
     const answersForExperts = {
@@ -491,7 +498,7 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_15.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
 
@@ -507,7 +514,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        'fileUpload': 'Evidence_11.pdf',
+        'fileUpload': fileUploadInfo,
       }],
     };
 
