@@ -8,9 +8,6 @@ import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 import {Claim} from 'models/claim';
-import {Party} from 'models/party';
-import {PartyDetails} from 'form/models/partyDetails';
-import {PartyType} from 'models/partyType';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
