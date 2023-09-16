@@ -61,7 +61,7 @@ describe('Claim TaskList page', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+        });
     });
   });
 });
