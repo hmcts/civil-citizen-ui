@@ -6,6 +6,7 @@ import {
   buildClaimantResponseSubmitSection,
   buildHowDefendantRespondSection,
   buildWhatToDoNextSection,
+  buildYourResponseSection,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder';
 import {CaseState} from 'common/form/models/claimDetails';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
@@ -17,7 +18,15 @@ import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/w
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from 'routes/urls';
+import {
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+  CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
+  CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
+  CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
+  DETERMINATION_WITHOUT_HEARING_URL,
+  DQ_TRIED_TO_SETTLE_CLAIM_URL,
+} from 'routes/urls';
 import {ResponseType} from 'common/form/models/responseType';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
@@ -478,7 +487,105 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
+    it('should not display What to do next section for full defense states paid (amount was LESS THAN full amount)', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.rejectAllOfClaim = {
+        option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+          amount: 8000,
+        } as any,
+      };
+      claim.totalClaimAmount = 9000;
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks.length).toBe(0);
+      expect(whatToDoNext.tasks[0]).toBeUndefined();
+    });
   });
+
+  describe('Your response section', () => {
+    const haveYoBeenPaidUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL);
+    const settleClaimForPaidAmountUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL);
+    const freeMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
+    let claim = new Claim();
+    beforeEach(() => {
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.rejectAllOfClaim = {
+        option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+          amount: 8000,
+        } as any,
+      };
+      claim.totalClaimAmount = 9000;
+      claim.claimantResponse = new ClaimantResponse();
+    })
+    it('should display Your Response section and haveYouBeenPaidTask for full defense states paid (amount was LESS THAN full amount)', () => {
+      //Given
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(1);
+      expect(yourResponse.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_YOU_BEEN_PAID');
+      expect(yourResponse.tasks[0].url).toEqual(haveYoBeenPaidUrl);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[1]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask and settleClaimForPaidAmountTask as second task for when claimant accepted defendant payment', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_THE_CLAIM');
+      expect(yourResponse.tasks[1].url).toEqual(settleClaimForPaidAmountUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask and freeTelephoneMediationTas as second for when claimant doesn`t accept defendant payment', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[1].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask, settleClaimForPaidAmountTask and freeTelephoneMediationTask as third task for when claimant accept defendant payment but not settle the claim', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.NO),
+        rejectionReason: {
+          text: 'test',
+        },
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(3);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[3]).toBeUndefined();
+    });
+  })
 
   describe('Your hearing requirements section', () => {
     it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
@@ -494,6 +601,27 @@ describe('Claimant Response Task List builder', () => {
     it('shouldn`t display hearingRequirement section when claimant rejected settlement for defendent`s partial admission amount', () => {
       //Given
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
+      //When
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(hearingRequirement.tasks[0]).toBeUndefined();
+    });
+
+    it('shouldn`t display hearingRequirement section when claimant accepts defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+      //When
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(hearingRequirement.tasks[0]).toBeUndefined();
+    });
+
+    it('shouldn`t display hearingRequirement section when claimant settle claim defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
       //When
       const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
       //Then
