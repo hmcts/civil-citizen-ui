@@ -13,7 +13,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {
-      const claimNumber = claim.legacyCaseReference;
+      const claimNumber = claim.getFormattedCaseReferenceNumber(claimId);
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
@@ -23,6 +23,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: Next
         defendantFullName,
         defendantResponseLimit,
         helpWithFee,
+        claimId,
         claimFeeUrl,
       });
     }
