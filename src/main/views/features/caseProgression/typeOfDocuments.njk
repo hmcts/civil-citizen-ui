@@ -21,7 +21,7 @@
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') }}</h1>
-          <p class="govuk-body-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER') }} {{claimId}}</p>
+          <p class="govuk-body-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId}) }}</p>
           <p class="govuk-body-l">{{claimantFullName}} v {{defendantFullName}}</p>
           <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
                   <div class='multiple-row'>

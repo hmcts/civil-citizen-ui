@@ -6,53 +6,78 @@ import {
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {
+  DocumentType,
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from 'models/document/documentType';
+import {CaseDocument} from 'models/document/caseDocument';
+import {mockNameValue} from './mockEvidenceUploadSummaryRows';
 
-export const getMockSectionArray = () => {
+const caseDoc = (documentType: DocumentType|EvidenceUploadWitness|EvidenceUploadExpert|EvidenceUploadDisclosure|EvidenceUploadTrial) => {
+  return {documentType: documentType, documentLink:{document_url:'http://test',document_binary_url:'http://test/binary',document_filename:'test.png',document_hash:'test'},documentName:'test.png',documentSize:86349,createdDatetime:new Date('2022-12-12T00:00:00.000Z'),createdBy:'test'} as CaseDocument;
+};
+
+export const getMockSectionArray = (documentType: EvidenceUploadWitness|EvidenceUploadDisclosure|EvidenceUploadTrial) => {
   const sectionArray: TypeOfDocumentSection[] = [];
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
+
+  const typeOfDocument = new TypeOfDocumentSection('12', '12', '2022');
+  typeOfDocument.typeOfDocument = 'document type';
+  typeOfDocument.caseDocument = caseDoc(documentType);
+  sectionArray.push(typeOfDocument);
+  sectionArray.push(typeOfDocument);
   return sectionArray;
 };
 
-export const getMockWitnessSectionArray = () => {
+export const getMockWitnessSectionArray = (documentType: EvidenceUploadWitness) => {
   const sectionArray: WitnessSection[] = [];
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
+
+  const witnessDocument = new WitnessSection('12', '12', '2022');
+  witnessDocument.witnessName = 'John Smith';
+  witnessDocument.caseDocument = caseDoc(documentType);
+
+  sectionArray.push(witnessDocument);
+  sectionArray.push(witnessDocument);
   return sectionArray;
 };
 
-export const getMockExpertSectionArray = () => {
+export const getMockExpertSectionArray = (documentType: EvidenceUploadExpert) => {
   const sectionArray: ExpertSection[] = [];
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
+
+  const expertDocument = new ExpertSection('12', '12', '2022');
+  expertDocument.expertName = mockNameValue;
+  expertDocument.otherPartyName = mockNameValue;
+  expertDocument.fieldOfExpertise = 'expertise';
+  expertDocument.questionDocumentName = 'other party document';
+  expertDocument.otherPartyQuestionsDocumentName = 'other party document';
+  expertDocument.caseDocument = caseDoc(documentType);
+
+  sectionArray.push(expertDocument);
+  sectionArray.push(expertDocument);
   return sectionArray;
 };
 
 export const getMockFullUploadDocumentsUserForm = () => {
   const uploadedDocuments: UploadDocumentsUserForm = new UploadDocumentsUserForm();
-  uploadedDocuments.documentsForDisclosure = getMockSectionArray();
-  uploadedDocuments.disclosureList = getMockSectionArray();
+  uploadedDocuments.documentsForDisclosure = getMockSectionArray(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE);
+  uploadedDocuments.disclosureList = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
 
-  uploadedDocuments.witnessStatement = getMockWitnessSectionArray();
-  uploadedDocuments.witnessSummary = getMockWitnessSectionArray();
-  uploadedDocuments.noticeOfIntention = getMockWitnessSectionArray();
-  uploadedDocuments.documentsReferred = getMockSectionArray();
+  uploadedDocuments.witnessStatement = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_STATEMENT);
+  uploadedDocuments.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_SUMMARY);
+  uploadedDocuments.noticeOfIntention = getMockWitnessSectionArray(EvidenceUploadWitness.NOTICE_OF_INTENTION);
+  uploadedDocuments.documentsReferred = getMockSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
 
-  uploadedDocuments.expertStatement = getMockExpertSectionArray();
-  uploadedDocuments.expertReport = getMockExpertSectionArray();
-  uploadedDocuments.questionsForExperts = getMockExpertSectionArray();
-  uploadedDocuments.answersForExperts = getMockExpertSectionArray();
+  uploadedDocuments.expertStatement = getMockExpertSectionArray(EvidenceUploadExpert.STATEMENT);
+  uploadedDocuments.expertReport = getMockExpertSectionArray(EvidenceUploadExpert.EXPERT_REPORT);
+  uploadedDocuments.questionsForExperts = getMockExpertSectionArray(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS);
+  uploadedDocuments.answersForExperts = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
 
-  uploadedDocuments.trialCaseSummary = getMockSectionArray();
-  uploadedDocuments.trialSkeletonArgument = getMockSectionArray();
-  uploadedDocuments.trialAuthorities = getMockSectionArray();
-  uploadedDocuments.trialCosts = getMockSectionArray();
-  uploadedDocuments.trialDocumentary = getMockSectionArray();
+  uploadedDocuments.trialCaseSummary = getMockSectionArray(EvidenceUploadTrial.CASE_SUMMARY);
+  uploadedDocuments.trialSkeletonArgument = getMockSectionArray(EvidenceUploadTrial.SKELETON_ARGUMENT);
+  uploadedDocuments.trialAuthorities = getMockSectionArray(EvidenceUploadTrial.AUTHORITIES);
+  uploadedDocuments.trialCosts = getMockSectionArray(EvidenceUploadTrial.COSTS);
+  uploadedDocuments.trialDocumentary = getMockSectionArray(EvidenceUploadTrial.DOCUMENTARY);
 
   return uploadedDocuments;
 };

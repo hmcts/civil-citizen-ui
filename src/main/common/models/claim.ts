@@ -118,6 +118,7 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
@@ -306,6 +307,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isPartialAdmissionPaid(): boolean {
+    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
+  }
+
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
@@ -343,11 +348,11 @@ export class Claim {
   }
 
   hasConfirmedAlreadyPaid(): boolean {
-    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID;
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -673,7 +678,7 @@ export class Claim {
   isDefendantAgreedForMediation() {
     return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
   }
-  
+
   isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
@@ -699,10 +704,15 @@ export class Claim {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
 
+  getFormattedCaseReferenceNumber(claimId: string): string {
+    const parts = claimId.match(/.{1,4}/g);
+    const claimId_new = parts.join('-');
+    return claimId_new;
+  }
+  
   isClaimant(){
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
   }
-
 }
 
 export interface StatementOfTruth {
