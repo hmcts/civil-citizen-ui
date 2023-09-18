@@ -10,9 +10,11 @@ import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 
 export function getHaveYouBeenPaidTask(claim: Claim, claimId: string, lang: string): Task {
+  const paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
   const haveYouBeenPaid = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_YOU_BEEN_PAID', {
       lng: lang,
+      statedPaidAmount: paidAmount,
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL),
     status: TaskStatus.INCOMPLETE,
@@ -25,9 +27,11 @@ export function getHaveYouBeenPaidTask(claim: Claim, claimId: string, lang: stri
 }
 
 export function getSettleClaimForPaidAmount(claim: Claim, claimId: string, lang: string): Task {
+  const paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
   const settleClaimForPaidAmount = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_THE_CLAIM', {
       lng: lang,
+      statedPaidAmount: paidAmount,
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
