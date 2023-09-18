@@ -22,8 +22,11 @@ export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[s
     const claim = await getCaseDataFromStore(claimId);
     let telephoneNumberData = new CompanyTelephoneNumber();
 
+    const contactPerson = claim.isClaimantIntentionPending() 
+      ? claim.applicant1?.partyDetails?.contactPerson
+      : claim.respondent1?.partyDetails.contactPerson;
+
     if (claim.isClaimantIntentionPending()) {
-      const contactPerson = claim.applicant1?.partyDetails?.contactPerson;
   
       if (claim.claimantResponse?.mediation?.companyTelephoneNumber) {
         telephoneNumberData = claim.claimantResponse?.mediation?.companyTelephoneNumber;
@@ -32,7 +35,6 @@ export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[s
       }
       return [contactPerson, telephoneNumberData];
     } else {
-      const contactPerson = claim.respondent1?.partyDetails.contactPerson;
   
       if (claim.mediation?.companyTelephoneNumber) {
         telephoneNumberData = claim.mediation.companyTelephoneNumber;
