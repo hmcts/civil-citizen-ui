@@ -20,10 +20,10 @@ const filterFormWithSelection = (form: CompanyTelephoneNumber) => {
 export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[string, CompanyTelephoneNumber]> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
+    let telephoneNumberData = new CompanyTelephoneNumber();
 
     if (claim.isClaimantIntentionPending()) {
       const contactPerson = claim.applicant1?.partyDetails?.contactPerson;
-      let telephoneNumberData = new CompanyTelephoneNumber();
   
       if (claim.claimantResponse?.mediation?.companyTelephoneNumber) {
         telephoneNumberData = claim.claimantResponse?.mediation?.companyTelephoneNumber;
@@ -33,7 +33,6 @@ export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[s
       return [contactPerson, telephoneNumberData];
     } else {
       const contactPerson = claim.respondent1?.partyDetails.contactPerson;
-      let telephoneNumberData = new CompanyTelephoneNumber();
   
       if (claim.mediation?.companyTelephoneNumber) {
         telephoneNumberData = claim.mediation.companyTelephoneNumber;
