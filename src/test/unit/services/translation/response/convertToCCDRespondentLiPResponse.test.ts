@@ -9,6 +9,9 @@ import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
+import {YesNo} from 'common/form/models/yesNo';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
 
 const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
   return {
@@ -144,6 +147,12 @@ describe('translate cui fields to CCD model', () => {
       comment: 'Evidence commet',
       evidenceItem: [],
     };
+    claim.claimDetails = <ClaimDetails>{
+      helpWithFees: <HelpWithFees>{
+        option: YesNo.YES,
+        referenceNumber: '12345',
+      },
+    };
 
     // When
     const result = toCCDRespondentLiPResponse(claim);
@@ -151,5 +160,6 @@ describe('translate cui fields to CCD model', () => {
     // Then
     expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
     expect(result.evidenceComment).toEqual(claim.evidence.comment);
+    expect(result.helpWithFeesReferenceNumberLip).toEqual(claim.claimDetails.helpWithFees.referenceNumber);
   });
 });
