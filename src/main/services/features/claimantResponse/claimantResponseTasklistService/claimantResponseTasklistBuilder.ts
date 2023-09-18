@@ -15,7 +15,7 @@ import {
   getProposeAlternativeRepaymentTask,
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {
@@ -118,19 +118,19 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
   //  Full Defence states Paid (when states paid amount was LESS THAN full amount)
-  // hearing req --update the existing builder to generate it
+  if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
+    const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+    tasks.push(haveYouBeenPaidTask);
+    if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES) {
+      const settleClaimForPaidAmountTask = getSettleClaimForPaidAmount(claim, claimId, lang);
+      tasks.push(settleClaimForPaidAmountTask);
+    }
 
-  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
-  tasks.push(haveYouBeenPaidTask);
-  if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES) {
-    const settleClaimForPaidAmountTask = getSettleClaimForPaidAmount(claim, claimId, lang);
-    tasks.push(settleClaimForPaidAmountTask);
-  }
-
-  if (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO ||
-    claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
-    tasks.push(freeTelephoneMediationTask);
+    if (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO ||
+      claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
+      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+      tasks.push(freeTelephoneMediationTask);
+    }
   }
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', {lng: lang}), tasks};
 }
@@ -144,7 +144,12 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  if (claim.isClaimantIntentionPending() && (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)) {
+  if (claim.isClaimantIntentionPending() &&
+    (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO ||
+      claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO ||
+      claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO ||
+      claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
+    )) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
