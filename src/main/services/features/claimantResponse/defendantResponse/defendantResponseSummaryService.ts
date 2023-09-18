@@ -2,6 +2,7 @@ import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {
+  buildFullDisputePaidFullResponseContent,
   buildFullDisputePaidLessResponseContent,
   buildFullDisputeResponseContent,
 } from './fullDisputeDefendantsResponseContent';
@@ -22,6 +23,8 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
       return buildPartAdmitNotPaidResponseContent(claim, lang);
+    case ClaimResponseStatus.RC_PAID_FULL:
+      return buildFullDisputePaidFullResponseContent(claim, lang);
     case ClaimResponseStatus.RC_PAID_LESS:
       return buildFullDisputePaidLessResponseContent(claim, lang);
     case ClaimResponseStatus.PA_ALREADY_PAID:

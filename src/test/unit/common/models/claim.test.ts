@@ -1007,6 +1007,45 @@ describe('Documents', () => {
     });
   });
 
+  describe('isPartialAdmissionPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and already paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('isBusiness', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -1336,6 +1375,18 @@ describe('Documents', () => {
       const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
+  describe('test formatted case reference number', () => {
+    it('should return formatted case reference number', () => {
+      //Given
+      const claim = new Claim();
+      const claimId = '1694412283955256';
+      //when
+      const newClaimId = claim.getFormattedCaseReferenceNumber(claimId);
+      //then
+      expect(newClaimId).toEqual('1694-4122-8395-5256');
     });
   });
 

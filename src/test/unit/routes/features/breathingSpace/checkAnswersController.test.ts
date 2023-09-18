@@ -13,7 +13,11 @@ const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/claimDetailsService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/services/features/breathingSpace/breathingSpaceService');
 jest.mock('../../../../../main/services/features/breathingSpace/checkAnswersService');
+jest.mock('../../../../../main/services/features/breathingSpace/submission/submitBreathingSpace');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 
