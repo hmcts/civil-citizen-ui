@@ -431,7 +431,7 @@ describe('Claimant Response Service', () => {
       };
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveClaimantResponse('validClaimId', YesNo.NO, 'hasDefendantPaidYou');
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'hasDefendantPaidYou');
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
