@@ -1108,6 +1108,7 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond."

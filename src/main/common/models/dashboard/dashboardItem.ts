@@ -57,9 +57,16 @@ export class DashboardClaimantItem extends DashboardItem {
   }
 
   getDashboardStatus(lang: string | unknown): DashboardStatus {
+    const paramDefendantName = {key: 'defendantName', value: this.defendantName};
     return {
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
+      ELIGIBLE_FOR_CCJ: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ELIGIBLE_CCJ'},
+      MORE_TIME_REQUESTED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.REQUESTED_MORE_TIME_TO_RESPOND',
+        parameter: [paramDefendantName],
+      },
+      REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
     };
   }
 

@@ -1108,9 +1108,10 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
-        "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
-        "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond."
+        "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
+        "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
