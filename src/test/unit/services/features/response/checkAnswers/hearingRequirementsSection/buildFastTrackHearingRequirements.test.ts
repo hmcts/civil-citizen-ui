@@ -11,7 +11,7 @@ import {
   getShareExpertWithClaimant,
   getUseExpertEvidence,
   requestExtra4WeeksQuestion,
-  triedToSettleQuestion
+  triedToSettleQuestion,
 } from 'services/features/common/buildFastTrackHearingRequirements';
 import {getSummaryRowForDisplayEvidenceYourself} from 'services/features/common/buildCommonHearingRequirements';
 

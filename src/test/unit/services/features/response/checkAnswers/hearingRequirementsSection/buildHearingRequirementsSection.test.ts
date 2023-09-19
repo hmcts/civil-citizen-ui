@@ -15,7 +15,7 @@ import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetail
 import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
-import {buildHearingRequirementsSection} from "services/features/common/buildHearingRequirementsSection";
+import {buildHearingRequirementsSection} from 'services/features/common/buildHearingRequirementsSection';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');

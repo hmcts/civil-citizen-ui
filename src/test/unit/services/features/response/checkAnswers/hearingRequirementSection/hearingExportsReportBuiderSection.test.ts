@@ -16,7 +16,7 @@ import {
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
-import {buildExpertReportSection} from "services/features/common/hearingExportsReportBuilderSection";
+import {buildExpertReportSection} from 'services/features/common/hearingExportsReportBuilderSection';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,

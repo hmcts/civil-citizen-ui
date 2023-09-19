@@ -20,7 +20,7 @@ import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {
   UnavailableDatePeriod,
-  UnavailableDateType
+  UnavailableDateType,
 } from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getClaimWithDirectionQuestionnaireAndHearing} from './buildFastTrackHearingRequirements.test';
@@ -35,7 +35,7 @@ import {
   phoneAndVideoQuestion,
   speakingLanguagePreference,
   vulnerabilityInfo,
-  vulnerabilityQuestion
+  vulnerabilityQuestion,
 } from 'services/features/common/buildCommonHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');

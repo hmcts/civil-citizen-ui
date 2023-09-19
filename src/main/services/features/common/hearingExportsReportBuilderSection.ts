@@ -52,9 +52,7 @@ const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string, d
   const valueForExpertPermission = claim?.hasPermissionForExperts() ? t('COMMON.VARIATION.YES', {lng: lang}) : t('COMMON.VARIATION.NO', {lng: lang});
   const valueForDefendantExpertEvidence = claim?.hasEvidenceExpertCanStillExamine() ? t('COMMON.VARIATION.YES', {lng: lang}) : t('COMMON.VARIATION.NO', {lng: lang});
   const examineRows = [summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', {lng: lang}),
-    valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)),
-    summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', {lng: lang}), valueForDefendantExpertEvidence,
-      constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
+    valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)), summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', {lng: lang}), valueForDefendantExpertEvidence, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
   if (claim.hasEvidenceExpertCanStillExamine()) {
     examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', {lng: lang}),
       directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),

@@ -8,7 +8,7 @@ import {DETERMINATION_WITHOUT_HEARING_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnswer';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {buildExpertReportSection} from "services/features/common/hearingExportsReportBuilderSection";
+import {buildExpertReportSection} from 'services/features/common/hearingExportsReportBuilderSection';
 
 export const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})

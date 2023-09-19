@@ -8,8 +8,8 @@ import {YesNo} from 'form/models/yesNo';
 import {DeterminationWithoutHearing} from 'models/directionsQuestionnaire/hearing/determinationWithoutHearing';
 import {
   determinationWithoutHearingQuestion,
-  determinationWithoutHearingReason
-} from "services/features/common/buildSmallClaimHearingRequirements";
+  determinationWithoutHearingReason,
+} from 'services/features/common/buildSmallClaimHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
