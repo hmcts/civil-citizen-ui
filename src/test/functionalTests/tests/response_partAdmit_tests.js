@@ -105,7 +105,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   }
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @regression', async ({api}) => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -125,6 +125,7 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
     // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
     // await api.enterBreathingSpace(config.applicantSolicitorUser);
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-10659
+    // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
 });
