@@ -18,7 +18,6 @@ import {
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
 
-
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
