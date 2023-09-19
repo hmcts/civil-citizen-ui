@@ -26,9 +26,6 @@ const getMediationContactNumber = (companyTelephoneNumber : CompanyTelephoneNumb
     companyTelephoneNumber.mediationPhoneNumber;
 };
 
-
-
-
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);

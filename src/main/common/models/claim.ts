@@ -520,7 +520,7 @@ export class Claim {
         return YesNoUpperCase.YES;
       }
     }
-  };
+  }
 
   get isSupportRequiredYes(): boolean {
     return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
