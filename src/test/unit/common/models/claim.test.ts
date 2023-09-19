@@ -1419,6 +1419,18 @@ describe('Documents', () => {
     });
   });
 
+  describe('test formatted case reference number', () => {
+    it('should return formatted case reference number', () => {
+      //Given
+      const claim = new Claim();
+      const claimId = '1694412283955256';
+      //when
+      const newClaimId = claim.getFormattedCaseReferenceNumber(claimId);
+      //then
+      expect(newClaimId).toEqual('1694-4122-8395-5256');
+    });
+  });
+
   describe('test of method isClaimant', () => {
     const claim = new Claim();
 
