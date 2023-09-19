@@ -36,7 +36,5 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  // TODO: hardcoded to true for testing CIV-9921, replace with the actual code before merging to master
-  return await new Promise((resolve) => resolve(true)) as boolean;
-  // return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
