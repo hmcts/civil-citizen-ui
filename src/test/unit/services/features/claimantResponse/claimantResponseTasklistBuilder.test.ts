@@ -509,8 +509,9 @@ describe('Claimant Response Task List builder', () => {
     const haveYoBeenPaidUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL);
     const settleClaimForPaidAmountUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL);
     const freeMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
-    let claim = new Claim();
+    let claim: Claim;
     beforeEach(() => {
+      claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
       claim.rejectAllOfClaim = {
         option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
@@ -519,7 +520,7 @@ describe('Claimant Response Task List builder', () => {
       };
       claim.totalClaimAmount = 9000;
       claim.claimantResponse = new ClaimantResponse();
-    })
+    });
     it('should display Your Response section and haveYouBeenPaidTask for full defense states paid (amount was LESS THAN full amount)', () => {
       //Given
       //When
@@ -585,7 +586,7 @@ describe('Claimant Response Task List builder', () => {
       expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[3]).toBeUndefined();
     });
-  })
+  });
 
   describe('Your hearing requirements section', () => {
     it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
