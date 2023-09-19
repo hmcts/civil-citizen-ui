@@ -26,30 +26,15 @@ const getMediationContactNumber = (companyTelephoneNumber : CompanyTelephoneNumb
     companyTelephoneNumber.mediationPhoneNumber;
 };
 
-const getContactName = (claim: Claim) => {
-  return claim.claimantResponse.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
-    claim.claimantResponse.mediation.companyTelephoneNumber.mediationContactPerson :
-    claim.applicant1.partyDetails.contactPerson;
-};
 
-const getCanWeUse = (claim: Claim) => {
-  if (claim.claimantResponse.mediation?.canWeUse?.option) {
-    return YesNoUpperCase.YES;
-  } else {
-    if (claim.claimantResponse.mediation?.mediationDisagreement?.option) {
-      return YesNoUpperCase.NO;
-    } else if (claim.claimantResponse.mediation?.companyTelephoneNumber) {
-      return YesNoUpperCase.YES;
-    }
-  }
-};
+
 
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = getContactNumber(claim);
-  const contactName = getContactName(claim);
-  const canWeUse = getCanWeUse(claim);
+  const contactName = claim.contactNameFromClaimantResponse;
+  const canWeUse = claim.canWeUseFromClaimantResponse;
 
   let freeTelephoneMediationSection: SummarySection = null;
 

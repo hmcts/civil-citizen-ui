@@ -86,7 +86,7 @@ export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string, di
   );
 };
 
-export const giveEvidenceYourself = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const giveEvidenceYourself = (directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
   const option = directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
