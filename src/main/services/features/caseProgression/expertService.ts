@@ -3,21 +3,23 @@ import {Claim} from 'models/claim';
 import {
   buildAnswersToQuestionsSection,
   buildExpertReportSection,
-  buildJointStatementSection, buildQuestionsForOtherSection,
+  buildJointStatementSection,
+  buildQuestionsForOtherSection,
 } from 'services/features/caseProgression/expertContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
-import {
-  ExpertSection,
-  UploadDocumentsUserForm,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {ExpertSection, UploadDocumentsUserForm,} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseRole} from 'form/models/caseRoles';
 
 export const getExpertContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
   const selectItems= [];
-  // TODO check for logged user and send only the other party/parties name/s
+
   selectItems.push({'value': '', 'text': ''});
-  selectItems.push({'value': claim.getClaimantFullName(), 'text': claim.getClaimantFullName()});
-  selectItems.push({'value': claim.getDefendantFullName(), 'text': claim.getDefendantFullName()});
+  if(claim.caseRole == CaseRole.CLAIMANT){
+    selectItems.push({'value': claim.getDefendantFullName(), 'text': claim.getDefendantFullName()});
+  } else {
+    selectItems.push({'value': claim.getClaimantFullName(), 'text': claim.getClaimantFullName()});
+  }
 
   if(claim.caseProgression?.defendantUploadDocuments?.expert[0]?.selected){
     sectionContent.push(getExpertReport(form));
