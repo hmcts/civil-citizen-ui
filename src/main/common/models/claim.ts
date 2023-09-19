@@ -118,7 +118,9 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
+  draftClaimCreatedAt?: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -703,10 +705,19 @@ export class Claim {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
   }
 
+  getFormattedCaseReferenceNumber(claimId: string): string {
+    const parts = claimId.match(/.{1,4}/g);
+    const claimId_new = parts.join('-');
+    return claimId_new;
+  }
+
   isClaimant(){
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
   }
 
+  isDraftClaim(): boolean {
+    return !!this.draftClaimCreatedAt;
+  }
 }
 
 export interface StatementOfTruth {
