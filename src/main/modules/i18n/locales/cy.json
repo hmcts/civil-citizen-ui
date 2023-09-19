@@ -499,6 +499,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -545,7 +546,8 @@
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu?",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
+      "YOUR_RESPONSE": "Your response"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",

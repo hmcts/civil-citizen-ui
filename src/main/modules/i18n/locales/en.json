@@ -499,6 +499,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
@@ -545,7 +546,8 @@
       "WHEN_PAY_TITLE": "When you'll pay?",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
       "WITNESS": "Witness",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
+      "YOUR_RESPONSE": "Your response"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",

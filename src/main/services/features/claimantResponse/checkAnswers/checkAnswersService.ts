@@ -3,19 +3,29 @@ import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {
+  buildYourResponseSection,
+} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {getLng} from 'common/utils/languageToggleUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (): SummarySections => {
+const buildSummarySections = (claimId: string, claim: Claim, lang: string | unknown): SummarySections => {
+
+  const getYourResponse = () => {
+    return buildYourResponseSection(claim, claimId, lang);
+  };
+
   return {
     sections: [
-    // TODO : This part will be developed as part of other future tasks for different scenarios
+      getYourResponse(),
     ],
   };
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections();
+  const lng = getLng(lang);
+  return buildSummarySections(claimId, claim, lng);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
