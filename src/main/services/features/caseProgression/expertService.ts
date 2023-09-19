@@ -7,7 +7,7 @@ import {
   buildQuestionsForOtherSection,
 } from 'services/features/caseProgression/expertContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
-import {ExpertSection, UploadDocumentsUserForm,} from 'models/caseProgression/uploadDocumentsUserForm';
+import {ExpertSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseRole} from 'form/models/caseRoles';
 
 export const getExpertContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
