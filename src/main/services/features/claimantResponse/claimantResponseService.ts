@@ -60,12 +60,13 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
         delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
       }
     }
-    // resetting values in redis
     if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
+      logger.info('Removing hasPartPaymentBeenAccepted and rejectionReason fields from redis because of changing hasDefendantPaidYou from Yes to No');
       delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
       delete claim.claimantResponse?.rejectionReason;
     }
     if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES) {
+      logger.info('Removing rejectionReason, mediation and directionQuestionnaire fields from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
       delete claim.claimantResponse?.mediation;
       delete claim.claimantResponse?.directionQuestionnaire;

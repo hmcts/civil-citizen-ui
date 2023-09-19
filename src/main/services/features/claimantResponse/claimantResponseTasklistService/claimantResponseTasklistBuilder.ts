@@ -32,7 +32,6 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  //  Full Defence states Paid (when states paid amount was LESS THAN full amount)
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
   }
@@ -117,7 +116,6 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  //  Full Defence states Paid (when states paid amount was LESS THAN full amount)
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
     tasks.push(haveYouBeenPaidTask);
