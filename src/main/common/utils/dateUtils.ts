@@ -127,5 +127,7 @@ export const formatStringDateDMY = (date: Date) => {
 };
 
 export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
+  console.log('Draft Claim redis expire duration in JS seconds in production', Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT))
+  // return Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
   return Math.round(new Date(date).getTime() / 1000) + (60);
 }
