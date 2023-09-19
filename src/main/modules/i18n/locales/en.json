@@ -748,7 +748,7 @@
       "TO_RESPOND_TO": " to respond to your claim.",
       "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request up to an extra 28 days if they need it.",
       "YOU_CAN_REQUEST_COUNTY_COURT": "You can request a County Court Judgment against them if they don't respond by the deadline.",
-      "IF_DEFENDANT_PAYS_YOU_HEADER": "If defendant pays you",
+      "IF_DEFENDANT_PAYS_YOU_HEADER": "If the defendant pays you",
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
@@ -900,6 +900,14 @@
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+    },
+    "CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID": {
+      "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PAGE_TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "YES_HINT": "Settle the claim",
+      "NO_HINT": "Proceed with the claim"
     },
     "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
       "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
@@ -1504,7 +1512,8 @@
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
-      "TITLE": "How they want to pay?"
+      "TITLE": "How they want to pay?",
+      "NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
@@ -1597,6 +1606,11 @@
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
           "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
           "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
+        },
+        "CASE_DISMISSED_HEARING_DUE_DATE": {
+          "TITLE": "Claim has been struck out",
+          "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
+          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -1675,9 +1689,16 @@
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
       "ANSWERS_TO_QUESTIONS_HINT": "Your expert's answers to questions put by the other party",
-      "CASE_REFERENCE_NUMBER": "Case reference:",
+      "CASE_REFERENCE_NUMBER": "Case reference: {{ caseNumber }}",
       "CASE_SUMMARY": "Case summary",
       "CASE_SUMMARY_HINT": "Overview of your whole case",
+      "CHECK_YOUR_ANSWERS_TITLE": "Check your answers",
+      "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Warning</span> </br> You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_WARNING_SHORT": "You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_CONFIRMATION": "Confirmation",
+      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.",
+      "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
+      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
       "COSTS": "Costs",
       "COSTS_HINT": "A detailed list of the costs you have incurred in making or defending the claim, for example photocopying, getting copies of contracts, include receipts",
       "DISCLOSURE": "Disclosure",
@@ -3011,6 +3032,7 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
+    "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",

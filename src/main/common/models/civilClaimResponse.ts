@@ -63,6 +63,7 @@ import {
   CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class CivilClaimResponse {
   id: string;
@@ -243,6 +244,7 @@ export interface CCDClaim extends ClaimUpdate {
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {
