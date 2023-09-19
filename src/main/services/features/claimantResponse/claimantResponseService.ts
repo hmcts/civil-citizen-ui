@@ -66,10 +66,8 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       delete claim.claimantResponse?.rejectionReason;
     }
     if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES) {
-      logger.info('Removing rejectionReason, mediation and directionQuestionnaire fields from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
+      logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
-      delete claim.claimantResponse?.mediation;
-      delete claim.claimantResponse?.directionQuestionnaire;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
