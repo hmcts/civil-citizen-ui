@@ -25,13 +25,13 @@ const buildSummarySections = (claimId: string, claim: Claim, lang?: string | unk
 
 const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const isSignSettlement = claim.isSignASettlementAgreement();
-  const isPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
-  const isPaymentOptionByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
+  const isSignSettlementForPaybysetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
+  const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
 
-  if (isSignSettlement && isPayBySetDate)
+  if (isSignSettlementForPaybysetDate)
     return buildSummaryForPayBySetDate(claim, claimId, lang);
 
-  if (isSignSettlement && isPaymentOptionByInstallments)
+  if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lang);
 };
 
