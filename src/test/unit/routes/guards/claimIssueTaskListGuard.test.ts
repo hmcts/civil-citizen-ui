@@ -28,9 +28,7 @@ describe('Claim Issue TaskList Guard', () => {
   });
   it('should redirect if claim not exists and eligibility not completed', async () => {
     //Given
-
-    const mockClaim = new Claim();
-    mockGetCaseData.mockImplementation(async () => mockClaim);
+    mockGetCaseData.mockImplementation(async () => new Claim());
     app.request.cookies = {};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -42,7 +40,7 @@ describe('Claim Issue TaskList Guard', () => {
   it('should access to claim/task-list page when claim exist', async () => {
     //Given
     const mockClaim = new Claim();
-    mockClaim.id = '1';
+    mockClaim.draftClaimCreatedAt = new Date();
     mockGetCaseData.mockImplementation(async () => mockClaim);
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -52,8 +50,7 @@ describe('Claim Issue TaskList Guard', () => {
   });
   it('should access to claim/task-list  page when eligibility questions completed', async () => {
     //Given
-    const mockClaim = new Claim();
-    mockGetCaseData.mockImplementation(async () => mockClaim);
+    mockGetCaseData.mockImplementation(async () => new Claim());
     app.request.cookies = {eligibilityCompleted: true};
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
@@ -64,7 +61,7 @@ describe('Claim Issue TaskList Guard', () => {
   it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
     //Given
     const mockClaim = new Claim();
-    mockClaim.id = '1';
+    mockClaim.draftClaimCreatedAt = new Date();
     mockGetCaseData.mockImplementation(async () => mockClaim);
     app.request.cookies = {eligibilityCompleted: true};
     //When
@@ -73,5 +70,4 @@ describe('Claim Issue TaskList Guard', () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
   });
-
 });
