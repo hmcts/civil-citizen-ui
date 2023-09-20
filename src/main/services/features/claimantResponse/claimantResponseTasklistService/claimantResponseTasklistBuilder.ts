@@ -15,7 +15,7 @@ import {
   getProposeAlternativeRepaymentTask,
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
@@ -32,7 +32,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
-    
+
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
@@ -51,12 +51,12 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   } else if (claim.isPartialAdmission()) {
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-    
+
     if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
-    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES) {
+    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
@@ -90,7 +90,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(getAcceptOrRejectDefendantResponse(claim, claimId, lang));
     } else {
       const decideWetherToProceed = getFullDefenceTask(claim, claimId, lang);
-      tasks.push(decideWetherToProceed); 
+      tasks.push(decideWetherToProceed);
     }
   }
 
