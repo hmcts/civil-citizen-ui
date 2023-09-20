@@ -221,7 +221,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const personalEvidence = getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng, claim.directionQuestionnaire);
+      const personalEvidence = getSummaryRowForDisplayEvidenceYourself( claim.directionQuestionnaire, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });

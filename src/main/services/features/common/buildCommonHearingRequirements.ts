@@ -1,4 +1,3 @@
-
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -30,7 +29,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 
 const MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON = 30;
 
-export const getWitnesses = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow[]  => {
+export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
   const otherWitnesses = directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   const summaryRows: SummaryRow [] = [];
@@ -51,7 +50,7 @@ export const getWitnesses = (claim: Claim, claimId: string, lng: string, directi
   return summaryRows;
 };
 
-export const getSummaryRowForDisplayEvidenceYourself = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const getSummaryRowForDisplayEvidenceYourself = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
   const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
@@ -62,7 +61,7 @@ export const getSummaryRowForDisplayEvidenceYourself = (claim: Claim, claimId: s
   );
 };
 
-export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const vulnerabilityQuestion = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
   const option = directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
@@ -75,7 +74,7 @@ export const vulnerabilityQuestion = (claim: Claim, claimId: string, lng: string
   );
 };
 
-export const vulnerabilityInfo = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const vulnerabilityInfo = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
   const details = directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.vulnerabilityDetails;
 
   return summaryRow(
@@ -216,9 +215,9 @@ export const getSpecificCourtLocationReason = (claim: Claim, claimId: string, ln
 export const buildCommonHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
 
   if (directionQuestionnaire?.defendantYourselfEvidence?.option) {
-    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(directionQuestionnaire, claimId, lng));
   }
-  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(claim, claimId, lng,directionQuestionnaire));
+  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(directionQuestionnaire, claimId, lng));
 
   hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claim, claimId, lng,directionQuestionnaire));
 
@@ -238,10 +237,10 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
   }
 
   if (directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
-    hearingRequirementsSection.summaryList.rows.push(vulnerabilityQuestion(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(vulnerabilityQuestion(directionQuestionnaire, claimId, lng));
 
     if(directionQuestionnaire?.vulnerabilityQuestions?.vulnerability?.option === YesNo.YES)
-      hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(claim, claimId, lng,directionQuestionnaire));
+      hearingRequirementsSection.summaryList.rows.push(vulnerabilityInfo(directionQuestionnaire, claimId, lng));
   }
 
   if (claim.hasSupportRequiredList) {

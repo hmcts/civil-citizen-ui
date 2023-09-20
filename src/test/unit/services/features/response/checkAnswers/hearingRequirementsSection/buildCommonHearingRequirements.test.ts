@@ -226,7 +226,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -243,7 +243,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -263,7 +263,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityQuestion(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityQuestion(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability question option is yes', () => {
@@ -281,7 +281,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityQuestion(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityQuestion(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -300,7 +300,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityInfo(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityInfo(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability details is not set', () => {
@@ -315,7 +315,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityInfo(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityInfo(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -383,7 +383,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.NO;
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng', claim.directionQuestionnaire);
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows[0].value.html).toEqual('COMMON.NO');
@@ -399,7 +399,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng', claim.directionQuestionnaire);
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows[0].value.html).toEqual('COMMON.YES');
@@ -433,7 +433,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng', claim.directionQuestionnaire);
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
 
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');

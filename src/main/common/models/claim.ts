@@ -510,6 +510,18 @@ export class Claim {
       this.applicant1.partyDetails.contactPerson;
   }
 
+  get contactNumberFromClaimantResponse(): string {
+    if (this.claimantResponse.mediation?.companyTelephoneNumber) {
+      return this.claimantResponse.mediation.companyTelephoneNumber.option !== YesNo.YES ?
+        this.claimantResponse.mediation.companyTelephoneNumber.mediationPhoneNumber
+        : this.claimantResponse.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation;
+    } else if (this.claimantResponse.mediation?.canWeUse?.mediationPhoneNumber) {
+      return this.claimantResponse.mediation.canWeUse.mediationPhoneNumber;
+    } else {
+      return this.applicant1?.partyPhone?.phone;
+    }
+  }
+
   get canWeUseFromClaimantResponse(): YesNoUpperCase {
     if (this.claimantResponse.mediation?.canWeUse?.option) {
       return YesNoUpperCase.YES;
