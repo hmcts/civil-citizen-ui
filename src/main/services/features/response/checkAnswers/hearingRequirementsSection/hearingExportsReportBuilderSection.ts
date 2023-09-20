@@ -14,6 +14,7 @@ import {
   ReportDetail,
 } from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { DirectionQuestionnaire } from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 
 const buildExpertReportSection = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
   const hrefReportDetails = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL);
@@ -58,15 +59,15 @@ const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string): 
     examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', {lng: lang}),
       claim?.directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),
       changeLabel(lang)));
-    examineRows.push(...buildExpertsDetailsRows(claim, claimId, lang));
+    examineRows.push(...buildExpertsDetailsRows(claim.directionQuestionnaire, claimId, lang));
   }
   return examineRows;
 };
 
-const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
+const buildExpertsDetailsRows = (directionQuestionnaire: DirectionQuestionnaire, claimId: string, lang: string): SummaryRow[] => {
   const hrefExpertDetails = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL);
   const hrefLabel = changeLabel(lang);
-  const rows = claim?.directionQuestionnaire?.experts?.expertDetailsList?.items;
+  const rows = directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: SummaryRow[] = [];
   rows?.forEach((expert, index) => {
     const row = index + 1;

@@ -33,6 +33,9 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
+
+      console.log(claim.isFastTrackClaim);
+      
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);

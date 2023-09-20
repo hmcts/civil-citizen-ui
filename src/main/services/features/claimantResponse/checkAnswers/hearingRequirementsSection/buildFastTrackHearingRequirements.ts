@@ -5,24 +5,24 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_TRIED_TO_SETTLE_CLAIM_URL,
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_SENT_EXPERT_REPORTS_URL,
   DQ_SHARE_AN_EXPERT_URL,
-  DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {
   getFormattedAnswerForYesNoNotReceived,
-  getEmptyStringIfUndefined,
+  // getEmptyStringIfUndefined,
 } from 'common/utils/checkYourAnswer/formatAnswer';
-import {
-  buildExpertsDetailsRows,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
+// import {
+//   buildExpertsDetailsRows,
+// } from 'services/features/response/checkAnswers/hearingRequirementsSection/hearingExportsReportBuilderSection';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
+  const option = claim.claimantResponse?.directionQuestionnaire?.hearing?.triedToSettle?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -35,7 +35,7 @@ export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string
 };
 
 export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
+  const option = claim.claimantResponse?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -48,7 +48,7 @@ export const requestExtra4WeeksQuestion = (claim: Claim, claimId: string, lng: s
 };
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
+  const option = claim.claimantResponse?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -60,17 +60,17 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
   );
 };
 
-export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const details = claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
+// export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+//   const details = claim.claimantResponse?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
 
-  return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
-    getEmptyStringIfUndefined(details),
-  );
-};
+//   return summaryRow(
+//     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
+//     getEmptyStringIfUndefined(details),
+//   );
+// };
 
 export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderExpertEvidence = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
+  const shouldConsiderExpertEvidence = getFormattedAnswerForYesNoNotReceived(claim.claimantResponse?.directionQuestionnaire?.experts?.expertEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE', {lng}),
@@ -81,7 +81,7 @@ export const getUseExpertEvidence = (claim: Claim, claimId: string, lng: string)
 };
 
 export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderSentExpertReports = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
+  const shouldConsiderSentExpertReports = getFormattedAnswerForYesNoNotReceived(claim.claimantResponse?.directionQuestionnaire?.experts?.sentExpertReports?.option, lng);
 
   return summaryRow(
     t('PAGES.SENT_EXPERT_REPORTS.TITLE', {lng}),
@@ -92,7 +92,7 @@ export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: 
 };
 
 export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const shouldConsiderSharedExpert = getFormattedAnswerForYesNoNotReceived(claim.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  const shouldConsiderSharedExpert = getFormattedAnswerForYesNoNotReceived(claim.claimantResponse?.directionQuestionnaire?.experts?.sharedExpert?.option, lng);
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
@@ -103,35 +103,35 @@ export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: s
 };
 
 export const buildFastTrackHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string) => {
-  if (claim.directionQuestionnaire?.hearing?.triedToSettle?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.hearing?.triedToSettle?.option) {
     hearingRequirementsSection.summaryList.rows.push(triedToSettleQuestion(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.hearing?.requestExtra4weeks?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.hearing?.requestExtra4weeks?.option) {
     hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option) {
     hearingRequirementsSection.summaryList.rows.push(considerClaimantDocQuestion(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
-  }
+  // if (claim.claimantResponse?.directionQuestionnaire?.hearing?.considerClaimantDocuments?.option == YesNo.YES) {
+  //   hearingRequirementsSection.summaryList.rows.push(considerClaimantDocResponse(claim, claimId, lng));
+  // }
 
-  if (claim.directionQuestionnaire?.experts?.expertEvidence?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.experts?.expertEvidence?.option) {
     hearingRequirementsSection.summaryList.rows.push(getUseExpertEvidence(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.experts?.sentExpertReports?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.experts?.sentExpertReports?.option) {
     hearingRequirementsSection.summaryList.rows.push(getSentReportToOtherParties(claim, claimId, lng));
   }
 
-  if (claim.directionQuestionnaire?.experts?.sharedExpert?.option) {
+  if (claim.claimantResponse?.directionQuestionnaire?.experts?.sharedExpert?.option) {
     hearingRequirementsSection.summaryList.rows.push(getShareExpertWithClaimant(claim, claimId, lng));
   }
 
-  if(claim.hasExpertDetails()) {
-    hearingRequirementsSection.summaryList.rows.push(... buildExpertsDetailsRows(claim.directionQuestionnaire, claimId, lng));
-  }
+  // if(claim.hasExpertDetails()) {
+  //   hearingRequirementsSection.summaryList.rows.push(... buildExpertsDetailsRows(claim.claimantResponse.directionQuestionnaire, claimId, lng));
+  // }
 };
