@@ -533,6 +533,7 @@ export class Claim {
         return YesNoUpperCase.YES;
       }
     }
+    return YesNoUpperCase.NO;
   }
 
   get isSupportRequiredYes(): boolean {
