@@ -748,7 +748,6 @@ export class Claim {
     return claimId_new;
   }
 
-
   isClaimant() {
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
   }
