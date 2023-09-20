@@ -25,10 +25,10 @@ const buildSummarySections = (claimId: string, claim: Claim, lang?: string | unk
 
 const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const isSignSettlement = claim.isSignASettlementAgreement();
-  const isSignSettlementForPaybysetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
+  const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
 
-  if (isSignSettlementForPaybysetDate)
+  if (isSignSettlementForPayBySetDate)
     return buildSummaryForPayBySetDate(claim, claimId, lang);
 
   if (isSignSettlementForPayByInstallments)
