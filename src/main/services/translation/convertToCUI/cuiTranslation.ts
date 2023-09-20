@@ -43,7 +43,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   } else if (claim.isFullDefence()) {
     claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
   }
-  if(ccdClaim.partialPayment){
+  if(ccdClaim?.partialPayment){
     claimantResponse.ccjRequest = toCUICCJRequest(ccdClaim);
   }
   claim.claimantResponse = claimantResponse;
