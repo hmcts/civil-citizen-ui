@@ -119,7 +119,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
     tasks.push(haveYouBeenPaidTask);
-    if (claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES) {
+    if (claim.isClaimantConfirmedDefendantPartlyPaidAmount()) {
       const settleClaimForPaidAmountTask = getSettleClaimForPaidAmount(claim, claimId, lang);
       tasks.push(settleClaimForPaidAmountTask);
     }
