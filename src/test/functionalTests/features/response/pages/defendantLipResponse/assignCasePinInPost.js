@@ -10,6 +10,8 @@ class AssignCasePinInPost {
 
   async open(claimNumber, securityCode) {
     await I.amOnPage('/first-contact/claim-reference/');
+    await I.click('Accept additional cookies');
+    await I.click('Hide this message');
     await I.waitForText('Enter your claim number', config.WaitForText);
     await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
@@ -21,7 +23,7 @@ class AssignCasePinInPost {
     await this.verifyClaimSummaryPageContent(claimNumber);
     await I.click('Respond to claim');
     // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
-    await I.wait(60);
+    await I.wait(10);
   }
 
   async verifyClaimSummaryPageContent(claimNumber) {
