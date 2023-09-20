@@ -8,7 +8,7 @@ import {
 } from 'services/features/claimantResponse/checkAnswers/buildFreeTelephoneMediationSection';
 import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {
-  buildHearingRequirementsSection,
+  buildHearingRequirementsSectionCommon,
 } from 'services/features/common/buildHearingRequirementsSection';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -22,7 +22,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
   const getHearingRequirementsSection = () => {
     return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
-      ? buildHearingRequirementsSection(claim, claimId, lang,claim.claimantResponse.directionQuestionnaire)
+      ? buildHearingRequirementsSectionCommon(claim, claimId, lang,claim.claimantResponse.directionQuestionnaire)
       : null;
   };
   return {

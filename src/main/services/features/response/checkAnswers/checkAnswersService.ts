@@ -70,7 +70,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 
   const getHearingRequirementsSection = () => {
     return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
-      ? buildHearingRequirementsSection(claim, claimId, lang,claim.directionQuestionnaire)
+      ? buildHearingRequirementsSection(claim, claimId, lang)
       : null;
   };
 

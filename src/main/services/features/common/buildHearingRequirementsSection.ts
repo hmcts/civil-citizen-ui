@@ -10,8 +10,11 @@ import {
 } from 'services/features/common/buildSmallClaimHearingRequirements';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {buildCommonHearingRequirements} from 'services/features/common/buildCommonHearingRequirements';
+export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+  return buildHearingRequirementsSectionCommon(claim,claimId,lang,claim.directionQuestionnaire);
+}
 
-export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string | unknown, directionQuestionnaire : DirectionQuestionnaire): SummarySection => {
+export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string | unknown, directionQuestionnaire : DirectionQuestionnaire): SummarySection => {
   const lng = getLng(lang);
   const hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
