@@ -1,11 +1,10 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {Claim} from 'models/claim';
-import {
-  ExpertSection,
-  UploadDocumentsUserForm,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockExpertSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {EvidenceUploadExpert} from 'models/document/documentType';
 
 describe('Expert service', () => {
   let mockClaim;
@@ -79,7 +78,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.expertReport = getMockExpertSectionArray();
+    form.expertReport = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -99,7 +98,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.expertStatement = getMockExpertSectionArray();
+    form.expertStatement = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -119,7 +118,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.questionsForExperts = getMockExpertSectionArray();
+    form.questionsForExperts = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -139,7 +138,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.answersForExperts = getMockExpertSectionArray();
+    form.answersForExperts = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -226,10 +225,3 @@ describe('Expert service', () => {
     expect(actualExpertContent.length).toEqual(0);
   });
 });
-
-const getMockExpertSectionArray = () => {
-  const sectionArray: ExpertSection[] = [];
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  return sectionArray;
-};

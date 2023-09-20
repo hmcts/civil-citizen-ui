@@ -1,7 +1,11 @@
 import {app} from '../../app';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {
+  CCDClaim,
+  CivilClaimResponse,
+} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
+import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -58,6 +62,9 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  if (claim.draftClaimCreatedAt) {
+    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
+  }
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
@@ -69,3 +76,15 @@ const createNewCivilClaimResponse = (claimId: string) => {
 export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
   await app.locals.draftStoreClient.del(claimId);
 };
+
+export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
+  const draftClaim = createNewCivilClaimResponse(claimId);
+  const creationTime = new Date();
+  draftClaim.case_data = {
+    draftClaimCreatedAt: creationTime,
+  } as unknown as CCDClaim;
+  const draftStoreClient = app.locals.draftStoreClient;
+  draftStoreClient.set(claimId, JSON.stringify(draftClaim));
+  await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(creationTime));
+  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`);
+}

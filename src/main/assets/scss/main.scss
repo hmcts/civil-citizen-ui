@@ -35,6 +35,15 @@
   }
 }
 
+.govuk-section-break--visible--l {
+  width: 100%;
+}
+@media (min-width: 40.0625em) {
+  .govuk-section-break--visible--l {
+    width: 120%;
+  }
+}
+
 .hide {
   display: none;
 }
@@ -217,4 +226,14 @@
     content: '.....';
     animation: dotAnimation 1s infinite steps(5);
   }
+}
+
+.wordWrap {
+  word-break: break-word;
+}
+
+.tableWrap {
+  word-break: break-word;
+  table-layout: fixed;
+  width: 100%;
 }

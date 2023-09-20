@@ -22,10 +22,7 @@ import {DocumentType} from 'common/models/document/documentType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
-import {
-  HowMuchHaveYouPaid,
-  HowMuchHaveYouPaidParams,
-} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from 'common/form/models/defence';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
@@ -39,6 +36,7 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -87,7 +85,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     //When
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
-    expect(result).toBeTruthy;
+    expect(result).toBeTruthy();
   });
   it('should return false', () => {
     //Given
@@ -1009,6 +1007,45 @@ describe('Documents', () => {
     });
   });
 
+  describe('isPartialAdmissionPaid', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other responses type', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.FULL_DEFENCE,
+      };
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty partial admission', () => {
+      //Given
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = new PartialAdmission();
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state Partial Admission and already paid', () => {
+      //Given
+      claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isPartialAdmissionPaid();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('isBusiness', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -1274,6 +1311,115 @@ describe('Documents', () => {
       expect('1 January 2023').toEqual(claim.bundleStitchingDeadline);
     });
   });
+
+  describe('test of method threeWeeksBeforeHearingDate', () => {
+    const claim = new Claim();
+
+    it('should return formatted date 3 weeks prior to 29 July 2023', () => {
+      //Given
+      const expectedDate = '8 July 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
+      //When
+      const actualDate = claim.threeWeeksBeforeHearingDate();
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+    it('bundleStitchingDeadline method should return formatted date 3 weeks prior to 2 July 2023', () => {
+      //Given
+      const expectedDate = '11 June 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 2), null);
+      //When
+      const actualDate = claim.bundleStitchingDeadline;
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+    it('finalisingTrialArrangementsDeadline method should return formatted date 3 weeks prior to 9 July 2023', () => {
+      //Given
+      const expectedDate = '18 June 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 9), null);
+      //When
+      const actualDate = claim.finalisingTrialArrangementsDeadline;
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+  });
+
+  describe('test of method isSixWeeksOrLessFromTrial', () => {
+    const claim = new Claim();
+
+    it('should return true if a date is exactly six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksFromTrial).toBeTruthy();
+    });
+
+    it('should return true if a date is less than six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 - 1);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeTruthy();
+    });
+
+    it('should return false if a date is more than six weeks from trial', () => {
+      //Given
+      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 + 1);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+  });
+
+  describe('test formatted case reference number', () => {
+    it('should return formatted case reference number', () => {
+      //Given
+      const claim = new Claim();
+      const claimId = '1694412283955256';
+      //when
+      const newClaimId = claim.getFormattedCaseReferenceNumber(claimId);
+      //then
+      expect(newClaimId).toEqual('1694-4122-8395-5256');
+    });
+  });
+
+  describe('test of method isClaimant', () => {
+    const claim = new Claim();
+
+    it('should return true when APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+    it('should return true when CLAIMANT', () => {
+      //Given
+      claim.caseRole = CaseRole.CLAIMANT;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeTruthy();
+    });
+
+    it('should return false when is not APPLICANTSOLICITORONE', () => {
+      //Given
+      claim.caseRole = CaseRole.RESPONDENTSOLICITORTWO;
+      //When
+      const isClaimant = claim.isClaimant();
+      //Then
+      expect(isClaimant).toBeFalsy();
+    });
+  });
+
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
     caseProgressionHearingDocuments.id = '1221';
