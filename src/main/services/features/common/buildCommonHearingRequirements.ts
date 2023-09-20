@@ -111,7 +111,7 @@ function getLanguageSelected(languageOptions: LanguageOptions, lng: string) {
   }
 }
 
-export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const speakingLanguagePreference = (lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const speakingLanguageName = getLanguageSelected(directionQuestionnaire?.welshLanguageRequirements?.language?.speakLanguage, lng);
 
   return summaryRow(
@@ -120,7 +120,7 @@ export const speakingLanguagePreference = (claim: Claim, claimId: string, lng: s
   );
 };
 
-export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const documentsLanguagePreference = ( lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
 
   const documentsLanguageName = getLanguageSelected(directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage, lng);
 
@@ -130,7 +130,7 @@ export const documentsLanguagePreference = (claim: Claim, claimId: string, lng: 
   );
 };
 
-export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const phoneAndVideoQuestion = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const option =  directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
@@ -143,7 +143,7 @@ export const phoneAndVideoQuestion = (claim: Claim, claimId: string, lng: string
   );
 };
 
-export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const phoneAndVideoInfo = ( lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const details = directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details;
 
   return summaryRow(
@@ -152,7 +152,7 @@ export const phoneAndVideoInfo = (claim: Claim, claimId: string, lng: string, di
   );
 };
 
-export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const getUnavailableDatesList = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasUnavailableDatesForHearing = getListOfUnavailableDate(directionQuestionnaire?.hearing?.unavailableDatesForHearing, lng);
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
@@ -162,7 +162,7 @@ export const getUnavailableDatesList = (claim: Claim, claimId: string, lng: stri
   );
 };
 
-export const getUnavailabilityReason = (claim: Claim, claimId: string, days: number, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const getUnavailabilityReason = ( claimId: string, days: number, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const whyUnavailableForHearing = directionQuestionnaire.hearing.whyUnavailableForHearing?.reason;
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS', {days: days, lng: lng}),
@@ -172,7 +172,7 @@ export const getUnavailabilityReason = (claim: Claim, claimId: string, days: num
   );
 };
 
-export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const displayUnavailabilityForHearing = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasUnavailableDatesForHearing = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option, lng);
   return summaryRow(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE', {lng}),
@@ -182,7 +182,7 @@ export const displayUnavailabilityForHearing = (claim: Claim, claimId: string, l
   );
 };
 
-export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const getSpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasSpecificCourtLocation = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
@@ -192,7 +192,7 @@ export const getSpecificCourtLocation = (claim: Claim, claimId: string, lng: str
   );
 };
 
-export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const displaySpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasSpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
@@ -202,7 +202,7 @@ export const displaySpecificCourtLocation = (claim: Claim, claimId: string, lng:
   );
 };
 
-export const getSpecificCourtLocationReason = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const getSpecificCourtLocationReason = (claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const whySpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.reason;
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.REASON', {lng}),
@@ -219,21 +219,21 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
   }
   hearingRequirementsSection.summaryList.rows.push(...getWitnesses(directionQuestionnaire, claimId, lng));
 
-  hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claim, claimId, lng,directionQuestionnaire));
+  hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claimId, lng,directionQuestionnaire));
 
   if (directionQuestionnaire?.hearing?.cantAttendHearingInNext12Months?.option === YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(getUnavailableDatesList(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(getUnavailableDatesList( claimId, lng,directionQuestionnaire));
     const numberOfUnavailableDays = getNumberOfUnavailableDays(directionQuestionnaire.hearing.unavailableDatesForHearing);
     if (numberOfUnavailableDays > MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON) {
-      hearingRequirementsSection.summaryList.rows.push(getUnavailabilityReason(claim, claimId, numberOfUnavailableDays, lng,directionQuestionnaire));
+      hearingRequirementsSection.summaryList.rows.push(getUnavailabilityReason( claimId, numberOfUnavailableDays, lng,directionQuestionnaire));
     }
   }
 
   if (directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option) {
-    hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(phoneAndVideoQuestion( claimId, lng,directionQuestionnaire));
 
     if(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option === YesNo.YES)
-      hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo(claim, claimId, lng,directionQuestionnaire));
+      hearingRequirementsSection.summaryList.rows.push(phoneAndVideoInfo( lng,directionQuestionnaire));
   }
 
   if (directionQuestionnaire?.vulnerabilityQuestions?.vulnerability) {
@@ -247,17 +247,17 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
-  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation(claim, claimId, lng,directionQuestionnaire));
+  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation( claimId, lng,directionQuestionnaire));
   if (directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claim, claimId, lng,directionQuestionnaire));
-    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocationReason(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocationReason( claimId, lng,directionQuestionnaire));
   }
 
   if (directionQuestionnaire?.welshLanguageRequirements?.language) {
     hearingRequirementsSection.summaryList.rows.push(summaryRow(
       t('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE', {lng}),null ,constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL), changeLabel(lng)));
-    hearingRequirementsSection.summaryList.rows.push(speakingLanguagePreference(claim, claimId, lng,directionQuestionnaire));
-    hearingRequirementsSection.summaryList.rows.push(documentsLanguagePreference(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(speakingLanguagePreference( lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(documentsLanguagePreference( lng,directionQuestionnaire));
   }
 
 };
