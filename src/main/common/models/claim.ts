@@ -709,9 +709,22 @@ export class Claim {
     const claimId_new = parts.join('-');
     return claimId_new;
   }
-  
+
   isClaimant(){
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+  }
+
+  isClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES
+  }
+  isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
+  }
+  isClaimantConfirmedDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
+  }
+  isClaimantDeclaredDefendantNotPaidAmount() {
+    return this?.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO
   }
 }
 

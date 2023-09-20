@@ -124,8 +124,8 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
       tasks.push(settleClaimForPaidAmountTask);
     }
 
-    if (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO ||
-      claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO) {
+    if (claim?.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount() ||
+      claim.isClaimantDeclaredDefendantNotPaidAmount()) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }
@@ -145,8 +145,8 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
   if (claim.isClaimantIntentionPending() &&
     (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO ||
       claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO ||
-      claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO ||
-      claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
+      claim.isClaimantDeclaredDefendantNotPaidAmount() ||
+      claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount()
     )) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
