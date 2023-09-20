@@ -1,12 +1,16 @@
 import {Request, Response, NextFunction} from 'express';
 import {Claim} from 'models/claim';
 import {ccjConfirmationGuard} from 'routes/guards/ccjConfirmationGuard';
-import {CaseDocument} from 'models/document/caseDocument';
 import {getClaimById, getRedisStoreForSession} from 'modules/utilityService';
 import config from 'config';
 import nock from 'nock';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {CaseState} from 'form/models/claimDetails';
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import {YesNo} from 'form/models/yesNo';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -34,7 +38,10 @@ describe('CCJ Guard', () => {
   it('should access ccj confirmation page', async () => {
     //Given
     const claim = new Claim();
-    claim.defaultJudgmentDocuments = [<CaseDocument>{}];
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     //When
     await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
