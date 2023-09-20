@@ -159,6 +159,8 @@ import howMuchContinueClaimingController from './features/claim/interest/howMuch
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
+import claimSettledConfirmationController
+  from './features/claimantResponse/claimSettledConfirmationController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
@@ -362,6 +364,7 @@ export default [
   debtRespiteReferenceNumberController,
   breathingSpaceCheckAnswersController,
   datePaidViewController,
+  claimSettledConfirmationController,
   settleClaimController,
   acceptRepaymentPlanController,
   partPaymentReceivedController,
