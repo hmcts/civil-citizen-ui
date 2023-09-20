@@ -143,8 +143,8 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
   if (claim.isClaimantIntentionPending() &&
-    (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO ||
-      claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO ||
+    (claim.isClaimantRejectedDefendantAdmittedAmount() ||
+      claim.isClaimantRejectedDefendantResponse() ||
       claim.isClaimantDeclaredDefendantNotPaidAmount() ||
       claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount()
     )) {

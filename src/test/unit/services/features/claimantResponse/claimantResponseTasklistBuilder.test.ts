@@ -71,11 +71,13 @@ describe('Full Defence', () => {
         },
       },
       isClaimantIntentionPending: jest.fn(),
+      isClaimantRejectedDefendantAdmittedAmount: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
+    claim.isClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);

@@ -717,14 +717,25 @@ export class Claim {
   isClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
     return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
   }
+
   isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount() {
     return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
   }
+
   isClaimantConfirmedDefendantPartlyPaidAmount() {
     return this?.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES;
   }
+
   isClaimantDeclaredDefendantNotPaidAmount() {
     return this?.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO;
+  }
+
+  isClaimantRejectedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  isClaimantRejectedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
 }
 
