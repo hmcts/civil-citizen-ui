@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Claim } from 'common/models/claim';
 import { getClaimById } from 'modules/utilityService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { CLAIMANT_RESPONSE_CONFIRMATION_URL, DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
@@ -12,7 +12,7 @@ describe('claimantIntentGuard', () => {
   let res: Partial<Response> & { redirect: jest.Mock };
   let next: jest.Mock;
   beforeEach(() => {
-    req = { params: { id: '123' } };
+    req = {params: {id: '123'}, originalUrl: 'test' };
     res = { redirect: jest.fn() };
     next = jest.fn();
   });
@@ -21,6 +21,16 @@ describe('claimantIntentGuard', () => {
       isClaimantIntentionPending: jest.fn().mockReturnValue(true),
     };
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    await claimantIntentGuard(req as Request, res as Response, next);
+    expect(next).toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+  });
+  it('should call next if isClaimantIntentionPending returns false but it`s claimant response confirmation page', async () => {
+    const claim: Partial<Claim> = {
+      isClaimantIntentionPending: jest.fn().mockReturnValue(false),
+    };
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    req.originalUrl = CLAIMANT_RESPONSE_CONFIRMATION_URL;
     await claimantIntentGuard(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
     expect(res.redirect).not.toHaveBeenCalled();
