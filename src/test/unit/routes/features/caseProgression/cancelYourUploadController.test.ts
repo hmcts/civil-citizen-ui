@@ -10,6 +10,7 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -34,6 +35,9 @@ describe('Cancel document upload - On GET', () => {
     nock(civilServiceUrl)
       .get(CIVIL_SERVICE_CASES_URL + claimId)
       .reply(200, claim);
+    nock(civilServiceUrl)
+      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
     //When
     await testSession
       .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))

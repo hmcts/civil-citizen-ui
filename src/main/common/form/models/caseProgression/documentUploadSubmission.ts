@@ -2,7 +2,7 @@ import {IsNotEmpty} from 'class-validator';
 
 export class documentUploadSubmissionForm {
 
-  @IsNotEmpty({message: 'ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'})
+  @IsNotEmpty({message: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_VALIDATION'})
     signed?: boolean;
 
   constructor(signed?: boolean) {
