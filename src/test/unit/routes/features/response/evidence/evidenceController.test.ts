@@ -19,6 +19,8 @@ const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilCl
 const mockWithLessThaFourEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const civilClaimResponseTwoMock = require('./evidenceListTwoMock.json');
@@ -26,6 +28,8 @@ const civilClaimResponseMockWithFullAdmission: string = JSON.stringify(civilClai
 const eMockWithFullAdmission = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithFullAdmission)),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Repayment Plan', () => {
