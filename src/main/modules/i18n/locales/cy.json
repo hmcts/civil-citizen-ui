@@ -861,6 +861,12 @@
     "CLAIMANT_RESPONSE_CONFIRMATION": {
       "CLAIM_NUMBER": "Your claim number:",
       "PAGE_TITLE": "Claimant Intention Confirmation",
+      "PA_PAY_IMMEDIATELY": {
+        "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
+        "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "The defendant said they'll pay you £{{ admittedAmount }} immediately.",
+        "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
+        "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
+      },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
@@ -2359,6 +2365,7 @@
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
+      "YOU_SETTLED_CLAIM": "This claim is now settled",
       "YOU_SHOULD": "Dylech:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "Rydych wedi cyflwyno eich ymateb",
       "YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai",

@@ -8,9 +8,6 @@ import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 import {Claim} from 'models/claim';
-import {Party} from 'models/party';
-import {PartyDetails} from 'form/models/partyDetails';
-import {PartyType} from 'models/partyType';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -49,9 +46,7 @@ describe('Dashboard Items', ()=> {
     it('should translate claim to dashboard item when claim is not empty', () => {
       //Given
       const claim = new Claim();
-      claim.applicant1 = new Party();
-      claim.applicant1.type = PartyType.COMPANY;
-      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Party Name'});
+      claim.draftClaimCreatedAt= new Date();
       //When
       const item = toDraftClaimDashboardItem(claim);
       //Then
