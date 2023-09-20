@@ -249,6 +249,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
   }
 
+  async submitClaimSettled(claimId: string, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, {}, req);
+  }
+  
   async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
