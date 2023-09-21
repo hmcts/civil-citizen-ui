@@ -3,20 +3,20 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   saveClaimantResponse,
-} from '../../../services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 import {
   getGenericOptionForm,
-} from '../../../services/genericForm/genericFormService';
+} from 'services/genericForm/genericFormService';
 
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {ClaimantResponseErrorMessages} from 'form/models/claimantResponse/claimantResponseErrorMessages';
 
 const partPaymentReceivedController = Router();
 const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-received';
@@ -33,7 +33,7 @@ partPaymentReceivedController.get(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, a
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     const claimantResponse = claim?.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
-    paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
+    paidAmount = claim.getPaidAmount();
     renderView(new GenericForm(claimantResponse.hasDefendantPaidYou), res, paidAmount);
   } catch (error) {
     next(error);
