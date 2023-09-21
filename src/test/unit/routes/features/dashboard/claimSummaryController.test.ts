@@ -10,6 +10,7 @@ import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/l
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {TabId, TabLabel} from 'routes/tabs';
 import {t} from 'i18next';
+import {CaseRole} from 'form/models/caseRoles';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -80,6 +81,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -95,7 +99,7 @@ describe('Claim Summary Controller Defendant', () => {
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
 
-      const claimWithoutSDO = claim;
+      const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
       claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
         'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
         'value': {
@@ -116,6 +120,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithoutSDO);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -135,6 +142,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -155,6 +165,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -186,6 +199,9 @@ describe('Claim Summary Controller Defendant', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
         .get(`/dashboard/${claimId}/defendant`)
@@ -196,6 +212,41 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain(t(TabLabel.UPDATES));
           expect(res.text).toContain(t(TabLabel.NOTICES));
           expect(res.text).toContain('A hearing has been scheduled for your case');
+        });
+    });
+
+    it('should show case dismissed latest Update defendant', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          caseDismissedHearingFeeDueDate: new Date(Date.now()),
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
         });
     });
   });

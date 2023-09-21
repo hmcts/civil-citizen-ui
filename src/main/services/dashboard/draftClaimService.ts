@@ -11,10 +11,10 @@ export interface DraftClaimData {
    draftClaim: DashboardClaimantItem
 }
 
-export const getDraftClaimData = async (userToken: string):Promise<DraftClaimData> => {
+export const getDraftClaimData = async (userToken: string, userId:string):Promise<DraftClaimData> => {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   const draftUrl = createDraftClaimUrl(isReleaseTwoEnabled);
-  const draftClaim = await getDraftClaim(userToken, isReleaseTwoEnabled);
+  const draftClaim = await getDraftClaim(userToken, userId, isReleaseTwoEnabled);
   return {
     claimCreationUrl: draftUrl,
     draftClaim: draftClaim,
@@ -28,12 +28,12 @@ const createDraftClaimUrl =  (isReleaseTwoEnabled : boolean):string => {
   }
   return `${ocmcBaseUrl}/eligibility`;
 };
-const getDraftClaim = async (userToken: string, isReleaseTwoEnabled : boolean): Promise<DashboardClaimantItem> => {
+
+const getDraftClaim = async (userToken: string, userId: string, isReleaseTwoEnabled : boolean): Promise<DashboardClaimantItem> => {
   if(isReleaseTwoEnabled) {
-    const claim = await getCaseDataFromStore(userToken);
+    const claim = await getCaseDataFromStore(userId);
     return toDraftClaimDashboardItem(claim);
   }
   return await getOcmcDraftClaims(userToken);
-
 };
 
