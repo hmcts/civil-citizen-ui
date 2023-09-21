@@ -72,12 +72,18 @@ describe('Full Defence', () => {
       },
       isClaimantIntentionPending: jest.fn(),
       isClaimantRejectedDefendantAdmittedAmount: jest.fn(),
+      isClaimantRejectedDefendantResponse: jest.fn(),
+      isClaimantDeclaredDefendantNotPaidAmount: jest.fn(),
+      isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
     claim.isClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
+    claim.isClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.isClaimantDeclaredDefendantNotPaidAmount.mockReturnValue(false);
+    claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(false);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -646,7 +652,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('shouldn`t display hearingRequirement section when claimant accepts defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
       //Given
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
       //When
       const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -656,7 +662,7 @@ describe('Claimant Response Task List builder', () => {
 
     it('shouldn`t display hearingRequirement section when claimant settle claim defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
       //Given
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
       claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
       //When
