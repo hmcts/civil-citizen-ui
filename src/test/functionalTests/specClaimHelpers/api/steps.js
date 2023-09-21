@@ -7,7 +7,6 @@ const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantRes
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
-const sdoMidEventPayload = require('../fixtures/events/SDOMidEventPayloads');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
