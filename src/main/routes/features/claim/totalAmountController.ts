@@ -33,7 +33,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
       claimAmount: claim.totalClaimAmount?.toFixed(2),
       interestToDate,
       claimFee,
-      totalClaimAmount: claim.totalClaimAmount + claimFee + interestToDate,
+      totalClaimAmount: ((claim.totalClaimAmount) + (claimFee) + (interestToDate)).toFixed(2),
       hearingAmount,
       hasInterest: claim.hasInterest(),
       hasHelpWithFees: claim.hasHelpWithFees(),
