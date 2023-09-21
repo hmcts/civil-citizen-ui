@@ -15,9 +15,6 @@ import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvid
 import {
   FinalOrderDocumentCollection,
 } from 'models/caseProgression/finalOrderDocumentCollectionType';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
-import {toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
-import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {toCUITrialArrangements} from 'services/translation/convertToCUI/convertToCUITrialArrangements';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
@@ -40,12 +37,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.defendantTrialArrangements = toCUITrialArrangements(ccdClaim, false);
 
     caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
-
-    const defendantTrialArrangements : TrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyRespondent1);
-    defendantTrialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments);
-    defendantTrialArrangements.otherTrialInformation = ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments;
-    caseProgression.defendantTrialArrangements = defendantTrialArrangements;
 
     return caseProgression;
   }
