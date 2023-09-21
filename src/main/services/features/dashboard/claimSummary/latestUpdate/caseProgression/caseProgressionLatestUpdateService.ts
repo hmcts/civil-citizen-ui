@@ -5,11 +5,16 @@ import {
   buildHearingTrialLatestUploadSection,
   buildNewUploadSection,
   buildFinaliseTrialArrangements,
+  buildClaimDismissedHearingDueDateUpdateContent,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
+  if (checkClaimDismissedHearingDueDate(claim)) {
+    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, false));
+    return getClaimSummaryContent(sectionContent.flat());
+  }
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
   }
@@ -33,6 +38,10 @@ export const checkEvidenceUploaded = (claim: Claim, isClaimant: boolean): boolea
   }
 };
 
+export const checkClaimDismissedHearingDueDate = (claim: Claim): boolean => {
+  return claim.caseDismissedHearingFeeDueDate != null;
+};
+
 export const getNewUploadLatestUpdateContent = (claim: Claim): ClaimSummarySection[][] => {
   return buildNewUploadSection(claim);
 };
@@ -43,6 +52,10 @@ export const getEvidenceUploadLatestUpdateContent = (claimId: string, claim: Cla
 
 export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: string): ClaimSummarySection[][] => {
   return buildHearingTrialLatestUploadSection(claim, lang);
+};
+
+export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
+  return buildClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant);
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {

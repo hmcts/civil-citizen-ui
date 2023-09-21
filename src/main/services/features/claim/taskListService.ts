@@ -86,7 +86,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   };
 
   if (
-    caseData.claimAmountBreakup && 
+    caseData.claimAmountBreakup &&
     caseData.claimDetails?.helpWithFees?.option &&
     (caseData.claimInterest === YesNo.NO || caseData.isInterestCompleted())
   ) {

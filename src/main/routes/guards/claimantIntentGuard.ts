@@ -11,7 +11,7 @@ export const claimantIntentGuard = (
   (async () => {
     try {
       const caseData: Claim = await getClaimById(req.params.id, req);
-      if (caseData.isClaimantIntentionPending()) {
+      if (caseData.isClaimantIntentionPending() || req.originalUrl.includes('claimant-response/confirmation')) {
         next();
       } else {
         res.redirect(

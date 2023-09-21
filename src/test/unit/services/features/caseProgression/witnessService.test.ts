@@ -2,7 +2,11 @@ import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
-import {getMockWitnessSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {
+  getMockSectionArray,
+  getMockWitnessSectionArray,
+} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {EvidenceUploadWitness} from 'models/document/documentType';
 
 describe('Witness service', () => {
   let mockClaim;
@@ -111,7 +115,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.witnessStatement = getMockWitnessSectionArray();
+    form.witnessStatement = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -129,7 +133,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.witnessSummary = getMockWitnessSectionArray();
+    form.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -147,7 +151,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.noticeOfIntention = getMockWitnessSectionArray();
+    form.noticeOfIntention = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -165,7 +169,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.documentsReferred = getMockWitnessSectionArray();
+    form.documentsReferred = getMockSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
