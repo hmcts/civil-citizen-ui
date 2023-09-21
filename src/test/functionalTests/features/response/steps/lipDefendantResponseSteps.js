@@ -184,8 +184,8 @@ class ResponseSteps {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
-  async CheckAndSubmit(claimRef, responseType) {
-    await checkYourAnswersPage.checkAndSubmit(claimRef, responseType);
+  async CheckAndSubmit(claimRef, responseType, claimType) {
+    await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
 
   async EnterDateToPayOn() {
