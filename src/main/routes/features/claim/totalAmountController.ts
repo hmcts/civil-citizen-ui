@@ -30,7 +30,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     }
 
     const form = {
-      claimAmount: claim.totalClaimAmount.toFixed(2),
+      claimAmount: claim.totalClaimAmount?.toFixed(2),
       interestToDate,
       claimFee,
       totalClaimAmount: claim.totalClaimAmount + claimFee + interestToDate,
