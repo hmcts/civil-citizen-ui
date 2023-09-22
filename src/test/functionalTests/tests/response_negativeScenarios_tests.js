@@ -2,11 +2,7 @@ const config = require('../../config');
 
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
-const admitAll = 'full-admission';
-const bySetDate = 'bySetDate';
-const repaymentPlan = 'repaymentPlan';
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 const yesIWantMoretime = 'yesIWantMoretime';
 
