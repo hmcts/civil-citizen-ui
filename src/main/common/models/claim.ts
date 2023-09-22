@@ -527,7 +527,7 @@ export class Claim {
   }
 
   get hasSupportRequiredList(): boolean {
-    return !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+    return this.isClaimantIntentionPending() ? !!this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList : !!this.directionQuestionnaire?.hearing?.supportRequiredList;
   }
 
   get contactNameFromClaimantResponse(): string {
@@ -570,7 +570,7 @@ export class Claim {
   }
 
   get isSupportRequiredDetailsAvailable(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0 : this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   get isClaimantResponseSupportRequiredDetailsAvailable(): boolean {
@@ -578,15 +578,15 @@ export class Claim {
   }
 
   hasExpertReportDetails(): boolean {
-    return this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES : this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
   }
 
   hasPermissionForExperts(): boolean {
-    return this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES  : this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
   }
 
   hasEvidenceExpertCanStillExamine(): boolean {
-    return this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
+    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES : this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
   }
 
   getExplanationText(): string {

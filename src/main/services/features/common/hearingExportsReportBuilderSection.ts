@@ -57,15 +57,15 @@ const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string, d
     examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', {lng: lang}),
       directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),
       changeLabel(lang)));
-    examineRows.push(...buildExpertsDetailsRows(claim, claimId, lang));
+    examineRows.push(...buildExpertsDetailsRows(claim, claimId, lang, directionQuestionnaire));
   }
   return examineRows;
 };
 
-const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
+const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string, directionQuestionnaire: DirectionQuestionnaire): SummaryRow[] => {
   const hrefExpertDetails = constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL);
   const hrefLabel = changeLabel(lang);
-  const rows = claim?.claimantResponse?.directionQuestionnaire?.experts?.expertDetailsList?.items;
+  const rows = directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: SummaryRow[] = [];
   rows?.forEach((expert, index) => {
     const row = index + 1;
