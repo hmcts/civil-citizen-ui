@@ -20,7 +20,7 @@ const fields = {
   correspondenceCity: 'input[id="correspondenceAddress[city]"]',
   correspondenceCity_error: 'a[href="#correspondenceAddress[city]"]',
   correspondencePostCode: 'input[id="correspondenceAddress[postCode]"]',
-  correspondencePostCode_error: 'a[href="#correspondenceAddress[postCode]"]'
+  correspondencePostCode_error: 'a[href="#correspondenceAddress[postCode]"]',
 };
 
 class EnterCompanyDetails {
