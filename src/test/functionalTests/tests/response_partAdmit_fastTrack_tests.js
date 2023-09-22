@@ -34,7 +34,7 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterCompanyDetails(); //modify
+  await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');

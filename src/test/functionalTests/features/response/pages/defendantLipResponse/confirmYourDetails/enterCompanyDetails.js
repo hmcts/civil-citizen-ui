@@ -52,6 +52,14 @@ class EnterCompanyDetails {
     await I.seeElement(fields.correspondencePostCode_error);
   }
 
+  async enterWrongPostcode() {
+    await I.fillField(fields.postcode, 'test');
+    await I.fillField(fields.correspondencePostCode, 'test');
+    await I.click('Save and continue');
+    await I.seeElement(fields.postcode_error);
+    await I.seeElement(fields.correspondencePostCode_error);
+  }
+
   async enterCorrespondenceAddressManually () {
     await I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
     await I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
