@@ -25,10 +25,10 @@ describe('Full Defence - Your Response', () => {
       //When
       const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
       //Then
-      expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE');
-      expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM');
-      expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('COMMON.YES');
-      expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].href).toBe('/case/claimId/claimant-response/intention-to-proceed');
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM');
+      expect(summarySections.sections[1].summaryList.rows[0].value.html).toBe('COMMON.YES');
+      expect(summarySections.sections[1].summaryList.rows[0].actions.items[0].href).toBe('/case/claimId/claimant-response/intention-to-proceed');
 
     });
   });
