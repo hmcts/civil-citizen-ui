@@ -71,7 +71,7 @@ const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lang: s
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections(claimId, claim, lang);
+  return buildSummarySections(claim, claimId, lang);
 };
 
 const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: string, lang: string | unknown) => {
