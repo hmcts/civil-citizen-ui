@@ -13,6 +13,7 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
+      expireInDays: REDIS_EXPIRE_IN_DAYS
     legacy:
       url: DRAFT_STORE_API_URL
   session:
