@@ -118,20 +118,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   const tasks: Task[] = [];
   const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
   tasks.push(haveYouBeenPaidTask);
-  if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
-    if (claim.hasClaimantConfirmedDefendantPaid()) {
-      const settleClaimForPaidAmountTask = getSettleTheClaimForTask(claim, claimId, lang);
-      tasks.push(settleClaimForPaidAmountTask);
-    }
-
-    if (claim?.hasClaimantRejectedPartAdmitPayment() ||
-      claim.hasClaimantRejectedDefendantPaid()) {
-      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
-      tasks.push(freeTelephoneMediationTask);
-    }
-  }
-  if (claim.isPartialAdmissionPaid()) {
-
+  if (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
     }
