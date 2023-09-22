@@ -163,6 +163,10 @@ class ResponseSteps {
     await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
 
+  async EnterYourOptionsForDeadlineError(claimRef, deadlineOption) {
+    await viewYourOptionsBeforeDeadline.selectYouOptionsError(claimRef, deadlineOption);
+  }
+
   async EnterCompanyDetails(){
     await taskListPage.verifyResponsePageContent();
     await enterCompanyDetails.enterCompanyDetails();

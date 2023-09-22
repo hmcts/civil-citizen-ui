@@ -3,6 +3,9 @@ const config = require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 
+const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
+const yesIWantMoretime = 'yesIWantMoretime';
+
 let claimRef;
 let caseData;
 let claimNumber;
@@ -26,8 +29,14 @@ Before(async ({api}) => {
     await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
-
+2
 Scenario('Personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
+
+Scenario('View your options before response deadline error screen @test', async () => {
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
+  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
+  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
 });
