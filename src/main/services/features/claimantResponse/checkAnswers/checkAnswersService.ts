@@ -19,7 +19,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
     // TODO : This part will be developed as part of other future tasks for different scenarios
-      buildDetailsSection(claim, claimId, lang),
+      buildDetailsSection(claim, claimId, lang);
       buildYourResponseSection(claim, claimId, lang);
     ],
   };
