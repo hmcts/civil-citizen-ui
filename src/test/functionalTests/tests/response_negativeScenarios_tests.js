@@ -8,6 +8,7 @@ const admitAll = 'full-admission';
 const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
+const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef;
 let caseData;
@@ -34,8 +35,9 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('View your options before response deadline error screen', async () => {
+Scenario('View your options before response deadline error screen @test', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
+  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
 });
