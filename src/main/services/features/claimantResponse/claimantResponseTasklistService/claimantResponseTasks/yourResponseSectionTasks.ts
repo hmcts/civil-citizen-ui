@@ -32,9 +32,6 @@ export function getSettleTheClaimForTask(claim: Claim, claimId: string, lang: st
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
-    settleTheClaimForTask.status = TaskStatus.COMPLETE;
-  }
   if (claim?.isClaimantSettleTheClaimForDefendantPartlyPaidAmount() ||
     (claim?.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount() && claim?.claimantResponse?.rejectionReason?.text)) {
     settleTheClaimForTask.status = TaskStatus.COMPLETE;

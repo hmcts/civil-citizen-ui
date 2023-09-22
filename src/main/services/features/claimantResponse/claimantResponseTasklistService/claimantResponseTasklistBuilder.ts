@@ -130,9 +130,9 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
       tasks.push(freeTelephoneMediationTask);
     }
   }
-  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
-  tasks.push(haveYouBeenPaidTask);
   if (claim.isPartialAdmissionPaid()) {
+    const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+    tasks.push(haveYouBeenPaidTask);
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
     }
