@@ -38,7 +38,7 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
   if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lang);
   
-   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY)
+  if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY)
     return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
 };
 
