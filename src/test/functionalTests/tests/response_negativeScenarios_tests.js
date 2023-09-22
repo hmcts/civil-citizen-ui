@@ -29,10 +29,11 @@ Before(async ({api}) => {
     await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
-2
+
 Scenario('Personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
+});
 
 Scenario('View your options before response deadline error screen @test', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
