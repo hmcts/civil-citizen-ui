@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
+  CANCEL_TRIAL_ARRANGEMENTS,
   DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
@@ -31,10 +32,10 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
     const defendantOtherTrialInformation: string = claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation;
 
     const form = new GenericForm(new OtherTrialInformation(defendantOtherTrialInformation));
-
+    const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
     res.render(hearingDurationViewPath, {form: form,
       hearingDurationContents: getHearingDurationAndOtherInformation(claim, claimIdPrettified),
-      latestUpdatesUrl: latestUpdatesUrl, hasAnythingChangedUrl: hasAnythingChangedUrl});
+      latestUpdatesUrl: latestUpdatesUrl, hasAnythingChangedUrl: hasAnythingChangedUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
