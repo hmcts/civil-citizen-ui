@@ -25,6 +25,7 @@ const fields = {
 
 class EnterCompanyDetails {
   async enterCompanyDetails () {
+    await I.click('Confirm your details');
     await I.waitForElement(fields.contactPerson, config.WaitForText);
     await I.fillField(fields.contactPerson, 'TestPerson');
     await I.fillField(fields.addressLine1, 'Test AddressLine1');
@@ -61,6 +62,8 @@ class EnterCompanyDetails {
   }
 
   async enterCorrespondenceAddressManually () {
+    await I.click(fields.correspondenceAddress_yes);
+    await I.click('Enter address manually');
     await I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
     await I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
     await I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');

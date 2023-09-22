@@ -148,11 +148,15 @@ class ResponseSteps {
 
   async EnterPersonalDetails(claimRef) {
     await taskListPage.verifyResponsePageContent();
-    await nameAndAddressDetailsPage.emptyNameAndAddressDetails(claimRef);
-    await nameAndAddressDetailsPage.enterWrongPostcode();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
     await contactNumberDetailsPage.enterContactNumber(claimRef);
+  }
+
+  async EnterPersonalDetailsError(claimRef) {
+    await taskListPage.verifyResponsePageContent();
+    await nameAndAddressDetailsPage.emptyNameAndAddressDetails(claimRef);
+    await nameAndAddressDetailsPage.enterWrongPostcode();
   }
 
   async EnterYourOptionsForDeadline(claimRef, deadlineOption) {
@@ -161,11 +165,15 @@ class ResponseSteps {
 
   async EnterCompanyDetails(){
     await taskListPage.verifyResponsePageContent();
-    await enterCompanyDetails.emptyCompanyDetails();
-    await enterCompanyDetails.enterWrongPostcode();
     await enterCompanyDetails.enterCompanyDetails();
     await enterCompanyDetails.enterCorrespondenceAddressManually();
     await contactNumberDetailsPage.enterContactNumber();
+  }
+
+  async EnterCompanyDetailError(){
+    await taskListPage.verifyResponsePageContent();
+    await enterCompanyDetails.emptyCompanyDetails();
+    await enterCompanyDetails.enterWrongPostcode();
   }
 
   async RespondToRequest(claimRef) {
