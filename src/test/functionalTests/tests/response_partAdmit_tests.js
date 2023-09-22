@@ -36,7 +36,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @park @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -58,7 +58,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @park @night
   }
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @park @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -81,7 +81,7 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   }
 });
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @park @nightly', async ({api}) => {
+Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -105,7 +105,7 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @park 
   }
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @park', async () => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
