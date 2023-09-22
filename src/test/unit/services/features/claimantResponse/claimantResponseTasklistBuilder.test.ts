@@ -55,6 +55,7 @@ describe('Full Defence', () => {
     //Given
     const claim = {
       isPartialAdmission: jest.fn(),
+      isPartialAdmissionPaid: jest.fn(),
       isFullDefence: jest.fn(),
       hasPaidInFull: jest.fn(),
       hasConfirmedAlreadyPaid: jest.fn(),
@@ -614,6 +615,54 @@ describe('Claimant Response Task List builder', () => {
       expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
       expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[3]).toBeUndefined();
+    });
+  });
+
+  describe('Your response section', () => {
+    it('should display amount have been paid task as incomplete', () => {
+      //When
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.partialAdmission = {
+        alreadyPaid: {option: YesNo.YES},
+      };
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display free telephone mediation task as incomplete', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as incomplete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}, hasPartPaymentBeenAccepted: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
   });
 

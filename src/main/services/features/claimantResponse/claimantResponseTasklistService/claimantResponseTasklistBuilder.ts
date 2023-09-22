@@ -20,8 +20,8 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {
   getHaveYouBeenPaidTask,
-  getSettleClaimForPaidAmount,
-} from './claimantResponseTasks/yourResponseSectionTasks';
+  getSettleTheClaimForTask,
+} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -120,7 +120,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
     tasks.push(haveYouBeenPaidTask);
     if (claim.isClaimantConfirmedDefendantPartlyPaidAmount()) {
-      const settleClaimForPaidAmountTask = getSettleClaimForPaidAmount(claim, claimId, lang);
+      const settleClaimForPaidAmountTask = getSettleTheClaimForTask(claim, claimId, lang);
       tasks.push(settleClaimForPaidAmountTask);
     }
 
@@ -130,6 +130,17 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
       tasks.push(freeTelephoneMediationTask);
     }
   }
+  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+  tasks.push(haveYouBeenPaidTask);
+  if (claim.isPartialAdmissionPaid()) {
+    if(claim.hasClaimantConfirmedDefendantPaid()){
+      tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
+    }
+    if(claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()){
+      tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
+    }
+  }
+
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', {lng: lang}), tasks};
 }
 
@@ -142,12 +153,11 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  if (claim.isClaimantIntentionPending() &&
-    (claim.isClaimantRejectedDefendantAdmittedAmount() ||
-      claim.isClaimantRejectedDefendantResponse() ||
-      claim.isClaimantDeclaredDefendantNotPaidAmount() ||
-      claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount()
-    )) {
+  if (isPartialAdmissionNotAccepted(claim) ||
+    isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
+    isFullDefenceClaimantNotSettleTheClaim(claim) ||
+    claim.isClaimantDeclaredDefendantNotPaidAmount() ||
+    claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
@@ -157,4 +167,16 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: lang}), tasks};
+}
+
+function isPartialAdmissionNotAccepted(claim: Claim) : boolean {
+  return (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO);
+}
+
+function isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim: Claim) : boolean {
+  return claim.isPartialAdmissionPaid() && ((claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()));
+}
+
+function isFullDefenceClaimantNotSettleTheClaim(claim: Claim) : boolean {
+  return claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
 }
