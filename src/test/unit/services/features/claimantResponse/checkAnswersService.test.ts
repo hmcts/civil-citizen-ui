@@ -16,7 +16,6 @@ jest.mock('i18next', () => ({
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-
 describe('Check Answers service', () => {
   describe('Get Data from Draft', () => {
 

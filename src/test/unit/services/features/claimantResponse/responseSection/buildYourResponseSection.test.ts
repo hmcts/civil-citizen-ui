@@ -45,7 +45,7 @@ describe('Part Admission - Your Response', () => {
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {
         option: YesNo.YES,
-      }
+      };
       //When
       const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
       //Then
@@ -64,7 +64,7 @@ describe('Part Admission - Your Response', () => {
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {
         option: YesNo.NO,
-      }
+      };
       //When
       const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
       //Then
