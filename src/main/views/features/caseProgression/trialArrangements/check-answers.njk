@@ -45,9 +45,9 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-button-group">
               {{ govukButton({
-                 text: submitText
+                text: t('COMMON.BUTTONS.SUBMIT')
               }) }}
-              <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
           {{ contactUsForHelp(t) }}
