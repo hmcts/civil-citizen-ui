@@ -11,23 +11,27 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
 import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
+import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claimId: string, claim: Claim, lang: string | unknown): SummarySections => {
+  const getYourResponse = () => {
+    return buildYourResponseSection(claim, claimId, lang);
+  };
+
   return {
     sections: [
-    // TODO : This part will be developed as part of other future tasks for different scenarios
-      buildDetailsSection(claim, claimId, lang);
-      buildYourResponseSection(claim, claimId, lang);
+      buildDetailsSection(claim, claimId, lang),
+      getYourResponse(),
     ],
   };
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  const lang = getLng(lang);
-  return buildSummarySections(claimId, claim, lang);
+  const lng = getLng(lang);
+  return buildSummarySections(claimId, claim, lng);
 };
 
 const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
