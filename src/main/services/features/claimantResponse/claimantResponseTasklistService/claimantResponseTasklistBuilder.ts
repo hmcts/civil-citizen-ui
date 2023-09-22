@@ -116,23 +116,22 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
+  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+  tasks.push(haveYouBeenPaidTask);
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
-    const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
-    tasks.push(haveYouBeenPaidTask);
-    if (claim.isClaimantConfirmedDefendantPartlyPaidAmount()) {
+    if (claim.hasClaimantConfirmedDefendantPaid()) {
       const settleClaimForPaidAmountTask = getSettleTheClaimForTask(claim, claimId, lang);
       tasks.push(settleClaimForPaidAmountTask);
     }
 
-    if (claim?.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount() ||
-      claim.isClaimantDeclaredDefendantNotPaidAmount()) {
+    if (claim?.hasClaimantRejectedPartAdmitPayment() ||
+      claim.hasClaimantRejectedDefendantPaid()) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
     }
   }
   if (claim.isPartialAdmissionPaid()) {
-    const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
-    tasks.push(haveYouBeenPaidTask);
+
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
     }
@@ -156,8 +155,8 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
   if (isPartialAdmissionNotAccepted(claim) ||
     isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
     isFullDefenceClaimantNotSettleTheClaim(claim) ||
-    claim.isClaimantDeclaredDefendantNotPaidAmount() ||
-    claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount()) {
+    claim.hasClaimantRejectedDefendantPaid() ||
+    claim.hasClaimantRejectedPartAdmitPayment()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }

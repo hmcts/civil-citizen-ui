@@ -72,19 +72,19 @@ describe('Full Defence', () => {
         },
       },
       isClaimantIntentionPending: jest.fn(),
-      isClaimantRejectedDefendantAdmittedAmount: jest.fn(),
-      isClaimantRejectedDefendantResponse: jest.fn(),
-      isClaimantDeclaredDefendantNotPaidAmount: jest.fn(),
-      isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
+      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
+      hasClaimantRejectedDefendantResponse: jest.fn(),
+      hasClaimantRejectedDefendantPaid: jest.fn(),
+      hasClaimantRejectedPartAdmitPayment: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
-    claim.isClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
-    claim.isClaimantRejectedDefendantResponse.mockReturnValue(false);
-    claim.isClaimantDeclaredDefendantNotPaidAmount.mockReturnValue(false);
-    claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
+    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
