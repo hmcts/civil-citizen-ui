@@ -282,21 +282,26 @@
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
-    "HOW_THEY_RESPONDED": {
-      "TITLE": "How they responded",
-      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
-    },
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
       "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
       "HOW_FORMALISE": "Choose how to formalise repayment",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next",
-      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response"
+      "TITLE": "Choose what to do next"
+    },
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "YOUR_RESPONSE": {
+      "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }} ?",
+      "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }} ?",
+      "TITLE": "Your response"
     }
   },
   "TASK_LIST": {
@@ -445,6 +450,7 @@
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "A oes gennych chi dystion eraill?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
       "EMAIL_ADDRESS": "Cyfeiriad e-bost (dewisol)",
@@ -472,6 +478,8 @@
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
       "GIVE_EVIDENCE": "Ydych chi eisiau rhoi tystiolaeth?",
       "HEARING_REQUIREMENTS_TITLE": "Gofynion ar gyfer gwrandawiad",
+      "I_REJECT_THIS_AMOUNT": "I reject this amount",
+      "I_ACCEPT_THIS_AMOUNT":"I accept this amount",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -856,6 +864,12 @@
     "CLAIMANT_RESPONSE_CONFIRMATION": {
       "CLAIM_NUMBER": "Your claim number:",
       "PAGE_TITLE": "Claimant Intention Confirmation",
+      "PA_PAY_IMMEDIATELY": {
+        "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
+        "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "The defendant said they'll pay you £{{ admittedAmount }} immediately.",
+        "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
+        "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
+      },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
@@ -2354,6 +2368,7 @@
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
+      "YOU_SETTLED_CLAIM": "This claim is now settled",
       "YOU_SHOULD": "Dylech:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "Rydych wedi cyflwyno eich ymateb",
       "YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai",
