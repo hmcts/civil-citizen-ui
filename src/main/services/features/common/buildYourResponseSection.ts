@@ -6,7 +6,7 @@ import {changeLabel} from "common/utils/checkYourAnswer/changeButton";
 import {getLng} from "common/utils/languageToggleUtils";
 import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
 import {t} from "i18next";
-import {CLAIMANT_RESPONSE_SETTLE_CLAIM_URL} from "routes/urls";
+import {CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL} from "routes/urls";
 
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string| unknown): SummarySection => {
 
@@ -16,34 +16,33 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     summaryRows: [],
   });
 
-  // if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
-  //   paidSection.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
-  // }
-
   paidSection.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
   paidSection.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
-  paidSection.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
+
+  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO) {
+    paidSection.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
+  }
 
   return paidSection;
 };
 
 export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
-  const option = claim.claimantResponse.hasPartPaymentBeenAccepted.option === YesNo.YES
+  const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
   ? YesNoUpperCase.YES
   : YesNoUpperCase.NO;
 
   let paidAmount: number;
   if (claim.isFullDefence()) {
     paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
-  } else if(claim.isPartialAdmissionPaid()){
+  } else if (claim.isPartialAdmissionPaid()) {
     paidAmount = claim.partialAdmissionPaidAmount();
   }
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID', {lng, paidAmount}),
     t(`COMMON.${option}`, {lng}),
-    constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
+    constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL),
     changeLabel(lng),
   );
 };
@@ -70,7 +69,7 @@ export const getReasonForRejecting = (claim : Claim, claimId: string, lng: strin
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_REJECTING', {lng}),
     claim.claimantResponse.rejectionReason.text,
-    constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
+    constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL),
     changeLabel(lng),
   );
 };
