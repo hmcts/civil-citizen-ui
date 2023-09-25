@@ -216,6 +216,7 @@ import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
+import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 
 export default [
   homeController,
@@ -418,4 +419,5 @@ export default [
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
   claimFeeController,
+  cancelTrialArrangementsController,
 ];
