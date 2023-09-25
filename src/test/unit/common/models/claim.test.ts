@@ -1705,7 +1705,6 @@ describe('Documents', () => {
     });
   });
 
-
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
     caseProgressionHearingDocuments.id = '1221';
