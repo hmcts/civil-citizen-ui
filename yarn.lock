@@ -2479,9 +2479,9 @@ __metadata:
   linkType: hard
 
 "@types/es6-promisify@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@types/es6-promisify@npm:6.0.1"
-  checksum: a717113805ed9d35f02f3fdf9a4c00b0589ca32e8a66bd22b950418e21900fda060a5578fa9ad37bd7c62f17ed327bd7570cea5dac522254d720cc1a861ecf12
+  version: 6.0.2
+  resolution: "@types/es6-promisify@npm:6.0.2"
+  checksum: c75e0e642da4c69376c4003322bf89aaabd7ba0921c9bb04a918838e2aca639ab4fa5377fc231764d8fef52925ba19c6a4116e8e6202ae8018e95af9ff21bf92
   languageName: node
   linkType: hard
 
@@ -2534,14 +2534,14 @@ __metadata:
   linkType: hard
 
 "@types/express@npm:*, @types/express@npm:^4.17.16":
-  version: 4.17.17
-  resolution: "@types/express@npm:4.17.17"
+  version: 4.17.18
+  resolution: "@types/express@npm:4.17.18"
   dependencies:
     "@types/body-parser": "*"
     "@types/express-serve-static-core": ^4.17.33
     "@types/qs": "*"
     "@types/serve-static": "*"
-  checksum: 0196dacc275ac3ce89d7364885cb08e7fb61f53ca101f65886dbf1daf9b7eb05c0943e2e4bbd01b0cc5e50f37e0eea7e4cbe97d0304094411ac73e1b7998f4da
+  checksum: 8c178da4f0edff1f006d871fbdc3f849620986ff10bad252f3dfd45b57554e26aaa28c602285df028930d5216e257a06fbaf795070f8bb42f7d87e3b689cba50
   languageName: node
   linkType: hard
 
