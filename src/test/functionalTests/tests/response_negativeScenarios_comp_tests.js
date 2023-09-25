@@ -1,10 +1,8 @@
-const config =  require('../../config');
-const  ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
-const  LoginSteps =  require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const config = require('../../config');
 
-const partAdmit = 'partial-admission';
-const dontWantMoreTime = 'dontWantMoreTime';
+const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
+const LoginSteps =  require('../features/home/steps/login');
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 let claimRef;
 let claimType = 'FastTrack';
@@ -12,7 +10,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit');
+Feature('Negative Scenarios for Defendant Response');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -32,16 +30,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @regression', async () => {
+Scenario('Company personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterCompanyDetails();
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterDQForFastTrack(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
+  await ResponseSteps.EnterCompanyDetailError(claimRef);
 });
