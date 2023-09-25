@@ -556,7 +556,7 @@
       "WHEN_PAY_TITLE": "When you'll pay?",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
       "WITNESS": "Witness",
-      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay {{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}.The first instalment will be paid by {{ instalmentDate }}",
+      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay {{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
