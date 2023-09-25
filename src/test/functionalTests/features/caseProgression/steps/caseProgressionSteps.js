@@ -1,13 +1,15 @@
 const LatestUpdate = require('../pages/latestUpdate');
-const UploadYourDocumentsIntroduction = require('../pages/uploadYourDocumentsIntroduction');
-const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/whatTypeOfDocumentsDoYouWantToUpload');
-const UploadYourDocument = require('../pages/uploadYourDocument');
+const UploadYourDocumentsIntroduction = require('../pages/uploadEvidence/uploadYourDocumentsIntroduction');
+const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/whatTypeOfDocumentsDoYouWantToUpload');
+const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
+const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdatePage = new LatestUpdate();
 const uploadYourDocumentsIntroduction = new UploadYourDocumentsIntroduction();
 const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToUpload();
 const uploadYourDocument = new UploadYourDocument();
+const checkYourAnswers = new CheckYourAnswers();
 
 class UploadEvidenceSteps {
 
@@ -22,7 +24,10 @@ class UploadEvidenceSteps {
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions();
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
     uploadYourDocument.verifyPageContent();
+    uploadYourDocument.inputDataForAllSections();
+    pause();
     uploadYourDocument.nextAction('Continue');
+    checkYourAnswers.verifyPageContent();
 
   }
 

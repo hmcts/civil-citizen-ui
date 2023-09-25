@@ -1,0 +1,96 @@
+const ContactUs = require('../../../common/contactUs');
+//const StringUtilsComponent = require('../util/StringUtilsComponent');
+const I = actor();
+
+const contactUs = new ContactUs();
+
+//const stringUtils = new StringUtilsComponent();
+
+class CheckYourAnswers {
+
+  nextAction(nextAction) {
+    I.click(nextAction);
+  }
+
+  verifyPageContent() {
+    this.verifyHeadingDetails();
+    this.verifyDisclosureSectionContent();
+    this.verifyWitnessSectionContent();
+    contactUs.verifyContactUs();
+  }
+
+  verifyHeadingDetails() {
+    I.see('Check your answers', 'h1');
+    I.see('Case reference');
+    I.see('Test Inc v Sir John Doe');
+    I.see('Warning');
+    I.see('You cannot withdraw a document once you have submitted it.');
+  }
+
+  verifyDisclosureSectionContent() {
+    I.see('Disclosure', 'h1');
+    I.see('Documents for disclosure 1');
+    I.see('Type of document');
+    I.see('Test Data Entry for Document Disclosure 1');
+    I.see('Date document was issued or message was sent');
+    I.see('1/2/2023');
+    I.see('Document uploaded');
+    I.see('fileUpload.txt');
+    I.see('Documents for disclosure 2');
+    I.see('Test Data Entry for Document Disclosure 2');
+    I.see('2/2/2023');
+  }
+
+  verifyWitnessSectionContent() {
+    I.see('Witness evidence', 'h1');
+    I.see('Witness statement 1');
+    I.see('Witness\'s name');
+    I.see('Witness Statement - Witness Nae 1');
+    I.see('Date statement was written');
+    I.see('3/2/2023');
+    I.see('Witness statement 2');
+    I.see('Witness Statement - Witness Nae 2');
+    I.see('4/2/2023');
+
+    I.see('Witness summary 1');
+    I.see('Date summary was written');
+    I.see('Witness Summary - Witness Nae 1');
+    I.see('5/2/2023');
+    I.see('Witness summary 2');
+    I.see('Witness Summary - Witness Nae 2');
+    I.see('6/2/2023');
+
+    I.see('Notice of intention to rely on hearsay evidence 1');
+    I.see('Notice of intention witness nae 1');
+    I.see('7/2/2023');
+    I.see('Notice of intention to rely on hearsay evidence 2');
+    I.see('Notice of intention witness nae 2');
+    I.see('8/2/2023');
+
+    I.see('Documents referred to in the statement 1');
+    I.see('Docuents referred Type of Docuent 1');
+    I.see('9/2/2023');
+    I.see('Documents referred to in the statement 2');
+    I.see('Docuents referred Type of Docuent 2');
+    I.see('10/2/2023');
+  }
+
+  verifyEvidenceSectionContent() {
+    I.see('Expert evidence', 'h1');
+    I.see('Expert\'s report 1');
+    I.see('Expert\'s name');
+    I.see('Field of expertise');
+    I.see('Expert Report - Field of Expertise 1');
+    I.see('Date report was written');
+    I.see('11/02/2023');
+    I.see('Expert\'s report 2');
+    I.see('Expert Report - Field of Expertise 2');
+    I.see('12/02/2023');
+    I.see('Joint statement of experts 1');
+    I.see('13/02/2023');
+  }
+
+
+}
+
+module.exports = CheckYourAnswers;
