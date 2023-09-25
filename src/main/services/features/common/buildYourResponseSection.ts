@@ -11,19 +11,19 @@ import {CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, CLAIMANT_RESPONSE_REJECTION
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string| unknown): SummarySection => {
 
   const lng = getLng(lang);
-  const paidSection = summarySection({
+  const yourResponse = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}),
     summaryRows: [],
   });
 
-  paidSection.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
-  paidSection.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
+  yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
+  yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
 
   if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO) {
-    paidSection.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
+    yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 
-  return paidSection;
+  return yourResponse;
 };
 
 export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
@@ -49,7 +49,7 @@ export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng:
 
 export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
-  const option = claim.claimantResponse.hasPartPaymentBeenAccepted.option === YesNo.YES
+  const option = claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES
   ? YesNoUpperCase.YES
   : YesNoUpperCase.NO;
 
@@ -68,7 +68,7 @@ export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: s
 export const getReasonForRejecting = (claim : Claim, claimId: string, lng: string): SummaryRow => {
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_REJECTING', {lng}),
-    claim.claimantResponse.rejectionReason.text,
+    claim.claimantResponse?.rejectionReason?.text,
     constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL),
     changeLabel(lng),
   );
