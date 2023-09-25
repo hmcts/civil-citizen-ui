@@ -55,6 +55,7 @@ describe('Full Defence', () => {
     //Given
     const claim = {
       isPartialAdmission: jest.fn(),
+      isPartialAdmissionPaid: jest.fn(),
       isFullDefence: jest.fn(),
       hasPaidInFull: jest.fn(),
       hasConfirmedAlreadyPaid: jest.fn(),
@@ -71,19 +72,19 @@ describe('Full Defence', () => {
         },
       },
       isClaimantIntentionPending: jest.fn(),
-      isClaimantRejectedDefendantAdmittedAmount: jest.fn(),
-      isClaimantRejectedDefendantResponse: jest.fn(),
-      isClaimantDeclaredDefendantNotPaidAmount: jest.fn(),
-      isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
+      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
+      hasClaimantRejectedDefendantResponse: jest.fn(),
+      hasClaimantRejectedDefendantPaid: jest.fn(),
+      hasClaimantRejectedPartAdmitPayment: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
-    claim.isClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
-    claim.isClaimantRejectedDefendantResponse.mockReturnValue(false);
-    claim.isClaimantDeclaredDefendantNotPaidAmount.mockReturnValue(false);
-    claim.isClaimantRejectSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
+    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -557,7 +558,7 @@ describe('Claimant Response Task List builder', () => {
       //Then
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(1);
-      expect(yourResponse.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_YOU_BEEN_PAID');
+      expect(yourResponse.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
       expect(yourResponse.tasks[0].url).toEqual(haveYoBeenPaidUrl);
       expect(yourResponse.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[1]).toBeUndefined();
@@ -573,7 +574,7 @@ describe('Claimant Response Task List builder', () => {
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(2);
       expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_THE_CLAIM');
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
       expect(yourResponse.tasks[1].url).toEqual(settleClaimForPaidAmountUrl);
       expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[2]).toBeUndefined();
@@ -614,6 +615,54 @@ describe('Claimant Response Task List builder', () => {
       expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
       expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[3]).toBeUndefined();
+    });
+  });
+
+  describe('Your response section', () => {
+    it('should display amount have been paid task as incomplete', () => {
+      //When
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.partialAdmission = {
+        alreadyPaid: {option: YesNo.YES},
+      };
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display free telephone mediation task as incomplete', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as incomplete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}, hasPartPaymentBeenAccepted: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
   });
 
