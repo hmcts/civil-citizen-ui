@@ -15,6 +15,9 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 describe('Expert Required Value service', () => {
   describe('Save Expert Required Value', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
     it('should save expert required successfully when expert doesnt exist', async () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -54,14 +57,6 @@ describe('Expert Required Value service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
-    it('should throw error when draft store throws error', async () => {
-      //When
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveExpertRequiredValue('1234', true)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
     it('should save expert required field for claimant response dq', async () => {
       //Given
       const id = '1234';
@@ -76,6 +71,14 @@ describe('Expert Required Value service', () => {
       //Then
       expect(claim.claimantResponse.directionQuestionnaire.experts.expertRequired).toBeTruthy();
       expect(spySave).toHaveBeenCalledWith(id, claim);
+    });
+    it('should throw error when draft store throws error', async () => {
+      //When
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveExpertRequiredValue('1234', true)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
