@@ -46,7 +46,158 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
           },
         ],
       },
-    }],
+    },
+    {
+      title: "PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE",
+      summaryList: {
+        rows: [
+          {
+            key: {
+              text: "PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION",
+            },
+            value: {
+              html: "COMMON.undefined",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/mediation/free-telephone-mediation",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      title: "PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE",
+      summaryList: {
+        rows: [
+          {
+            key: {
+              text: "PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE",
+            },
+            value: {
+              html: "COMMON.NO",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/determination-without-hearing",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE",
+            },
+            value: {
+              html: "COMMON.VARIATION_2.NO",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/expert-report-details",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE",
+            },
+            value: {
+              html: "COMMON.VARIATION.NO",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/permission-for-expert",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE",
+            },
+            value: {
+              html: "COMMON.VARIATION.NO",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/expert-can-still-examine",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES",
+            },
+            value: {
+              html: "COMMON.NO",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/other-witnesses",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE",
+            },
+            value: {
+              html: "",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE",
+                },
+              ],
+            },
+          },
+          {
+            key: {
+              text: "PAGES.SPECIFIC_COURT.TITLE",
+            },
+            value: {
+              html: "",
+            },
+            actions: {
+              items: [
+                {
+                  href: "/case/12345/directions-questionnaire/court-location",
+                  text: "COMMON.BUTTONS.CHANGE",
+                  visuallyHiddenText: " PAGES.SPECIFIC_COURT.TITLE",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ],
   };
 }
 

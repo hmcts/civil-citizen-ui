@@ -33,7 +33,7 @@ const getMediationContactNumber = (companyTelephoneNumber : CompanyTelephoneNumb
 const getContactName = (claim: Claim) => {
   return claim.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
     claim.mediation.companyTelephoneNumber.mediationContactPerson :
-    claim.respondent1.partyDetails.contactPerson;
+    claim.respondent1.partyDetails?.contactPerson;
 };
 
 const getCanWeUse = (claim: Claim) => {
