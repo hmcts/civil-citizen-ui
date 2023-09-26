@@ -1,7 +1,7 @@
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('expertReportDetailsService');
