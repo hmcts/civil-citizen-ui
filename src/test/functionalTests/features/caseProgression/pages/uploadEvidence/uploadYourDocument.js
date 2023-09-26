@@ -125,7 +125,7 @@ class UploadYourDocument {
     I.fillField('noticeOfIntention[0][dateInputFields][dateMonth]', '02');
     I.fillField('noticeOfIntention[0][dateInputFields][dateYear]', '2023');
     I.attachFile('noticeOfIntention[0][fileUpload]', 'features/caseProgression/data/fileUpload.txt');
-    I.click('[method=\'post\'] div:nth-of-type(5) #add-another-witness-list')
+    I.click('[method=\'post\'] div:nth-of-type(5) #add-another-witness-list');
     I.fillField('noticeOfIntention[1][witnessName]', 'Notice of intention witness nae 2');
     I.fillField('noticeOfIntention[1][dateInputFields][dateDay]', '08');
     I.fillField('noticeOfIntention[1][dateInputFields][dateMonth]', '02');

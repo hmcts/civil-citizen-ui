@@ -16,6 +16,7 @@ class CheckYourAnswers {
     this.verifyHeadingDetails();
     this.verifyDisclosureSectionContent();
     this.verifyWitnessSectionContent();
+    this.verifyEvidenceSectionContent();
     contactUs.verifyContactUs();
   }
 
@@ -82,14 +83,25 @@ class CheckYourAnswers {
     I.see('Field of expertise');
     I.see('Expert Report - Field of Expertise 1');
     I.see('Date report was written');
-    I.see('11/02/2023');
+    I.see('11/2/2023');
     I.see('Expert\'s report 2');
     I.see('Expert Report - Field of Expertise 2');
-    I.see('12/02/2023');
-    I.see('Joint statement of experts 1');
-    I.see('13/02/2023');
-  }
+    I.see('12/2/2023');
 
+    I.see('Joint statement of experts 1');
+    I.see('Experts\' name');
+    I.see('Expert Stateent - Expert Nae 1');
+    I.see('Expert Stateent - Field Of Expertise 1');
+    I.see('13/2/2023');
+    I.see('Joint statement of experts 2');
+    I.see('Expert Stateent - Expert Nae 2');
+    I.see('Expert Stateent - Field Of Expertise 2');
+    I.see('14/2/2023');
+
+    /*I.see('Questions for other party');
+    I.see('Other party\'s name');
+    I.see('Name of document you have questions about');*/
+  }
 
 }
 

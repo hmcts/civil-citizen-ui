@@ -25,7 +25,6 @@ class UploadEvidenceSteps {
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
     uploadYourDocument.verifyPageContent();
     uploadYourDocument.inputDataForAllSections();
-    pause();
     uploadYourDocument.nextAction('Continue');
     checkYourAnswers.verifyPageContent();
 
