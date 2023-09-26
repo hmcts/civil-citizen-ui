@@ -579,6 +579,10 @@ export class Claim {
     return this.statementOfMeans?.courtOrders;
   }
 
+  isFinalGeneralOrderIssued(): boolean {
+    return this.caseProgression?.finalOrderDocumentCollection?.length > 0;
+  }
+
   getPriorityDebts(): PriorityDebts | undefined {
     return this.statementOfMeans?.priorityDebts;
   }
