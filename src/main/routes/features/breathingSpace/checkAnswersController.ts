@@ -1,8 +1,8 @@
 import {NextFunction, Response, Router} from 'express';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../../urls';
-import {getSummarySections} from '../../../../services/features/breathingSpace/checkAnswersService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {getSummarySections} from '../../../services/features/breathingSpace/checkAnswersService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {AppRequest} from '../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
