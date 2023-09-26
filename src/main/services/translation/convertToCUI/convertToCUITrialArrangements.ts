@@ -33,5 +33,5 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
 };
 
 function formatOwnedBy(ownedBy: CaseRole) {
-  return ownedBy.toString().startsWith('[') ? ownedBy : `[${ownedBy}]`;
+  return ownedBy?.toString().startsWith('[') ? ownedBy : `[${ownedBy}]`;
 }
