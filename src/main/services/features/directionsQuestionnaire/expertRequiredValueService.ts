@@ -46,4 +46,14 @@ const setExpertRequiredValueForClaimant = (expertRequired : boolean, claim: Clai
     claim.claimantResponse.directionQuestionnaire.experts = new Experts();
   }
   claim.claimantResponse.directionQuestionnaire.experts.expertRequired = expertRequired;
+  if(!expertRequired) {
+    resetExperts(claim.claimantResponse.directionQuestionnaire.experts);
+  }
+};
+
+const resetExperts = (experts : Experts) => {
+  experts.expertReportDetails = null;
+  experts.permissionForExpert = null;
+  experts.expertCanStillExamine = null;
+  experts.expertDetailsList = null;
 };
