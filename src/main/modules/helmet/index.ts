@@ -2,10 +2,12 @@ import {AppRequest} from 'common/models/AppRequest';
 import * as express from 'express';
 import helmet from 'helmet';
 import {HelmetOptions} from 'helmet';
+import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
 const inline = '\'unsafe-inline\'';
+const loginUrl: string = config.get('services.idam.authorizationURL');
 
 const scriptSrcElem = [
   self,
@@ -91,6 +93,7 @@ export class Helmet {
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
+          formAction: [self, loginUrl],
         },
       }),
     );
