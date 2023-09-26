@@ -2,11 +2,10 @@ const config = require('../../config');
 
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
-
-const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
-const yesIWantMoretime = 'yesIWantMoretime';
+const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 let claimRef;
+let claimType = 'FastTrack';
 let caseData;
 let claimNumber;
 let securityCode;
@@ -15,7 +14,7 @@ Feature('Negative Scenarios for Defendant Response');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
@@ -23,21 +22,15 @@ Before(async ({api}) => {
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   }else{
-    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
+    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser, null, claimType);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
 
-Scenario('Personal detail error screen', async () => {
+Scenario('Company personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetailsError(claimRef);
-});
-
-Scenario('View your options before response deadline error screen @test', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
-  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
+  await ResponseSteps.EnterCompanyDetailError(claimRef);
 });
