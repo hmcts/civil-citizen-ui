@@ -1,12 +1,12 @@
-import {YesNo, YesNoUpperCase} from "common/form/models/yesNo";
-import {Claim} from "common/models/claim";
-import {SummaryRow, summaryRow} from "common/models/summaryList/summaryList";
-import {SummarySection, summarySection} from "common/models/summaryList/summarySections";
-import {changeLabel} from "common/utils/checkYourAnswer/changeButton";
-import {getLng} from "common/utils/languageToggleUtils";
-import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
-import {t} from "i18next";
-import {CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL} from "routes/urls";
+import {YesNo, YesNoUpperCase} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {SummaryRow, summaryRow} from 'common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL} from 'routes/urls';
 
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string| unknown): SummarySection => {
 
@@ -29,8 +29,8 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
 export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
-  ? YesNoUpperCase.YES
-  : YesNoUpperCase.NO;
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   let paidAmount: number;
   if (claim.isFullDefence()) {
@@ -50,8 +50,8 @@ export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng:
 export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
   const option = claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES
-  ? YesNoUpperCase.YES
-  : YesNoUpperCase.NO;
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   const paidAmount = claim.isFullDefence() 
     ? claim.isRejectAllOfClaimAlreadyPaid()
