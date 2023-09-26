@@ -138,7 +138,7 @@ describe('test buildExportReportSection', ()=>{
     //When
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
-    expect(summaryRows.length).toEqual(4);
+    expect(summaryRows.length).toEqual(12);
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
     expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
@@ -147,5 +147,13 @@ describe('test buildExportReportSection', ()=>{
     expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.YES');
     expect(summaryRows[3].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE');
     expect(summaryRows[3].value.html).toEqual('something');
+    expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
+    expect(summaryRows[4].value.html).toBeUndefined();
+    expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL');
+    expect(summaryRows[5].value.html).toEqual('John');
+    expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL');
+    expect(summaryRows[6].value.html).toEqual('Smith');
+    expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
+    expect(summaryRows[7].value.html).toEqual('email');
   });
 });

@@ -277,7 +277,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(10);
+      expect(summaryRows.summaryList.rows.length).toEqual(18);
     });
     it('should not display experts when claim does not have experts', () => {
       //Given
