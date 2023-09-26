@@ -21,6 +21,10 @@ type DashboardDefendantStatus = {
   [propKey: string]: StatusTranslation
 }
 
+type DashboardClaimantStatus = {
+  [propKey: string]: StatusTranslation
+}
+
 export class DashboardItem {
   claimId: string;
   claimNumber: string;
@@ -38,11 +42,34 @@ export class DashboardItem {
 }
 
 export class DashboardClaimantItem extends DashboardItem {
+  status: string;
+  numberOfDays?: string;
   constructor() {
     super();
     this.url = '/dashboard/:claimId/claimant';
   }
+  getStatus(lang: string | unknown) {
+    const paramClaimantName = {key: 'claimantName', value: this.claimantName};
+    const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
 
+    const dashboardStatus: DashboardClaimantStatus = {
+      NO_STATUS: {translationKey: ''},
+      NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME', parameter: [paramNumberOfDays]},
+      RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS.RESPONSE_BY_POST'},
+      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS.ADMIT_PAY_IMMEDIATELY_CLAIMANT'},
+      CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS.CLAIM_ENDED' },
+      DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS.NOT_ADMITTED_CLAIMANT'},
+      WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS.NOT_ADMITTED_CLAIMANT'},
+      CLAIMANT_ACCEPTED_STATES_PAID: {
+        translationKey: 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT',
+        parameter: [paramClaimantName],
+      },
+    };
+    console.log(this.status);
+    const currentStatus = dashboardStatus[this.status];
+    console.log(currentStatus);
+    return translate(currentStatus.translationKey, currentStatus.parameter, lang);
+  }
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
 }
