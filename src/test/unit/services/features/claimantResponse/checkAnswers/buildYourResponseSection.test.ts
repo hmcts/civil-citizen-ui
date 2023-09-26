@@ -5,7 +5,7 @@ import { Claim } from 'common/models/claim';
 import { ClaimantResponse } from 'common/models/claimantResponse';
 import { PartialAdmission } from 'common/models/partialAdmission';
 import { Party } from 'common/models/party';
-import { buildYourResponseSection } from 'services/features/common/buildYourResponseSection';
+import { buildYourResponseSection } from 'services/features/claimantResponse/checkAnswers/buildYourResponseSection';
 import { t } from 'i18next';
 
 jest.mock('../../../../../main/modules/draft-store');
