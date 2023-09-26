@@ -7,6 +7,10 @@ import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draf
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CaseState} from 'form/models/claimDetails';
+import {ExpertReportDetails} from "models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails";
+import {GenericYesNo} from "form/models/genericYesNo";
+import {ExpertCanStillExamine} from "models/directionsQuestionnaire/experts/expertCanStillExamine";
+import {ExpertDetailsList} from "models/directionsQuestionnaire/experts/expertDetailsList";
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -62,6 +66,46 @@ describe('Expert Required Value service', () => {
       const id = '1234';
       const expertRequired = true;
       const claim = getClaimWithClaimantResponseDQ();
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      await saveExpertRequiredValue(id, expertRequired);
+      //Then
+      expect(claim.claimantResponse.directionQuestionnaire.experts.expertRequired).toBeTruthy();
+      expect(spySave).toHaveBeenCalledWith(id, claim);
+    });
+    it('should reset expert dq fields when expert required field on claimant response is false', async () => {
+      //Given
+      const id = '1234';
+      const expertRequired = false;
+      const claim = getClaimWithClaimantResponseDQ();
+      claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails();
+      claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = new GenericYesNo();
+      claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = new ExpertCanStillExamine();
+      claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList();
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      await saveExpertRequiredValue(id, expertRequired);
+      //Then
+      expect(claim.claimantResponse.directionQuestionnaire.experts.expertRequired).toBeFalsy();
+      expect(claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails).toBeNull();
+      expect(claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert).toBeNull();
+      expect(claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine).toBeNull();
+      expect(claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList).toBeNull();
+      expect(spySave).toHaveBeenCalledWith(id, claim);
+    });
+    it('should save expert required when direction questionnaire and experts are not defined', async () => {
+      //Given
+      const id = '1234';
+      const expertRequired = true;
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return claim;
