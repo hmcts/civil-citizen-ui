@@ -8,9 +8,9 @@ import { Party } from 'common/models/party';
 import { buildYourResponseSection } from 'services/features/claimantResponse/checkAnswers/buildYourResponseSection';
 import { t } from 'i18next';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
