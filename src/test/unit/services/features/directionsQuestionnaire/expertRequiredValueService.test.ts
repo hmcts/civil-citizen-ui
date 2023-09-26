@@ -7,10 +7,10 @@ import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draf
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CaseState} from 'form/models/claimDetails';
-import {ExpertReportDetails} from "models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails";
-import {GenericYesNo} from "form/models/genericYesNo";
-import {ExpertCanStillExamine} from "models/directionsQuestionnaire/experts/expertCanStillExamine";
-import {ExpertDetailsList} from "models/directionsQuestionnaire/experts/expertDetailsList";
+import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {ExpertCanStillExamine} from 'models/directionsQuestionnaire/experts/expertCanStillExamine';
+import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
