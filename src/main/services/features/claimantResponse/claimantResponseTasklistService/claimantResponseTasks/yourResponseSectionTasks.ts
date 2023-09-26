@@ -12,7 +12,7 @@ export function getHaveYouBeenPaidTask(claim: Claim, claimId: string, lang: stri
   const haveYouBeenPaidTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID', {
       lng: lang,
-      paidAmount: claim.partialAdmissionPaidAmount(),
+      paidAmount: claim.isFullDefence() ? claim.isRejectAllOfClaimAlreadyPaid() : claim.partialAdmissionPaidAmount(),
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL),
     status: TaskStatus.INCOMPLETE,
@@ -27,14 +27,14 @@ export function getSettleTheClaimForTask(claim: Claim, claimId: string, lang: st
   const settleTheClaimForTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR', {
       lng: lang,
-      paidAmount: claim.partialAdmissionPaidAmount(),
+      paidAmount: claim.isFullDefence() ? claim.isRejectAllOfClaimAlreadyPaid() : claim.partialAdmissionPaidAmount(),
     }),
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
+  if (claim?.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() ||
+    (claim?.hasClaimantRejectedPartAdmitPayment() && claim?.claimantResponse?.rejectionReason?.text)) {
     settleTheClaimForTask.status = TaskStatus.COMPLETE;
   }
   return settleTheClaimForTask;
 }
-

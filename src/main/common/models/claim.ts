@@ -781,6 +781,18 @@ export class Claim {
   isDraftClaim(): boolean {
     return !!this.draftClaimCreatedAt;
   }
+
+  hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
+  }
 }
 
 export interface StatementOfTruth {

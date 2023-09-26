@@ -1527,7 +1527,7 @@ describe('Documents', () => {
     });
     it('should return formatted date 3 weeks prior from 22', () => {
       //Given
-      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 0 ,22), null);
+      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 0, 22), null);
       const claim = new Claim();
       claim.caseProgressionHearing = caseProgressionHearing;
       //Then
@@ -1640,6 +1640,108 @@ describe('Documents', () => {
       const isClaimant = claim.isClaimant();
       //Then
       expect(isClaimant).toBeFalsy();
+    });
+  });
+
+  describe('Test of method hasClaimantSettleTheClaimForDefendantPartlyPaidAmount', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasPartPaymentBeenAccepte is NO', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "yes" option', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Test of method hasClaimantRejectedDefendantAdmittedAmount', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasPartAdmittedBeenAccepted is YES', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "no" option', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Test of method hasClaimantRejectedDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasFullDefenceStatesPaidClaimSettled is YES', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "no" option', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(true);
     });
   });
 
