@@ -10,13 +10,9 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claimId: string, claim: Claim, lang: string | unknown): SummarySections => {
-  const getYourResponse = () => {
-    return buildYourResponseSection(claim, claimId, lang);
-  };
-
   return {
     sections: [
-      getYourResponse(),
+      buildYourResponseSection(claim, claimId, lang),
     ],
   };
 };
