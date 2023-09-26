@@ -299,8 +299,8 @@
       "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
     },
     "YOUR_RESPONSE": {
-      "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }} ?",
-      "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }} ?",
+      "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }}?",
+      "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }}?",
       "TITLE": "Your response"
     }
   },

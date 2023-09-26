@@ -17,8 +17,10 @@ import {
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {
-  getHaveYouBeenPaidTask, getSettleTheClaimForTask,
+  getHaveYouBeenPaidTask,
+  getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
@@ -30,7 +32,9 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-
+  if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
+    return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
+  }
   if (claim.isFullAdmission()) {
 
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
@@ -114,7 +118,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   const tasks: Task[] = [];
   const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
   tasks.push(haveYouBeenPaidTask);
-  if (claim.isPartialAdmissionPaid()) {
+  if (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
     }
@@ -135,7 +139,11 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  if (isPartialAdmissionNotAccepted(claim) || isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) || isFullDefenceClaimantNotSettleTheClaim(claim)) {
+  if (isPartialAdmissionNotAccepted(claim) ||
+    isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
+    isFullDefenceClaimantNotSettleTheClaim(claim) ||
+    claim.hasClaimantRejectedDefendantPaid() ||
+    claim.hasClaimantRejectedPartAdmitPayment()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
