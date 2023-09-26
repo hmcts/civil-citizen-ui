@@ -11,9 +11,9 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
 import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
-import {buildFreeTelephoneMediationSection} from 'services/features/response/checkAnswers/responseSection/buildFreeTelephoneMediationSection';
 import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
+import { buildFreeTelephoneMediationSection } from './buildFreeTelephoneMediationSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');

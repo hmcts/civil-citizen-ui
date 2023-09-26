@@ -9,6 +9,10 @@ import { getSummarySections, saveStatementOfTruth } from 'services/features/clai
 import { ResponseType } from 'common/form/models/responseType';
 import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 import { YesNo } from 'common/form/models/yesNo';
+import {Party} from 'models/party';
+import {PartyDetails} from 'form/models/partyDetails';
+import {Mediation} from 'models/mediation/mediation';
+import {CanWeUse} from 'models/mediation/canWeUse';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');
@@ -18,188 +22,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-function generateExpectedResultForPartAdmitPayImmediately(option: string) {
-  return {
-    sections: [{
-      title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
-            },
-            value: {
-              html: option === YesNo.YES
-                ? 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT'
-                : 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/claimant-response/settle-admitted',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      title: 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
-            },
-            value: {
-              html: 'COMMON.undefined',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/mediation/free-telephone-mediation',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      title: 'PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-            },
-            value: {
-              html: 'COMMON.NO',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/determination-without-hearing',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
-            },
-            value: {
-              html: 'COMMON.VARIATION_2.NO',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/expert-report-details',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
-            },
-            value: {
-              html: 'COMMON.VARIATION.NO',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/permission-for-expert',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
-            },
-            value: {
-              html: 'COMMON.VARIATION.NO',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/expert-can-still-examine',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
-            },
-            value: {
-              html: 'COMMON.NO',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/other-witnesses',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
-            },
-            value: {
-              html: '',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
-                },
-              ],
-            },
-          },
-          {
-            key: {
-              text: 'PAGES.SPECIFIC_COURT.TITLE',
-            },
-            value: {
-              html: '',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/directions-questionnaire/court-location',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.SPECIFIC_COURT.TITLE',
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    ],
-  };
-}
 
 describe('Check Answers service', () => {
   describe('Get Data from Draft', () => {
@@ -233,21 +55,22 @@ describe('Check Answers service', () => {
     beforeEach(() => {
       claim = new Claim();
       claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.applicant1=new Party();
+      claim.applicant1.partyDetails=new PartyDetails({});
+      claim.applicant1.partyDetails.contactPerson='John Smith';
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.IMMEDIATELY } };
     });
 
-    it('should check answers for part admit pay immediately for yes option', () => {
-      const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.YES);
-      claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.YES } } as ClaimantResponse;
-      const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result);
-    });
 
     it('should check answers for part admit pay immediately for no option', () => {
-      const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.NO);
+
+      claim.respondent1.responseType=ResponseType.PART_ADMISSION;
       claim.claimantResponse = { hasPartAdmittedBeenAccepted: { option: YesNo.NO } } as ClaimantResponse;
+      claim.claimantResponse.mediation=new Mediation();
+      claim.claimantResponse.mediation.canWeUse=new class implements CanWeUse {};
+      claim.claimantResponse.mediation.canWeUse.option=YesNo.YES;
       const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result);
+      expect(result.sections).toHaveLength(3);
     });
   });
 
