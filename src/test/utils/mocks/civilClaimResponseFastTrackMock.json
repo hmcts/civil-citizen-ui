@@ -301,8 +301,22 @@
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
-      "defendantTrialArrangements": "",
-      "claimantTrialArrangements": "",
+      "defendantTrialArrangements": {
+        "otherTrialInformation": "Other Information",
+        "isCaseReady": "yes",
+        "hasAnythingChanged": {
+          "textArea": "Changed",
+          "option": "yes"
+        }
+      },
+      "claimantTrialArrangements": {
+        "otherTrialInformation": "Other Information",
+        "isCaseReady": "yes",
+        "hasAnythingChanged": {
+          "textArea": "Changed",
+          "option": "yes"
+        }
+      },
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
