@@ -61,7 +61,6 @@ describe('Check Answers service', () => {
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.IMMEDIATELY } };
     });
 
-
     it('should check answers for part admit pay immediately for no option', () => {
 
       claim.respondent1.responseType=ResponseType.PART_ADMISSION;
