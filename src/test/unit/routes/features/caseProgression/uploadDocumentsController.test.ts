@@ -33,7 +33,6 @@ jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
-const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
 
 describe('Upload document- upload document controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -160,6 +159,7 @@ describe('on POST', () => {
   });
 
   it('File only section', async () => {
+    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
     const disclosureList = {'disclosureList': [{'file_upload': '', 'caseDocument': `${caseDoc}`}]};
 
     await request(app)
@@ -401,10 +401,10 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_01.pdf',
       }],
     };
-    const disclosureList = {'disclosureList':[{caseDocument: caseDoc}]};
+    const disclosureList = {'disclosureList':[{'fileUpload':'Evidence_02.pdf'}]};
 
     const witnessStatement = {
       'witnessStatement': [{
@@ -414,7 +414,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_03.pdf',
       }],
     };
     const witnessSummary = {
@@ -425,7 +425,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_04.pdf',
       }],
     };
     const noticeOfIntention = {
@@ -436,7 +436,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_05.pdf',
       }],
     };
     const documentsReferred = {
@@ -447,7 +447,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_06.pdf',
       }],
     };
 
@@ -462,10 +462,10 @@ describe('on POST', () => {
           'dateMonth': '12',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_12.pdf',
       }],
     };
-    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', caseDocument: caseDoc}]};
+    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', 'fileUpload':'Evidence_13.pdf'}]};
     const questionsForExperts = {
       'questionsForExperts': [{
         'expertName': 'expert Name 1',
@@ -477,7 +477,7 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_14.pdf',
       }],
     };
     const answersForExperts = {
@@ -491,14 +491,14 @@ describe('on POST', () => {
           'dateMonth': '10',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_15.pdf',
       }],
     };
 
-    const trialCaseSummary = {'trialCaseSummary':[{caseDocument: caseDoc}]};
-    const trialSkeletonArgument = {'trialSkeletonArgument':[{caseDocument: caseDoc}]};
-    const trialAuthorities = {'trialAuthorities':[{caseDocument: caseDoc}]};
-    const trialCosts = {'trialCosts':[{caseDocument: caseDoc}]};
+    const trialCaseSummary = {'trialCaseSummary':[{'fileUpload':'Evidence_07.pdf'}]};
+    const trialSkeletonArgument = {'trialSkeletonArgument':[{'fileUpload':'Evidence_08.pdf'}]};
+    const trialAuthorities = {'trialAuthorities':[{'fileUpload':'Evidence_09.pdf'}]};
+    const trialCosts = {'trialCosts':[{'fileUpload':'Evidence_10.pdf'}]};
     const trialDocumentary = {
       'trialDocumentary': [{
         'typeOfDocument': 'Word',
@@ -507,7 +507,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2020',
         },
-        caseDocument: caseDoc,
+        'fileUpload': 'Evidence_11.pdf',
       }],
     };
 
