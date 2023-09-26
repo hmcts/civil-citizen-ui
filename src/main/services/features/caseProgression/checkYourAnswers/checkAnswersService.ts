@@ -139,7 +139,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.expertStatement){
     for(const document of newUploadedDocuments.expertStatement){
       const documentType = EvidenceUploadExpert.STATEMENT;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, null, null, null, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceExpert(document.expertName, null, document.fieldOfExpertise, null, null, null, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
