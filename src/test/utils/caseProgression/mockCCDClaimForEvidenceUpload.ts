@@ -63,6 +63,21 @@ export const mockCCDExpertArray = (length: number) => {
   return sectionArray;
 };
 
+export const mockCCDJointExpertsStatementArray = (length: number) => {
+  if (length == 0) return undefined;
+  const sectionArray: UploadEvidenceElementCCD[] = [];
+
+  const expertDocument = new UploadEvidenceExpert(mockNameValue, null, 'expertise', null, null, null, new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const ccdElement = {id: mockUUID, value: expertDocument};
+
+  for(let i = 0; i < length; i++)
+  {
+    sectionArray.push(ccdElement);
+  }
+
+  return sectionArray;
+};
+
 export const mockCCDExpertQuestionsAnswersArray = (length: number, questions: boolean) => {
   if (length == 0) return undefined;
   const sectionArray: UploadEvidenceElementCCD[] = [];
@@ -170,7 +185,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
       documentHearsayNotice: mockCCDWitnessArray(length),
       documentReferredInStatement: mockCCDDocumentTypeArray(length),
       documentExpertReport: mockCCDExpertArray(length),
-      documentJointStatement: mockCCDExpertArray(length),
+      documentJointStatement: mockCCDJointExpertsStatementArray(length),
       documentQuestions: mockCCDExpertQuestionsAnswersArray(length,true),
       documentAnswers: mockCCDExpertQuestionsAnswersArray(length,false),
       documentCaseSummary: mockCCDFileUploadArray(length),
@@ -190,7 +205,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
       documentHearsayNoticeRes: mockCCDWitnessArray(length),
       documentReferredInStatementRes: mockCCDDocumentTypeArray(length),
       documentExpertReportRes: mockCCDExpertArray(length),
-      documentJointStatementRes: mockCCDExpertArray(length),
+      documentJointStatementRes: mockCCDJointExpertsStatementArray(length),
       documentQuestionsRes: mockCCDExpertQuestionsAnswersArray(length, true),
       documentAnswersRes: mockCCDExpertQuestionsAnswersArray(length, false),
       documentCaseSummaryRes: mockCCDFileUploadArray(length),

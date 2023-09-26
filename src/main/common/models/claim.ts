@@ -314,6 +314,22 @@ export class Claim {
     return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
   }
 
+  isPartialAdmissionNotPaid(): boolean {
+    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
+  }
+
+  hasClaimantConfirmedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedPartAdmitPayment(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
+  }
+
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
@@ -336,6 +352,15 @@ export class Claim {
 
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  getPaidAmount(): number {
+    if(this.hasConfirmedAlreadyPaid()){
+      return this.isRejectAllOfClaimAlreadyPaid();
+    }
+    if(this.isPartialAdmissionPaid()){
+      return this.partialAdmissionPaidAmount();
+    }
   }
 
   isRejectAllOfClaimDispute(): boolean {
@@ -556,6 +581,10 @@ export class Claim {
     return this.statementOfMeans?.courtOrders;
   }
 
+  isFinalGeneralOrderIssued(): boolean {
+    return this.caseProgression?.finalOrderDocumentCollection?.length > 0;
+  }
+
   getPriorityDebts(): PriorityDebts | undefined {
     return this.statementOfMeans?.priorityDebts;
   }
@@ -749,6 +778,18 @@ export class Claim {
 
   isDraftClaim(): boolean {
     return !!this.draftClaimCreatedAt;
+  }
+
+  hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
 }
 

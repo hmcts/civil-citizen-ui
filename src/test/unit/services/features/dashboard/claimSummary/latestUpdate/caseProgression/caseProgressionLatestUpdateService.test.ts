@@ -74,6 +74,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasCaseProgressionHearingDocuments: () => false,
       hasSdoOrderDocument: () => true,
       isBundleStitched: () => false,
+      isFinalGeneralOrderIssued: () => false,
     } as Claim;
 
     //When
@@ -100,6 +101,7 @@ describe('Case Progression Latest Update Content service', () => {
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
       isBundleStitched: () => true,
+      isFinalGeneralOrderIssued: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T18:00'),
       },
@@ -130,6 +132,7 @@ describe('Case Progression Latest Update Content service', () => {
       isBundleStitched: () => false,
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
+      isFinalGeneralOrderIssued: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -161,6 +164,7 @@ describe('Case Progression Latest Update Content service', () => {
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => true,
       isBundleStitched: () => true,
+      isFinalGeneralOrderIssued: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -193,6 +197,7 @@ describe('Case Progression Latest Update Content service', () => {
       isFastTrackClaim: true,
       isSixWeeksOrLessFromTrial: () => false,
       isBundleStitched: () => false,
+      isFinalGeneralOrderIssued: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -239,6 +244,7 @@ describe('Case Progression Latest Update Content service', () => {
       caseProgression: {
         claimantLastUploadDate: fakeDayBeforeDate,
       },
+      isFinalGeneralOrderIssued: () => true,
       caseProgressionHearing,
     };
 
@@ -246,13 +252,14 @@ describe('Case Progression Latest Update Content service', () => {
     const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
 
     //Then
-    expect(result.length).toEqual(4);
-    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
-    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_TRIAL_TITLE');
-    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS.TITLE');
-    expect(result[2].contentSections.length).toEqual(5);
-    expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    expect(result[3].contentSections.length).toEqual(6);
+    expect(result.length).toEqual(5);
+    expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_ORDER.TITLE');
+    expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
+    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_TRIAL_TITLE');
+    expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS.TITLE');
+    expect(result[3].contentSections.length).toEqual(5);
+    expect(result[4].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[4].contentSections.length).toEqual(6);
   });
 
   it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
@@ -319,6 +326,7 @@ describe('Case Progression Latest Update Content service', () => {
     const claimDismissedHearingFeeNotPaid = {
       ...claimWithSdo,
       isBundleStitched: () => false,
+      isFinalGeneralOrderIssued: () => false,
       caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00'),
     };
 
@@ -343,6 +351,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
       isBundleStitched: () => false,
+      isFinalGeneralOrderIssued: () => false,
       ...claimWithSdo,
     };
 

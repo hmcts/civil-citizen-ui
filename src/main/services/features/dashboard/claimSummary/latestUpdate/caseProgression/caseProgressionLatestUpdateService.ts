@@ -4,6 +4,7 @@ import {
   buildEvidenceUploadSection,
   buildHearingTrialLatestUploadSection,
   buildNewUploadSection,
+  buildViewFinalGeneralOrderContent,
   buildFinaliseTrialArrangements,
   buildViewBundleSection,
   buildClaimDismissedHearingDueDateUpdateContent,
@@ -13,9 +14,14 @@ import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const sectionContent = [];
 
+  if (claim.isFinalGeneralOrderIssued()) {
+    sectionContent.push(getViewFinalGeneralOrderContent(claim));
+  }  
+  
   if (claim.isBundleStitched()) {
     sectionContent.push(getViewBundleLatestUpdateContent(claim));
   }
+
   if (checkClaimDismissedHearingDueDate(claim)) {
     sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, false));
     return getClaimSummaryContent(sectionContent.flat());
@@ -62,6 +68,10 @@ export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: str
 export const getViewBundleLatestUpdateContent = (claim: Claim) : ClaimSummarySection[][] => {
   return buildViewBundleSection(claim);
 };
+
+export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildViewFinalGeneralOrderContent(claim);
+};  
 
 export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
   return buildClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant);
