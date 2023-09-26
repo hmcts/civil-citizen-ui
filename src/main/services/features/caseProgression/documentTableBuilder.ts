@@ -2,7 +2,8 @@ import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
 import {
   UploadDocumentTypes,
-  UploadEvidenceDocumentType, UploadEvidenceExpert,
+  UploadEvidenceDocumentType,
+  UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {TableCell} from 'models/summaryList/summaryList';
@@ -48,7 +49,7 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
 
   const tableRows = [] as TableCell[][];
 
-  orderDocumentNewestToOldest(rows);
+  orderDocumentByTypeAndNewestToOldest(rows);
 
   for(const upload of rows)
   {
@@ -65,12 +66,20 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
   return addEvidenceUploadTable(header, isClaimant, tableRows);
 }
 
-function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
 
   documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
-    return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;
-  });
+    const typeAValue = typeValueMap[a.documentType];
+    const typeBValue = typeValueMap[b.documentType];
 
+    if (typeAValue < typeBValue) {
+      return -1;
+    } else if (typeAValue > typeBValue) {
+      return 1;
+    } else {
+      return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;
+    }
+  });
   return documentsWithDates;
 }
 
@@ -150,5 +159,21 @@ function getDocumentLink (document: UploadDocumentTypes, claimId: string) : stri
   }
   const url = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId);
   return `<a class="govuk-link" href="${url}">${documentName}</a>`;
-
 }
+
+const typeValueMap: Record<string, number> = {
+  DOCUMENTS_FOR_DISCLOSURE: 1,
+  DISCLOSURE_LIST: 2,
+  WITNESS_STATEMENT: 3,
+  WITNESS_SUMMARY: 4,
+  NOTICE_OF_INTENTION: 5,
+  DOCUMENTS_REFERRED: 6,
+  STATEMENT: 7,
+  QUESTIONS_FOR_EXPERTS: 8,
+  ANSWERS_FOR_EXPERTS: 9,
+  CASE_SUMMARY: 10,
+  SKELETON_ARGUMENT: 11,
+  AUTHORITIES: 12,
+  COSTS: 13,
+  DOCUMENTARY: 14,
+};

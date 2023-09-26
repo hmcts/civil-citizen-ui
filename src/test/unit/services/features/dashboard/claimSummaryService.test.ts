@@ -209,8 +209,8 @@ describe('getEvidenceUploadContent', () => {
     expect(result).toHaveLength(1);
     expect(result[0].contentSections).toHaveLength(9);
     expect(result[0].contentSections[0]).toEqual(evidenceUploadText);
-    expect(result[0].contentSections[1]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['pages.upload_evidence_documents.documents_for_disclosure', 'pages.upload_evidence_documents.disclosure_list']));
-    expect(result[0].contentSections[2]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['pages.upload_evidence_documents.documents_for_disclosure', 'pages.upload_evidence_documents.disclosure_list']));
+    expect(result[0].contentSections[1]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', [ 'pages.upload_evidence_documents.disclosure_list', 'pages.upload_evidence_documents.documents_for_disclosure']));
+    expect(result[0].contentSections[2]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', [ 'pages.upload_evidence_documents.disclosure_list', 'pages.upload_evidence_documents.documents_for_disclosure']));
     expect(result[0].contentSections[3]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.claim_summary.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention', 'pages.upload_evidence_documents.witness_summary', 'pages.upload_evidence_documents.witness_statement']));
     expect(result[0].contentSections[4]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['pages.claim_summary.documents_referred_to_statement', 'pages.claim_summary.notice_of_intention', 'pages.upload_evidence_documents.witness_summary', 'pages.upload_evidence_documents.witness_statement']));
     expect(result[0].contentSections[5]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['pages.upload_evidence_documents.answers_to_questions', 'pages.upload_evidence_documents.questions_for_other_party','PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS', 'pages.claim_summary.expert_report']));
