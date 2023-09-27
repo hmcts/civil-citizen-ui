@@ -33,9 +33,9 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
   }];
 }
 
-function getEvidenceUploadContent(claim: Claim): ClaimSummaryContent[] {
+function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSummaryContent[] {
   return [{
-    contentSections: getEvidenceUploadDocuments(claim),
+    contentSections: getEvidenceUploadDocuments(claim, lang),
     hasDivider: false,
   }];
 }

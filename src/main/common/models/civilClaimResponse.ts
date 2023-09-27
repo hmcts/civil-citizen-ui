@@ -54,6 +54,7 @@ import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsTy
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {TrialArrangementsDocument} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {CaseRole} from 'form/models/caseRoles';
@@ -225,6 +226,7 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  caseBundles?: CCDBundle[];
   trialReadyDocuments?: TrialArrangementsDocument[];
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;

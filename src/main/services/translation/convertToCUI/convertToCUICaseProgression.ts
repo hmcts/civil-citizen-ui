@@ -12,6 +12,7 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {
   FinalOrderDocumentCollection,
 } from 'models/caseProgression/finalOrderDocumentCollectionType';
@@ -32,6 +33,11 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
+
+    caseProgression.caseBundles = [] as Bundle[];
+    if(ccdClaim?.caseBundles) {
+      ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(new Bundle(element.value?.title, element.value?.stitchedDocument, element.value?.createdOn, element.value?.bundleHearingDate));});
+    }
 
     const claimantTrialArrangements =  toCUITrialArrangements(ccdClaim, true);
     if (claimantTrialArrangements) {

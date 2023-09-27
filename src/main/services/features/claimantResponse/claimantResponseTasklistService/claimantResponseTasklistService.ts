@@ -4,7 +4,8 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {
   buildClaimantHearingRequirementsSection,
   buildClaimantResponseSubmitSection,
-  buildHowDefendantRespondSection, buildWhatToDoNextSection,
+  buildHowDefendantRespondSection,
+  buildWhatToDoNextSection,
   buildYourResponseSection,
 } from './claimantResponseTasklistBuilder';
 
@@ -15,7 +16,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   if(claim.isPartialAdmissionNotPaid()) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
-  if(claim.isPartialAdmissionPaid()){
+  if(claim.isPartialAdmissionPaid() || claim.isFullDefence()){
     taskGroups.push(buildYourResponseSection(claim, claimId, lang));
   }
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
