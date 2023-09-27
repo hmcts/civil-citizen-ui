@@ -5,7 +5,7 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {EvidenceUploadExpert} from 'models/document/documentType';
 import {t} from 'i18next';
 import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
-import { UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
+import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 
 export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSummarySection[] {
 
@@ -26,19 +26,17 @@ export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSum
 
   const wrap = 'tableWrap';
 
-  const evidenceUploadTab = new TabSectionBuilder()
+  return new TabSectionBuilder()
     .addParagraph('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY')
-    .addTable(getTableHeaders(disclosureHeading, disclosureListClaimant, true, lang), getTableRows(disclosureListClaimant, claim,true, lang), wrap)
-    .addTable(getTableHeaders(disclosureHeading, disclosureListDefendant, false, lang), getTableRows(disclosureListDefendant, claim,false, lang), wrap)
-    .addTable(getTableHeaders(witnessHeading, witnessListClaimant, true, lang), getTableRows(witnessListClaimant, claim,true, lang), wrap)
-    .addTable(getTableHeaders(witnessHeading, witnessListDefendant, false, lang), getTableRows(witnessListDefendant, claim,false, lang), wrap)
-    .addTable(getTableHeaders(expertHeading, expertListClaimant, true, lang), getTableRows(expertListClaimant, claim,true, lang), wrap)
-    .addTable(getTableHeaders(expertHeading, expertListDefendant, false, lang), getTableRows(expertListDefendant, claim,false, lang), wrap)
-    .addTable(getTableHeaders(trialOrHearingHeading, trialListClaimant, true, lang), getTableRows(trialListClaimant, claim,true, lang), wrap)
+    .addTable(getTableHeaders(disclosureHeading, disclosureListClaimant, true, lang), getTableRows(disclosureListClaimant, claim, true, lang), wrap)
+    .addTable(getTableHeaders(disclosureHeading, disclosureListDefendant, false, lang), getTableRows(disclosureListDefendant, claim, false, lang), wrap)
+    .addTable(getTableHeaders(witnessHeading, witnessListClaimant, true, lang), getTableRows(witnessListClaimant, claim, true, lang), wrap)
+    .addTable(getTableHeaders(witnessHeading, witnessListDefendant, false, lang), getTableRows(witnessListDefendant, claim, false, lang), wrap)
+    .addTable(getTableHeaders(expertHeading, expertListClaimant, true, lang), getTableRows(expertListClaimant, claim, true, lang), wrap)
+    .addTable(getTableHeaders(expertHeading, expertListDefendant, false, lang), getTableRows(expertListDefendant, claim, false, lang), wrap)
+    .addTable(getTableHeaders(trialOrHearingHeading, trialListClaimant, true, lang), getTableRows(trialListClaimant, claim, true, lang), wrap)
     .addTable(getTableHeaders(trialOrHearingHeading, trialListDefendant, false, lang), getTableRows(trialListDefendant, claim, false, lang), wrap)
     .build();
-
-  return evidenceUploadTab;
 }
 
 function getTableHeaders(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, lang: string){
