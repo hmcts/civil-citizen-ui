@@ -17,6 +17,8 @@ class CheckYourAnswers {
     this.verifyDisclosureSectionContent();
     this.verifyWitnessSectionContent();
     this.verifyEvidenceSectionContent();
+    this.verifyTrialDocuments();
+    this.verifyConfirmationStatements();
     contactUs.verifyContactUs();
   }
 
@@ -98,9 +100,50 @@ class CheckYourAnswers {
     I.see('Expert Stateent - Field Of Expertise 2');
     I.see('14/2/2023');
 
-    /*I.see('Questions for other party');
+    I.see('Questions for other party\'s expert or joint expert 1');
+    I.see('Questions for Expert 1');
     I.see('Other party\'s name');
-    I.see('Name of document you have questions about');*/
+    I.see('Test Inc');
+    I.see('Name of document you have questions about');
+    I.see('Questions for Expert Docuent Nae 1');
+
+    I.see('Questions for other party\'s expert or joint expert 2');
+    I.see('Questions for Expert 2');
+    I.see('Questions for Expert Docuent Nae 2');
+
+    I.see('Answers to questions asked by other party 1');
+    I.see('Answers for Expert 1');
+    I.see('Name of document with other party\'s questions');
+    I.see('Answers to questions asked by other party 2');
+    I.see('Answers for Expert 2');
+    I.see('Answers for Expert Docuent Nae 2');
+  }
+
+  verifyTrialDocuments() {
+    I.see('Trial documents', 'h1');
+    I.see('Case summary 1');
+    I.see('Case summary 2');
+    I.see('Skeleton argument 1');
+    I.see('Skeleton argument 2');
+    I.see('Legal authorities 1');
+    I.see('Legal authorities 2');
+    I.see('Costs 1');
+    I.see('Costs 2');
+    I.see('Documentary evidence for trial 1');
+    I.see('Documentary evidence for trial - Type of Document 1');
+    I.see('Documentary evidence for trial 2');
+    I.see('Documentary evidence for trial - Type of Document 2');
+  }
+
+  verifyConfirmationStatements() {
+    I.see('Confirmation', 'h1');
+    I.see('You cannot withdraw a document once you have submitted it.');
+    I.see('I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.');
+
+  }
+
+  clickConfirm() {
+    I.checkOption('#signed');
   }
 
 }

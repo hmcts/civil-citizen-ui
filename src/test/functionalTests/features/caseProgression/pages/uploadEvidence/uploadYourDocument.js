@@ -220,13 +220,13 @@ class UploadYourDocument {
     I.attachFile('trialCosts[1][fileUpload]', 'features/caseProgression/data/fileUpload.txt');
 
     //Docuentary Evidence For Trial
-    I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for trial 1');
+    I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for trial - Type of Document 1');
     I.fillField('trialDocumentary[0][dateInputFields][dateDay]', '15');
     I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
     I.attachFile('trialDocumentary[0][fileUpload]','features/caseProgression/data/fileUpload.txt');
     I.click('div:nth-of-type(15) #add-another-trial-list');
-    I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for trial 2');
+    I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for trial - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '15');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
