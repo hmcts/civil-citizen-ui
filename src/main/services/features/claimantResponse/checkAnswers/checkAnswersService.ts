@@ -5,14 +5,19 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {
+  buildSettlementAgreementSection,
+} from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claimId: string, claim: Claim, lang: string | unknown): SummarySections => {
+
   return {
     sections: [
       buildYourResponseSection(claim, claimId, lang),
+      buildSettlementAgreementSection(claim, claimId, lang),
     ],
   };
 };
