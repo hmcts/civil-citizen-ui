@@ -60,6 +60,8 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
 
@@ -617,6 +619,10 @@ export class Claim {
     return this.statementOfMeans?.courtOrders;
   }
 
+  isFinalGeneralOrderIssued(): boolean {
+    return this.caseProgression?.finalOrderDocumentCollection?.length > 0;
+  }
+
   getPriorityDebts(): PriorityDebts | undefined {
     return this.statementOfMeans?.priorityDebts;
   }
@@ -713,6 +719,36 @@ export class Claim {
 
   isSixWeeksOrLessFromTrial(): boolean {
     return new Date() >= this.sixWeeksBeforeHearingDate();
+  }
+
+  isBundleStitched(): boolean {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[0]?.stitchedDocument;
+  }
+
+  lastBundleCreatedDate(): Date {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return undefined;
+    }
+
+    BundlesFormatter.orderBundlesNewToOld(caseBundles);
+
+    for(const bundle of caseBundles)
+    {
+      if(bundle.createdOn)
+      {
+        return bundle.createdOn;
+      }
+    }
+
+    return undefined;
   }
 
   hasClaimTakenOffline() {
