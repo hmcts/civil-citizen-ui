@@ -8,7 +8,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
+      show: false,
       browser: 'chromium',
       waitForTimeout: 20000,
       windowSize: '1920x1080',
