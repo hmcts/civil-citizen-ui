@@ -30,12 +30,12 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Personal detail error screen', async () => {
+Scenario('Personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
 });
 
-Scenario('View your options before response deadline error screen @test', async () => {
+Scenario('View your options before response deadline error screen @@nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
