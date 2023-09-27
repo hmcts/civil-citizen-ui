@@ -14,7 +14,7 @@ import {getClaimantIdamDetails} from 'services/translation/response/claimantIdam
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
-import {toCCDHelpWithFees} from "services/translation/response/toCCDHelpWithFees";
+import {toCCDHelpWithFees} from 'services/translation/response/toCCDHelpWithFees';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {

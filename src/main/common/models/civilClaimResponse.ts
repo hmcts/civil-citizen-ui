@@ -5,7 +5,7 @@ import {
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
-  InterestEndDateType
+  InterestEndDateType,
 } from 'form/models/claimDetails';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
