@@ -209,7 +209,7 @@ class ResponseSteps {
   }
 
   async EnterPaymentOptionError(claimRef, responseType, paymentOption) {
-    await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+    await paymentOptionPage.enterPaymentOptionError(claimRef, responseType, paymentOption);
   }
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
@@ -391,8 +391,8 @@ class ResponseSteps {
     await explanation.enterExplanation();
   }
 
-  async EnterRepaymentPlan(claimRef) {
-    await repaymentPlan.enterRepaymentPlan(claimRef);
+  async EnterRepaymentPlanError(claimRef) {
+    await repaymentPlan.enterRepaymentPlanError(claimRef);
   }
 
   async SelectPartAdmitAlreadyPaid(option) {

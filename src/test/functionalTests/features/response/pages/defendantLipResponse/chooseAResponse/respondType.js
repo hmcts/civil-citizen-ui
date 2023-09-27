@@ -44,24 +44,6 @@ class RespondTypePage {
     await I.see('There was a problem');
     await I.see('Choose your response');
     switch (responseType){
-      case 'full-admission':{
-        await I.click(fields.responseAdmitAll);
-        await I.click('Save and continue');
-        await I.amOnPage('/case/'+claimRef+'/response/full-admission/payment-option');
-        await I.click('Save and continue');
-        await I.see('There was a problem');
-        await I.see('Choose a payment option');
-        await I.click(fields.responseAdmitAllBySetDate);
-        await I.click('Save and continue');
-        await I.amOnPage('/case/'+claimRef+'/response/full-admission/payment-date');
-        await I.see('What date will you pay on?');
-        await I.click('Save and continue');
-        await I.see('There was a problem');
-        await I.see('Enter a valid day');
-        await I.see('Enter a valid month');
-        await I.see('Enter a valid year');
-        break;
-      }
       case 'partial-admission':{
         await I.click(fields.responsePartAdmit);
         await I.click('Save and continue');

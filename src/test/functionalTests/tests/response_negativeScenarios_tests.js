@@ -9,6 +9,8 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const admitAll = 'full-admission';
 const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
+const bySetDate = 'bySetDate';
+// const repaymentPlan = 'repaymentPlan';
 
 let claimRef;
 let caseData;
@@ -50,8 +52,20 @@ Scenario('View your options before response deadline error screen @nightly', asy
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
 });
 
-Scenario('Respond to claim screens @nightly @test', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
+Scenario('Choose a response screens @nightly', async () => {
   await ResponseSteps.EnterResponseToClaimError(claimRef, partAdmit);
   await ResponseSteps.EnterResponseToClaimError(claimRef, rejectAll);
+});
+
+Scenario('Decide how you\'ll pay @nightly', async () => {
+  await ResponseSteps.EnterPaymentOptionError(claimRef, admitAll, bySetDate);
+});
+
+//todo:
+Scenario('Share your financial details screens @nightly', async () => {
+  await ResponseSteps.EnterPaymentOptionError(claimRef, admitAll, bySetDate);
+});
+
+Scenario('Your repayment plan @nightly @test', async () => {
+  await ResponseSteps.EnterRepaymentPlanError(claimRef);
 });
