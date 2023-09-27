@@ -1,15 +1,16 @@
-import {Address} from 'form/models/address';
 import {Party} from 'models/party';
+import {toCCDAddress} from 'services/translation/response/convertToCCDAddress';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 
 export interface CCDAdditionalPartyDetails {
-  correspondenceAddress?: Address,
+  correspondenceAddress?: CCDAddress,
   contactPerson?: string,
 }
 
 export const toAdditionalPartyDetails = (party: Party) => {
   if (!party) return undefined;
   return {
-    correspondenceAddress: party.partyDetails?.correspondenceAddress,
+    correspondenceAddress: toCCDAddress(party.partyDetails?.correspondenceAddress),
     contactPerson: party.partyDetails?.contactPerson,
   };
 
