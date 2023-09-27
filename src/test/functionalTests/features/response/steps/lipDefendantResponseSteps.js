@@ -208,6 +208,10 @@ class ResponseSteps {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
+  async EnterPaymentOptionError(claimRef, responseType, paymentOption) {
+    await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+  }
+
   async CheckAndSubmit(claimRef, responseType, claimType) {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
