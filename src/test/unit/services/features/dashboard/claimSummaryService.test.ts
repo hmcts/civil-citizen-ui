@@ -219,7 +219,7 @@ describe('getEvidenceUploadContent', () => {
     expect(result[0].contentSections).toHaveLength(9);
     expect(result[0].contentSections[0]).toEqual(evidenceUploadText);
     expect(result[0].contentSections[1]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['disclosure_list', 'documents_for_disclosure']));
-    expect(result[0].contentSections[2]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', ['documents_for_disclosure', 'disclosure_list']));
+    expect(result[0].contentSections[2]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', [ 'disclosure_list', 'documents_for_disclosure']));
     expect(result[0].contentSections[3]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['documents_referred', 'notice_of_intention', 'witness_summary', 'witness_statement']));
     expect(result[0].contentSections[4]).toEqual(getTable(false, 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE',['documents_referred', 'notice_of_intention', 'witness_summary', 'witness_statement']));
     expect(result[0].contentSections[5]).toEqual(getTable(true, 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE',['answers_for_experts', 'questions_for_experts','STATEMENT', 'expert_report']));
