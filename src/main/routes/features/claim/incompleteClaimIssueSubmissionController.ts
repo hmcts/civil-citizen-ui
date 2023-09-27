@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, Router, RequestHandler} from 'express';
 import {
   CLAIM_INCOMPLETE_SUBMISSION_URL, CLAIMANT_TASK_LIST_URL,
 } from '../../urls';
@@ -9,7 +9,7 @@ import {outstandingTasksFromCase} from 'services/features/claim/taskListService'
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteClaimIssueSubmissionController = Router();
 
-incompleteClaimIssueSubmissionController.get(CLAIM_INCOMPLETE_SUBMISSION_URL, async (req, res, next: NextFunction) => {
+incompleteClaimIssueSubmissionController.get(CLAIM_INCOMPLETE_SUBMISSION_URL, (async (req, res, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -22,7 +22,7 @@ incompleteClaimIssueSubmissionController.get(CLAIM_INCOMPLETE_SUBMISSION_URL, as
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default incompleteClaimIssueSubmissionController;
 
