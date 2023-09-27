@@ -8,7 +8,7 @@ import {
   getFirstRepaymentDate,
   getPaymentAmount,
   getPaymentDate,
-  getRepaymentFrequency
+  getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL} from 'routes/urls';
