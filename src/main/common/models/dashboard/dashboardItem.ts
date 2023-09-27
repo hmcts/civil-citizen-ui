@@ -45,7 +45,7 @@ export abstract class DashboardItem {
   getStatus(lang: string | unknown): string {
     const dashboardStatus = this.getDashboardStatus(lang);
     const currentStatus = dashboardStatus[this.status];
-    return translate(currentStatus.translationKey, currentStatus.parameter, lang);
+    return currentStatus? translate(currentStatus?.translationKey, currentStatus?.parameter, lang): '';
   }
   abstract getDashboardStatus(lang: string | unknown) : DashboardStatus
 }
