@@ -11,8 +11,7 @@ export interface CCDRespondentLiPResponse {
   respondent1DQHearingSupportLip?: CCDHearingSupport,
   respondent1LiPContactPerson?: string,
   respondent1LiPCorrespondenceAddress?: CCDAddress,
-  respondent1ResponseLanguage?: CCDRespondentResponseLanguage,
-  helpWithFeesReferenceNumberLip?: string;
+  respondent1ResponseLanguage?: CCDRespondentResponseLanguage;
 }
 
 export enum CCDRespondentResponseLanguage {

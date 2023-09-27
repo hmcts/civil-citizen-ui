@@ -14,6 +14,7 @@ import {getClaimantIdamDetails} from 'services/translation/response/claimantIdam
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
+import {toCCDHelpWithFees} from "services/translation/response/toCCDHelpWithFees";
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -41,5 +42,6 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
+    helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
   };
 };

@@ -1,3 +1,5 @@
+import {YesNo} from "form/models/yesNo";
+
 export enum InterestClaimFromType {
   FROM_CLAIM_SUBMIT_DATE = 'FROM_CLAIM_SUBMIT_DATE',
   FROM_A_SPECIFIC_DATE = 'FROM_A_SPECIFIC_DATE'
@@ -47,4 +49,9 @@ export enum CaseState {
 
 export interface ClaimantMediationLip {
   hasAgreedFreeMediation: string
+}
+
+export interface CCDHelpWithFees {
+  helpWithFee: YesNo,
+  helpWithFeesReferenceNumber: string
 }
