@@ -57,15 +57,33 @@ Scenario('Choose a response screens @nightly', async () => {
   await ResponseSteps.EnterResponseToClaimError(claimRef, rejectAll);
 });
 
+Scenario('How much money do you admit you owe? screen @nightly', async () => {
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, partAdmit);
+});
+
+Scenario('Why do you disagree with the amount claimed? screen @nightly @test', async () => {
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmountError(claimRef, partAdmit);
+});
+
 Scenario('Decide how you\'ll pay @nightly', async () => {
   await ResponseSteps.EnterPaymentOptionError(claimRef, admitAll, bySetDate);
 });
 
-//todo:
+//todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
   await ResponseSteps.EnterPaymentOptionError(claimRef, admitAll, bySetDate);
 });
 
-Scenario('Your repayment plan @nightly @test', async () => {
+Scenario('Your repayment plan @nightly ', async () => {
   await ResponseSteps.EnterRepaymentPlanError(claimRef);
 });

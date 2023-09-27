@@ -342,6 +342,10 @@ class ResponseSteps {
     await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
   }
 
+  async EnterHowMuchMoneyYouOweError(claimRef) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef);
+  }
+
   async EnterEmployerDetails() {
     await enterEmployerDetails.enterEmployerDetails();
   }
@@ -405,6 +409,10 @@ class ResponseSteps {
 
   async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
     await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  }
+
+  async EnterWhyYouDisagreeTheClaimAmountError(claimRef, responseType) {
+    await whyDoYouDisagreeTheClaimAmount.enterReasonError(claimRef, responseType);
   }
 
   async EnterWhyYouDisagree(claimRef){
