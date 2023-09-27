@@ -66,6 +66,22 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(item).toBeUndefined();
     });
+    it('should return empty status when there is no status', () => {
+      //Given
+      ccdClaimantClaim.status = 'CHANGE_BY_CLAIMANT';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toBe('');
+    });
+    it('should return matched status value when status exists', () => {
+      //Given
+      ccdClaimantClaim.status = 'NO_RESPONSE';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
+    });
   });
   describe('Dashboard defendant item', ()=>{
     const ocmcDefendantClaim = new DashboardDefendantItem();
