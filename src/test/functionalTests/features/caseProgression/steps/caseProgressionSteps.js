@@ -3,6 +3,7 @@ const UploadYourDocumentsIntroduction = require('../pages/uploadEvidence/uploadY
 const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/whatTypeOfDocumentsDoYouWantToUpload');
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
+const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdatePage = new LatestUpdate();
@@ -10,6 +11,7 @@ const uploadYourDocumentsIntroduction = new UploadYourDocumentsIntroduction();
 const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToUpload();
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
+const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 
 class UploadEvidenceSteps {
 
@@ -27,7 +29,9 @@ class UploadEvidenceSteps {
     uploadYourDocument.inputDataForAllSections();
     uploadYourDocument.nextAction('Continue');
     checkYourAnswers.verifyPageContent();
-
+    checkYourAnswers.clickConfirm();
+    checkYourAnswers.nextAction('Submit');
+    uploadYourDocumentsConfirmation.verifyPageContent();
   }
 
   initiateHearingNoticeJourney(claimRef) {
