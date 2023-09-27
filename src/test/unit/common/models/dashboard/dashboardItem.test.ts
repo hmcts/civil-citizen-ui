@@ -95,12 +95,12 @@ describe('Dashboard Items', ()=> {
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
-      expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
     });
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
-      const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
       const params: DashboardStatusTranslationParam[] = [];
       const lang = 'cy';
 
