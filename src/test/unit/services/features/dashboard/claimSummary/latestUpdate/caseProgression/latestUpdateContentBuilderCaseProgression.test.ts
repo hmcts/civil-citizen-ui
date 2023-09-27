@@ -10,8 +10,9 @@ import {
   buildEvidenceUploadSection,
   buildFinaliseTrialArrangements,
   buildHearingTrialLatestUploadSection,
+  buildViewBundleSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
-import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {FAST_TRACK_CLAIM_AMOUNT, SMALL_CLAIM_AMOUNT} from 'form/models/claimType';
 import {getCaseProgressionHearingMock} from '../../../../../../../utils/caseProgression/mockCaseProgressionHearing';
@@ -136,6 +137,26 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       //Then
       expect(finaliseTrialArrangementsSection).toEqual([lastedContentBuilderExpected]);
+    });
+  });
+
+  describe('test buildViewBundleSection method', () => {
+    const BUNDLE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.BUNDLE';
+
+    it('should have view bundle content', () => {
+      //Given
+      const viewBundleContentExpected: ClaimSummarySection[] = new LatestUpdateSectionBuilder()
+        .addTitle(`${BUNDLE_CONTENT}.TITLE`)
+        .addParagraph(`${BUNDLE_CONTENT}.BUNDLE_CONTAINS_ALL_DOCUMENTS`)
+        .addParagraph(`${BUNDLE_CONTENT}.YOU_ARE_REMINDED`)
+        .addButton(`${BUNDLE_CONTENT}.VIEW_BUNDLE`, DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.BUNDLES))
+        .build();
+
+      //When
+      const viewBundleContent = buildViewBundleSection(claim);
+
+      //Then
+      expect(viewBundleContent).toEqual([viewBundleContentExpected]);
     });
   });
 
