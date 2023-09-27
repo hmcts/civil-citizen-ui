@@ -1,51 +1,57 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
-import {
-  UploadDocumentTypes,
-  UploadEvidenceDocumentType,
-  UploadEvidenceExpert,
-  UploadEvidenceWitness,
-} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {TableCell} from 'models/summaryList/summaryList';
-import {
-  EvidenceUploadDisclosure,
-  EvidenceUploadExpert,
-  EvidenceUploadTrial,
-  EvidenceUploadWitness,
-} from 'models/document/documentType';
+import {EvidenceUploadExpert} from 'models/document/documentType';
 import {t} from 'i18next';
-import {
-  addEvidenceUploadDescription,
-  addEvidenceUploadTable,
-} from 'models/caseProgression/uploadDocumentsTableSectionBuilder';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {TabSectionBuilder} from 'models/caseProgression/TabSectionBuilder';
+import { UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 
-export function getEvidenceUploadDocuments(claim: Claim): ClaimSummarySection[] {
+export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSummarySection[] {
 
-  const documentTables = [] as ClaimSummarySection[];
-  const trialOrHearing: string = claim.isFastTrackClaim ? 'PAGES.CLAIM_SUMMARY.TRIAL_DOCUMENTS': 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS';
+  const disclosureHeading = 'PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS';
+  const witnessHeading = 'PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE';
+  const expertHeading = 'PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE';
+  const trialOrHearingHeading: string = claim.isFastTrackClaim ? 'PAGES.CLAIM_SUMMARY.TRIAL_DOCUMENTS': 'PAGES.CLAIM_SUMMARY.HEARING_DOCUMENTS';
 
-  documentTables.push(addEvidenceUploadDescription());
+  const disclosureListClaimant = claim.caseProgression?.claimantUploadDocuments?.disclosure;
+  const witnessListClaimant = claim.caseProgression?.claimantUploadDocuments?.witness;
+  const expertListClaimant = claim.caseProgression?.claimantUploadDocuments?.expert;
+  const trialListClaimant = claim.caseProgression?.claimantUploadDocuments?.trial;
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.claimantUploadDocuments?.disclosure, true, claim.id));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.DISCLOSURE_DOCUMENTS', claim.caseProgression?.defendantUploadDocuments?.disclosure, false, claim.id));
+  const disclosureListDefendant = claim.caseProgression?.defendantUploadDocuments?.disclosure;
+  const witnessListDefendant = claim.caseProgression?.defendantUploadDocuments?.witness;
+  const expertListDefendant = claim.caseProgression?.defendantUploadDocuments?.expert;
+  const trialListDefendant = claim.caseProgression?.defendantUploadDocuments?.trial;
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.witness, true, claim.id));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.WITNESS_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.witness, false, claim.id));
+  const wrap = 'tableWrap';
 
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.claimantUploadDocuments?.expert, true, claim.id));
-  documentTables.push(getDocumentTypeTable('PAGES.CLAIM_SUMMARY.EXPERT_EVIDENCE', claim.caseProgression?.defendantUploadDocuments?.expert, false, claim.id));
+  const evidenceUploadTab = new TabSectionBuilder()
+    .addParagraph('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY')
+    .addTable(getTableHeaders(disclosureHeading, disclosureListClaimant, true, lang), getTableRows(disclosureListClaimant, claim,true, lang), wrap)
+    .addTable(getTableHeaders(disclosureHeading, disclosureListDefendant, false, lang), getTableRows(disclosureListDefendant, claim,false, lang), wrap)
+    .addTable(getTableHeaders(witnessHeading, witnessListClaimant, true, lang), getTableRows(witnessListClaimant, claim,true, lang), wrap)
+    .addTable(getTableHeaders(witnessHeading, witnessListDefendant, false, lang), getTableRows(witnessListDefendant, claim,false, lang), wrap)
+    .addTable(getTableHeaders(expertHeading, expertListClaimant, true, lang), getTableRows(expertListClaimant, claim,true, lang), wrap)
+    .addTable(getTableHeaders(expertHeading, expertListDefendant, false, lang), getTableRows(expertListDefendant, claim,false, lang), wrap)
+    .addTable(getTableHeaders(trialOrHearingHeading, trialListClaimant, true, lang), getTableRows(trialListClaimant, claim,true, lang), wrap)
+    .addTable(getTableHeaders(trialOrHearingHeading, trialListDefendant, false, lang), getTableRows(trialListDefendant, claim, false, lang), wrap)
+    .build();
 
-  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.claimantUploadDocuments?.trial, true, claim.id));
-  documentTables.push(getDocumentTypeTable(trialOrHearing, claim.caseProgression?.defendantUploadDocuments?.trial, false, claim.id));
-
-  return documentTables;
+  return evidenceUploadTab;
 }
 
-function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, claimId: string) : ClaimSummarySection {
+function getTableHeaders(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, lang: string){
+  if(!rows || rows.length == 0) return null;
 
-  if (!rows || rows.length == 0) return undefined;
+  const newHeader = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) + t(header, {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang}) + t(header, {lng: lang});
+
+  return [{html: newHeader, classes:'govuk-!-width-one-half'},{html: '', classes: 'govuk-!-width-one-half'}] as TableCell[];
+}
+
+function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boolean, lang: string) {
+
+  if (!rows || rows.length == 0) return null;
 
   const tableRows = [] as TableCell[][];
 
@@ -55,15 +61,25 @@ function getDocumentTypeTable(header: string, rows: UploadDocumentTypes[], isCla
   {
     const uploadDateString: string  = upload.createdDateTimeFormatted;
 
+    const uploaderName = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
+    const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(upload.documentType, lang);
+    let documentName: string;
+
+    if(upload.documentType == EvidenceUploadExpert.STATEMENT) {
+      documentName = documentTypeName;
+    } else {
+      documentName = uploaderName + documentTypeName.toLowerCase();
+    }
+
     tableRows.push([
-      {html: getDocumentTypeName(upload.documentType, isClaimant) + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED') + uploadDateString,
+      {html: documentName + '<br>' + t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED', {lng: lang}) + uploadDateString,
         classes: 'govuk-!-width-one-half'},
-      {html: getDocumentLink(upload, claimId),
+      {html: UploadedEvidenceFormatter.getDocumentLink(upload, claim.id),
         classes: 'govuk-!-width-one-half govuk-table__cell--numeric'}],
     );
   }
 
-  return addEvidenceUploadTable(header, isClaimant, tableRows);
+  return tableRows;
 }
 
 function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
@@ -81,84 +97,6 @@ function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocument
     }
   });
   return documentsWithDates;
-}
-
-function getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial, isClaimant: boolean)
-{
-  let documentName = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT') : t('PAGES.CLAIM_SUMMARY.DEFENDANT');
-
-  switch(documentType)
-  {
-    case EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE').toLowerCase();
-      break;
-    case EvidenceUploadDisclosure.DISCLOSURE_LIST:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE_LIST').toLowerCase();
-      break;
-    case EvidenceUploadWitness.WITNESS_STATEMENT:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_STATEMENT').toLowerCase();
-      break;
-    case EvidenceUploadWitness.WITNESS_SUMMARY:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY').toLowerCase();
-      break;
-    case EvidenceUploadWitness.NOTICE_OF_INTENTION:
-      documentName = documentName +t('PAGES.CLAIM_SUMMARY.NOTICE_OF_INTENTION').toLowerCase();
-      break;
-    case EvidenceUploadWitness.DOCUMENTS_REFERRED:
-      documentName = documentName +t('PAGES.CLAIM_SUMMARY.DOCUMENTS_REFERRED_TO_STATEMENT').toLowerCase();
-      break;
-    case EvidenceUploadExpert.STATEMENT:
-      documentName = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.JOINT_STATEMENT_OF_EXPERTS');
-      break;
-    case EvidenceUploadExpert.EXPERT_REPORT:
-      documentName = documentName +t('PAGES.CLAIM_SUMMARY.EXPERT_REPORT').toLowerCase();
-      break;
-    case EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.QUESTIONS_FOR_OTHER_PARTY').toLowerCase();
-      break;
-    case EvidenceUploadExpert.ANSWERS_FOR_EXPERTS:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.ANSWERS_TO_QUESTIONS').toLowerCase();
-      break;
-    case EvidenceUploadTrial.CASE_SUMMARY:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY').toLowerCase();
-      break;
-    case EvidenceUploadTrial.SKELETON_ARGUMENT:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SKELETON_ARGUMENT').toLowerCase();
-      break;
-    case EvidenceUploadTrial.AUTHORITIES:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES').toLowerCase();
-      break;
-    case EvidenceUploadTrial.COSTS:
-      documentName = documentName +t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS').toLowerCase();
-      break;
-    case EvidenceUploadTrial.DOCUMENTARY:
-      documentName = documentName +t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE').toLowerCase();
-      break;
-  }
-  return documentName;
-}
-
-function getDocumentLink (document: UploadDocumentTypes, claimId: string) : string {
-  let documentName : string;
-  let documentId : string;
-
-  if(document.caseDocument instanceof UploadEvidenceDocumentType)
-  {
-    documentName = document.caseDocument.documentUpload.document_filename;
-    documentId = documentIdExtractor(document.caseDocument.documentUpload.document_binary_url);
-  }
-  else if(document.caseDocument instanceof  UploadEvidenceWitness)
-  {
-    documentName = document.caseDocument.witnessOptionDocument.document_filename;
-    documentId = documentIdExtractor(document.caseDocument.witnessOptionDocument.document_binary_url);
-  }
-  else if(document.caseDocument instanceof UploadEvidenceExpert)
-  {
-    documentName = document.caseDocument.expertDocument.document_filename;
-    documentId = documentIdExtractor(document.caseDocument.expertDocument.document_binary_url);
-  }
-  const url = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId);
-  return `<a class="govuk-link" href="${url}">${documentName}</a>`;
 }
 
 const typeValueMap: Record<string, number> = {
