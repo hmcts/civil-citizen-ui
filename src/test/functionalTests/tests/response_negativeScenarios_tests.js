@@ -5,6 +5,10 @@ const LoginSteps =  require('../features/home/steps/login');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 const yesIWantMoretime = 'yesIWantMoretime';
+const dontWantMoreTime = 'dontWantMoreTime';
+const admitAll = 'full-admission';
+const partAdmit = 'partial-admission';
+const rejectAll = 'rejectAll';
 
 let claimRef;
 let caseData;
@@ -30,7 +34,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Respond To Claim screen @nightly', async () => {
+Scenario('Respond To Claim in english or welsh screen @nightly', async () => {
   await ResponseSteps.RespondToClaimError(claimRef);
 });
 
@@ -44,4 +48,10 @@ Scenario('View your options before response deadline error screen @nightly', asy
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
+});
+
+Scenario('Respond to claim screens @nightly @test', async () => {
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterResponseToClaimError(claimRef, partAdmit);
+  await ResponseSteps.EnterResponseToClaimError(claimRef, rejectAll);
 });

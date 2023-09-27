@@ -35,6 +35,33 @@ class RespondTypePage {
     }
     await I.click(buttons.saveAndContinue);
   }
+
+  async enterResponseToClaimError(claimRef, responseType){
+    await I.amOnPage('/case/'+claimRef+'/response/response-type');
+    await I.waitForText('How do you respond to the claim?', config.WaitForText);
+    await I.click('Save and continue');
+    await I.see('There was a problem');
+    await I.see('Choose your response');
+    switch (responseType){
+      case 'partial-admission':{
+        await I.click(fields.responsePartAdmit);
+        await I.click('Save and continue');
+        await I.see('Have you paid the claimant the amount you admit you owe?');
+        await I.click('Save and continue');
+        await I.see('There was a problem');
+        await I.see('Choose option: Yes or No');
+        break;
+      }
+      case 'rejectAll':{
+        await I.click(fields.responseRejectAll);
+        await I.click('Save and continue');
+        await I.click('Save and continue');
+        await I.see('There was a problem');
+        await I.see('Please select a response');
+        break;
+      }
+    }
+  }
 }
 
 module.exports = RespondTypePage;

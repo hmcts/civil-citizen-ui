@@ -200,6 +200,9 @@ class ResponseSteps {
   async EnterResponseToClaim(claimRef, responseType) {
     await respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
+  async EnterResponseToClaimError(claimRef, responseType) {
+    await respondTypePage.enterResponseToClaimError(claimRef, responseType);
+  }
 
   async EnterPaymentOption(claimRef, responseType, paymentOption) {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
