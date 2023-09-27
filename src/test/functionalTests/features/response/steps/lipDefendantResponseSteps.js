@@ -142,6 +142,11 @@ class ResponseSteps {
     await bilingualLanguagePreference.verifyContent();
   }
 
+  async RespondToClaimError(claimRef){
+    await defendantLatestUpdate.open(claimRef);
+    await bilingualLanguagePreference.verifyContentError();
+  }
+
   async DefendantSummaryPage(claimRef){
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
