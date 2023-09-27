@@ -215,7 +215,7 @@ export const CCJ_PAYMENT_OPTIONS_URL = `${BASE_CCJ_URL}/payment-options`;
 export const CCJ_CONFIRMATION_URL = `${BASE_CCJ_URL}/confirmation-ccj`;
 export const CCJ_EXTENDED_PAID_AMOUNT_URL = `${BASE_CLAIMANT_RESPONSE_URL}/county-court-judgement/paid-amount`;
 export const CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL = `${BASE_CLAIMANT_RESPONSE_URL}/county-court-judgement/paid-amount-summary`;
-export const BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL = `${BASE_BREATHING_SPACE_URL}/respite-reference-number`;
+export const BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL = `case/:id/breathing-space/respite-reference-number`;
 export const BREATHING_SPACE_RESPITE_START_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-start`;
 export const BREATHING_SPACE_RESPITE_END_DATE_URL = `${BASE_BREATHING_SPACE_URL}/respite-end`;
 export const BREATHING_SPACE_RESPITE_TYPE_URL = `${BASE_BREATHING_SPACE_URL}/respite-type`;
@@ -240,3 +240,4 @@ export const HEARING_DURATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/heari
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/confirmation`;
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;
+

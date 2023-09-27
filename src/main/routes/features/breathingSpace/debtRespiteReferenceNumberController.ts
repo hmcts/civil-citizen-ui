@@ -7,6 +7,7 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {DebtRespiteReferenceNumber} from '../../../common/models/breathingSpace/debtRespiteReferenceNumber';
 import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
+import {breathingSpacGuard} from 'routes/guards/breathingSpacGuard';
 
 const debtRespiteReferenceNumberController = Router();
 const debtRespiteReferenceNumberViewPath = 'features/breathingSpace/debt-respite-reference-number';
@@ -16,7 +17,7 @@ function renderView(form: GenericForm<DebtRespiteReferenceNumber>, res: Response
   res.render(debtRespiteReferenceNumberViewPath, {form});
 }
 
-debtRespiteReferenceNumberController.get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteReferenceNumberController.get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, breathingSpacGuard, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const breathingSpace = await getBreathingSpace(req.params.id);
     renderView(new GenericForm(breathingSpace.debtRespiteReferenceNumber), res);
@@ -25,7 +26,7 @@ debtRespiteReferenceNumberController.get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBE
   }
 });
 
-debtRespiteReferenceNumberController.post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteReferenceNumberController.post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, breathingSpacGuard, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const debtRespiteScheme = new GenericForm(new DebtRespiteReferenceNumber(req.body.referenceNumber));

@@ -7,6 +7,7 @@ import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpace
 import {BreathingSpace} from 'models/breathingSpace';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
+import {breathingSpacGuard} from 'routes/guards/breathingSpacGuard';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -18,6 +19,7 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 }
 
 breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
+  breathingSpacGuard,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
@@ -28,7 +30,7 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
     }
   });
 
-breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, breathingSpacGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpace(<AppRequest>req);
