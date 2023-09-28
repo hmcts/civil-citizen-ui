@@ -18,6 +18,8 @@ const day = currentDate.getDay() + 1;
 const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() + 1;
 const yearError = currentDate.getFullYear() - 50;
+const dayError = currentDate.getDay() + 1000;
+const monthError = currentDate.getMonth() - 1000;
 
 class RepaymentPlan {
   async enterRepaymentPlan(claimRef) {
@@ -49,6 +51,14 @@ class RepaymentPlan {
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, yearError.toString());
     await I.click('Save and continue');
+    await I.see('There was a problem');
+    await I.see('Enter a first payment date in the future');
+    //invalid date, month & year
+    await I.fillField(fields.day, dayError.toString());
+    await I.fillField(fields.month, monthError.toString());
+    await I.fillField(fields.year, '20');
+    await I.click(buttons.saveAndContinue);
+    await I.see('There was a problem');
     await I.see('There was a problem');
     await I.see('Enter a first payment date in the future');
   }

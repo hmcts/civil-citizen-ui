@@ -75,11 +75,14 @@ Scenario('Why do you disagree with the amount claimed? screen @nightly @test', a
 });
 
 Scenario('Decide how you\'ll pay @nightly @test', async () => {
-  await ResponseSteps.EnterPaymentOptionError(claimRef, admitAll, bySetDate);
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
+  await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
+  await ResponseSteps.EnterDateToPayOnError();
 });
 
 //todo:financial screens
-Scenario('Share your financial details screens @nightly ', async () => {
+Scenario('Share your financial details screens @nightly', async () => {
 });
 
 Scenario('Your repayment plan @nightly @test', async () => {

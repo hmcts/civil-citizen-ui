@@ -224,6 +224,10 @@ class ResponseSteps {
     await dateToPayOn.enterDateToPayOn();
   }
 
+  async EnterDateToPayOnError() {
+    await dateToPayOn.enterDateToPayOnError();
+  }
+
   async EnterFinancialDetails(claimRef) {
     await this.ShareYourFinancialDetailsIntro(claimRef);
     await this.EnterBankAccountDetails();
