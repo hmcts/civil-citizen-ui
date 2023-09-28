@@ -11,6 +11,7 @@ const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/services/dashboard/draftClaimService');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -39,7 +40,7 @@ describe('Dashboard page', () => {
     .get('/drafts')
     .reply(200, {});
   nock(civilServiceUrl)
-    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined')
+    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
     .reply(200, {});
   beforeAll((done) => {
     testSession
@@ -56,24 +57,29 @@ describe('Dashboard page', () => {
 
   describe('on GET', () => {
     it('should return dashboard page', async () => {
-      const data = [
-        {'admittedAmount':'200',
-          'ccjRequestedDate':'2023-02-24',
-          'claimAmount':'1000',
-          'claimId':'string',
-          'claimNumber':'256MC007',
-          'claimantName':'Mr Baddy Bad',
-          'defendantName':'Mr Bad Guy',
-          'numberOfDays':0,
-          'numberOfDaysOverdue':45,
-          'ocmc':true,
-          'paymentDate':'2022-06-21',
-          'responseDeadline':'2023-02-05',
-          'status':'SETTLED'},
-      ];
+      const data = {
+        claims: [
+          {
+            'admittedAmount': '200',
+            'ccjRequestedDate': '2023-02-24',
+            'claimAmount': '1000',
+            'claimId': 'string',
+            'claimNumber': '256MC007',
+            'claimantName': 'Mr Baddy Bad',
+            'defendantName': 'Mr Bad Guy',
+            'numberOfDays': 0,
+            'numberOfDaysOverdue': 45,
+            'ocmc': true,
+            'paymentDate': '2022-06-21',
+            'responseDeadline': '2023-02-05',
+            'status': 'SETTLED',
+          },
+        ],
+        totalPages: 1,
+      };
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
-        .reply(200, {data});
+        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
+        .reply(200, data);
       await testSession
         .get(DASHBOARD_URL)
         .expect((res: Response) => {
@@ -83,7 +89,7 @@ describe('Dashboard page', () => {
     });
     it('should return error page when there is an error with civil service response', async () => {
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
+        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
         .reply(500, {});
       await testSession
         .get(DASHBOARD_URL)

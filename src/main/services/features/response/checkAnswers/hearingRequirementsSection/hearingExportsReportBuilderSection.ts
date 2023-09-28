@@ -29,7 +29,7 @@ const buildExpertReportSection = (claim: Claim, claimId: string, lang: string): 
 
 const buildHasExportReportSectionOption = (claim: Claim, claimId: string, lang: string, hrefReportDetails: string): SummaryRow => {
   const value = claim?.hasExpertReportDetails() ?
-    t('COMMON.VARIATION_2.YES', lang) : t('COMMON.VARIATION_2.NO', lang);
+    t('COMMON.VARIATION_2.YES', {lng: lang}) : t('COMMON.VARIATION_2.NO', {lng: lang});
   return summaryRow(t('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE', {lng:lang}),
     value, hrefReportDetails, changeLabel(lang));
 };
@@ -48,14 +48,14 @@ const buildExpertsReportDetailsValue = (reportDetails: ReportDetail, lang: strin
 };
 
 const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
-  const valueForExpertPermission = claim?.hasPermissionForExperts() ? t('COMMON.VARIATION.YES', getLng(lang)) : t('COMMON.VARIATION.NO', getLng(lang));
-  const valueForDefendantExpertEvidence = claim?.hasEvidenceExpertCanStillExamine() ? t('COMMON.VARIATION.YES', getLng(lang)) : t('COMMON.VARIATION.NO', getLng(lang));
-  const examineRows = [summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', lang),
+  const valueForExpertPermission = claim?.hasPermissionForExperts() ? t('COMMON.VARIATION.YES', {lng: lang}) : t('COMMON.VARIATION.NO', {lng: lang});
+  const valueForDefendantExpertEvidence = claim?.hasEvidenceExpertCanStillExamine() ? t('COMMON.VARIATION.YES', {lng: lang}) : t('COMMON.VARIATION.NO', {lng: lang});
+  const examineRows = [summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', {lng: lang}),
     valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)),
-  summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', getLng(lang)), valueForDefendantExpertEvidence,
+  summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', {lng: lang}), valueForDefendantExpertEvidence,
     constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
   if (claim.hasEvidenceExpertCanStillExamine()) {
-    examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', lang),
+    examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', {lng: lang}),
       claim?.directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),
       changeLabel(lang)));
     examineRows.push(...buildExpertsDetailsRows(claim, claimId, lang));
@@ -70,14 +70,14 @@ const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string): S
   const expertDetailsSummaryRows: SummaryRow[] = [];
   rows?.forEach((expert, index) => {
     const row = index + 1;
-    expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', lang)} ${row}`));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', lang), expert.firstName, hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', lang), expert.lastName, hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', lang), expert.emailAddress, hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', lang), expert.phoneNumber?.toString(), hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', lang), expert.fieldOfExpertise, hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', lang), expert.whyNeedExpert, hrefExpertDetails, hrefLabel));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', lang), expert.estimatedCost?.toString(), hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(`${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', {lng: lang})} ${row}`));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', {lng: lang}), expert.lastName, hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', {lng: lang}), expert.emailAddress, hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', {lng: lang}), expert.phoneNumber?.toString(), hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', {lng: lang}), expert.fieldOfExpertise, hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', {lng: lang}), expert.whyNeedExpert, hrefExpertDetails, hrefLabel));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', {lng: lang}), expert.estimatedCost?.toString(), hrefExpertDetails, hrefLabel));
   });
   return expertDetailsSummaryRows;
 };

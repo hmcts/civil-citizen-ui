@@ -1,0 +1,58 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: hasAnythingChangedUrl,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <p class="govuk-body">
+            {% for content in hearingDurationContents %}
+              {{ itemContent(content,t) }}
+            {% endfor %}
+          </p>
+          <div class="form-group">
+            <form method="post" novalidate>
+              {{ csrfProtection(csrf) }}
+              {{ govukTextarea({
+                name: "otherInformation",
+                id: "otherInformation",
+                rows: "5",
+                label: {
+                  html: t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_LABEL')
+                },
+                hint: {
+                  text: t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_INPUT_HINT')
+                },
+                value: form.model.otherInformation
+              }) }}
+              <div class="govuk-button-group">
+                {{ govukButton({
+                  text: t('COMMON.BUTTONS.CONTINUE')
+                }) }}
+                <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              </div>
+            </form>
+          </div>
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

@@ -4,6 +4,8 @@ const config = require('../../../../../config');
 const fields = {
   cyaSigned: 'input[id="signed"]',
   directionsQuestionnaireSigned: '#directionsQuestionnaireSigned',
+  signedName: 'input[id="signerName"]',
+  signedRole: 'input[id="signerRole"]',
 };
 
 const buttons = {
@@ -11,7 +13,7 @@ const buttons = {
 };
 
 class CheckYourAnswersPage {
-  async checkAndSubmit(claimRef, responseType='') {
+  async checkAndSubmit(claimRef, responseType='', claimType) {
     await I.click('Check and submit your response');
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
@@ -22,6 +24,10 @@ class CheckYourAnswersPage {
     await I.waitForText('Check your answers', config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
+    if(claimType == 'FastTrack'){
+      await I.fillField(fields.signedName, 'TestTest');
+      await I.fillField(fields.signedRole, 'Test');
+    }
     if (responseType == 'partial-admission' || responseType == 'rejectAll') {
       await I.waitForElement(fields.directionsQuestionnaireSigned);
       await I.checkOption(fields.directionsQuestionnaireSigned);
@@ -32,7 +38,7 @@ class CheckYourAnswersPage {
     //Added the below IF statement to exclude these steps in AAT as we are ignoring cui non prod files in AAT
     //Once the CUI Release is done, we can remove this IF statement.
 
-    if((config.TestUrl).includes('preview')  ){
+    if (['preview', 'demo'  ].includes(config.runningEnv)) {
       await I.click(buttons.submit);
       await I.amOnPage('/case/'+claimRef+'/response/confirmation');
       await I.waitForText('You\'ve submitted your response',config.WaitForText);

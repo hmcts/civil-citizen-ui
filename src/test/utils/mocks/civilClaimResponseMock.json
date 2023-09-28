@@ -7,6 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "caseRole" : "[APPLICANTSOLICITORONE]",
     "pcqId":"123",
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
@@ -274,15 +275,36 @@
           "documentType": "SEALED_CLAIM",
           "createdDatetime": "2022-06-21T14:15:19"
         }
+      },
+      {
+        "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+            "document_filename": "sealed_claim_form_000MC001.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+          },
+          "documentName": "sealed_claim_form_000MC001.pdf",
+          "documentSize": 45794,
+          "documentType": "SDO_ORDER",
+          "createdDatetime": "2022-06-21T14:15:19"
+        }
       }
     ],
     "responseDeadline": {
       "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
+    "caseProgressionHearing": {
+      "hearingDuration": "MINUTES_150"
+    },
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
+      "defendantTrialArrangements": "",
+      "claimantTrialArrangements": "",
+      "defendantDocuments": "",
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
@@ -584,6 +606,14 @@
           true,
           true
         ]
+      },
+      "defendantTrialArrangements": {
+        "isCaseReady": "no",
+        "hasAnythingChanged": {
+          "option": "yes",
+          "textArea": "a witness requires a courtroom with step-free access."
+        },
+        "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
       }
     }
   }

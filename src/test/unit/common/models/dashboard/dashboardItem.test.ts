@@ -1,7 +1,14 @@
-import {DashboardClaimantItem, DashboardDefendantItem, DashboardStatusTranslationParam} from 'common/models/dashboard/dashboardItem';
+import {
+  DashboardClaimantItem,
+  DashboardDefendantItem,
+  DashboardStatusTranslationParam,
+  toDraftClaimDashboardItem,
+} from 'common/models/dashboard/dashboardItem';
 import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
+import {Claim} from 'models/claim';
+
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 jest.mock('../../../../../main/modules/i18n');
@@ -35,6 +42,29 @@ describe('Dashboard Items', ()=> {
       const href = ccdClaimantClaim.getHref();
       //Then
       expect(href).toEqual( '/dashboard/1/claimant');
+    });
+    it('should translate claim to dashboard item when claim is not empty', () => {
+      //Given
+      const claim = new Claim();
+      claim.draftClaimCreatedAt= new Date();
+      //When
+      const item = toDraftClaimDashboardItem(claim);
+      //Then
+      expect(item).not.toBeUndefined();
+    });
+    it('should return undefined when claim is empty', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const item = toDraftClaimDashboardItem(claim);
+      //Then
+      expect(item).toBeUndefined();
+    });
+    it('should return undefined when claim is undefined', () => {
+      //When
+      const item = toDraftClaimDashboardItem(undefined);
+      //Then
+      expect(item).toBeUndefined();
     });
   });
   describe('Dashboard defendant item', ()=>{
@@ -70,15 +100,15 @@ describe('Dashboard Items', ()=> {
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
       const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT'; 
-      const params: DashboardStatusTranslationParam[] = []; 
-      const lang = 'cy'; 
-      
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const params: DashboardStatusTranslationParam[] = [];
+      const lang = 'cy';
+
       // When
       const result = translate(translationKey, params, lang);
-      
+
       // Then
       expect(result).toBe(expectedTranslation);
-    }); 
+    });
   });
 });

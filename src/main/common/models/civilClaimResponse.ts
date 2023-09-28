@@ -11,7 +11,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document} from 'models/document/document';
+import {Document, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -53,6 +53,17 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CaseRole} from 'form/models/caseRoles';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class CivilClaimResponse {
   id: string;
@@ -103,6 +114,7 @@ export interface CCDClaim extends ClaimUpdate {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  servedDocumentFiles?: ServedDocumentFiles;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   ccdState?: CaseState;
@@ -173,6 +185,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -212,6 +225,25 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  caseBundles?: CCDBundle[];
+  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  caseRole?: CaseRole;
+  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
+  partialPayment?: YesNoUpperCamelCase;
+  partialPaymentAmount?: string;
+  paymentTypeSelection?: CCDDJPaymentOption;
+  paymentSetDate?: Date;
+  repaymentDue?: string;
+  repaymentDate?: Date;
+  repaymentFrequency?: CCDPaymentFrequency;
+  repaymentSuggestion?: string;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {

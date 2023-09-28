@@ -17,13 +17,26 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
     this._claimSummarySections.push(linkSection);
     return this;
   }
-  addResponseDocumentLink(text: string, claimId: string, documentUri: string, variables?: any, textAfter?: string) {
+
+  addButtonOpensNewTab(title: string, href: string) {
+    const newTabButtonSection = ({
+      type: ClaimSummaryType.NEW_TAB_BUTTON,
+      data: {
+        text: title,
+        href: href,
+      },
+    });
+    this._claimSummarySections.push(newTabButtonSection);
+    return this;
+  }
+
+  addResponseDocumentLink(text: string, claimId: string, documentId: string, variables?: any, textAfter?: string) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
         text: text,
         variables: variables,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', documentUri),
+        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId),
         textAfter: textAfter,
       },
     });
