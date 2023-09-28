@@ -3,14 +3,14 @@ import {Reason} from 'form/models/claim/details/reason';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 
 describe('translate Claim Details to CUI model', () => {
   const ccdClaimMock : CCDClaim = {
     detailsOfClaim: 'test detailsOfClaim to reason',
     helpWithFees: <CCDHelpWithFees>{
-      helpWithFee: YesNo.YES,
+      helpWithFee: YesNoUpperCamelCase.YES,
       helpWithFeesReferenceNumber: '12345',
     },
   };
