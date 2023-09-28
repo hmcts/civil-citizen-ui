@@ -5,9 +5,9 @@ import {DASHBOARD_URL} from '../urls';
 import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('breathingSpacGuard');
+const logger = Logger.getLogger('breathingSpaceGuard');
 
-export const breathingSpacGuard = async (req: Request, res: Response, next: NextFunction) => {
+export const breathingSpaceGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
     const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
