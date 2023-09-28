@@ -8,7 +8,6 @@ import {AppRequest} from '../../../common/models/AppRequest';
 import {DebtRespiteEndDate} from '../../../common/models/breathingSpace/debtRespiteEndDate';
 import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
 
 const debtRespiteEndDateController = Router();
 const debtRespiteEndDatePath = 'features/breathingSpace/debt-respite-end-date';
@@ -20,7 +19,7 @@ function renderView(form: GenericForm<DebtRespiteEndDate>, res: Response): void 
   });
 }
 
-debtRespiteEndDateController.get(BREATHING_SPACE_RESPITE_END_DATE_URL, breathingSpaceGuard, async (req:AppRequest, res:Response, next: NextFunction) => {
+debtRespiteEndDateController.get(BREATHING_SPACE_RESPITE_END_DATE_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
     const breathingSpace = await getBreathingSpace(req.params.id);
     const debtRespiteEndDate = breathingSpace?.debtRespiteEndDate ?? new DebtRespiteEndDate();
@@ -30,7 +29,7 @@ debtRespiteEndDateController.get(BREATHING_SPACE_RESPITE_END_DATE_URL, breathing
   }
 });
 
-debtRespiteEndDateController.post(BREATHING_SPACE_RESPITE_END_DATE_URL, breathingSpaceGuard, async (req:Request, res:Response, next: NextFunction) => {
+debtRespiteEndDateController.post(BREATHING_SPACE_RESPITE_END_DATE_URL, async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(new DebtRespiteEndDate(req.body.day, req.body.month, req.body.year));

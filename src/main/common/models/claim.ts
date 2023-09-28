@@ -63,8 +63,7 @@ import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
-import {ChooseHowProceed} from './chooseHowProceed';
-import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import { ChooseHowProceed } from './chooseHowProceed';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -124,7 +123,6 @@ export class Claim {
   caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
