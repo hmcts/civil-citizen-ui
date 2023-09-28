@@ -9,6 +9,7 @@ export class TrialArrangements {
   trialArrangementsDocument?: TrialArrangementsDocument;
 }
 
+
 export class TrialArrangementsDocument {
   id: string;
   value: CaseDocument;
