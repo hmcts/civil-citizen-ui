@@ -12,7 +12,7 @@ export const breathingSpaceGuard = async (req: Request, res: Response, next: Nex
     const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
     const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
     const claim = await civilServiceClient.retrieveClaimDetails(req.params?.id, <AppRequest>req);
-    if (!!claim?.enterBreathing?.type) {
+    if (claim?.enterBreathing?.type) {
       logger.info('Redirecting to dashboard from ', req.url);
       res.redirect(DASHBOARD_URL);
     } else {
