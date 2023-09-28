@@ -197,6 +197,10 @@ class ResponseSteps {
     await addYourTimeLine.addTimeLineOfEvents();
   }
 
+  async AddYourTimeLineEventsError() {
+    await addYourTimeLine.addTimeLineOfEvents();
+  }
+
   async EnterResponseToClaim(claimRef, responseType) {
     await respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
@@ -205,6 +209,10 @@ class ResponseSteps {
   }
 
   async EnterPaymentOption(claimRef, responseType, paymentOption) {
+    await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+  }
+
+  async EnterPaymentOptionError(claimRef, responseType, paymentOption) {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
@@ -336,6 +344,10 @@ class ResponseSteps {
 
   async EnterHowMuchYouHavePaid(claimRef, amount, responseType) {
     await howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
+  }
+
+  async EnterHowMuchYouHavePaidError(claimRef, amount, responseType) {
+    await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
   }
 
   async EnterHowMuchMoneyYouOwe(claimRef, amount) {
