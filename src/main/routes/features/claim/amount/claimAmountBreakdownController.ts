@@ -30,22 +30,24 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, claimIssueTaskListGuard, (a
   }
 }) as RequestHandler);
 
-claimAmountBreakdownController.post(CLAIM_AMOUNT_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  try {
-    const form = new GenericForm(AmountBreakdown.fromObject(req.body));
-    form.validateSync();
-    if (form.hasErrors()) {
-      renderView(form, res);
-    } else {
-      if (form.model.isValidTotal()) {
-        await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
+claimAmountBreakdownController.post(CLAIM_AMOUNT_URL, (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  (async () => {
+    try {
+      const form = new GenericForm(AmountBreakdown.fromObject(req.body));
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
       } else {
-        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
+        if (form.model.isValidTotal()) {
+          await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
+        } else {
+          res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
+        }
       }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
-  }
+  })();
 });
 
 const saveAndRedirectToNextPage = async (req: AppRequest, res: Response, amountBreakdown: AmountBreakdown) => {
