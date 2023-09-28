@@ -16,8 +16,8 @@ Before(async ({api}) => {
   }
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'FastTrack');
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
-  //await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
-  //await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
 });
 
 Scenario('Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
