@@ -1,7 +1,6 @@
 const config = require('../../config');
-//const performSDOSteps = require('../features/caseProgression/steps/performSDO');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const LoginSteps = require('../features/caseProgression/steps/login');
+const LoginSteps = require('../features/home/steps/login');
 
 let claimRef;
 
