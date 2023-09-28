@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, Response, Router, RequestHandler} from 'express';
 
 import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -11,6 +11,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<AmountBreakdown>, res: Response) {
   res.render(viewPath, {form});
 }
 
-claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userid = req.session?.user?.id;
     const form = new GenericForm<AmountBreakdown>(await getClaimAmountBreakdownForm(userid));
@@ -27,7 +28,9 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
   } catch (error) {
     next(error);
   }
-}).post(CLAIM_AMOUNT_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+}) as RequestHandler);
+
+claimAmountBreakdownController.post(CLAIM_AMOUNT_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
     form.validateSync();

@@ -5,13 +5,14 @@ import {
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 import {saveCompletingClaim} from 'services/features/claim/completingClaimService';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const completingClaimViewPath = 'features/claim/completing-claim';
 const completingClaimController = Router();
 
-completingClaimController.get(CLAIM_COMPLETING_CLAIM_URL, (_req, res) => {
+completingClaimController.get(CLAIM_COMPLETING_CLAIM_URL, claimIssueTaskListGuard, (async (_req, res) => {
   res.render(completingClaimViewPath);
-});
+}) as RequestHandler);
 
 completingClaimController.post(CLAIM_COMPLETING_CLAIM_URL, (async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
