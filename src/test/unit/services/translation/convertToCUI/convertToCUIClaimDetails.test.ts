@@ -24,10 +24,27 @@ describe('translate Claim Details to CUI model', () => {
     expect(claimDetailsResponseCUI).toBe(undefined);
   });
 
-  it('should translate Claim Details to CUI', () => {
+  it('should translate Claim Details to CUI when HWF exists', () => {
     //Given
     const claimDetailsCUI = new ClaimDetails(new Reason('test detailsOfClaim to reason'));
     claimDetailsCUI.helpWithFees = new HelpWithFees(YesNo.YES, '12345');
+    //When
+    const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
+    //Then
+    expect(claimDetailsResponseCUI).toMatchObject(claimDetailsCUI);
+  });
+
+  it('should translate Claim Details to CUI when HWF doesnt exists', () => {
+    //Given
+    const claimDetailsCUI = new ClaimDetails(new Reason());
+    claimDetailsCUI.helpWithFees = new HelpWithFees();
+    const ccdClaimMock : CCDClaim = {
+      detailsOfClaim: undefined,
+      helpWithFees: <CCDHelpWithFees>{
+        helpWithFee: undefined,
+        helpWithFeesReferenceNumber: undefined,
+      },
+    };
     //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
     //Then
