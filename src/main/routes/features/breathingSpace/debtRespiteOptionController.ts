@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_TYPE_URL,
   BREATHING_SPACE_RESPITE_END_DATE_URL,
@@ -23,7 +23,7 @@ function renderView(form: GenericForm<DebtRespiteOption>, res: Response): void {
   res.render(debtRespiteOptionViewPath, {form, DebtRespiteOptionType});
 }
 
-debtRespiteOptionController.get(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpaceGuard, async (req, res, next: NextFunction) => {
+debtRespiteOptionController.get(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpaceGuard, (async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
   try {
     const breathingSpace = await getBreathingSpace(claimId);
@@ -31,9 +31,9 @@ debtRespiteOptionController.get(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpace
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-debtRespiteOptionController.post(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpaceGuard, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteOptionController.post(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpaceGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const debtRespiteOption = new DebtRespiteOption(req.body.debtRespiteType);
@@ -50,6 +50,6 @@ debtRespiteOptionController.post(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpac
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default debtRespiteOptionController;

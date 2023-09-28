@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
   BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<DebtRespiteStartDate>, res: Response): voi
   res.render(debtRespiteLiftDateViewPath, {form, today: new Date()});
 }
 
-debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpaceGuard, async (req, res, next: NextFunction) => {
+debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpaceGuard, (async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
   try {
     const breathingSpace = await getBreathingSpace(claimId);
@@ -29,9 +29,9 @@ debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpa
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpaceGuard, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpaceGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const debtRespiteLiftDate = new DebtRespiteStartDate(req.body.day, req.body.month, req.body.year, 'ERRORS.VALID_DATE_LIFT_NOT_AFTER_TODAY');
@@ -47,6 +47,6 @@ debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSp
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default debtRespiteLiftedController;
