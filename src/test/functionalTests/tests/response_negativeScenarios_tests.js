@@ -10,7 +10,6 @@ const admitAll = 'full-admission';
 const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
 const bySetDate = 'bySetDate';
-// const repaymentPlan = 'repaymentPlan';
 
 let claimRef;
 let caseData;

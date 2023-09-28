@@ -6,11 +6,6 @@ const fields = {
   welshAndEnglish: 'input[id="option-2"]',
 };
 
-const buttons = {
-  continue: 'a.govuk-button',
-  saveAndContinue:'button.govuk-button',
-};
-
 class BilingualLanguagePreference {
 
   async verifyContent() {
