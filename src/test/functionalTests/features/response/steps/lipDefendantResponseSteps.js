@@ -212,8 +212,8 @@ class ResponseSteps {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
-  async EnterPaymentOptionError(claimRef, responseType, paymentOption) {
-    await paymentOptionPage.enterPaymentOptionError(claimRef, responseType, paymentOption);
+  async EnterRepaymentPlan(claimRef) {
+    await repaymentPlan.enterRepaymentPlan(claimRef);
   }
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
