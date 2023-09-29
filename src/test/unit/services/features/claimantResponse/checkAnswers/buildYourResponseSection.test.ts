@@ -6,6 +6,7 @@ import { ClaimantResponse } from 'common/models/claimantResponse';
 import { PartialAdmission } from 'common/models/partialAdmission';
 import { Party } from 'common/models/party';
 import { buildYourResponseSection } from 'services/features/claimantResponse/checkAnswers/buildYourResponseSection';
+import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
 import { t } from 'i18next';
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -30,7 +31,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(2);
+    expect(yourResponseSection.summaryList.rows.length).toBe(0);
   });
 
   it('should return Your response sections when PA and paid', async () => {
@@ -40,6 +41,9 @@ describe('Your response Section', () => {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = new PartialAdmission();
     claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
@@ -53,7 +57,10 @@ describe('Your response Section', () => {
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse = new ClaimantResponse();
+
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
+    claim.claimantResponse.rejectionReason = new RejectionReason('test');
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
