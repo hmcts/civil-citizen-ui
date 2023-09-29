@@ -13,6 +13,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
 import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
+import { buildYourResponseSection } from './buildYourResponseSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
