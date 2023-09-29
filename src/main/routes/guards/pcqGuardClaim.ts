@@ -11,7 +11,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
-import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'models/AppRequest';
 
 const ACTOR = 'applicant';
@@ -22,10 +21,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const caseData: Claim = await getCaseDataFromStore(userId);
     const pcqShutterOn = await isPcqShutterOn();
 
-    console.log('pcqShutterOn');
-    console.log(pcqShutterOn);
-    console.log('caseData.pcqId');
-    console.log(caseData.pcqId);
     if (pcqShutterOn || caseData.pcqId) {
       return next();
     }
@@ -36,15 +31,9 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     const isHealthy = await isPcqHealthy();
     const isEligible = isPcqElegible(type);
-    console.log('isHealthy');
-    console.log(isHealthy);
-    console.log('isEligible');
-    console.log(isEligible);
-    console.log('url info');
-    console.log(getRedirectionUrl(req.headers.host, claimId));
+
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
-      await savePcqIdClaim(pcqId, claimId);
 
       const pcqUrl = generatePcqUrl(
         pcqId,
@@ -54,8 +43,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         getRedirectionUrl(req.headers.host, claimId),
         lang,
       );
-      console.log('pcq url info');
-      console.log(pcqUrl);
+
       res.redirect(pcqUrl);
     } else {
       next();

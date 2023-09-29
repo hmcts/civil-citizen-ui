@@ -51,14 +51,14 @@ export const generatePcqUrl = (
   const qs = Object.entries(encryptedPcqParams)
     .map(([key, value]) => key + '=' + value)
     .join('&');
-    
+
   return `${pcqBaseUrl}/service-endpoint?${qs}`;
 };
 
 export interface PcqParameters {
+  pcqId: string;
   serviceId: string;
   actor: string;
-  pcqId: string;
   ccdCaseId?: string;
   partyId: string;
   returnUrl: string;
