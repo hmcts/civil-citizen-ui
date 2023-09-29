@@ -83,16 +83,27 @@ function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boo
 function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
 
   documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
-    const typeAValue = typeValueMap[a.documentType];
-    const typeBValue = typeValueMap[b.documentType];
+    const typeAValue : number = typeValueMap[a.documentType];
+    const typeBValue : number = typeValueMap[b.documentType];
 
-    if (typeAValue < typeBValue) {
-      return -1;
-    } else if (typeAValue > typeBValue) {
+    if (a.caseDocument?.createdDatetime > b.caseDocument?.createdDatetime) {
+      console.log('Date of ' + a.documentType + ' is ' + a.caseDocument?.createdDatetime);
+      console.log('Date of ' + b.documentType + ' is ' + b.caseDocument?.createdDatetime);
       return 1;
+    } else if (a.caseDocument?.createdDatetime < b.caseDocument?.createdDatetime) {
+      console.log('-Date of ' + a.documentType + ' is ' + a.caseDocument?.createdDatetime);
+      console.log('-Date of ' + b.documentType + ' is ' + b.caseDocument?.createdDatetime);
+      return -1;
     } else {
-      return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;
+      console.log('Equal dates');
+      if (typeAValue < typeBValue) {
+        return -1;
+      }
+      if (typeAValue > typeBValue){
+        return 1;
+      }
     }
+    return 0;
   });
   return documentsWithDates;
 }
@@ -104,12 +115,13 @@ const typeValueMap: Record<string, number> = {
   WITNESS_SUMMARY: 4,
   NOTICE_OF_INTENTION: 5,
   DOCUMENTS_REFERRED: 6,
-  STATEMENT: 7,
-  QUESTIONS_FOR_EXPERTS: 8,
-  ANSWERS_FOR_EXPERTS: 9,
-  CASE_SUMMARY: 10,
-  SKELETON_ARGUMENT: 11,
-  AUTHORITIES: 12,
-  COSTS: 13,
-  DOCUMENTARY: 14,
+  EXPERT_REPORT: 7,
+  STATEMENT: 8,
+  QUESTIONS_FOR_EXPERTS: 9,
+  ANSWERS_FOR_EXPERTS: 10,
+  CASE_SUMMARY: 11,
+  SKELETON_ARGUMENT: 12,
+  AUTHORITIES: 13,
+  COSTS: 14,
+  DOCUMENTARY: 15,
 };
