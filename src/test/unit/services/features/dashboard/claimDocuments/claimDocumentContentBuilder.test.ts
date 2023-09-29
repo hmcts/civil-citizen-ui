@@ -1,14 +1,18 @@
 import {mockClaim} from '../../../../../utils/mockClaim';
-import {getCaseProgressionHearingMock} from '../../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {
+  getCaseProgressionHearingMock,
+  getCaseProgressionTrialArrangementsMock,
+} from '../../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {
   buildDownloadHearingNoticeSection,
   buildSystemGeneratedDocumentSections,
-  buildDownloadSealedResponseSection,
+  buildDownloadSealedResponseSection, buildTrialReadyDocumentSection,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {DocumentUri} from 'common/models/document/documentType';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{
@@ -51,5 +55,55 @@ describe('Hearing Notice document content builder', ()=>{
     expect(hearingNoticeSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentId', getSystemGeneratedCaseDocumentIdByType(mockClaim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
     expect(hearingNoticeSection.data?.text).toContain('55 KB');
     expect(hearingNoticeSection.data?.subtitle).toContain('21 June 2022');
+  });
+});
+
+describe('Trial Arrangements document content', () => {
+  it('should return nothing if correct information missing for claimant', () => {
+    //Given
+    const claim = mockClaim;
+    const isClaimant = true;
+    //When
+    const trialArrangementsSection = buildTrialReadyDocumentSection(claim, '1234', 'eng', isClaimant);
+    //Then
+    expect(trialArrangementsSection).toBeUndefined();
+  });
+
+  it('should return nothing if correct information missing for defendant', () => {
+    //Given
+    const claim = mockClaim;
+    const isClaimant = false;
+    //When
+    const trialArrangementsSection = buildTrialReadyDocumentSection(claim, '1234', 'eng', isClaimant);
+    //Then
+    expect(trialArrangementsSection).toBeUndefined();
+  });
+
+  it('should return json with document size in KB and link to download the pdf for claimant', () => {
+    //Given
+    const isClaimant = true;
+    const claim = mockClaim;
+    mockClaim.caseProgression = getCaseProgressionTrialArrangementsMock(isClaimant);
+    //When
+    const trialArrangementsSection = buildTrialReadyDocumentSection(claim, '1234', 'eng', isClaimant);
+    //Then
+    expect(trialArrangementsSection).toBeDefined();
+    expect(trialArrangementsSection.data.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234').replace(':documentId', documentIdExtractor(claim.caseProgression.claimantTrialArrangements.trialArrangementsDocument.value.documentLink.document_binary_url)));
+    expect(trialArrangementsSection.data.text).toContain('55 KB');
+    expect(trialArrangementsSection.data.subtitle).toContain('21 June 2022');
+  });
+
+  it('should return json with document size in KB and link to download the pdf for defendant', () => {
+    //Given
+    const isClaimant = false;
+    const claim = mockClaim;
+    mockClaim.caseProgression = getCaseProgressionTrialArrangementsMock(isClaimant);
+    //When
+    const trialArrangementsSection = buildTrialReadyDocumentSection(claim, '1234', 'eng', isClaimant);
+    //Then
+    expect(trialArrangementsSection).toBeDefined();
+    expect(trialArrangementsSection.data.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1234').replace(':documentId', documentIdExtractor(claim.caseProgression.defendantTrialArrangements.trialArrangementsDocument.value.documentLink.document_binary_url)));
+    expect(trialArrangementsSection.data.text).toContain('55 KB');
+    expect(trialArrangementsSection.data.subtitle).toContain('21 June 2022');
   });
 });
