@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router, RequestHandler} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CLAIM_DEFENDANT_PARTY_TYPE_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {PartyTypeSelection} from 'form/models/claim/partyTypeSelection';
@@ -10,12 +10,11 @@ import {
 } from 'services/features/common/defendantDetailsService';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
-import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = Router();
 
-defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const defendant: Party = await getDefendantInformation(caseId);
@@ -25,7 +24,8 @@ defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, claimIssueTaskL
   } catch (error) {
     next(error);
   }
-}) as RequestHandler);
+});
+
 defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;

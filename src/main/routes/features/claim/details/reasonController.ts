@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router, RequestHandler} from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -6,7 +6,6 @@ import {CLAIM_REASON_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {Reason} from 'form/models/claim/details/reason';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const reasonController = Router();
 const reasonViewPath = 'features/claim/details/reason';
@@ -16,7 +15,7 @@ function renderView(form: GenericForm<Reason>, res: Response): void {
   res.render(reasonViewPath, {form});
 }
 
-reasonController.get(CLAIM_REASON_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+reasonController.get(CLAIM_REASON_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimDetails: ClaimDetails = await getClaimDetails(req.session?.user?.id);
     const reason: Reason = claimDetails.reason;
@@ -26,7 +25,7 @@ reasonController.get(CLAIM_REASON_URL, claimIssueTaskListGuard, (async (req: App
   } catch (error) {
     next(error);
   }
-}) as RequestHandler);
+});
 
 reasonController.post(CLAIM_REASON_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {

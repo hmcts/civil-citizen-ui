@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router, RequestHandler} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CLAIMANT_PARTY_TYPE_SELECTION_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {PartyTypeSelection} from 'form/models/claim/partyTypeSelection';
@@ -7,12 +7,11 @@ import {redirectToPage} from 'services/features/claim/partyTypeService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 import {Party} from 'models/party';
-import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();
 
-claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, claimIssueTaskListGuard, ( async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(userId);
@@ -21,7 +20,7 @@ claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, claimIssueTas
   } catch (error) {
     next(error);
   }
-}) as RequestHandler);
+});
 
 claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
