@@ -1,5 +1,5 @@
 const BASE_CASE_URL = '/case/:id';
-const BASE_CLAIM_URL = '/claim';
+export const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
 const BASE_BREATHING_SPACE_URL = `${BASE_CASE_URL}/breathing-space`;
