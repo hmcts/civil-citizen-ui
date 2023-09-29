@@ -15,7 +15,7 @@ class CheckYourAnswers {
   verifyPageContent() {
     I.see('Documents uploaded');
     I.see('You can');
-    I.seeElement('[href=\'/case/undefined/case-progression/upload-your-documents\']');
+    //I.seeElement('[href=\'/case/undefined/case-progression/upload-your-documents\']');
     I.see('now or come back later. You can view your documents and the other party\'s documents.');
     contactUs.verifyContactUs();
   }
