@@ -720,7 +720,7 @@
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
         "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
