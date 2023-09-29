@@ -16,10 +16,13 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     summaryRows: [],
   });
 
-  yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
-  yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
-
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO) {
+  if (claim.claimantResponse?.hasDefendantPaidYou?.option) {
+    yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
+  }
+  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
+    yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
+  }
+  if (claim.isRejectionReasonCompleted()) {
     yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 
