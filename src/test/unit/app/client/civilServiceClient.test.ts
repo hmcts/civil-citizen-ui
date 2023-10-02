@@ -225,7 +225,7 @@ describe('Civil Service Client', () => {
       );
 
       //When
-      const fileResponse: FileResponse = await civilServiceClient.retrieveDocument(documentId);
+      const fileResponse: FileResponse = await civilServiceClient.retrieveDocument(mockedAppRequest, documentId);
 
       //Then
       expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId));
@@ -246,7 +246,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
-      await expect(civilServiceClient.retrieveDocument(documentId)).rejects.toEqual({'status': 404});
+      await expect(civilServiceClient.retrieveDocument(mockedAppRequest, documentId)).rejects.toEqual({'status': 404});
     });
   });
   describe('submitDefendantResponseEvent', () => {
