@@ -3,7 +3,7 @@ import config from 'config';
 import {CASE_TIMELINE_DOCUMENTS_URL} from '../../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {displayPDF} from '../../../../common/utils/downloadUtils';
-import {AppRequest} from "models/AppRequest";
+import {AppRequest} from 'models/AppRequest';
 
 const theirPdfTimelineDownloadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');

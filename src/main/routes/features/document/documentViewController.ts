@@ -3,7 +3,7 @@ import config from 'config';
 import {CASE_DOCUMENT_VIEW_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {viewFile} from 'common/utils/downloadUtils';
-import {AppRequest} from "models/AppRequest";
+import {AppRequest} from 'models/AppRequest';
 
 const documentViewController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
