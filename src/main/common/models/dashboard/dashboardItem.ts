@@ -186,6 +186,7 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
   draftClaim.claimId = 'draft';
   draftClaim.draft = true;
   draftClaim.ocmc = false;
+  draftClaim.status = 'NO_STATUS';
   draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
   draftClaim.claimantName = claim.getClaimantFullName();
   draftClaim.defendantName = claim.getDefendantFullName();
