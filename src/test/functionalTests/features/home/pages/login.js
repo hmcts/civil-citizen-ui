@@ -5,6 +5,7 @@ const fields = {
   username: 'input[id="username"]',
   password: 'input[id="password"]',
 };
+
 const buttons = {
   submit: 'input.button',
   hmctsSignIn: 'input[type="submit"]',
