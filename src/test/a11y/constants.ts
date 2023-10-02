@@ -131,7 +131,7 @@ export const PageUrls = {
   CHECK_AND_SEND : 'case/:caseProgressionCaseId/case-progression/check-and-send',
   DOCUMENTS_UPLOADED : 'case/:caseProgressionCaseId/case-progression/documents-uploaded',
 
-//Trial Arrangements
+  //Trial Arrangements
   FINALISE_TRIAL_ARRANGEMENTS : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements',
   IS_CASE_READY : '/case/:caseProgressionCaseId/case-progression/is-case-ready',
   HAS_ANYTHING_CHANGED : '/case/:caseProgressionCaseId/case-progression/has-anything-changed',
