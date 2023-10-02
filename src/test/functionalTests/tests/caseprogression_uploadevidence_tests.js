@@ -9,10 +9,10 @@ Feature('Case progression journey - Defendant & Claimant Response with RejectAll
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', 'FastTrack');
-    LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   } else {
     claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser, '', 'FastTrack');
-    LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
+    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'FastTrack');
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
