@@ -135,7 +135,7 @@ export const PageUrls = {
   FINALISE_TRIAL_ARRANGEMENTS : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements',
   IS_CASE_READY : '/case/:caseProgressionCaseId/case-progression/is-case-ready',
   HAS_ANYTHING_CHANGED : '/case/:caseProgressionCaseId/case-progression/has-anything-changed',
-  HEARING_DURATION_OTHER_INFO :'/case/1696001408942576/case-progression/finalise-trial-arrangements/hearing-duration-other-info',
-  CHECK_TRIAL_ARRANGEMENTS :'/case/1696001408942576/case-progression/finalise-trial-arrangements/check-trial-arrangements',
-  TRIAL_ARRANGEMENTS_CONFIRMATION : 'case/1696001408942576/case-progression/finalise-trial-arrangements/confirmation',
+  HEARING_DURATION_OTHER_INFO :'/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/hearing-duration-other-info',
+  CHECK_TRIAL_ARRANGEMENTS :'/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/check-trial-arrangements',
+  TRIAL_ARRANGEMENTS_CONFIRMATION : 'case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/confirmation',
 } as const;
