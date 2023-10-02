@@ -1,33 +1,45 @@
-import { SummarySection, SummarySections, summarySection } from 'common/models/summaryList/summarySections';
+import {SummarySection, SummarySections, summarySection} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import { CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL } from 'routes/urls';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getPaymentDate, getRepaymentFrequency } from 'common/utils/repaymentUtils';
-import { summaryRow } from 'common/models/summaryList/summaryList';
-import { t } from 'i18next';
-import { getLng } from 'common/utils/languageToggleUtils';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
-import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
-import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
+import {CCJ_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getPaymentDate, getRepaymentFrequency} from 'common/utils/repaymentUtils';
+import {summaryRow} from 'common/models/summaryList/summaryList';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
+import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
+import {RESPONSEFORNOTPAIDPAYIMMEDIATELY} from 'common/models/claimantResponse/checkAnswers';
+import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
+  const getDetailsSection = () => {
+    return claim.isSignASettlementAgreement()
+      ? buildDetailsSection(claim, claimId, lng)
+      : null;
+  };
+  const getJudgmentRequestSection = () => {
+    return claim.isRequestACCJ()
+      ? buildJudgmentRequestSection(claim, claimId, lng, claimFee)
+      : null;
+  };
   return {
     sections: [
-    // TODO : This part will be developed as part of other future tasks for different scenarios
-      buildDetailsSection(claim, claimId, lng),
+      getDetailsSection(),
+      getJudgmentRequestSection(),
     ],
   };
 };
 
-const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+const buildDetailsSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
   const isSignSettlement = claim.isSignASettlementAgreement();
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
@@ -37,10 +49,35 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
 
   if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lang);
-  
+
   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY)
     return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
 };
+
+const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
+  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
+  const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
+  const paymentOption = claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+
+  const judgmentRequestSection = summarySection({
+    title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
+    summaryRows: [
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME', {lng}),
+        paymentOption === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, ccjPaidAmountHref, changeLabel(lng)),
+    ],
+  });
+  if (claim.claimantResponse?.ccjRequest?.paidAmount?.amount) {
+    judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
+      "£" + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
+  }
+
+  if (claim.claimantResponse?.ccjRequest?.paidAmount) {
+    judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), "£" + judgmentSummaryDetails.total));
+  }
+  return judgmentRequestSection;
+};
+
+
 
 const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const paymentDate = formatDateToFullDate(getPaymentDate(claim));
@@ -70,8 +107,8 @@ const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lang: s
   });
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections(claim, claimId, lang);
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown, claimFee?: number): SummarySections => {
+  return buildSummarySections(claim, claimId, lang, claimFee);
 };
 
 const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: string, lang: string | unknown) => {
