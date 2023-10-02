@@ -11,7 +11,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 documentViewController.get(CASE_DOCUMENT_VIEW_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const document = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest>req, req.params.documentId);
+    const document = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest> req, req.params.documentId);
     viewFile(res, document);
   } catch (error) {
     next(error);
