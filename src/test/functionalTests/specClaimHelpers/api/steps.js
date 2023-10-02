@@ -63,7 +63,7 @@ module.exports = {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       payload = defendantResponse.createDefendantResponse('15000');
     } else {
@@ -83,7 +83,7 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
     } else {
@@ -107,7 +107,7 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    if(claimType !== 'pinInPost'){
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
     await waitForFinishedBusinessProcess(caseId);
@@ -123,7 +123,7 @@ module.exports = {
     caseId = null;
     caseData = {};
     let createClaimSpecData;
-    if (claimType === 'FastTrack'){
+    if (claimType === 'FastTrack') {
       console.log('Creating LRvLR FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACKLRvLR(multipartyScenario);
     } else {
@@ -147,7 +147,7 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
 
-    if(claimType !== 'pinInPost'){
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
     }
     await waitForFinishedBusinessProcess(caseId);
@@ -157,7 +157,7 @@ module.exports = {
     return caseId;
   },
 
-  retrieveCaseData: async(user, caseId) => {
+  retrieveCaseData: async (user, caseId) => {
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
   },
@@ -183,7 +183,7 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState)=> {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState) => {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
@@ -213,7 +213,7 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  enterBreathingSpace: async (user)=> {
+  enterBreathingSpace: async (user) => {
     const enterBreathingSpacePayload = breathingSpace.enterBreathingSpacePayload();
     eventName = enterBreathingSpacePayload['event'];
     caseData = enterBreathingSpacePayload['caseData'];
@@ -222,7 +222,7 @@ module.exports = {
     console.log('End of enterBreathingSpace()');
   },
 
-  mediationSuccessful: async (user)=> {
+  mediationSuccessful: async (user) => {
     const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
     eventName = mediationSuccessfulPayload['event'];
     caseData = mediationSuccessfulPayload['caseData'];
@@ -231,7 +231,7 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user)=> {
+  mediationUnsuccessful: async (user) => {
     const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
@@ -407,9 +407,9 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 }
 
 const assignSpecCase = async (caseId, type) => {
-  if(type === 'lrvlr'){
+  if (type === 'lrvlr') {
     await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantLRCitizenUser);
-  }else{
+  } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
   }
 };
