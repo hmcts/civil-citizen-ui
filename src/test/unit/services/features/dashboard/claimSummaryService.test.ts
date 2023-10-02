@@ -1,8 +1,13 @@
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
+import {
+  getDocumentsContent,
+  getEvidenceUploadContent,
+  hasTrialArrangementsDocuments,
+} from 'services/features/dashboard/claimSummaryService';
 import {
   buildDownloadHearingNoticeSection,
   buildSystemGeneratedDocumentSections,
+  buildTrialReadyDocumentSection,
 } from 'services/features/dashboard/claimDocuments/claimDocumentContentBuilder';
 
 import {Claim} from 'models/claim';
@@ -138,15 +143,17 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(3);
+    expect(result[0].contentSections).toHaveLength(4);
 
     const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
     const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(claim, claimId, lang);
+    const downloadTrialReadyDocumentSection = hasTrialArrangementsDocuments(claim) ? buildTrialReadyDocumentSection(claim, claimId, lang, false) : undefined;
 
     expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
     expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
-    expect(result[0].contentSections[3]).toEqual(downloadHearingNoticeSection);
+    expect(result[0].contentSections[2]).toEqual(downloadHearingNoticeSection);
+    expect(result[0].contentSections[3]).toEqual(downloadTrialReadyDocumentSection);
   });
 
   it('should return an array with one ClaimSummaryContent object with one content section containing the Final Orders section', async () => {
@@ -160,7 +167,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(4);
+    expect(result[0].contentSections).toHaveLength(5);
 
     const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[0];
     const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[1];
@@ -180,7 +187,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(2);
+    expect(result[0].contentSections).toHaveLength(3);
 
     const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
