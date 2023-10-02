@@ -54,7 +54,17 @@ import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsTy
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
+import {TrialArrangementsDocument} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CaseRole} from 'form/models/caseRoles';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class CivilClaimResponse {
   id: string;
@@ -216,11 +226,26 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  caseBundles?: CCDBundle[];
+  trialReadyDocuments?: TrialArrangementsDocument[];
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  caseRole?: CaseRole;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
+  partialPayment?: YesNoUpperCamelCase;
+  partialPaymentAmount?: string;
+  paymentTypeSelection?: CCDDJPaymentOption;
+  paymentSetDate?: Date;
+  repaymentDue?: string;
+  repaymentDate?: Date;
+  repaymentFrequency?: CCDPaymentFrequency;
+  repaymentSuggestion?: string;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {

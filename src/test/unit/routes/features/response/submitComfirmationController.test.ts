@@ -8,6 +8,7 @@ import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draf
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Party} from '../../../../../main/common/models/party';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -35,6 +36,9 @@ describe('Submit confirmation controller', () => {
     nock('http://localhost:4000')
       .get('/cases/:id')
       .reply(200, civilClaimResponseMock);
+    nock('http://localhost:4000')
+      .get('/cases/:id/userCaseRoles')
+      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
   });
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {
@@ -42,6 +46,9 @@ describe('Submit confirmation controller', () => {
       nock('http://localhost:4000')
         .get('/cases/:id')
         .reply(200, civilClaimResponseMock);
+      nock('http://localhost:4000')
+        .get('/cases/:id/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       await request(app)
         .get(CONFIRMATION_URL)
         .expect((res) => {

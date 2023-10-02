@@ -60,6 +60,10 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {DateTimeFormatOptions} from 'luxon';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
+import {CaseRole} from 'form/models/caseRoles';
+import { ChooseHowProceed } from './chooseHowProceed';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -116,6 +120,9 @@ export class Claim {
   applicant1ResponseDeadline?: Date;
   applicant1ResponseDate?: Date;
   applicant1ClaimMediationSpecRequiredLip?: ClaimantMediationLip;
+  caseDismissedHearingFeeDueDate?: Date;
+  caseRole?: CaseRole;
+  draftClaimCreatedAt?: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -303,6 +310,26 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isPartialAdmissionPaid(): boolean {
+    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
+  }
+
+  isPartialAdmissionNotPaid(): boolean {
+    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
+  }
+
+  hasClaimantConfirmedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantPaid(): boolean {
+    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedPartAdmitPayment(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
+  }
+
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
@@ -327,16 +354,33 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  getPaidAmount(): number {
+    if(this.hasConfirmedAlreadyPaid()){
+      return this.isRejectAllOfClaimAlreadyPaid();
+    }
+    if(this.isPartialAdmissionPaid()){
+      return this.partialAdmissionPaidAmount();
+    }
+  }
+
   isRejectAllOfClaimDispute(): boolean {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
   }
 
+  isSignASettlementAgreement(): boolean {
+    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+  }
+
+  isRequestACCJ(): boolean {
+    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+  }
+
   hasConfirmedAlreadyPaid(): boolean {
-    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID;
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -537,6 +581,10 @@ export class Claim {
     return this.statementOfMeans?.courtOrders;
   }
 
+  isFinalGeneralOrderIssued(): boolean {
+    return this.caseProgression?.finalOrderDocumentCollection?.length > 0;
+  }
+
   getPriorityDebts(): PriorityDebts | undefined {
     return this.statementOfMeans?.priorityDebts;
   }
@@ -635,6 +683,36 @@ export class Claim {
     return new Date() >= this.sixWeeksBeforeHearingDate();
   }
 
+  isBundleStitched(): boolean {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return false;
+    }
+
+    return !!caseBundles[0]?.stitchedDocument;
+  }
+
+  lastBundleCreatedDate(): Date {
+    const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
+
+    if(!caseBundles || caseBundles.length < 1) {
+      return undefined;
+    }
+
+    BundlesFormatter.orderBundlesNewToOld(caseBundles);
+
+    for(const bundle of caseBundles)
+    {
+      if(bundle.createdOn)
+      {
+        return bundle.createdOn;
+      }
+    }
+
+    return undefined;
+  }
+
   hasClaimTakenOffline() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
@@ -659,7 +737,11 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
-  isClaimantRejectedPaymentPlan(){
+  isDefendantAgreedForMediation() {
+    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+  }
+
+  isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 
@@ -682,6 +764,32 @@ export class Claim {
 
   hasRespondent1AgreedMediation() {
     return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
+  }
+
+  getFormattedCaseReferenceNumber(claimId: string): string {
+    const parts = claimId.match(/.{1,4}/g);
+    const claimId_new = parts.join('-');
+    return claimId_new;
+  }
+
+  isClaimant(){
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+  }
+
+  isDraftClaim(): boolean {
+    return !!this.draftClaimCreatedAt;
+  }
+
+  hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  hasClaimantRejectedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
 }
 

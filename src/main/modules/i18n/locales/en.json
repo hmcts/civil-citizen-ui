@@ -136,7 +136,7 @@
       "DAY_2": "2 days"
     },
     "HELP_CALCULATING_INTEREST": {
-      "CALCULATE_THIS": "To calculate this, use the steps bellow.",
+      "CALCULATE_THIS": "To calculate this, use the steps below.",
       "EXAMPLE": {
         "EXAMPLE": "Example",
         "OWED": "If you were owed £1,000:",
@@ -282,19 +282,26 @@
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
-    "HOW_THEY_RESPONDED": {
-      "TITLE": "How they responded",
-      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
-    },
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
       "HOW_FORMALISE": "Choose how to formalise repayment",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
       "TITLE": "Choose what to do next"
+    },
+    "HOW_THEY_RESPONDED": {
+      "TITLE": "How they responded",
+      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+    },
+    "YOUR_RESPONSE": {
+      "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }}?",
+      "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }}?",
+      "TITLE": "Your response"
     }
   },
   "TASK_LIST": {
@@ -425,10 +432,12 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
       "CLAIM_INTEREST": "Claim Interest",
+      "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
+      "COMPLETION_DATE_CYA": "Completion date",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
-      "CONSIDER_CLAIMANT_DOCUMENT" : "Are there any documents the claimant has that you want the court to consider?",
+      "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
@@ -442,6 +451,7 @@
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "Do you have other witnesses?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
       "EMAIL_ADDRESS": "Email address (optional)",
@@ -466,9 +476,11 @@
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
-      "GIVE_DOC_DETAILS" : "Give details of the documents",
+      "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "I_REJECT_THIS_AMOUNT": "I reject this amount",
+      "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -480,7 +492,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
-      "NEED_HEARING_SUPPORT" : "Do you, your experts or witnesses need support to attend a hearing?",
+      "NEED_HEARING_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Is your partner aged 18 or over?",
@@ -499,6 +511,8 @@
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -512,8 +526,9 @@
       "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "How did you pay this amount?",
       "RESPONSE_TITLE": "Your response to the claim",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
-      "REQUEST_EXTRA_4WEEKS" : "Do you want an extra 4 weeks to try to settle the claim?",
+      "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
       "SAME_ADDRESS": "Same as address",
+      "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
       "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
@@ -525,11 +540,12 @@
       "TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING": "Tell us why you want a telephone or video hearing",
       "THEIR_DETAILS_TITLE": "Their details",
       "THEIR_DETAILS_TITLE_DEFENDANT": "Their details (defendant)",
+      "THE_AGREEMENT_CYA": "The agreement",
       "TITLE": "Check your answers",
       "TIMELINE_TITLE": "Your timeline of what happened (optional)",
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
-      "TRIED_TO_SETTLE" : "Have you tried to settle this claim before going to court?",
+      "TRIED_TO_SETTLE": "Have you tried to settle this claim before going to court?",
       "UNEMPLOYMENT_FOR": "Unemployed for {{ unemployedYears }} years {{ unemployedMonths }} months",
       "VULNERABILITY_INFO": "Tell us who is vulnerable and what support they need",
       "VULNERABILITY_QUESTION": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
@@ -540,6 +556,8 @@
       "WHEN_PAY_TITLE": "When you'll pay?",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
       "WITNESS": "Witness",
+      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+      "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
@@ -702,7 +720,7 @@
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim?",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
         "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
@@ -743,12 +761,29 @@
       "TO_RESPOND_TO": " to respond to your claim.",
       "THEY_CAN_REQUEST_EXTRA_DAYS": "They can request up to an extra 28 days if they need it.",
       "YOU_CAN_REQUEST_COUNTY_COURT": "You can request a County Court Judgment against them if they don't respond by the deadline.",
-      "IF_DEFENDANT_PAYS_YOU_HEADER": "If defendant pays you",
+      "IF_DEFENDANT_PAYS_YOU_HEADER": "If the defendant pays you",
       "IF_DEFENDANT_PAYS_YOU_CONTENT": "You need to sign in to your account to tell us you've been paid."
     },
     "CLAIM_SUMMARY": {
       "1_DAY_REMAINING": "1 day remaining",
       "ABOUT_CLAIM": "About claim",
+      "BUNDLES": {
+        "TAB_TITLE": "Bundles",
+        "FIND_BUNDLE_BELOW": "You can find the bundle below.",
+        "APPLY_TO_COURT_BEFORE": "As the bundle has now been created, you will have to",
+        "APPLY_TO_COURT_LINK": "apply to the court",
+        "APPLY_TO_COURT_AFTER": "if you want any new documents you upload to be used at your trial or hearing.",
+        "NEW_DOCUMENT_NOT_INCLUDED": "Any new documents you upload will not be included in the main bundle. They will be listed separately below and under 'Documents'.",
+        "BUNDLE_HEADER": "Trial Bundle",
+        "CREATED_DATE_HEADER": "Created On",
+        "HEARING_DATE_HEADER": "Hearing Date",
+        "URL_HEADER": "Document URL",
+        "UPLOADED_AFTER_DATE_UPLOADED": "Date uploaded",
+        "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
+        "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
+        "UPLOADED_AFTER_DOCUMENT": "Document",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
+      },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
       "CLAIM_DOCUMENTS": "Claim documents",
@@ -851,6 +886,12 @@
     "CLAIMANT_RESPONSE_CONFIRMATION": {
       "CLAIM_NUMBER": "Your claim number:",
       "PAGE_TITLE": "Claimant Intention Confirmation",
+      "PA_PAY_IMMEDIATELY": {
+        "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
+        "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "The defendant said they'll pay you £{{ admittedAmount }} immediately.",
+        "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
+        "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
+      },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
@@ -895,6 +936,14 @@
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+    },
+    "CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID": {
+      "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+      "PAGE_TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+      "YES_HINT": "Settle the claim",
+      "NO_HINT": "Proceed with the claim"
     },
     "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
       "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
@@ -1499,7 +1548,8 @@
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
-      "TITLE": "How they want to pay?"
+      "TITLE": "How they want to pay?",
+      "NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Enter the Help With Fees number",
@@ -1583,6 +1633,13 @@
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice",
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
         },
+        "VIEW_ORDER": {
+          "TITLE": "An order has been made on your claim",
+          "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+          "ORDER_IS_AVAILABLE": "The order is available in 'Notices and orders'.",
+          "VIEW_ORDER": "View the order",
+          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+        },
         "FINALISE_TRIAL_ARRANGEMENTS": {
           "TITLE": "Finalise your trial arrangements for your upcoming trial",
           "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
@@ -1592,6 +1649,17 @@
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
           "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
           "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
+        },
+        "BUNDLE": {
+          "TITLE": "Bundle is complete and ready to view",
+          "BUNDLE_CONTAINS_ALL_DOCUMENTS": "The bundle contains all the documents submitted by both parties. Please review the bundle to makes sure all the information is correct.",
+          "YOU_ARE_REMINDED": "You are reminded that the other party will also be able to view the bundle.",
+          "VIEW_BUNDLE": "View bundle"
+        },
+        "CASE_DISMISSED_HEARING_DUE_DATE": {
+          "TITLE": "Claim has been struck out",
+          "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
+          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "This is because {{ claimantName }} didn’t proceed with it before the deadline of 4pm on {{ deadline }}.",
@@ -1670,9 +1738,16 @@
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
       "ANSWERS_TO_QUESTIONS_HINT": "Your expert's answers to questions put by the other party",
-      "CASE_REFERENCE_NUMBER": "Case reference:",
+      "CASE_REFERENCE_NUMBER": "Case reference: {{ caseNumber }}",
       "CASE_SUMMARY": "Case summary",
       "CASE_SUMMARY_HINT": "Overview of your whole case",
+      "CHECK_YOUR_ANSWERS_TITLE": "Check your answers",
+      "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Warning</span> </br> You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_WARNING_SHORT": "You cannot withdraw a document once you have submitted it.",
+      "CHECK_YOUR_ANSWERS_CONFIRMATION": "Confirmation",
+      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.",
+      "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
+      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
       "COSTS": "Costs",
       "COSTS_HINT": "A detailed list of the costs you have incurred in making or defending the claim, for example photocopying, getting copies of contracts, include receipts",
       "DISCLOSURE": "Disclosure",
@@ -1687,6 +1762,7 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in the statement",
       "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Documents you or your witness refer to in the statement, including emails, receipts, invoices, contracts and photos",
       "EXPERT_EVIDENCE": "Expert evidence",
+      "EXPERT_REPORT": "Expert report",
       "EXPERTS_REPORT": "Expert's report",
       "EXPERTS_REPORT_HINT": "A written report by your expert. Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work. An expert is not a legal representative",
       "HEARING_DOCUMENTS": "Hearing documents",
@@ -2076,10 +2152,15 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
-      "DOWNLOAD_RESPONSE": "Download their full response and hearing requirements (PDF)",
+      "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
+        "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+        "HOW_THEY_WANT_PAY": "How they want to pay?",
+        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
+      },
       "FULL_RESPONSE": "Full response",
       "HOW_PAID": "How they say they paid?",
       "MONTHLY_EXPENSES": "Monthly expenses",
@@ -2127,6 +2208,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
       "HOW_THEY_PAID": "How they said they paid?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
     },
     "SELF_EMPLOYED": {
@@ -2322,6 +2404,7 @@
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SETTLED_CLAIM": "This claim is now settled",
       "YOU_SHOULD": "You should:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
       "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can ",
@@ -2363,6 +2446,11 @@
       "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
       "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
       "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
+    },
+    "FEE_AMOUNT": {
+      "TITLE": "Pay your claim fee",
+      "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
+      "CONTINUE_TO_PAYMENT": "continue to payment"
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
@@ -2485,7 +2573,7 @@
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
-        "TITLE" : "Witness evidence",
+        "TITLE": "Witness evidence",
         "TYPE_OF_DOCUMENT": "Type of document",
         "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice, receipt, email, text message, photo, social media message",
         "YOUR_STATEMENT": "Your statement",
@@ -2635,6 +2723,7 @@
       "OTHER_INFORMATION_TITLE": "Other information",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
+      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
@@ -2994,6 +3083,7 @@
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
+    "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",

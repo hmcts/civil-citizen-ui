@@ -416,6 +416,43 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
     });
+    it('should delete hasPartPaymentBeenAccepted and rejectionReason fields from redis when hasDefendantPaidYou is no', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
+        claim.claimantResponse.rejectionReason = {text: 'test'};
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'hasDefendantPaidYou');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+    });
+    it('should delete rejectionReason field from redis when hasPartPaymentBeenAccepted is yes', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.rejectionReason = {text: 'test'};
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.YES),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES) , 'hasPartPaymentBeenAccepted');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+    });
 
     describe('intentionToProceed', () => {
       claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);

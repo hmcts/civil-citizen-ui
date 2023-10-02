@@ -10,6 +10,8 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {YesNo} from 'common/form/models/yesNo';
+import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -28,6 +30,8 @@ export class ClaimantResponse {
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
+  claimantStatementOfTruth?: StatementOfTruthForm;
+  hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
@@ -39,5 +43,17 @@ export class ClaimantResponse {
 
   get isClaimantSuggestedPayByInstalments(): boolean {
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
+
+  get isClaimantNotIntendedToProceed(): boolean {
+    return this.intentionToProceed?.option === YesNo.NO;
+  }
+
+  get isClaimantAcceptedPartAdmittedAmount(): boolean {
+    return this.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
+  get isClaimantNotAcceptedPartAdmittedAmount(): boolean {
+    return this.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
 }

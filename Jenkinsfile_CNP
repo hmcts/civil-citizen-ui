@@ -73,10 +73,6 @@ def checkForFullDeployLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
-def checkForEnableHelmLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
-}
-
 withPipeline(type, product, component) {
   pipelineConf = config
   disableLegacyDeployment()
@@ -89,9 +85,6 @@ withPipeline(type, product, component) {
     env.ENVIRONMENT = "preview"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     loadVaultSecrets(secrets)
-    if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      enableCleanupOfHelmReleaseAlways();
-    }
   }
   onMaster {
     env.ENVIRONMENT="aat"

@@ -67,6 +67,7 @@ import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/admission/fullRejection/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
+import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
@@ -159,6 +160,8 @@ import howMuchContinueClaimingController from './features/claim/interest/howMuch
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
+import claimSettledConfirmationController
+  from './features/claimantResponse/claimSettledConfirmationController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
@@ -206,11 +209,15 @@ import documentUploadCheckAnswerController from 'routes/features/caseProgression
 import claimTaskListController from './features/claim/claimTaskListController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
 import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakDownController';
 import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
+import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import documentViewController from 'routes/features/document/documentViewController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
+import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
+import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 
 export default [
   homeController,
@@ -273,6 +280,7 @@ export default [
   youHavePaidLessController,
   yourDefenceController,
   incompleteSubmissionController,
+  incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
   paymentDatePAController,
@@ -359,6 +367,7 @@ export default [
   debtRespiteReferenceNumberController,
   breathingSpaceCheckAnswersController,
   datePaidViewController,
+  claimSettledConfirmationController,
   settleClaimController,
   acceptRepaymentPlanController,
   partPaymentReceivedController,
@@ -405,8 +414,12 @@ export default [
   claimTaskListController,
   isCaseReadyController,
   hasAnythingChangedController,
+  claimFeeBreakDownController,
   hearingDurationController,
+  trialCheckAnswersController,
   documentViewController,
   trialArrangementsConfirmationController,
+  claimantResponseCheckAnswersController,
   claimFeeController,
+  cancelTrialArrangementsController,
 ];
