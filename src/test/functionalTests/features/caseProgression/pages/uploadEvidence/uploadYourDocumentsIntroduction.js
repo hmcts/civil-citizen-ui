@@ -1,4 +1,4 @@
-const ContactUs = require('../../common/contactUs');
+const ContactUs = require('../../../common/contactUs');
 //const StringUtilsComponent = require('../util/StringUtilsComponent');
 const I = actor();
 

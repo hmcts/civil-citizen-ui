@@ -8,6 +8,7 @@ const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
 const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
 const getCaseDetailsUrl = (userId, caseId) => `${config.url.ccdDataStore}/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
+//const getXUIURL = () => `${config.url.manageCase}/data/case-types/CIVIL`;
 const getRequestHeaders = (userAuth) => {
   return {
     'Content-Type': 'application/json',
@@ -75,6 +76,17 @@ module.exports = {
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
       .then(response => response.json());
     tokens.ccdEvent = response.token;
+  },
+
+  validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
+    return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),
+      {
+        case_reference: caseId,
+        data: caseData,
+        event: {id: eventName},
+        event_data: caseData,
+        event_token: tokens.ccdEvent,
+      }, 'POST', expectedStatus);
   },
 
   validatePage: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {

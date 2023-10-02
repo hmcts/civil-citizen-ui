@@ -14,6 +14,7 @@ import {
   CLAIM_RESOLVING_DISPUTE_URL,
 } from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
+import {Task} from 'models/taskList/task';
 
 export const getTaskLists = (caseData: Claim, userId: string, lang: string): TaskList[] => {
   const taskListConsiderOtherOptions: TaskList = buildConsiderOtherOptions( caseData, userId, lang);
@@ -28,7 +29,20 @@ export const getTaskLists = (caseData: Claim, userId: string, lang: string): Tas
 
   return taskGroups;
 };
+export const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang));
+};
 
+const isOutstanding = (task: Task): boolean => {
+  return task.status !== TaskStatus.COMPLETE && !task.isCheckTask;
+};
+
+const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
+  return taskLists
+    .map((taskList: TaskList) => taskList.tasks)
+    .flat()
+    .filter(task => isOutstanding(task));
+};
 export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang: string): TaskList => {
   const considerOtherOptionsTask = {
     description: t('PAGES.CLAIM_TASK_LIST.RESOLVING_DISPUTE', { lng: getLng(lang) }),
