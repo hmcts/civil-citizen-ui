@@ -5,6 +5,7 @@ import {
   getTrialArrangementsConfirmationContent,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsConfirmationService';
 import {YesNo} from 'form/models/yesNo';
+import {CaseRole} from 'form/models/caseRoles';
 
 const trialArrangementsConfirmationController = Router();
 
@@ -13,7 +14,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     if (!claim.isEmpty()) {
-      const readyForTrialOrHearing:boolean = claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES;
+      const readyForTrialOrHearing:boolean = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression.claimantTrialArrangements.isCaseReady === YesNo.YES : claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES;
       const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, readyForTrialOrHearing);
       const latestUpdateUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
       res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});

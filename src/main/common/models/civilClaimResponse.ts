@@ -240,7 +240,10 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyApplicant?: YesNoUpperCamelCase;
   trialReadyRespondent1?: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments?: CCDTrialArrangementsOtherComments;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;

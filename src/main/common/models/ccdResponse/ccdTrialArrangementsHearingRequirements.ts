@@ -15,3 +15,9 @@ export interface CCDTrialArrangementDefendent extends ClaimUpdate {
   respondent1RevisedHearingRequirements: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments: CCDTrialArrangementsOtherComments;
 }
+
+export interface CCDTrialArrangementClaimant extends ClaimUpdate {
+  trialReadyApplicant: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments: CCDTrialArrangementsOtherComments;
+}

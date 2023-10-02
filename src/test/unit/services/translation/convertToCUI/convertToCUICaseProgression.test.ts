@@ -66,6 +66,7 @@ describe('toCUICaseProgression', () => {
       [new FinalOrderDocumentCollection(mockFinalOrderDocument1.id, mockFinalOrderDocument1.value)];
     const expectedOutput = createCUIClaim();
     expectedOutput.defendantTrialArrangements = getTrialArrangement();
+    expectedOutput.claimantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
 
@@ -127,6 +128,7 @@ describe('toCUICaseProgression', () => {
     expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
     expectedOutput.defendantTrialArrangements = getTrialArrangement();
+    expectedOutput.claimantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -164,6 +166,7 @@ describe('toCUICaseProgression', () => {
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
       (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
     expectedOutput.defendantTrialArrangements = getTrialArrangement();
+    expectedOutput.claimantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });

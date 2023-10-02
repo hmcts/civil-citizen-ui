@@ -12,6 +12,7 @@ cancelTrialArrangementsController.get([CANCEL_TRIAL_ARRANGEMENTS], (async (req, 
   try {
     const claimId = req.params.id;
     await deleteDraftClaimFromStore(claimId);
+    
     res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
   } catch (error) {
     next(error);

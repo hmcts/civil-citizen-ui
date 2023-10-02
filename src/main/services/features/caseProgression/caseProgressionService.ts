@@ -48,6 +48,8 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
     {
       claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    } else if (parentPropertyName == 'claimantTrialArrangements' && !claim?.caseProgression.claimantTrialArrangements) {
+      claim.caseProgression.claimantTrialArrangements = new TrialArrangements();
     }
 
     if (claim?.caseProgression) {

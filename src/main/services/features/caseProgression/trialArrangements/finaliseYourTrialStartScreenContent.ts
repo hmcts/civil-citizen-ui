@@ -1,13 +1,17 @@
 import {Claim} from 'models/claim';
-import {
-  CASE_DOCUMENT_DOWNLOAD_URL,
-  DEFENDANT_SUMMARY_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {
+  FinaliseYourTrialSectionBuilder,
+} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+//import {CaseRole} from 'form/models/caseRoles';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
+
+  //const directionsQuestionnaire = claim.caseRole == CaseRole.CLAIMANT ? DocumentType.CLAIMANT_DEFENCE : DocumentType.DEFENDANT_DEFENCE;
+
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
     .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')

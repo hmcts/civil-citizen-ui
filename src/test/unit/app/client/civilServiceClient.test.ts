@@ -487,7 +487,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest);
+      const claim = await civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -510,7 +510,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });
