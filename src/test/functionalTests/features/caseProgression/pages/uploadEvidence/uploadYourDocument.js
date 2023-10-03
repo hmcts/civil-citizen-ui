@@ -12,10 +12,12 @@ class UploadYourDocument {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
-    this.verifyHeadingDetails();
-    this.verifyAcceptableDocumentsFormatsSectionContent();
-    this.verifyDisclosureSectionContent();
+  verifyPageContent(claimType) {
+    if(claimType === 'FastTrack') {
+      this.verifyHeadingDetails();
+      this.verifyAcceptableDocumentsFormatsSectionContent();
+      this.verifyDisclosureSectionContent();
+    }
     contactUs.verifyContactUs();
   }
 

@@ -15,20 +15,20 @@ const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 
 class UploadEvidenceSteps {
 
-  initiateUploadEvidenceJourney(claimRef) {
+  initiateUploadEvidenceJourney(claimRef, claimType) {
 
     console.log('The value of the Claim Reference : '+claimRef);
-    latestUpdatePage.open(claimRef);
+    latestUpdatePage.open(claimRef , claimType);
     latestUpdatePage.nextAction('Upload documents');
     uploadYourDocumentsIntroduction.verifyPageContent();
     uploadYourDocumentsIntroduction.nextAction('Start now');
-    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent();
+    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions();
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
-    uploadYourDocument.verifyPageContent();
+    uploadYourDocument.verifyPageContent(claimType);
     uploadYourDocument.inputDataForAllSections();
     uploadYourDocument.nextAction('Continue');
-    checkYourAnswers.verifyPageContent();
+    checkYourAnswers.verifyPageContent(claimType);
     checkYourAnswers.clickConfirm();
     checkYourAnswers.nextAction('Submit');
     uploadYourDocumentsConfirmation.verifyPageContent();

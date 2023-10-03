@@ -12,13 +12,17 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
-    this.verifyHeadingDetails();
-    this.verifyDisclosureSectionContent();
-    this.verifyWitnessSectionContent();
-    this.verifyEvidenceSectionContent();
-    this.verifyTrialDocuments();
-    this.verifyConfirmationStatements();
+  verifyPageContent(claimType) {
+    if(claimType === 'FastTrack') {
+      this.verifyHeadingDetails();
+      this.verifyDisclosureSectionContent();
+      this.verifyWitnessSectionContent();
+      this.verifyEvidenceSectionContent();
+      this.verifyTrialDocuments();
+      this.verifyConfirmationStatements();
+    } else {
+
+    }
     contactUs.verifyContactUs();
   }
 
