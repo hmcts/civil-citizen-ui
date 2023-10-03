@@ -80,22 +80,17 @@ function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boo
   return tableRows;
 }
 
-function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+export function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
 
   documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
     const typeAValue : number = typeValueMap[a.documentType];
     const typeBValue : number = typeValueMap[b.documentType];
 
     if (a.caseDocument?.createdDatetime > b.caseDocument?.createdDatetime) {
-      console.log('Date of ' + a.documentType + ' is ' + a.caseDocument?.createdDatetime);
-      console.log('Date of ' + b.documentType + ' is ' + b.caseDocument?.createdDatetime);
       return 1;
     } else if (a.caseDocument?.createdDatetime < b.caseDocument?.createdDatetime) {
-      console.log('-Date of ' + a.documentType + ' is ' + a.caseDocument?.createdDatetime);
-      console.log('-Date of ' + b.documentType + ' is ' + b.caseDocument?.createdDatetime);
       return -1;
     } else {
-      console.log('Equal dates');
       if (typeAValue < typeBValue) {
         return -1;
       }
@@ -108,7 +103,7 @@ function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadDocument
   return documentsWithDates;
 }
 
-const typeValueMap: Record<string, number> = {
+export const typeValueMap: Record<string, number> = {
   DOCUMENTS_FOR_DISCLOSURE: 1,
   DISCLOSURE_LIST: 2,
   WITNESS_STATEMENT: 3,
