@@ -6134,9 +6134,1082 @@
       "id": 1694001225953600,
       "lastModifiedDate": "2023-09-06T13:28:38"
     }
+  },
+  {
+    "id": "1696332175878101",
+    "case_data": {
+      "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
+      "respondent1DQLanguage": {
+        "court": "ENGLISH",
+        "documents": "ENGLISH"
+      },
+      "defenceAdmitPartPaymentTimeRouteRequired": "IMMEDIATELY",
+      "totalClaimAmount": 9000,
+      "respondent1ClaimResponseDocumentSpec": {
+        "createdBy": "Civil",
+        "documentLink": {
+          "document_url": "http://dm-store:8080/documents/8bda2e0f-93be-4f77-af3c-7ddc05ed5db9",
+          "document_filename": "response_sealed_form_000MC058.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/8bda2e0f-93be-4f77-af3c-7ddc05ed5db9/binary"
+        },
+        "documentName": "response_sealed_form_000MC058.pdf",
+        "documentSize": 74979,
+        "documentType": "DEFENDANT_DEFENCE",
+        "createdDatetime": "2023-10-03T12:26:27"
+      },
+      "respondent1LiPResponse": {
+        "respondent1DQExtraDetails": {
+          "giveEvidenceYourSelf": "No",
+          "respondent1DQLiPExpert": {
+            "caseNeedsAnExpert": "No"
+          },
+          "wantPhoneOrVideoHearing": "No",
+          "determinationWithoutHearingReason": "no",
+          "determinationWithoutHearingRequired": "No"
+        },
+        "respondent1ResponseLanguage": "ENGLISH",
+        "respondent1DQHearingSupportLip": {
+          "supportRequirementLip": "No"
+        },
+        "respondent1MediationLiPResponse": {
+          "canWeUseMediationLiP": "No",
+          "canWeUseMediationPhoneLiP": "02012346788"
+        }
+      },
+      "submittedDate": "2023-10-03T12:22:55",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2023-10-31T12:23:28",
+      "respondent1ResponseDate": "2023-10-03T12:26:16",
+      "respondToAdmittedClaimOwingAmount": "200000",
+      "respondToAdmittedClaimOwingAmountPounds": "2000",
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "applicant1": {
+        "partyDetails": {
+          "individualLastName": "Sood",
+          "individualFirstName": "Smily",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "type": "INDIVIDUAL"
+      },
+      "respondent1DQHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "issueDate": "2023-10-03",
+      "applicant1Represented": "No",
+      "detailsOfClaim": "details",
+      "respondent1DQHearingSmallClaim": {
+        "unavailableDatesRequired": "No"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "eb632455-87e0-486b-9eee-dad04522811d",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/a16869ac-83cc-457b-a5eb-e970a7abb6bd",
+              "document_filename": "defendant_directions_questionnaire_form_000MC058.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/a16869ac-83cc-457b-a5eb-e970a7abb6bd/binary"
+            },
+            "documentName": "defendant_directions_questionnaire_form_000MC058.pdf",
+            "documentSize": 66117,
+            "documentType": "DIRECTIONS_QUESTIONNAIRE",
+            "createdDatetime": "2023-10-03T12:26:24"
+          }
+        },
+        {
+          "id": "6e712898-e801-4ebd-904a-acce080cfedc",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/8bda2e0f-93be-4f77-af3c-7ddc05ed5db9",
+              "document_filename": "response_sealed_form_000MC058.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/8bda2e0f-93be-4f77-af3c-7ddc05ed5db9/binary"
+            },
+            "documentName": "response_sealed_form_000MC058.pdf",
+            "documentSize": 74979,
+            "documentType": "DEFENDANT_DEFENCE",
+            "createdDatetime": "2023-10-03T12:26:27"
+          }
+        }
+      ],
+      "specDefenceAdmittedRequired": "No",
+      "claimNotificationDate": "2023-10-03T12:23:30",
+      "specClaimResponseTimelineList": "MANUAL",
+      "respondent1DQVulnerabilityQuestions": {
+        "vulnerabilityAdjustmentsRequired": "No"
+      },
+      "claimInterest": "No",
+      "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+      "claimantUserDetails": {
+        "id": "91a226dd-1ef6-4a37-96df-717ff33992a7",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC058",
+      "applicant1ResponseDeadline": "2023-10-31T16:00:00",
+      "respondent1Represented": "No",
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "DEFENDANT_RESPONSE_CUI"
+      },
+      "respondent1GeneratedResponseDocument": {
+        "documentSize": 0
+      },
+      "respondent1DQRequestedCourt": {
+        "requestHearingAtSpecificCourt": "No"
+      },
+      "respondent1": {
+        "partyDetails": {
+          "individualLastName": "Beazley",
+          "individualFirstName": "Rhys",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "dateOfBirth": {
+          "date": "2000-10-10T00:00:00.000Z",
+          "year": 2000,
+          "month": 10,
+          "day": 10
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL",
+        "responseType": "PART_ADMISSION"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "8VR35J8KSGDP",
+        "expiryDate": "2024-03-31",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "claimNotificationDeadline": "2024-02-03T23:59:59",
+      "responseClaimMediationSpecRequired": "Yes",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "9000",
+            "claimReason": "broken tiles"
+          }
+        }
+      ],
+      "respondent1DQWitnesses": {
+        "witnessesToAppear": "No"
+      },
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "details"
+        },
+        "helpWithFees": {
+          "option": "no"
+        }
+      },
+      "mediation": {
+        "canWeUse": {
+          "option": "no",
+          "mediationPhoneNumber": "02012346788"
+        },
+        "noMediationReason": {},
+        "companyTelephoneNumber": {}
+      },
+      "statementOfMeans": {},
+      "claimBilingualLanguagePreference": "ENGLISH",
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {}
+      },
+      "directionQuestionnaire": {
+        "defendantYourselfEvidence": {
+          "option": "no"
+        },
+        "hearing": {
+          "specificCourtLocation": {
+            "option": "no"
+          },
+          "unavailableDatesForHearing": {},
+          "cantAttendHearingInNext12Months": {
+            "option": "no"
+          },
+          "phoneOrVideoHearing": {
+            "option": "no"
+          },
+          "supportRequiredList": {
+            "option": "no"
+          },
+          "determinationWithoutHearing": {
+            "option": "no",
+            "reasonForHearing": "no"
+          }
+        },
+        "vulnerabilityQuestions": {
+          "vulnerability": {
+            "option": "no"
+          }
+        },
+        "experts": {
+          "expertRequired": false,
+          "expertReportDetails": {}
+        },
+        "welshLanguageRequirements": {
+          "language": {
+            "speakLanguage": "en",
+            "documentsLanguage": "en"
+          }
+        }
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "defendantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": [],
+        "defendantTrialArrangements": {
+          "hasAnythingChanged": {}
+        }
+      },
+      "partialAdmission": {
+        "alreadyPaid": {
+          "option": "no"
+        },
+        "howMuchHaveYouPaid": {},
+        "whyDoYouDisagree": {},
+        "timeline": {},
+        "howMuchDoYouOwe": {
+          "amount": 2000
+        },
+        "paymentIntention": {
+          "paymentOption": "IMMEDIATELY",
+          "paymentDate": "2023-10-08T10:22:55.000Z"
+        }
+      },
+      "claimantResponse": {},
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "id": 1696332175878101,
+      "lastModifiedDate": "2023-10-03T11:26:27"
+    }
+  },
+  {
+    "id": "1696332613639917",
+    "case_data": {
+      "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
+      "respondent1ClaimResponseDocumentSpec": {
+        "createdBy": "Civil",
+        "documentLink": {
+          "document_url": "http://dm-store:8080/documents/9e655ce7-eedb-4d70-8e18-6ceb86b90ba3",
+          "document_filename": "response_sealed_form_000MC059.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/9e655ce7-eedb-4d70-8e18-6ceb86b90ba3/binary"
+        },
+        "documentName": "response_sealed_form_000MC059.pdf",
+        "documentSize": 74543,
+        "documentType": "DEFENDANT_DEFENCE",
+        "createdDatetime": "2023-10-03T12:33:26"
+      },
+      "respondent1LiPResponse": {
+        "respondent1DQExtraDetails": {
+          "giveEvidenceYourSelf": "No",
+          "respondent1DQLiPExpert": {
+            "caseNeedsAnExpert": "No"
+          },
+          "wantPhoneOrVideoHearing": "No",
+          "determinationWithoutHearingReason": "disagree",
+          "determinationWithoutHearingRequired": "No"
+        },
+        "respondent1ResponseLanguage": "ENGLISH",
+        "respondent1DQHearingSupportLip": {
+          "supportRequirementLip": "No"
+        },
+        "respondent1MediationLiPResponse": {
+          "canWeUseMediationLiP": "No",
+          "canWeUseMediationPhoneLiP": "02012346788"
+        }
+      },
+      "submittedDate": "2023-10-03T12:30:13",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2023-10-31T12:30:36",
+      "respondToAdmittedClaimOwingAmount": "200000",
+      "respondToAdmittedClaimOwingAmountPounds": "2000",
+      "respondent1DQHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "detailsOfClaim": "details",
+      "specDefenceAdmittedRequired": "No",
+      "specClaimResponseTimelineList": "MANUAL",
+      "respondent1DQVulnerabilityQuestions": {
+        "vulnerabilityAdjustmentsRequired": "No"
+      },
+      "respondToClaimAdmitPartUnemployedLRspec": {
+        "unemployedComplexTypeRequired": "RETIRED"
+      },
+      "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+      "respondent1CourtOrderPaymentOption": "No",
+      "respondent1DQCarerAllowanceCredit": "No",
+      "claimNotificationDeadline": "2024-02-03T23:59:59",
+      "respondent1DQLanguage": {
+        "court": "ENGLISH",
+        "documents": "ENGLISH"
+      },
+      "defenceAdmitPartPaymentTimeRouteRequired": "BY_SET_DATE",
+      "totalClaimAmount": 9000,
+      "respondent1ResponseDate": "2023-10-03T12:33:22",
+      "respondent1DQHomeDetails": {
+        "type": "PRIVATE_RENTAL"
+      },
+      "respondToClaimAdmitPartLRspec": {
+        "whenWillThisAmountBePaid": "2023-11-03"
+      },
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "responseToClaimAdmitPartWhyNotPayLRspec": "cant pay",
+      "applicant1": {
+        "partyDetails": {
+          "individualLastName": "Sood",
+          "individualFirstName": "Smily",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "type": "INDIVIDUAL"
+      },
+      "issueDate": "2023-10-03",
+      "applicant1Represented": "No",
+      "disabilityPremiumPayments": "No",
+      "respondent1DQHearingSmallClaim": {
+        "unavailableDatesRequired": "No"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "50ae3a6c-fc5d-4413-b5e2-40472fef871e",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/421f3243-1e3e-419a-87e3-e2ecdc1a1b13",
+              "document_filename": "defendant_directions_questionnaire_form_000MC059.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/421f3243-1e3e-419a-87e3-e2ecdc1a1b13/binary"
+            },
+            "documentName": "defendant_directions_questionnaire_form_000MC059.pdf",
+            "documentSize": 66341,
+            "documentType": "DIRECTIONS_QUESTIONNAIRE",
+            "createdDatetime": "2023-10-03T12:33:25"
+          }
+        },
+        {
+          "id": "84e01dbd-7a9c-4f79-8096-b25b6bb4c52f",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/9e655ce7-eedb-4d70-8e18-6ceb86b90ba3",
+              "document_filename": "response_sealed_form_000MC059.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/9e655ce7-eedb-4d70-8e18-6ceb86b90ba3/binary"
+            },
+            "documentName": "response_sealed_form_000MC059.pdf",
+            "documentSize": 74543,
+            "documentType": "DEFENDANT_DEFENCE",
+            "createdDatetime": "2023-10-03T12:33:26"
+          }
+        }
+      ],
+      "claimNotificationDate": "2023-10-03T12:30:37",
+      "claimInterest": "No",
+      "claimantUserDetails": {
+        "id": "91a226dd-1ef6-4a37-96df-717ff33992a7",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC059",
+      "applicant1ResponseDeadline": "2023-10-31T16:00:00",
+      "respondent1Represented": "No",
+      "respondent1PartnerAndDependent": {
+        "haveAnyChildrenRequired": "No",
+        "liveWithPartnerRequired": "No",
+        "supportedAnyoneFinancialRequired": "No"
+      },
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "DEFENDANT_RESPONSE_CUI"
+      },
+      "respondent1GeneratedResponseDocument": {
+        "documentSize": 0
+      },
+      "respondent1LoanCreditOption": "No",
+      "respondent1DQRequestedCourt": {
+        "requestHearingAtSpecificCourt": "No"
+      },
+      "respondent1": {
+        "partyDetails": {
+          "individualLastName": "Beazley",
+          "individualFirstName": "Rhys",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "dateOfBirth": {
+          "date": "2000-10-10T00:00:00.000Z",
+          "year": 2000,
+          "month": 10,
+          "day": 10
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL",
+        "responseType": "PART_ADMISSION"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "RJF22PJEJTZV",
+        "expiryDate": "2024-03-31",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "defenceAdmitPartEmploymentTypeRequired": "No",
+      "responseClaimMediationSpecRequired": "Yes",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "9000",
+            "claimReason": "broken tiles"
+          }
+        }
+      ],
+      "respondent1DQWitnesses": {
+        "witnessesToAppear": "No"
+      },
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "details"
+        },
+        "helpWithFees": {
+          "option": "no"
+        }
+      },
+      "mediation": {
+        "canWeUse": {
+          "option": "no",
+          "mediationPhoneNumber": "02012346788"
+        },
+        "noMediationReason": {},
+        "companyTelephoneNumber": {}
+      },
+      "statementOfMeans": {
+        "disability": {
+          "option": "no"
+        },
+        "residence": {
+          "type": "PRIVATE_RENTAL"
+        },
+        "cohabiting": {
+          "option": "no"
+        },
+        "dependants": {
+          "declared": false
+        },
+        "otherDependants": {
+          "option": "no",
+          "numberOfPeople": null
+        },
+        "employment": {
+          "declared": false
+        },
+        "unemployment": {
+          "option": "Retired"
+        },
+        "courtOrders": {
+          "declared": false
+        },
+        "debts": {
+          "option": "no",
+          "debtsItems": [
+            {
+              "debt": "",
+              "totalOwned": "",
+              "monthlyPayments": ""
+            },
+            {
+              "debt": "",
+              "totalOwned": "",
+              "monthlyPayments": ""
+            }
+          ]
+        },
+        "explanation": {
+          "text": "cant pay"
+        },
+        "carer": {
+          "option": "no"
+        }
+      },
+      "claimBilingualLanguagePreference": "ENGLISH",
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {}
+      },
+      "directionQuestionnaire": {
+        "defendantYourselfEvidence": {
+          "option": "no"
+        },
+        "hearing": {
+          "specificCourtLocation": {
+            "option": "no"
+          },
+          "unavailableDatesForHearing": {},
+          "cantAttendHearingInNext12Months": {
+            "option": "no"
+          },
+          "phoneOrVideoHearing": {
+            "option": "no"
+          },
+          "supportRequiredList": {
+            "option": "no"
+          },
+          "determinationWithoutHearing": {
+            "option": "no",
+            "reasonForHearing": "disagree"
+          }
+        },
+        "vulnerabilityQuestions": {
+          "vulnerability": {
+            "option": "no"
+          }
+        },
+        "experts": {
+          "expertRequired": false,
+          "expertReportDetails": {}
+        },
+        "welshLanguageRequirements": {
+          "language": {
+            "speakLanguage": "en",
+            "documentsLanguage": "en"
+          }
+        }
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "defendantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": [],
+        "defendantTrialArrangements": {
+          "hasAnythingChanged": {}
+        }
+      },
+      "partialAdmission": {
+        "alreadyPaid": {
+          "option": "no"
+        },
+        "howMuchHaveYouPaid": {},
+        "whyDoYouDisagree": {},
+        "timeline": {},
+        "howMuchDoYouOwe": {
+          "amount": 2000
+        },
+        "paymentIntention": {
+          "paymentOption": "BY_SET_DATE",
+          "paymentDate": "2023-11-03"
+        }
+      },
+      "claimantResponse": {},
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "id": 1696332613639917,
+      "lastModifiedDate": "2023-10-03T11:33:27"
+    }
+  },
+  {
+    "id": "1696332888944489",
+    "case_data": {
+      "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
+      "respondent1ClaimResponseDocumentSpec": {
+        "createdBy": "Civil",
+        "documentLink": {
+          "document_url": "http://dm-store:8080/documents/b98aa93d-281c-46ae-948a-9b05fa361f30",
+          "document_filename": "response_sealed_form_000MC060.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/b98aa93d-281c-46ae-948a-9b05fa361f30/binary"
+        },
+        "documentName": "response_sealed_form_000MC060.pdf",
+        "documentSize": 76137,
+        "documentType": "DEFENDANT_DEFENCE",
+        "createdDatetime": "2023-10-03T12:37:46"
+      },
+      "respondent1LiPResponse": {
+        "respondent1DQExtraDetails": {
+          "giveEvidenceYourSelf": "No",
+          "respondent1DQLiPExpert": {
+            "caseNeedsAnExpert": "No"
+          },
+          "wantPhoneOrVideoHearing": "No",
+          "determinationWithoutHearingReason": "asdf",
+          "determinationWithoutHearingRequired": "No"
+        },
+        "respondent1ResponseLanguage": "ENGLISH",
+        "respondent1DQHearingSupportLip": {
+          "supportRequirementLip": "No"
+        },
+        "respondent1MediationLiPResponse": {
+          "canWeUseMediationLiP": "No",
+          "canWeUseMediationPhoneLiP": "02012346788"
+        }
+      },
+      "submittedDate": "2023-10-03T12:34:48",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2023-10-31T12:35:24",
+      "respondToAdmittedClaimOwingAmount": "200000",
+      "respondToAdmittedClaimOwingAmountPounds": "2000",
+      "respondent1DQHearing": {
+        "unavailableDatesRequired": "No"
+      },
+      "detailsOfClaim": "details",
+      "specDefenceAdmittedRequired": "No",
+      "specClaimResponseTimelineList": "MANUAL",
+      "respondent1DQVulnerabilityQuestions": {
+        "vulnerabilityAdjustmentsRequired": "No"
+      },
+      "respondToClaimAdmitPartUnemployedLRspec": {
+        "unemployedComplexTypeRequired": "RETIRED"
+      },
+      "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+      "respondent1RepaymentPlan": {
+        "paymentAmount": "40000",
+        "firstRepaymentDate": "2023-11-03",
+        "repaymentFrequency": "ONCE_TWO_WEEKS"
+      },
+      "respondent1CourtOrderPaymentOption": "No",
+      "respondent1DQCarerAllowanceCredit": "No",
+      "claimNotificationDeadline": "2024-02-03T23:59:59",
+      "respondent1DQLanguage": {
+        "court": "ENGLISH",
+        "documents": "ENGLISH"
+      },
+      "defenceAdmitPartPaymentTimeRouteRequired": "SUGGESTION_OF_REPAYMENT_PLAN",
+      "totalClaimAmount": 9000,
+      "respondent1ResponseDate": "2023-10-03T12:37:43",
+      "respondent1DQHomeDetails": {
+        "type": "PRIVATE_RENTAL"
+      },
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "responseToClaimAdmitPartWhyNotPayLRspec": "cant pay",
+      "applicant1": {
+        "partyDetails": {
+          "individualLastName": "Sood",
+          "individualFirstName": "Smily",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "type": "INDIVIDUAL"
+      },
+      "issueDate": "2023-10-03",
+      "applicant1Represented": "No",
+      "disabilityPremiumPayments": "No",
+      "respondent1DQHearingSmallClaim": {
+        "unavailableDatesRequired": "No"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "ddd0e71a-3c86-4409-bbdd-dd69f0bfa635",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/0ab66504-132c-4be7-8c75-0220e40e13e6",
+              "document_filename": "defendant_directions_questionnaire_form_000MC060.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/0ab66504-132c-4be7-8c75-0220e40e13e6/binary"
+            },
+            "documentName": "defendant_directions_questionnaire_form_000MC060.pdf",
+            "documentSize": 66142,
+            "documentType": "DIRECTIONS_QUESTIONNAIRE",
+            "createdDatetime": "2023-10-03T12:37:45"
+          }
+        },
+        {
+          "id": "b3176b4f-8799-4b58-880e-2491229458ce",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/b98aa93d-281c-46ae-948a-9b05fa361f30",
+              "document_filename": "response_sealed_form_000MC060.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/b98aa93d-281c-46ae-948a-9b05fa361f30/binary"
+            },
+            "documentName": "response_sealed_form_000MC060.pdf",
+            "documentSize": 76137,
+            "documentType": "DEFENDANT_DEFENCE",
+            "createdDatetime": "2023-10-03T12:37:46"
+          }
+        }
+      ],
+      "claimNotificationDate": "2023-10-03T12:35:26",
+      "claimInterest": "No",
+      "claimantUserDetails": {
+        "id": "91a226dd-1ef6-4a37-96df-717ff33992a7",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC060",
+      "applicant1ResponseDeadline": "2023-10-31T16:00:00",
+      "respondent1Represented": "No",
+      "respondent1PartnerAndDependent": {
+        "haveAnyChildrenRequired": "No",
+        "liveWithPartnerRequired": "No",
+        "supportedAnyoneFinancialRequired": "No"
+      },
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "DEFENDANT_RESPONSE_CUI"
+      },
+      "respondent1GeneratedResponseDocument": {
+        "documentSize": 0
+      },
+      "respondent1LoanCreditOption": "No",
+      "respondent1DQRequestedCourt": {
+        "requestHearingAtSpecificCourt": "No"
+      },
+      "respondent1": {
+        "partyDetails": {
+          "individualLastName": "Beazley",
+          "individualFirstName": "Rhys",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "dateOfBirth": {
+          "date": "2000-10-10T00:00:00.000Z",
+          "year": 2000,
+          "month": 10,
+          "day": 10
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL",
+        "responseType": "PART_ADMISSION"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "CDWTHA6RJMXJ",
+        "expiryDate": "2024-03-31",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "defenceAdmitPartEmploymentTypeRequired": "No",
+      "responseClaimMediationSpecRequired": "Yes",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "9000",
+            "claimReason": "broken tiles"
+          }
+        }
+      ],
+      "respondent1DQWitnesses": {
+        "witnessesToAppear": "No"
+      },
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "details"
+        },
+        "helpWithFees": {
+          "option": "no"
+        }
+      },
+      "mediation": {
+        "canWeUse": {
+          "option": "no",
+          "mediationPhoneNumber": "02012346788"
+        },
+        "noMediationReason": {},
+        "companyTelephoneNumber": {}
+      },
+      "statementOfMeans": {
+        "disability": {
+          "option": "no"
+        },
+        "residence": {
+          "type": "PRIVATE_RENTAL"
+        },
+        "cohabiting": {
+          "option": "no"
+        },
+        "dependants": {
+          "declared": false
+        },
+        "otherDependants": {
+          "option": "no",
+          "numberOfPeople": null
+        },
+        "employment": {
+          "declared": false
+        },
+        "unemployment": {
+          "option": "Retired"
+        },
+        "courtOrders": {
+          "declared": false
+        },
+        "debts": {
+          "option": "no",
+          "debtsItems": [
+            {
+              "debt": "",
+              "totalOwned": "",
+              "monthlyPayments": ""
+            },
+            {
+              "debt": "",
+              "totalOwned": "",
+              "monthlyPayments": ""
+            }
+          ]
+        },
+        "explanation": {
+          "text": "cant pay"
+        },
+        "carer": {
+          "option": "no"
+        }
+      },
+      "claimBilingualLanguagePreference": "ENGLISH",
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {}
+      },
+      "directionQuestionnaire": {
+        "defendantYourselfEvidence": {
+          "option": "no"
+        },
+        "hearing": {
+          "specificCourtLocation": {
+            "option": "no"
+          },
+          "unavailableDatesForHearing": {},
+          "cantAttendHearingInNext12Months": {
+            "option": "no"
+          },
+          "phoneOrVideoHearing": {
+            "option": "no"
+          },
+          "supportRequiredList": {
+            "option": "no"
+          },
+          "determinationWithoutHearing": {
+            "option": "no",
+            "reasonForHearing": "asdf"
+          }
+        },
+        "vulnerabilityQuestions": {
+          "vulnerability": {
+            "option": "no"
+          }
+        },
+        "experts": {
+          "expertRequired": false,
+          "expertReportDetails": {}
+        },
+        "welshLanguageRequirements": {
+          "language": {
+            "speakLanguage": "en",
+            "documentsLanguage": "en"
+          }
+        }
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "defendantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": [],
+        "defendantTrialArrangements": {
+          "hasAnythingChanged": {}
+        }
+      },
+      "partialAdmission": {
+        "alreadyPaid": {
+          "option": "no"
+        },
+        "howMuchHaveYouPaid": {},
+        "whyDoYouDisagree": {},
+        "timeline": {},
+        "howMuchDoYouOwe": {
+          "amount": 2000
+        },
+        "paymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "repaymentPlan": {
+            "paymentAmount": 400,
+            "firstRepaymentDate": "2023-11-03",
+            "repaymentFrequency": "TWO_WEEKS"
+          }
+        }
+      },
+      "claimantResponse": {},
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "id": 1696332888944489,
+      "lastModifiedDate": "2023-10-03T11:37:47"
+    }
   }
-
-
-
 
 ]
