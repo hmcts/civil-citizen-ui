@@ -10,7 +10,7 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseRole} from 'form/models/caseRoles';
 import {
   CCDTrialArrangementClaimant,
-  CCDTrialArrangementDefendent
+  CCDTrialArrangementDefendent,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 
 describe('toCCDTrialArrangements', () => {
