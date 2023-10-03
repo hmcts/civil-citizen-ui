@@ -15,6 +15,11 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
           trialArrangements.trialArrangementsDocument =  claimantTrialArrangementsDocuments[0];
         }
       }
+
+      trialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyApplicant);
+      trialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.applicantRevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.applicantRevisedHearingRequirements?.revisedHearingComments);
+      trialArrangements.otherTrialInformation = ccdClaim?.applicantHearingOtherComments?.hearingOtherComments;
+
     } else {
       if (ccdClaim.trialReadyDocuments) {
         const defendantTrialArrangementsDocuments : TrialArrangementsDocument[] = ccdClaim.trialReadyDocuments.filter(doc => formatOwnedBy(doc.value.ownedBy) === CaseRole.DEFENDANT);

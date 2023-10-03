@@ -1276,3 +1276,18 @@ export const getClaimWithDefendantTrialArrangements = (): Claim => {
   return claim;
 };
 
+export const getClaimWithClaimantTrialArrangements = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const claimantTrialArrangements = new TrialArrangements();
+  claimantTrialArrangements.otherTrialInformation = 'Other Information';
+  claimantTrialArrangements.isCaseReady = YesNo.YES;
+  const hasAnythingChanged = new HasAnythingChangedForm();
+  hasAnythingChanged.textArea = 'Changed';
+  hasAnythingChanged.option = YesNo.YES;
+  claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
+  caseProgression.claimantTrialArrangements = claimantTrialArrangements;
+  claim.caseProgression = caseProgression;
+  return claim;
+};
+

@@ -43,7 +43,11 @@ describe('toCUITrialArrangements', () => {
     const ccdClaim: CCDClaim = {
       trialReadyDocuments: [getTrialReadyDocument(false)],
     };
-    const expectedOutput: TrialArrangements = undefined;
+    const expectedOutput: TrialArrangements = new TrialArrangements();
+    expectedOutput.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined);
+    expectedOutput.isCaseReady = undefined;
+    expectedOutput.otherTrialInformation = undefined;
+
     //When
     const actualOutput = toCUITrialArrangements(ccdClaim, isClaimant);
     //Then

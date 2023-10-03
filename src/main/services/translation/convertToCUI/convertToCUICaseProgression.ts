@@ -50,12 +50,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
 
-    const claimantTrialArrangements : TrialArrangements = new TrialArrangements();
-    claimantTrialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyApplicant);
-    claimantTrialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.applicantRevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.applicantRevisedHearingRequirements?.revisedHearingComments);
-    claimantTrialArrangements.otherTrialInformation = ccdClaim?.applicantHearingOtherComments?.hearingOtherComments;
-    caseProgression.claimantTrialArrangements = claimantTrialArrangements;
-
     return caseProgression;
   }
 };
