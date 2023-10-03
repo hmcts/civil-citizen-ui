@@ -21,11 +21,6 @@ const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
-  const getDetailsSection = () => {
-    return claim.isSignASettlementAgreement()
-      ? buildDetailsSection(claim, claimId, lng)
-      : null;
-  };
   const getJudgmentRequestSection = () => {
     return claim.isRequestACCJ()
       ? buildJudgmentRequestSection(claim, claimId, lng, claimFee)
@@ -33,7 +28,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
   return {
     sections: [
-      getDetailsSection(),
+      buildDetailsSection(claim, claimId, lng),
       getJudgmentRequestSection(),
     ],
   };
