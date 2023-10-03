@@ -49,7 +49,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
         ],
       },
     },
-      null,
+    null,
     ],
   };
 }
