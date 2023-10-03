@@ -17,7 +17,10 @@ import {OtherTrialInformation} from 'form/models/caseProgression/trialArrangemen
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {CaseRole} from 'form/models/caseRoles';
+import {
+  getOtherInformationForm,
+  getNameTrialArrangements,
+} from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
 
 const hearingDurationViewPath = 'features/caseProgression/trialArrangements/hearing-duration-other-info';
 const hearingDurationController = Router();
@@ -30,9 +33,7 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
     const claimIdPrettified: string = caseNumberPrettify(req.params.id);
     const hasAnythingChangedUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
     const latestUpdatesUrl: string = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-    const defendantOtherTrialInformation: string = claim.caseRole ? claim.caseProgression?.claimantTrialArrangements?.otherTrialInformation : claim.caseProgression?.defendantTrialArrangements?.otherTrialInformation;
-
-    const form = new GenericForm(new OtherTrialInformation(defendantOtherTrialInformation));
+    const form = new GenericForm(getOtherInformationForm(claim));
     const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
     res.render(hearingDurationViewPath, {form: form,
       hearingDurationContents: getHearingDurationAndOtherInformation(claim, claimIdPrettified),
@@ -49,7 +50,7 @@ hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (re
     otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     const claim = await getClaimById(claimId, req);
-    const parentPropertyName = claim.caseRole == CaseRole.CLAIMANT ? 'claimantTrialArrangements' : 'defendantTrialArrangements';
+    const parentPropertyName = getNameTrialArrangements(claim);
     await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
 
     res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));

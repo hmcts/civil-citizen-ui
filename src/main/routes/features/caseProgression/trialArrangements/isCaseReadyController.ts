@@ -12,7 +12,10 @@ import {getIsCaseReady} from 'services/features/caseProgression/trialArrangement
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {getClaimById} from 'modules/utilityService';
-import {CaseRole} from 'form/models/caseRoles';
+import {
+  getIsCaseReadyForm,
+  getNameTrialArrangements,
+} from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
@@ -22,8 +25,7 @@ isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunct
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    const isCaseReady = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression?.claimantTrialArrangements?.isCaseReady : claim.caseProgression?.defendantTrialArrangements?.isCaseReady;
-    const form = new GenericForm(new IsCaseReadyForm(isCaseReady));
+    const form = new GenericForm(getIsCaseReadyForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
@@ -40,7 +42,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);
     } else {
-      const parentPropertyName = claim.caseRole == CaseRole.CLAIMANT ? 'claimantTrialArrangements' : 'defendantTrialArrangements';
+      const parentPropertyName = getNameTrialArrangements(claim);
       await saveCaseProgression(claimId, form.model.option, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
     }

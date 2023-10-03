@@ -15,7 +15,10 @@ import {getHasAnythingChanged} from 'services/features/caseProgression/trialArra
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {YesNo} from 'form/models/yesNo';
-import {CaseRole} from 'form/models/caseRoles';
+import {
+  getHasAnythingChangedForm,
+  getNameTrialArrangements,
+} from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -25,9 +28,7 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, n
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    const hasAnythingChanged = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression?.claimantTrialArrangements?.hasAnythingChanged?.option : claim.caseProgression.defendantTrialArrangements?.hasAnythingChanged?.option;
-    const hasAnythingChangedText = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression?.claimantTrialArrangements?.hasAnythingChanged?.textArea :   claim.caseProgression.defendantTrialArrangements?.hasAnythingChanged?.textArea;
-    const form = new GenericForm(new HasAnythingChangedForm(hasAnythingChanged, hasAnythingChangedText));
+    const form = new GenericForm(getHasAnythingChangedForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
@@ -48,7 +49,7 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, n
       if (form.model.option === YesNo.NO) {
         form.model.textArea = '';
       }
-      const parentPropertyName = claim.caseRole == CaseRole.CLAIMANT ? 'claimantTrialArrangements' : 'defendantTrialArrangements';
+      const parentPropertyName = getNameTrialArrangements(claim);
       await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_HEARING_DURATION));
     }
