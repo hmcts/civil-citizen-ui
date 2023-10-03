@@ -11,6 +11,7 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', 'FastTrack');
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'FastTrack');
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
