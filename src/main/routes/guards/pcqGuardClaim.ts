@@ -42,7 +42,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
       const pcqUrl = generatePcqUrl(
         pcqId,
         ACTOR,
-        claimId,
         claimantEmail,
         getRedirectionUrl(req.headers.host),
         lang,
