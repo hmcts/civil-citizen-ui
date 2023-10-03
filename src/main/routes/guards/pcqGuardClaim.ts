@@ -7,11 +7,11 @@ import {isPcqShutterOn} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {generatePcqId} from 'client/pcq/generatePcqId';
 import {Claim} from 'common/models/claim';
 import {PartyType} from 'common/models/partyType';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
+import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 
 const ACTOR = 'applicant';
 
@@ -19,9 +19,11 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const caseData: Claim = await getCaseDataFromStore(userId);
+    console.log('Claim data: ', caseData);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.pcqId) {
+      console.log('PCQ already visited', caseData?.pcqId);
       return next();
     }
     const type: PartyType = caseData.applicant1.type;
@@ -34,13 +36,15 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
+      console.log('PcqId generated: ', pcqId);
+      await savePcqIdClaim(pcqId, userId);
 
       const pcqUrl = generatePcqUrl(
         pcqId,
         ACTOR,
         claimId,
         claimantEmail,
-        getRedirectionUrl(req.headers.host, claimId),
+        getRedirectionUrl(req.headers.host),
         lang,
       );
 
@@ -53,7 +57,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
   }
 };
 
-const getRedirectionUrl = (host: string, claimId: string): string => {
-  const path = constructResponseUrlWithIdParams(claimId, CLAIM_CHECK_ANSWERS_URL);
+const getRedirectionUrl = (host: string): string => {
+  const path = CLAIM_CHECK_ANSWERS_URL;
   return `${host}${path}`;
 };
