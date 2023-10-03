@@ -68,16 +68,14 @@ const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string,
   });
   if (claim.claimantResponse?.ccjRequest?.paidAmount?.amount) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
-      "£" + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
+      '£' + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
   }
 
   if (claim.claimantResponse?.ccjRequest?.paidAmount) {
-    judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), "£" + judgmentSummaryDetails.total));
+    judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), '£' + judgmentSummaryDetails.total));
   }
   return judgmentRequestSection;
 };
-
-
 
 const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const paymentDate = formatDateToFullDate(getPaymentDate(claim));
