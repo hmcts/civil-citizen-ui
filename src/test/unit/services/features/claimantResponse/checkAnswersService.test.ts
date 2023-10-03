@@ -11,6 +11,8 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {ResponseType} from 'common/form/models/responseType';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
+import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
+import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -49,7 +51,95 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
         ],
       },
     },
-    null,
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForDefendantPaidNone() {
+  return {
+    sections: [
+      undefined,
+      {
+        title: "PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST",
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: "PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME",
+              },
+              value: {
+                html:'No',
+              },
+              actions: {
+                items: [
+                  {
+                    href: "/case/12345/ccj/paid-amount",
+                    text: "COMMON.BUTTONS.CHANGE",
+                    visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME",
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: "PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID",
+              },
+              value: {
+                html: "£570.00",
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
+function generateExpectedResultForDefendantPaidSome() {
+  return {
+    sections: [
+      undefined,
+      {
+        title: "PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST",
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: "PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME",
+              },
+              value: {
+                html: 'Yes',
+              },
+              actions: {
+                items: [
+                  {
+                    href: "/case/12345/ccj/paid-amount",
+                    text: "COMMON.BUTTONS.CHANGE",
+                    visuallyHiddenText: " PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME",
+                  },
+                ],
+              },
+            },
+           {
+              key: {
+                text: "PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID",
+              },
+              value: {
+                html: "£100.00",
+              },
+            },
+            {
+              key: {
+                text: "PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID",
+              },
+              value: {
+                html: "£470.00",
+              },
+            },
+          ],
+        },
+      },
     ],
   };
 }
@@ -155,6 +245,33 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.NO);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+  });
+  describe('Build check answers for judgment request', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.totalClaimAmount = 500;
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
+      claim.claimantResponse = {
+        chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
+        ccjRequest: new CCJRequest(),
+      } as ClaimantResponse;
+    });
+
+    it('should check answers for defendant paid some of the money', () => {
+      const expectedResult = generateExpectedResultForDefendantPaidSome();
+      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
+      const result = getSummarySections('12345', claim, 'en', 70);
+      expect(expectedResult).toEqual(result);
+    });
+
+    it('should check answers for defendant didn`t paid any amount', () => {
+      const expectedResult = generateExpectedResultForDefendantPaidNone();
+      claim.claimantResponse.ccjRequest.paidAmount = {option: YesNo.NO};
+      const result = getSummarySections('12345', claim, 'en', 70);
       expect(expectedResult).toEqual(result);
     });
   });
