@@ -8,6 +8,10 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   getMockEmptyUploadDocumentsUserForm, getMockFullUploadDocumentsUserForm, getMockUploadDocumentsSelected,
 } from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {
+  getClaimWithClaimantTrialArrangements,
+  getClaimWithDefendantTrialArrangements,
+} from '../../../../utils/mockClaimForCheckAnswers';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
@@ -165,6 +169,33 @@ describe('case Progression service', () => {
       await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'claimantUploadDocuments');
       expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
     });
+
+    it('should save defendantTrialArrangements successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = getClaimWithDefendantTrialArrangements();
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      const claimToSave  = getClaimWithDefendantTrialArrangements();
+
+      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.defendantTrialArrangements, 'defendantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+    });
+
+    it('should save claimantTrialArrangements successfully', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = getClaimWithClaimantTrialArrangements();
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      const claimToSave  = getClaimWithClaimantTrialArrangements();
+
+      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.claimantTrialArrangements, 'claimantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();

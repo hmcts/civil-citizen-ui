@@ -9,12 +9,18 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
-  UploadDocumentTypes, UploadEvidenceDocumentType, UploadEvidenceExpert, UploadEvidenceWitness,
+  UploadDocumentTypes,
+  UploadEvidenceDocumentType,
+  UploadEvidenceExpert,
+  UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
-  createCCDClaimForEvidenceUpload, mockExpertDocument,
-  mockTypeDocument, mockUUID, mockWitnessDocument,
+  createCCDClaimForEvidenceUpload,
+  mockExpertDocument,
+  mockTypeDocument,
+  mockUUID,
+  mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
@@ -26,6 +32,7 @@ import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {getMockDocument} from '../../../../utils/mockDocument';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -52,21 +59,37 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
 
-function getTrialArrangement() {
+function getTrialArrangementUndefined() {
   const defendantTrialArrangement = new TrialArrangements();
   defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined),
   defendantTrialArrangement.isCaseReady = undefined,
   defendantTrialArrangement.otherTrialInformation = undefined;
   return defendantTrialArrangement;
 }
+
+function getTrialArrangementFilled() {
+  const defendantTrialArrangement = new TrialArrangements();
+  defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(YesNo.YES, 'textArea');
+  defendantTrialArrangement.isCaseReady = YesNo.YES;
+  defendantTrialArrangement.otherTrialInformation = 'other trial info';
+  return defendantTrialArrangement;
+}
+
 describe('toCUICaseProgression', () => {
   it('should convert CCDClaim to CaseProgression', () => {
     const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
     ccdClaim.finalOrderDocumentCollection =
       [new FinalOrderDocumentCollection(mockFinalOrderDocument1.id, mockFinalOrderDocument1.value)];
+    ccdClaim.trialReadyApplicant = YesNoUpperCamelCase.YES;
+    ccdClaim.trialReadyRespondent1 = YesNoUpperCamelCase.YES;
+    ccdClaim.applicantRevisedHearingRequirements = {revisedHearingRequirements: YesNoUpperCamelCase.YES, revisedHearingComments: 'textArea'};
+    ccdClaim.respondent1RevisedHearingRequirements = {revisedHearingRequirements: YesNoUpperCamelCase.YES, revisedHearingComments: 'textArea'};
+    ccdClaim.applicantHearingOtherComments = {hearingOtherComments: 'other trial info'};
+    ccdClaim.respondent1HearingOtherComments = {hearingOtherComments: 'other trial info'};
+
     const expectedOutput = createCUIClaim();
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
-    expectedOutput.claimantTrialArrangements = getTrialArrangement();
+    expectedOutput.defendantTrialArrangements = getTrialArrangementFilled();
+    expectedOutput.claimantTrialArrangements = getTrialArrangementFilled();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
 
@@ -127,8 +150,8 @@ describe('toCUICaseProgression', () => {
     expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
-    expectedOutput.claimantTrialArrangements = getTrialArrangement();
+    expectedOutput.defendantTrialArrangements = getTrialArrangementUndefined();
+    expectedOutput.claimantTrialArrangements = getTrialArrangementUndefined();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -165,8 +188,8 @@ describe('toCUICaseProgression', () => {
     );
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
       (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
-    expectedOutput.claimantTrialArrangements = getTrialArrangement();
+    expectedOutput.defendantTrialArrangements = getTrialArrangementUndefined();
+    expectedOutput.claimantTrialArrangements = getTrialArrangementUndefined();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
