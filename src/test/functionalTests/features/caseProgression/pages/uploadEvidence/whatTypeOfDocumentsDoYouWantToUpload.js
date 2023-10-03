@@ -24,30 +24,48 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     contactUs.verifyContactUs();
   }
 
-  checkAllDocumentUploadOptions() {
+  checkAllDocumentUploadOptions(claimType) {
 
-    //Disclosure Section
-    I.checkOption('#documents');
-    I.checkOption('#list');
+    if (claimType === 'FastTrack') {
 
-    //Witness evidence Section
-    I.checkOption('#witnessStatement');
-    I.checkOption('#summary');
-    I.checkOption('#witnessNotice');
-    I.checkOption('#witnessDocuments');
+      //Disclosure Section
+      I.checkOption('#documents');
+      I.checkOption('#list');
 
-    //Expert Evidence
-    I.checkOption('#report');
-    I.checkOption('#statement');
-    I.checkOption('#questions');
-    I.checkOption('#answer');
+      //Witness evidence Section
+      I.checkOption('#witnessStatement');
+      I.checkOption('#summary');
+      I.checkOption('#witnessNotice');
+      I.checkOption('#witnessDocuments');
 
-    //Trial documents
-    I.checkOption('#case');
-    I.checkOption('#skeleton');
-    I.checkOption('#legal');
-    I.checkOption('#cost');
-    I.checkOption('#documentary');
+      //Expert Evidence
+      I.checkOption('#report');
+      I.checkOption('#statement');
+      I.checkOption('#questions');
+      I.checkOption('#answer');
+
+      //Trial documents
+      I.checkOption('#case');
+      I.checkOption('#skeleton');
+      I.checkOption('#legal');
+      I.checkOption('#cost');
+      I.checkOption('#documentary');
+
+    } else if (claimType === 'SmallClaims') {
+
+      //Witness evidence Section
+      I.checkOption('#witnessStatement');
+      I.checkOption('#summary');
+      I.checkOption('#witnessDocuments');
+
+      //Expert Evidence
+      I.checkOption('#report');
+      I.checkOption('#statement');
+
+      //Hearing Docuents
+      I.checkOption('#documentary');
+      I.checkOption('#legal');
+    }
 
   }
 

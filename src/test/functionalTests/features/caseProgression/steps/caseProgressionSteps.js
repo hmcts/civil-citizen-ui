@@ -23,7 +23,7 @@ class UploadEvidenceSteps {
     uploadYourDocumentsIntroduction.verifyPageContent();
     uploadYourDocumentsIntroduction.nextAction('Start now');
     whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType);
-    whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions();
+    whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
     uploadYourDocument.verifyPageContent(claimType);
     uploadYourDocument.inputDataForAllSections();
