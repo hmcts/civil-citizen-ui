@@ -28,7 +28,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     }
     const type: PartyType = caseData.applicant1.type;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
     const claimantEmail = caseData.applicant1.emailAddress?.emailAddress;
 
     const isHealthy = await isPcqHealthy();

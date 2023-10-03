@@ -28,10 +28,10 @@ export const isPcqElegible = (type: PartyType): boolean => {
 export const generatePcqUrl = (
   pcqId: string,
   actor: string,
-  ccdCaseId: string,
   partyId: string,
   returnUri: string,
   lang: string,
+  ccdCaseId?: string,
 ): string => {
   const pcqParameters: PcqParameters = {
     pcqId: pcqId,
