@@ -45,6 +45,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         getRedirectionUrl(req.headers.host),
         lang,
       );
+      console.log('PCQ URL :', pcqUrl);
 
       res.redirect(pcqUrl);
     } else {
