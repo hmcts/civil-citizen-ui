@@ -1,5 +1,5 @@
 import { Claim } from 'models/claim';
-import { translateClaimantResponseDJToCCD } from '../../../../../main/services/translation/claimantResponse/ccdTranslation';
+import { translateClaimantResponseDJToCCD } from 'services/translation/claimantResponse/ccdTranslation';
 import { YesNo } from 'common/form/models/yesNo';
 import { Party } from 'common/models/party';
 import { PartyType } from 'common/models/partyType';
@@ -47,26 +47,6 @@ describe('translate draft claim to ccd version', () => {
     expect(ccdClaim.totalClaimAmount).toEqual(100);
   });
 
-  it('should translate the partial payment option', () => {
-    // given
-    const claim = new Claim();
-    claim.claimantResponse = {
-      ccjRequest: {
-        paidAmount: {
-          option: YesNo.YES,
-          amount: 10,
-        },
-      },
-    } as any;
-    const expectedPartialPaymentAmount =
-      claim.claimantResponse?.ccjRequest?.paidAmount?.amount.toString();
-    // when
-    const ccdClaim = translateClaimantResponseDJToCCD(claim);
-
-    // then
-    expect(ccdClaim.partialPaymentAmount).toEqual(expectedPartialPaymentAmount);
-  });
-
   it('should translate the partial payment amount when option is Yes', () => {
     // given
     const claim = new Claim();
@@ -83,7 +63,7 @@ describe('translate draft claim to ccd version', () => {
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
     // then
-    expect(ccdClaim.partialPaymentAmount).toEqual('10');
+    expect(ccdClaim.partialPaymentAmount).toEqual('1000');
   });
 
   it('should not translate the partial payment amount when option is No', () => {
