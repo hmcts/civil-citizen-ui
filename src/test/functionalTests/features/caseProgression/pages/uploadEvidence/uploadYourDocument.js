@@ -33,7 +33,6 @@ class UploadYourDocument {
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.');
   }
 
-
   verifyAllFastTrackSectionContent(claimType) {
     this.verifyDisclosureSectionContent();
     this.verifyWitnessSectionContent(claimType);
