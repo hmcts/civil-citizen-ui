@@ -37,11 +37,14 @@ export const generatePcqUrl = (
     pcqId: pcqId,
     serviceId: SERVICE_ID,
     actor: actor,
-    ccdCaseId: ccdCaseId,
     partyId: partyId,
     returnUrl: returnUri,
     language: lang,
   };
+
+  if (ccdCaseId) {
+    pcqParameters.ccdCaseId = ccdCaseId;
+  }
 
   const encryptedPcqParams: EncryptedPcqParams = {
     ...pcqParameters,
