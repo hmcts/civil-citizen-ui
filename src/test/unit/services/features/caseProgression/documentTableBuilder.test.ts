@@ -28,12 +28,12 @@ describe('orderDocumentByTypeAndNewestToOldest', () => {
     const sortedDocumentsExpert = orderDocumentByTypeAndNewestToOldest(documentsExpert);
     // Then
     expect(sortedDocumentsDisclosure).toEqual([
-      typeDocument,
       typeDocumentDisclosureList,
+      typeDocument,
     ]);
     expect(sortedDocumentsExpert).toEqual([
-      typeDocumentExpertStatement,
       typeDocumentExpertReport,
+      typeDocumentExpertStatement,
     ]);
   });
 });

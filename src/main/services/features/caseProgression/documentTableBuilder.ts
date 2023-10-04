@@ -87,9 +87,9 @@ export function orderDocumentByTypeAndNewestToOldest(documentsWithDates: UploadD
     const typeBValue : number = typeValueMap[b.documentType];
 
     if (a.caseDocument?.createdDatetime > b.caseDocument?.createdDatetime) {
-      return 1;
-    } else if (a.caseDocument?.createdDatetime < b.caseDocument?.createdDatetime) {
       return -1;
+    } else if (a.caseDocument?.createdDatetime < b.caseDocument?.createdDatetime) {
+      return 1;
     } else {
       if (typeAValue < typeBValue) {
         return -1;
