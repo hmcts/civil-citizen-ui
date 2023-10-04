@@ -201,10 +201,11 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentId: string) {
+  async retrieveDocument(req: AppRequest, documentId: string ) {
+    const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
-        .replace(':documentId', documentId));
+        .replace(':documentId', documentId), config);
 
       return new FileResponse(response.headers['content-type'],
         response.headers['original-file-name'],
