@@ -6,11 +6,9 @@ import {
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
-//import {CaseRole} from 'form/models/caseRoles';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
-
-  //const directionsQuestionnaire = claim.caseRole == CaseRole.CLAIMANT ? DocumentType.CLAIMANT_DEFENCE : DocumentType.DEFENDANT_DEFENCE;
+  //TODO: When claimant directions are available, add check for claimant documents
 
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')

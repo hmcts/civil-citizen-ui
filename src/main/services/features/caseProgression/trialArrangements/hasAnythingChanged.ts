@@ -6,6 +6,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
+  //TODO: When claimant directions are available, add check for claimant DQ documentId
   const documentId = getDocumentId(claim, DocumentType.DEFENDANT_DEFENCE);
   return new PageSectionBuilder()
     .addMainTitle('PAGES.HAS_ANYTHING_CHANGED.FINALISE')

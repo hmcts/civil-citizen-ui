@@ -16,6 +16,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
     if (!claim.isEmpty()) {
       const readyForTrialOrHearing:boolean = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression.claimantTrialArrangements.isCaseReady === YesNo.YES : claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES;
       const trialArrangementsConfirmationContent = getTrialArrangementsConfirmationContent(claimId, claim, readyForTrialOrHearing);
+      //TODO: When claimant dashboard/latest updates is available, add check for URL here
       const latestUpdateUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
       res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});
     }
