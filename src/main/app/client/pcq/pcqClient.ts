@@ -59,9 +59,9 @@ export interface PcqParameters {
   pcqId: string;
   serviceId: string;
   actor: string;
-  ccdCaseId?: string;
   partyId: string;
   returnUrl: string;
+  ccdCaseId?: string;
   language?: string;
 }
 

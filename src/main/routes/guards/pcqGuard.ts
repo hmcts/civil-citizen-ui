@@ -35,14 +35,14 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     if (isHealthy && isElegible) {
       const pcqId = generatePcqId();
       await savePcqIdClaim(pcqId, claimId);
-      
+
       const pcqUrl = generatePcqUrl(
         pcqId,
         ACTOR,
-        claimId,
         defendantEmail,
         getRedirectionUrl(req.headers.host, claimId),
         lang,
+        claimId,
       );
 
       res.redirect(pcqUrl);

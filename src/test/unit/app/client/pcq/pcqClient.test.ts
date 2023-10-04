@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from 'config';
-import { 
+import {
   isPcqElegible,
   isPcqHealthy,
   generatePcqUrl,
@@ -13,7 +13,7 @@ describe('PCQ Client', () => {
   describe('Check PCQ health', () => {
 
     jest.mock('axios');
-    
+
     it('should return true on PCQ health check', async () => {
       //Given
       axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
@@ -84,10 +84,10 @@ describe('PCQ Client', () => {
       const pcqUrl = generatePcqUrl(
         pcqId,
         actor,
-        ccdCaseId,
         partyId,
         returnUrl,
         language,
+        ccdCaseId,
       );
       //Then
       expect(pcqUrl).toContain(result);
