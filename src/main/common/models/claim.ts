@@ -605,6 +605,10 @@ export class Claim {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
   }
 
+  isCCJComplete(){
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  }
+
   getHowTheInterestCalculatedReason(): string {
     return this.interest?.totalInterest?.reason;
   }
