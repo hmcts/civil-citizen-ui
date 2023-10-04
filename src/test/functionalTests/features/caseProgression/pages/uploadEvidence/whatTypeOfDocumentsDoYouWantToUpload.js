@@ -105,7 +105,7 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     I.see('Joint statement of experts');
     I.see('A statement by the experts for both parties, setting out the facts in the case that they agree on or disagree on. This only applies if you and the other party set up a meeting for your experts. The experts write this statement after their discussion');
     if (claimType === 'FastTrack') {
-      I.see('Questions for other party\'s expert of joint expert');
+      I.see('Questions for other party\'s expert or joint expert');
       I.see('Written questions about an expert\'s report or a joint statement of experts');
       I.see('Answers to questions asked by other party');
       I.see('Your expert\'s answers to questions put by the other party');

@@ -26,7 +26,11 @@ class UploadEvidenceSteps {
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
     uploadYourDocument.verifyPageContent(claimType);
-    uploadYourDocument.inputDataForAllSections();
+    if (claimType === 'FastTrack') {
+      uploadYourDocument.inputDataForFastTrackSections(claimType);
+    } else {
+      uploadYourDocument.inputDataForSmallClaimsSections(claimType);
+    }
     uploadYourDocument.nextAction('Continue');
     checkYourAnswers.verifyPageContent(claimType);
     checkYourAnswers.clickConfirm();
