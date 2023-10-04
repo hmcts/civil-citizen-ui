@@ -1,0 +1,90 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "./claim-summary-content.njk" import claimSummaryContent %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% block content %}
+
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      {# {% set totalClaimAmount = '£' + cla
+      im.totalClaimAmount %} #}
+      {% set claimantName = claim.getClaimantFullName() %}
+      {% set defendantName = claim.getDefendantFullName() %}
+
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
+          <p class="govuk-body-s">
+              {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
+              {{ claim.legacyCaseReference }}
+          </p>
+        </div>
+      </div>
+
+      <div class="govuk-grid-row">
+
+        {# Left side #}
+        <div class="govuk-grid-column-two-thirds">
+
+          <div class="border-small-top"></div>
+          {# <hr class="govuk-section-break--xl" color="#1d70b8"> #}
+
+          {# Notifications #}
+          {% for notification in dashboardNotifications %}
+            {% set html %}
+              <p class="govuk-heading-s">
+                {{ notification.text }}
+                <a class="govuk-notification-banner__link" href={{notification.link}}>{{ notification.linkText }}</a>
+              </p>
+            {% endset %}
+            {{ govukNotificationBanner({
+              titleText: notification.title,
+              html: html
+            }) }}
+          {% endfor %}
+
+          {# TaskList #}
+          {% for taskList in dashboardTaskList %}
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+              <h2 class="app-task-list__section">
+                <span class="app-task-list__section-number">
+                  {{loop.index}} . </span>
+                  {{ t(taskList.title) }}
+              </h2>
+              <ol class="app-task-list app-task-list__items">
+                {% for task in taskList.tasks %}
+                  <li class="app-task-list__item">
+                    <span class="app-task-list__task-name">
+                      <a href={{task.url}}>{{ t(task.description) }}</a>
+                    </span>
+                    <strong class="govuk-tag app-task-list__tag {{ task.statusColor }}">
+                      {{ t('PAGES.TASK_LIST.' + task.status) }}
+                    </strong>
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+          {% endfor %}
+
+        </div>
+
+        {# TODO: Right side #}
+        <div class="govuk-grid-column-one-third">
+          <div class="border-small-top"></div>
+          {# <hr class="govuk-section-break--xl" color="#1d70b8"> #}
+
+          <p class="govuk-heading-s"> I want to... </p>
+          <p class="govuk-heading-s"> Help and support </p>
+          <div>
+          {{ contactUsForHelp(t) }}
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+{% endblock %}

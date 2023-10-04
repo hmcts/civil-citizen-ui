@@ -5,4 +5,5 @@ export interface Task {
   url: string,
   status: TaskStatus,
   isCheckTask?: boolean;
+  statusColor?: string;
 }

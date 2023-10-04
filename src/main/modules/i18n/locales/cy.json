@@ -2415,7 +2415,11 @@
       "HEADER": "Ymateb i hawliad ariannol",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
       "COMPLETE": "Cyflawn",
-      "INCOMPLETE": "Anghyflawn"
+      "DONE": "DONE",
+      "INCOMPLETE": "Anghyflawn",
+      "IN_PROGRESS": "In progress",
+      "READY_TO_VIEW": "Ready to view",
+      "NOT_AVAILABLE_YET": "Not available yet"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
