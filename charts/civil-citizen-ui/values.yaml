@@ -32,7 +32,7 @@ nodejs:
   devmemoryRequests: 1Gi
   devcpuLimits: 2
   devmemoryLimits: 2Gi
-  readinessDelay: 130  # claim-store will start much slower
+  readinessDelay: 130
   livenessDelay: 130
   keyVaults:
     civil-cui:
