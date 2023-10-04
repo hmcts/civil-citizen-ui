@@ -1523,7 +1523,8 @@
       "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
       "REASON_FOR_CLAIM": "Reason for claim:",
       "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WE_HAVE_SENT": "We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
