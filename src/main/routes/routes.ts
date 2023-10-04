@@ -67,6 +67,7 @@ import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/admission/fullRejection/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
+import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
@@ -216,6 +217,7 @@ import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
+import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 
 export default [
   homeController,
@@ -278,6 +280,7 @@ export default [
   youHavePaidLessController,
   yourDefenceController,
   incompleteSubmissionController,
+  incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
   paymentDatePAController,
@@ -418,4 +421,5 @@ export default [
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
   claimFeeController,
+  cancelTrialArrangementsController,
 ];

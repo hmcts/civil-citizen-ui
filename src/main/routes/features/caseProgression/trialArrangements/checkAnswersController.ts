@@ -3,6 +3,7 @@ import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-sto
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {
+  CANCEL_TRIAL_ARRANGEMENTS,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   DEFENDANT_SUMMARY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
@@ -30,7 +31,8 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
   const hearingDurationTrialArrangementsUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
   const caseInfoContents = getCaseInfoContents(claimId, claim, lang);
   const summarySections = getSummarySections(claimId, claim, lang);
-  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl});
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
+  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl, cancelUrl});
 }
 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
