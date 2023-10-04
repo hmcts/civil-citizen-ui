@@ -27,7 +27,7 @@ nodejs:
   devcpuRequests: 500m
   devmemoryRequests: 1Gi
   devcpuLimits: 2
-  devmemoryLimits: 2Gic
+  devmemoryLimits: 2Gi
   keyVaults:
     civil-cui:
       resourceGroup: civil-citizen-ui
