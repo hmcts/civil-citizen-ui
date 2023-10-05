@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
-  BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
+  BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
@@ -36,12 +36,12 @@ debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, async (req:
     const debtRespiteLiftDate = new DebtRespiteStartDate(req.body.day, req.body.month, req.body.year, 'ERRORS.VALID_DATE_LIFT_NOT_AFTER_TODAY');
     const genericForm = new GenericForm(debtRespiteLiftDate);
     genericForm.validateSync();
-    
+
     if (genericForm.hasErrors()) {
       renderView(genericForm, res);
     } else {
       await saveBreathingSpace(claimId, genericForm.model, breathingSpacePropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL));
     }
   } catch (error) {
     next(error);

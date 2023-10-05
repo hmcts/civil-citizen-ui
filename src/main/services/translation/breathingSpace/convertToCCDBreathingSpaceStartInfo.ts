@@ -11,3 +11,9 @@ export const toCCDBreathingSpaceStartInfo = (breathingSpace: BreathingSpace): CC
     expectedEnd: breathingSpace?.debtRespiteEndDate?.date,
   };
 };
+
+export const toCCDBreathingSpaceLiftInfo = (breathingSpace: BreathingSpace): CCDBreathingSpaceStartInfo => {
+  return {
+    expectedEnd: breathingSpace?.debtRespiteLiftDate?.date,
+  };
+};

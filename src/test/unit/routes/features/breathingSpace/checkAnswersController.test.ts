@@ -1,6 +1,6 @@
 import nock from 'nock';
 import config from 'config';
-import {getSummarySections} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
+import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 import {BREATHING_SPACE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
@@ -16,7 +16,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/breathingSpace/breathingSpaceService');
-jest.mock('../../../../../main/services/features/breathingSpace/checkAnswersService');
+jest.mock('../../../../../main/services/features/breathingSpace/checkYourAnswer/checkAnswersService');
 jest.mock('../../../../../main/services/features/breathingSpace/submission/submitBreathingSpace');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;

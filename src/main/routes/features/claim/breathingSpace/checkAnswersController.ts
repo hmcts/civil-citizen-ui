@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../../urls';
-import {getSummarySections} from '../../../../services/features/breathingSpace/checkAnswersService';
+import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';

@@ -720,7 +720,7 @@
         "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
-        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
+        "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim?",
         "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
       },
       "RESOLVE_THE_DISPUTE": {
@@ -779,7 +779,7 @@
         "HEARING_DATE_HEADER": "Hearing Date",
         "URL_HEADER": "Document URL",
         "UPLOADED_AFTER_DATE_UPLOADED": "Date uploaded",
-        "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
+        "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents below have been uploaded since the trial bundle was created.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
         "UPLOADED_AFTER_DOCUMENT": "Document",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
@@ -830,6 +830,13 @@
         "STANDARD_BREATHING_SPACE": "Standard breathing space"
       },
       "EXPECTED_END_DATE": "Expected end date"
+    },
+    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
+      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
+      "TITLE": "Lift the debt respite scheme (breathing space)",
+      "DATE_LIFTED": " Date lifted",
+      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
+      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
     },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
