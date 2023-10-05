@@ -4,7 +4,7 @@ const eligibilityCheck = new EligibilityCheck();
 
 class CreateClaimSteps {
 
-  async EligibilityCheckSteps() {
+  async VerifyEligibilityCheckSteps(userNotLoggedIn) {
     await eligibilityCheck.open();
     await eligibilityCheck.eligibilityClaimValueValidations();
     await eligibilityCheck.eligibilityClaimValue();
@@ -26,7 +26,25 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityClaimantAge();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReferenceValidations();
+    await eligibilityCheck.eligibilityHWFReference(userNotLoggedIn);
+  }
+  async EligibilityCheckSteps() {
+    await eligibilityCheck.open();
+    await eligibilityCheck.eligibilityClaimValue();
+    await eligibilityCheck.eligibilitySingleDefendant();
+    await eligibilityCheck.eligibilityDefendantAddress();
+    await eligibilityCheck.eligibilityClaimType();
+    await eligibilityCheck.eligibilityClaimantAddress();
+    await eligibilityCheck.eligibilityTenancyDeposit();
+    await eligibilityCheck.eligibilityGovtDept();
+    await eligibilityCheck.eligibilityDefendantAge();
+    await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReference();
+  }
+
+  async VerifyClaimTaskListPage() {
+
   }
 }
 

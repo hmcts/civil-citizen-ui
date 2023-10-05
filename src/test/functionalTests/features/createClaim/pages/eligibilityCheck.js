@@ -264,7 +264,7 @@ class EligibilityCheck {
     await I.amOnPage('/eligibility/help-with-fees-reference');
   }
 
-  async eligibilityHWFReference() {
+  async eligibilityHWFReference(userNotLoggedIn) {
     await I.waitForText('Do you have a Help With Fees reference number?');
     await I.click(fields.hwfReferenceNo);
     await I.waitForText('Decide whether to apply for Help with Fees');
@@ -278,7 +278,11 @@ class EligibilityCheck {
     await I.see('Based on your answers you can make a money claim using this service.');
     await I.see('You will have to pay court fees unless you are eligible for Help with Fees. Find out more about Help with Fees (opens in a new window) .');
     await I.click('Continue');
-    await I.waitForText('Sign in or create an account');
+    if(userNotLoggedIn == 'userNotLoggedIn'){
+      await I.waitForText('Sign in or create an account');
+    }else{
+      await I.seeInCurrentUrl('/claim/task-list');
+    }
   }
 
   async eligibilityCantUseThisServiceAddress(){
