@@ -6,7 +6,7 @@ import {Claim} from 'models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('fullAdmitSetDatePaymentService');
 
-export const getSetDatePaymentDetails = async (claim: Claim): Promise<{fullAdmitAcceptPayment: GenericYesNo; defendantName: string; proposedSetDate: string}> => {
+export const getSetDatePaymentDetails = (claim: Claim): {fullAdmitAcceptPayment: GenericYesNo; defendantName: string; proposedSetDate: string} => {
   try {
     const claimantResponse = (claim?.claimantResponse) ? claim.claimantResponse : new ClaimantResponse();
     const fullAdmitAcceptPayment = claimantResponse?.fullAdmitSetDateAcceptPayment;
