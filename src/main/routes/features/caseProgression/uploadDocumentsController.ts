@@ -16,16 +16,18 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
+const dqPropertyNameClaimant = 'claimantDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const claim: Claim = await getCaseDataFromStore(claimId);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
-  //TODO: This will need to distinguish between claimant and defendant once claimant is implemented.
-  if(!form && claim.caseProgression?.defendantDocuments)
+  if(!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments)
   {
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
+  } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
+    form = new GenericForm(claim.caseProgression?.claimantDocuments);
   }
 
   if (claim && !claim.isEmpty()) {
@@ -60,13 +62,15 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const claim: Claim = await getCaseDataFromStore(claimId);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
+
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claimId, form);
     } else {
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
+      await saveCaseProgression(claimId, form.model, claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {

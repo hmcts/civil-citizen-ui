@@ -64,14 +64,14 @@ export const getBottomElements = (): ClaimSummarySection[] => {
     .build();
 };
 
-export const saveUploadedDocuments = async (claim: Claim, req: AppRequest, isClaimant: boolean): Promise<Claim> => {
+export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Promise<Claim> => {
   let newUploadDocuments: UploadDocumentsUserForm;
   let existingUploadDocuments: UploadDocuments;
   const caseProgression = new CaseProgression();
   let updatedCcdClaim = {} as CCDClaim;
   const oldClaim = await civilServiceClient.retrieveClaimDetails(claim.id, req);
 
-  if(isClaimant)
+  if(claim.isClaimant())
   {
     newUploadDocuments = claim.caseProgression.claimantDocuments;
     existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;

@@ -2,6 +2,7 @@ import request from 'supertest';
 import {
   mockCivilClaim,
   mockRedisFailure,
+  mockCivilClaimDefendantCaseProgression,
 } from '../../../../utils/mockDraftStore';
 import {
   TYPES_OF_DOCUMENTS_URL,
@@ -37,6 +38,14 @@ describe('Upload document- type of documents controller', () => {
       });
     });
 
+    it('should render page successfully on defendant request if cookie has correct values', async () => {
+      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      await request(app).get(typeOfDocumentUrl).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE'));
+      });
+    });
+
     it('should return 500 error page for redis failure', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
@@ -64,6 +73,20 @@ describe('Upload document- type of documents controller', () => {
     });
 
     it('when at least 1 is  selected, should redirect to Upload documents screen', async () => {
+      await request(app)
+        .post(typeOfDocumentUrl)
+        .send({
+          documents: 'documents',
+          list: 'list',
+        })
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', 'aaa'));
+        });
+    });
+
+    it('when at least 1 is  selected, should redirect to Upload documents screen on defendant request', async () => {
+      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
       await request(app)
         .post(typeOfDocumentUrl)
         .send({

@@ -19,6 +19,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             witness: [
@@ -41,6 +42,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             witness: [
@@ -64,6 +66,34 @@ describe('Witness service', () => {
     expect(actualContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT');
   });
 
+  it('should return all witness content on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments: {
+            witness: [
+              {documentType: 'WITNESS_STATEMENT', selected: true},
+              {documentType: 'WITNESS_SUMMARY', selected: true},
+              {documentType: 'NOTICE_OF_INTENTION', selected: true},
+              {documentType: 'DOCUMENTS_REFERRED', selected: true},
+            ],
+          },
+        },
+      },
+    };
+    //when
+    const actualContent = getWitnessContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualContent.length).toEqual(4);
+  });
+
   it('should return no witness content', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, null);
 
@@ -79,6 +109,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {},
       },
     };
@@ -98,6 +129,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
       },
     };
 

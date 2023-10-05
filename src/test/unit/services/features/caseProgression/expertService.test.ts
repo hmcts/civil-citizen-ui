@@ -17,6 +17,7 @@ describe('Expert service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             expert: [
@@ -39,6 +40,7 @@ describe('Expert service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             expert: [
@@ -69,6 +71,38 @@ describe('Expert service', () => {
     expect(actualExpertContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT');
     expect(actualExpertContent[2][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.QUESTIONS_FOR_OTHER');
     expect(actualExpertContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS');
+  });
+
+  it('should return all sections if all selected on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments : {
+            expert: [
+              { documentType: 'EXPERT_REPORT', selected: true },
+              { documentType: 'STATEMENT', selected: true },
+              { documentType: 'QUESTIONS_FOR_EXPERTS', selected: true },
+              { documentType: 'ANSWERS_FOR_EXPERTS', selected: true },
+            ],
+          },
+        },
+      },
+    };
+
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
+    //when
+    const actualExpertContent = getExpertContent(claim, null);
+
+    //Then
+    expect(actualExpertContent.length).toEqual(4);
+
   });
 
   it('should return multiple section 1 if selected', () => {

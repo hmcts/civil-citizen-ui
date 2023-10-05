@@ -1,5 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL, TYPES_OF_DOCUMENTS_URL} from '../../urls';
+import {
+  CP_UPLOAD_DOCUMENTS_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  TYPES_OF_DOCUMENTS_URL,
+} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -8,17 +13,18 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   deleteUntickedDocumentsFromStore, getDocuments, getTypeDocumentForm, saveCaseProgression,
 } from 'services/features/caseProgression/caseProgressionService';
-import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
+const dqPropertyNameClaimant = 'claimantUploadDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   const claim = await getCaseDataFromStore(claimId);
+  const latestUploadUrl = constructResponseUrlWithIdParams(claimId,
+    claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
   const isFastTrack = claim.isFastTrackClaim;
@@ -34,7 +40,8 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const documentsList = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
+      const claim = await getCaseDataFromStore(claimId);
+      const documentsList = await getDocuments(claimId,claim.isClaimant());
       const form = new GenericForm(documentsList);
       await renderView(res, claimId,form);
     } catch (error) {
@@ -45,6 +52,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const claim = await getCaseDataFromStore(claimId);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
 
@@ -52,8 +60,8 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     if (form.hasErrors()) {
       await renderView(res, claimId,form);
     } else {
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
-      await deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
+      await saveCaseProgression(claimId, form.model, claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName);
+      await deleteUntickedDocumentsFromStore(claimId, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {

@@ -1,7 +1,13 @@
 import {
   mockCivilClaim,
+  mockCivilClaimDefendantCaseProgression,
 } from '../../../../utils/mockDraftStore';
-import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {
+  CP_EVIDENCE_UPLOAD_CANCEL,
+  CP_UPLOAD_DOCUMENTS_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import config from 'config';
@@ -16,7 +22,9 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+const claimDefendant = require('../../../../utils/mocks/civilClaimResponseDefendantMock.json');
 const claimId = claim.id;
+const claimDefendantId = claimDefendant.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
@@ -107,6 +115,25 @@ describe('Cancel document upload - on POST', () => {
   it('should redirect to defendant page', async () => {
 
     //Given
+    app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+    nock(civilServiceUrl)
+      .post(CIVIL_SERVICE_CASES_URL + claimDefendantId)
+      .reply(200, claimDefendantId);
+
+    //When
+    await testSession
+      .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimDefendantId))
+      .send({option: YesNo.YES})
+    //Then
+      .expect((res: {status: unknown, header: {location: unknown}}) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimDefendantId));
+      });
+  });
+
+  it('should redirect to claimant page', async () => {
+
+    //Given
     app.locals.draftStoreClient = mockCivilClaim;
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + claimId)
@@ -116,10 +143,10 @@ describe('Cancel document upload - on POST', () => {
     await testSession
       .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))
       .send({option: YesNo.YES})
-    //Then
+      //Then
       .expect((res: {status: unknown, header: {location: unknown}}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
+        expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', claimId));
       });
   });
 });

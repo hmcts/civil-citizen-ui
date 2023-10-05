@@ -9,15 +9,24 @@ import {
   FileOnlySection, TypeOfDocumentSection,
   UploadDocumentsUserForm,
 } from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getDisclosureContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  if (claim.caseProgression?.defendantUploadDocuments?.disclosure[0]?.selected) {
+  let uploadDocuments: UploadDocuments;
+
+  if (claim.isClaimant()) {
+    uploadDocuments = claim.caseProgression?.claimantUploadDocuments;
+  } else {
+    uploadDocuments = claim.caseProgression?.defendantUploadDocuments;
+  }
+
+  if (uploadDocuments?.disclosure[0]?.selected) {
     sectionContent.push(documentsForDisclosure(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.disclosure[1]?.selected) {
+  if (uploadDocuments?.disclosure[1]?.selected) {
     sectionContent.push(disclosureList(form));
   }
 
