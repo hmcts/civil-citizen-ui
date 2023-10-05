@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
-import {getFullAdmitSetDatePaymentDetails} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {getSetDatePaymentDetails} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -33,8 +33,8 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const details = await getFullAdmitSetDatePaymentDetails(claimId);
     const claim: Claim = await getCaseDataFromStore(claimId);
+    const details = await getSetDatePaymentDetails(claim);
     const claimantResponseStatus : ClaimResponseStatus = claim.responseStatus;
     const frequency = getRepaymentFrequency(claim);
     repaymentPlan = {
@@ -57,7 +57,7 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const details = await getFullAdmitSetDatePaymentDetails(claimId);
+    const details = await getSetDatePaymentDetails(claim);
     const displayHintTextForNoOption = claim.isBusiness();
     const claimantResponseStatus : ClaimResponseStatus = claim.responseStatus;
     form.validateSync();

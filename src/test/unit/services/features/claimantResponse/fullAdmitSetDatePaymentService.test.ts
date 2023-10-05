@@ -1,7 +1,5 @@
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
-  getFullAdmitSetDatePaymentDetails,
+  getSetDatePaymentDetails,
 } from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
 import {Claim} from 'common/models/claim';
 import {ClaimantResponse} from 'common/models/claimantResponse';
@@ -12,11 +10,6 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-
 const claim = new Claim();
 claim.claimantResponse = new ClaimantResponse();
 claim.respondent1 = new Party();
@@ -25,20 +18,16 @@ claim.fullAdmission = new FullAdmission();
 claim.fullAdmission.paymentIntention = new PaymentIntention();
 
 describe('Full Admit Set Date Payment Service', () => {
-  describe('getFullAdmitSetDatePaymentDetails', () => {
+  describe('getSetDatePaymentDetails', () => {
     it('should return object with correct details', async () => {
       //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyDetails.partyName = 'John Doe';
-        claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
-        claim.claimantResponse.fullAdmitSetDateAcceptPayment = {
-          option: YesNo.YES,
-        };
-        return claim;
-      });
-
+      claim.respondent1.partyDetails.partyName = 'John Doe';
+      claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = {
+        option: YesNo.YES,
+      };
       //When
-      const details = await getFullAdmitSetDatePaymentDetails('validClaimId');
+      const details = await getSetDatePaymentDetails(claim);
 
       //Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
@@ -48,15 +37,12 @@ describe('Full Admit Set Date Payment Service', () => {
 
     it('should return object when claimantResponse is undefined', async () => {
       //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyDetails.partyName = 'John Doe';
-        claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
-        claim.claimantResponse = undefined;
-        return claim;
-      });
+      claim.respondent1.partyDetails.partyName = 'John Doe';
+      claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
+      claim.claimantResponse = undefined;
 
       //When
-      const details = await getFullAdmitSetDatePaymentDetails('validClaimId');
+      const details = await getSetDatePaymentDetails(claim);
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
@@ -64,31 +50,20 @@ describe('Full Admit Set Date Payment Service', () => {
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.fullAdmission.paymentIntention.paymentDate));
     });
 
-    it('should return object when fullAdmitSetDateAcceptPayment is undefined', async () => {
+    it('should return object when getSetDatePaymentDetails is undefined', async () => {
       //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        claim.respondent1.partyDetails.partyName = 'John Doe';
-        claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
-        claim.claimantResponse = new ClaimantResponse();
-        claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
-        return claim;
-      });
+      claim.respondent1.partyDetails.partyName = 'John Doe';
+      claim.fullAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
 
       //When
-      const details = await getFullAdmitSetDatePaymentDetails('validClaimId');
+      const details = await getSetDatePaymentDetails(claim);
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
       expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.fullAdmission.paymentIntention.paymentDate));
-    });
-
-    it('should return an error on redis failure', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-
-      await expect(getFullAdmitSetDatePaymentDetails('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
