@@ -109,7 +109,7 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.respondent1.partyDetails.partyName = 'John Doe';
       claim.partialAdmission.paymentIntention.paymentDate = new Date('2022-11-11T13:29:22.447');
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
 
       // When
       const details = getSetDatePaymentDetails(claim);
