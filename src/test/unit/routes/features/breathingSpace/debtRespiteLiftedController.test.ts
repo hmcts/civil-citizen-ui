@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
-  BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
+  BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -51,7 +51,7 @@ describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
         .post(BREATHING_SPACE_RESPITE_LIFTED_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL}`);
+          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL}`);
         });
     });
     it('should return errors date in the future', async () => {
@@ -74,7 +74,7 @@ describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL}`);
+          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL}`);
         });
     });
     it('should return http 500 when has error in the post method', async () => {
