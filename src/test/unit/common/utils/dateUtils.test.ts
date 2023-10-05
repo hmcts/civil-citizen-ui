@@ -1,6 +1,6 @@
 import {
   addFiveDaysBefore4pm,
-  addMonths, checkEvidenceUploadTime,
+  addMonths, checkEvidenceUploadTime, formatStringDateDMY, formatStringTimeHMS,
   getDOBforAgeFromCurrentTime,
 } from '../../../../main/common/utils/dateUtils';
 
@@ -115,4 +115,32 @@ describe('before 18:00, checkEvidenceUploadTime ', () => {
     expect(result).toBeTruthy();
   });
 
+});
+
+describe('formatStringDateDMY', () => {
+  it('date should be formatted in format: day as 2 digits, month as 3 letters, year as 4 digits', () => {
+    const mockDate = new Date('2023-01-01T17:59');
+    const result = formatStringDateDMY(mockDate);
+    expect(result).toStrictEqual('01 Jan 2023');
+  });
+});
+
+describe('formatStringTimeHMS', () => {
+  it('if hour is a single digit, it should be displayed as such', () => {
+    const mockDate = new Date('2023-01-01T07:59:02');
+    const result = formatStringTimeHMS(mockDate);
+    expect(result).toStrictEqual('7:59:02 AM');
+  });
+
+  it('before noon, time should be formatted as hours:minutes:seconds AM', () => {
+    const mockDate = new Date('2023-01-01T11:59:59');
+    const result = formatStringTimeHMS(mockDate);
+    expect(result).toStrictEqual('11:59:59 AM');
+  });
+
+  it('from noon onwards, time should be formatted as hours:minutes:seconds PM', () => {
+    const mockDate = new Date('2023-01-01T12:00:00');
+    const result = formatStringTimeHMS(mockDate);
+    expect(result).toStrictEqual('12:00:00 PM');
+  });
 });

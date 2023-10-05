@@ -36,7 +36,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+const productionMode = env === 'false';
 const developmentMode = env === 'development';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();

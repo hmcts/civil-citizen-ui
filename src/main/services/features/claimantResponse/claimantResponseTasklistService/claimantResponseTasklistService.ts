@@ -13,12 +13,14 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
-  if(claim.isPartialAdmissionNotPaid()) {
+  if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && claim.isRejectAllOfClaimDispute())) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
-  if(claim.isPartialAdmissionPaid() || claim.isFullDefence()){
+
+  if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute())) {
     taskGroups.push(buildYourResponseSection(claim, claimId, lang));
   }
+
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
   taskGroups.push(buildClaimantResponseSubmitSection(claimId, lang));
   return taskGroups.filter(item => item.tasks.length !== 0);

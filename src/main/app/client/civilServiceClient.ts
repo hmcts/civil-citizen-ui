@@ -76,6 +76,7 @@ export class CivilServiceClient {
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId + '?page=' + currentPage, config);
       const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
+      console.log("==================================",dashboardClaimantItemList,"=================");
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
@@ -201,10 +202,11 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentId: string) {
+  async retrieveDocument(req: AppRequest, documentId: string ) {
+    const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
-        .replace(':documentId', documentId));
+        .replace(':documentId', documentId), config);
 
       return new FileResponse(response.headers['content-type'],
         response.headers['original-file-name'],
@@ -252,7 +254,7 @@ export class CivilServiceClient {
   async submitClaimSettled(claimId: string, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, {}, req);
   }
-  
+
   async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
