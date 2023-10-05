@@ -1,4 +1,4 @@
-import { SummarySection, SummarySections, summarySection } from 'common/models/summaryList/summarySections';
+import {SummarySection, SummarySections, summarySection} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
@@ -13,16 +13,23 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { ClaimResponseStatus } from 'common/models/claimResponseStatus';
 import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse/checkAnswers';
+import { buildYourResponseSection } from './buildYourResponseSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const lng = getLng(lang);
+  
+  const getYourResponseSection = () => {
+    return claim.isFullDefence() || claim.isPartialAdmission()
+      ? buildYourResponseSection(claim, claimId, lang)
+      : null;
+  };
   return {
     sections: [
-    // TODO : This part will be developed as part of other future tasks for different scenarios
       buildDetailsSection(claim, claimId, lng),
+      getYourResponseSection(),
     ],
   };
 };
