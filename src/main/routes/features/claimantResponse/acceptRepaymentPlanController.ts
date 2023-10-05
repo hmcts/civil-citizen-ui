@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
-import {getSetDatePaymentDetails} from 'services/features/claimantResponse/fullAdmitSetDatePaymentService';
+import {getSetDatePaymentDetails} from 'services/features/claimantResponse/getSetDatePaymentDetails';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
