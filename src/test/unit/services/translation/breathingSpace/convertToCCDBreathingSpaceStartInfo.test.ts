@@ -1,6 +1,9 @@
 import {BreathingSpace} from 'common/models/breathingSpace';
 import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';
-import {toCCDBreathingSpaceStartInfo} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStartInfo';
+import {
+  toCCDBreathingSpaceLiftInfo,
+  toCCDBreathingSpaceStartInfo
+} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStartInfo';
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 import {DebtRespiteEndDate} from 'models/breathingSpace/debtRespiteEndDate';
@@ -88,6 +91,20 @@ describe('translate start to ccd model', () => {
     };
 
     const startCCD = toCCDBreathingSpaceStartInfo(breathingSpace);
+    expect(startCCD).toMatchObject(expectedResult);
+  });
+
+  it('should translate breathing space lift date to ccd', () => {
+
+    const breathingSpace: BreathingSpace = {
+      debtRespiteLiftDate: new DebtRespiteEndDate('05', '10', '2023'),
+    };
+
+    const expectedResult: CCDBreathingSpaceStartInfo = {
+      expectedEnd: new Date('2023-10-05'),
+    };
+
+    const startCCD = toCCDBreathingSpaceLiftInfo(breathingSpace);
     expect(startCCD).toMatchObject(expectedResult);
   });
 });

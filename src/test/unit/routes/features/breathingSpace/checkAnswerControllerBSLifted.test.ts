@@ -4,7 +4,7 @@ import {getSummarySections} from 'services/features/breathingSpace/checkYourAnsw
 import {
   BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
   BREATHING_SPACE_RESPITE_LIFTED_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {app} from '../../../../../main/app';
@@ -49,8 +49,31 @@ export function createDebtRespiteLifted(): SummarySection {
     },
   };
 }
-
-const data = {_csrf: 'oAu8p5bV-glpP78Yowsar_iK4UPB4fKSSXCc'};
+export function getDebtRespiteLifted(): SummarySection {
+  return {
+    title: '',
+    summaryList: {
+      rows: [
+        {
+          key: {
+            text: 'Date lifted',
+          },
+          value: {
+            html: ' ',
+          },
+          actions: {
+            items: [
+              {
+                href: BREATHING_SPACE_RESPITE_LIFTED_URL,
+                text: 'Change',
+              },
+            ],
+          },
+        },
+      ],
+    },
+  };
+}
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -88,6 +111,29 @@ describe('Response - Check answers', () => {
       expect(dateLifted[0].textContent?.trim()).toBe('2 October 2023');
     });
 
+    it('should return empty check answers page', async () => {
+      mockGetSummarySections.mockImplementation(() => {
+        return getDebtRespiteLifted();
+      });
+
+      const response = await session(app).get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL);
+      expect(response.status).toBe(200);
+
+      const dom = new JSDOM(response.text);
+      const htmlDocument = dom.window.document;
+
+      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
+
+      const dateLifted = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Date lifted')]]",
+        htmlDocument);
+
+      expect(header.length).toBe(1);
+      expect(header[0].textContent).toBe(checkYourAnswerEng);
+      expect(dateLifted.length).toBe(1);
+      expect(dateLifted[0].textContent?.trim()).toBe('');
+    });
+
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -105,7 +151,7 @@ describe('Response - Check answers', () => {
     it('should redirect dashboard claimant', async () => {
       await session(app)
         .post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL)
-        .send(data)
+        .send('data')
         .expect((res: Response) => {
           expect(res.status).toBe(302);
         });
