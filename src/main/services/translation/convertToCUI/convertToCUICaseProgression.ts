@@ -12,12 +12,11 @@ import {
   EvidenceUploadWitness,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {
   FinalOrderDocumentCollection,
 } from 'models/caseProgression/finalOrderDocumentCollectionType';
-import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
-import {toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
-import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
+import {toCUITrialArrangements} from 'services/translation/convertToCUI/convertToCUITrialArrangements';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (!ccdClaim) {
@@ -35,13 +34,21 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 
-    caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
+    caseProgression.caseBundles = [] as Bundle[];
+    if(ccdClaim?.caseBundles) {
+      ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(new Bundle(element.value?.title, element.value?.stitchedDocument, element.value?.createdOn, element.value?.bundleHearingDate));});
+    }
 
-    const defendantTrialArrangements : TrialArrangements = new TrialArrangements();
-    defendantTrialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyRespondent1);
-    defendantTrialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments);
-    defendantTrialArrangements.otherTrialInformation = ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments;
-    caseProgression.defendantTrialArrangements = defendantTrialArrangements;
+    const claimantTrialArrangements =  toCUITrialArrangements(ccdClaim, true);
+    if (claimantTrialArrangements) {
+      caseProgression.claimantTrialArrangements = claimantTrialArrangements;
+    }
+    const defendantTrialArrangements = toCUITrialArrangements(ccdClaim, false);
+    if (defendantTrialArrangements) {
+      caseProgression.defendantTrialArrangements = defendantTrialArrangements;
+    }
+
+    caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
 
     return caseProgression;
   }
@@ -148,6 +155,7 @@ const finalOrderDocuments =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
   documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial) => {
+
   if(ccdList != null)
   {
     for(const ccdElement of ccdList)

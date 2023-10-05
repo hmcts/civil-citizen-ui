@@ -7,9 +7,11 @@ import {
 } from 'models/document/documentType';
 import {
   UploadEvidenceDocumentType,
-  UploadEvidenceElementCCD, UploadEvidenceExpert,
+  UploadEvidenceElementCCD,
+  UploadEvidenceExpert,
   UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
+import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
 
 export const mockUUID = '1221';
@@ -109,11 +111,8 @@ export const mockCCDFileUploadArray = (length: number) => {
 export const mockWitnessDocument = {
   witnessOptionName: 'witness name',
   witnessOptionUploadDate: new Date(0),
-  witnessOptionDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'witness_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
+  witnessOptionDocument: getMockDocument(),
+
   createdDatetime: new Date(0),
 };
 
@@ -125,22 +124,14 @@ export const mockExpertDocument = {
   expertDocumentQuestion: 'document question',
   expertDocumentAnswer: 'document answer',
   expertOptionUploadDate: new Date(0),
-  expertDocument: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'expert_document.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
+  expertDocument: getMockDocument(),
   createdDatetime: new Date(0),
 };
 
 export const mockTypeDocument = {
   typeOfDocument: 'type',
   documentIssuedDate: new Date(0),
-  documentUpload: {
-    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-    document_filename: 'document_type.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-  },
+  documentUpload: getMockDocument(),
   createdDatetime: new Date(0),
 };
 
@@ -262,3 +253,4 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
 
   return [uploadEvidenceElementCCD];
 }
+
