@@ -1,13 +1,15 @@
 import {
   getDisclosureSummarySection,
-  getExpertSummarySection, getTrialSummarySection,
+  getExpertSummarySection,
+  getTrialSummarySection,
   getWitnessSummarySection,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {
   getBottomElements,
   getSummarySections,
-  getTopElements, saveUploadedDocuments,
+  getTopElements,
+  saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {SummarySections} from 'models/summaryList/summarySections';
@@ -25,6 +27,7 @@ import {
   getMockFullUploadDocumentsUserForm,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSections';
 import {createCCDClaimForUploadedDocuments} from '../../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('i18next');
 jest.mock('client/civilServiceClient');
@@ -140,9 +143,9 @@ describe('checkAnswersServiceTest', () => {
       test('For claimant - all arrays filled', async ()=> {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
-
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
         //when
-        await saveUploadedDocuments(claimWithUploadedDocuments, null, true);
+        await saveUploadedDocuments(claimWithUploadedDocuments, null);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
@@ -153,9 +156,10 @@ describe('checkAnswersServiceTest', () => {
       test('For claimant - all arrays empty', async () => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        claimWithoutUploadedDocuments.caseRole = CaseRole.CLAIMANT;
 
         //when
-        await saveUploadedDocuments(claimWithoutUploadedDocuments, null, true);
+        await saveUploadedDocuments(claimWithoutUploadedDocuments, null);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
@@ -165,9 +169,10 @@ describe('checkAnswersServiceTest', () => {
       test('For defendant - all arrays filled', async ()=> {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        claimWithUploadedDocuments.caseRole = CaseRole.DEFENDANT;
 
         //when
-        await saveUploadedDocuments(claimWithUploadedDocuments, null, false);
+        await saveUploadedDocuments(claimWithUploadedDocuments, null);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
@@ -178,9 +183,10 @@ describe('checkAnswersServiceTest', () => {
       test('For defendant - all arrays empty', async() => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        claimWithoutUploadedDocuments.caseRole = CaseRole.DEFENDANT;
 
         //when
-        await saveUploadedDocuments(claimWithoutUploadedDocuments, null, false);
+        await saveUploadedDocuments(claimWithoutUploadedDocuments, null);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
