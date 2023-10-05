@@ -35,7 +35,7 @@ Scenario('Personal detail error screen', async () => {
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
 });
 
-Scenario('View your options before response deadline error screen @test', async () => {
+Scenario('View your options before response deadline error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
