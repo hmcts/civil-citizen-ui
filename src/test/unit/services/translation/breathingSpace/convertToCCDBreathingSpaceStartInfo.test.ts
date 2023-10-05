@@ -2,7 +2,7 @@ import {BreathingSpace} from 'common/models/breathingSpace';
 import {DebtRespiteStartDate} from 'common/models/breathingSpace/debtRespiteStartDate';
 import {
   toCCDBreathingSpaceLiftInfo,
-  toCCDBreathingSpaceStartInfo
+  toCCDBreathingSpaceStartInfo,
 } from 'services/translation/breathingSpace/convertToCCDBreathingSpaceStartInfo';
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
