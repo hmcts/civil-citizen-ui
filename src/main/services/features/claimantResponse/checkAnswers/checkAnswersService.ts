@@ -26,7 +26,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
     return claim.isRequestACCJ()
       ? buildJudgmentRequestSection(claim, claimId, lng, claimFee)
       : null;
-  }
+  };
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
