@@ -34,6 +34,11 @@ jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
+jest.mock('../../../../../main/routes/guards/checkYourAnswersGuard', () => ({
+  checkYourAnswersClaimGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
@@ -169,6 +174,7 @@ describe('Claim - Check answers', () => {
     beforeAll(() => {
       mockGetSummarySections.mockReset();
     });
+    const spyClearcookie = jest.spyOn(app.response, 'clearCookie');
 
     it('should return errors when form is incomplete', async () => {
       mockGetClaim.mockImplementation(() => {
@@ -255,6 +261,8 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
+      expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
@@ -280,6 +288,8 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
+      expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {
