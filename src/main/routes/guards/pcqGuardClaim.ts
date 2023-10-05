@@ -20,11 +20,9 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
   try {
     const userId = (<AppRequest>req).session?.user?.id;
     const caseData: Claim = await getCaseDataFromStore(userId);
-    console.log('Claim data: ', caseData);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.pcqId) {
-      console.log('PCQ already visited', caseData?.pcqId);
       return next();
     }
     const type: PartyType = caseData.applicant1.type;
@@ -37,7 +35,6 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
 
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
-      console.log('PcqId generated: ', pcqId);
       await savePcqIdClaim(pcqId, userId);
 
       const pcqUrl = generatePcqUrl(
@@ -47,7 +44,6 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
         getRedirectionUrl(req.headers.host),
         lang,
       );
-      console.log('PCQ URL :', pcqUrl);
 
       res.redirect(pcqUrl);
     } else {

@@ -44,7 +44,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
-    pcqId:claim.pcqId,
+    pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
   };
