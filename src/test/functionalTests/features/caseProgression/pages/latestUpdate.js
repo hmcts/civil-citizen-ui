@@ -16,7 +16,7 @@ class LatestUpdate {
 
   verifyLatestUpdatePageContent(claimType) {
     this.verifyHeadingDetails();
-    this.verifyHearingNoticeSectionContent(claimType);
+    this.verifyHearingOrTrialNoticeSectionContent(claimType);
     this.verifyUploadDocumentSectionContent();
     contactUs.verifyContactUs();
   }
@@ -29,7 +29,7 @@ class LatestUpdate {
     I.see('Documents');
   }
 
-  verifyHearingNoticeSectionContent(claimType) {
+  verifyHearingOrTrialNoticeSectionContent(claimType) {
     //TODO - Include the hearing date in the relevant Format
     if (claimType === 'FastTrack') {
       I.see('A trial has been scheduled for your case', 'h3');
