@@ -32,18 +32,15 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextFunction) => {
   try {
 
-    const isReleaseTwoEnabled = true;
-    // const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+    const isReleaseTwoEnabled = true; // await isCUIReleaseTwoEnabled();
 
     if (isReleaseTwoEnabled) {
       // RELEASE 2
       const claimId = req.params.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-
       const dashboardTaskList = getDashboardTaskList(claim, lang);
       const dashboardNotifications = getDashboardNotifications(claim, lang);
-
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
       // RELEASE 1
@@ -56,7 +53,6 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
         const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
-      // TODO: else keeps thinking
     }
   } catch (error) {
     next(error);

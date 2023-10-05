@@ -1,6 +1,6 @@
-import { Claim } from "common/models/claim";
-import { TaskStatus } from "common/models/taskList/TaskStatus";
-import { TaskList } from "common/models/taskList/taskList";
+import {Claim} from "common/models/claim";
+import {TaskStatus} from "common/models/taskList/TaskStatus";
+import {TaskList} from "common/models/taskList/taskList";
 
 export const getDashboardNotifications = (claim: Claim, lng: string) => {
   // TODO: this is a mock data
