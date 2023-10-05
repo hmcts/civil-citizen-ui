@@ -9,6 +9,8 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {app} from '../../../../../main/app';
 import {SummarySection} from 'models/summaryList/summarySections';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import request from 'supertest';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -148,12 +150,27 @@ describe('Response - Check answers', () => {
   });
 
   describe('on Post', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockCivilClaim;
+    });
+
     it('should redirect dashboard claimant', async () => {
       await session(app)
         .post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL)
         .send('data')
         .expect((res: Response) => {
           expect(res.status).toBe(302);
+        });
+    });
+
+    it('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL)
+        .send('data')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

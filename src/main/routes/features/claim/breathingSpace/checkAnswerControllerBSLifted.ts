@@ -20,23 +20,22 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
   res.render(checkAnswersViewPath, {summarySections: summarySections?.summaryList?.rows});
 }
 
-breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
-  async (req: AppRequest, res: Response, next: NextFunction) => {
-    try {
-      const claimId = req.params.id;
-      const breathingSpace = await getBreathingSpace(claimId);
-      renderView(req, res, breathingSpace, claimId);
-    } catch (error) {
-      next(error);
-    }
-  });
+breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
+    const claimId = req.params.id;
+    const breathingSpace = await getBreathingSpace(claimId);
+    return renderView(req, res, breathingSpace, claimId);
+  } catch (error) {
+    next(error);
+  }
+});
 
 breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpaceLifted(<AppRequest>req);
     await deleteDraftClaimFromStore(userId);
-    res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
+    return res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }

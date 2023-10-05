@@ -96,15 +96,18 @@ describe('translate start to ccd model', () => {
 
   it('should translate breathing space lift date to ccd', () => {
 
+    //given
     const breathingSpace: BreathingSpace = {
       debtRespiteLiftDate: new DebtRespiteEndDate('05', '10', '2023'),
     };
-
     const expectedResult: CCDBreathingSpaceStartInfo = {
       expectedEnd: new Date('2023-10-05'),
     };
 
+    //when
     const startCCD = toCCDBreathingSpaceLiftInfo(breathingSpace);
+
+    //then
     expect(startCCD).toMatchObject(expectedResult);
   });
 });
