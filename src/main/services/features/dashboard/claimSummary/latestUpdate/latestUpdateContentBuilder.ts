@@ -21,6 +21,7 @@ import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuild
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -342,6 +343,7 @@ function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM`, {lng}), {
       claimantName: claimantFullName,
     })
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_AGREEMENT`, claimId, documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName},
       t(`${PAGES_LATEST_UPDATE_CONTENT}.THEIR_PAYMENT_DETAILS`, {lng}))
     .build();

@@ -13,6 +13,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {RESPONSEFORNOTPAIDPAYIMMEDIATELY} from 'common/models/claimantResponse/checkAnswers';
+import {buildYourResponseSection} from './buildYourResponseSection';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 
@@ -25,11 +26,17 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
     return claim.isRequestACCJ()
       ? buildJudgmentRequestSection(claim, claimId, lng, claimFee)
       : null;
+  }
+  const getYourResponseSection = () => {
+    return claim.isFullDefence() || claim.isPartialAdmission()
+      ? buildYourResponseSection(claim, claimId, lang)
+      : null;
   };
   return {
     sections: [
       buildDetailsSection(claim, claimId, lng),
       getJudgmentRequestSection(),
+      getYourResponseSection(),
     ],
   };
 };
@@ -77,10 +84,10 @@ const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lang: string
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   return summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lang }),
+    title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', {lang}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lang }), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', { fullName, amount, paymentDate, lang }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lang as string)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${paymentDate}`),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', {lang}), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', {fullName, amount, paymentDate, lang}), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lang as string)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', {lang}), `${paymentDate}`),
     ],
   });
 };
@@ -89,13 +96,13 @@ const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lang: s
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   const instalmentAmount = getPaymentAmount(claim);
-  const frequency = t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, { lang })?.toLowerCase();
+  const frequency = t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, {lang})?.toLowerCase();
   const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim));
   return summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lang }),
+    title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', {lang}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lang }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lang, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lang as string)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${formatDateToFullDate(getFinalPaymentDate(claim))}`),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', {lang}), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', {lang, fullName, amount, instalmentAmount, instalmentDate, frequency}), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lang as string)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', {lang}), `${formatDateToFullDate(getFinalPaymentDate(claim))}`),
     ],
   });
 };
@@ -108,9 +115,9 @@ const buildSummarySectionForPartAdmitPayImmediately = (claim: Claim, claimId: st
   const selectedOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option;
   if (selectedOption) {
     return summarySection({
-      title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', { lang }),
+      title: t('PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', {lang}),
       summaryRows: [
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', { lang }), t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectedOption], { lang }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL), changeLabel(lang as string)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', {lang}), t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectedOption], {lang}), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL), changeLabel(lang as string)),
       ],
     });
   }

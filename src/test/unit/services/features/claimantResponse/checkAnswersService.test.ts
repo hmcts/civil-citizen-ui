@@ -52,95 +52,12 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
       },
     },
     null,
-    ],
-  };
-}
-
-function generateExpectedResultForDefendantPaidNone() {
-  return {
-    sections: [
-      undefined,
-      {
-        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
-              },
-              value: {
-                html:'No',
-              },
-              actions: {
-                items: [
-                  {
-                    href: '/case/12345/ccj/paid-amount',
-                    text: 'COMMON.BUTTONS.CHANGE',
-                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
-                  },
-                ],
-              },
-            },
-            {
-              key: {
-                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
-              },
-              value: {
-                html: '£570.00',
-              },
-            },
-          ],
-        },
+    {
+      title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+      summaryList: {
+        rows: [],
       },
-    ],
-  };
-}
-
-function generateExpectedResultForDefendantPaidSome() {
-  return {
-    sections: [
-      undefined,
-      {
-        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
-              },
-              value: {
-                html: 'Yes',
-              },
-              actions: {
-                items: [
-                  {
-                    href: '/case/12345/ccj/paid-amount',
-                    text: 'COMMON.BUTTONS.CHANGE',
-                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
-                  },
-                ],
-              },
-            },
-            {
-              key: {
-                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID',
-              },
-              value: {
-                html: '£100.00',
-              },
-            },
-            {
-              key: {
-                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
-              },
-              value: {
-                html: '£470.00',
-              },
-            },
-          ],
-        },
-      },
-    ],
+    }],
   };
 }
 
@@ -253,8 +170,8 @@ describe('Check Answers service', () => {
     beforeEach(() => {
       claim = new Claim();
       claim.totalClaimAmount = 500;
-      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
-      claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
+      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
+      claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
       claim.claimantResponse = {
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         ccjRequest: new CCJRequest(),
@@ -275,5 +192,96 @@ describe('Check Answers service', () => {
       expect(expectedResult).toEqual(result);
     });
   });
+
 });
+
+function generateExpectedResultForDefendantPaidNone() {
+  return {
+    sections: [
+      undefined,
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+              },
+              value: {
+                html: 'No',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/ccj/paid-amount',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
+              },
+              value: {
+                html: '£570.00',
+              },
+            },
+          ],
+        },
+      },
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForDefendantPaidSome() {
+  return {
+    sections: [
+      undefined,
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+              },
+              value: {
+                html: 'Yes',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/ccj/paid-amount',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID',
+              },
+              value: {
+                html: '£100.00',
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
+              },
+              value: {
+                html: '£470.00',
+              },
+            },
+          ],
+        },
+      },
+      null,
+    ],
+  };
+}
 
