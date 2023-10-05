@@ -1529,7 +1529,8 @@
       "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
       "REASON_FOR_CLAIM": "Reason for claim:",
       "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WE_HAVE_SENT": "We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
@@ -1605,9 +1606,9 @@
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "{{ claimantName }} confirmed you settled on {{ settlementDate }}",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1" : "{{ claimantName }} rejected your repayment plan.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2" : "The court will review the case. We’ll contact you by post to tell you what to do next.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3" : "Your online account won’t be updated - any further updates will be by post.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "{{ claimantName }} rejected your repayment plan.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "The court will review the case. We’ll contact you by post to tell you what to do next.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3": "Your online account won’t be updated - any further updates will be by post.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "CCJ_REQUESTED_TITLE": "{{ claimantName }} requested a County Court Judgment (CCJ) against you",
       "CCJ_REQUESTED_MSG1": "They accepted your repayment plan.",
@@ -1695,6 +1696,7 @@
       "MEDIATION_UNSUCCESSFUL_TITLE": "Mediation was unsuccessful",
       "MEDIATION_UNSUCCESSFUL_MSG1": "You weren’t able to resolve {{ claimantName }}’s claim against you using mediation.",
       "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
+      "MEDIATION_AGREEMENT": "Mediation Agreement",
       "NO_TO_TRYING_MEDIATION": "{{ claimantName }} has said no to trying mediation.",
       "REJECTED_YOUR_RESPONSE": "{{ claimantName }} rejected your response",
       "REJECTED_YOUR_ADMISSION": "{{ claimantName }} has rejected your admission of £{{ partAmount }}",
