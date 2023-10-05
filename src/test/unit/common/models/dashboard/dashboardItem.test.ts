@@ -66,6 +66,22 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(item).toBeUndefined();
     });
+    it('should return empty status when there is no status', () => {
+      //Given
+      ccdClaimantClaim.status = 'CHANGE_BY_CLAIMANT';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toBe('');
+    });
+    it('should return matched status value when status exists', () => {
+      //Given
+      ccdClaimantClaim.status = 'NO_RESPONSE';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
+    });
   });
   describe('Dashboard defendant item', ()=>{
     const ocmcDefendantClaim = new DashboardDefendantItem();
@@ -95,12 +111,12 @@ describe('Dashboard Items', ()=> {
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
-      expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
     });
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
-      const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
       const params: DashboardStatusTranslationParam[] = [];
       const lang = 'cy';
 
