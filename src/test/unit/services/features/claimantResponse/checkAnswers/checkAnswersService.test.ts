@@ -23,192 +23,192 @@ const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.
 
 function generateExpectedResultForPartAdmitPayImmediately(option: string) {
   return {
-    "sections": [
+    'sections': [
       {
-        "title": "PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER",
-        "summaryList": {
-          "rows": [
+        'title': 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
+        'summaryList': {
+          'rows': [
             {
-              "key": {
-                "text": "PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION"
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
               },
-              "value": {
-                "html": option === YesNo.YES
+              'value': {
+                'html': option === YesNo.YES
                   ? 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT'
                   : 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/claimant-response/settle-admitted",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION"
-                  }
-                ]
-              }
-            }
-          ]
-        }
+                    'href': '/case/12345/claimant-response/settle-admitted',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
       {
-        "title": "PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE",
-        "summaryList": {
-          "rows": [
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
 
-          ]
-        }
+          ],
+        },
       },
       {
-        "title": "PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE",
-        "summaryList": {
-          "rows": [
+        'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
+        'summaryList': {
+          'rows': [
             {
-              "key": {
-                "text": "PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION"
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
               },
-              "value": {
-                "html": "COMMON.NO"
+              'value': {
+                'html': 'COMMON.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/mediation/free-telephone-mediation",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION"
-                  }
-                ]
-              }
-            }
-          ]
-        }
+                    'href': '/case/12345/mediation/free-telephone-mediation',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
       },
       {
-        "title": "PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE",
-        "summaryList": {
-          "rows": [
+        'title': 'PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE',
+        'summaryList': {
+          'rows': [
             {
-              "key": {
-                "text": "PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE"
+              'key': {
+                'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
               },
-              "value": {
-                "html": "COMMON.NO"
+              'value': {
+                'html': 'COMMON.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/determination-without-hearing",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/determination-without-hearing',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE"
+              'key': {
+                'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
               },
-              "value": {
-                "html": "COMMON.VARIATION_2.NO"
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/expert-report-details",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/expert-report-details',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE"
+              'key': {
+                'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
               },
-              "value": {
-                "html": "COMMON.VARIATION.NO"
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/permission-for-expert",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/permission-for-expert',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE"
+              'key': {
+                'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
-              "value": {
-                "html": "COMMON.VARIATION.NO"
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/expert-can-still-examine",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES"
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
               },
-              "value": {
-                "html": "COMMON.NO"
+              'value': {
+                'html': 'COMMON.NO',
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/other-witnesses",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/other-witnesses',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE"
+              'key': {
+                'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
               },
-              "value": {
-                "html": ""
+              'value': {
+                'html': ''
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE"
-                  }
-                ]
-              }
+                    'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                  },
+                ],
+              },
             },
             {
-              "key": {
-                "text": "PAGES.SPECIFIC_COURT.TITLE"
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.TITLE',
               },
-              "value": {
-                "html": ""
+              'value': {
+                'html': ''
               },
-              "actions": {
-                "items": [
+              'actions': {
+                'items': [
                   {
-                    "href": "/case/12345/directions-questionnaire/court-location",
-                    "text": "COMMON.BUTTONS.CHANGE",
-                    "visuallyHiddenText": " PAGES.SPECIFIC_COURT.TITLE"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
   };
 }
 
@@ -306,7 +306,6 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.YES);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      console.log('----result----', JSON.stringify(result))
       expect(expectedResult).toEqual(result);
     });
 
