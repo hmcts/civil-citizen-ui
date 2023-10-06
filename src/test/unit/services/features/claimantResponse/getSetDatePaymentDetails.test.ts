@@ -125,15 +125,21 @@ describe('Full Admit Set Date Payment Service', () => {
       const claim = new Claim();
       const expectedError = new Error('Test error message');
       
-      // Mocking the dependencies
-      jest.spyOn(claim, 'getDefendantFullName').mockImplementation(() => {
+      claim.getDefendantFullName = () => {
         throw expectedError;
-      });
+      };
       
-      jest.spyOn(claim, 'getPaymentIntention').mockReturnValue(null);
+      claim.getPaymentIntention = () => null;
       
-      // When and Then
-      expect(() => getSetDatePaymentDetails(claim)).toThrowError(expectedError);
+      try {
+        // When
+        getSetDatePaymentDetails(claim);
+        
+        expect(true).toBe(false);
+      } catch (error) {
+        // Then
+        expect(error).toBe(expectedError);
+      }
     });
   });
 });
