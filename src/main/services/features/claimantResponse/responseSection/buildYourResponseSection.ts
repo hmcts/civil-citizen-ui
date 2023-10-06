@@ -23,7 +23,7 @@ export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string,
     t(`COMMON.${intentionToProceed}`, {lang}),
     intentionToProceedHref,
     changeLabel(lang));
-}
+};
 
 export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
@@ -34,7 +34,7 @@ export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
     partAdmitAcceptedHref,
     changeLabel(lang));
 
-}
+};
 
 export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 

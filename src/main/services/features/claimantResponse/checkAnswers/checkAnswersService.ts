@@ -6,8 +6,8 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import {
-  buildSettlementAgreementSection
-} from "services/features/claimantResponse/responseSection/buildSettlementAgreementSection";
+  buildSettlementAgreementSection,
+} from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
