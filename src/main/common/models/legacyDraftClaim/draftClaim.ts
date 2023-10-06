@@ -28,7 +28,6 @@ export function draftOcmcClaimToDashboardItem(ocmcClaim?: DraftOcmcClaim): Dashb
     draftClaim.claimId = 'draft';
     draftClaim.draft = true;
     draftClaim.ocmc = true;
-    draftClaim.nextSteps = 'PAGES.DASHBOARD.DRAFT_CLAIM_NEXT_STEPS';
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = ocmcClaim.document.claimant?.partyDetails?.name;
     draftClaim.defendantName = ocmcClaim.document.defendant?.partyDetails?.name;
