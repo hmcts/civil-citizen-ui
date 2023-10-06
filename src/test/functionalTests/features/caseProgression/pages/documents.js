@@ -81,9 +81,6 @@ class Documents {
     I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for trial - Type of Document 1 15-02-2\')]');
     I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for trial - Type of Document 2 15-02-2\')]');
 
-
-
-
   }
 
   verifySmallClaimsDocumentsUploadedSectionContent() {
