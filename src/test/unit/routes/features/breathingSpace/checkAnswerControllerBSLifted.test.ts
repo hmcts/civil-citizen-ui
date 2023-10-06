@@ -9,8 +9,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {app} from '../../../../../main/app';
 import {SummarySection} from 'models/summaryList/summarySections';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import request from 'supertest';
+import {submitBreathingSpaceLifted} from 'services/features/breathingSpace/submission/submitBreathingSpaceLifted';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -25,6 +24,7 @@ jest.mock('../../../../../main/services/features/breathingSpace/checkYourAnswer/
 jest.mock('../../../../../main/services/features/breathingSpace/submission/submitBreathingSpaceLifted');
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
+const mockSubmitBreathingSpaceLifted = submitBreathingSpaceLifted as jest.Mock;
 
 export function createDebtRespiteLifted(): SummarySection {
   return {
@@ -150,10 +150,6 @@ describe('Response - Check answers', () => {
   });
 
   describe('on Post', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should redirect dashboard claimant', async () => {
       await session(app)
         .post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL)
@@ -164,11 +160,13 @@ describe('Response - Check answers', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
+      mockSubmitBreathingSpaceLifted.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await session(app)
         .post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL)
         .send('data')
-        .expect((res) => {
+        .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
