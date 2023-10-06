@@ -8,7 +8,7 @@ import {BREATHING_SPACE_RESPITE_LIFTED_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getLng} from 'common/utils/languageToggleUtils';
 
-export const getSummarySections = (claimId: string, breathingSpace: BreathingSpace, lang?: string | unknown): SummarySection => {
+export const getSummarySections = (claimId: string, breathingSpace: BreathingSpace, lang?: string): SummarySection => {
   const lng = getLng(lang);
   const breathingSpaceLiftedDate = breathingSpace.debtRespiteLiftDate?.date ? formatDateToFullDate(breathingSpace?.debtRespiteLiftDate?.date) : '';
   return summarySection(

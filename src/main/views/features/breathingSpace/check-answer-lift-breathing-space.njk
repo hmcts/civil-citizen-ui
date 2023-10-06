@@ -14,13 +14,11 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER.TITLE') }}</h1>
           <hr>
-          {% if summarySections %}
               <div class="govuk-form-group">
                 {{ govukSummaryList({
                   rows: summarySections
                 }) }}
               </div>
-          {% endif %}
           <h2 class="govuk-heading-m">{{ t('PAGES.CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER.CYA_HEADER') }}</h2>
           <p class="govuk-body">
             {{ t('PAGES.CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER.CYA_HEADER_TEXT') }}

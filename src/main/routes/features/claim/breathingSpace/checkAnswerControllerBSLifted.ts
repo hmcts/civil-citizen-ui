@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
   DASHBOARD_CLAIMANT_URL,
@@ -20,25 +20,25 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
   res.render(checkAnswersViewPath, {summarySections: summarySections?.summaryList?.rows});
 }
 
-breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const breathingSpace = await getBreathingSpace(claimId);
-    return renderView(req, res, breathingSpace, claimId);
+    renderView(req, res, breathingSpace, claimId);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpaceLifted(<AppRequest>req);
     await deleteDraftClaimFromStore(userId);
-    return res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
+    res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default breathingSpaceLiftedCheckAnswersController;

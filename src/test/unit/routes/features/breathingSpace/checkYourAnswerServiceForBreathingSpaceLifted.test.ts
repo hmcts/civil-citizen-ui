@@ -26,4 +26,20 @@ describe('Get Summary Section for Lift Breathing Space Check Answer Page', () =>
     expect(summarySections.summaryList.rows[0].actions.items[0].href).toBe('/case/123/breathing-space/respite-lifted');
 
   });
+
+  it('should return check answers page without Date', async () => {
+    //given
+    const breathingSpace: BreathingSpace = {
+      debtRespiteLiftDate: new DebtRespiteStartDate(),
+    };
+
+    //when
+    const summarySections = await getSummarySections('123', breathingSpace, 'en');
+
+    //then
+    expect(summarySections.summaryList.rows[0].key.text).toBe('PAGES.CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER.DATE_LIFTED');
+    expect(summarySections.summaryList.rows[0].value.html).toBe('');
+    expect(summarySections.summaryList.rows[0].actions.items[0].href).toBe('/case/123/breathing-space/respite-lifted');
+
+  });
 });
