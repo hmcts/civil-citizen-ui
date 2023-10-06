@@ -45,7 +45,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
         claimId,
       );
 
-      console.log('Response PCQ URL:', pcqUrl);
       res.redirect(pcqUrl);
     } else {
       next();
