@@ -449,8 +449,10 @@
       "DETAILS_TITLE": "Eich manylion",
       "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
       "DISABILITY_ARE_YOU_DISABLED": "Ydych chi'n anabl?",
+      "DO_YOU_AGREE_PAID": "Do you agree the defendant has paid £{{ paidAmount }}?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "A oes gennych chi dystion eraill?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
+      "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
@@ -513,6 +515,7 @@
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
       "CLAIM_CHECKBOX": "Rwy'n credu bod y ffeithiau a nodir yn yr honiadau hyn yn wir.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "Rwy'n deall y gellir cyflwyno gweithredoedd am anffyddineb y llys yn erbyn unrhyw un sy'n gwneud, neu'n achosi i'w wneud, datganiad ffug mewn dogfen a gadarnhawyd gan ddatganiad o wirionedd heb gred onest yn ei wirionedd.",
+      "REASON_FOR_REJECTING": "Reason for rejecting their response",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu’n onest ei fod yn wir.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
@@ -558,7 +561,8 @@
       "WITNESS": "Tyst",
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
+      "YOUR_RESPONSE": "Your response"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
@@ -1143,7 +1147,13 @@
       "NEXT_STEPS": "Y camau nesaf",
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
-      "STATUS": {
+      "STATUS_CLAIMANT": {
+        "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
+        "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb."
+      },
+      "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "Rydych wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn mewn rhandaliadau.",
         "ADMIT_PAY_IMMEDIATELY": "Rydych wedi derbyn yr hawliad yn ei gyfanrwydd a dweud y byddwch yn talu'r swm llawn ar unwaith.",

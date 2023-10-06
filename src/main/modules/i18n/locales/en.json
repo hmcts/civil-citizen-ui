@@ -449,8 +449,10 @@
       "DETAILS_TITLE": "Your details",
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
+      "DO_YOU_AGREE_PAID": "Do you agree the defendant has paid £{{ paidAmount }}?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "Do you have other witnesses?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
+      "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -513,6 +515,7 @@
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "REASON_FOR_REJECTING": "Reason for rejecting their response",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -558,7 +561,8 @@
       "WITNESS": "Witness",
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
+      "YOUR_RESPONSE": "Your response"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
@@ -1143,7 +1147,13 @@
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
-      "STATUS": {
+      "STATUS_CLAIMANT": {
+        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond."
+      },
+      "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
         "ADMIT_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
