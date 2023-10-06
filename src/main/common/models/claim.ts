@@ -539,7 +539,7 @@ export class Claim {
   get contactNameFromClaimantResponse(): string {
     return this.claimantResponse.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
       this.claimantResponse.mediation.companyTelephoneNumber.mediationContactPerson :
-      this.applicant1.partyDetails.contactPerson;
+      this.applicant1?.partyDetails?.contactPerson;
   }
 
   get contactNumberFromClaimantResponse(): string {
