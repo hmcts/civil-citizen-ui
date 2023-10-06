@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {getSummarySections} from '../../../services/features/breathingSpace/checkAnswersService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -18,7 +18,7 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 }
 
 breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
-  async (req: AppRequest, res: Response, next: NextFunction) => {
+  (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
       const breathingSpace = await getBreathingSpace(claimId);
@@ -26,9 +26,9 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
-breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpace(<AppRequest>req);
@@ -37,6 +37,6 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, asy
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default breathingSpaceCheckAnswersController;
