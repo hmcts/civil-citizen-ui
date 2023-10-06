@@ -1,4 +1,3 @@
-import {app} from '../../app';
 import {
   CCDClaim,
   CivilClaimResponse,
@@ -6,17 +5,18 @@ import {
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
+import DraftStoreClient from './index';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
-
+const redisModule = new DraftStoreClient();
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
  * @returns claim from redis or undefined when no there is no data for claim id
  */
 export const getDraftClaimFromStore = async (claimId: string) => {
-  const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
+  const dataFromRedis = await redisModule.get(claimId);
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
@@ -57,10 +57,10 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim;
-  const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  // const draftStoreClient = app.locals.draftStoreClient;
+  redisModule.setValue(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
-    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
+    await redisModule.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
 };
 
@@ -71,7 +71,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
-  await app.locals.draftStoreClient.del(claimId);
+  await redisModule.del(claimId);
 };
 
 export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
@@ -80,8 +80,7 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   draftClaim.case_data = {
     draftClaimCreatedAt: creationTime,
   } as unknown as CCDClaim;
-  const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(draftClaim));
-  await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(creationTime));
-  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`);
+  redisModule.setValue(claimId, JSON.stringify(draftClaim));
+  await redisModule.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(creationTime));
+  logger.info(`Draft claim expiry time is set to ${await redisModule.timeToLive(claimId)} seconds as of ${creationTime}`);
 }

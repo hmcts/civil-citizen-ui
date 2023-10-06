@@ -12,7 +12,7 @@ import {AppInsights} from './modules/appinsights';
 import {I18Next} from './modules/i18n';
 import {HealthCheck} from './modules/health';
 import {OidcMiddleware} from './modules/oidc';
-import {DraftStoreClient} from './modules/draft-store';
+import DraftStoreClient from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
@@ -54,7 +54,7 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 
 logger.info('Creating new draftStoreClient');
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+new DraftStoreClient().enable();
 
 logger.info('Creating OSplaces Client Instance');
 createOSPlacesClientInstance();
