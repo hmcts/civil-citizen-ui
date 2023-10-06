@@ -3,7 +3,7 @@ import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {CCJ_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL} from 'routes/urls';
+import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getPaymentDate, getRepaymentFrequency} from 'common/utils/repaymentUtils';
 import {summaryRow} from 'common/models/summaryList/summaryList';
@@ -58,7 +58,7 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string): Summa
 
 const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
-  const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
+  const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.claimantResponse?.ccjRequest?.paidAmount?.option;
 
   const judgmentRequestSection = summarySection({

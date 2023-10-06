@@ -213,7 +213,7 @@ function generateExpectedResultForDefendantPaidNone() {
               actions: {
                 items: [
                   {
-                    href: '/case/12345/ccj/paid-amount',
+                    href: '/case/12345/claimant-response/county-court-judgement/paid-amount',
                     text: 'COMMON.BUTTONS.CHANGE',
                     visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
                   },
@@ -254,7 +254,7 @@ function generateExpectedResultForDefendantPaidSome() {
               actions: {
                 items: [
                   {
-                    href: '/case/12345/ccj/paid-amount',
+                    href: '/case/12345/claimant-response/county-court-judgement/paid-amount',
                     text: 'COMMON.BUTTONS.CHANGE',
                     visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
                   },
