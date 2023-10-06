@@ -36,6 +36,8 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
 
@@ -1527,7 +1529,7 @@ describe('Documents', () => {
     });
     it('should return formatted date 3 weeks prior from 22', () => {
       //Given
-      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 0 ,22), null);
+      const caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 0, 22), null);
       const claim = new Claim();
       claim.caseProgressionHearing = caseProgressionHearing;
       //Then
@@ -1643,6 +1645,108 @@ describe('Documents', () => {
     });
   });
 
+  describe('Test of method hasClaimantSettleTheClaimForDefendantPartlyPaidAmount', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasPartPaymentBeenAccepte is NO', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "yes" option', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Test of method hasClaimantRejectedDefendantAdmittedAmount', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasPartAdmittedBeenAccepted is YES', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "no" option', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantRejectedDefendantAdmittedAmount();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Test of method hasClaimantRejectedDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasFullDefenceStatesPaidClaimSettled is YES', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "no" option', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
     caseProgressionHearingDocuments.id = '1221';
@@ -1660,4 +1764,78 @@ describe('Documents', () => {
     };
     return caseProgressionHearingDocuments;
   }
+  describe('test of method isBundleStitched', () => {
+    it('should return true when bundle is stitched', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      caseProgression.caseBundles = [new Bundle('title', {document_filename: 'name', document_url: 'url', document_binary_url: 'binary_url'})];
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //Then
+      expect(claim.isBundleStitched()).toBeTruthy();
+    });
+    it('should return false when bundle present, but document not yet stitched.', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      caseProgression.caseBundles = [new Bundle('title')];
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //Then
+      expect(claim.isBundleStitched()).toBeFalsy();
+    });
+    it('should return false when no bundle present.', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //Then
+      expect(claim.isBundleStitched()).toBeFalsy();
+    });
+  });
+  describe('test of method lastBundleCreatedDate', () => {
+    it('should return latest createdOn date in the bundles', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      const document = {document_filename: 'name', document_url: 'url', document_binary_url: 'binary_url'};
+      const oldestDate = new Date('01-01-2023');
+      const middleDate = new Date('02-01-2023');
+      const newestDate = new Date('03-01-2023');
+      caseProgression.caseBundles = [new Bundle('title', document, middleDate), new Bundle('title', document, newestDate), new Bundle('title', document, oldestDate)];
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
+      //Then
+      expect(dateActual).toStrictEqual(newestDate);
+    });
+    it('should return latest createdOn in bundles, when some bundles do not have dates', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      const document = {document_filename: 'name', document_url: 'url', document_binary_url: 'binary_url'};
+      const oldestDate = new Date('01-01-2023');
+      const middleDate = new Date('02-01-2023');
+      const newestDate = new Date('03-01-2023');
+      caseProgression.caseBundles = [new Bundle('title', document), new Bundle('title', document, middleDate), new Bundle('title', document, newestDate), new Bundle('title', document, oldestDate), new Bundle('title', document)];
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
+      //Then
+      expect(dateActual).toStrictEqual(newestDate);
+    });
+    it('should return undefined when no date present', () => {
+      //Given
+      const caseProgression = new CaseProgression();
+      caseProgression.caseBundles = [new Bundle('title')];
+      const claim = new Claim();
+      claim.caseProgression = caseProgression;
+      //when
+      const dateActual = claim.lastBundleCreatedDate();
+
+      //Then
+      expect(dateActual).toBeUndefined();
+    });
+  });
 });

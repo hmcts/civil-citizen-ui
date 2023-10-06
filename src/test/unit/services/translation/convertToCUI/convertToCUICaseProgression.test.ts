@@ -9,22 +9,21 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
-  UploadDocumentTypes,
-  UploadEvidenceDocumentType,
-  UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadDocumentTypes, UploadEvidenceDocumentType, UploadEvidenceExpert, UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
   createCCDClaimForEvidenceUpload, mockExpertDocument,
   mockTypeDocument, mockUUID, mockWitnessDocument,
 } from '../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {
   mockFinalOrderDocument1,
   mockFinalOrderDocument2,
 } from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
+import {getMockDocument} from '../../../../utils/mockDocument';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
@@ -32,24 +31,6 @@ jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
   setLanguage: jest.fn(),
 }));
-
-const documentForWitness = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'witness_document.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
-
-const documentForExpert = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'expert_document.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
-
-const documentForType = {
-  document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
-  document_filename: 'document_type.pdf',
-  document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
-};
 
 const documentForFinalOrder = {
   id: '1177a9b6-8f66-4241-a00b-0618bfb40733',
@@ -67,9 +48,9 @@ const documentForFinalOrder = {
   },
 };
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
-const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
-const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
+const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), getMockDocument(), new Date(0));
+const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
+const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
 
 function getTrialArrangement() {
   const defendantTrialArrangement = new TrialArrangements();
@@ -137,6 +118,9 @@ describe('toCUICaseProgression', () => {
       respondent1HearingOtherComments: undefined,
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
+    expectedOutput.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    expectedOutput.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     expectedOutput.defendantLastUploadDate = undefined;
     expectedOutput.claimantLastUploadDate = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], []);
@@ -161,6 +145,7 @@ describe('toCUICaseProgression', () => {
       finalOrderDocumentCollection: [mockFinalOrderDocument1, mockFinalOrderDocument2],
     };
     const expectedOutput: CaseProgression = new CaseProgression();
+    expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.defendantLastUploadDate = undefined;
     expectedOutput.claimantDocuments = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
@@ -186,6 +171,7 @@ describe('toCUICaseProgression', () => {
 
 function createCUIClaim(): CaseProgression {
   return {
+    caseBundles: [] as Bundle[],
     claimantUploadDocuments:
       new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
     defendantUploadDocuments:
