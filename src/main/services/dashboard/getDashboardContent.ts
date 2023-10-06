@@ -1,21 +1,74 @@
-import {Claim} from "common/models/claim";
-import {TaskStatus} from "common/models/taskList/TaskStatus";
-import {TaskList} from "common/models/taskList/taskList";
+import { CaseState } from "common/form/models/claimDetails";
+import { Claim } from "common/models/claim";
+import { TaskStatus } from "common/models/taskList/TaskStatus";
+import { TaskList } from "common/models/taskList/taskList";
+import { t } from "i18next";
+import { buildResponseToClaimSection } from "services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder";
 
-export const getDashboardNotifications = (claim: Claim, lng: string) => {
-  // TODO: this is a mock data
-  return [
-    {
-      title: "You haven’t responded to this claim",
-      text: "You need to respond before 4pm on 9 October 2023 (6 days remaining).",
-      linkText: "Respond to claim.",
-      link: "#.",
-    },
-    {
-      title: "Wait for the defendant to respond",
-      text: "Mr Mary Richardshas until 4 October 2023 to respond. They can request up to an extra 28 days if they need it.",
-    },
-  ];
+export const buildClaimantNotifications = (claim: Claim, lng: string) => {
+
+  // const dashboardNotificationsList = [];
+  const notificationContent = buildResponseToClaimSection(claim, claim.id, lng)
+  
+  console.log(notificationContent);
+
+    // const notificationContent: ClaimSummarySection[] = [{
+  //   type: ClaimSummaryType.PARAGRAPH,
+  //   data: {
+  //     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
+  //   },
+  // },
+  // {
+  //   type: ClaimSummaryType.LINK,
+  //   data: {
+  //     text: 'View Claim',
+  //     href: '#',
+  //     textBefore:  t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
+  //   },
+  // }];
+  
+  // const waitForDefendantResponseNotification = {
+  //   title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
+  //   content: notificationContent,
+  // };
+
+  // dashboardNotificationsList.push(waitForDefendantResponseNotification);
+  
+  return notificationContent;
+};
+
+// export const buildClaimantNotifications = (claim: Claim, lng: string) => {
+//   const dashboardNotificationsList = [];
+//   const defendantName = claim.getDefendantFullName();
+//   const responseDeadline = claim.formattedResponseDeadline();
+
+//   const waitForDefendantResponseNotification = {
+//     title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
+//     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
+//   };
+
+//   dashboardNotificationsList.push(waitForDefendantResponseNotification);
+  
+//   return dashboardNotificationsList;
+// };
+
+export const buildDefendantNotifications = (claim: Claim, lng: string) => {
+  const dashboardNotificationsList = [];
+  const responseDeadline = claim.formattedResponseDeadline();
+  const remainingDays = claim.getRemainingDays();
+
+  const youHaventRespondedNotification = {
+    title: t("PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM"),
+    text: t("PAGES.LATEST_UPDATE_CONTENT.YOU_NEED_TO_RESPOND_BEFORE_DEADLINE",{ lng, responseDeadline, remainingDays }),
+    linkText: t("BUTTONS.RESPOND_TO_CLAIM"),
+    link: "#",
+  };
+
+  if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
+    dashboardNotificationsList.push(youHaventRespondedNotification);
+  }
+
+  return dashboardNotificationsList;
 };
 
 export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
@@ -39,16 +92,16 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
       ],
     },
     {
-      title: "The claim",
+      title: "The response",
       tasks: [
         {
-          description: "View the claim",
+          description: "View the response to the claim",
           url: "#",
           status: TaskStatus.IN_PROGRESS,
           statusColor: getStatusColor(TaskStatus.IN_PROGRESS),
         },
         {
-          description: "View information about the claimant",
+          description: "View information about the defendant",
           url: "#",
           status: TaskStatus.READY_TO_VIEW,
           statusColor: getStatusColor(TaskStatus.READY_TO_VIEW),

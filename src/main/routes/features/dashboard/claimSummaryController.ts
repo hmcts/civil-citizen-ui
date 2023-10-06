@@ -4,7 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  // isCUIReleaseTwoEnabled, 
+  isCUIReleaseTwoEnabled, 
   isCaseProgressionV1Enable,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
@@ -20,7 +20,7 @@ import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
-import {getDashboardNotifications, getDashboardTaskList} from 'services/dashboard/getDashboardContent';
+import {buildDefendantNotifications, getDashboardTaskList} from 'services/dashboard/getDashboardContent';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -28,19 +28,18 @@ const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign'
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
 claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextFunction) => {
   try {
 
-    const isReleaseTwoEnabled = true; // await isCUIReleaseTwoEnabled();
+    const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled(); 
 
     if (isReleaseTwoEnabled) {
       // RELEASE 2
       const claimId = req.params.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      const dashboardNotifications = buildDefendantNotifications(claim, lang);
       const dashboardTaskList = getDashboardTaskList(claim, lang);
-      const dashboardNotifications = getDashboardNotifications(claim, lang);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
       // RELEASE 1

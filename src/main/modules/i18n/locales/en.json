@@ -1595,6 +1595,9 @@
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
     "LATEST_UPDATE_CONTENT": {
+      "WAIT_DEFENDANT_TO_RESPOND": "Wait for the defendant to respond",
+      "DEFENDANT_HAS_UNTIL_TO_RESPOND": "{{ defendantName }} has until {{ responseDeadline }} to respond. They can request up to an extra 28 days if they need it.",
+
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
