@@ -354,6 +354,10 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  isRejectionReasonCompleted(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.claimantResponse?.rejectionReason?.text;
+  }
+
   getPaidAmount(): number {
     if(this.hasConfirmedAlreadyPaid()){
       return this.isRejectAllOfClaimAlreadyPaid();
@@ -641,6 +645,10 @@ export class Claim {
 
   hasDefendantPaid(): boolean {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  isCCJComplete(){
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
   }
 
   getHowTheInterestCalculatedReason(): string {

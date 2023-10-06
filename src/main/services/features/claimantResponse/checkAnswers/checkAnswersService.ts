@@ -1,4 +1,4 @@
-import { SummarySection, SummarySections, summarySection } from 'common/models/summaryList/summarySections';
+import {SummarySection, SummarySections, summarySection} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
@@ -16,6 +16,7 @@ import { RESPONSEFORNOTPAIDPAYIMMEDIATELY } from 'common/models/claimantResponse
 import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
 import { buildFreeTelephoneMediationSection } from './buildFreeTelephoneMediationSection';
+import { buildYourResponseSection } from './buildYourResponseSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -23,8 +24,7 @@ const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const lng = getLng(lang);
   const getFreeTelephoneMediationSection = () => {
-    return claim.isFullDefence()
-      || claim.isPartialAdmission()
+    return claim.isFullDefence() || claim.isPartialAdmission()
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
@@ -33,9 +33,16 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
       : null;
   };
+
+  const getYourResponseSection = () => {
+    return claim.isFullDefence() || claim.isPartialAdmission()
+      ? buildYourResponseSection(claim, claimId, lang)
+      : null;
+  };
   return {
     sections: [
       buildDetailsSection(claim, claimId, lng),
+      getYourResponseSection(),
       getFreeTelephoneMediationSection(),
       getHearingRequirementsSection(),
     ],
@@ -52,7 +59,7 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
 
   if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lang);
-  
+
   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY)
     return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
 };
