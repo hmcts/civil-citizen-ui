@@ -32,10 +32,9 @@ breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CH
 
 breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
     await submitBreathingSpaceLifted(<AppRequest>req);
-    await deleteDraftClaimFromStore(userId);
-    res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
+    await deleteDraftClaimFromStore(req.params.id);
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }
