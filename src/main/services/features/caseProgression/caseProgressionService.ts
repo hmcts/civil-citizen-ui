@@ -236,7 +236,7 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;
