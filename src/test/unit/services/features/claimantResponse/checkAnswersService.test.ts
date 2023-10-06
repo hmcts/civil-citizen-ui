@@ -48,6 +48,12 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
           },
         ],
       },
+    },
+    {
+      title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+      summaryList: {
+        rows: [],
+      },
     }],
   };
 }
@@ -157,4 +163,3 @@ describe('Check Answers service', () => {
     });
   });
 });
-
