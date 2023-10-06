@@ -119,5 +119,22 @@ describe('Full Admit Set Date Payment Service', () => {
       expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate));
     });
+  
+    it('should catch and throw an error', () => {
+      // Given
+      const claim = new Claim();
+      const expectedError = new Error('Test error message');
+      
+      // Mocking the dependencies
+      jest.spyOn(claim, 'getDefendantFullName').mockImplementation(() => {
+        throw expectedError;
+      });
+      
+      jest.spyOn(claim, 'getPaymentIntention').mockReturnValue(null);
+      
+      // When and Then
+      expect(() => getSetDatePaymentDetails(claim)).toThrowError(expectedError);
+    });
   });
 });
+
