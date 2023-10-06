@@ -76,7 +76,6 @@ export class CivilServiceClient {
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId + '?page=' + currentPage, config);
       const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
-      console.log("==================================",dashboardClaimantItemList,"=================");
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
