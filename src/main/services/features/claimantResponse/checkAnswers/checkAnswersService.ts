@@ -6,23 +6,27 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import {
-  buildSettlementAgreementSection,
-} from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
+  buildSettlementAgreementSection
+} from "services/features/claimantResponse/responseSection/buildSettlementAgreementSection";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claimId: string, claim: Claim, lang: string | unknown): SummarySections => {
-
+const buildSummarySections = (claimId: string, claim: Claim, lang: string): SummarySections => {
+  const getYourResponseSection = () => {
+    return claim.isFullDefence() || claim.isPartialAdmission()
+      ? buildYourResponseSection(claim, claimId, lang)
+      : null;
+  };
   return {
     sections: [
-      buildYourResponseSection(claim, claimId, lang),
+      getYourResponseSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
     ],
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string): SummarySections => {
   const lng = getLng(lang);
   return buildSummarySections(claimId, claim, lng);
 };
