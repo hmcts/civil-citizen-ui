@@ -1,11 +1,12 @@
 import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
-import { YesNo, YesNoNotReceived } from 'common/form/models/yesNo';
+import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
 import {
   buildClaimantHearingRequirementsSection,
   buildClaimantResponseSubmitSection,
   buildHowDefendantRespondSection,
   buildWhatToDoNextSection,
+  buildYourResponseSection,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder';
 import {CaseState} from 'common/form/models/claimDetails';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
@@ -17,21 +18,29 @@ import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/w
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, DETERMINATION_WITHOUT_HEARING_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from 'routes/urls';
+import {
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+  CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
+  CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
+  CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
+  DETERMINATION_WITHOUT_HEARING_URL,
+  DQ_TRIED_TO_SETTLE_CLAIM_URL,
+} from 'routes/urls';
 import {ResponseType} from 'common/form/models/responseType';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import { RejectAllOfClaimType } from 'common/form/models/rejectAllOfClaimType';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {Party} from 'common/models/party';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
-import { Mediation } from 'common/models/mediation/mediation';
+import {Mediation} from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -46,10 +55,11 @@ describe('Full Defence', () => {
     //Given
     const claim = {
       isPartialAdmission: jest.fn(),
+      isPartialAdmissionPaid: jest.fn(),
       isFullDefence: jest.fn(),
       hasPaidInFull: jest.fn(),
       hasConfirmedAlreadyPaid: jest.fn(),
-      isFullAdmission:jest.fn(),
+      isFullAdmission: jest.fn(),
       claimantResponse: {
         hasFullDefenceStatesPaidClaimSettled: {
           option: 'no',
@@ -62,11 +72,19 @@ describe('Full Defence', () => {
         },
       },
       isClaimantIntentionPending: jest.fn(),
+      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
+      hasClaimantRejectedDefendantResponse: jest.fn(),
+      hasClaimantRejectedDefendantPaid: jest.fn(),
+      hasClaimantRejectedPartAdmitPayment: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
+    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -84,10 +102,10 @@ describe('Full Defence', () => {
   it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
     //Given
     const claim = new Claim();
-    claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+    claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
     claim.rejectAllOfClaim = {
       option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
-        amount: 900000,
+        amount: 9000,
       } as any,
     };
     claim.totalClaimAmount = 9000;
@@ -116,9 +134,15 @@ describe('Claimant Response Task List builder', () => {
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
 
   describe('How they responded section', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+    });
     it('should display view defendant`s response task as incomplete', () => {
       //When
-      const howDefendantRespond = buildHowDefendantRespondSection(new Claim(), claimId, lang);
+      const howDefendantRespond = buildHowDefendantRespondSection(claim, claimId, lang);
       //Then
       expect(howDefendantRespond.tasks.length).toBe(1);
       expect(howDefendantRespond.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.HOW_THEY_RESPONDED.VIEW_DEFENDANTS_RESPONSE');
@@ -140,6 +164,13 @@ describe('Claimant Response Task List builder', () => {
   });
 
   describe('Choose what to do next section', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.claimantResponse = new ClaimantResponse();
+    });
     describe('Choose what to do next section Full Admission', () => {
       it('should display Accept or reject Repayment Plan task as incomplete', () => {
         claim.respondent1 = new Party();
@@ -187,7 +218,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
         claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
         claim.claimantResponse.ccjRequest = new CCJRequest();
-        claim.claimantResponse.ccjRequest.paidAmount =  new PaidAmount(YesNo.YES, 10);
+        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 10);
         //When
         const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
         //Then
@@ -223,8 +254,7 @@ describe('Claimant Response Task List builder', () => {
     });
     it('should display Free telephone mediation task as incomplete', () => {
       //Given
-      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
-      claim.claimantResponse = <ClaimantResponse>{ hasPartAdmittedBeenAccepted: { option: YesNo.NO } };
+      claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: {option: YesNo.NO}};
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -236,6 +266,9 @@ describe('Claimant Response Task List builder', () => {
     it('should display Accept or reject their repayment plan task as incomplete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: {option: YesNo.YES}};
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -249,6 +282,9 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+      };
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -265,6 +301,9 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
+      };
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -285,7 +324,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -307,7 +346,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -330,7 +369,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -354,7 +393,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -380,7 +419,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -405,7 +444,7 @@ describe('Claimant Response Task List builder', () => {
         ccjRequest: {paidAmount: {option: YesNo.YES}},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -423,7 +462,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display decide wether to proceed task as incomplete for full defense', () => {
       //Given
       const claim = new Claim();
-      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -434,7 +473,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense', () => {
       //Given
       const claim = new Claim();
-      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
       claim.mediation = {
         canWeUse: {
           option: 'yes',
@@ -464,7 +503,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display decide wether to proceed task with proceed value as no as complete for full defense', () => {
       //Given
       const claim = new Claim();
-      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
         intentionToProceed: {
@@ -478,9 +517,169 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
+    it('should not display What to do next section for full defense states paid (amount was LESS THAN full amount)', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.rejectAllOfClaim = {
+        option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+          amount: 8000,
+        } as any,
+      };
+      claim.totalClaimAmount = 9000;
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks.length).toBe(0);
+      expect(whatToDoNext.tasks[0]).toBeUndefined();
+    });
+  });
+
+  describe('Your response section', () => {
+    const haveYoBeenPaidUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL);
+    const settleClaimForPaidAmountUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL);
+    const freeMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.rejectAllOfClaim = {
+        option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
+          amount: 8000,
+        } as any,
+      };
+      claim.totalClaimAmount = 9000;
+      claim.claimantResponse = new ClaimantResponse();
+    });
+    it('should display Your Response section and haveYouBeenPaidTask for full defense states paid (amount was LESS THAN full amount)', () => {
+      //Given
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(1);
+      expect(yourResponse.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(yourResponse.tasks[0].url).toEqual(haveYoBeenPaidUrl);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[1]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask and settleClaimForPaidAmountTask as second task for when claimant accepted defendant payment', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(yourResponse.tasks[1].url).toEqual(settleClaimForPaidAmountUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask and freeTelephoneMediationTas as second for when claimant doesn`t accept defendant payment', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[1].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask, settleClaimForPaidAmountTask and freeTelephoneMediationTask as third task for when claimant accept defendant payment but not settle the claim', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.NO),
+        rejectionReason: {
+          text: 'test',
+        },
+      } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(3);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[3]).toBeUndefined();
+    });
+  });
+
+  describe('Your response section', () => {
+    it('should display amount have been paid task as incomplete', () => {
+      //When
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.partialAdmission = {
+        alreadyPaid: {option: YesNo.YES},
+      };
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display free telephone mediation task as incomplete', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as incomplete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should display settle the claim task as complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}, hasPartPaymentBeenAccepted: {option: YesNo.YES}};
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+    });
   });
 
   describe('Your hearing requirements section', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
+      claim.claimantResponse.directionQuestionnaire.experts = new Experts();
+      claim.claimantResponse.directionQuestionnaire.witnesses = new Witnesses();
+      claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
+      claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
+    });
     it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: undefined};
@@ -500,7 +699,31 @@ describe('Claimant Response Task List builder', () => {
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
 
+    it('shouldn`t display hearingRequirement section when claimant accepts defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+      //When
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(hearingRequirement.tasks[0]).toBeUndefined();
+    });
+
+    it('shouldn`t display hearingRequirement section when claimant settle claim defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+      //Given
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
+      //When
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      //Then
+      expect(hearingRequirement.tasks[0]).toBeUndefined();
+    });
+
     describe('Small Claims track DQ', () => {
+      beforeEach(() => {
+        claim.totalClaimAmount = 9000;
+      });
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //Given
         claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
@@ -568,16 +791,8 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scenario', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
-        claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.YES};
-        claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
-        claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
-        claim.claimantResponse.directionQuestionnaire.experts = new Experts();
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = false;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -590,6 +805,8 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert required and expert report details available', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = true;
         claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {option: YesNo.YES};
         //When
@@ -612,6 +829,8 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available but not wanted to ask for court permission to use an expert ', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.NO};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -632,6 +851,8 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.NO};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -652,6 +873,8 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -673,11 +896,9 @@ describe('Claimant Response Task List builder', () => {
     });
 
     describe('Fast track DQ', () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      claim.totalClaimAmount = 24000;
-      claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
+      beforeEach(() => {
+        claim.totalClaimAmount = 24000;
+      });
       it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -689,8 +910,6 @@ describe('Claimant Response Task List builder', () => {
       });
 
       it('should display give us details for hearing task task as incomplete with empty directions questionnaire', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -701,8 +920,6 @@ describe('Claimant Response Task List builder', () => {
       });
 
       it('should display give us details for hearing task as incomplete when other witnesses is not available', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.witnesses = new Witnesses();
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -711,8 +928,6 @@ describe('Claimant Response Task List builder', () => {
       });
 
       it('should display give us details for hearing task as incomplete when phone or video hearing is not available', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -721,8 +936,6 @@ describe('Claimant Response Task List builder', () => {
       });
 
       it('should display give us details for hearing task as incomplete when vulnerability not available', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -731,8 +944,6 @@ describe('Claimant Response Task List builder', () => {
       });
 
       it('should display give us details for hearing task as incomplete when welsh language requirements not available', () => {
-        //Given
-        claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -742,19 +953,13 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete for fast track claims when all information provided - expert evidence not used sceneraio', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.experts = {
+          expertEvidence: {option: YesNo.NO},
+        };
         claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES};
-        claim.claimantResponse.directionQuestionnaire.experts = new Experts();
-        claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.witnesses.otherWitnesses = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.cantAttendHearingInNext12Months = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-        claim.claimantResponse.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
-        claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
         //When
         const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
         //Then
@@ -797,6 +1002,10 @@ describe('Claimant Response Task List builder', () => {
 
       it('should display give us details for hearing task as complete when expert evidence used, sent expert reports, sharedExpert and expert details available', () => {
         //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.sentExpertReports = {option: YesNoNotReceived.YES};
         claim.claimantResponse.directionQuestionnaire.experts.sharedExpert = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
@@ -821,3 +1030,27 @@ describe('Claimant Response Task List builder', () => {
   });
 });
 
+function getCommonJourneyCompleted() {
+  return {
+    defendantYourselfEvidence: {option: YesNo.NO},
+    hearing: <Hearing>{
+      phoneOrVideoHearing: {option: YesNo.NO},
+      supportRequiredList: {option: YesNo.NO},
+      specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
+      cantAttendHearingInNext12Months: {option: YesNo.NO},
+    },
+    witnesses: <Witnesses>{
+      otherWitnesses: {option: YesNo.NO},
+    },
+    vulnerabilityQuestions: <VulnerabilityQuestions>{
+      vulnerability: {option: YesNo.NO},
+    },
+    welshLanguageRequirements: <WelshLanguageRequirements>{
+      language: {
+        speakLanguage: LanguageOptions.WELSH,
+        documentsLanguage: LanguageOptions.ENGLISH,
+      },
+    },
+    experts: new Experts(),
+  };
+}

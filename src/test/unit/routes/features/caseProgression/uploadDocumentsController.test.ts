@@ -37,6 +37,7 @@ jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
+const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
 
 describe('Upload a single file', () => {
   jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -237,7 +238,6 @@ describe('on POST', () => {
   });
 
   it('File only section', async () => {
-    const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
     const disclosureList = {'disclosureList': [{'file_upload': '', 'caseDocument': `${caseDoc}`}]};
 
     await request(app)
@@ -495,8 +495,10 @@ describe('on POST', () => {
           'mimetype': 'application/pdf',
           'size': '123',
         },
+        caseDocument: caseDoc,
       }],
     };
+    const disclosureList = {'disclosureList':[{caseDocument: caseDoc}]};
 
     const witnessStatement = {
       'witnessStatement': [{
@@ -506,6 +508,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2022',
         },
+        caseDocument: caseDoc,
         'fileUpload': {
           'fieldname': 'Evidence_02.pdf',
           'originalname': 'Evidence_02.pdf',
@@ -522,6 +525,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2022',
         },
+        caseDocument: caseDoc,
         'fileUpload': {
           'fieldname': 'Evidence_02.pdf',
           'originalname': 'Evidence_02.pdf',
@@ -538,6 +542,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2022',
         },
+        caseDocument: caseDoc,
         'fileUpload': {
           'fieldname': 'Evidence_02.pdf',
           'originalname': 'Evidence_02.pdf',
@@ -554,6 +559,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2022',
         },
+        caseDocument: caseDoc,
         'fileUpload': {
           'fieldname': 'Evidence_02.pdf',
           'originalname': 'Evidence_02.pdf',
@@ -594,8 +600,10 @@ describe('on POST', () => {
           'mimetype': 'application/pdf',
           'size': '123',
         },
+        caseDocument: caseDoc,
       }],
     };
+    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', caseDocument: caseDoc}]};
     const questionsForExperts = {
       'questionsForExperts': [{
         'expertName': 'John Doe',
@@ -607,6 +615,7 @@ describe('on POST', () => {
           'mimetype': 'application/pdf',
           'size': '123',
         },
+        caseDocument: caseDoc,
       }],
     };
     const answersForExperts = {
@@ -620,6 +629,7 @@ describe('on POST', () => {
           'mimetype': 'application/pdf',
           'size': '123',
         },
+        caseDocument: caseDoc,
       }],
     };
 
@@ -663,6 +673,10 @@ describe('on POST', () => {
         },
       }],
     };
+    const trialCaseSummary = {'trialCaseSummary':[{caseDocument: caseDoc}]};
+    const trialSkeletonArgument = {'trialSkeletonArgument':[{caseDocument: caseDoc}]};
+    const trialAuthorities = {'trialAuthorities':[{caseDocument: caseDoc}]};
+    const trialCosts = {'trialCosts':[{caseDocument: caseDoc}]};
     const trialDocumentary = {
       'trialDocumentary': [{
         'typeOfDocument': 'Word',
@@ -671,6 +685,7 @@ describe('on POST', () => {
           'dateMonth': '11',
           'dateYear': '2022',
         },
+        caseDocument: caseDoc,
         'fileUpload': {
           'fieldname': 'Evidence_02.pdf',
           'originalname': 'Evidence_02.pdf',

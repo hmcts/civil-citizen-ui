@@ -22,7 +22,7 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
-const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
+//const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
 function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
@@ -71,9 +71,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
+      res.clearCookie('eligibilityCompleted');
+      res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
-        res.redirect(paymentUrlWithId);
+        //TODO Will be implemented after integration ready
+        //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+        //res.redirect(paymentUrlWithId);
+        await deleteDraftClaimFromStore(userId);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       } else {
         await deleteDraftClaimFromStore(userId);
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));

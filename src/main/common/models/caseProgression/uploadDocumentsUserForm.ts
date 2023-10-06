@@ -28,7 +28,7 @@ export class UploadDocumentsUserForm {
   @ValidateNested()
     noticeOfIntention?: WitnessSection[];
   @ValidateNested()
-    documentsReferred?: FileOnlySection[];
+    documentsReferred?: TypeOfDocumentSection[];
   @ValidateNested()
     expertReport?: ExpertSection[];
   @ValidateNested()

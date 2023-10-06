@@ -205,7 +205,6 @@ const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  formObj.fileUpload = request['fileUpload'];
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
@@ -215,7 +214,6 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.witnessName = request['witnessName'].trim();
-  formObj.fileUpload = request['fileUpload'];
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
@@ -230,7 +228,6 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-  formObj.fileUpload = request['fileUpload'];
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
@@ -239,8 +236,7 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  formObj.fileUpload = request['fileUpload'];
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
   return formObj;

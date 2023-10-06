@@ -201,10 +201,11 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(documentId: string) {
+  async retrieveDocument(req: AppRequest, documentId: string ) {
+    const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
-        .replace(':documentId', documentId));
+        .replace(':documentId', documentId), config);
 
       return new FileResponse(response.headers['content-type'],
         response.headers['original-file-name'],
@@ -247,6 +248,14 @@ export class CivilServiceClient {
 
   async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
+  }
+
+  async submitClaimSettled(claimId: string, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, {}, req);
+  }
+
+  async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {

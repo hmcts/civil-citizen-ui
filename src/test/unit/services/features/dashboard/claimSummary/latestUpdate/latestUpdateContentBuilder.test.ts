@@ -683,12 +683,14 @@ describe('Latest Update Content Builder', () => {
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
-      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection.length).toBe(4);
       expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_SETTLED_CLAIM_TITLE');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_SETTLED_CLAIM');
-      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CONTACT');
-      expect(responseToClaimSection[2].data.href).toBe('/dashboard/1/contact-them');
-      expect(responseToClaimSection[3]).toBeUndefined();
+      expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.MEDIATION_AGREEMENT');
+      expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/b46f785e-5f2d-4b7a-a359-d516a97f37bc');
+      expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CONTACT');
+      expect(responseToClaimSection[3].data.href).toBe('/dashboard/1/contact-them');
+      expect(responseToClaimSection[4]).toBeUndefined();
     });
   });
 

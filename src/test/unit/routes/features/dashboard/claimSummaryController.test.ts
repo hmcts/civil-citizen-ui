@@ -4,12 +4,15 @@ import Module from 'module';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
+
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 import {TabId, TabLabel} from 'routes/tabs';
 import {t} from 'i18next';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
 
 const nock = require('nock');
@@ -28,6 +31,7 @@ jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
 jest.mock('services/caseDocuments/documentService');
+jest.mock('services/features/caseProgression/bundles/bundlesService');
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -47,7 +51,6 @@ describe('Claim Summary Controller Defendant', () => {
         }
         return done();
       });
-
   });
 
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
@@ -99,7 +102,7 @@ describe('Claim Summary Controller Defendant', () => {
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
 
-      const claimWithoutSDO = claim;
+      const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
       claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
         'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
         'value': {
@@ -212,6 +215,86 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain(t(TabLabel.UPDATES));
           expect(res.text).toContain(t(TabLabel.NOTICES));
           expect(res.text).toContain('A hearing has been scheduled for your case');
+          expect(res.text).not.toContain(TabId.BUNDLES);
+        });
+    });
+
+    it('should show case progression Trial bundle', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const bundles = [] as CCDBundle[];
+      bundles.push(new CCDBundle('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
+
+      const claimWithHearingAndBundleDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claimWithSdo.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+          caseBundles: bundles,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHearingAndBundleDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Upload documents');
+          expect(res.text).not.toContain(t(TabLabel.LATEST_UPDATE));
+          expect(res.text).toContain(t(TabLabel.UPDATES));
+          expect(res.text).toContain(t(TabLabel.NOTICES));
+          expect(res.text).toContain('A hearing has been scheduled for your case');
+          expect(res.text).toContain(TabId.BUNDLES);
+        });
+    });
+
+    it('should show case dismissed latest Update defendant', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+          caseDismissedHearingFeeDueDate: new Date(Date.now()),
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
         });
     });
   });

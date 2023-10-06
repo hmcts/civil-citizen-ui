@@ -1,8 +1,11 @@
+import config from 'config';
 import {DateTime} from 'luxon';
 
 const FIVE_DAYS = 5;
 const SIX_DAYS = 6;
 const FOUR_PM = 16;
+const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
+const DAY_TO_SECONDS_UNIT = 86400;
 
 export const currentDateTime = () => {
   return DateTime.now();
@@ -83,6 +86,15 @@ export const formatStringDate = (text: string) => {
   return `${year}-${month}-${day}`;
 };
 
+export const formatStringDateSlash = (text: string) => {
+  const date = new Date(Date.parse(text));
+  const day = date.getDate().toString();
+  const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 export const checkEvidenceUploadTime = (date: Date): boolean => {
 
   const endOfDay = 18;
@@ -113,3 +125,11 @@ export const formatStringDateDMY = (date: Date) => {
 
   return `${day} ${month} ${year}`;
 };
+
+export const formatStringTimeHMS = (date: Date) => {
+  return `${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}`;
+};
+
+export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
+  return Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
+}
