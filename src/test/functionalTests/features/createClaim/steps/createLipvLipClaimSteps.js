@@ -1,6 +1,8 @@
 const EligibilityCheck = require('../pages/eligibilityCheck');
+const ClaimTaskList = require('../pages/claimTaskList');
 
 const eligibilityCheck = new EligibilityCheck();
+const claimTaskList = new ClaimTaskList();
 
 class CreateClaimSteps {
 
@@ -44,7 +46,11 @@ class CreateClaimSteps {
   }
 
   async VerifyClaimTaskListPage() {
+    await claimTaskList.VerifyClaimTaskListPage();
+  }
 
+  async EnterYourDetails(partyType){
+    await claimTaskList.YourDetails(partyType);
   }
 }
 
