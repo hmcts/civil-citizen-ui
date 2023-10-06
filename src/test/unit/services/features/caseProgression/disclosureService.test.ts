@@ -149,6 +149,7 @@ describe('Disclosure service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {},
       },
     };
@@ -168,6 +169,7 @@ describe('Disclosure service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
       },
     };
 
@@ -187,6 +189,7 @@ describe('Disclosure service', () => {
       case_data: {
         ...mockClaim.case_data,
         caseProgression: {},
+        isClaimant: jest.fn(),
       },
     };
 
@@ -205,6 +208,7 @@ describe('Disclosure service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
       },
     };
 
