@@ -176,7 +176,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
                 'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
               },
               'value': {
-                'html': ''
+                'html': '',
               },
               'actions': {
                 'items': [
@@ -193,7 +193,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
                 'text': 'PAGES.SPECIFIC_COURT.TITLE',
               },
               'value': {
-                'html': ''
+                'html': '',
               },
               'actions': {
                 'items': [
