@@ -11,7 +11,6 @@
 
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      {# {% set totalClaimAmount = '£' + claim.totalClaimAmount %} #}
       {% set claimantName = claim.getClaimantFullName() %}
       {% set defendantName = claim.getDefendantFullName() %}
 
@@ -29,7 +28,6 @@
 
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
-
           <div class="border-small-top"></div>
 
           {# Notifications #}
@@ -45,19 +43,6 @@
             }) }}
           {% endfor %}
           
-          {# {% for notification in dashboardNotifications %}
-            {% set html %}
-              <p class="govuk-heading-s">
-                {{ notification.text }}
-                <a class="govuk-notification-banner__link" href={{notification.link}}>{{ notification.linkText }}</a>
-              </p>
-            {% endset %}
-            {{ govukNotificationBanner({
-              titleText: notification.title,
-              html: html
-            }) }}
-          {% endfor %} #}
-
           {# TaskList #}
           {% for taskList in dashboardTaskList %}
             {{ taskListComponent(taskList, t) }}
@@ -68,8 +53,6 @@
         {# TODO: Right side #}
         <div class="govuk-grid-column-one-third">
           <div class="border-small-top"></div>
-          {# <hr class="govuk-section-break--xl" color="#1d70b8"> #}
-
           <p class="govuk-heading-s"> I want to... </p>
           <p class="govuk-heading-s"> Help and support </p>
           <div>

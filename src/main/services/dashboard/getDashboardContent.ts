@@ -13,12 +13,6 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
   const waitForDefendantResponseNotification = {
     title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
     content: [
-      // {
-      //   type: ClaimSummaryType.PARAGRAPH,
-      //   data: {
-      //     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
-      //   }
-      // },
       {
         type: ClaimSummaryType.LINK,
         data: {
