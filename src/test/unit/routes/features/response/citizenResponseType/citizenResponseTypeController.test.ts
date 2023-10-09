@@ -29,9 +29,7 @@ describe('Citizen response type', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
       await request(app)
         .get(CITIZEN_RESPONSE_TYPE_URL)
         .expect((res) => {
@@ -42,9 +40,7 @@ describe('Citizen response type', () => {
   });
 
   it('should return http 500 when has error in the post method', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
+    (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
     await request(app)
       .post(CITIZEN_RESPONSE_TYPE_URL)
       .send('responseType=test')

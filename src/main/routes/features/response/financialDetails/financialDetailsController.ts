@@ -30,6 +30,7 @@ financialDetailsController
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
+        console.log('----problem-----', claim, claimantDetailsUrl)
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
         next(error);
@@ -38,8 +39,10 @@ financialDetailsController
   .post(FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
+      console.log('----zirr-post------', claimantDetailsUrl);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const partyType: PartyType = claim.respondent1?.type;
+      console.log('-----post------', partyType);
       if (partyType) {
         if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));

@@ -9,9 +9,11 @@ import {
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {saveDefendantProperty} from 'services/features/common/defendantDetailsService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/services/features/common/defendantDetailsService')
 
 describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -78,7 +80,8 @@ describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      // app.locals.draftStoreClient = mockRedisFailure;
+      (saveDefendantProperty as jest.Mock).mockRejectedValueOnce(new Error('error'));
       await request(app)
         .post(BREATHING_SPACE_RESPITE_LIFTED_URL)
         .send('year=1990')

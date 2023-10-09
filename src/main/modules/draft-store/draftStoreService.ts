@@ -5,11 +5,13 @@ import {
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
-import DraftStoreClient from './index';
+// import DraftStoreClient from './index';
+import {redisClient} from '../../app';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
-const redisModule = new DraftStoreClient();
+// const redisModule = new DraftStoreClient();
+const redisModule = redisClient;
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId

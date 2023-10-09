@@ -36,7 +36,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+const productionMode = false; //env === 'production';
 const developmentMode = env === 'development';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
@@ -54,7 +54,7 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 
 logger.info('Creating new draftStoreClient');
-new DraftStoreClient().enable();
+export const redisClient = new DraftStoreClient().enable();
 
 logger.info('Creating OSplaces Client Instance');
 createOSPlacesClientInstance();

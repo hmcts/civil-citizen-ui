@@ -3,12 +3,14 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +24,7 @@ describe('Citizen phone number', () => {
 
   describe('on GET', () => {
     it('should return citizen phone number page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -31,7 +33,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return empty citizen phone number page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockNoStatementOfMeans)
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -40,7 +42,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -52,7 +54,7 @@ describe('Citizen phone number', () => {
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim())
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=01234567890')
@@ -61,7 +63,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
@@ -96,7 +98,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should redirect on correct input', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockNoStatementOfMeans)
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=01234567890')
@@ -105,7 +107,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should redirect on empty input', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockNoStatementOfMeans)
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=')
@@ -114,7 +116,7 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {

@@ -8,9 +8,10 @@ import {
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Debt Respite Reference Number Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,7 +25,8 @@ describe('Debt Respite Reference Number Controller', () => {
 
   describe('on GET', () => {
     it('should return intention to proceed page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      // app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
       await request(app).get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you have a Debt Respite Scheme reference number?');
@@ -32,7 +34,8 @@ describe('Debt Respite Reference Number Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      // app.locals.draftStoreClient = mockRedisFailure;
+      (getDraftClaimFromStore as jest.Mock).mockResolvedValue(new Error('error'))
       await request(app)
         .get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL)
         .expect((res) => {
@@ -44,7 +47,7 @@ describe('Debt Respite Reference Number Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
     });
 
     it('should redirect to start date debit respite page when there is NO data', async () => {

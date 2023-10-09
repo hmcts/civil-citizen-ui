@@ -6,10 +6,11 @@ import {ResponseType} from 'form/models/responseType';
 import {PartyType} from 'models/partyType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {FeeRange, FeeRanges} from 'models/feeRange';
+import {FeeRanges} from 'models/feeRange';
 import {TableItem} from 'models/tableItem';
 import {AppRequest} from 'models/AppRequest';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {formatFeesRanges} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -40,13 +41,5 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
     next(error);
   }
 });
-
-const formatFeesRanges = (feesRanges: FeeRanges, lang: string): [TableItem[]] => {
-  const tableFormatFeesRanges: [TableItem[]] = [[]];
-  feesRanges.value.forEach((feeRange: FeeRange) => {
-    tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem(lang));
-  });
-  return tableFormatFeesRanges;
-};
 
 export default sendYourResponseByEmailController;

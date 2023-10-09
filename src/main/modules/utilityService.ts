@@ -8,6 +8,8 @@ import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
 import {Reason} from '../common/form/models/claim/details/reason';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {FeeRange, FeeRanges} from 'common/models/feeRange';
+import {TableItem} from 'common/models/tableItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -43,4 +45,12 @@ export const getRedisStoreForSession = () => {
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });
+};
+
+export const formatFeesRanges = (feesRanges: FeeRanges, lang: string): [TableItem[]] => {
+  const tableFormatFeesRanges: [TableItem[]] = [[]];
+  feesRanges.value.forEach((feeRange: FeeRange) => {
+    tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem(lang));
+  });
+  return tableFormatFeesRanges;
 };

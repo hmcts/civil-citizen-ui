@@ -10,8 +10,6 @@ import {
 } from 'routes/urls';
 import {
   mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockRedisFailure,
   mockNoStatementOfMeans,
   mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
   mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
@@ -20,9 +18,11 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +35,7 @@ describe('Citizen date of birth', () => {
 
   describe('on GET', () => {
     it('should return citizen date of birth page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockNoStatementOfMeans)
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -44,7 +44,7 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return citizen date of birth page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -53,7 +53,7 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -65,7 +65,7 @@ describe('Citizen date of birth', () => {
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim())
       await request(app)
         .post(DOB_URL)
         .send('year=2000')
@@ -76,7 +76,7 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim)
       await request(app)
         .post(DOB_URL)
         .send('year=')
@@ -177,7 +177,7 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockNoStatementOfMeans)
       await request(app)
         .post(DOB_URL)
         .send('year=1981')
@@ -189,7 +189,7 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
       await request(app)
         .post(DOB_URL)
         .send('year=1981')
@@ -202,7 +202,7 @@ describe('Citizen date of birth', () => {
     });
     describe('Redirect to phone-number or task-list screen', () => {
       it('should redirect to task-list screen if phone-number provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithPhoneNumber;
+        (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaimRespondentIndividualTypeWithPhoneNumber)
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -214,7 +214,7 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+        (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaimApplicantIndividualType)
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -226,7 +226,7 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if phone-number is empty', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber;
+        (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber)
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -238,7 +238,7 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if ccd phone number exist is false', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse;
+        (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse)
         await request(app)
           .post(DOB_URL)
           .send('year=1981')

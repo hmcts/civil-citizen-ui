@@ -4,10 +4,14 @@ import nock from 'nock';
 import config from 'config';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/utilityService');
+jest.mock('../../../../../../main/app/client/civilServiceClient');
 
 describe('Send your response by email', () => {
   const data = require('../../../../../utils/mocks/feeRangesMock.json');
@@ -24,7 +28,7 @@ describe('Send your response by email', () => {
 
   describe('on GET', () => {
     it('should return send your response by email page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(Object.assign(new Claim(), mockCivilClaim));
       await request(app)
         .get(SEND_RESPONSE_BY_EMAIL_URL)
         .expect((res) => {
@@ -39,7 +43,7 @@ describe('Send your response by email', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(SEND_RESPONSE_BY_EMAIL_URL)
         .expect((res) => {

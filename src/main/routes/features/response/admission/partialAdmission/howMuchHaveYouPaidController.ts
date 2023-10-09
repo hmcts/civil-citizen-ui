@@ -19,7 +19,6 @@ howMuchHaveYouPaidController
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.PART_ADMISSION);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
-
         res.render(howMuchHaveYouPaidPath, {
           form: new GenericForm(howMuchHaveYouPaid), lastMonth: lastMonth, totalClaimAmount: totalClaimAmount,
         });

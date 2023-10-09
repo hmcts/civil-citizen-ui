@@ -1,0 +1,264 @@
+{
+  "id": "1693815943382623",
+  "case_data": {
+    "ccdState": "AWAITING_APPLICANT_INTENTION",
+    "claimInterest": "No",
+    "totalClaimAmount": 999,
+    "claimantUserDetails": {
+      "id": "964a2b7a-a250-4e6c-8bea-a502c155a7a4",
+      "email": "citizen.user1@gmail.com"
+    },
+    "legacyCaseReference": "000MC009",
+    "submittedDate": "2023-09-04T09:25:43",
+    "respondent1Represented": "No",
+    "specRespondent1Represented": "No",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "CREATE_LIP_CLAIM"
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "respondent1": {
+      "partyDetails": {
+        "partyName": "defendant lip",
+        "postToThisAddress": "no",
+        "primaryAddress": {
+          "addressLine1": "gggg",
+          "city": "london",
+          "postCode": "ub100fg"
+        }
+      },
+      "partyPhone": {
+        "phone": "07898678902",
+        "ccdPhoneExist": true
+      },
+      "emailAddress": {
+        "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "type": "COMPANY",
+      "responseType": "PART_ADMISSION"
+    },
+    "speclistYourEvidenceList": [
+      {
+        "id": "0",
+        "value": {
+          "evidenceType": "CONTRACTS_AND_AGREEMENTS",
+          "contractAndAgreementsEvidence": "jklkjl"
+        }
+      }
+    ],
+    "respondent1PinToPostLRspec": {
+      "accessCode": "7XFXWF6EEHRR",
+      "expiryDate": "2024-03-02",
+      "respondentCaseRole": "[DEFENDANT]"
+    },
+    "applicant1": {
+      "partyDetails": {
+        "partyName": "claimant lip",
+        "primaryAddress": {
+          "addressLine1": "sss",
+          "city": "london",
+          "postCode": "ub100fg"
+        }
+      },
+      "partyPhone": {
+        "phone": "07898678902",
+        "ccdPhoneExist": true
+      },
+      "type": "COMPANY"
+    },
+    "applicant1Represented": "No",
+    "detailsOfClaim": "dfgfdg",
+    "claimAmountBreakup": [
+      {
+        "id": "0",
+        "value": {
+          "claimAmount": "888",
+          "claimReason": "tiles"
+        }
+      }
+    ],
+    "claimDetails": {
+      "reason": {
+        "text": "dfgfdg"
+      }
+    },
+    "statementOfMeans": {},
+    "rejectAllOfClaim": {},
+    "directionQuestionnaire": {
+      "hearing": {
+        "determinationWithoutHearing": {
+          "option": "yes"
+        },
+        "cantAttendHearingInNext12Months": {
+          "option": "no",
+          "messageName": "ERRORS.VALID_CANT_ATTEND_HEARING"
+        },
+        "phoneOrVideoHearing": {
+          "option": "no"
+        },
+        "supportRequiredList": {
+          "option": "no",
+          "items": [
+            {
+              "checkboxGrp": [null, null, null, null, null]
+            }
+          ]
+        },
+        "specificCourtLocation": {
+          "option": "no"
+        }
+      },
+      "experts": {
+        "expertRequired": false,
+        "expertReportDetails": null,
+        "permissionForExpert": null,
+        "expertCanStillExamine": null,
+        "expertDetailsList": null
+      },
+      "defendantYourselfEvidence": {
+        "option": "no",
+        "messageName": "ERRORS.DEFENDANT_YOURSELF_EVIDENCE_REQUIRED"
+      },
+      "witnesses": {
+        "otherWitnesses": {
+          "option": "no",
+          "witnessItems": [
+            {
+              "firstName": "",
+              "lastName": "",
+              "email": "",
+              "telephone": "",
+              "details": ""
+            }
+          ]
+        }
+      },
+      "vulnerabilityQuestions": {
+        "vulnerability": {
+          "option": "no"
+        }
+      },
+      "welshLanguageRequirements": {
+        "language": {
+          "speakLanguage": "en",
+          "documentsLanguage": "en"
+        }
+      }
+    },
+    "caseProgressionHearing": {
+      "hearingLocation": {}
+    },
+    "caseProgression": {
+      "claimantUploadDocuments": {
+        "checkboxGrp": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "defendantUploadDocuments": {
+        "checkboxGrp": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "claimantResponse": {
+      "defendantResponseViewed": true,
+      "hasPartAdmittedBeenAccepted": {
+        "option": "yes",
+        "messageName": "ERRORS.VALID_YES_NO_SELECTION"
+      },
+      "fullAdmitSetDateAcceptPayment": {
+        "option": "yes",
+        "messageName": "ERRORS.VALID_YES_NO_SELECTION"
+      },
+      "suggestedPaymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": {
+          "year": 2023,
+          "month": 11,
+          "day": 11,
+          "date": "2023-11-11T00:00:00.000Z"
+        }
+      },
+      "chooseHowToProceed": {
+        "option": "REQUEST_A_CCJ"
+      },
+      "ccjRequest": {
+        "paidAmount": {
+          "option": "no",
+          "totalAmount": 999
+        }
+      }
+    },
+    "ccdState": "PENDING_CASE_ISSUED",
+    "id": "1693815943382623",
+    "lastModifiedDate": "2023-09-04T08:25:45",
+    "responseDeadline": {
+      "option": "no"
+    },
+    "fullAdmission": {
+      "paymentIntention": {}
+    },
+    "partialAdmission": {
+      "alreadyPaid": {
+        "option": "no"
+      },
+      "howMuchDoYouOwe": {
+        "amount": 155,
+        "totalAmount": 999
+      },
+      "whyDoYouDisagree": {
+        "text": "test"
+      },
+      "timeline": {
+        "rows": [],
+        "comment": ""
+      },
+      "paymentIntention": {
+        "paymentOption": "BY_SET_DATE",
+        "paymentDate": "2023-11-11T00:00:00.000Z"
+      }
+    },
+    "evidence": {
+      "comment": "",
+      "evidenceItem": []
+    },
+    "taskSharedFinancialDetails": true,
+    "mediation": {
+      "mediationDisagreement": {
+        "option": "no"
+      },
+      "noMediationReason": {
+        "iDoNotWantMediationReason": "PAGES.I_DON_T_WANT_FREE_MEDIATION.JUDGE_TO_DECIDE",
+        "otherReason": ""
+      }
+    }
+  }
+}

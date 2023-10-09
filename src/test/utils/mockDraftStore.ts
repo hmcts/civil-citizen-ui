@@ -25,14 +25,17 @@ import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDo
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 
 import {LoggerInstance} from 'winston';
+import {Claim} from 'common/models/claim';
 
-const mockCivilClaim = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-  del: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+// const mockCivilClaim = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+//   del: jest.fn(() => Promise.resolve({})),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
+
+const mockCivilClaim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
 
 const mockCivilClaimClaimantIntention = {
   set: jest.fn(() => Promise.resolve({})),
@@ -46,18 +49,24 @@ const mockCivilClaimFastTrack = {
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
 };
-const mockCivilClaimUndefined = {
-  set: jest.fn(() => Promise.resolve(undefined)),
-  get: jest.fn(() => Promise.resolve(undefined)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-const mockNoStatementOfMeans = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(noStatementOfMeansMock))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+// const mockCivilClaimUndefined = {
+//   set: jest.fn(() => Promise.resolve(undefined)),
+//   get: jest.fn(() => Promise.resolve(undefined)),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
+
+const mockCivilClaimUndefined: any = undefined;
+
+// const mockNoStatementOfMeans = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(noStatementOfMeansMock))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
+
+const mockNoStatementOfMeans = noStatementOfMeansMock.case_data;
+
 const mockCivilClaimOptionNo = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseOptionNoMock))),
@@ -144,41 +153,50 @@ const mockCivilClaimApplicantCompanyType = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
 };
 
-const mockCivilClaimApplicantIndividualType = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+// const mockCivilClaimApplicantIndividualType = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
 
-const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+const mockCivilClaimApplicantIndividualType = civilClaimResponseApplicantIndividual.case_data;
 
-const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithoutPhoneNumber))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+// const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithPhoneNumber))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
+const mockCivilClaimRespondentIndividualTypeWithPhoneNumber = civilClaimResponseRespondentIndividualWithPhoneNumber.case_data;
 
-const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+// const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithoutPhoneNumber))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
 
-const mockCivilClaimPDFTimeline = {
-  del: jest.fn(() => Promise.resolve({})),
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+const mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber = civilClaimResponseRespondentIndividualWithoutPhoneNumber.case_data;
+
+// const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = {
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
+
+const mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse = civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse.case_data;
+
+const mockCivilClaimPDFTimeline = civilClaimResponsePDFTimeline.case_data;
+
+// const mockCivilClaimPDFTimeline = {
+//   del: jest.fn(() => Promise.resolve({})),
+//   set: jest.fn(() => Promise.resolve({})),
+//   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
+//   ttl: jest.fn(() => Promise.resolve({})),
+//   expireat: jest.fn(() => Promise.resolve({})),
+// };
 
 const mockClaimantClaims = {
   set: jest.fn(() => Promise.resolve({})),

@@ -4,20 +4,20 @@ import config from 'config';
 import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
 jest.mock('../../../../../../main/modules/oidc');
 const nock = require('nock');
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      set: jest.fn(async () => {
-        return;
-      }),
-      on: jest.fn(async () => {
-        return;
-      }),
-      ttl: jest.fn(() => Promise.resolve({})),
-      expireat: jest.fn(() => Promise.resolve({})),
-    };
-  });
-});
+// jest.mock('ioredis', () => {
+//   return jest.fn().mockImplementation(() => {
+//     return {
+//       set: jest.fn(async () => {
+//         return;
+//       }),
+//       on: jest.fn(async () => {
+//         return;
+//       }),
+//       ttl: jest.fn(() => Promise.resolve({})),
+//       expireat: jest.fn(() => Promise.resolve({})),
+//     };
+//   });
+// });
 
 describe('Under 18 Contact court', ()=> {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -3,12 +3,14 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'form/models/responseType';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'common/models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('How Much Have You Paid', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +24,7 @@ describe('How Much Have You Paid', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
@@ -32,7 +34,7 @@ describe('How Much Have You Paid', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
         .send({amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text'})
@@ -57,10 +59,7 @@ describe('How Much Have You Paid', () => {
           },
         },
       };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(Object.assign(new Claim(), civilClaimResponseMock.case_data));
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
@@ -97,10 +96,7 @@ describe('How Much Have You Paid', () => {
           },
         },
       };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(Object.assign(new Claim(), civilClaimResponseMock.case_data));
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
@@ -115,8 +111,10 @@ describe('How Much Have You Paid', () => {
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim);
+    })
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
         .send({
@@ -137,7 +135,6 @@ describe('How Much Have You Paid', () => {
         });
     });
     it('should return error on date in future', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
         .send({amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text'})
@@ -147,7 +144,6 @@ describe('How Much Have You Paid', () => {
         });
     });
     it('should return error for a 2 digit year', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
         .send({amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text'})
@@ -157,7 +153,6 @@ describe('How Much Have You Paid', () => {
         });
     });
     it('should redirect to claim task list page on valid amount, date in past, text', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
         .send({amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text'})

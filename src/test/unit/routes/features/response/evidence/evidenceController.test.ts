@@ -7,30 +7,20 @@ import {
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {EvidenceType} from 'models/evidence/evidenceType';
 import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const civilClaimResponseMock = require('./evidenceListMock.json');
-const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);
-const mockWithLessThaFourEvidence = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
 const civilClaimResponseTwoMock = require('./evidenceListTwoMock.json');
-const civilClaimResponseMockWithFullAdmission: string = JSON.stringify(civilClaimResponseTwoMock);
-const eMockWithFullAdmission = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithFullAdmission)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
+
+const mockWithLessThaFourEvidence = civilClaimResponseMock.case_data;
+
+const eMockWithFullAdmission = civilClaimResponseTwoMock.case_data;
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -44,7 +34,7 @@ describe('Repayment Plan', () => {
 
   describe('on Get', () => {
     it('should return on your evidence list page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim);
       await request(app).get(CITIZEN_EVIDENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -57,7 +47,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should return on your evidence list page successfully when less than 4 items saved', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockWithLessThaFourEvidence);
       await request(app)
         .get(CITIZEN_EVIDENCE_URL)
         .expect((res) => {
@@ -67,7 +57,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(CITIZEN_EVIDENCE_URL)
         .expect((res) => {
@@ -95,7 +85,7 @@ describe('Repayment Plan', () => {
     ];
 
     it('should return errors when comment max length is greater than 99000 characters', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: tooLongEvidenceDetails, evidenceItem: EVIDENCE_ITEM})
@@ -106,7 +96,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should return errors when description max length is greater than 99000 characters', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockCivilClaim);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM_INVALID})
@@ -117,7 +107,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should redirect with empties input and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockWithLessThaFourEvidence);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: '', evidenceItem: []})
@@ -128,7 +118,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should redirect with correct input and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(mockWithLessThaFourEvidence);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
@@ -139,7 +129,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should redirect with empties input and redirect to impact of dispute', async () => {
-      app.locals.draftStoreClient = eMockWithFullAdmission;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(eMockWithFullAdmission);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: '', evidenceItem: []})
@@ -150,7 +140,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should redirect with correct input and redirect to impact of dispute', async () => {
-      app.locals.draftStoreClient = eMockWithFullAdmission;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(eMockWithFullAdmission);
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
@@ -161,7 +151,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .post(CITIZEN_EVIDENCE_URL)
         .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})

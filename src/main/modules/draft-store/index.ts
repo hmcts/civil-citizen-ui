@@ -6,10 +6,9 @@ const REDIS_DATA = require('./redisData.json');
 
 class DraftStoreClient {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
-  // TODO : ask Leo why this is private not public so we can use from instance directly
   private client: Redis;
 
-  public enable(): void {
+  public enable() {
     const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
     const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
     logger.info(`connectionString: ${connectionString}`);
@@ -23,6 +22,7 @@ class DraftStoreClient {
         );
       });
     });
+    return this;
   }
   public async setValue(key: string, value: string): Promise<void> {
     try {

@@ -7,25 +7,27 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from 'models/claim';
+import DraftStoreClient from 'modules/draft-store';
 
-const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
+// const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
+import REDIS_DATA from '../../../../main/modules/draft-store/redisData.json';
 const CLAIM_ID = '1645882162449409';
 
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      get: jest.fn(async () => JSON.stringify(REDIS_DATA[0])),
-      set: jest.fn(async () => {
-        return;
-      }),
-      on: jest.fn(async () => {
-        return;
-      }),
-      ttl: jest.fn(() => Promise.resolve({})),
-      expireat: jest.fn(() => Promise.resolve({})),
-    };
-  });
-});
+// jest.mock('ioredis', () => {
+//   return jest.fn().mockImplementation(() => {
+//     return {
+//       get: jest.fn(async () => JSON.stringify(REDIS_DATA[0])),
+//       set: jest.fn(async () => {
+//         return;
+//       }),
+//       on: jest.fn(async () => {
+//         return;
+//       }),
+//       ttl: jest.fn(() => Promise.resolve({})),
+//       expireat: jest.fn(() => Promise.resolve({})),
+//     };
+//   });
+// });
 
 function createMockDraftStore(returnData: unknown) {
   return {
@@ -44,9 +46,7 @@ function createMockDraftStore(returnData: unknown) {
 describe('Draft store service to save and retrieve claim', () => {
   it('should get claim data successfully when data exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    const spyGet = jest.spyOn(DraftStoreClient.prototype, 'get').mockResolvedValueOnce(JSON.stringify(REDIS_DATA[0]));
     //When
     const {id} = await getDraftClaimFromStore(CLAIM_ID);
     //Then
@@ -55,9 +55,7 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should return empty result', async () => {
     //Given
-    const draftStoreWithNoData = createMockDraftStore(null);
-    app.locals.draftStoreClient = draftStoreWithNoData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    const spyGet = jest.spyOn(DraftStoreClient.prototype, 'get').mockResolvedValueOnce(null);
     //When
     const {id} = await getDraftClaimFromStore(CLAIM_ID);
     //Then
@@ -66,11 +64,8 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should update existing claim when data exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
-    //When
+    const spyGet = jest.spyOn(DraftStoreClient.prototype, 'get').mockResolvedValueOnce(JSON.stringify(REDIS_DATA[0]));
+    const spySet = jest.spyOn(DraftStoreClient.prototype, 'setValue');    //When
     await saveDraftClaim(CLAIM_ID, new Claim());
     //Then
     expect(spyGet).toBeCalled();
@@ -78,15 +73,14 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should save new claim when data does not exists', async () => {
     //Given
-    const draftStoreWithNoData = createMockDraftStore(null);
-    app.locals.draftStoreClient = draftStoreWithNoData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    const spyGet = jest.spyOn(DraftStoreClient.prototype, 'get').mockResolvedValueOnce(null);
+    const spySet = jest.spyOn(DraftStoreClient.prototype, 'setValue');
     //When
     await saveDraftClaim(CLAIM_ID, new Claim());
     //Then
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
+    expect(spySet).toBeCalledWith('test');
   });
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given

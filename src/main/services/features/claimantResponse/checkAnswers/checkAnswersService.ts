@@ -20,7 +20,7 @@ const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const lng = getLng(lang);
-  
+
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
@@ -44,7 +44,7 @@ const buildDetailsSection = (claim: Claim, claimId: string, lang: string | unkno
 
   if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lang);
-  
+
   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY)
     return buildSummarySectionForPartAdmitPayImmediately(claim, claimId, lang);
 };
