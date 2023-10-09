@@ -44,7 +44,6 @@ class UploadYourDocumentsIntroduction {
     I.see('Before you upload the document, give it a name that tells the court what it is, for example \'Witness statement by Jane Smith\'.');
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.');
   }
-
 }
 
 module.exports = UploadYourDocumentsIntroduction;

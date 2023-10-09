@@ -128,9 +128,14 @@ export const PageUrls = {
   UPLOAD_YOUR_DOCUMENTS : '/case/:caseProgressionCaseId/case-progression/upload-your-documents',
   WHAT_TYPE_OF_DOCUMENTS_DO_YOU_WANT_TO_UPLOAD : '/case/:caseProgressionCaseId/case-progression/type-of-documents',
   UPLOAD_DOCUMENTS : '/case/:caseProgressionCaseId/case-progression/upload-documents',
+  CHECK_AND_SEND : '/case/:caseProgressionCaseId/case-progression/check-and-send',
+  DOCUMENTS_UPLOADED : '/case/:caseProgressionCaseId/case-progression/documents-uploaded',
 
   //Trial Arrangements
   FINALISE_TRIAL_ARRANGEMENTS : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements',
   IS_CASE_READY : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/is-case-ready',
   HAS_ANYTHING_CHANGED : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/has-anything-changed',
+  HEARING_DURATION_OTHER_INFO :'/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/hearing-duration-other-info',
+  CHECK_TRIAL_ARRANGEMENTS :'/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/check-trial-arrangements',
+  TRIAL_ARRANGEMENTS_CONFIRMATION : '/case/:caseProgressionCaseId/case-progression/finalise-trial-arrangements/confirmation',
 } as const;

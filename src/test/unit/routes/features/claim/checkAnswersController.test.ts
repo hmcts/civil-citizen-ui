@@ -231,6 +231,7 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
@@ -257,6 +258,7 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should return 500 when error in service', async () => {
