@@ -47,6 +47,10 @@ class UploadEvidenceSteps {
     latestUpdateTab.nextAction('View hearing notice');
   }
 
+  verifyLatestUpdatePageForCaseProgressionState(claimRef)  {
+    latestUpdateTab.open(claimRef, false);
+  }
+
 }
 
 module.exports = new UploadEvidenceSteps();
