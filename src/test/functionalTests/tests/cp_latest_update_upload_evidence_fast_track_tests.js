@@ -5,7 +5,7 @@ const LoginSteps = require('../features/home/steps/login');
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Verify latest Update page');
+Feature('Case progression journey - Verify latest Update page - Upload Evidence');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -18,7 +18,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Sall Clais - Verify latest Update page', () => {
+Scenario('Case progression journey - Fast Track - Verify latest Update page for Upload Evidence', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
