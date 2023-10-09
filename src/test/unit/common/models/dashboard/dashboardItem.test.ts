@@ -8,9 +8,6 @@ import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 import {Claim} from 'models/claim';
-import {Party} from 'models/party';
-import {PartyDetails} from 'form/models/partyDetails';
-import {PartyType} from 'models/partyType';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -49,9 +46,7 @@ describe('Dashboard Items', ()=> {
     it('should translate claim to dashboard item when claim is not empty', () => {
       //Given
       const claim = new Claim();
-      claim.applicant1 = new Party();
-      claim.applicant1.type = PartyType.COMPANY;
-      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Party Name'});
+      claim.draftClaimCreatedAt= new Date();
       //When
       const item = toDraftClaimDashboardItem(claim);
       //Then
@@ -70,6 +65,22 @@ describe('Dashboard Items', ()=> {
       const item = toDraftClaimDashboardItem(undefined);
       //Then
       expect(item).toBeUndefined();
+    });
+    it('should return empty status when there is no status', () => {
+      //Given
+      ccdClaimantClaim.status = 'CHANGE_BY_CLAIMANT';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toBe('');
+    });
+    it('should return matched status value when status exists', () => {
+      //Given
+      ccdClaimantClaim.status = 'NO_RESPONSE';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
   });
   describe('Dashboard defendant item', ()=>{
@@ -100,12 +111,12 @@ describe('Dashboard Items', ()=> {
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
-      expect(status).toBe('PAGES.DASHBOARD.STATUS.NO_RESPONSE_ON_TIME');
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
     });
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
-      const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
-      const expectedTranslation = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
+      const expectedTranslation = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
       const params: DashboardStatusTranslationParam[] = [];
       const lang = 'cy';
 

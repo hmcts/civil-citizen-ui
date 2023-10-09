@@ -21,6 +21,7 @@ import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuild
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -237,6 +238,59 @@ function getPartAdmitAlreadyPaidNotAccepted(claim: Claim) {
     .build();
 }
 
+function getPartAdmitNotPaidNotAccepted(claim: Claim) {
+  const fullAmount = claim.totalClaimAmount;
+  const partAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount;
+  const claimantName = claim.getClaimantFullName();
+  const claimId = claim.id;
+  return new LatestUpdateSectionBuilder()
+    .addTitle(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_ADMISSION`, { claimantName, partAmount })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THEY_BELIEVE_FULL_AMOUNT_CLAIMED`, { fullAmount })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING`)
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
+    .build();
+}
+
+function getStatusFDClaimDispute(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  if (claim.isFastTrackClaim) {
+    return new LatestUpdateSectionBuilder()
+      .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG4`, {lng}))
+      .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS`, {lng}))
+      .build();
+  } else {
+    if (claim.hasRespondent1NotAgreedMediation()) {
+      return new LatestUpdateSectionBuilder()
+        .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.AWAITING_CLAIMANT_RESPONSE', {lng}))
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM`, {lng}))
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.NO_MEDIATION_REQUIRED`, {lng}))
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS`, {lng}))
+        .build();
+
+    }
+    if (claim.hasRespondent1AgreedMediation()) {
+      return new LatestUpdateSectionBuilder()
+        .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG1`, {lng}))
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG2`, {lng}), {claimantName: claimantFullName})
+        .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM_MSG3`, {lng}))
+        .addResponseDocumentLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.DOWNLOAD_YOUR_RESPONSE`, {lng}), claim.id, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
+        .build();
+    }
+  }
+
+}
+
+function getStatusFDClaimantIntentToProceed(claim: Claim, lng: string) {
+  const claimantFullName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.REJECTED_YOUR_RESPONSE`, {lng}), { claimantName: claimantFullName })
+    .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.THE_COURT_WILL_REVIEW_THE_CASE`)
+    .build();
+}
+
 function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string) {
   const claimResponsesStatus = {
     [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
@@ -248,10 +302,14 @@ function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseSt
     [ClaimResponseStatus.PA_ALREADY_PAID]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_PAID_FULL]: getStatusPaid(claim, lng),
     [ClaimResponseStatus.RC_PAID_LESS]: getStatusPaid(claim, lng),
+    [ClaimResponseStatus.RC_DISPUTE]: getStatusFDClaimDispute(claim, lng),
+    [ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED]: getStatusFDClaimantIntentToProceed(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED]: getPartAdmitPaidPayImmediatelyAccepted(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED]: getPartAdmitAlreadyPaidSettled(claim, lng),
     [ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED]: getPartAdmitAlreadyPaidNotSettled(claim),
     [ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED]: getPartAdmitAlreadyPaidNotAccepted(claim),
+    [ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED]: getPartAdmitNotPaidNotAccepted(claim),
+    [ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN]: getLatestUpdateForClaimantRejectRepaymentPlan(claim, lng),
   };
   return claimResponsesStatus[claimResponseStatus as keyof typeof claimResponsesStatus];
 }
@@ -285,6 +343,7 @@ function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM`, {lng}), {
       claimantName: claimantFullName,
     })
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_AGREEMENT`, claimId, documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName},
       t(`${PAGES_LATEST_UPDATE_CONTENT}.THEIR_PAYMENT_DETAILS`, {lng}))
     .build();
@@ -383,6 +442,17 @@ const getLastUpdateForNoMediation = (claim: Claim) => {
     .build();
 };
 
+function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string) {
+  const claimantName = claim.getClaimantFullName();
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW', {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1`, {lng}), {
+      claimantName: claimantName})
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG3`, {lng}))
+    .build();
+}
+
 export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
@@ -392,7 +462,6 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lng);
   const respondToClaimLink = getRespondToClaimLink(claimId, lng);
   const responseStatus = claim.responseStatus;
-
   if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
@@ -419,7 +488,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(getLastUpdateForClaimDismissed(claim));
   } else if (claim.hasClaimInMediation()) {
     sectionContent.push(getLastUpdateForClaimMediation(claim));
-  } else if (![ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED, ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED].includes(responseStatus) && claim.hasClaimantNotAgreedToMediation() && !claim.hasSdoOrderDocument()) {
+  } else if (![ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED, ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED].includes(responseStatus) && claim.hasClaimantNotAgreedToMediation() && !claim.hasSdoOrderDocument() && !claim.isClaimantRejectedPaymentPlan()) {
     sectionContent.push(getLastUpdateForNoMediation(claim));
   } else {
     sectionContent.push(generateLastUpdateResponseSections(responseStatus, claim, lng));

@@ -2,7 +2,6 @@ import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import {app} from '../../../../../main/app';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {Party} from 'common/models/party';
@@ -10,14 +9,21 @@ import {PartyType} from 'common/models/partyType';
 import {CLAIMANT_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {CaseState} from 'common/form/models/claimDetails';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+jest.mock('../../../../../main/modules/utilityService');
+jest.mock('routes/guards/claimantResponseConfirmationGuard', () => ({
+  claimantResponseConfirmationGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+const mockGetCaseData = getClaimById as jest.Mock;
 
 const mockClaim = new Claim();
+mockClaim.ccdState = CaseState.JUDICIAL_REFERRAL;
 mockClaim.respondent1ResponseDate = new Date();
 mockClaim.claimantResponse = new ClaimantResponse();
 mockClaim.claimantResponse.intentionToProceed = {option: 'no'};
@@ -39,14 +45,11 @@ describe('Claimant response confirmation controller', () => {
       .reply(200, {id_token: citizenRoleToken});
     nock('http://localhost:4000')
       .get('/cases/:id')
-      .reply(200, civilClaimResponseMock);
+      .reply(200, mockClaim);
   });
   describe('on GET', () => {
     it('should return claimant response confirmation claim', async () => {
-      mockGetCaseData.mockImplementation(() => mockClaim);
-      nock('http://localhost:4000')
-        .get('/cases/:id')
-        .reply(200, civilClaimResponseMock);
+      (getClaimById as jest.Mock).mockImplementation(() => mockClaim);
       const res = await request(app).get(CLAIMANT_RESPONSE_CONFIRMATION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain("You didn't proceed with the claim");

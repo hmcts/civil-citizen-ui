@@ -15,6 +15,7 @@ import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/e
 import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertFrequencyToText, getFinalPaymentDate, getRepaymentFrequency, getRepaymentLength} from 'common/utils/repaymentUtils';
+import {RepaymentPlan} from 'common/models/repaymentPlan';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -59,6 +60,15 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
         delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
       }
     }
+    if (claim.hasClaimantRejectedDefendantPaid()) {
+      logger.info('Removing hasPartPaymentBeenAccepted and rejectionReason fields from redis because of changing hasDefendantPaidYou from Yes to No');
+      delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
+      delete claim.claimantResponse?.rejectionReason;
+    }
+    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount()) {
+      logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
+      delete claim.claimantResponse?.rejectionReason;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -67,59 +77,63 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 };
 
 const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object> => {
-  const sectionRows = [];
-
-  if(claim.isPartialAdmission) {
-    sectionRows.push(
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
-        },
-        value: {
-          text: currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount)),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
-        },
-        value: {
-          text: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
-        },
-        value: {
-          text: formatDateToFullDate(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate,lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
-        },
-        value: {
-          text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-      {
-        key: {
-          text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH', {lng}),
-        },
-        value: {
-          text: getRepaymentLength(claim, lng),
-        },
-        classes: 'govuk-summary-list__row--no-border',
-      },
-    );
+  if(claim.isPartialAdmission()) {
+    const repaymentPlan = claim.partialAdmission?.paymentIntention?.repaymentPlan;
+    return repaymentPlanSummary(claim, lng, repaymentPlan);
+  } else if(claim.isFullAdmission()) {
+    const repaymentPlan = claim.fullAdmission?.paymentIntention?.repaymentPlan;
+    return repaymentPlanSummary(claim, lng, repaymentPlan);
   }
+};
 
-  return sectionRows;
+export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: RepaymentPlan): Array<object> => {
+  return [
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
+      },
+      value: {
+        text: currencyFormatWithNoTrailingZeros(Number(repaymentPlan?.paymentAmount)),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FREQUENCY_OF_PAYMENTS', {lng}),
+      },
+      value: {
+        text: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
+      },
+      value: {
+        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate, lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
+      },
+      value: {
+        text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+    {
+      key: {
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH', {lng}),
+      },
+      value: {
+        text: getRepaymentLength(claim, lng),
+      },
+      classes: 'govuk-summary-list__row--no-border',
+    },
+  ];
 };
 
 const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
@@ -460,7 +474,7 @@ const constructCourtOrdersSection = (claim: Claim, lng: string) => {
   });
 
   if (courtOrders) {
-    courtOrders?.rows.forEach((courtOrder) => {
+    courtOrders?.rows?.forEach((courtOrder) => {
 
       sectionRows.push({
         key: {

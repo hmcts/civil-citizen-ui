@@ -28,6 +28,7 @@
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEFENDANT_NAME') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
+              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -39,6 +40,7 @@
                     {{ t(claimDraftSaved.claimNumber) }}
                   </a>
                 </td>
+                <td class="govuk-table__cell">-</td>
                 <td class="govuk-table__cell">-</td>
                 <td class="govuk-table__cell">-</td>
               </tr>
@@ -53,12 +55,20 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.defendantName }}</td>
                 <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
+                <td class="govuk-table__cell">{{ item.getStatus(lang) }} </td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
+  {% endif %}
+   {% if paginationArgumentClaimant %}
+    {{ govukPagination({
+      previous: paginationArgumentClaimant.previous,
+      next: paginationArgumentClaimant.next,
+      items: paginationArgumentClaimant.items
+    }) }}
   {% endif %}
   {% if claimsAsDefendant | length %}
     <div class="govuk-grid-row">

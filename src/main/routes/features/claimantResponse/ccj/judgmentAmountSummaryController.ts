@@ -1,11 +1,15 @@
 import {NextFunction, Response, Router} from 'express';
-import {CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, CCJ_PAID_AMOUNT_SUMMARY_URL} from '../../../urls';
+import {
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_PAYMENT_OPTIONS_URL,
+} from 'routes/urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
@@ -30,6 +34,10 @@ judgmentAmountSummaryController.get([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PA
   } catch (error) {
     next(error);
   }
+});
+
+judgmentAmountSummaryController.post([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
+  res.redirect(constructResponseUrlWithIdParams(req.params.id, CCJ_PAYMENT_OPTIONS_URL));
 });
 
 export default judgmentAmountSummaryController;

@@ -2,8 +2,12 @@ import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
   buildEvidenceUploadSection,
-  buildNewUploadSection,
   buildHearingTrialLatestUploadSection,
+  buildNewUploadSection,
+  buildViewFinalGeneralOrderContent,
+  buildFinaliseTrialArrangements,
+  buildViewBundleSection,
+  buildClaimDismissedHearingDueDateUpdateContent,
   buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
@@ -13,6 +17,19 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   const areTrialArrangementsFinalised = claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
   const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.claimantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
   const sectionContent = [];
+
+  if (claim.isFinalGeneralOrderIssued()) {
+    sectionContent.push(getViewFinalGeneralOrderContent(claim));
+  }
+
+  if (claim.isBundleStitched()) {
+    sectionContent.push(getViewBundleLatestUpdateContent(claim));
+  }
+
+  if (checkClaimDismissedHearingDueDate(claim)) {
+    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, false));
+    return getClaimSummaryContent(sectionContent.flat());
+  }
   if(checkEvidenceUploaded(claim, false)){
     sectionContent.push(getNewUploadLatestUpdateContent(claim));
   }
@@ -24,8 +41,13 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
     if (areTrialArrangementsFinalised) {
       sectionContent.push(getViewTrialArrangementsContent(false));
     }
-    sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+    if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
+      sectionContent.push(getFinaliseTrialArrangementsContent(claim));
+    }
   }
+
+  sectionContent.push(getEvidenceUploadLatestUpdateContent(claim.id, claim));
+
   return getClaimSummaryContent(sectionContent.flat());
 };
 
@@ -35,6 +57,10 @@ export const checkEvidenceUploaded = (claim: Claim, isClaimant: boolean): boolea
   }else {
     return checkEvidenceUploadTime(claim.caseProgression?.claimantLastUploadDate);
   }
+};
+
+export const checkClaimDismissedHearingDueDate = (claim: Claim): boolean => {
+  return claim.caseDismissedHearingFeeDueDate != null;
 };
 
 export const getNewUploadLatestUpdateContent = (claim: Claim): ClaimSummarySection[][] => {
@@ -49,11 +75,27 @@ export const getHearingTrialUploadLatestUpdateContent = (claim: Claim, lang: str
   return buildHearingTrialLatestUploadSection(claim, lang);
 };
 
+export const getViewBundleLatestUpdateContent = (claim: Claim) : ClaimSummarySection[][] => {
+  return buildViewBundleSection(claim);
+};
+
+export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildViewFinalGeneralOrderContent(claim);
+};
+
+export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
+  return buildClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant);
+};
+
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {
   return section.map((sectionContent, index) => ({
     contentSections: sectionContent,
     hasDivider: index < section.length - 1,
   }));
+};
+
+export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummarySection[][] => {
+  return buildFinaliseTrialArrangements(claim);
 };
 
 export const getViewTrialArrangementsContent = (isOtherParty: boolean) : ClaimSummarySection[][] => {
