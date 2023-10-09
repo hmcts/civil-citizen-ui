@@ -510,6 +510,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
