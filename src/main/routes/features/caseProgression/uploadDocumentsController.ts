@@ -18,8 +18,7 @@ const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
-async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
-  const claim: Claim = await getCaseDataFromStore(claimId);
+async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
@@ -52,8 +51,8 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-
-    await renderView(res, claimId, null);
+    const claim: Claim = await getCaseDataFromStore(claimId);
+    await renderView(res, claim, claimId, null);
   } catch (error) {
     next(error);
   }
@@ -65,12 +64,13 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     const claim: Claim = await getCaseDataFromStore(claimId);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
+    const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     form.validateSync();
     if (form.hasErrors()) {
-      await renderView(res, claimId, form);
+      await renderView(res, claim, claimId, form);
     } else {
-      await saveCaseProgression(claimId, form.model, claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName);
+      await saveCaseProgression(claimId, form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {

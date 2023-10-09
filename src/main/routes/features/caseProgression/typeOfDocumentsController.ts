@@ -40,8 +40,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const claim = await getCaseDataFromStore(claimId);
-      const documentsList = await getDocuments(claimId,claim.isClaimant());
+      const documentsList = await getDocuments(claimId);
       const form = new GenericForm(documentsList);
       await renderView(res, claimId,form);
     } catch (error) {
@@ -55,12 +54,13 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     const claim = await getCaseDataFromStore(claimId);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
+    const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claimId,form);
     } else {
-      await saveCaseProgression(claimId, form.model, claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName);
+      await saveCaseProgression(claimId, form.model, isClaimant);
       await deleteUntickedDocumentsFromStore(claimId, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }

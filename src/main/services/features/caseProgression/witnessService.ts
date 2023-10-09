@@ -17,13 +17,8 @@ import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 export const getWitnessContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  let uploadDocuments: UploadDocuments;
-
-  if (claim.isClaimant()) {
-    uploadDocuments = claim.caseProgression?.claimantUploadDocuments;
-  } else {
-    uploadDocuments = claim.caseProgression?.defendantUploadDocuments;
-  }
+  const uploadDocuments: UploadDocuments = claim.isClaimant()
+    ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
 
   if (uploadDocuments?.witness[0]?.selected){
     sectionContent.push(getWitnessStatement(form));

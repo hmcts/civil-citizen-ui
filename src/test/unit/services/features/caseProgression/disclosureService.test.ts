@@ -200,6 +200,26 @@ describe('Disclosure service', () => {
     expect(actualDisclosureContent.length).toEqual(0);
   });
 
+  it('should return no section if claimantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {},
+        isClaimant: jest.fn(() => true),
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
+
   it('should return no section if caseProgression not present', () => {
     //Given
     const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
@@ -209,6 +229,25 @@ describe('Disclosure service', () => {
       case_data: {
         ...mockClaim.case_data,
         isClaimant: jest.fn(),
+      },
+    };
+
+    //when
+    const actualDisclosureContent = getDisclosureContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualDisclosureContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
       },
     };
 

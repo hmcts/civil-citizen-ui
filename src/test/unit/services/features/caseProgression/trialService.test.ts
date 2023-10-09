@@ -331,6 +331,26 @@ describe('Trial service', () => {
     expect(actualTrialContent.length).toEqual(0);
   });
 
+  it('should return no section if defendantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
   it('should return no section if caseProgression not present', () => {
     //Given
     const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
@@ -340,6 +360,25 @@ describe('Trial service', () => {
       case_data: {
         ...mockClaim.case_data,
         isClaimant: jest.fn(),
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
       },
     };
 

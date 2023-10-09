@@ -22,13 +22,13 @@ import {Claim} from 'models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-export const getDocuments = async (claimId: string, isClaimant: boolean): Promise<UploadDocuments> => {
+export const getDocuments = async (claimId: string): Promise<UploadDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.caseProgression?.defendantUploadDocuments && !isClaimant) {
+    if (caseData?.caseProgression?.defendantUploadDocuments && !caseData.isClaimant()) {
       return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
-    else if (caseData?.caseProgression?.claimantUploadDocuments && isClaimant) {
+    else if (caseData?.caseProgression?.claimantUploadDocuments && caseData.isClaimant()) {
       return caseData?.caseProgression?.claimantUploadDocuments ? caseData?.caseProgression.claimantUploadDocuments : new UploadDocuments();
     }
   } catch (error) {
