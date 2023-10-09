@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
   BREATHING_SPACE_RESPITE_START_DATE_URL,
@@ -7,6 +7,7 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {DebtRespiteReferenceNumber} from '../../../common/models/breathingSpace/debtRespiteReferenceNumber';
 import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
+import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
 
 const debtRespiteReferenceNumberController = Router();
 const debtRespiteReferenceNumberViewPath = 'features/breathingSpace/debt-respite-reference-number';
@@ -16,16 +17,16 @@ function renderView(form: GenericForm<DebtRespiteReferenceNumber>, res: Response
   res.render(debtRespiteReferenceNumberViewPath, {form});
 }
 
-debtRespiteReferenceNumberController.get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteReferenceNumberController.get(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, breathingSpaceGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const breathingSpace = await getBreathingSpace(req.params.id);
     renderView(new GenericForm(breathingSpace.debtRespiteReferenceNumber), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-debtRespiteReferenceNumberController.post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, async (req: Request, res: Response, next: NextFunction) => {
+debtRespiteReferenceNumberController.post(BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL, breathingSpaceGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const debtRespiteScheme = new GenericForm(new DebtRespiteReferenceNumber(req.body.referenceNumber));
@@ -40,6 +41,6 @@ debtRespiteReferenceNumberController.post(BREATHING_SPACE_RESPITE_REFERENCE_NUMB
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default debtRespiteReferenceNumberController;
