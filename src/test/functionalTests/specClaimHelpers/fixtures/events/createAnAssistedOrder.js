@@ -7,7 +7,7 @@ module.exports = {
         finalOrderMadeSelection: 'No',
         finalOrderDateHeardComplex: null,
         finalOrderJudgeHeardFrom: [
-          'SHOW'
+          'SHOW',
         ],
         finalOrderRepresentation: {
           typeRepresentationList: 'OTHER_REPRESENTATION',
@@ -25,26 +25,26 @@ module.exports = {
               list: null,
               listClaimTwo: null,
               listDef: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedClaimTwoComplex: {
               listClaimTwo: null,
               list: null,
               listDef: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedureComplex: {
               listDef: null,
               list: null,
               listClaimTwo: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedureDefTwoComplex: {
               listDefTwo: null,
               list: null,
               listClaimTwo: null,
-              listDef: null
-            }
+              listDef: null,
+            },
           },
           typeRepresentationOtherComplex: {
             detailsRepresentationText: 'Enter details of representation',
@@ -60,38 +60,38 @@ module.exports = {
               list: null,
               listClaimTwo: null,
               listDef: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedClaimTwoComplex: {
               list: null,
               listClaimTwo: null,
               listDef: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedureComplex: {
               list: null,
               listClaimTwo: null,
               listDef: null,
-              listDefTwo: null
+              listDefTwo: null,
             },
             trialProcedureDefTwoComplex: {
               list: null,
               listClaimTwo: null,
               listDef: null,
-              listDefTwo: null
-            }
+              listDefTwo: null,
+            },
           },
           typeRepresentationJudgePapersList: [
-            'CONSIDERED'
-          ]
+            'CONSIDERED',
+          ],
         },
         finalOrderRecitals: [
-          'SHOW'
+          'SHOW',
         ],
         finalOrderRecitalsRecorded: null,
         finalOrderOrderedThatText: 'Blach',
         finalOrderFurtherHearingToggle: [
-          'SHOW'
+          'SHOW',
         ],
         finalOrderFurtherHearingComplex: {
           listFromDate: '2024-12-01',
@@ -101,18 +101,18 @@ module.exports = {
           hearingLocationList: {
             value: {
               code: 'LOCATION_LIST',
-              label: 'Central London County Court'
+              label: 'Central London County Court',
             },
             list_items: [
               {
                 code: 'LOCATION_LIST',
-                label: 'Central London County Court'
+                label: 'Central London County Court',
               },
               {
                 code: 'OTHER_LOCATION',
-                label: 'Other location'
-              }
-            ]
+                label: 'Other location',
+              },
+            ],
           },
           alternativeHearingList: null,
           hearingMethodList: 'TELEPHONE',
@@ -120,11 +120,11 @@ module.exports = {
           lengthListOther: {
             lengthListOtherDays: null,
             lengthListOtherHours: null,
-            lengthListOtherMinutes: null
+            lengthListOtherMinutes: null,
           },
           datesToAvoidDateDropdown: {
-            datesToAvoidDates: '2023-10-16'
-          }
+            datesToAvoidDates: '2023-10-16',
+          },
         },
         assistedOrderCostList: 'NO_ORDER_TO_COST',
         assistedOrderCostsBespoke: null,
@@ -132,7 +132,7 @@ module.exports = {
         assistedOrderCostsReserved: null,
         publicFundingCostsProtection: 'No',
         finalOrderAppealToggle: [
-          'SHOW'
+          'SHOW',
         ],
         finalOrderAppealComplex: {
           list: 'CLAIMANT',
@@ -141,27 +141,27 @@ module.exports = {
           appealGrantedDropdown: {
             circuitOrHighCourtList: 'CIRCUIT_COURT',
             appealChoiceSecondDropdownA: {
-              appealGrantedRefusedDate: '2023-10-30'
+              appealGrantedRefusedDate: '2023-10-30',
             },
             appealChoiceSecondDropdownB: {
-              appealGrantedRefusedDate: '2023-10-30'
-            }
+              appealGrantedRefusedDate: '2023-10-30',
+            },
           },
           appealRefusedDropdown: {
             circuitOrHighCourtListRefuse: null,
             appealChoiceSecondDropdownA: {
-              appealGrantedRefusedDate: '2023-10-30'
+              appealGrantedRefusedDate: '2023-10-30',
             },
             appealChoiceSecondDropdownB: {
-              appealGrantedRefusedDate: '2023-10-30'
-            }
-          }
+              appealGrantedRefusedDate: '2023-10-30',
+            },
+          },
         },
         orderMadeOnDetailsList: 'WITHOUT_NOTICE',
         orderMadeOnDetailsOrderCourt: null,
         orderMadeOnDetailsOrderWithoutNotice: {
           withOutNoticeText: 'If you were not notified of the application before this order was made, you may apply to set aside, vary or stay the order. Any such application must be made by 4pm on',
-          withOutNoticeDate: '2023-10-09'
+          withOutNoticeDate: '2023-10-09',
         },
         finalOrderGiveReasonsYesNo: 'No',
         finalOrderGiveReasonsComplex: null,
@@ -170,9 +170,9 @@ module.exports = {
           document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
           document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
           document_filename: 'Order_2023-10-09.pdf',
-          document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce'
-        }
-      }
+          document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce',
+        },
+      },
     };
     return assistedOrderData;
   },

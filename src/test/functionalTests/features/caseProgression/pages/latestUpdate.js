@@ -44,7 +44,6 @@ class LatestUpdate {
     I.see('at Central London County Court.');
   }
 
-
   verifyUploadDocumentTileContent(hearingInitiatedFlag) {
     I.see('Upload documents', 'h3');
     if (hearingInitiatedFlag) {
