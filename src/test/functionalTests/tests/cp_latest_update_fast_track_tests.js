@@ -2,7 +2,7 @@ const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 
-const claimType = 'SmallClaims';
+const claimType = 'FastTrack';
 let claimRef;
 
 Feature('Case progression journey - Verify latest Update page');

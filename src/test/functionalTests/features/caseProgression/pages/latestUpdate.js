@@ -16,7 +16,6 @@ class LatestUpdate {
 
   verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag) {
     this.verifyHeadingDetails();
-    this.verifyHearingOrTrialNoticeSectionContent(claimType);
     this.verifyUploadDocumentSectionContent(hearingInitiatedFlag);
     contactUs.verifyContactUs();
   }
