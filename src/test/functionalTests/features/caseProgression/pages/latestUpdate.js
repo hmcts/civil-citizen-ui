@@ -5,19 +5,18 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType) {
+  open(claimRef, claimType, hearingInitiatedFlag = true) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag) {
     this.verifyHeadingDetails();
-    this.verifyHearingOrTrialNoticeSectionContent(claimType);
-    this.verifyUploadDocumentSectionContent();
+    this.verifyUploadDocumentSectionContent(hearingInitiatedFlag);
     contactUs.verifyContactUs();
   }
 
@@ -41,9 +40,13 @@ class LatestUpdate {
     I.see('at Central London County Court.');
   }
 
-  verifyUploadDocumentSectionContent() {
+  verifyUploadDocumentSectionContent(hearingInitiatedFlag) {
     I.see('Upload documents', 'h3');
-    I.see('Due by:');
+    if (hearingInitiatedFlag) {
+      I.see('Due by:');
+    } else {
+      I.dontSee('Due by:');
+    }
     I.see('You can upload and submit any documents which support your claim. These can include any communications, paperwork and statements from expert and witnesses.');
     I.see('Please follow the instructions sent in the');
     I.seeElement('//a[contains(.,\'standard directions order\')]');
