@@ -530,8 +530,7 @@ export class Claim {
       !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
       ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
-        (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualF
-         irstName && !!this.applicant1?.dateOfBirth))
+        (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
     );
   }
 
