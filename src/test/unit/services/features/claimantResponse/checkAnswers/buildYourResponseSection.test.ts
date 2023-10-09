@@ -5,9 +5,9 @@ import { Claim } from 'common/models/claim';
 import { ClaimantResponse } from 'common/models/claimantResponse';
 import { PartialAdmission } from 'common/models/partialAdmission';
 import { Party } from 'common/models/party';
-import { buildYourResponseSection } from 'services/features/claimantResponse/checkAnswers/buildYourResponseSection';
 import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
 import { t } from 'i18next';
+import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');

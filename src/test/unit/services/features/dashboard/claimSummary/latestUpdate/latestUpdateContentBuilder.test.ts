@@ -796,7 +796,7 @@ describe('Latest Update Content Builder', () => {
   });
 
   describe('Test FD with/without mediation  and for FT claim buildResponseToClaimSection', () => {
-    it('FD and dispute all and respondant rejected free mediation', () => {
+    it('FD and dispute all and respondent rejected free mediation', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
       claim.rejectAllOfClaim = {
@@ -817,7 +817,7 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[4].data.href).toBe('/case/1/documents/123');
     });
 
-    it('FD and dispute all and respondant agreed for free mediation.', () => {
+    it('FD and dispute all and respondent agreed for free mediation.', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
       claim.rejectAllOfClaim = {
@@ -830,7 +830,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(4);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.AWAITING_CLAIMANT_RESPONSE');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');
