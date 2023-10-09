@@ -25,7 +25,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
   return {
     'sections': [
       {
-        'title': 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
         'summaryList': {
           'rows': [
             {
@@ -50,14 +50,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
           ],
         },
       },
-      {
-        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
-        'summaryList': {
-          'rows': [
-
-          ],
-        },
-      },
+      undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
         'summaryList': {
@@ -253,9 +246,9 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
+      expect(result.sections[1].summaryList.rows.length).toEqual(2);
+      expect(result.sections[1].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
+      expect(result.sections[1].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
     });
 
     it('should show the check your answers for pay by set date for full admit', () => {
@@ -265,9 +258,9 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
+      expect(result.sections[1].summaryList.rows.length).toEqual(2);
+      expect(result.sections[1].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
+      expect(result.sections[1].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
     });
 
     it('should show the check your answers for pay by installments for part admit', () => {
@@ -276,9 +269,9 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
+      expect(result.sections[1].summaryList.rows.length).toEqual(2);
+      expect(result.sections[1].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
+      expect(result.sections[1].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
     });
 
     it('should show the check your answers for pay by set date for full admit', () => {
@@ -288,9 +281,9 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
+      expect(result.sections[1].summaryList.rows.length).toEqual(2);
+      expect(result.sections[1].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
+      expect(result.sections[1].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
     });
   });
 
