@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import config from 'config';
 import {DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {buildClaimantNotifications, getDashboardTaskList} from 'services/dashboard/getDashboardContent';
+import {getClaimantNotifications, getDashboardTaskList} from 'services/dashboard/getDashboardContent';
 import {AppRequest} from 'common/models/AppRequest';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
@@ -16,7 +16,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, async (req: Request, res
       const claimId = req.params.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-      const dashboardNotifications = buildClaimantNotifications(claim, lang);
+      const dashboardNotifications = getClaimantNotifications(claim, lang);
       const dashboardTaskList = getDashboardTaskList(claim, lang);
       res.render(claimantDashboardViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
   } catch (error) {

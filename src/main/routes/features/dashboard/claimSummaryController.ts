@@ -20,7 +20,7 @@ import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
-import {buildDefendantNotifications, getDashboardTaskList} from 'services/dashboard/getDashboardContent';
+import {getDashboardTaskList, getDefendantNotifications} from 'services/dashboard/getDashboardContent';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -38,7 +38,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
       const claimId = req.params.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-      const dashboardNotifications = buildDefendantNotifications(claim, lang);
+      const dashboardNotifications = getDefendantNotifications(claim, lang);
       const dashboardTaskList = getDashboardTaskList(claim, lang);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {

@@ -1,67 +1,57 @@
 import { CaseState } from "common/form/models/claimDetails";
+import { ClaimSummaryType } from "common/form/models/claimSummarySection";
 import { Claim } from "common/models/claim";
 import { TaskStatus } from "common/models/taskList/TaskStatus";
 import { TaskList } from "common/models/taskList/taskList";
 import { t } from "i18next";
-import { buildResponseToClaimSection } from "services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder";
 
-export const buildClaimantNotifications = (claim: Claim, lng: string) => {
+export const getClaimantNotifications = (claim: Claim, lng: string) => {
+  const dashboardNotificationsList = [];
+  const defendantName = claim.getDefendantFullName();
+  const responseDeadline = claim.formattedResponseDeadline();
 
-  // const dashboardNotificationsList = [];
-  const notificationContent = buildResponseToClaimSection(claim, claim.id, lng)
+  const waitForDefendantResponseNotification = {
+    title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
+    content: [
+      // {
+      //   type: ClaimSummaryType.PARAGRAPH,
+      //   data: {
+      //     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
+      //   }
+      // },
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: 'View Claim',
+          href: '#',
+          textBefore:  t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
+        }
+      },
+    ]
+  };
+
+  dashboardNotificationsList.push(waitForDefendantResponseNotification);
   
-  console.log(notificationContent);
-
-    // const notificationContent: ClaimSummarySection[] = [{
-  //   type: ClaimSummaryType.PARAGRAPH,
-  //   data: {
-  //     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
-  //   },
-  // },
-  // {
-  //   type: ClaimSummaryType.LINK,
-  //   data: {
-  //     text: 'View Claim',
-  //     href: '#',
-  //     textBefore:  t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
-  //   },
-  // }];
-  
-  // const waitForDefendantResponseNotification = {
-  //   title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
-  //   content: notificationContent,
-  // };
-
-  // dashboardNotificationsList.push(waitForDefendantResponseNotification);
-  
-  return notificationContent;
+  return dashboardNotificationsList;
 };
 
-// export const buildClaimantNotifications = (claim: Claim, lng: string) => {
-//   const dashboardNotificationsList = [];
-//   const defendantName = claim.getDefendantFullName();
-//   const responseDeadline = claim.formattedResponseDeadline();
-
-//   const waitForDefendantResponseNotification = {
-//     title: t("PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND", { lng }),
-//     text: t("PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND", { lng, defendantName, responseDeadline }),
-//   };
-
-//   dashboardNotificationsList.push(waitForDefendantResponseNotification);
-  
-//   return dashboardNotificationsList;
-// };
-
-export const buildDefendantNotifications = (claim: Claim, lng: string) => {
+export const getDefendantNotifications = (claim: Claim, lng: string) => {
   const dashboardNotificationsList = [];
   const responseDeadline = claim.formattedResponseDeadline();
   const remainingDays = claim.getRemainingDays();
 
   const youHaventRespondedNotification = {
     title: t("PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM"),
-    text: t("PAGES.LATEST_UPDATE_CONTENT.YOU_NEED_TO_RESPOND_BEFORE_DEADLINE",{ lng, responseDeadline, remainingDays }),
-    linkText: t("BUTTONS.RESPOND_TO_CLAIM"),
-    link: "#",
+    content:[
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: t("BUTTONS.RESPOND_TO_CLAIM"),
+          href: '#',
+          textBefore:  t("PAGES.LATEST_UPDATE_CONTENT.YOU_NEED_TO_RESPOND_BEFORE_DEADLINE",{ lng, responseDeadline, remainingDays }),
+        }
+      },
+    ]
   };
 
   if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
@@ -112,7 +102,7 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
   return taskListMock;
 };
 
-const getStatusColor = (taskStatus: TaskStatus): string => {
+export const getStatusColor = (taskStatus: TaskStatus): string => {
   const grey = "govuk-tag--grey";
   const red = "govuk-tag--red";
   const green = "govuk-tag--green";
