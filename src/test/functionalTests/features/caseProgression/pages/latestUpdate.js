@@ -5,18 +5,18 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef) {
+  open(claimRef, claimType) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent();
+    this.verifyLatestUpdatePageContent(claimType);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent() {
+  verifyLatestUpdatePageContent(claimType) {
     this.verifyHeadingDetails();
-    this.verifyHearingNoticeSectionContent();
+    this.verifyHearingOrTrialNoticeSectionContent(claimType);
     this.verifyUploadDocumentSectionContent();
     contactUs.verifyContactUs();
   }
@@ -29,10 +29,15 @@ class LatestUpdate {
     I.see('Documents');
   }
 
-  verifyHearingNoticeSectionContent() {
-    I.see('A trial has been scheduled for your case', 'h3');
+  verifyHearingOrTrialNoticeSectionContent(claimType) {
     //TODO - Include the hearing date in the relevant Format
-    I.see('Your trial has been scheduled for');
+    if (claimType === 'FastTrack') {
+      I.see('A trial has been scheduled for your case', 'h3');
+      I.see('Your trial has been scheduled for');
+    } else {
+      I.see('A hearing has been scheduled for your case', 'h3');
+      I.see('Your hearing has been scheduled for');
+    }
     I.see('at Central London County Court.');
   }
 
