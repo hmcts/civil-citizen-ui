@@ -2,7 +2,7 @@ const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 
-const claimType = 'SmallClaims';
+const claimType = 'FastTrack';
 let claimRef;
 
 Feature('Case progression journey - Verify latest Update page For an Order being Created');
@@ -19,7 +19,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Sall Clais - Verify latest Update page for an Order being Created', () => {
+Scenario('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }

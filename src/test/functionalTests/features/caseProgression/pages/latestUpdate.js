@@ -5,9 +5,9 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag);
   }
 
   nextAction (nextAction) {
@@ -16,7 +16,11 @@ class LatestUpdate {
 
   verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag) {
     this.verifyHeadingDetails();
-    this.verifyUploadDocumentSectionContent(hearingInitiatedFlag);
+    if (hearingInitiatedFlag === true) {
+      this.verifyHearingOrTrialNoticeSectionContent(claimType);
+    }
+    this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
+    this.verifyOrderCreatedTileContent();
     contactUs.verifyContactUs();
   }
 
@@ -40,7 +44,8 @@ class LatestUpdate {
     I.see('at Central London County Court.');
   }
 
-  verifyUploadDocumentSectionContent(hearingInitiatedFlag) {
+
+  verifyUploadDocumentTileContent(hearingInitiatedFlag) {
     I.see('Upload documents', 'h3');
     if (hearingInitiatedFlag) {
       I.see('Due by:');
@@ -52,6 +57,12 @@ class LatestUpdate {
     I.seeElement('//a[contains(.,\'standard directions order\')]');
     I.see('which can be found under \'Notices and orders\'.');
     I.see('Any documents submitted after the due date may not be considered by the judge.');
+  }
+
+  verifyOrderCreatedTileContent() {
+    I.see('An order has been made on your claim','h3');
+    I.see('The Judge has made an order on your claim.');
+    I.see('The order is available in \'Notices and orders\'.');
   }
 }
 

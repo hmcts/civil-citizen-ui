@@ -42,13 +42,18 @@ class UploadEvidenceSteps {
     documentsTab.verifyLatestUpdatePageContent(claimType);
   }
 
-  initiateHearingNoticeJourney(claimRef) {
+  initiateHearingNoticeJourney(claimRef, claimType) {
     latestUpdateTab.open(claimRef);
     latestUpdateTab.nextAction('View hearing notice');
   }
 
   verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType)  {
     latestUpdateTab.open(claimRef, claimType,false);
+  }
+
+  verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType)  {
+    latestUpdateTab.open(claimRef, claimType,false, true);
+    latestUpdateTab.nextAction('View the order')
   }
 
 }
