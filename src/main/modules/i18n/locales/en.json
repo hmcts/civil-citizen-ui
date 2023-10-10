@@ -1570,6 +1570,7 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",

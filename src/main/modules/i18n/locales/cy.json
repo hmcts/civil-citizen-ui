@@ -1570,6 +1570,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
