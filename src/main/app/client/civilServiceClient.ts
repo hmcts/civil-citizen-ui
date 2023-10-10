@@ -251,7 +251,6 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
-
   async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
   }

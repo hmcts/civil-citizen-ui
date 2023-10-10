@@ -16,7 +16,7 @@ describe('Translate claimant ccd request  to ccd version', () => {
     claim.claimantResponse.ccjRequest = {
       paidAmount: {
         option: YesNo.YES,
-        amount: 50
+        amount: 50,
       },
     };
     const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
