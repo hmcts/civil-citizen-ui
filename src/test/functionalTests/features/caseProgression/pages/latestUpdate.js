@@ -14,13 +14,15 @@ class LatestUpdate {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
     }
     this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
-    this.verifyOrderCreatedTileContent();
+    if(orderCreatedFlag === true) {
+      this.verifyOrderCreatedTileContent();
+    }
     contactUs.verifyContactUs();
   }
 

@@ -8,11 +8,15 @@ const contactUs = new ContactUs();
 
 class UploadYourDocument {
 
+  checkPageFullyLoaded () {
+    I.waitForElement('//a[.=\'Cancel\']');
+  }
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(claimType) {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     this.verifyAcceptableDocumentsFormatsSectionContent();
     if(claimType === 'FastTrack') {
@@ -20,7 +24,6 @@ class UploadYourDocument {
     } else if (claimType === 'SmallClaims') {
       this.verifyAllSmallClaimsSectionContent(claimType);
     }
-
     contactUs.verifyContactUs();
   }
 
@@ -296,39 +299,39 @@ class UploadYourDocument {
     I.fillField('witnessStatement[0][dateInputFields][dateDay]', '01');
     I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[0][fileUpload]', 'features/caseProgression/data/TestBMP.bmp');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[1]//input[@name=\'file\']', 'features/caseProgression/data/TestBMP.bmp');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(1) #add-another-witness-list');
     I.fillField('witnessStatement[1][witnessName]', 'Witness Statement - Witness Nae 2');
     I.fillField('witnessStatement[1][dateInputFields][dateDay]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[1][fileUpload]', 'features/caseProgression/data/TestCSV.csv');
+    I.attachFile('//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestCSV.csv');
 
     //Witness Summary - Subsection
     I.fillField('witnessSummary[0][witnessName]', 'Witness Summary - Witness Nae 1');
     I.fillField('witnessSummary[0][dateInputFields][dateDay]', '03');
     I.fillField('witnessSummary[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[0][fileUpload]', 'features/caseProgression/data/TestDOC.doc');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[2]//input[@name=\'file\']', 'features/caseProgression/data/TestDOC.doc');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(2) #add-another-witness-list');
     I.fillField('witnessSummary[1][witnessName]', 'Witness Summary - Witness Nae 2');
     I.fillField('witnessSummary[1][dateInputFields][dateDay]', '04');
     I.fillField('witnessSummary[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[1][fileUpload]', 'features/caseProgression/data/TestDOCX.docx');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[2]//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestDOCX.docx');
 
     //Docuents Referred to in the stateent - Subsection
     I.fillField('documentsReferred[0][typeOfDocument]', 'Docuents referred Type of Docuent 1');
     I.fillField('documentsReferred[0][dateInputFields][dateDay]', '05');
     I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[0][fileUpload]', 'features/caseProgression/data/TestJPEG.jpeg');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[3]//input[@name=\'file\']', 'features/caseProgression/data/TestJPEG.jpeg');
     I.click('[method=\'post\'] div:nth-of-type(3) #add-another-witness-list');
     I.fillField('documentsReferred[1][typeOfDocument]', 'Docuents referred Type of Docuent 2');
     I.fillField('documentsReferred[1][dateInputFields][dateDay]', '06');
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[1][fileUpload]', 'features/caseProgression/data/TestJPG.jpg');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[3]//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestJPG.jpg');
 
     //Evidences Section
     //Expert's report - Subsection
@@ -337,14 +340,14 @@ class UploadYourDocument {
     I.fillField('expertReport[0][dateInputFields][dateDay]', '07');
     I.fillField('expertReport[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[0][fileUpload]', 'features/caseProgression/data/TestPDF.pdf');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']/div[4]//input[@name=\'file\']', 'features/caseProgression/data/TestPDF.pdf');
     I.click('[method=\'post\'] div:nth-of-type(4) #add-another-expert-list');
     I.fillField('expertReport[1][expertName]', 'Expert Report - Expert Nae 2');
     I.fillField('expertReport[1][fieldOfExpertise]', 'Expert Report - Field of Expertise 2');
     I.fillField('expertReport[1][dateInputFields][dateDay]', '08');
     I.fillField('expertReport[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[1][fileUpload]', 'features/caseProgression/data/TestPNG.png');
+    I.attachFile('//div[@class=\'govuk-grid-column-two-thirds govuk-!-margin-top-0\']//fieldset[2]//div[4]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestPNG.png');
 
     //Joint Stateent of Experts - Subsection
     I.fillField('expertStatement[0][expertName]', 'Expert Stateent - Expert Nae 1');
@@ -352,14 +355,14 @@ class UploadYourDocument {
     I.fillField('expertStatement[0][dateInputFields][dateDay]', '09');
     I.fillField('expertStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[0][fileUpload]', 'features/caseProgression/data/TestPPT.ppt');
+    I.attachFile('//div[5]//input[@name=\'file\']', 'features/caseProgression/data/TestPPT.ppt');
     I.click('[method=\'post\'] div:nth-of-type(5) #add-another-expert-list');
     I.fillField('expertStatement[1][expertName]', 'Expert Stateent - Expert Nae 2');
     I.fillField('expertStatement[1][fieldOfExpertise]', 'Expert Stateent - Field Of Expertise 2');
     I.fillField('expertStatement[1][dateInputFields][dateDay]', '10');
     I.fillField('expertStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[1][fileUpload]', 'features/caseProgression/data/TestRTF.rtf');
+    I.attachFile('//div[5]//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestRTF.rtf');
 
     //Hearing Docuents Section
     //Docuentary Evidence For Trial - Subsection
@@ -367,18 +370,18 @@ class UploadYourDocument {
     I.fillField('trialDocumentary[0][dateInputFields][dateDay]', '11');
     I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[0][fileUpload]','features/caseProgression/data/TestTIF.tif');
+    I.attachFile('//div[6]//input[@name=\'file\']','features/caseProgression/data/TestTIF.tif');
     I.click('div:nth-of-type(6) #add-another-trial-list');
     I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for hearing - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '12');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[1][fileUpload]','features/caseProgression/data/TestTIFF.tiff');
+    I.attachFile('//div[6]//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']','features/caseProgression/data/TestTIFF.tiff');
 
     //Trial Authorities - Subsection
-    I.attachFile('trialAuthorities[0][fileUpload]', 'features/caseProgression/data/TestXLS.xls');
+    I.attachFile('//div[7]//input[@name=\'file\']', 'features/caseProgression/data/TestXLS.xls');
     I.click('div:nth-of-type(7) #add-another-trial-list');
-    I.attachFile('trialAuthorities[1][fileUpload]', 'features/caseProgression/data/TestXLSX.xlsx');
+    I.attachFile('//div[7]//fieldset[2]//input[@class=\'govuk-file-upload uploadFile govuk-!-width-three-half undefined\']', 'features/caseProgression/data/TestXLSX.xlsx');
   }
 }
 
