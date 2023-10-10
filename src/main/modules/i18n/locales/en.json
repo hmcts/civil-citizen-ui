@@ -870,7 +870,8 @@
         "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
         "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
         "YES": "Yes",
-        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgement for the court’s proposed plan in the next screen"
       },
       "COURT_PROPOSED_PLAN": {
         "PAGE_TITLE": "The defendant can’t afford your plan",
@@ -885,7 +886,8 @@
         "LENGTH_OF_REPAYMENT": "Length of repayment plan",
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+        "I_WANT_JUDGE": "I want a judge to make a repayment plan",
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgement for the court’s proposed plan in the next screen"
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
