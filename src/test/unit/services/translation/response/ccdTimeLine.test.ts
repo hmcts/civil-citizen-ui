@@ -1,5 +1,4 @@
 import {Claim} from 'models/claim';
-import {toCCDTimeline} from 'services/translation/response/convertToCCDTimeLine';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
@@ -22,7 +21,7 @@ describe('translate TimeLine to CCD model', () => {
         new TimelineRow(2, 2, 2002, 'test 2'),
       ],
     );
-    const timelineResponseCCD = toCCDTimeline(claim.claimDetails.timeline);
+    const timelineResponseCCD = toCCDTimelineEvent(claim.claimDetails.timeline);
     expect(timelineResponseCCD).toHaveLength(2);
   });
 });
