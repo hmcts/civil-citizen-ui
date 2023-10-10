@@ -52,24 +52,23 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   }
   claim.claimantResponse = claimantResponse;
   claim.caseRole = ccdClaim?.caseRole;
-  claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim)
+  claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   return claim;
 };
 
-
 const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
-  const interest = new Interest()
+  const interest = new Interest();
   interest.interestClaimFrom = ccdClaim?.interestClaimFrom;
   interest.interestClaimOptions = InterestClaimOptionsType[ccdClaim?.interestClaimOptions];
   interest.interestEndDate = InterestEndDateType[ccdClaim?.interestClaimUntil];
   if (ccdClaim?.interestFromSpecificDate) {
     const ccdInterestDate = new Date(ccdClaim?.interestFromSpecificDate);
-    interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim.interestFromSpecificDateDescription)
+    interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim.interestFromSpecificDateDescription);
   }
   interest.sameRateInterestSelection = {
     sameRateInterestType: SameRateInterestType[ccdClaim?.sameRateInterestSelection?.sameRateInterestType],
     differentRate: ccdClaim?.sameRateInterestSelection?.differentRate,
-    reason: ccdClaim?.sameRateInterestSelection?.differentRateReason
+    reason: ccdClaim?.sameRateInterestSelection?.differentRateReason,
   };
   return interest;
-}
+};

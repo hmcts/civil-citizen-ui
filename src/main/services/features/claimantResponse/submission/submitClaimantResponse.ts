@@ -22,7 +22,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
     if (claim.isClaimantIntentionPending()) {
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFee);
-      return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req)
+      return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
     logger.info('Translation claimant response sent to civil-service - submit event');
