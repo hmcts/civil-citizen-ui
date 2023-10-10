@@ -29,7 +29,7 @@ export const getClaimById = async (claimId: string, req: Request): Promise<Claim
       claim.totalClaimAmount = 200;
       claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
       claim.totalInterest = 15;
-      claim.claimFee = {calculatedAmountInPence: '3500'};
+      claim.claimFee = {calculatedAmountInPence: 3500};
     }
   }
   return claim;

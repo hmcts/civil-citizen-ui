@@ -17,6 +17,8 @@ import {
   toAdditionalPartyDetails,
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
+import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
+import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -29,7 +31,8 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     totalClaimAmount: claim.totalClaimAmount,
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),
     detailsOfClaim: claim.claimDetails?.reason?.text,
-    // specResponseTimelineOfEvents: toCCDTimeline(claim.claimDetails?.timeline),
+    timelineOfEvents: toCCDTimelineEvent(claim.claimDetails?.timeline),
+    claimFee:toCCDClaimFee(claim.claimFee),
     speclistYourEvidenceList: toCCDEvidence(claim.claimDetails?.evidence),
     claimInterest: toCCDYesNo(claim.claimInterest),
     interestClaimOptions: toCCDInterestType(claim.interest?.interestClaimOptions),
