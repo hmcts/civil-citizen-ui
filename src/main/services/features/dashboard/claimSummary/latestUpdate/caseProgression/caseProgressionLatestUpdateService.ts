@@ -14,8 +14,8 @@ import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
 import {YesNo} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
-  const areTrialArrangementsFinalised = claim.caseProgression.defendantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
-  const areOtherPartyTrialArrangementsFinalised = claim.caseProgression.claimantTrialArrangements.isCaseReady === YesNo.YES; //TODO: get the correct value once the logged in user is known
+  const areTrialArrangementsFinalised = isCaseReady(claim.isClaimant(), claim);
+  const areOtherPartyTrialArrangementsFinalised = isCaseReady(!claim.isClaimant(), claim);
   const sectionContent = [];
 
   if (claim.isFinalGeneralOrderIssued()) {
@@ -101,3 +101,7 @@ export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummaryS
 export const getViewTrialArrangementsContent = (isOtherParty: boolean) : ClaimSummarySection[][] => {
   return buildViewTrialArrangementsSection(isOtherParty);
 };
+
+function isCaseReady(isClaimant: boolean, claim: Claim): boolean {
+  return isClaimant ? claim?.caseProgression?.claimantTrialArrangements?.isCaseReady === YesNo.YES : claim?.caseProgression?.defendantTrialArrangements?.isCaseReady === YesNo.YES;
+}
