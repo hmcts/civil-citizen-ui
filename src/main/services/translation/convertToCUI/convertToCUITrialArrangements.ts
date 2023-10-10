@@ -24,9 +24,15 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
         }
       }
 
-      trialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyRespondent1);
-      trialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments);
-      trialArrangements.otherTrialInformation = ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments;
+      if (ccdClaim?.trialReadyRespondent1) {
+        trialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyRespondent1);
+      }
+      if (ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements || ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments) {
+        trialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments);
+      }
+      if (ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments) {
+        trialArrangements.otherTrialInformation = ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments;
+      }
     }
     return Object.keys(trialArrangements).length > 0 ? trialArrangements : undefined;
   }
