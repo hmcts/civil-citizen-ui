@@ -3,6 +3,12 @@ import {TrialArrangements, TrialArrangementsDocument} from 'models/caseProgressi
 import {DocumentType} from 'models/document/documentType';
 import {toCUITrialArrangements} from 'services/translation/convertToCUI/convertToCUITrialArrangements';
 import {CaseRole} from 'form/models/caseRoles';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
+import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 
 describe('toCUITrialArrangements', () => {
   it ('should convert CCDClaim to TrialArrangements for claimant', () => {
@@ -22,11 +28,22 @@ describe('toCUITrialArrangements', () => {
   it ('should convert CCDClaim to TrialArrangements for defendant', () => {
     //Given
     const isClaimant = false;
+    const respondent1RevisedHearingRequirements: CCDTrialArrangementsHearingRequirements = {
+      revisedHearingRequirements: YesNoUpperCamelCase.NO,
+      revisedHearingComments: 'test',
+    };
+    const respondent1HearingOtherComments: CCDTrialArrangementsOtherComments = { hearingOtherComments: 'test' };
     const ccdClaim: CCDClaim = {
       trialReadyDocuments: [getTrialReadyDocument(true), getTrialReadyDocument(false)],
+      trialReadyRespondent1: YesNoUpperCamelCase.YES,
+      respondent1RevisedHearingRequirements: respondent1RevisedHearingRequirements,
+      respondent1HearingOtherComments: respondent1HearingOtherComments,
     };
     const expectedOutput: TrialArrangements = new TrialArrangements();
     expectedOutput.trialArrangementsDocument = getTrialReadyDocument(isClaimant);
+    expectedOutput.isCaseReady = YesNo.YES;
+    expectedOutput.otherTrialInformation = 'test';
+    expectedOutput.hasAnythingChanged = new HasAnythingChangedForm(YesNo.NO, 'test');
     //When
     const actualOutput = toCUITrialArrangements(ccdClaim, isClaimant);
     //Then
