@@ -59,8 +59,9 @@ class RepaymentPlan {
     await I.fillField(fields.year, '20');
     await I.click(buttons.saveAndContinue);
     await I.see('There was a problem');
-    await I.see('There was a problem');
-    await I.see('Enter a first payment date in the future');
+    await I.see('Enter a valid day');
+    await I.see('Enter a valid month');
+    await I.see('Enter a 4 digit year');
   }
 }
 

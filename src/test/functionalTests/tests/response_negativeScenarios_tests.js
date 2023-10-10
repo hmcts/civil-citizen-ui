@@ -35,64 +35,34 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Respond To Claim in english or welsh screen @nightly', async () => {
+Scenario('Testing error messages @nightly', async () => {
+  //Respond To Claim in english or welsh error screen
   await ResponseSteps.RespondToClaimError(claimRef);
-});
-
-Scenario('Personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetailsError(claimRef);
-});
-
-Scenario('View your options before response deadline error screen @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
+  //Todo:get Personal detail error screen passing
+  //await ResponseSteps.EnterPersonalDetailsError(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
+  //View your options before response deadline error screen
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
   await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
-});
-
-Scenario('Choose a response screens @nightly', async () => {
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  //Choose a response error screens
   await ResponseSteps.EnterResponseToClaimError(claimRef, partAdmit);
   await ResponseSteps.EnterResponseToClaimError(claimRef, rejectAll);
-});
-
-Scenario('How much money do you admit you owe? screen @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  //How much money do you admit you owe? error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
   await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, partAdmit);
-});
-
-Scenario('Why do you disagree with the amount claimed? screen @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  //Why do you disagree with the amount claimed? error screen
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmountError(claimRef, partAdmit);
-});
-
-Scenario('Decide how you\'ll pay @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
+  //Decide how you'll pay error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
   await ResponseSteps.EnterDateToPayOnError();
-});
-
-//todo:financial screens
-Scenario('Share your financial details screens @nightly', async () => {
-});
-
-Scenario('Your repayment plan @nightly', async () => {
+  //Your repayment plan error screen
   await ResponseSteps.EnterRepaymentPlanError(claimRef);
-});
-
-Scenario('Tell us how much you\'ve paid @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  //Tell us how much you've paid error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, rejectAll);
@@ -100,3 +70,13 @@ Scenario('Tell us how much you\'ve paid @nightly', async () => {
   await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, partAdmit);
 });
+
+Scenario('Personal detail error screen @nightly', async () => {
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetailsError(claimRef);
+});
+
+//todo:financial screens
+Scenario('Share your financial details screens @nightly', async () => {
+});
+
