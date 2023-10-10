@@ -27,7 +27,7 @@ describe('Submit claimant to ccd', ()=>{
   beforeEach(() => {
     claim = new Claim();
     claim.claimantResponse = new ClaimantResponse();
-    claim.totalClaimAmount = 500
+    claim.totalClaimAmount = 500;
     nock(citizenBaseUrl)
       .get('/cases/1')
       .reply(200, claimFromService);
@@ -80,7 +80,7 @@ describe('Submit claimant to ccd', ()=>{
       .post('/cases/1/citizen/undefined/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       return claim;
     });
     const spyOnTranslation = jest.spyOn(ccdTranslationForRequestJudement, 'translateClaimantResponseRequestDefaultJudgementToCCD');
