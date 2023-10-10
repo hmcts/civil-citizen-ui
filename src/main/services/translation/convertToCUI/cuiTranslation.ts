@@ -63,7 +63,7 @@ const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
   interest.interestEndDate = InterestEndDateType[ccdClaim?.interestClaimUntil];
   if (ccdClaim?.interestFromSpecificDate) {
     const ccdInterestDate = new Date(ccdClaim?.interestFromSpecificDate);
-    interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim.interestFromSpecificDateDescription);
+    interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim?.interestFromSpecificDateDescription);
   }
   interest.sameRateInterestSelection = {
     sameRateInterestType: SameRateInterestType[ccdClaim?.sameRateInterestSelection?.sameRateInterestType],
