@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CP_EVIDENCE_UPLOAD_CANCEL,
   CP_UPLOAD_DOCUMENTS_URL,
-  TYPES_OF_DOCUMENTS_URL
+  TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -64,7 +64,4 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     next(error);
   }
 })as RequestHandler);
-export function cancelDoc() {
-  console.log('ENTRANDO EN CANCEL');
-}
 export default typeOfDocumentsController;
