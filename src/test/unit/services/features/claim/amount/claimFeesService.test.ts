@@ -18,7 +18,7 @@ describe('claim fee  service', () => {
     //When
     const claimFee = await saveClaimFee('123',111);
     //Then
-    expect(claimFee).toBeUndefined()
+    expect(claimFee).toBeUndefined();
   });
 
 });
