@@ -22,7 +22,7 @@ describe('translate TimeLine to CCD model', () => {
         new TimelineRow(2, 2, 2002, 'test 2'),
       ],
     );
-    const timelineResponseCCD = toCCDTimeline(claim.claimDetails.timeline)
+    const timelineResponseCCD = toCCDTimeline(claim.claimDetails.timeline);
     expect(timelineResponseCCD).toHaveLength(2);
   });
 });
