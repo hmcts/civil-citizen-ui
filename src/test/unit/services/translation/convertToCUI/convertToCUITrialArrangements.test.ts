@@ -6,7 +6,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CCDTrialArrangementsHearingRequirements,
-  CCDTrialArrangementsOtherComments
+  CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 
