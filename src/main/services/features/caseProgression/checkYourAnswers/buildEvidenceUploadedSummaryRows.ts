@@ -48,7 +48,7 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
 
   const noticeOfIntention = uploadedDocuments.noticeOfIntention;
   if(noticeOfIntention){
-    getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', noticeOfIntention, witnessSummarySection.summaryList, claimId, lang);
+    getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', noticeOfIntention, witnessSummarySection.summaryList, claimId, lang);
   }
 
   const documentsReferred = uploadedDocuments.documentsReferred;
