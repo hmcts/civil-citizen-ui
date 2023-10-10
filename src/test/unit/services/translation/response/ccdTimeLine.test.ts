@@ -7,7 +7,6 @@ import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
 
 describe('translate TimeLine to CCD model', () => {
 
-
   it('should return undefined if timeline doesnt exist', () => {
     const claimEmpty = new Claim();
     claimEmpty.claimDetails = new ClaimDetails();
