@@ -27,4 +27,19 @@ describe('Translate claimant ccd request  to ccd version', () => {
       'ccjPaymentPaidSomeOption': 'Yes',
     });
   });
+  it('should translate ccj request for judgment admission into the CCD response without paid amount', () => {
+    claim.claimantResponse.ccjRequest = {
+      paidAmount: {
+        option: YesNo.NO,
+        amount: 0,
+      },
+    };
+    const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
+    expect(ccdResponse).toEqual({
+      'ccjJudgmentAmountClaimFee': '300',
+      'ccjJudgmentLipInterest': '0',
+      'ccjPaymentPaidSomeAmount': null,
+      'ccjPaymentPaidSomeOption': 'No',
+    });
+  });
 });

@@ -12,11 +12,11 @@ export interface ClaimantResponseRequestDefaultJudgementToCCD extends CCDClaim {
 }
 
 export const translateClaimantResponseRequestDefaultJudgementToCCD = (claim: Claim, claimFee: number): ClaimantResponseRequestDefaultJudgementToCCD => {
-  const ccjClaimantResponse = claim.claimantResponse;
-  const ccjPaymentPaidSomeAmount = ccjClaimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? (ccjClaimantResponse?.ccjRequest?.paidAmount?.amount * 100).toString() : null;
+  const claimantAcceptedpaidAmount = claim.claimantResponse?.ccjRequest?.paidAmount;
+  const ccjPaymentPaidSomeAmount = claimantAcceptedpaidAmount?.option === YesNo.YES ? (claimantAcceptedpaidAmount?.amount * 100).toString() : null;
   const ccjJudgmentLipInterest = calculateInterestToDate(claim) || 0;
   return {
-    ccjPaymentPaidSomeOption: toCCDYesNo(ccjClaimantResponse?.ccjRequest?.paidAmount?.option),
+    ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedpaidAmount?.option),
     ccjPaymentPaidSomeAmount,
     ccjJudgmentAmountClaimFee: claimFee.toString(),
     ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
