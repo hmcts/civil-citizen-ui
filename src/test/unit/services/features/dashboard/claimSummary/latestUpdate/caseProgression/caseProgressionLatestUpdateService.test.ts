@@ -79,6 +79,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       isBundleStitched: () => false,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
     } as Claim;
 
     //When
@@ -96,6 +97,9 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
+      isClaimant: () => false,
+      isFinalGeneralOrderIssued: () => false,
+      isBundleStitched: () => false,
     };
     const lang = 'en';
     let result: ClaimSummaryContent[];
@@ -251,6 +255,7 @@ describe('Case Progression Latest Update Content service', () => {
       isSixWeeksOrLessFromTrial: () => false,
       isBundleStitched: () => true,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T18:00'),
         claimantTrialArrangements: claimantTrialArrangements,
@@ -288,6 +293,7 @@ describe('Case Progression Latest Update Content service', () => {
       isFastTrackClaim: false,
       isSixWeeksOrLessFromTrial: () => false,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
         claimantTrialArrangements: claimantTrialArrangements,
@@ -322,6 +328,7 @@ describe('Case Progression Latest Update Content service', () => {
       isSixWeeksOrLessFromTrial: () => true,
       isBundleStitched: () => true,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -355,6 +362,7 @@ describe('Case Progression Latest Update Content service', () => {
       isSixWeeksOrLessFromTrial: () => false,
       isBundleStitched: () => false,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -398,6 +406,7 @@ describe('Case Progression Latest Update Content service', () => {
       isFastTrackClaim: true,
       isSixWeeksOrLessFromTrial: () => true,
       isBundleStitched: () => false,
+      isClaimant: () => false,
       caseProgression: {
         claimantLastUploadDate: fakeDayBeforeDate,
       },
@@ -496,6 +505,7 @@ describe('Case Progression Latest Update Content service', () => {
       ...claimWithSdo,
       isBundleStitched: () => false,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       caseDismissedHearingFeeDueDate: new Date('2020-01-01T18:00'),
     };
 
@@ -521,6 +531,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasSdoOrderDocument: () => true,
       isBundleStitched: () => false,
       isFinalGeneralOrderIssued: () => false,
+      isClaimant: () => false,
       ...claimWithSdo,
     };
 

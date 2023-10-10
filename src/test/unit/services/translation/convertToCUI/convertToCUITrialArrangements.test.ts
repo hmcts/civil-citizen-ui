@@ -3,7 +3,6 @@ import {TrialArrangements, TrialArrangementsDocument} from 'models/caseProgressi
 import {DocumentType} from 'models/document/documentType';
 import {toCUITrialArrangements} from 'services/translation/convertToCUI/convertToCUITrialArrangements';
 import {CaseRole} from 'form/models/caseRoles';
-import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 
 describe('toCUITrialArrangements', () => {
   it ('should convert CCDClaim to TrialArrangements for claimant', () => {
@@ -28,9 +27,6 @@ describe('toCUITrialArrangements', () => {
     };
     const expectedOutput: TrialArrangements = new TrialArrangements();
     expectedOutput.trialArrangementsDocument = getTrialReadyDocument(isClaimant);
-    expectedOutput.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined);
-    expectedOutput.isCaseReady = undefined;
-    expectedOutput.otherTrialInformation = undefined;
     //When
     const actualOutput = toCUITrialArrangements(ccdClaim, isClaimant);
     //Then
@@ -56,10 +52,7 @@ describe('toCUITrialArrangements', () => {
     const ccdClaim: CCDClaim = {
       trialReadyDocuments: [getTrialReadyDocument(true)],
     };
-    const expectedOutput: TrialArrangements = new TrialArrangements();
-    expectedOutput.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined);
-    expectedOutput.isCaseReady = undefined;
-    expectedOutput.otherTrialInformation = undefined;
+    const expectedOutput: TrialArrangements = undefined;
     //When
     const actualOutput = toCUITrialArrangements(ccdClaim, isClaimant);
     //Then

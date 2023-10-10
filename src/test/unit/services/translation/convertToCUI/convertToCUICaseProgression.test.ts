@@ -9,7 +9,10 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
-  UploadDocumentTypes, UploadEvidenceDocumentType, UploadEvidenceExpert, UploadEvidenceWitness,
+  UploadDocumentTypes,
+  UploadEvidenceDocumentType,
+  UploadEvidenceExpert,
+  UploadEvidenceWitness,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
@@ -27,7 +30,6 @@ import {
 } from '../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {getMockDocument} from '../../../../utils/mockDocument';
-import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
@@ -56,21 +58,12 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
 
-function getTrialArrangement() {
-  const defendantTrialArrangement = new TrialArrangements();
-  defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined),
-  defendantTrialArrangement.isCaseReady = undefined,
-  defendantTrialArrangement.otherTrialInformation = undefined;
-  return defendantTrialArrangement;
-}
-
 describe('toCUICaseProgression', () => {
   it('should convert CCDClaim to CaseProgression', () => {
     const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
     ccdClaim.finalOrderDocumentCollection =
       [new FinalOrderDocumentCollection(mockFinalOrderDocument1.id, mockFinalOrderDocument1.value)];
     const expectedOutput = createCUIClaim();
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -131,8 +124,8 @@ describe('toCUICaseProgression', () => {
     expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
-    expectedOutput.claimantTrialArrangements = new TrialArrangements();
+    expectedOutput.claimantTrialArrangements = undefined;
+    expectedOutput.defendantTrialArrangements = undefined;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
@@ -170,16 +163,15 @@ describe('toCUICaseProgression', () => {
     );
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
       (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
-    expectedOutput.defendantTrialArrangements = getTrialArrangement();
-    expectedOutput.claimantTrialArrangements = new TrialArrangements();
+    const defendantTrialArrangements = new TrialArrangements();
+    defendantTrialArrangements.isCaseReady = YesNo.YES;
+    expectedOutput.defendantTrialArrangements = defendantTrialArrangements;
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
 });
 
 function createCUIClaim(): CaseProgression {
-  const claimantTrialArrangements = new TrialArrangements();
-  claimantTrialArrangements.isCaseReady = YesNo.NO;
   const defendantTrialArrangements = new TrialArrangements();
   defendantTrialArrangements.isCaseReady = YesNo.YES;
   return {
@@ -191,7 +183,6 @@ function createCUIClaim(): CaseProgression {
     claimantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     finalOrderDocumentCollection: getFinalOrderDocumentCollection(),
-    claimantTrialArrangements: claimantTrialArrangements,
     defendantTrialArrangements: defendantTrialArrangements,
   } as CaseProgression;
 }
