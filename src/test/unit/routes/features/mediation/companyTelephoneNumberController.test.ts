@@ -4,12 +4,14 @@ import config from 'config';
 import nock from 'nock';
 import {CAN_WE_USE_COMPANY_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {getCompanyTelephoneNumberData} from 'services/features/response/mediation/companyTelephoneNumberService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/response/mediation/companyTelephoneNumberService');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,7 +25,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
   describe('on Get', () => {
     it('should return on company telephone number page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCompanyTelephoneNumberData as jest.Mock).mockResolvedValue(['Felipe', '123345']);
       await request(app).get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -31,7 +33,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCompanyTelephoneNumberData as jest.Mock).mockRejectedValueOnce(new Error('Redis error'));
       await request(app)
         .get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
@@ -46,7 +48,9 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const validName = 'David';
     const inValidName = 'Daviddaviddaviddaviddaviddavido';
     it('should return error when option is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue({
+        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
+      });
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({contactPerson: 'Test contact person'})
@@ -126,7 +130,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         });
     });
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error('Redis error'))
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName})
