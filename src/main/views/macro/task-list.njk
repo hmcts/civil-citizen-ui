@@ -1,6 +1,7 @@
 {% from "./task.njk" import taskComponent %}
 
-{% macro taskListComponent(taskList, t) %}
+{% macro taskListComponent(dashboardTaskList, t) %}
+{% for taskList in dashboardTaskList %}
 
   <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
     <h2 class="app-task-list__section">
@@ -13,5 +14,5 @@
       {% endfor %}
     </ol>
   </div>
-
+ {% endfor %}
 {% endmacro %}
