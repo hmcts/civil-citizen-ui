@@ -8,7 +8,7 @@ const contactUs = new ContactUs();
 class UploadYourDocumentsIntroduction {
 
   checkPageFullyLoaded () {
-    //I.waitForElement('//a[.=\'Cancel\']');
+    I.waitForElement('//a[contains(.,\'Start now\')]');
   }
 
   nextAction (nextAction) {
