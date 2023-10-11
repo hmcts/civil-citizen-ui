@@ -11,6 +11,8 @@ import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetail
 import {YesNo} from '../../../../common/form/models/yesNo';
 import config from 'config';
 
+var CryptoJS = require("crypto-js");
+
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 const firstContactClaimSummaryController = Router();
@@ -19,7 +21,12 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cookie = req.cookies['firstContact'];
-      if (cookie?.claimId && cookie?.pinVerified === YesNo.YES) {
+
+      // Decrypt
+      var bytes  = CryptoJS.AES.decrypt(cookie?.hash, cookie.claimReference);
+      var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+      if (cookie?.claimId && originalText === YesNo.YES) {
         const claimId = req.cookies.firstContact?.claimId;
         const claim: Claim = await getClaimById(claimId, req);
         const interestData = getInterestDetails(claim);
