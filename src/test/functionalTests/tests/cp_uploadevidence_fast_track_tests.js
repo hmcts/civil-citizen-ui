@@ -19,7 +19,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
-  /*if (['preview', 'demo'].includes(config.runningEnv)) {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
-  }*/
+  }
 }).tag('@regression');
