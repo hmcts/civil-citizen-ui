@@ -11,7 +11,7 @@ import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetail
 import {YesNo} from '../../../../common/form/models/yesNo';
 import config from 'config';
 
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js');
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 

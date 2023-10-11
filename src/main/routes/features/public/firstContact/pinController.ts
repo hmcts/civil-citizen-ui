@@ -13,7 +13,7 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js');
 
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
