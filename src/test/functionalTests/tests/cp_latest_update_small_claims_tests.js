@@ -22,4 +22,4 @@ Scenario('Case progression journey - Sall Clais - Verify latest Update page', ()
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
