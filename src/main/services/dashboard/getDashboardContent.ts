@@ -1,9 +1,10 @@
 
 import { Claim } from 'common/models/claim';
 import {TaskStatus, TaskStatusColor} from 'common/models/taskList/TaskStatus';
-import { TaskList } from 'common/models/taskList/taskList';
+import {TaskList, TaskListBuilder} from 'common/models/taskList/taskList';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {NotificationBuilder} from 'common/utils/NotificationBuilder';
+import {TaskItem} from "models/taskList/task";
 
 export const getDefendantNotifications = (claim: Claim, lng: string) => {
   const dashboardNotificationsList = [];
@@ -65,7 +66,21 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
 export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
   // TODO: this is a mock data
-  const taskListMock: TaskList[] = [
+  const taskListMock: TaskList[]= [];
+  const taskListItemMock =  new TaskListBuilder('The claim')
+    .addTask(new TaskItem('Task 1', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .addTask(new TaskItem('Task 2', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .addTask(new TaskItem('Task 3', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .build();
+  taskListMock.push(taskListItemMock);
+
+  const taskListItemMock2 =  new TaskListBuilder('The claim')
+    .addTask(new TaskItem('Task 1', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .addTask(new TaskItem('Task 2', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .addTask(new TaskItem('Task 3', 'http://example.com',TaskStatus.COMPLETE, true, TaskStatusColor[TaskStatus.COMPLETE]) )
+    .build();
+  taskListMock.push(taskListItemMock2);
+  /*const taskListMock: TaskList[] = [
     {
       title: 'The claim',
       tasks: [
@@ -100,6 +115,6 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
         },
       ],
     },
-  ];
+  ];*/
   return taskListMock;
 };
