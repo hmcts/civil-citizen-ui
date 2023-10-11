@@ -11,7 +11,6 @@ import {
   buildViewTrialArrangementsSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/latestUpdateContentBuilderCaseProgression';
 import {checkEvidenceUploadTime} from 'common/utils/dateUtils';
-import {YesNo} from 'form/models/yesNo';
 
 export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : ClaimSummaryContent[] => {
   const areTrialArrangementsFinalised = isCaseReady(claim.isClaimant(), claim);
@@ -103,5 +102,6 @@ export const getViewTrialArrangementsContent = (isOtherParty: boolean) : ClaimSu
 };
 
 function isCaseReady(isClaimant: boolean, claim: Claim): boolean {
-  return isClaimant ? claim?.caseProgression?.claimantTrialArrangements?.isCaseReady === YesNo.YES : claim?.caseProgression?.defendantTrialArrangements?.isCaseReady === YesNo.YES;
+  return !!((isClaimant && claim?.caseProgression?.claimantTrialArrangements?.isCaseReady)
+    || claim?.caseProgression?.claimantTrialArrangements?.isCaseReady);
 }
