@@ -21,13 +21,14 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cookie = req.cookies['firstContact'];
+      
+      const claimId = req.cookies.firstContact?.claimId;
+      const claim: Claim = await getClaimById(claimId, req);
 
-      var bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, cookie.claimReference);
-      var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
+      const bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, claim.respondent1PinToPostLRspec.accessCode);
+      const originalText = bytes.toString(CryptoJS.enc.Utf8);
+      
       if (cookie?.claimId && originalText === YesNo.YES) {
-        const claimId = req.cookies.firstContact?.claimId;
-        const claim: Claim = await getClaimById(claimId, req);
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());

@@ -45,7 +45,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       await saveDraftClaim(claim.id, claim);
       cookie.claimId = claim.id;
 
-      var ciphertext = CryptoJS.AES.encrypt(YesNo.YES, cookie.claimReference).toString();
+      const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
       cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
 
       res.cookie('firstContact', cookie);
