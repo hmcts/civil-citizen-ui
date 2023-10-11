@@ -45,8 +45,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       await saveDraftClaim(claim.id, claim);
       cookie.claimId = claim.id;
 
-      // pinVerified = hash
-      // Encrypt YES with claim ref
       var ciphertext = CryptoJS.AES.encrypt(YesNo.YES, cookie.claimReference).toString();
       cookie.hash = ciphertext;
 

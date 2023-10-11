@@ -22,7 +22,6 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
     try {
       const cookie = req.cookies['firstContact'];
 
-      // Decrypt
       var bytes  = CryptoJS.AES.decrypt(cookie?.hash, cookie.claimReference);
       var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
