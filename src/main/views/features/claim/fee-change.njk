@@ -1,0 +1,38 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.FEE_CHANGE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t("PAGES.FEE_CHANGE.TITLE") }}</h1>
+          <p class="govuk-body">{{ t("PAGES.FEE_CHANGE.PARAGRAPH_1") }}</p>
+          <p class="govuk-body">{{ t("PAGES.FEE_CHANGE.PARAGRAPH_2", { claimFee : claimFee }) }}</p>
+          <p class="govuk-body">{{ t("PAGES.FEE_CHANGE.PARAGRAPH_3") }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('PAGES.FEE_CHANGE.BUTTON_LABEL'),
+                href: redirectUrl
+              }) }}
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
