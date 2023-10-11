@@ -16,9 +16,11 @@ describe('toCUITrialArrangements', () => {
     const isClaimant = true;
     const ccdClaim: CCDClaim = {
       trialReadyDocuments: [getTrialReadyDocument(true), getTrialReadyDocument(false)],
+      trialReadyApplicant: YesNoUpperCamelCase.NO,
     };
     const expectedOutput: TrialArrangements = new TrialArrangements();
     expectedOutput.trialArrangementsDocument = getTrialReadyDocument(isClaimant);
+    expectedOutput.isCaseReady = YesNo.NO;
     //When
     const actualOutput = toCUITrialArrangements(ccdClaim, isClaimant);
     //Then

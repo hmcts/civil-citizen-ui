@@ -104,7 +104,7 @@ describe('Case Progression Latest Update Content service', () => {
     const lang = 'en';
     let result: ClaimSummaryContent[];
 
-    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (respondent) as only they have finalised their trial arrangements and evidence upload contents', () => {
+    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (defendant) with case ready answer and for the other party (claimant) with case not ready answer', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
       const claimantTrialArrangements = new TrialArrangements();
@@ -118,17 +118,21 @@ describe('Case Progression Latest Update Content service', () => {
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
-      expect(result.length).toEqual(3);
+      expect(result.length).toEqual(4);
       expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
-      expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
-      expect(result[1].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`);
+      expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
+      expect(result[1].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_OTHER_PARTY`);
       expect(result[1].contentSections[2].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`);
       expect(result[1].contentSections.length).toEqual(3);
-      expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(result[2].contentSections.length).toEqual(6);
+      expect(result[2].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+      expect(result[2].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`);
+      expect(result[2].contentSections[2].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`);
+      expect(result[2].contentSections.length).toEqual(3);
+      expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(result[3].contentSections.length).toEqual(6);
     });
 
-    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the other party (claimant) as only they have finalised their trial arrangements and evidence upload contents', () => {
+    it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements for the current party (defendant) with case not ready answer and for the other party (claimant) with case ready answer and evidence upload contents', () => {
       //Given
       claimWithSdoAndHearing.caseProgressionHearing = getCaseProgressionHearingMock();
       const claimantTrialArrangements = new TrialArrangements();
@@ -142,13 +146,18 @@ describe('Case Progression Latest Update Content service', () => {
       //When
       result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, lang);
       //Then
-      expect(result.length).toEqual(3);
+      expect(result.length).toEqual(4);
       expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
       expect(result[1].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
       expect(result[1].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_OTHER_PARTY`);
+      expect(result[1].contentSections[2].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`);
       expect(result[1].contentSections.length).toEqual(3);
-      expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-      expect(result[2].contentSections.length).toEqual(6);
+      expect(result[2].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+      expect(result[2].contentSections[1].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`);
+      expect(result[2].contentSections[2].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`);
+      expect(result[2].contentSections.length).toEqual(3);
+      expect(result[3].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+      expect(result[3].contentSections.length).toEqual(6);
     });
 
     it('getCaseProgressionLatestUpdates should return hearing notice, view trial arrangements section for the both parties as they have finalised their trial arrangements and evidence upload contents', () => {
@@ -237,6 +246,7 @@ describe('Case Progression Latest Update Content service', () => {
 
   it('getCaseProgressionLatestUpdates: should return hearing notice and evidence upload contents, but not new upload contents', () => {
     //Given:
+    const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
     jest
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
@@ -267,15 +277,20 @@ describe('Case Progression Latest Update Content service', () => {
     const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
 
     //Then
-    expect(result.length).toEqual(3);
+    expect(result.length).toEqual(5);
     expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.BUNDLE.TITLE');
     expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
-    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    expect(result[2].contentSections.length).toEqual(6);
+    expect(result[2].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
+    expect(result[2].contentSections.length).toEqual(3);
+    expect(result[3].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+    expect(result[3].contentSections.length).toEqual(3);
+    expect(result[4].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[4].contentSections.length).toEqual(6);
   });
 
   it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents', () => {
     //Given:
+    const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
     jest
       .useFakeTimers()
       .setSystemTime(new Date('2020-01-02T17:59'));
@@ -305,11 +320,15 @@ describe('Case Progression Latest Update Content service', () => {
     const result = getCaseProgressionLatestUpdates(claimWithSdoAndHearing, 'en');
 
     //Then
-    expect(result.length).toEqual(3);
+    expect(result.length).toEqual(5);
     expect(result[0].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.NEW_UPLOAD.TITLE');
     expect(result[1].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.TRIAL_HEARING_CONTENT.YOUR_HEARING_TITLE');
-    expect(result[2].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
-    expect(result[2].contentSections.length).toEqual(6);
+    expect(result[2].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_OTHER_PARTY`);
+    expect(result[2].contentSections.length).toEqual(3);
+    expect(result[3].contentSections[0].data.text).toEqual(`${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`);
+    expect(result[3].contentSections.length).toEqual(3);
+    expect(result[4].contentSections[0].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE');
+    expect(result[4].contentSections.length).toEqual(6);
   });
 
   it('getCaseProgressionLatestUpdates: should return hearing notice, evidence upload, and new upload contents, ' +

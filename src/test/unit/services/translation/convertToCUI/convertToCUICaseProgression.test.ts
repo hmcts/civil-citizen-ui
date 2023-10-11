@@ -219,6 +219,7 @@ describe('toCUICaseProgression', () => {
     expectedOutput.defendantTrialArrangements = defendantTrialArrangements;
     const claimantTrialArrangements = new TrialArrangements();
     claimantTrialArrangements.trialArrangementsDocument = claimantTrialArrangementsDocument;
+    claimantTrialArrangements.isCaseReady = YesNo.NO;
     expectedOutput.claimantTrialArrangements = claimantTrialArrangements;
     //When
     const actualOutput = toCUICaseProgression(ccdClaim);
@@ -228,6 +229,8 @@ describe('toCUICaseProgression', () => {
 });
 
 function createCUIClaim(): CaseProgression {
+  const claimantTrialArrangements = new TrialArrangements();
+  claimantTrialArrangements.isCaseReady = YesNo.NO;
   const defendantTrialArrangements = new TrialArrangements();
   defendantTrialArrangements.isCaseReady = YesNo.YES;
   return {
@@ -240,6 +243,7 @@ function createCUIClaim(): CaseProgression {
     defendantLastUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     finalOrderDocumentCollection: getFinalOrderDocumentCollection(),
     defendantTrialArrangements: defendantTrialArrangements,
+    claimantTrialArrangements: claimantTrialArrangements,
   } as CaseProgression;
 }
 
