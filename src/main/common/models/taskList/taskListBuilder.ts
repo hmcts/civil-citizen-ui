@@ -1,5 +1,5 @@
-import {Task} from "./task";
-import {TaskList} from "./taskList";
+import {Task} from './task';
+import {TaskList} from './taskList';
 
 export class TaskListBuilder {
   private taskList: TaskList;

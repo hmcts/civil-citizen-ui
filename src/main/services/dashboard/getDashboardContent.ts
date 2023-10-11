@@ -21,13 +21,12 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
       .build())
     .build();
 
-    const waitForDefendantResponseNotification2 = new NotificationBuilder()
+  const waitForDefendantResponseNotification2 = new NotificationBuilder()
     .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND', { lng }))
     .addContent(new PageSectionBuilder()
       .addLink('View Claim', '#', t('PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND', { lng, defendantName, responseDeadline }))
       .build())
     .build();
-
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
@@ -64,7 +63,7 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
     .addTask(new TaskItem('View information about the claimant', '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]) )
     .build();
     
-    const taskListItemMock2 =  new TaskListBuilder('The response')
+  const taskListItemMock2 =  new TaskListBuilder('The response')
     .addTask(new TaskItem('View the response to the claim', '#',TaskStatus.IN_PROGRESS, false, TaskStatusColor[TaskStatus.IN_PROGRESS]) )
     .addTask(new TaskItem('View information about the defendant', '#',TaskStatus.READY_TO_VIEW, false, TaskStatusColor[TaskStatus.READY_TO_VIEW]) )
     .build();
