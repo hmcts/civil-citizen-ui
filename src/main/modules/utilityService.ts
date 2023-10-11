@@ -22,18 +22,18 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey: b
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
   if (claim.isEmpty()) {
     claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if(claim) {
+    if (claim) {
       await saveDraftClaim(redisKey, claim, true);
-      } else {
-        claim = new Claim();
-        claim.legacyCaseReference = 'testCaseReference';
-        claim.totalClaimAmount = 200;
-        claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
-        claim.totalInterest = 15;
-        claim.claimFee = {calculatedAmountInPence: '3500'};
-      }
+    } else {
+      claim = new Claim();
+      claim.legacyCaseReference = 'testCaseReference';
+      claim.totalClaimAmount = 200;
+      claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
+      claim.totalInterest = 15;
+      claim.claimFee = {calculatedAmountInPence: '3500'};
     }
-    return claim;
+  }
+  return claim;
 };
 
 export const getRedisStoreForSession = () => {

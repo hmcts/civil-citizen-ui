@@ -8,8 +8,8 @@ import {
   getGenericOptionForm,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/utilityService';
 import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const sharedExpertController = Router();
 const dqPropertyName = 'sharedExpert';

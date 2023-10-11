@@ -16,7 +16,7 @@ const logger = Logger.getLogger('draftStoreService');
  * @param claimId
  * @returns claim from redis or undefined when no there is no data for claim id
  */
-export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror: boolean=false) => {
+export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror = false) => {
   const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
   if (dataFromRedis === null && !doNotThrowErrror) {
     throw new Error('Case not found...');
@@ -39,7 +39,7 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  * Gets only case data.
  * @param claimId
  */
-export const getCaseDataFromStore = async (claimId: string, doNotThrowError: boolean = false): Promise<Claim> => {
+export const getCaseDataFromStore = async (claimId: string, doNotThrowError = false): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
@@ -55,7 +55,7 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError: boo
  * @param claimId
  * @param claim
  */
-export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError: boolean = false) => {
+export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);

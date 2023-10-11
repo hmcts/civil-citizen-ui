@@ -36,7 +36,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
 requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req)
+      const redisKey = generateRedisKey(<AppRequest>req);
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = req.params.id;
