@@ -15,6 +15,10 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
           trialArrangements.trialArrangementsDocument =  claimantTrialArrangementsDocuments[0];
         }
       }
+
+      if (ccdClaim.trialReadyApplicant) {
+        trialArrangements.isCaseReady = toCUIYesNo(ccdClaim.trialReadyApplicant);
+      }
     } else {
       if (ccdClaim.trialReadyDocuments) {
         const defendantTrialArrangementsDocuments : TrialArrangementsDocument[] = ccdClaim.trialReadyDocuments.filter(doc => formatOwnedBy(doc.value.ownedBy) === CaseRole.DEFENDANT);
