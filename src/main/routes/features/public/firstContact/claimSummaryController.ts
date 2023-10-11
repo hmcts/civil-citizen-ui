@@ -22,7 +22,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
     try {
       const cookie = req.cookies['firstContact'];
 
-      var bytes  = CryptoJS.AES.decrypt(cookie?.hash, cookie.claimReference);
+      var bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, cookie.claimReference);
       var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
       if (cookie?.claimId && originalText === YesNo.YES) {

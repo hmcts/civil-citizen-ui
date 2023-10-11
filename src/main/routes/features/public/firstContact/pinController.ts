@@ -46,7 +46,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       cookie.claimId = claim.id;
 
       var ciphertext = CryptoJS.AES.encrypt(YesNo.YES, cookie.claimReference).toString();
-      cookie.hash = ciphertext;
+      cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
 
       res.cookie('firstContact', cookie);
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
