@@ -21,11 +21,14 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const cookie = req.cookies['firstContact'];
-      
       const claimId = req.cookies.firstContact?.claimId;
       const claim: Claim = await getClaimById(claimId, req);
 
-      const bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, claim.respondent1PinToPostLRspec.accessCode);
+      if (!claim.respondent1PinToPostLRspec?.accessCode || !cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ) {
+        return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
+      }
+
+      const bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, claim.respondent1PinToPostLRspec?.accessCode);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
       
       if (cookie?.claimId && originalText === YesNo.YES) {
