@@ -36,4 +36,3 @@ const getDraftClaim = async (userToken: string, userId: string, isReleaseTwoEnab
   }
   return await getOcmcDraftClaims(userToken);
 };
-

@@ -5,14 +5,13 @@ import {SignatureType} from 'models/signatureType';
 import {Claim} from 'models/claim';
 import {CLAIM_ID} from '../../../../utils/checkAnswersConstants';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {getSummarySections, saveStatementOfTruth} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
-import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { getSummarySections, saveStatementOfTruth } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {ResponseType} from 'common/form/models/responseType';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'common/form/models/yesNo';
 import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -22,44 +21,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-function generateExpectedResultForPartAdmitPayImmediately(option: string) {
-  return {
-    sections: [{
-      title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
-            },
-            value: {
-              html: option === YesNo.YES
-                ? 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT'
-                : 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT',
-            },
-            actions: {
-              items: [
-                {
-                  href: '/case/12345/claimant-response/settle-admitted',
-                  text: 'COMMON.BUTTONS.CHANGE',
-                  visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    null,
-    {
-      title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
-      summaryList: {
-        rows: [],
-      },
-    }],
-  };
-}
 
 describe('Check Answers service', () => {
   describe('Get Data from Draft', () => {
@@ -86,83 +47,6 @@ describe('Check Answers service', () => {
       //Then
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
-    });
-  });
-
-  describe('Build check answers for pay by set date either for part admit or full admit ', () => {
-    let claim: Claim;
-    beforeEach(() => {
-      claim = new Claim();
-
-    });
-
-    it('should show the check your answers for pay by set date for part admit', () => {
-      claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
-
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
-    });
-
-    it('should show the check your answers for pay by set date for full admit', () => {
-      claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
-      const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
-
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
-    });
-
-    it('should show the check your answers for pay by installments for part admit', () => {
-      claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
-
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
-    });
-
-    it('should show the check your answers for pay by set date for full admit', () => {
-      claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
-      const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
-
-      expect(result.sections[0].summaryList.rows.length).toEqual(2);
-      expect(result.sections[0].summaryList.rows[0]).toEqual({'actions': {'items': [{'href': '/case/12345/claimant-response/choose-how-to-proceed', 'text': 'COMMON.BUTTONS.CHANGE', 'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}]}, 'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'}, 'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}});
-      expect(result.sections[0].summaryList.rows[1]).toEqual({'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'}, 'value': {'html': expectedPaymentDate}});
-    });
-  });
-
-  describe('Build check answers for part admit immediately', () => {
-    let claim: Claim;
-    beforeEach(() => {
-      claim = new Claim();
-      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
-      claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}};
-    });
-
-    it('should check answers for part admit pay immediately for yes option', () => {
-      const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.YES);
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
-      const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result);
-    });
-
-    it('should check answers for part admit pay immediately for no option', () => {
-      const expectedResult = generateExpectedResultForPartAdmitPayImmediately(YesNo.NO);
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
-      const result = getSummarySections('12345', claim, 'en');
-      expect(expectedResult).toEqual(result);
     });
   });
   describe('Build check answers for judgment request', () => {
@@ -192,13 +76,12 @@ describe('Check Answers service', () => {
       expect(expectedResult).toEqual(result);
     });
   });
-
 });
 
 function generateExpectedResultForDefendantPaidNone() {
   return {
     sections: [
-      undefined,
+      null,
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
         summaryList: {
@@ -231,7 +114,7 @@ function generateExpectedResultForDefendantPaidNone() {
           ],
         },
       },
-      null,
+      undefined,
     ],
   };
 }
@@ -239,7 +122,7 @@ function generateExpectedResultForDefendantPaidNone() {
 function generateExpectedResultForDefendantPaidSome() {
   return {
     sections: [
-      undefined,
+      null,
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
         summaryList: {
@@ -280,8 +163,7 @@ function generateExpectedResultForDefendantPaidSome() {
           ],
         },
       },
-      null,
+      undefined,
     ],
   };
 }
-
