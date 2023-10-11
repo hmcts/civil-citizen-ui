@@ -64,6 +64,7 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
+import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -124,6 +125,7 @@ export class Claim {
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
   helpWithFees ?: CCDHelpWithFees;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -353,6 +355,10 @@ export class Claim {
 
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  isRejectionReasonCompleted(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.claimantResponse?.rejectionReason?.text;
   }
 
   getPaidAmount(): number {
