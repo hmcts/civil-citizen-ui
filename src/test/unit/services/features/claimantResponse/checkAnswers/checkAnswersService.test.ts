@@ -76,7 +76,7 @@ function generateExpectedResultForPartAdmitPayImmediately(option: string) {
         },
       },
       {
-        'title': 'PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE',
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_HEARING_REQUIREMENTS_TITLE',
         'summaryList': {
           'rows': [
             {
