@@ -257,6 +257,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   helpWithFees ?: CCDHelpWithFees;
+  pcqId?: string;
 }
 
 export interface ClaimFeeData {
