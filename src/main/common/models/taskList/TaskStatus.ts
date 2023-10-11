@@ -7,9 +7,11 @@ export enum TaskStatus {
   IN_PROGRESS = 'IN_PROGRESS',
 }
 
-// export const TaskStatusColor = {
-//   DONE: { text: TaskStatus.DONE, class: 'govuk-tag--green' },
-//   READY_TO_VIEW: { text: TaskStatus.READY_TO_VIEW, class: 'govuk-tag--red' },
-//   NOT_AVAILABLE_YET: { text: TaskStatus.NOT_AVAILABLE_YET, class: 'govuk-tag--grey' },
-//   IN_PROGRESS: { text: TaskStatus.IN_PROGRESS, class: 'govuk-tag--yellow' },
-// };
+export const TaskStatusColor: Record<TaskStatus, string> = {
+  [TaskStatus.COMPLETE]: '',
+  [TaskStatus.INCOMPLETE]:'govuk-tag--grey',
+  [TaskStatus.DONE]:'govuk-tag--green',
+  [TaskStatus.READY_TO_VIEW]:'govuk-tag--red',
+  [TaskStatus.NOT_AVAILABLE_YET]:'govuk-tag--grey',
+  [TaskStatus.IN_PROGRESS]:'govuk-tag--yellow',
+};

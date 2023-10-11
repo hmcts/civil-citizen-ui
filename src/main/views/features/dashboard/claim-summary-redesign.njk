@@ -4,8 +4,7 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
-{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
-{% from "./item-content.njk" import itemContent %}
+{% from "../../macro/notifications.njk" import notifications %}
 
 {% block content %}
 
@@ -29,25 +28,10 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-
           {# Notifications #}
-          {% for notification in dashboardNotifications %}
-            {% set html %}
-            {% for item in notification.content %}
-              {{ itemContent(item,t) }}
-            {% endfor %}
-            {% endset %}
-            {{ govukNotificationBanner({
-              titleText: notification.title,
-              html: html
-            }) }}
-          {% endfor %}
-          
+          {{ notifications(dashboardNotifications, t) }}
           {# TaskList #}
-          {% for taskList in dashboardTaskList %}
-            {{ taskListComponent(taskList, t) }}
-          {% endfor %}
-
+          {{ taskListComponent(dashboardTaskList, t) }}
         </div>
 
         {# TODO: Right side #}
