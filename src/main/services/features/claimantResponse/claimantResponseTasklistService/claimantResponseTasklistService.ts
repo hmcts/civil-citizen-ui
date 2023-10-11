@@ -8,15 +8,16 @@ import {
   buildWhatToDoNextSection,
   buildYourResponseSection,
 } from './claimantResponseTasklistBuilder';
+import {ClaimResponseStatus} from "models/claimResponseStatus";
 
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
-  if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && claim.isRejectAllOfClaimDispute())) {
+  if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && (claim.isRejectAllOfClaimDispute() || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL))) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
-  if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute()))
+  if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS))
   {
     taskGroups.push(buildYourResponseSection(claim, claimId, lang));
   }
