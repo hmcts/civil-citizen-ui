@@ -14,7 +14,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   try{
     if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
-      deleteDraftClaimFromStore(claimId)
+      deleteDraftClaimFromStore(claimId);
     }
   } finally {
     res.redirect(DASHBOARD_URL);

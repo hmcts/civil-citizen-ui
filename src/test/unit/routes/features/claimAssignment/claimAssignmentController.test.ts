@@ -28,7 +28,7 @@ describe('claim assignment controller', ()=>{
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.get('location')).toBe(DASHBOARD_URL);
-          expect(spyDel).toBeCalled()
+          expect(spyDel).toBeCalled();
         });
     });
     it('should not call civil service api and redirect to dashboard', async () =>{
