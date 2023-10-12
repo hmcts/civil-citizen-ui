@@ -65,8 +65,8 @@ describe('Full Defence', () => {
           option: 'no',
         },
         hasPartPaymentBeenAccepted: {
-          option: 'no'
-        }
+          option: 'no',
+        },
       },
       totalClaimAmount: 9000,
       rejectAllOfClaim: {
@@ -117,8 +117,8 @@ describe('Full Defence', () => {
         option: 'yes',
       },
       hasPartPaymentBeenAccepted: {
-        option: 'yes'
-      }
+        option: 'yes',
+      },
     } as ClaimantResponse;
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
