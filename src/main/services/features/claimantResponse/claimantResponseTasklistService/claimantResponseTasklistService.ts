@@ -15,6 +15,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
   if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && (claim.isRejectAllOfClaimDispute() || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL))) {
+  if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && claim.isRejectAllOfClaimDispute()) || claim.isFullAdmission()) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
   if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS))
