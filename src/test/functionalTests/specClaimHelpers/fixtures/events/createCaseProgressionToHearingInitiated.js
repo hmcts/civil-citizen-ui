@@ -19,7 +19,7 @@ module.exports = {
           ],
         },
         channel: 'IN_PERSON',
-        hearingDate: '2023-10-21',
+        hearingDate: '2024-07-10',
         hearingTimeHourMinute: '0930',
         hearingDuration: 'MINUTES_150',
         information: null,
