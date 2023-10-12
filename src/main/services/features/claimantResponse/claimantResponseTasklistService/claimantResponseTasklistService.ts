@@ -8,7 +8,7 @@ import {
   buildWhatToDoNextSection,
   buildYourResponseSection,
 } from './claimantResponseTasklistBuilder';
-import {ClaimResponseStatus} from "models/claimResponseStatus";
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
   const lang = getLng(lng);
