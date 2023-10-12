@@ -40,7 +40,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(claim.id, claim, true);
       cookie.claimId = claim.id;
       cookie.pinVerified = YesNo.YES;
       res.cookie('firstContact', cookie);

@@ -21,7 +21,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
       const cookie = req.cookies['firstContact'];
       if (cookie?.claimId && cookie?.pinVerified === YesNo.YES) {
         const claimId = req.cookies.firstContact?.claimId;
-        const claim: Claim = await getClaimById(claimId, req, true);
+        const claim: Claim = await getClaimById(claimId, req);
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
