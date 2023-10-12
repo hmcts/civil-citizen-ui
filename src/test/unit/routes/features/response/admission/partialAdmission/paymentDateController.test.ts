@@ -4,15 +4,15 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_PA_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
-  civilClaimResponseMock,
+  mockCivilClaim,
+  mockCivilClaimUndefined,
+  mockNoStatementOfMeans,
+  mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'common/models/claim';
-import {PaymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,12 +22,12 @@ describe('Payment date', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (generateRedisKey as jest.Mock).mockReturnValue('12345');
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -37,7 +37,7 @@ describe('Payment date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      (getCaseDataFromStore as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -52,7 +52,7 @@ describe('Payment date', () => {
 
   describe('on GET', () => {
     it('should redirect to task list when part admit and amount not defined', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue({partialAdmissionPaymentAmount: jest.fn().mockReturnValue(null)});
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -60,7 +60,7 @@ describe('Payment date', () => {
         });
     });
     it('should return payment date page', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue({partialAdmissionPaymentAmount: jest.fn().mockReturnValue(100)});
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -72,9 +72,7 @@ describe('Payment date', () => {
         });
     });
     it('should return payment date page with payment date loaded from Redis', async () => {
-      jest
-        .spyOn(PaymentDateService.prototype, 'getPaymentDate')
-        .mockResolvedValueOnce({day: 1, month: 6, year: 2025});
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -88,7 +86,7 @@ describe('Payment date', () => {
   });
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -100,7 +98,7 @@ describe('Payment date', () => {
         });
     });
     it('should return errors on no input', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(civilClaimResponseMock.case_data);
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=')
@@ -136,7 +134,6 @@ describe('Payment date', () => {
         });
     });
     it('should accept a future date', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(civilClaimResponseMock.case_data);
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -147,7 +144,6 @@ describe('Payment date', () => {
         });
     });
     it('should redirect to claim task list page on valid payment date', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(civilClaimResponseMock.case_data);
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')

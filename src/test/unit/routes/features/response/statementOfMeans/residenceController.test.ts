@@ -23,7 +23,7 @@ describe('Citizen residence', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

@@ -28,7 +28,7 @@ describe('Partner Pension', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
