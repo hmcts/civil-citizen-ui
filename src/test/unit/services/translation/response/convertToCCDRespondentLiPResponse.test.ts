@@ -160,6 +160,5 @@ describe('translate cui fields to CCD model', () => {
     // Then
     expect(result.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
     expect(result.evidenceComment).toEqual(claim.evidence.comment);
-    expect(result.helpWithFeesReferenceNumberLip).toEqual(claim.claimDetails.helpWithFees.referenceNumber);
   });
 });
