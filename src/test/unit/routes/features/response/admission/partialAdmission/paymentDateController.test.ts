@@ -7,12 +7,12 @@ import {
   civilClaimResponseMock,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {PaymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService',);
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,6 +22,7 @@ describe('Payment date', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    (generateRedisKey as jest.Mock).mockReturnValue('12345');
   });
 
   describe('on Exception', () => {
@@ -59,7 +60,7 @@ describe('Payment date', () => {
         });
     });
     it('should return payment date page', async () => {
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue({partialAdmissionPaymentAmount: jest.fn().mockReturnValue(100)})
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue({partialAdmissionPaymentAmount: jest.fn().mockReturnValue(100)});
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
