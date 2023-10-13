@@ -100,7 +100,7 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramNumberOfDaysOverdue],
       },
       RESPONSE_DUE_NOW: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_DUE_TODAY'},
-      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS.ADMIT_PAY_IMMEDIATELY'},
+      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_IMMEDIATELY'},
       ADMIT_PAY_BY_SET_DATE: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_BY_SET_DATE',
         parameter: [paramPaymentDate],
@@ -118,7 +118,7 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT',
         parameter: [paramClaimantName],
       },
-      TRANSFERRED: {translationKey: 'PAGES.DASHBOARD.STATUS.CASE_SENT_TO_COURT'},
+      TRANSFERRED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_SENT_TO_COURT'},
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramClaimantName, paramCCJRequestedDate],
@@ -136,12 +136,12 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ASKED_TO_SIGN_AGREEMENT',
         parameter: [paramClaimantName],
       },
-      PASSED_TO_COUNTRY_COURT_BUSINESS_CENTRE: {translationKey: 'PAGES.DASHBOARD.STATUS.CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE'},
+      PASSED_TO_COUNTRY_COURT_BUSINESS_CENTRE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE'},
       CLAIMANT_ACCEPTED_ADMISSION_OF_AMOUNT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT',
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
-      SETTLEMENT_SIGNED: {translationKey: 'PAGES.DASHBOARD.STATUS.SETTLEMENT_SIGNED'},
+      SETTLEMENT_SIGNED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.SETTLEMENT_SIGNED'},
       DEFENDANT_PART_ADMIT_PAID: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.PART_ADMIT_STATES_PAID',
         parameter: [paramClaimantName],
