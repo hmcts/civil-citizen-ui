@@ -40,6 +40,7 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1796,6 +1797,43 @@ describe('Documents', () => {
 
       //Then
       expect(dateActual).toBeUndefined();
+    });
+  });
+  describe('Test of method isClaimantSignSettlementAgreement', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isClaimantSignSettlementAgreement();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return true with partialAdmission by installment', () => {
+      //Given
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+      };
+    });
+    it('should return true with fullAdmission by installment', () => {
+      //Given
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date(Date.now())}},
+      };
+      //When
+      const result = claim.isClaimantSignSettlementAgreement();
+      //Then
+      expect(result).not.toBeNull();
+    });
+    it('should return true with partialAdmission by set date', () => {
+      //Given
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isClaimantSignSettlementAgreement();
+      //Then
+      expect(result).not.toBeNull();
     });
   });
 });
