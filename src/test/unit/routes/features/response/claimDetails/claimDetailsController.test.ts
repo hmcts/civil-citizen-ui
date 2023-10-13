@@ -51,7 +51,7 @@ describe('Claim details page', () => {
   });
 
   describe('on Get', () => {
-    it('should return your claim details page with default values', async () => {
+    it('should return 500 if the case is not found in ccd and redis', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(400);
@@ -59,8 +59,8 @@ describe('Claim details page', () => {
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.CLAIM_NUMBER);
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
