@@ -35,7 +35,6 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lng, claimFee);
 };
 
-
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
     const claim = await getCaseDataFromStore(claimId);

@@ -14,7 +14,7 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
-import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED, } from 'models/claimantResponse/checkAnswers';
+import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED } from 'models/claimantResponse/checkAnswers';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -28,7 +28,7 @@ export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string,
 
 export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
-  const selectedOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option as YesNo;
+  const selectedOption = claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option as YesNo;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', {lang}),
     t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectedOption], {lang}),
@@ -39,13 +39,13 @@ export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
 
 export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL);
-  const selectedOption = claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option as YesNo;
+  const selectedOption = claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option as YesNo;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN', { lang }),
     t(RESPONSEFORDEFENDANTREPAYMENTPLAN[selectedOption], { lang }),
     pageRef,
     changeLabel(lang));
-}
+};
 
 export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
@@ -96,16 +96,16 @@ export const getReasonForRejecting = (claim : Claim, claimId: string, lng: strin
 };
 
 export const buildSummaryQuestionForChooseHowToProceed = (claim: Claim, claimId: string, lang: string) => {
-  const selectedOption = claim?.claimantResponse?.chooseHowToProceed?.option
+  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN', { lang }),
     t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], { lang }),
     constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     changeLabel(lang));
-}
+};
 
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
-  const claimantResponse = claim.claimantResponse
+  const claimantResponse = claim.claimantResponse;
   const yourResponse = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lang}),
     summaryRows: [],

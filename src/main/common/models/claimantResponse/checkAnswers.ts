@@ -2,7 +2,6 @@
 import { YesNo, YesNoUpperCase } from 'common/form/models/yesNo';
 import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
-
 export const RESPONSEFORNOTPAIDPAYIMMEDIATELY = {
   [YesNo.YES]: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT',
   [YesNo.NO]: 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT',
