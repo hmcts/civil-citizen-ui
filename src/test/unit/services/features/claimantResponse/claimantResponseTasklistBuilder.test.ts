@@ -394,7 +394,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
-    })
+    });
     it('should display Sign a settlement agreement task as incomplete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
