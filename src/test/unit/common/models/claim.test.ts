@@ -1835,5 +1835,15 @@ describe('Documents', () => {
       //Then
       expect(result).not.toBeNull();
     });
+    it('should return true with fullAdmission by set date', () => {
+      //Given
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isClaimantSignSettlementAgreement();
+      //Then
+      expect(result).not.toBeNull();
+    });
   });
 });
