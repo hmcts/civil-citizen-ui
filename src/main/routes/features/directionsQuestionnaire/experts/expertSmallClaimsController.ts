@@ -8,12 +8,18 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {saveExpertRequiredValue} from 'services/features/directionsQuestionnaire/expertRequiredValueService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const expertSmallClaimsController = Router();
 const expertSmallClaimsViewPath = 'features/directionsQuestionnaire/experts/expert-small-claims';
 
-expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response) => {
-  res.render(expertSmallClaimsViewPath);
+expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    res.render(expertSmallClaimsViewPath);
+  } catch (error) {
+    next(error);
+  }
 });
 
 expertSmallClaimsController.post(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response, next: NextFunction) => {
