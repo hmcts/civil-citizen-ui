@@ -258,6 +258,7 @@ export interface CCDClaim extends ClaimUpdate {
   enterBreathing?: CCDBreathingSpaceStartInfo;
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
+  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
 }
 
 export interface ClaimFeeData {
