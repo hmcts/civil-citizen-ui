@@ -68,8 +68,8 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(acceptOrRejectRepayment);
 
       if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES && isChooseHowFormaliseTask(claim)) {
-          const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
-          tasks.push(chooseHowFormaliseTask);
+        const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
+        tasks.push(chooseHowFormaliseTask);
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
