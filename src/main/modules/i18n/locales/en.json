@@ -1594,7 +1594,7 @@
       "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
-    "LATEST_UPDATE_CONTENT": {      
+    "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
