@@ -120,7 +120,7 @@ class UploadYourDocument {
 
   verifyHearingDocumentsSectionContent () {
     I.see('Hearing documents', 'h2');
-    I.see('Documentary evidence for hearing', 'h3');
+    I.see('Documentary evidence for the hearing', 'h3');
     I.see('Type of document');
     I.see('For example, contract, invoice, receipt, email, text message, photo, social media message');
     I.see('Date document was issued or message was sent');
@@ -363,13 +363,13 @@ class UploadYourDocument {
 
     //Hearing Docuents Section
     //Docuentary Evidence For Trial - Subsection
-    I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for hearing - Type of Document 1');
+    I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 1');
     I.fillField('trialDocumentary[0][dateInputFields][dateDay]', '11');
     I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
     I.attachFile('trialDocumentary[0][fileUpload]','features/caseProgression/data/TestTIF.tif');
     I.click('div:nth-of-type(6) #add-another-trial-list');
-    I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for hearing - Type of Document 2');
+    I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '12');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
