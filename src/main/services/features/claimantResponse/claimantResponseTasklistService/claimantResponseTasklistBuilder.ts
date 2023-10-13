@@ -68,11 +68,9 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(acceptOrRejectRepayment);
 
       if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-        const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
-        tasks.push(proposeAlternativeRepayment);
-
         if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
-          (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+          (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate) ||
+          (claim.isPAPaymentOptionInstallments() && claim.partialAdmission?.paymentIntention?.repaymentPlan)) {
           const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
           tasks.push(chooseHowFormaliseTask);
         }
