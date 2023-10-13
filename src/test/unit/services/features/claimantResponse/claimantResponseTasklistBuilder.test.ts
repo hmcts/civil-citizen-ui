@@ -354,7 +354,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
     });
-    it('should display only accept or reject admit task when paymentIntention undefined', () => {
+    it('should display Accept or Reject Admitted task as complete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
@@ -389,7 +389,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
-    it('should display aceept or reject repayment task as complete', () => {
+    it('should display Accept or Reject Repayment task as complete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
@@ -408,7 +408,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
-    it('should display repayment task as complete', () => {
+    it('should display Accept or Reject Repayment task as complete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
@@ -425,7 +425,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
-    it('should display settlement agreement task as in complete', () => {
+    it('should display Choose how to formalise repayment task as complete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
