@@ -1,5 +1,5 @@
 
-import { YesNo, YesNoUpperCase } from 'common/form/models/yesNo';
+import { YesNo } from 'common/form/models/yesNo';
 import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
 export const RESPONSEFORNOTPAIDPAYIMMEDIATELY = {

@@ -30,7 +30,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown, claimFee?: number): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
   return buildSummarySections(claim, claimId, lng, claimFee);
 };

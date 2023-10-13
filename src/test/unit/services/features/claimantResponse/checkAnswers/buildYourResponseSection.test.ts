@@ -27,6 +27,7 @@ describe('Your response Section', () => {
     const claim = new Claim();
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
