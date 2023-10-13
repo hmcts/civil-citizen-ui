@@ -806,8 +806,8 @@ export class Claim {
   }
 
   isClaimantSignSettlementAgreement() {
-    return this?.partialAdmission?.paymentIntention?.repaymentPlan || this?.fullAdmission?.paymentIntention?.repaymentPlan ||
-      this?.partialAdmission?.paymentIntention?.paymentDate || this?.fullAdmission?.paymentIntention?.paymentDate;
+    return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
+      this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
   }
 }
 
