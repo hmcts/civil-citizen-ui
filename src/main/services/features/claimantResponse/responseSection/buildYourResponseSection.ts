@@ -38,7 +38,7 @@ export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
 };
 export const buildSetDate = (claim: Claim, lang: string): string => {
   return t(' COMMON.PAYMENT_OPTION.INSTALMENTS', {lang}) + getEmptyStringIfUndefined(claim.claimantResponse.suggestedPaymentIntention.paymentDate.toString());
-}
+};
 
 export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
@@ -66,7 +66,6 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
     changeLabel(lang)));
   return summaryRows;
 };
-
 
 export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
