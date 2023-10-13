@@ -24,6 +24,8 @@ import {
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {TabId} from 'routes/tabs';
+import {YesNo} from 'form/models/yesNo';
+import {CaseRole} from 'form/models/caseRoles';
 
 const lang = 'en';
 describe('Latest Update Content Builder Case Progression', () => {
@@ -164,6 +166,28 @@ describe('Latest Update Content Builder Case Progression', () => {
   describe('test buildViewTrialArrangementsSection', () => {
     it('should have view trial arrangements content for the current party (respondent) if isOtherParty false', () => {
       //Given
+      const claim: Claim = new Claim();
+      claim.caseProgression = {
+        defendantTrialArrangements: {
+          isCaseReady: YesNo.NO,
+          trialArrangementsDocument: {
+            id: '2345',
+            value: {
+              'createdBy': 'Civil',
+              'documentLink': {
+                'document_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab2',
+                'document_filename': 'defendant_Richards_21_June_2022_Trial_Arrangements.pdf',
+                'document_binary_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab2/binary',
+              },
+              'documentName': 'defendant_Richards_21_June_2022_Trial_Arrangements.pdf',
+              'documentSize': 56461,
+              documentType: DocumentType.TRIAL_READY_DOCUMENT,
+              createdDatetime: new Date('2022-06-21T14:15:19'),
+              ownedBy: CaseRole.DEFENDANT,
+            },
+          },
+        },
+      };
       const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
       const isOtherParty = false;
       const lastedContentBuilderExpected: ClaimSummarySection[][] = [[
@@ -180,21 +204,43 @@ describe('Latest Update Content Builder Case Progression', () => {
           },
         },
         {
-          type: ClaimSummaryType.BUTTON,
+          type: ClaimSummaryType.NEW_TAB_BUTTON,
           data: {
             text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
-            href: 'href',
+            href: CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', 'e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab2'),
           },
         },
       ]];
       //When
-      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty);
+      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty, claim);
       //Then
       expect(lastedContentBuilderExpected).toEqual(viewTrialArrangementsContent);
     });
 
     it('should have view trial arrangements content for the other party (claimant) if isOtherParty true', () => {
       //Given
+      const claim: Claim = new Claim();
+      claim.caseProgression = {
+        claimantTrialArrangements: {
+          isCaseReady: YesNo.NO,
+          trialArrangementsDocument: {
+            id: '1234',
+            value: {
+              'createdBy': 'Civil',
+              'documentLink': {
+                'document_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab5',
+                'document_filename': 'claimant_Clark_21_June_2022_Trial_Arrangements.pdf',
+                'document_binary_url': 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab5/binary',
+              },
+              'documentName': 'claimant_Clark_21_June_2022_Trial_Arrangements.pdf',
+              'documentSize': 56461,
+              documentType: DocumentType.TRIAL_READY_DOCUMENT,
+              createdDatetime: new Date('2022-06-21T14:15:19'),
+              ownedBy: CaseRole.CLAIMANT,
+            },
+          },
+        },
+      };
       const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
       const isOtherParty = true;
       const lastedContentBuilderExpected: ClaimSummarySection[][] = [[
@@ -211,15 +257,15 @@ describe('Latest Update Content Builder Case Progression', () => {
           },
         },
         {
-          type: ClaimSummaryType.BUTTON,
+          type: ClaimSummaryType.NEW_TAB_BUTTON,
           data: {
             text: `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
-            href: 'href',
+            href: CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', 'e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab5'),
           },
         },
       ]];
       //When
-      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty);
+      const viewTrialArrangementsContent = buildViewTrialArrangementsSection(isOtherParty, claim);
       //Then
       expect(lastedContentBuilderExpected).toEqual(viewTrialArrangementsContent);
     });
