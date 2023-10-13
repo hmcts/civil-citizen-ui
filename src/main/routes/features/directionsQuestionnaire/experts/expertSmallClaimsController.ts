@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DQ_EXPERT_REPORT_DETAILS_URL,
   DQ_EXPERT_SMALL_CLAIMS_URL,
@@ -13,16 +13,16 @@ import {getDirectionQuestionnaire} from 'services/features/directionsQuestionnai
 const expertSmallClaimsController = Router();
 const expertSmallClaimsViewPath = 'features/directionsQuestionnaire/experts/expert-small-claims';
 
-expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response, next: NextFunction) => {
+expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     res.render(expertSmallClaimsViewPath);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-expertSmallClaimsController.post(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request, res: Response, next: NextFunction) => {
+expertSmallClaimsController.post(DQ_EXPERT_SMALL_CLAIMS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const expertRequiredValue = req.body.expertYes ? true : false;
@@ -32,6 +32,6 @@ expertSmallClaimsController.post(DQ_EXPERT_SMALL_CLAIMS_URL, async (req: Request
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default expertSmallClaimsController;
