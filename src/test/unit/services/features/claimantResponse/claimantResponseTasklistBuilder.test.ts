@@ -397,9 +397,9 @@ describe('Claimant Response Task List builder', () => {
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+        paymentIntention: {repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
       };
+      jest.spyOn(claim,'isPAPaymentOptionInstallments').mockReturnValue(true);
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
@@ -409,6 +409,51 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display accept or reject admit task only when paymentIntention undefined', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+        chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
+      };
+      claim.partialAdmission = {paymentIntention: undefined};
+      jest.spyOn(claim,'isPAPaymentOptionInstallments').mockReturnValue(false);
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display accept or reject admit task only when paymentIntention undefined', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+        chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
+      };
+      claim.partialAdmission = {paymentIntention: undefined};
+      jest.spyOn(claim,'isPAPaymentOptionPayImmediately').mockReturnValue(false);
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display accept or reject admit task only when paymentIntention undefined', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+        chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
+      };
+      claim.partialAdmission = {paymentIntention: undefined};
+      jest.spyOn(claim,'isPAPaymentOptionInstallments').mockReturnValue(false);
+      //When
+      const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
     it('should display Sign a settlement agreement task as incomplete', () => {
       //Given
