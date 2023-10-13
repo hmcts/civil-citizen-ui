@@ -66,8 +66,8 @@ export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lan
   return sectionContent;
 };
 
-export const buildViewTrialArrangementsSection = (isOtherParty: boolean) : ClaimSummarySection[][] => {
+export const buildViewTrialArrangementsSection = (isOtherParty: boolean, claim: Claim) : ClaimSummarySection[][] => {
   const sectionContent = [];
-  sectionContent.push(getViewTrialArrangements(isOtherParty));
+  sectionContent.push(getViewTrialArrangements(isOtherParty, claim));
   return sectionContent;
 };

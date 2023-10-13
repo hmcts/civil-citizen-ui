@@ -35,10 +35,10 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
     if (areOtherPartyTrialArrangementsFinalised) {
-      sectionContent.push(getViewTrialArrangementsContent(true));
+      sectionContent.push(getViewTrialArrangementsContent(true, claim));
     }
     if (areTrialArrangementsFinalised) {
-      sectionContent.push(getViewTrialArrangementsContent(false));
+      sectionContent.push(getViewTrialArrangementsContent(false, claim));
     }
     if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
       sectionContent.push(getFinaliseTrialArrangementsContent(claim));
@@ -97,11 +97,14 @@ export const getFinaliseTrialArrangementsContent = (claim: Claim): ClaimSummaryS
   return buildFinaliseTrialArrangements(claim);
 };
 
-export const getViewTrialArrangementsContent = (isOtherParty: boolean) : ClaimSummarySection[][] => {
-  return buildViewTrialArrangementsSection(isOtherParty);
+export const getViewTrialArrangementsContent = (isOtherParty: boolean, claim: Claim) : ClaimSummarySection[][] => {
+  return buildViewTrialArrangementsSection(isOtherParty, claim);
 };
 
 function isCaseReady(isClaimant: boolean, claim: Claim): boolean {
-  return !!((isClaimant && claim?.caseProgression?.claimantTrialArrangements?.isCaseReady)
-    || claim?.caseProgression?.claimantTrialArrangements?.isCaseReady);
+  if (isClaimant) {
+    return !!(claim?.caseProgression?.claimantTrialArrangements?.isCaseReady);
+  } else {
+    return !!(claim?.caseProgression?.defendantTrialArrangements?.isCaseReady);
+  }
 }
