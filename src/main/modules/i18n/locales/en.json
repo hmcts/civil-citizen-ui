@@ -379,10 +379,10 @@
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
-      "PAGE_TITLE": "County Court Judgement confirmation",
+      "PAGE_TITLE": "County Court Judgment confirmation",
       "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
-      "TITLE": "County Court Judgement requested",
+      "TITLE": "County Court Judgment requested",
       "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
       "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
     },
@@ -449,8 +449,10 @@
       "DETAILS_TITLE": "Your details",
       "DETAILS_TITLE_CLAIMANT": "Your details (claimant)",
       "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
+      "DO_YOU_AGREE_PAID": "Do you agree the defendant has paid £{{ paidAmount }}?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "Do you have other witnesses?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
+      "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -508,11 +510,13 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "REASON_FOR_REJECTING": "Reason for rejecting their response",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -558,7 +562,8 @@
       "WITNESS": "Witness",
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
-      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
+      "YOUR_RESPONSE": "Your response"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Add another account",
@@ -1143,7 +1148,13 @@
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
-      "STATUS": {
+      "STATUS_CLAIMANT": {
+        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond."
+      },
+      "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "You’ve admitted all of the claim and offered to pay the full amount in instalments.",
         "ADMIT_PAY_IMMEDIATELY": "You’ve admitted all of the claim and said you’ll pay the full amount immediately.",
@@ -1474,6 +1485,14 @@
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can't pay immediately"
     },
+    "FEE_CHANGE": {
+      "PAGE_TITLE": "Claim fee has changed",
+      "TITLE": "Claim fee has changed",
+      "PARAGRAPH_1": "You submitted a claim, but did not pay the claim fee, so it was not issued and sent to the other parties.",
+      "PARAGRAPH_2": "Since then the claim fee has been recalculated and is now £{{ claimFee }}.",
+      "PARAGRAPH_3": "To proceed with this claim you need to create a new claim and pay the claim fee.",
+      "BUTTON_LABEL": "Create new claim"
+    },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
       "GET_APPLICANT_CONTACT_DETAILS": "Get {{ applicant1Details }} 's contact details.",
@@ -1523,7 +1542,8 @@
       "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
       "REASON_FOR_CLAIM": "Reason for claim:",
       "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WE_HAVE_SENT": "We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
@@ -1545,6 +1565,7 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
@@ -1595,13 +1616,13 @@
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
     "LATEST_UPDATE_CONTENT": {
-      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
+      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgment against you.",
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "{{ claimantName }} confirmed you settled on {{ settlementDate }}",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1" : "{{ claimantName }} rejected your repayment plan.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2" : "The court will review the case. We’ll contact you by post to tell you what to do next.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3" : "Your online account won’t be updated - any further updates will be by post.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "{{ claimantName }} rejected your repayment plan.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "The court will review the case. We’ll contact you by post to tell you what to do next.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3": "Your online account won’t be updated - any further updates will be by post.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
       "CCJ_REQUESTED_TITLE": "{{ claimantName }} requested a County Court Judgment (CCJ) against you",
       "CCJ_REQUESTED_MSG1": "They accepted your repayment plan.",
@@ -1690,6 +1711,7 @@
       "MEDIATION_UNSUCCESSFUL_TITLE": "Mediation was unsuccessful",
       "MEDIATION_UNSUCCESSFUL_MSG1": "You weren’t able to resolve {{ claimantName }}’s claim against you using mediation.",
       "MEDIATION_UNSUCCESSFUL_MSG2": "The court will review the case. We’ll contact you to tell you what to do next.",
+      "MEDIATION_AGREEMENT": "Mediation Agreement",
       "NO_TO_TRYING_MEDIATION": "{{ claimantName }} has said no to trying mediation.",
       "REJECTED_YOUR_RESPONSE": "{{ claimantName }} rejected your response",
       "REJECTED_YOUR_ADMISSION": "{{ claimantName }} has rejected your admission of £{{ partAmount }}",

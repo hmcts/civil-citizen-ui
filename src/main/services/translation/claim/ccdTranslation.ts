@@ -13,7 +13,11 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
+import {
+  toAdditionalPartyDetails,
+} from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
+import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -41,5 +45,9 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
+    helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
+    pcqId: claim.pcqId,
+    respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
+    applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
   };
 };

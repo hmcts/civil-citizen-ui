@@ -15,6 +15,7 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {toCUICCJRequest} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -41,6 +42,9 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
     claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
   } else if (claim.isFullDefence()) {
     claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
+  }
+  if(ccdClaim?.partialPayment){
+    claimantResponse.ccjRequest = toCUICCJRequest(ccdClaim);
   }
   claim.claimantResponse = claimantResponse;
   claim.caseRole = ccdClaim?.caseRole;

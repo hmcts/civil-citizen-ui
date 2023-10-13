@@ -14,7 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState,
+  CaseState, CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -64,6 +64,8 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
+import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {PinToPost} from './pinToPost';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -123,6 +125,9 @@ export class Claim {
   caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
+  helpWithFees ?: CCDHelpWithFees;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
+  respondent1PinToPostLRspec: PinToPost;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -352,6 +357,10 @@ export class Claim {
 
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  isRejectionReasonCompleted(): boolean {
+    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.claimantResponse?.rejectionReason?.text;
   }
 
   getPaidAmount(): number {
@@ -603,6 +612,10 @@ export class Claim {
 
   hasDefendantPaid(): boolean {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  isCCJComplete(){
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
   }
 
   getHowTheInterestCalculatedReason(): string {
