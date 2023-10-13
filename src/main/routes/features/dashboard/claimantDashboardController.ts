@@ -18,7 +18,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, async (req: Request, res
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const dashboardNotifications = getClaimantNotifications(claim, lang);
     const dashboardTaskList = getDashboardTaskList(claim, lang);
-    res.render(claimantDashboardViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
+    return res.render(claimantDashboardViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
   } catch (error) {
     next(error);
   }
