@@ -1730,7 +1730,7 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "Gallwch ymateb i'r hawliad o hyd cyn i’r hawlydd ofyn am ddyfarniad.",
       "YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION": "Mae'r ddau ohonoch wedi cytuno i roi cynnig ar gyfryngu. Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
       "YOU_HAVE_OFFERED_TO_PAY_BY": "Rydych chi wedi cynnig talu i {{ claimantName }} erbyn {{ paymentDate }}",
-      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu £{{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
+      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu {{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
       "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} erbyn {{ paymentDate }}",
       "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} ar unwaith.",
       "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "Rydych chi wedi dweud bod arnoch {{ amount }} ac wedi cynnig talu {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} gan ddechrau ar {{ paymentDate }} ",
