@@ -28,7 +28,6 @@ export interface ClaimSummaryItem {
   tableRows?: TableCell[][];
   title?: string;
   externalLink?: boolean;
-  //lang?: string;
 }
 
 /**
