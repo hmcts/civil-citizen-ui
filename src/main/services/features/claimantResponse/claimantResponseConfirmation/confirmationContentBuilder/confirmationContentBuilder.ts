@@ -5,7 +5,7 @@ import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './dis
 import {getPAPayImmediatelyAcceptedNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
-  getCCJNextSteps
+  getCCJNextSteps,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {

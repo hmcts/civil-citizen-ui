@@ -15,7 +15,7 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {toCUICCJRequest, toCUIChoosesHowToProceed,} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {toCUICCJRequest, toCUIChoosesHowToProceed} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 
