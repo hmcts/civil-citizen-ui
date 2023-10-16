@@ -81,9 +81,11 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //res.redirect(paymentUrlWithId);
         await deleteDraftClaimFromStore(userId);
         res.clearCookie('eligibilityCompleted');
+        // TODO: Navigate to confirmation page
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       } else {
         await deleteDraftClaimFromStore(userId);
+        // TODO: Navigate to HWF Submission Screen 
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
