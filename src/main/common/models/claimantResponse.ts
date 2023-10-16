@@ -56,4 +56,8 @@ export class ClaimantResponse {
   get isClaimantNotAcceptedPartAdmittedAmount(): boolean {
     return this.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
+  
+  get isClaimantIntendedToProceed(): boolean {
+    return this.intentionToProceed?.option === YesNo.YES;
+  }
 }

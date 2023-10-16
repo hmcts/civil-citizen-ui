@@ -34,3 +34,21 @@ export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string)
     },
   ];
 };
+
+export const getRejectedResponseNoMediationNextSteps = (lang: string) => {
+ 
+  return [
+    {
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}),
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.WHAT_HAPPENS_NEXT_TEXT', {lng: lang}),
+      },
+    },
+  ];
+};

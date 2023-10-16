@@ -24,4 +24,7 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1DQExperts?: CCDExpert;
   applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
+  applicant1ProceedWithClaim : YesNoUpperCamelCase;
+  applicant1PartAdmitConfirmAmountPaidSpec: YesNoUpperCamelCase;
+  applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase;
 }

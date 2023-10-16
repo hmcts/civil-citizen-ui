@@ -8,7 +8,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -52,6 +52,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
       await submitClaimantResponse(<AppRequest>req);
+      await deleteDraftClaimFromStore(req.params.id);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {

@@ -22,5 +22,8 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1DQSmallClaimHearing: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.claimantResponse?.directionQuestionnaire?.hearing) : undefined,
     applicant1DQExperts: toCCDExpert(claim),
     applicant1ClaimExpertSpecRequired: toCCDYesNo(claim.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option),
+    applicant1ProceedWithClaim : toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option),
+    applicant1PartAdmitConfirmAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option),
+    applicant1PartAdmitIntentionToSettleClaimSpec: toCCDYesNo(claim.claimantResponse?.hasPartPaymentBeenAccepted?.option),
   };
 };

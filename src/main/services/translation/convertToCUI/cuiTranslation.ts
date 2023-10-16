@@ -40,12 +40,15 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   } else if (claim.isPartialAdmission()) {
     claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
     claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
+     claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim?.applicant1PartAdmitIntentionToSettleClaimSpec);
   } else if (claim.isFullDefence()) {
     claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
   }
   if(ccdClaim?.partialPayment){
     claimantResponse.ccjRequest = toCUICCJRequest(ccdClaim);
   }
+  
+  claimantResponse.hasDefendantPaidYou = toCUIGenericYesNo(ccdClaim?.applicant1PartAdmitConfirmAmountPaidSpec);
   claim.claimantResponse = claimantResponse;
   claim.caseRole = ccdClaim?.caseRole;
 
