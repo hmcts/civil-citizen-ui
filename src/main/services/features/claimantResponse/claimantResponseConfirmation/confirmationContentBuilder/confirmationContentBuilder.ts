@@ -2,7 +2,7 @@ import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
-import {getPAPayImmediatelyAcceptedNextSteps,getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
+import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
@@ -25,7 +25,6 @@ function hasClaimantRejectedDefendantResponse(claim: Claim) : boolean {
 
   // No Mediation
   if(claim.isDefendantAgreedForMediation || claim.hasClaimantNotAgreedToMediation) {
-    
 	 if((claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid()) || claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED 
       || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED || claim.responseStatus === ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED) {
         return true;
