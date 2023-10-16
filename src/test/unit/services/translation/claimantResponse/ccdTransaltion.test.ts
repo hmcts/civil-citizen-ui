@@ -9,6 +9,9 @@ import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/heari
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CaseState} from 'common/form/models/claimDetails';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim;
@@ -65,6 +68,35 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+  });
+  it('should translate repaymentPlan rejected details and new proposed payment plan', () => {
+    //Given
+    claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+    claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate : new Date() } ;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
+    expect(ccdClaim.applicant1RepaymentOptionForDefendantSpec).toBe(PaymentOptionType.BY_SET_DATE);
+  });
+
+  it('should translate repaymentPlan accepted details', () => {
+    //Given
+    claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
   });
 });
 

@@ -756,6 +756,10 @@ export class Claim {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 
+  isClaimantAcceptPaymentPlan() {
+    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
+  }
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;

@@ -15,13 +15,15 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {toCUICCJRequest} from 'services/translation/convertToCUI/convertToCUICCJRequest';
-import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {toCUICCJRequest, toCUIChoosesHowToProceed,} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaim);
   const claimantResponse: ClaimantResponse = new ClaimantResponse();
   claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+  claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
   claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
   claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
@@ -51,6 +53,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.claimantResponse = claimantResponse;
   claim.caseRole = ccdClaim?.caseRole;
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.applicant1RepaymentOptionForDefendantSpec);
+  claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed(ccdClaim?.applicant1LiPResponse?.applicant1ChoosesHowToProceed);
 
   return claim;
 };

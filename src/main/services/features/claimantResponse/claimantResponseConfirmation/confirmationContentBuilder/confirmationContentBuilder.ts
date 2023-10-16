@@ -9,9 +9,6 @@ import {
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  console.log('Claim : ', claim);
-  console.log('Claimant Status :', claim);
-
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
 
@@ -19,7 +16,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
   } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
-  } else if (!claim.isClaimantRejectedPaymentPlan()) {
+  } else if (claimantResponse.isClaimantAcceptPaymentPlan && claimantResponse.isCCJRequested) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED';
   }
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
@@ -37,7 +34,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
   }
-  if (claimantResponse.isClaimantAcceptRepaymentPlan) {
+  if (claimantResponse.isClaimantAcceptPaymentPlan && claimantResponse.isCCJRequested) {
     return ccjNextSteps;
   }
 }
