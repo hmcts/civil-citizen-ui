@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';
@@ -15,12 +15,13 @@ const logger = Logger.getLogger('partialAdmissionService');
 
 const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claim = await getCaseDataFromStore(req.params.id);
+    const redisKey = generateRedisKey(req);
+    const claim = await getCaseDataFromStore(redisKey);
     if (!claim.responseDeadline?.agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
     }
     claim.responseDeadline.calculatedResponseDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, req);
-    await saveDraftClaim(req.params.id, claim);
+    await saveDraftClaim(redisKey, claim);
     return claim;
   } catch (error) {
     logger.error(error);
@@ -30,7 +31,8 @@ const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Cl
 
 const submitExtendedResponseDeadline = async (req: AppRequest) => {
   try {
-    const claim = await getCaseDataFromStore(req.params.id);
+    const redisKey = generateRedisKey(req);
+    const claim = await getCaseDataFromStore(redisKey);
     const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, req.params.id, 'en');
     if (viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE) {
       await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {
@@ -41,7 +43,7 @@ const submitExtendedResponseDeadline = async (req: AppRequest) => {
         }}, req);
       claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
       claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
-      await saveDraftClaim(req.params.id, claim);
+      await saveDraftClaim(redisKey, claim);
     }
   } catch (error) {
     logger.error(error);

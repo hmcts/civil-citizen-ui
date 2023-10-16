@@ -404,7 +404,7 @@ function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
 export function generateClaimSettledLatestUpdate(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   return new LatestUpdateSectionBuilder()
-    .addTitle(t('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED', {lng}))
+    .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIM_SETTLED', {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_SETTLED_CLAIM`, {lng}), {
       claimantName: claimantFullName,
       settlementDate: formatDateToFullDate(claim.lastModifiedDate, lng),
@@ -445,7 +445,7 @@ const getLastUpdateForNoMediation = (claim: Claim) => {
 function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string) {
   const claimantName = claim.getClaimantFullName();
   return new LatestUpdateSectionBuilder()
-    .addTitle(t('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW', {lng}))
+    .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_COURT_REVIEW', {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1`, {lng}), {
       claimantName: claimantName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2`, {lng}))
