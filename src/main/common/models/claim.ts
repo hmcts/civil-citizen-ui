@@ -842,6 +842,14 @@ export class Claim {
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
+
+  hasClaimantIntentToProceedResponse() {
+    return this?.claimantResponse?.intentionToProceed?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectIntentToProceedResponse() {
+    return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+  }
 }
 
 export interface StatementOfTruth {
