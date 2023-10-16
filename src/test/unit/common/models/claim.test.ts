@@ -1799,11 +1799,11 @@ describe('Documents', () => {
       expect(dateActual).toBeUndefined();
     });
   });
-  describe('Test of method isClaimantSignSettlementAgreement', () => {
+  describe('Test of method hasDefendantCompletedPaymentIntention', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
       //When
-      const result = claim.isClaimantSignSettlementAgreement();
+      const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).toBeUndefined();
     });
@@ -1821,7 +1821,7 @@ describe('Documents', () => {
           repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date(Date.now())}},
       };
       //When
-      const result = claim.isClaimantSignSettlementAgreement();
+      const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).not.toBeNull();
     });
@@ -1831,7 +1831,7 @@ describe('Documents', () => {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
-      const result = claim.isClaimantSignSettlementAgreement();
+      const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).not.toBeNull();
     });
@@ -1841,7 +1841,7 @@ describe('Documents', () => {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
       //When
-      const result = claim.isClaimantSignSettlementAgreement();
+      const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).not.toBeNull();
     });

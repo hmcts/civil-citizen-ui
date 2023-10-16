@@ -67,7 +67,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
-      if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES && isChooseHowFormaliseTask(claim)) {
+      if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES && canShowChooseHowFormaliseTask(claim)) {
         const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
         tasks.push(chooseHowFormaliseTask);
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
@@ -160,7 +160,7 @@ function isFullDefenceClaimantNotSettleTheClaim(claim: Claim) : boolean {
   return claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
 }
 
-function isChooseHowFormaliseTask(claim: Claim) : boolean {
+function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
   return ((claim.isPAPaymentOptionPayImmediately() && !!claim.claimantResponse?.courtProposedDate?.decision) ||
   (claim.isPAPaymentOptionByDate() && !!claim.partialAdmission?.paymentIntention?.paymentDate) ||
   (claim.isPAPaymentOptionInstallments() && !!claim.partialAdmission?.paymentIntention?.repaymentPlan));

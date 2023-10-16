@@ -8,7 +8,7 @@ export class SignSettlmentAgreementGuard {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const caseData: Claim = await getCaseDataFromStore(req.params.id);
-        if (caseData.isClaimantSignSettlementAgreement()) {
+        if (caseData.hasDefendantCompletedPaymentIntention()) {
           return next();
         }
         res.redirect(constructResponseUrlWithIdParams(req.params.id, redirectUrl));
