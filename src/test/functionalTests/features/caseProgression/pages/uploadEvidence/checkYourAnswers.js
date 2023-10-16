@@ -8,12 +8,16 @@ const contactUs = new ContactUs();
 
 class CheckYourAnswers {
 
+  checkPageFullyLoaded () {
+    I.waitForElement('//a[.=\'Cancel\']');
+  }
+
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(claimType) {
-
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
