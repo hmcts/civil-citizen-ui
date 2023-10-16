@@ -5,21 +5,24 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
     }
     this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
+    if (trialArrageentFlag === true) {
+
+    }
     if(orderCreatedFlag === true) {
       this.verifyOrderCreatedTileContent();
     }
@@ -32,6 +35,18 @@ class LatestUpdate {
     I.see('Updates');
     I.see('Notices and orders');
     I.see('Documents');
+  }
+
+  verifyTrialArrangeentsTile(claimType) {
+    //TODO - Include the hearing date in the relevant Format
+    if (claimType === 'FastTrack') {
+      I.see('A trial has been scheduled for your case', 'h3');
+      I.see('Your trial has been scheduled for');
+    } else {
+      I.see('A hearing has been scheduled for your case', 'h3');
+      I.see('Your hearing has been scheduled for');
+    }
+    I.see('at Central London County Court.');
   }
 
   verifyHearingOrTrialNoticeSectionContent(claimType) {
