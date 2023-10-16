@@ -10,6 +10,8 @@ import {DisabilityService} from '../../../../../services/features/response/state
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const partnerAgeController = Router();
@@ -22,7 +24,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: NextFunction) => {
   try {
-    const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
+    const partnerAge = await partnerAgeService.getPartnerAge(generateRedisKey(<AppRequest>req));
     renderView(partnerAge, res);
   } catch (error) {
     next(error);
@@ -32,16 +34,17 @@ partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: NextFun
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   async (req, res, next: NextFunction) => {
     try {
+      const redisKey = generateRedisKey(<AppRequest>req);
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await partnerAgeService.savePartnerAge(req.params.id, form);
+        await partnerAgeService.savePartnerAge(redisKey, form);
         if (form.model.option == 'yes') {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_PENSION_URL));
         } else {
-          const disability = await disabilityService.getDisability(req.params.id);
+          const disability = await disabilityService.getDisability(redisKey);
           disability.model.option == 'yes'
             ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL))
             : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));

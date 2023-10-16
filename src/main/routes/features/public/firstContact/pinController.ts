@@ -13,6 +13,8 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 
+const CryptoJS = require('crypto-js');
+
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -40,9 +42,12 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(claim.id, claim, true);
       cookie.claimId = claim.id;
-      cookie.pinVerified = YesNo.YES;
+
+      const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+      cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
+
       res.cookie('firstContact', cookie);
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
     }

@@ -110,8 +110,8 @@ class Documents {
 
     I.see('Defendant hearing documents');
     I.see('Defendant documentary evidence');
-    I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for hearing - Type of Document 1 11-02\')]');
-    I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for hearing - Type of Document 2 12-02\')]');
+    I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for the hearing - Type of Document 1 11-02\')]');
+    I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for the hearing - Type of Document 2 12-02\')]');
     I.see('Defendant legal authorities');
     I.seeElement('//a[.=\'TestXLS.xls\']');
     I.seeElement('//a[.=\'TestXLSX.xlsx\']');
