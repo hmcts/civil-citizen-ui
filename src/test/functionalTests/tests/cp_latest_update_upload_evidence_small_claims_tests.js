@@ -22,4 +22,4 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page Fo
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');

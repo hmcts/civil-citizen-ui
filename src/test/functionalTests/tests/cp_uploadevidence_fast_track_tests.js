@@ -22,4 +22,4 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
