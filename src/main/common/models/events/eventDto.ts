@@ -11,4 +11,5 @@ export interface ClaimUpdate {
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   issueDate?: Date;
   respondent1ResponseDeadline?: Date;
+  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
 }
