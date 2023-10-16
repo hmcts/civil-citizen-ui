@@ -9,6 +9,7 @@ import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/heari
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CaseState} from 'common/form/models/claimDetails';
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim;
@@ -65,6 +66,16 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+  });
+  it('should translate signSettlementAgreement to ccd', () => {
+    //Given
+    claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{
+      signed: 'true',
+    };
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.applicant1SignedSettlementAgreement).toBe(YesNoUpperCamelCase.YES);
   });
 });
 
