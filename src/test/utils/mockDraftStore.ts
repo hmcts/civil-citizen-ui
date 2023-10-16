@@ -225,4 +225,5 @@ export {
   mockResponseFullAdmitPayBySetDate,
   mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
+  civilClaimResponseMock,
 };

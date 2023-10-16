@@ -7,9 +7,9 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -19,6 +19,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {

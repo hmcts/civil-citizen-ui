@@ -11,6 +11,8 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = Router();
@@ -21,7 +23,7 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
 
 evidenceController.get(CITIZEN_EVIDENCE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const evidence = await getEvidence(req.params.id);
+    const evidence = await getEvidence(generateRedisKey(<AppRequest>req));
     const form: Evidence = new Evidence(evidence.comment, evidence.evidenceItem);
     if (evidence.evidenceItem?.length < INIT_ROW_COUNT) {
       form.setRows(INIT_ROW_COUNT - evidence.evidenceItem?.length);
@@ -41,7 +43,7 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, (async (req: Request, res: Respons
       renderView(form, res);
     } else {
       form = new GenericForm(new Evidence(req.body.comment, utilEvidence.removeEmptyValueToEvidences(req.body)));
-      await saveEvidence(req.params.id, form.model);
+      await saveEvidence(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
