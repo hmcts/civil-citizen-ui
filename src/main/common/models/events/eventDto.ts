@@ -1,5 +1,6 @@
 import {CaseEvent} from './caseEvent';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 
 export interface EventDto {
   event: CaseEvent,

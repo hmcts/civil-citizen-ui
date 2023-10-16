@@ -2,7 +2,6 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 
 export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPaymentOption => {
-  if (!paymentOptionType) return undefined;
   switch(paymentOptionType) {
     case PaymentOptionType.INSTALMENTS:
       return CCDPaymentOption.REPAYMENT_PLAN;
