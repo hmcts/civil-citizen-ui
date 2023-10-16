@@ -10,6 +10,8 @@ import {
 } from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Validator} from 'class-validator';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
 const unemploymentController = Router();
@@ -23,7 +25,7 @@ function renderView(form: GenericForm<Unemployment>, res: Response): void {
 
 unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextFunction) => {
   try {
-    unemployment = await unemploymentService.getUnemployment(req.params.id);
+    unemployment = await unemploymentService.getUnemployment(generateRedisKey(<AppRequest>req));
     renderView(new GenericForm(unemployment), res);
   } catch (error) {
     next(error);
@@ -39,7 +41,7 @@ unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res, next: NextF
     if (unemploymentForm.hasErrors() || unemploymentForm.hasNestedErrors()) {
       renderView(unemploymentForm, res);
     } else {
-      await unemploymentService.saveUnemployment(req.params.id, unemploymentToSave);
+      await unemploymentService.saveUnemployment(generateRedisKey(<AppRequest>req), unemploymentToSave);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {

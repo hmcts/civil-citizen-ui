@@ -1776,7 +1776,7 @@
       "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
-      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for the hearing",
       "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
@@ -2620,7 +2620,7 @@
       },
       "HEARING": {
         "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for hearing"
+        "DOCUMENTARY": "Documentary evidence for the hearing"
       },
       "YEAR": "Year"
     },
