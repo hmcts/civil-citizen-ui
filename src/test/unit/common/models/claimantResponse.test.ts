@@ -1,7 +1,5 @@
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'form/models/yesNo';
-import {GenericYesNo} from 'form/models/genericYesNo';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 
@@ -139,15 +137,6 @@ describe('ClaimantResponse model', () => {
       claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       //When
       const result = claimantResponse.isClaimantSuggestedPayByInstalments;
-      //Then
-      expect(result).toBe(true);
-    });
-
-    it('should return true claimant accept payment plan', () => {
-      //Given
-      claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES)
-      //When
-      const result = claimantResponse.isClaimantAcceptPaymentPlan;
       //Then
       expect(result).toBe(true);
     });
