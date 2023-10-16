@@ -9,6 +9,10 @@ import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/heari
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {CaseState} from 'common/form/models/claimDetails';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {Address} from 'form/models/address';
+import {PartyType} from 'models/partyType';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim;
@@ -16,6 +20,33 @@ describe('Translate claimant response to ccd version', () => {
     claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     claim.claimantResponse = new ClaimantResponse();
+    claim.respondent1 = new Party();
+  });
+  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
+    //Given
+    claim.respondent1 = {
+      responseType: ResponseType.PART_ADMISSION,
+      partyDetails: {primaryAddress: new Address()},
+      type: PartyType.COMPANY,
+    };
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
+  });
+  it('should translate fullAdmitSetDateAcceptPayment to ccd - full admission', () => {
+    //Given
+    claim.respondent1 = {
+      responseType: ResponseType.FULL_ADMISSION,
+      partyDetails: {primaryAddress: new Address()},
+      type: PartyType.ORGANISATION,
+    };
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
   });
   it('should translate hasPartAdmittedBeenAccepted to ccd', () => {
     //Given
