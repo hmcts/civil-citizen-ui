@@ -7,11 +7,16 @@ const contactUs = new ContactUs();
 
 class UploadYourDocumentsIntroduction {
 
+  checkPageFullyLoaded () {
+    I.waitForElement('//a[contains(.,\'Start now\')]');
+  }
+
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent() {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     this.verifyUploadDocumentSectionContent();
     this.verifyDeadlinesForUploadingDocumentsContent();

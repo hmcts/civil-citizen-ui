@@ -20,6 +20,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
+import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
@@ -39,12 +40,13 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
 }
 
 claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
-  checkYourAnswersClaimGuard,
+  checkYourAnswersClaimGuard,isFirstTimeInPCQ,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(userId);
+      console.log('claim info',claim);
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(res, form, claim, userId, lang);
     } catch (error) {

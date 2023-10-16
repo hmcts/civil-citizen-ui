@@ -5,11 +5,16 @@ const contactUs = new ContactUs();
 
 class WhatTypeOfDocumentsDoYouWantToUpload {
 
+  checkPageFullyLoaded () {
+    I.seeElement('//a[.=\'Cancel\']');
+  }
+
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(caseType) {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     if (caseType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
