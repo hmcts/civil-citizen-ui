@@ -10,7 +10,6 @@ import {
 } from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
-import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -22,12 +21,20 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string): Summ
       : null;
   };
   const getFreeTelephoneMediationSection = () => {
-    return claim.isFullDefence() || claim.isPartialAdmission()
+    return (claim.hasClaimantRejectedDefendantAdmittedAmount()
+      || claim.hasClaimantIntentToProceedResponse()
+      || claim.hasClaimantRejectedDefendantPaid()
+      || claim.hasClaimantRejectedPartAdmitPayment()
+    )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
   const getHearingRequirementsSection = () => {
-    return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
+    return (claim.hasClaimantRejectedDefendantAdmittedAmount()
+      || claim.hasClaimantIntentToProceedResponse()
+      || claim.hasClaimantRejectedDefendantPaid()
+      || claim.hasClaimantRejectedPartAdmitPayment()
+    )
       ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
       : null;
   };
