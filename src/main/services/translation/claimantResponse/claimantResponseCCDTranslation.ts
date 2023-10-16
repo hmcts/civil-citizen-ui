@@ -5,7 +5,7 @@ import {toCCDVulnerability} from '../response/convertToCCDVulenrabilityQuestions
 import {toCCDSpecificCourtLocations} from '../response/convertToCCDSpecificCourtLocations';
 import {toCCDSmallClaimHearing} from '../response/convertToCCDSmallClaimHearing';
 import {toCCDClaimantLiPResponse} from './convertToCCDClaimantLiPResponse';
-import {toCCDYesNo} from '../response/convertToCCDYesNo';
+import {toCCDYesNo, toCCDYesNoFromGenericYesNo} from '../response/convertToCCDYesNo';
 import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
@@ -22,5 +22,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1DQSmallClaimHearing: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.claimantResponse?.directionQuestionnaire?.hearing) : undefined,
     applicant1DQExperts: toCCDExpert(claim),
     applicant1ClaimExpertSpecRequired: toCCDYesNo(claim.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option),
+    applicant1AcceptPartAdmitPaymentPlanSpec: claim.isPartialAdmission() ? toCCDYesNoFromGenericYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment) : undefined,
+    applicant1AcceptFullAdmitPaymentPlanSpec: claim.isFullAdmission() ? toCCDYesNoFromGenericYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment) : undefined,
   };
 };
