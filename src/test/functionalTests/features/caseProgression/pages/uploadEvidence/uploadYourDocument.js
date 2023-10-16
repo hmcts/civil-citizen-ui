@@ -8,19 +8,23 @@ const contactUs = new ContactUs();
 
 class UploadYourDocument {
 
+  checkPageFullyLoaded() {
+    I.waitForElement('//a[.=\'Cancel\']');
+  }
+
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(claimType) {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     this.verifyAcceptableDocumentsFormatsSectionContent();
-    if(claimType === 'FastTrack') {
+    if (claimType === 'FastTrack') {
       this.verifyAllFastTrackSectionContent(claimType);
     } else if (claimType === 'SmallClaims') {
       this.verifyAllSmallClaimsSectionContent(claimType);
     }
-
     contactUs.verifyContactUs();
   }
 
@@ -46,7 +50,7 @@ class UploadYourDocument {
     this.verifyHearingDocumentsSectionContent();
   }
 
-  verifyDisclosureSectionContent () {
+  verifyDisclosureSectionContent() {
     I.see('Disclosure', 'h2');
     I.see('Documents for disclosure', 'h3');
     I.see('Type of document');
@@ -60,7 +64,7 @@ class UploadYourDocument {
     I.see('Disclosure list');
   }
 
-  verifyWitnessSectionContent (claimType) {
+  verifyWitnessSectionContent(claimType) {
     I.see('Witness evidence', 'h2');
     I.see('Witness statement', 'h3');
     I.see('Witness\'s name');
@@ -75,7 +79,7 @@ class UploadYourDocument {
     I.see('Date document was issued or message was sent');
   }
 
-  verifyExpertSectionContentForFastTrack () {
+  verifyExpertSectionContentForFastTrack() {
     I.see('Expert evidence', 'h2');
     I.see('Expert\'s report', 'h3');
     I.see('Expert\'s name');
@@ -92,7 +96,7 @@ class UploadYourDocument {
     I.see('Name of document with other party\'s questions');
   }
 
-  verifyExpertSectionContentForSmallClaims () {
+  verifyExpertSectionContentForSmallClaims() {
     I.see('Expert evidence', 'h2');
     I.see('Expert\'s report', 'h3');
     I.see('Expert\'s name');
@@ -109,7 +113,7 @@ class UploadYourDocument {
     I.see('Date statement was written');
   }
 
-  verifyTrialDocumentsSectionContent () {
+  verifyTrialDocumentsSectionContent() {
     I.see('Trial documents', 'h2');
     I.see('Case summary', 'h3');
     I.see('Skeleton argument', 'h3');
@@ -118,7 +122,7 @@ class UploadYourDocument {
     I.see('Documentary evidence for trial', 'h3');
   }
 
-  verifyHearingDocumentsSectionContent () {
+  verifyHearingDocumentsSectionContent() {
     I.see('Hearing documents', 'h2');
     I.see('Documentary evidence for hearing', 'h3');
     I.see('Type of document');
