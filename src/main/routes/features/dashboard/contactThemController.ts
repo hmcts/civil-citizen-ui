@@ -22,7 +22,7 @@ contactThemController.get(
   CITIZEN_CONTACT_THEM_URL, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const claim: Claim = await getClaimById(claimId, req);
+      const claim: Claim = await getClaimById(claimId, req, true);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL);
       const claimDetailsUrl = constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL);
       renderView(res, claim, claimantDetailsUrl, claimDetailsUrl);
