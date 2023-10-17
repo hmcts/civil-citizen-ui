@@ -258,8 +258,6 @@ export interface CCDClaim extends ClaimUpdate {
   enterBreathing?: CCDBreathingSpaceStartInfo;
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
-  applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
-  applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
 }
 
 export interface ClaimFeeData {
