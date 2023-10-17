@@ -54,6 +54,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
   claim.caseRole = ccdClaim?.caseRole;
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed(ccdClaim?.applicant1LiPResponse?.applicant1ChoosesHowToProceed);
+  claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.applicant1RepaymentOptionForDefendantSpec);
 
   return claim;
 };
