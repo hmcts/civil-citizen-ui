@@ -5,6 +5,8 @@ import {DisabilityService} from '../../../../../services/features/response/state
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';
 const partnerPensionController = Router();
@@ -17,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: NextFunction) => {
   try {
-    const partnerPension = await partnerPensionService.getPartnerPension(req.params.id);
+    const partnerPension = await partnerPensionService.getPartnerPension(generateRedisKey(<AppRequest>req));
     renderView(partnerPension, res);
   } catch (error) {
     next(error);
@@ -27,12 +29,13 @@ partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res, next:
 partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: NextFunction) => {
   try {
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
+    const redisKey = generateRedisKey(<AppRequest>req);
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await partnerPensionService.savePartnerPension(req.params.id, form);
-      const disability = await disabilityService.getDisability(req.params.id);
+      await partnerPensionService.savePartnerPension(redisKey, form);
+      const disability = await disabilityService.getDisability(redisKey);
       (disability.model.option == 'no')
         ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL))
         : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
