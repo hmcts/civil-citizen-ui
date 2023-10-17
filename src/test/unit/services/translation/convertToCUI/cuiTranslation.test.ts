@@ -81,49 +81,21 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(output.specClaimTemplateDocumentFiles.document_url).toBe('http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c');
 
   });
-  it('should translate full defence fields to CUI model', () => {
-
-    //Given
-    const input: CCDClaim = {
-      respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
-      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
-    };
-   
-    //When
-    const claim = translateCCDCaseDataToCUIModel(input);
-   
-    //Then
-    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
-  });
-  it('should translate full defence fields to CUI model', () => {
-
-    //Given
-    const input: CCDClaim = {
-      respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
-      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
-    };
-    //When
-    const claim = translateCCDCaseDataToCUIModel(input);
-    //Then
-    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
-  });
 
   it('should translate full defence fields to CUI model', () => {
 
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
-      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES,
     };
 
     //When
     const claim = translateCCDCaseDataToCUIModel(input);
-    
+
     //Then
-    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
+    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES));
   });
 
   it('should translate partial admission field to CUI model', () => {
@@ -131,7 +103,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "PART_ADMISSION",
+      respondent1ClaimResponseTypeForSpec: 'PART_ADMISSION',
       applicant1AcceptPartAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
       applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
       specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
@@ -139,11 +111,11 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //When
     const claim = translateCCDCaseDataToCUIModel(input);
-    
+
     //Then
-    expect(claim.partialAdmission.alreadyPaid).toEqual(new GenericYesNo(YesNo.YES))
-    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES))
-    expect(claim.claimantResponse.hasPartAdmittedBeenAccepted).toEqual(new GenericYesNo(YesNo.YES))
+    expect(claim.partialAdmission.alreadyPaid).toEqual(new GenericYesNo(YesNo.YES));
+    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES));
+    expect(claim.claimantResponse.hasPartAdmittedBeenAccepted).toEqual(new GenericYesNo(YesNo.YES));
   });
 
   it('should translate full admission field to CUI model', () => {
@@ -151,15 +123,15 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_ADMISSION",
+      respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
       defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
       applicant1AcceptFullAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
-    
+
     //Then
-    expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(PaymentOptionType.IMMEDIATELY)
-    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES))
+    expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(PaymentOptionType.IMMEDIATELY);
+    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES));
   });
 });
