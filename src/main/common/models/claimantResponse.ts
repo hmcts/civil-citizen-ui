@@ -61,9 +61,5 @@ export class ClaimantResponse {
   get isCCJRequested() : boolean {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
-
-  get isClaimantAcceptPaymentPlan() {
-    return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
-  }
-
+  
 }
