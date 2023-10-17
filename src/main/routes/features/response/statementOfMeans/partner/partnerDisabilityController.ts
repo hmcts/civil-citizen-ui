@@ -8,6 +8,8 @@ import {PartnerDisabilityService} from '../../../../../services/features/respons
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const partnerDisabilityController = Router();
@@ -19,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res, next: NextFunction) => {
   try {
-    const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
+    const partnerDisability = await partnerDisabilityService.getPartnerDisability(generateRedisKey(<AppRequest>req));
     renderView(partnerDisability, res);
   } catch (error) {
     next(error);
@@ -34,7 +36,7 @@ partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await partnerDisabilityService.savePartnerDisability(req.params.id, form);
+        await partnerDisabilityService.savePartnerDisability(generateRedisKey(<AppRequest>req), form);
         form.model.option == 'yes'
           ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_SEVERE_DISABILITY_URL))
           : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
