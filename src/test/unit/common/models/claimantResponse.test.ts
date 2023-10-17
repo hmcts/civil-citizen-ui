@@ -1,5 +1,5 @@
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 describe('ClaimantResponse model', () => {
   describe('isClaimantSuggestedPayImmediately', () => {

@@ -46,10 +46,10 @@ describe('Claimant Response Confirmation service', () => {
 
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
-    claim.claimantResponse.hasPartAdmittedBeenAccepted = { option: YesNo.YES };
+    claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
-      paymentIntention: { paymentOption: PaymentOptionType.IMMEDIATELY },
+      paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
     };
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
