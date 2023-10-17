@@ -5,9 +5,9 @@ import config from 'config';
 import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Carer', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -16,7 +16,8 @@ describe('Carer', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
@@ -48,7 +49,7 @@ describe('Carer', () => {
     it('should redirect page when "no"', async () => {
       await request(app)
         .post(CITIZEN_CARER_URL)
-        .send({option:'no'})
+        .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
@@ -57,7 +58,7 @@ describe('Carer', () => {
     it('should redirect page when "yes"', async () => {
       await request(app)
         .post(CITIZEN_CARER_URL)
-        .send({option:'yes'})
+        .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
@@ -76,7 +77,7 @@ describe('Carer', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_CARER_URL)
-        .send({option:'no'})
+        .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

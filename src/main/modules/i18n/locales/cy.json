@@ -1775,7 +1775,7 @@
       "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
-      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for the hearing",
       "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
@@ -2402,7 +2402,7 @@
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
-      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol { { claimantName }}.",
+      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol {{ claimantName }}.",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "IF_CLAIMANT_ACCEPTS_OFFER": "Os yw {{ claimantName }} yn derbyn eich cynnig",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "Os yw {{ claimantName }} yn derbyn eich ymateb",
@@ -2620,7 +2620,7 @@
       },
       "HEARING": {
         "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for hearing"
+        "DOCUMENTARY": "Documentary evidence for the hearing"
       },
       "YEAR": "Year"
     },
