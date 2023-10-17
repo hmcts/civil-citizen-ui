@@ -20,7 +20,7 @@ describe('Documents uploaded controller', () => {
   });
 
   it('should render the page successfully', async () => {
-    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', '1234123412341234'))
+    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', '1645882162449409'))
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Documents uploaded');
