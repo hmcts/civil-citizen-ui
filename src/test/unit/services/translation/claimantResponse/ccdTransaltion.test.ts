@@ -51,10 +51,24 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBeUndefined();
   });
-  it('should set fullAdmitSetDateAcceptPayment related ccd fields to undefined', () => {
+  it('should set fullAdmitSetDateAcceptPayment (full admission) related ccd fields to undefined', () => {
     //Given
     claim.respondent1 = {
       responseType: ResponseType.FULL_ADMISSION,
+      partyDetails: {primaryAddress: new Address()},
+      type: PartyType.ORGANISATION,
+    };
+    claim.claimantResponse = undefined;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBeUndefined();
+    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBeUndefined();
+  });
+  it('should set fullAdmitSetDateAcceptPayment (part admission) related ccd fields to undefined', () => {
+    //Given
+    claim.respondent1 = {
+      responseType: ResponseType.PART_ADMISSION,
       partyDetails: {primaryAddress: new Address()},
       type: PartyType.ORGANISATION,
     };
