@@ -41,7 +41,7 @@ export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
 
 export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
-  const selectedOption = claim?.claimantResponse?.chooseHowToProceed?.option;
+  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
     t(RESPONSEFORHOWDOYOUWANTTOPROCEED[selectedOption], {lang}),
