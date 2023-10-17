@@ -68,6 +68,7 @@ export class DashboardClaimantItem extends DashboardItem {
         parameter: [paramDefendantName],
       },
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
     };
   }
 
@@ -107,6 +108,10 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       ADMIT_PAY_INSTALLMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_BY_INSTALLMENTS'},
       ELIGIBLE_FOR_CCJ: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
+        parameter: [paramClaimantName],
+      },
+      DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
         parameter: [paramClaimantName],
       },
