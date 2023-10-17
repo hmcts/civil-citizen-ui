@@ -277,7 +277,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
     });
-    it('should display Choose how to formalise repayment task as incomplete', () => {
+    it('should display Choose how to formalise repayment task as complete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
@@ -291,10 +291,8 @@ describe('Claimant Response Task List builder', () => {
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
-      expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
     it('should display propose alternative repayment task as incomplete', () => {
       //Given
@@ -331,11 +329,10 @@ describe('Claimant Response Task List builder', () => {
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
-      expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
-      expect(whatToDoNext.tasks[3].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+      expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
     it('should display Choose how to formalise repayment task as complete', () => {
       //Given
@@ -353,11 +350,10 @@ describe('Claimant Response Task List builder', () => {
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_ADMITTED');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
-      expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
-      expect(whatToDoNext.tasks[3].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+      expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
     });
 
     it('should display Sign a settlement agreement task as incomplete', () => {
