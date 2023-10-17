@@ -143,7 +143,7 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and want to proceed with no mediation', () => {
 
     // Given
-    claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined);
+    claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, {});
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = { option: YesNo.NO };
     // When
@@ -157,6 +157,28 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.WHAT_HAPPENS_NEXT_TEXT');
     expect(claimantResponseConfirmationContent[3]).toBeUndefined();
+  });
+
+  it('Claimant rejected defendant`s response as part admit paid already with yes mediation', () => {
+
+    // Given
+    claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
+    claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
+    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.mediation = new Mediation(undefined, { option: YesNo.YES }, undefined, undefined);
+    claim.partialAdmission = {
+      alreadyPaid: { option: 'yes' },
+    };
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('undefined');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
   });
 
 });

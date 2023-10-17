@@ -1,6 +1,49 @@
-import {CCDClaim} from 'common/models/civilClaimResponse';
-import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {TimeLineDocument, Document} from 'common/models/document/document';
+import { CCDClaim } from 'common/models/civilClaimResponse';
+import { translateCCDCaseDataToCUIModel } from 'services/translation/convertToCUI/cuiTranslation';
+import { TimeLineDocument, Document } from 'common/models/document/document';
+import { PartyType } from 'common/models/partyType';
+import { CCDAddress } from 'models/ccdResponse/ccdAddress';
+import { CCDParty } from 'models/ccdResponse/ccdParty';
+import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
+import { GenericYesNo } from 'form/models/genericYesNo';
+import { CCDPaymentOption } from 'common/models/ccdResponse/ccdPaymentOption';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+
+const phoneCCD = '123456789';
+const title = 'Mr';
+const firstName = 'Jon';
+const lastName = 'Doe';
+const emailCCD = 'test@test.com';
+
+const addressCCD: CCDAddress = {
+  AddressLine1: 'Street test',
+  AddressLine2: '1',
+  AddressLine3: '1A',
+  PostTown: 'test',
+  PostCode: 'sl11gf',
+  Country: 'test',
+  County: 'test',
+};
+
+const getPartyIndividualCCD = (): CCDParty => {
+  return {
+    companyName: undefined,
+    individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    individualTitle: title,
+    individualFirstName: firstName,
+    individualLastName: lastName,
+    organisationName: undefined,
+    partyEmail: emailCCD,
+    partyPhone: phoneCCD,
+    primaryAddress: addressCCD,
+    soleTraderDateOfBirth: undefined,
+    soleTraderTitle: undefined,
+    soleTraderFirstName: undefined,
+    soleTraderLastName: undefined,
+    soleTraderTradingAs: undefined,
+    type: PartyType.INDIVIDUAL,
+  };
+};
 
 describe('translateCCDCaseDataToCUIModel', () => {
   it('should return undefined if ccdClaim', () => {
@@ -37,5 +80,86 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(output.specClaimTemplateDocumentFiles.document_filename).toBe('timeline-event-summary.pdf');
     expect(output.specClaimTemplateDocumentFiles.document_url).toBe('http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c');
 
+  });
+  it('should translate full defence fields to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
+      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
+    };
+   
+    //When
+    const claim = translateCCDCaseDataToCUIModel(input);
+   
+    //Then
+    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
+  });
+  it('should translate full defence fields to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
+      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
+    };
+    //When
+    const claim = translateCCDCaseDataToCUIModel(input);
+    //Then
+    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
+  });
+
+  it('should translate full defence fields to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
+      applicant1ProceedWithClaim: YesNoUpperCamelCase.YES
+    };
+
+    //When
+    const claim = translateCCDCaseDataToCUIModel(input);
+    
+    //Then
+    expect(claim.claimantResponse.intentionToProceed).toEqual(new GenericYesNo(YesNo.YES))
+  });
+
+  it('should translate partial admission field to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: "PART_ADMISSION",
+      applicant1AcceptPartAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
+      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+      specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
+    };
+
+    //When
+    const claim = translateCCDCaseDataToCUIModel(input);
+    
+    //Then
+    expect(claim.partialAdmission.alreadyPaid).toEqual(new GenericYesNo(YesNo.YES))
+    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES))
+    expect(claim.claimantResponse.hasPartAdmittedBeenAccepted).toEqual(new GenericYesNo(YesNo.YES))
+  });
+
+  it('should translate full admission field to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: "FULL_ADMISSION",
+      defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
+      applicant1AcceptFullAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+    
+    //Then
+    expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(PaymentOptionType.IMMEDIATELY)
+    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES))
   });
 });

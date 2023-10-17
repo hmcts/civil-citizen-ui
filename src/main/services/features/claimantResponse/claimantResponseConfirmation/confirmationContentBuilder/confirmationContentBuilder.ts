@@ -23,7 +23,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   // No Mediation
-  if (claim.isDefendantAgreedForMediation || claim.hasClaimantNotAgreedToMediation) {
+  if (claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation()) {
     if ((claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid()) || claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED
       || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED || claim.responseStatus === ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED) {
       return true;

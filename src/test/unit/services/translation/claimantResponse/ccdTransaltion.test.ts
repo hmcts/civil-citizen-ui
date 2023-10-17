@@ -1,14 +1,14 @@
-import {Claim} from 'common/models/claim';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
-import {ClaimantResponse} from 'common/models/claimantResponse';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {Mediation} from 'common/models/mediation/mediation';
-import {mockExpertDetailsList} from '../../features/directionsQuestionnaire/experts/expertDetailsService.test';
-import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
-import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
-import {CaseState} from 'common/form/models/claimDetails';
+import { Claim } from 'common/models/claim';
+import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { translateClaimantResponseToCCD } from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
+import { ClaimantResponse } from 'common/models/claimantResponse';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { Mediation } from 'common/models/mediation/mediation';
+import { mockExpertDetailsList } from '../../features/directionsQuestionnaire/experts/expertDetailsService.test';
+import { SpecificCourtLocation } from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
+import { LanguageOptions } from 'common/models/directionsQuestionnaire/languageOptions';
+import { DirectionQuestionnaire } from 'common/models/directionsQuestionnaire/directionQuestionnaire';
+import { CaseState } from 'common/form/models/claimDetails';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim;
@@ -19,12 +19,13 @@ describe('Translate claimant response to ccd version', () => {
   });
   it('should translate hasPartAdmittedBeenAccepted to ccd', () => {
     //Given
-    claim.claimantResponse.hasPartAdmittedBeenAccepted = <GenericYesNo>{option: YesNo.NO};
+    claim.claimantResponse.hasPartAdmittedBeenAccepted = <GenericYesNo>{ option: YesNo.NO };
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
     //Then
     expect(ccdClaim.applicant1AcceptAdmitAmountPaidSpec).toBe(YesNoUpperCamelCase.NO);
   });
+
   it('should translate mediation to ccd', () => {
     //Given
     claim.claimantResponse.mediation = <Mediation>{
@@ -65,6 +66,41 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+    expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+  });
+
+  it('should translate applicant1ProceedWithClaim to ccd', () => {
+
+    //Given
+    claim.claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1ProceedWithClaim).toBe(YesNoUpperCamelCase.YES);
+  });
+  it('should translate applicant1PartAdmitConfirmAmountPaidSpec to ccd', () => {
+
+    //Given
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
+
+    //Given
+    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
   });
 });
 
@@ -77,7 +113,7 @@ function getClaimantResponseDQ(claim: Claim): Claim {
       details: 'Need Phone hearing',
     },
     cantAttendHearingInNext12Months: new GenericYesNo(YesNo.NO),
-    supportRequiredList: {option: YesNo.NO},
+    supportRequiredList: { option: YesNo.NO },
     whyUnavailableForHearing: {
       reason: 'out of city',
     },
@@ -85,12 +121,12 @@ function getClaimantResponseDQ(claim: Claim): Claim {
       option: YesNo.NO,
       reasonForHearing: 'reasonForHearing',
     },
-    specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
+    specificCourtLocation: <SpecificCourtLocation>{ option: YesNo.NO },
   };
 
   claim.claimantResponse.directionQuestionnaire.experts = {
     expertRequired: true,
-    expertReportDetails: {option: YesNo.NO},
+    expertReportDetails: { option: YesNo.NO },
     permissionForExpert: new GenericYesNo(YesNo.YES),
     expertCanStillExamine: {
       option: YesNo.YES,
@@ -114,5 +150,6 @@ function getClaimantResponseDQ(claim: Claim): Claim {
       documentsLanguage: LanguageOptions.ENGLISH,
     },
   };
+
   return claim;
 }
