@@ -1,13 +1,14 @@
-import { CCDClaim } from 'common/models/civilClaimResponse';
-import { translateCCDCaseDataToCUIModel } from 'services/translation/convertToCUI/cuiTranslation';
-import { TimeLineDocument, Document } from 'common/models/document/document';
-import { PartyType } from 'common/models/partyType';
-import { CCDAddress } from 'models/ccdResponse/ccdAddress';
-import { CCDParty } from 'models/ccdResponse/ccdParty';
-import { YesNo, YesNoUpperCamelCase } from 'form/models/yesNo';
-import { GenericYesNo } from 'form/models/genericYesNo';
-import { CCDPaymentOption } from 'common/models/ccdResponse/ccdPaymentOption';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDClaim} from 'common/models/civilClaimResponse';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {TimeLineDocument,Document} from 'common/models/document/document';
+import {PartyType} from 'common/models/partyType';
+import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {CCDParty} from 'models/ccdResponse/ccdParty';
+import {YesNo,YesNoUpperCamelCase} from 'form/models/yesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -134,4 +135,37 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(PaymentOptionType.IMMEDIATELY);
     expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES));
   });
+
+  it('should translate full admission field to CUI model', () => {
+
+    //Given
+    const input: CCDClaim = {
+      respondent1: getPartyIndividualCCD(),
+      respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
+      defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
+      applicant1AcceptFullAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(PaymentOptionType.IMMEDIATELY);
+    expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(new GenericYesNo(YesNo.YES));
+  });
+});
+
+it('should translate partial payment to CUI model', () => {
+
+  //Given
+  const input: CCDClaim = {
+    partialPayment: YesNoUpperCamelCase.YES,
+    partialPaymentAmount: 'IMMEDIATELY',
+    paymentTypeSelection: CCDDJPaymentOption.IMMEDIATELY,
+  };
+  
+  const claim = translateCCDCaseDataToCUIModel(input);
+
+  //Then
+  expect(claim.claimantResponse.ccjRequest.ccjPaymentOption.type).toEqual(PaymentOptionType.IMMEDIATELY);
+
 });

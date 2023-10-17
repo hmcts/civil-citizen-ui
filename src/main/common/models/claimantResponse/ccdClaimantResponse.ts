@@ -1,14 +1,14 @@
-import { ClaimUpdate } from 'models/events/eventDto';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import { CCDWelshLanguageRequirements } from 'models/ccdResponse/ccdWelshLanguageRequirements';
-import { CCDVulnerability } from 'models/ccdResponse/ccdVulnerability';
-import { CCDSpecificCourtLocations } from 'models/ccdResponse/ccdSpecificCourtLocations';
-import { CCDWitnesses } from 'models/ccdResponse/ccdWitnesses';
-import { CCDSmallClaimHearing } from 'models/ccdResponse/ccdSmallClaimHearing';
-import { CCDExpert } from 'models/ccdResponse/ccdExpert';
-import { CCDClaimantLiPResponse } from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
-import { CCDMediation } from '../ccdResponse/ccdMediation';
-import { CCDPaymentOption } from 'models/ccdResponse/ccdPaymentOption';
+import {ClaimUpdate} from 'models/events/eventDto';
+import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
+import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
+import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
+import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
+import {CCDExpert} from 'models/ccdResponse/ccdExpert';
+import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import {CCDMediation} from '../ccdResponse/ccdMediation';
+import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;

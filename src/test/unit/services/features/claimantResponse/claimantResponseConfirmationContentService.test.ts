@@ -1,16 +1,16 @@
-import { Claim } from 'common/models/claim';
-import { ResponseType } from 'common/form/models/responseType';
-import { Party } from 'common/models/party';
-import { RejectAllOfClaim } from 'common/form/models/rejectAllOfClaim';
-import { RejectAllOfClaimType } from 'common/form/models/rejectAllOfClaimType';
-import { PartyDetails } from 'common/form/models/partyDetails';
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import { CaseState } from 'common/form/models/claimDetails';
-import { getClaimantResponseConfirmationContent } from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { YesNo } from 'common/form/models/yesNo';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { Mediation } from 'common/models/mediation/mediation';
+import {Claim} from 'common/models/claim';
+import {ResponseType} from 'common/form/models/responseType';
+import {Party} from 'common/models/party';
+import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
+import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {CaseState} from 'common/form/models/claimDetails';
+import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {YesNo} from 'common/form/models/yesNo';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {Mediation} from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -27,7 +27,7 @@ describe('Claimant Response Confirmation service', () => {
 
   it('Dispute Scenario when claimant intention is not to proceed with claim', () => {
     // Given
-    claim.claimantResponse.intentionToProceed = { option: 'no' };
+    claim.claimantResponse.intentionToProceed = {option: 'no'};
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.rejectAllOfClaim = new RejectAllOfClaim(
       RejectAllOfClaimType.DISPUTE,
@@ -73,11 +73,11 @@ describe('Claimant Response Confirmation service', () => {
 
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' }; //new ClaimantMediationLip('No');
+    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'}; //new ClaimantMediationLip('No');
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
-      paymentIntention: { paymentOption: paymentOptionType },
-      alreadyPaid: { option: 'no' },
+      paymentIntention: {paymentOption: paymentOptionType},
+      alreadyPaid: {option: 'no'},
     };
 
     // When
@@ -98,10 +98,10 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
+    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'};
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
-      alreadyPaid: { option: 'yes' },
+      alreadyPaid: {option: 'yes'},
     };
 
     // When
@@ -122,9 +122,9 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined);
+    claim.mediation = new Mediation(undefined, {option: YesNo.NO}, undefined, undefined);
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-    claim.claimantResponse.intentionToProceed = { option: YesNo.YES };
+    claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
 
     // When
@@ -143,9 +143,9 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and want to proceed with no mediation', () => {
 
     // Given
-    claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, {});
+    claim.mediation = new Mediation(undefined, {option: YesNo.NO}, undefined, {});
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-    claim.claimantResponse.hasDefendantPaidYou = { option: YesNo.NO };
+    claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
 
@@ -166,9 +166,9 @@ describe('Claimant Response Confirmation service', () => {
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
     claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.mediation = new Mediation(undefined, { option: YesNo.YES }, undefined, undefined);
+    claim.mediation = new Mediation(undefined, {option: YesNo.YES}, undefined, undefined);
     claim.partialAdmission = {
-      alreadyPaid: { option: 'yes' },
+      alreadyPaid: {option: 'yes'},
     };
 
     // When
@@ -183,12 +183,12 @@ describe('Claimant Response Confirmation service', () => {
 
 });
 
-function getClaim() {
+function getClaim (){
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   claim.legacyCaseReference = '000MC009';
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetails({ partyName: 'Version 1' });
+  claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
   claim.respondent1ResponseDeadline = new Date();
   claim.claimantResponse = new ClaimantResponse();
   return claim;
