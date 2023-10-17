@@ -35,8 +35,6 @@ const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOpti
 };
 
 export const toCUIChoosesHowToProceed = (option: CCDChoosesHowToProceed) : ChooseHowProceed => {
-  if(!option) return undefined;
-
   switch(option) {
     case CCDChoosesHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT:
       return ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
