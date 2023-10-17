@@ -770,7 +770,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(3);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIM_SETTLED');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_CONFIRMED_SETTLED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
       expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/123');
@@ -788,7 +788,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(4);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_COURT_REVIEW');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG3');

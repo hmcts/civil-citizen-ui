@@ -10,6 +10,7 @@ import {LoggerInstance} from 'winston';
 import {FINANCIAL_DETAILS_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
 const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
@@ -19,7 +20,6 @@ const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
 const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
@@ -56,6 +56,7 @@ describe('Citizen financial details', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     setFinancialDetailsControllerLogger(mockLogger);
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

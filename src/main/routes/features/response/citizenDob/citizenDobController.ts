@@ -8,6 +8,8 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const citizenDobController = Router();
 
@@ -30,7 +32,7 @@ citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: Next
   const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
-    const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
+    const responseDataRedis: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     if (responseDataRedis?.respondent1?.dateOfBirth) {
       const dateOfBirth = new Date(responseDataRedis.respondent1.dateOfBirth.date);
       citizenDob.model.day = dateOfBirth.getDate();
@@ -45,13 +47,14 @@ citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: Next
 
 citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
   const {year, month, day} = req.body;
+  const redisKey = generateRedisKey(<AppRequest>req);
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     await citizenDob.validate();
     if (citizenDob.hasErrors()) {
       renderView(citizenDob, res);
     } else {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(redisKey);
       if (claim.respondent1) {
         claim.respondent1.dateOfBirth = new CitizenDate(day, month, year);
       } else {
@@ -59,7 +62,7 @@ citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
         respondent.dateOfBirth = new CitizenDate(day, month, year);
         claim.respondent1 = respondent;
       }
-      await saveDraftClaim(req.params.id, claim);
+      await saveDraftClaim(redisKey, claim);
       redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
     }
   } catch (error) {
