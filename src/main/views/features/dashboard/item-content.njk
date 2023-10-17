@@ -223,8 +223,11 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
+    {% if javascriptEnabled %}
+
       <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
       <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
+  {% endif %}
 
      <div class="govuk-inset-text">
        {{ govukFileUpload({
