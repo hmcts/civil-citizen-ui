@@ -50,7 +50,6 @@ export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang:
 
 };
 
-
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
 
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
