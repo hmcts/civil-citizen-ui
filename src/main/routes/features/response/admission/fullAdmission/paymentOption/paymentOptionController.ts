@@ -8,6 +8,8 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -26,7 +28,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 
 paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
   try {
-    const paymentOption = await getPaymentOptionForm(req.params.id, ResponseType.FULL_ADMISSION);
+    const paymentOption = await getPaymentOptionForm(generateRedisKey(<AppRequest>req), ResponseType.FULL_ADMISSION);
     renderView(new GenericForm(paymentOption), res);
   } catch (error) {
     next(error);
@@ -41,7 +43,7 @@ paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await savePaymentOptionData(req.params.id, paymentOption, ResponseType.FULL_ADMISSION);
+      await savePaymentOptionData(generateRedisKey(<AppRequest>req), paymentOption, ResponseType.FULL_ADMISSION);
       redirectToNextPage(req.params.id, paymentOption, res);
     }
   } catch (error) {

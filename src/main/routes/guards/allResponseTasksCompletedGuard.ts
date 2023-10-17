@@ -13,7 +13,7 @@ export class AllResponseTasksCompletedGuard {
       try {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        const caseData: Claim = await getClaimById(appReq.session.claimId, req);
+        const caseData: Claim = await getClaimById(appReq.session.claimId, req, true);
         await setResponseDeadline(caseData, appReq);
         const taskLists = getTaskLists(caseData,  appReq.session.claimId, lang);
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');

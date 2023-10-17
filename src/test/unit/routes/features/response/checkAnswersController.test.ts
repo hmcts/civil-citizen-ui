@@ -15,6 +15,7 @@ import {isFullAmountReject} from 'modules/claimDetailsService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import * as utilityService from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 import {Party} from 'common/models/party';
 import {PartyType} from 'common/models/partyType';
@@ -88,6 +89,7 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
     beforeEach((done) => {
+      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaimWithPcqId;
       });
