@@ -3,7 +3,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-  RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
@@ -43,7 +42,7 @@ const getRepaymentPlan = (claim: Claim, req: Request) => {
   return data;
 };
 
-signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
+signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     const claimantResponse = await getClaimantResponse(req.params.id);
