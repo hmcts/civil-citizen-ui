@@ -21,6 +21,16 @@ export const addFiveDaysBefore4pm = (date: Date): Date => {
   return datePlusDays;
 } ;
 
+export const addDaysBefore4pm = (date: Date, value: number): Date => {
+  const datePlusDays = new Date(date);
+  if (date.getUTCHours() > FOUR_PM) {
+    datePlusDays.setDate(date.getDate() + value + 1);
+  } else {
+    datePlusDays.setDate(date.getDate() + value);
+  }
+  return datePlusDays;
+} ;
+
 // set deadline time 4pm
 export const setTimeFourPM = (deadlineDay: Date | string) => {
   return convertDateToLuxonDate(deadlineDay).set({hour: 16, minute: 0, second: 0, millisecond: 1});

@@ -6,6 +6,7 @@ import {
 import {
   getSummarySections,
   saveStatementOfTruth,
+  saveSubmitDate,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -51,6 +52,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
+      await saveSubmitDate(req.params.id);
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }

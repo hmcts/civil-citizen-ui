@@ -32,6 +32,7 @@ export class ClaimantResponse {
   suggestedPaymentIntention?: PaymentIntention;
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
+  submitDate?: Date;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
@@ -55,5 +56,9 @@ export class ClaimantResponse {
 
   get isClaimantNotAcceptedPartAdmittedAmount(): boolean {
     return this.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  get isSignSettlementAgreement(): boolean {
+    return this.signSettlementAgreement?.signed !== undefined;
   }
 }

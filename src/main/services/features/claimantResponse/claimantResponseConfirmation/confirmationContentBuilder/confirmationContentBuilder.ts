@@ -4,6 +4,7 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
 import {getPAPayImmediatelyAcceptedNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {getSignSettlementAgreementNextSteps} from "./signSettlementAgreementContentBuilder";
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -13,6 +14,8 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
   } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
+  } else if (claimantResponse.isSignSettlementAgreement) {
+    claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   }
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
@@ -21,11 +24,15 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
+  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
 
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
     return RCDisputeNotContinueNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
+  }
+  if (claimantResponse.isSignSettlementAgreement) {
+    return SignSettlementAgreementNextSteps;
   }
 }

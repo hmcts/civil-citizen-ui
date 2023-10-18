@@ -46,3 +46,17 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
     throw error;
   }
 };
+
+export const saveSubmitDate = async (claimId: string) => {
+  try {
+    const claim = await getCaseDataFromStore(claimId);
+    if (!claim.claimantResponse) {
+      claim.claimantResponse = new ClaimantResponse();
+    }
+    claim.claimantResponse.submitDate = new Date();
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
