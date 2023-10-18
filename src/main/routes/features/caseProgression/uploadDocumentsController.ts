@@ -107,7 +107,6 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res
   }
 }) as RequestHandler);
 
-// NOSONAR - Suppressing SonarQube analysis for this line because it's a false positive
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {// nosonar
 
   try {
