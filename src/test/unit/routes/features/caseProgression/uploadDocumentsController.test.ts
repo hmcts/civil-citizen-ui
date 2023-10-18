@@ -103,7 +103,7 @@ describe('Upload a single file', () => {
       .field('documentsForDisclosure[0][caseDocument]', '')
       .field('documentsForDisclosure[0][dateInputFields]', '')
       .field('documentsForDisclosure[0][fileUpload]', '')
-      .attach('file', file.buffer, {
+      .attach('documentsForDisclosure[0][fileUpload]', file.buffer, {
         filename: file.originalname,
         contentType: file.mimetype,
       });
