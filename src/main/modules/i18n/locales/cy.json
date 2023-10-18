@@ -482,7 +482,7 @@
       "GIVE_EVIDENCE": "Ydych chi eisiau rhoi tystiolaeth?",
       "HEARING_REQUIREMENTS_TITLE": "Gofynion ar gyfer gwrandawiad",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
-      "I_ACCEPT_THIS_AMOUNT":"I accept this amount",
+      "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -510,6 +510,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -1491,6 +1492,14 @@
       "PAGE_TITLE": "Esboniad",
       "TITLE": "Esboniwch yn fras pam na allwch dalu ar unwaith"
     },
+    "FEE_CHANGE": {
+      "PAGE_TITLE": "Claim fee has changed",
+      "TITLE": "Claim fee has changed",
+      "PARAGRAPH_1": "You submitted a claim, but did not pay the claim fee, so it was not issued and sent to the other parties.",
+      "PARAGRAPH_2": "Since then the claim fee has been recalculated and is now £{{ claimFee }}.",
+      "PARAGRAPH_3": "To proceed with this claim you need to create a new claim and pay the claim fee.",
+      "BUTTON_LABEL": "Create new claim"
+    },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
       "GET_APPLICANT_CONTACT_DETAILS": "Cael manylion cyswllt {{ applicant1Details }}.",
@@ -1563,6 +1572,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
@@ -1727,10 +1737,10 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "Gallwch ymateb i'r hawliad o hyd cyn i’r hawlydd ofyn am ddyfarniad.",
       "YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION": "Mae'r ddau ohonoch wedi cytuno i roi cynnig ar gyfryngu. Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
       "YOU_HAVE_OFFERED_TO_PAY_BY": "Rydych chi wedi cynnig talu i {{ claimantName }} erbyn {{ paymentDate }}",
-      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu £{{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "Rydych chi wedi dweud bod arnoch chi £{{ amount }} ac wedi cynnig talu {{ claimantName }} erbyn {{ paymentDate }}",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "Rydych chi wedi dweud bod arnoch chi £{{ amount }} ac wedi cynnig talu {{ claimantName }} ar unwaith.",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "Rydych chi wedi dweud bod arnoch £{{ amount }} ac wedi cynnig talu {{ claimantName }} £{{ installmentAmount }} {{ paymentSchedule }} gan ddechrau ar {{ paymentDate }} ",
+      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu {{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} erbyn {{ paymentDate }}",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} ar unwaith.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "Rydych chi wedi dweud bod arnoch {{ amount }} ac wedi cynnig talu {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} gan ddechrau ar {{ paymentDate }} ",
       "YOU_HAVE_SETTLED_CLAIM_TITLE": "Fe wnaethoch chi setlo'r hawliad drwy gyfryngu",
       "YOU_HAVE_SETTLED_CLAIM": "Fe wnaethoch chi gytundeb sy'n golygu bod yr hawliad bellach wedi dod i ben ac yn nodi'r telerau o sut mae'n rhaid i chi ad-dalu i {{claimantName}}.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "Dydych chi ddim wedi ymateb i'r hawliad hwn",
@@ -1738,7 +1748,7 @@
       "YOU_MUST_PAY_THEM_BY_PAYMENT_DATE": "Mae'n rhaid i chi dalu erbyn {{paymentDate}}. Rhaid i unrhyw sieciau neu drosglwyddiadau fod yn glir yn eu cyfrif erbyn hynny.",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} Dyddiau sy'n weddill).",
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "Mae angen i chi anfon manylion ariannol eich cwmni at yr hawlydd os nad ydych eisoes wedi gwneud hynny.",
-      "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu £{{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
+      "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu {{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Eich ymateb i'r hawliad",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Aros i'r llys adolygu'r achos.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
@@ -1772,7 +1782,7 @@
       "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
-      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for the hearing",
       "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
@@ -2399,7 +2409,7 @@
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
-      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol { { claimantName }}.",
+      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol {{ claimantName }}.",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "IF_CLAIMANT_ACCEPTS_OFFER": "Os yw {{ claimantName }} yn derbyn eich cynnig",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "Os yw {{ claimantName }} yn derbyn eich ymateb",
@@ -2616,7 +2626,7 @@
       },
       "HEARING": {
         "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for hearing"
+        "DOCUMENTARY": "Documentary evidence for the hearing"
       },
       "YEAR": "Year"
     },

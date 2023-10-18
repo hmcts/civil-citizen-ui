@@ -14,7 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState,
+  CaseState, CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -64,6 +64,8 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
+import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {PinToPost} from './pinToPost';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -123,6 +125,9 @@ export class Claim {
   caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
+  helpWithFees ?: CCDHelpWithFees;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
+  respondent1PinToPostLRspec: PinToPost;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

@@ -10,11 +10,12 @@ import {
   savePaymentOptionData,
 } from '../../../../../services/features/response/admission/paymentOptionService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../common/models/claim';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
+import {AppRequest} from 'common/models/AppRequest';
 
 const partialAdmissionPaymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -34,7 +35,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 let admittedPaymentAmount: number;
 
 partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = generateRedisKey(<AppRequest>req);
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (!claim.partialAdmissionPaymentAmount() || !claim.isPartialAdmission()) {
@@ -50,15 +51,15 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
 });
 
 partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
-  const paymentOption = new PaymentOption(req.body.paymentType);
-  const form = new GenericForm(paymentOption);
   try {
+    const claimId = req.params.id;
+    const paymentOption = new PaymentOption(req.body.paymentType);
+    const form = new GenericForm(paymentOption);
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, admittedPaymentAmount);
     } else {
-      await savePaymentOptionData(claimId, form.model, ResponseType.PART_ADMISSION);
+      await savePaymentOptionData(generateRedisKey(<AppRequest>req), form.model, ResponseType.PART_ADMISSION);
       redirectToNextPage(claimId, form.model, res);
     }
   } catch (error) {

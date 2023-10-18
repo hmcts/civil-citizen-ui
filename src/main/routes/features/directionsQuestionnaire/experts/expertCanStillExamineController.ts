@@ -12,6 +12,8 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const expertCanStillExamineController = Router();
 const expertCanStillExamineViewPath = 'features/directionsQuestionnaire/experts/defendant-expert-can-still-examine';
@@ -24,7 +26,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
 
 expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req, res, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const expertCanStillExamine = directionQuestionnaire.experts?.expertCanStillExamine ?
       directionQuestionnaire.experts.expertCanStillExamine : new ExpertCanStillExamine();
 
@@ -44,7 +46,7 @@ expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req
     if (expertCanStillExamine.hasErrors()) {
       renderView(expertCanStillExamine, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, expertCanStillExamine.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), expertCanStillExamine.model, dqPropertyName, dqParentName);
       if (req.body.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
       } else {

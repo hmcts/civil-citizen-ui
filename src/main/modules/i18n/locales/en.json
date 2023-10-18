@@ -379,10 +379,10 @@
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
-      "PAGE_TITLE": "County Court Judgement confirmation",
+      "PAGE_TITLE": "County Court Judgment confirmation",
       "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
-      "TITLE": "County Court Judgement requested",
+      "TITLE": "County Court Judgment requested",
       "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
       "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
     },
@@ -510,6 +510,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
@@ -1491,6 +1492,14 @@
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can't pay immediately"
     },
+    "FEE_CHANGE": {
+      "PAGE_TITLE": "Claim fee has changed",
+      "TITLE": "Claim fee has changed",
+      "PARAGRAPH_1": "You submitted a claim, but did not pay the claim fee, so it was not issued and sent to the other parties.",
+      "PARAGRAPH_2": "Since then the claim fee has been recalculated and is now £{{ claimFee }}.",
+      "PARAGRAPH_3": "To proceed with this claim you need to create a new claim and pay the claim fee.",
+      "BUTTON_LABEL": "Create new claim"
+    },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
       "GET_APPLICANT_CONTACT_DETAILS": "Get {{ applicant1Details }} 's contact details.",
@@ -1563,6 +1572,7 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
@@ -1613,7 +1623,7 @@
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
     },
     "LATEST_UPDATE_CONTENT": {
-      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
+      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgment against you.",
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "{{ claimantName }} confirmed you settled on {{ settlementDate }}",
@@ -1727,10 +1737,10 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
       "YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION": "You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.",
       "YOU_HAVE_OFFERED_TO_PAY_BY": "You’ve offered to pay {{ claimantName }} by {{ paymentDate }}",
-      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "You’ve offered to pay {{ claimantName }} £{{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}.",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "You’ve said you owe £{{ amount }} and offered to pay {{ claimantName }} by {{ paymentDate }}",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "You’ve said you owe £{{ amount }} and offered to pay {{ claimantName }} immediately.",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "You’ve said you owe £{{ amount }} and offered to pay {{ claimantName }} £{{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}",
+      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "You’ve offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} by {{ paymentDate }}",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} immediately.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "You’ve said you owe {{ amount }} and offered to pay {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} starting {{ paymentDate }}",
       "YOU_HAVE_SETTLED_CLAIM_TITLE": "You settled the claim through mediation",
       "YOU_HAVE_SETTLED_CLAIM": "You made an agreement which means the claim is now ended and sets out the terms of how you must repay {{ claimantName }}.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
@@ -1738,7 +1748,7 @@
       "YOU_MUST_PAY_THEM_BY_PAYMENT_DATE": "You must pay them by {{ paymentDate }}. Any cheques or transfers must be clear in their account by then.",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "You need to send them your company’s financial details if you haven’t already.",
-      "YOU_SAID_YOU_WILL_PAY": "You said you’ll pay {{ claimantName }} £{{ amount }} before 4pm on {{ paymentDate }}",
+      "YOU_SAID_YOU_WILL_PAY": "You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Wait for the court to review the case.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "We’ll contact you when they respond.",
@@ -1772,7 +1782,7 @@
       "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
-      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for the hearing",
       "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
@@ -2616,7 +2626,7 @@
       },
       "HEARING": {
         "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for hearing"
+        "DOCUMENTARY": "Documentary evidence for the hearing"
       },
       "YEAR": "Year"
     },

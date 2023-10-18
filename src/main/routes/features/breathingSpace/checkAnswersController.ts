@@ -1,3 +1,8 @@
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {getSummarySections} from '../../../services/features/breathingSpace/checkAnswersService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {AppRequest} from '../../../common/models/AppRequest';
 import {NextFunction, Response, Router} from 'express';
 import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../../urls';
 import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
@@ -7,6 +12,7 @@ import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpace
 import {BreathingSpace} from 'models/breathingSpace';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
+import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -18,7 +24,8 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 }
 
 breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
-  async (req: AppRequest, res: Response, next: NextFunction) => {
+  breathingSpaceGuard,
+  (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
       const breathingSpace = await getBreathingSpace(claimId);
@@ -26,9 +33,9 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
-breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, breathingSpaceGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpace(<AppRequest>req);
@@ -37,6 +44,6 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, asy
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default breathingSpaceCheckAnswersController;

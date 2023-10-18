@@ -1,5 +1,12 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, ClaimFee, InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetails';
+import {
+  CaseState,
+  CCDHelpWithFees,
+  ClaimAmountBreakup,
+  ClaimFee,
+  InterestClaimFromType,
+  InterestEndDateType,
+} from 'form/models/claimDetails';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {StatementOfMeans} from 'models/statementOfMeans';
@@ -249,6 +256,8 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
+  helpWithFees ?: CCDHelpWithFees;
+  pcqId?: string;
   liftBreathing?: CCDBreathingSpaceStartInfo;
 }
 
