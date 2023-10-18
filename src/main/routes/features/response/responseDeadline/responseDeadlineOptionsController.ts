@@ -5,13 +5,14 @@ import {
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../urls';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
 import {Claim} from '../../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
+import {AppRequest} from 'common/models/AppRequest';
 
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
@@ -28,7 +29,7 @@ function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: C
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang);
     } catch (error) {
@@ -42,8 +43,9 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       let responseOption;
       let redirectUrl;
       const claimId = req.params.id;
+      const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(claimId);
+      const claim = await getCaseDataFromStore(redisKey);
       switch (req.body['option']) {
         case 'already-agreed':
           responseOption = ResponseOptions.ALREADY_AGREED;
@@ -69,7 +71,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       if (form.hasErrors()) {
         renderView(res, form, claim, lang);
       } else {
-        await responseDeadlineService.saveDeadlineResponse(claimId, responseOption);
+        await responseDeadlineService.saveDeadlineResponse(redisKey, responseOption);
         res.redirect(redirectUrl);
       }
     } catch (error) {

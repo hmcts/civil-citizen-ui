@@ -6,9 +6,9 @@ import {CITIZEN_SELF_EMPLOYED_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('Self Employed As', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -18,6 +18,7 @@ describe('Self Employed As', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {
