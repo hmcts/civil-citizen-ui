@@ -53,7 +53,7 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
 acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req)
+    const redisKey = generateRedisKey(<AppRequest>req);
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     const claim: Claim = await getCaseDataFromStore(redisKey);

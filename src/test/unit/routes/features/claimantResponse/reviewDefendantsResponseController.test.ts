@@ -45,7 +45,7 @@ describe('Review Defendant\'s Response Controller', () => {
   beforeEach(() => {
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     jest.spyOn(utilService, 'getClaimById').mockResolvedValue(claim);
-  })
+  });
 
   beforeAll(() => {
     nock(idamUrl)

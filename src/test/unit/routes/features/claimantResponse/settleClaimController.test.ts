@@ -24,7 +24,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
   const claim = new Claim();
   beforeEach(() => {
     jest.spyOn(utilService, 'getClaimById').mockResolvedValue({ isClaimantIntentionPending: () => true } as Claim);
-  })
+  });
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -47,7 +47,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
     it('should return settle claim page when defendant paid full amount', async () => {
       jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
       jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
-      jest.spyOn(claim, 'isRejectAllOfClaimAlreadyPaid').mockReturnValueOnce(110)
+      jest.spyOn(claim, 'isRejectAllOfClaimAlreadyPaid').mockReturnValueOnce(110);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });

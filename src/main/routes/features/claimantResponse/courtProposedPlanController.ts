@@ -41,7 +41,7 @@ function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object,
 courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const redisKey = generateRedisKey(req as unknown as AppRequest)
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claimantResponse = await getClaimantResponse(redisKey);
     const claim: Claim = await getCaseDataFromStore(redisKey);
 

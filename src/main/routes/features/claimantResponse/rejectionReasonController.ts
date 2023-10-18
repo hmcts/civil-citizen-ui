@@ -29,7 +29,7 @@ rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req
 rejectionReasonController.post(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req, res, next: NextFunction) => {
   const reason: RejectionReason = new RejectionReason(req.body.text);
   const form: GenericForm<RejectionReason> = new GenericForm(reason);
-  const redisKey = generateRedisKey(req as unknown as AppRequest) 
+  const redisKey = generateRedisKey(req as unknown as AppRequest); 
   await form.validate();
   if (form.hasErrors()) {
     const claimantResponse = await getClaimantResponse(redisKey);
