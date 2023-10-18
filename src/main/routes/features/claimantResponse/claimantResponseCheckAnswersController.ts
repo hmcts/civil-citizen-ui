@@ -8,7 +8,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -32,7 +32,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);
@@ -47,7 +47,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);

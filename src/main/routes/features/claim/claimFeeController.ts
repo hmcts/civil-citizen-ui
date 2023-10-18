@@ -11,7 +11,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimFeeController.get(CLAIM_FEE_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     claim.issueDate = new Date();
     // TODO: Need to create a separate service when we do the fee and pay page
     await civilServiceClient.submitClaimAfterPayment(claimId, claim, <AppRequest>req);
