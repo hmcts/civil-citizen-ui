@@ -10,7 +10,7 @@ import {getClaimantResponseConfirmationContent} from 'services/features/claimant
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {SignSettlmentAgreement} from "form/models/claimantResponse/signSettlementAgreement";
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
