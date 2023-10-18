@@ -13,6 +13,8 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const expertReportDetailsController = Router();
 const dqPropertyName = 'expertReportDetails';
@@ -24,7 +26,7 @@ function renderView(form: GenericForm<ExpertReportDetails>, res: Response): void
 
 expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getExpertReportDetails(req.params.id)), res);
+    renderView(new GenericForm(await getExpertReportDetails(generateRedisKey(<AppRequest>req))), res);
   } catch (error) {
     next(error);
   }
@@ -41,7 +43,7 @@ expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res
       renderView(form, res);
     } else {
       expertReportDetails = ExpertReportDetails.removeEmptyReportDetails(expertReportDetails);
-      await saveDirectionQuestionnaire(claimId, expertReportDetails, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), expertReportDetails, dqPropertyName, dqParentName);
 
       if (req.body.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
