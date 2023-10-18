@@ -13,7 +13,7 @@ import {CCDClaim} from 'common/models/civilClaimResponse';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {toCUIGenericYesNo} from './convertToCUIYesNo';
-import {addFiveDaysBefore4pm} from 'common/utils/dateUtils';
+import {addDaysBefore4pm} from 'common/utils/dateUtils';
 import {convertToPound} from 'services/translation/claim/moneyConversation';
 
 export function toCUIPartialAdmission(ccdClaim: CCDClaim): PartialAdmission {
@@ -45,7 +45,7 @@ export function toCUIPaymentIntention(ccdClaim: CCDClaim): PaymentIntention {
   paymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired);
   if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.IMMEDIATELY) {
     const submittedDate = new Date(ccdClaim?.submittedDate);
-    paymentIntention.paymentDate = addFiveDaysBefore4pm(submittedDate);
+    paymentIntention.paymentDate = addDaysBefore4pm(submittedDate, 5);
   } else if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.BY_SET_DATE) {
     paymentIntention.paymentDate = ccdClaim?.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid;
   } else if (ccdClaim?.defenceAdmitPartPaymentTimeRouteRequired === CCDPaymentOption.REPAYMENT_PLAN) {

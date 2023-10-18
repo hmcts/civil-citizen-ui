@@ -52,8 +52,8 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      await saveSubmitDate(req.params.id);
-      await submitClaimantResponse(<AppRequest>req);
+      const claim = await submitClaimantResponse(<AppRequest>req);
+      await saveSubmitDate(req.params.id, claim.claimantResponse);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {

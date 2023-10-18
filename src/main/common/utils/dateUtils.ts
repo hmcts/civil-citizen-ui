@@ -1,8 +1,6 @@
 import config from 'config';
 import {DateTime} from 'luxon';
 
-const FIVE_DAYS = 5;
-const SIX_DAYS = 6;
 const FOUR_PM = 16;
 const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
 const DAY_TO_SECONDS_UNIT = 86400;
@@ -10,16 +8,6 @@ const DAY_TO_SECONDS_UNIT = 86400;
 export const currentDateTime = () => {
   return DateTime.now();
 };
-
-export const addFiveDaysBefore4pm = (date: Date): Date => {
-  const datePlusDays = new Date(date);
-  if (date.getUTCHours() > FOUR_PM) {
-    datePlusDays.setDate(date.getDate() + SIX_DAYS);
-  } else {
-    datePlusDays.setDate(date.getDate() + FIVE_DAYS);
-  }
-  return datePlusDays;
-} ;
 
 export const addDaysBefore4pm = (date: Date, value: number): Date => {
   const datePlusDays = new Date(date);
