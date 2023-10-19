@@ -52,7 +52,6 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(req.params.id);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
