@@ -1,5 +1,11 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetails';
+import {
+  CaseState,
+  CCDHelpWithFees,
+  ClaimAmountBreakup,
+  InterestClaimFromType,
+  InterestEndDateType,
+} from 'form/models/claimDetails';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {StatementOfMeans} from 'models/statementOfMeans';
@@ -250,6 +256,8 @@ export interface CCDClaim extends ClaimUpdate {
   enterBreathing?: CCDBreathingSpaceStartInfo;
   claimFee?:CCDClaimFee;
   timelineOfEvents?:CCDTimeLineOfEvent[];
+  helpWithFees ?: CCDHelpWithFees;
+  pcqId?: string;
 }
 
 export interface ClaimFeeData {

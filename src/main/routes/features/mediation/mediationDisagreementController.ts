@@ -14,6 +14,8 @@ import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {PartyType} from '../../../common/models/partyType';
 import {CaseState} from '../../../common/form/models/claimDetails';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = Router();
@@ -24,8 +26,9 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, claimStatus:
 
 mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
   try {
-    const claim: Claim = await getCaseDataFromStore(req.params.id);
-    const mediation = await getMediation(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
+    const mediation = await getMediation(redisKey);
     const freeMediationForm = new GenericForm(new GenericYesNo(mediation.mediationDisagreement?.option));
     renderView(freeMediationForm, res, claim.ccdState);
   } catch (error) {
@@ -35,7 +38,8 @@ mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res,
 
 mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
   try {
-    const claim: Claim = await getCaseDataFromStore(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
     const mediationDisagreement = new GenericYesNo(req.body.option);
     const mediationDisagreementForm = new GenericForm(mediationDisagreement);
     await mediationDisagreementForm.validate();
@@ -43,9 +47,9 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
     if (mediationDisagreementForm.hasErrors()) {
       renderView(mediationDisagreementForm, res, claim.ccdState);
     } else {
-      await saveMediation(req.params.id, mediationDisagreement, 'mediationDisagreement');
+      await saveMediation(redisKey, mediationDisagreement, 'mediationDisagreement');
       if (claim.mediation?.canWeUse || claim.claimantResponse?.mediation?.canWeUse) {
-        await saveMediation(req.params.id, undefined, 'canWeUse');
+        await saveMediation(redisKey, undefined, 'canWeUse');
       }
       if (req.body.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DONT_WANT_FREE_MEDIATION_URL));
