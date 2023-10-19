@@ -1,63 +1,63 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{% macro bankAndSavingsAccounts(financialDetailsRows) %}
+{% macro bankAndSavingsAccounts(financialDetailsRows, t) %}
   <h4 class="govuk-heading-s">{{ t('COMMON.BANK_AND_SAVINGS_ACCOUNTS') }}</h4>
   {{ govukSummaryList({
     rows: financialDetailsRows
   }) }}
 {% endmacro %}
 
-{% macro children(childrenRows) %}
+{% macro children(childrenRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('COMMON.CHILDREN') }}</h4>
   {{ govukSummaryList({
     rows: childrenRows
   }) }}
 {% endmacro %}
 
-{% macro financialSupport(financialSupportRows) %}
+{% macro financialSupport(financialSupportRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FINANCIAL_SUPPORT') }}</h4>
   {{ govukSummaryList({
     rows: financialSupportRows
   }) }}
 {% endmacro %}
 
-{% macro employmentDetails(employmentRows) %}
+{% macro employmentDetails(employmentRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('COMMON.EMPLOYMENT_DETAILS') }}</h4>
   {{ govukSummaryList({
     rows: employmentRows
   }) }}
 {% endmacro %}
 
-{% macro selfEmploymentDetails(selEmploymentRows) %}
+{% macro selfEmploymentDetails(selEmploymentRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.SELF_EMPLOYMENT_DETAILS') }}</h4>
   {{ govukSummaryList({
     rows: selEmploymentRows
   }) }}
 {% endmacro %}
 
-{% macro monthlyIncome(monthlyIncomeRows) %}
+{% macro monthlyIncome(monthlyIncomeRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.MONTHLY_INCOME') }}</h4>
   {{ govukSummaryList({
     rows: monthlyIncomeRows
   }) }}
 {% endmacro %}
 
-{% macro monthlyExpenses(monthlyExpensesRows) %}
+{% macro monthlyExpenses(monthlyExpensesRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.MONTHLY_EXPENSES') }}</h4>
   {{ govukSummaryList({
     rows: monthlyExpensesRows
   }) }}
 {% endmacro %}
 
-{% macro courtOrders(courtOrdersRows) %}
+{% macro courtOrders(courtOrdersRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.COURT_ORDERS') }}</h4>
   {{ govukSummaryList({
     rows: courtOrdersRows
   }) }}
 {% endmacro %}
 
-{% macro debts(debtsRows) %}
+{% macro debts(debtsRows, t) %}
   <h4 class="govuk-heading-s govuk-!-margin-top-4">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DEBTS') }}</h4>
   {{ govukSummaryList({
     rows: debtsRows
@@ -67,15 +67,15 @@
 {% macro theirFinancialDetails(t, title, claim, financialDetails) %}
   {{ govukDetails({
     summaryText: t(title),
-    html: bankAndSavingsAccounts(financialDetails[0]) +
-    children(financialDetails[1]) +
-    financialSupport(financialDetails[2]) +
-    employmentDetails(financialDetails[3]) +
-    selfEmploymentDetails(financialDetails[4]) +
-    monthlyIncome(financialDetails[5]) +
-    monthlyExpenses(financialDetails[6]) +
-    courtOrders(financialDetails[7]) +
-    debts(financialDetails[8])
+    html: bankAndSavingsAccounts(financialDetails[0], t) +
+    children(financialDetails[1], t)  +
+    financialSupport(financialDetails[2], t) +
+    employmentDetails(financialDetails[3], t) +
+    selfEmploymentDetails(financialDetails[4], t) +
+    monthlyIncome(financialDetails[5], t) +
+    monthlyExpenses(financialDetails[6], t) +
+    courtOrders(financialDetails[7], t) +
+    debts(financialDetails[8], t)
   }) }}
 {% endmacro %}
 
