@@ -25,13 +25,12 @@ async function renderView(form: GenericForm<GenericYesNo>, claimId: string, res:
 }
 
 settleAdmittedController.get(CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, async (req: Request, res, next: NextFunction) => {
-  const claimId = req.params.id;
   try {
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
     const claimantResponse = await getClaimantResponse(redisKey);
     const form = claim.isFullDefence() ? new GenericForm(claimantResponse?.hasFullDefenceStatesPaidClaimSettled) : new GenericForm(claimantResponse?.hasPartAdmittedBeenAccepted);
-    await renderView(form, claimId, res);
+    await renderView(form, redisKey, res);
   } catch (error) {
     next(error);
   }
@@ -44,7 +43,7 @@ settleAdmittedController.post(CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, async
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     form.validateSync();
     if (form.hasErrors()) {
-      await renderView(form, claimId, res);
+      await renderView(form, redisKey, res);
     } else {
       const claim = await getCaseDataFromStore(redisKey);
       claim.isFullDefence() ?
