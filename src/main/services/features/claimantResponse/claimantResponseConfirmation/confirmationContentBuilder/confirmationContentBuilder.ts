@@ -40,14 +40,15 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 }
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
-  if (claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation()) {
-    if (claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid()) {
-      return true;
-    } else if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED
-      || claim.responseStatus === ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED || claim.responseStatus === ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED) {
-      return true;
-    }
-  }
+  const hasMediationDisagreement = claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation();
+  const isFullDefenceWithClaimantRejected = claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
 
-  return false;
+  const claimantResponseStatus = [
+    ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
+    ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
+    ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED,
+    ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED];
+
+  return hasMediationDisagreement && (isFullDefenceWithClaimantRejected || claimantResponseStatus.includes(claim.responseStatus));
+
 }
