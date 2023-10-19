@@ -3,7 +3,7 @@ const I = actor();
 
 const contactUs = new ContactUs();
 
-class IsYourCaseReadyForTrial {
+class HasAnythingChanged {
 
   checkPageFullyLoaded () {
     I.waitForElement('//a[.=\'Cancel\']');
