@@ -219,6 +219,7 @@ import trialArrangementsConfirmationController
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
+import claimantDashboardController from './features/dashboard/claimantDashboardController';
 
 export default [
   homeController,
@@ -284,6 +285,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantDashboardController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,

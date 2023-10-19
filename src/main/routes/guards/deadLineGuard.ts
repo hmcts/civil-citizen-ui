@@ -1,11 +1,12 @@
 import {NextFunction, Request, Response} from 'express';
 import {Claim} from '../../common/models/claim';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
 import {isPastDeadline} from '../../common/utils/dateUtils';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
+import {AppRequest} from 'common/models/AppRequest';
 
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,7 +22,7 @@ export const deadLineGuard = async (req: Request, res: Response, next: NextFunct
 };
 
 export const isUnauthorized = async (req: Request) => {
-  const caseData: Claim = await getCaseDataFromStore(req.params.id);
+  const caseData: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
 
