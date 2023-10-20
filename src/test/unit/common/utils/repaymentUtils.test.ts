@@ -7,14 +7,15 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
 import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
 import {
+  convertFrequencyToText,
+  getAmount,
   getFinalPaymentDate,
   getFirstRepaymentDate,
   getPaymentAmount,
-  getRepaymentFrequency,
-  convertFrequencyToText,
-  getRepaymentLength,
-  getAmount,
   getPaymentDate,
+  getPaymentOptionType,
+  getRepaymentFrequency,
+  getRepaymentLength,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
@@ -54,6 +55,7 @@ const getClaimForPA = (repaymentFrequency: TransactionSchedule, paymentAmount?: 
   };
   claim.partialAdmission.howMuchDoYouOwe.amount = 200;
   claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
   claim.partialAdmission.paymentIntention.repaymentPlan = {
     paymentAmount: amount,
     repaymentFrequency: repaymentFrequency,
@@ -452,6 +454,25 @@ describe('repaymentUtils', () => {
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
       expect(repaymentLength).toContain('20');
+    });
+  });
+
+  describe('getPaymentOption', () => {
+    it('should return payment option when response type is part admission', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const paymentOption = getPaymentOptionType(claim);
+      //Then
+      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
+    });
+    it('should return payment option when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const paymentOption = getPaymentOptionType(claim);
+      //Then
+      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
     });
   });
 });

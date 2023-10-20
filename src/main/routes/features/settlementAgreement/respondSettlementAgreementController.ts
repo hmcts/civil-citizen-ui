@@ -20,7 +20,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, data?: objec
   res.render(respondSettlementAgreementViewPath, {form, data});
 }
 
-const getRepaymentPlan = (claim: Claim, req: Request) => {
+const getSettlementAgreementData = (claim: Claim, req: Request) => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const data = {
     amount: getAmount(claim),
@@ -40,7 +40,8 @@ const getRepaymentPlan = (claim: Claim, req: Request) => {
 respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    renderView(new GenericForm(new GenericYesNo(undefined, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getRepaymentPlan(claim, req));
+    // TODO: Populate form from saved response once this is implemented in the model
+    renderView(new GenericForm(new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
   } catch (error) {
     next(error);
   }
@@ -54,12 +55,12 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, a
 
     if (respondSettlementAgreement.hasErrors()) {
       const claim = await getCaseDataFromStore(claimId);
-      renderView(respondSettlementAgreement, res, getRepaymentPlan(claim, req));
+      renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     } else {
       // TODO : Save respondSettlementAgreement.model.option value and redirect to next page
       // res.redirect(constructResponseUrlWithIdParams(claimId, <Next page>>));
       const claim = await getCaseDataFromStore(claimId);
-      renderView(respondSettlementAgreement, res, getRepaymentPlan(claim, req));
+      renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     }
   } catch (error) {
     next(error);
