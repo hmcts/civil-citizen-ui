@@ -60,7 +60,7 @@ describe('Respond To Settlement Agreement', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
-          {defendant: '', amount: '200', paymentAmount: '50', theAgreementRepaymentFrequency: 'week', firstRepaymentDate: formatDateToFullDate(date),}
+          {defendant: '', amount: '200', paymentAmount: '50', theAgreementRepaymentFrequency: 'week', firstRepaymentDate: formatDateToFullDate(date)},
         ));
       });
     });
