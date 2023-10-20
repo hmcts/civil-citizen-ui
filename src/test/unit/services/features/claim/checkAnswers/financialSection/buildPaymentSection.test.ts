@@ -14,7 +14,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-const YES_OPTION = 'Yes';
 const DATE = '25 December 2023';
 const AMOUNT_ALREADY_PAID = '£200';
 const AMOUNT_TO_BE_PAID = '£800';
