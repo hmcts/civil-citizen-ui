@@ -14,7 +14,7 @@ claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (r
     const claimId = req.params.id;
     req.session.claimId = claimId;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim : Claim = await getClaimById(claimId, req);
+    const claim: Claim = await getClaimById(claimId, req, true);
     const taskLists = getClaimantResponseTaskLists(claim, claimId, lang);
     res.render(claimantResponseTasklistViewPath, {
       claim,
