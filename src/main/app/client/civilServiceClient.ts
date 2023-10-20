@@ -346,7 +346,7 @@ export class CivilServiceClient {
       console.log('JSON: ',JSON.stringify(claimantProposedPlan));
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId) , JSON.stringify(claimantProposedPlan), config);
       console.log('Decision: ', response.data);
-      return response.data as ;
+      return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
