@@ -12,6 +12,7 @@ import {
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();
@@ -58,9 +59,7 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, a
       renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     } else {
       // TODO : Save respondSettlementAgreement.model.option value and redirect to next page
-      // res.redirect(constructResponseUrlWithIdParams(claimId, <Next page>>));
-      const claim = await getCaseDataFromStore(claimId);
-      renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
+       res.redirect(constructResponseUrlWithIdParams(claimId, '<Next page>>'));
     }
   } catch (error) {
     next(error);
