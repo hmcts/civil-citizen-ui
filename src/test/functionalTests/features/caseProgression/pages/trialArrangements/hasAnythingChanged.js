@@ -16,7 +16,7 @@ class HasAnythingChanged {
   verifyPageContent() {
     this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
-    this.verifyIsThisCaseReadyForTrialSectionContent();
+    this.verifyHasAnythingChangedSectionContent();
     contactUs.verifyContactUs();
   }
 
@@ -26,22 +26,20 @@ class HasAnythingChanged {
     I.see('Test Inc v Sir John Doe');
   }
 
-  verifyIsThisCaseReadyForTrialSectionContent() {
-    I.see('Is the case ready for trial?','h3');
-    I.see('You are reminded that this information will be shared with all other parties');
+  verifyHasAnythingChangedSectionContent() {
+    I.see('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?','h3');
+    I.see('You can check your previous answers in the');
+    I.seeElement('//a[.=\'directions questionnaire.\']');
     I.see('Yes');
     I.see('No');
   }
 
-  inputDataForIsThisCaseReadyForTrialPage() {
-    I.see('Is the case ready for trial?','h3');
-    I.see('You are reminded that this information will be shared with all other parties');
-    I.click('//input[@value=\'no\']');
-    I.see('You will still need to continue and provide some information on trial arrangements.');
-    I.see('You will need to make an application to the court if this case is not ready for the trial.');
-    I.see('The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.')
-    I.see('If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court.');
+  inputDataForHasAnythingChangedSection() {
+    I.click('//input[@id=\'option\']');
+    I.see('What support do you, experts or witnesses need?');
+    I.see('For example, a witness requires a courtroom with step-free access.');
+    I.fillField('textArea','Autoation Test execution of Trial Arrangeents...%$£');
   }
 }
 
-module.exports = IsYourCaseReadyForTrial;
+module.exports = HasAnythingChanged;
