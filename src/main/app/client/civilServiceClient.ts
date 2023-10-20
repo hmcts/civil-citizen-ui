@@ -8,7 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
@@ -31,6 +31,8 @@ import {
   DashboardDefendantResponse,
 } from 'common/models/dashboard/dashboarddefendantresponse';
 import {CaseRole} from 'form/models/caseRoles';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {CCDClaimantProposedPlan} from "models/claimantResponse/ClaimantProposedPlan";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -333,6 +335,19 @@ export class CivilServiceClient {
         .at(0);
 
     } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+
+  async getCourtDecision(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
+    const config = this.getConfig(req);
+    try{
+      console.log('JSON: ',JSON.stringify(claimantProposedPlan));
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId) , JSON.stringify(claimantProposedPlan), config);
+      console.log('Decision: ', response.data);
+      return response.data as ;
+    } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
     }

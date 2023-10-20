@@ -1,8 +1,11 @@
-import {CCDRepaymentPlan, CCDRepaymentPlanFrequency} from '../../../common/models/ccdResponse/ccdRepaymentPlan';
-import {RepaymentPlan} from '../../../common/models/repaymentPlan';
+import {
+  CCDRepaymentPlan,
+  CCDRepaymentPlanFrequency,
+} from 'models/ccdResponse/ccdRepaymentPlan';
+import {RepaymentPlan} from 'models/repaymentPlan';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
 
-const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlanFrequency => {
+export const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlanFrequency => {
   switch (frequency) {
     case 'WEEK':
       return CCDRepaymentPlanFrequency.ONCE_ONE_WEEK;
@@ -26,3 +29,4 @@ export const toCCDRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDRepaymentPl
     };
   }
 };
+
