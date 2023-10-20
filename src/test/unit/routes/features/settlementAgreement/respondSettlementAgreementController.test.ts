@@ -10,7 +10,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {formatDateToFullDate} from "common/utils/dateUtils";
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -60,7 +60,7 @@ describe('Respond To Settlement Agreement', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
-          {defendant: '', amount: '200', paymentAmount: '50', theAgreementRepaymentFrequency: 'week', firstRepaymentDate: formatDateToFullDate(date)}
+          {defendant: '', amount: '200', paymentAmount: '50', theAgreementRepaymentFrequency: 'week', firstRepaymentDate: formatDateToFullDate(date),}
         ));
       });
     });

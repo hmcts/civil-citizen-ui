@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,} from '../../urls';
+import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
@@ -11,7 +11,7 @@ import {
 } from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();

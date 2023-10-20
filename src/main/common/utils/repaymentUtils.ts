@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {t} from 'i18next';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const WEEKDAYS = 7;
 
@@ -65,7 +65,7 @@ export const getPaymentOptionType = (claim: Claim): PaymentOptionType => {
     return claim.fullAdmission?.paymentIntention?.paymentOption;
   }
   return claim.partialAdmission?.paymentIntention?.paymentOption;
-}
+};
 
 export const convertFrequencyToText = (frequency: string, lng: string): string => {
   switch (frequency as TransactionSchedule) {
