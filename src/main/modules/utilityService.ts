@@ -4,8 +4,8 @@ import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from '../modules
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from '../../main/common/models/claim';
 import {Request} from 'express';
-import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
-import {Reason} from '../common/form/models/claim/details/reason';
+// import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
+// import {Reason} from '../common/form/models/claim/details/reason';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 
@@ -25,12 +25,7 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
     if (claim) {
       await saveDraftClaim(redisKey, claim, true);
     } else {
-      claim = new Claim();
-      claim.legacyCaseReference = 'testCaseReference';
-      claim.totalClaimAmount = 200;
-      claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
-      claim.totalInterest = 15;
-      claim.claimFee = {calculatedAmountInPence: 3500};
+      throw new Error('Case not found...');
     }
   }
   return claim;
