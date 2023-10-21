@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -38,7 +38,7 @@ const getSettlementAgreementData = (claim: Claim, req: Request) => {
   return data;
 };
 
-respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, async (req: Request, res: Response, next: NextFunction) => {
+respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     // TODO: Populate form from saved response once this is implemented in the model
@@ -46,9 +46,9 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, as
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, async (req: Request, res: Response, next) => {
+respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (async (req: Request, res: Response, next) => {
   try {
     const claimId = req.params.id;
     const respondSettlementAgreement = new GenericForm(new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'));
@@ -64,7 +64,7 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, a
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default respondSettlementAgreementController;
 
