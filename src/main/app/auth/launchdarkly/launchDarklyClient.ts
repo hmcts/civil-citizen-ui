@@ -36,5 +36,5 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return false;
+  return true;
 }
