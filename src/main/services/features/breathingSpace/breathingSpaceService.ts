@@ -7,7 +7,7 @@ const logger = Logger.getLogger('breathingSpaceService');
 
 const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getCaseDataFromStore(claimId, true);
     return caseData.claimDetails?.breathingSpace ?? new BreathingSpace();
   } catch (error) {
     logger.error(error);
