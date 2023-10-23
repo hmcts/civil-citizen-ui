@@ -1,10 +1,12 @@
-import {Claim} from 'common/models/claim';
-import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 import {Party} from 'common/models/party';
-import {YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PartyType} from 'models/partyType';
 import {req} from '../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
@@ -42,6 +44,17 @@ describe('translate draft claim to ccd version', () => {
     //Then
     expect(ccdClaim.respondent1).not.toBeUndefined();
     expect(ccdClaim.respondent1?.companyName).toBe('test');
+  });
+  it('should translate HWF to ccd', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.helpWithFees = new HelpWithFees(YesNo.YES, '1111');
+    //When
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
+    //Then
+    expect(ccdClaim.helpWithFees?.helpWithFee).toBe('Yes');
+    expect(ccdClaim.helpWithFees?.helpWithFeesReferenceNumber).toBe('1111');
   });
 
 });

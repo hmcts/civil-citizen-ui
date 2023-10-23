@@ -4,6 +4,8 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {courtOrdersService}
   from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
 
@@ -13,7 +15,7 @@ courtOrdersController
     CITIZEN_COURT_ORDERS_URL,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(req.params.id);
+        const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(generateRedisKey(<AppRequest>req));
         res.render(residenceViewPath, {
           form: new GenericForm(courtOrders),
         });
@@ -35,7 +37,7 @@ courtOrdersController
         });
       } else {
         try {
-          await courtOrdersService.saveCourtOrders(req.params.id, courtOrders);
+          await courtOrdersService.saveCourtOrders(generateRedisKey(<AppRequest>req), courtOrders);
           res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', req.params.id));
         } catch (error) {
           next(error);
