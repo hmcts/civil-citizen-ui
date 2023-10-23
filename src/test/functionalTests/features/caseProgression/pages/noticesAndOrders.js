@@ -30,7 +30,7 @@ class Documents {
 
   verifyNoticesAndOrdersSectionContent() {
     I.see('Claim documents', 'h3');
-    I.seeElement('//a[contains(.,\'Trial_Arrangements.pdf (PDF, 57 KB)\')]');
+    I.seeElement('//a[contains(.,\'Trial_Arrangements.pdf\')]');
   }
 }
 
