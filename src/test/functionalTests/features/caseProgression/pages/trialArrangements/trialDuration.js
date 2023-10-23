@@ -41,7 +41,7 @@ class HasAnythingChanged {
   }
 
   inputDataForTrialDurationOtherInformation() {
-    I.fillField('otherInformation',"Autoation Testing for Other Information of the Trial Arrangement Section......%$£^");
+    I.fillField('otherInformation','Autoation Testing for Other Information of the Trial Arrangement Section......%$£^');
   }
 }
 

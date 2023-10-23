@@ -17,7 +17,6 @@ const checkYourAnswers = new CheckYourAnswers();
 const trialArrangementConfirmation = new TrialArrangementsConfirmation();
 const noticesAndOrders =  new NoticesAndOrders();
 
-
 class TrialArrangementSteps {
 
   initiateTrialArrangementJourney(claimRef, claimType) {

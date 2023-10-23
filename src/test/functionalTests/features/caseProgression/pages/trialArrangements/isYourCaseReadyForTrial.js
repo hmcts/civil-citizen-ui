@@ -39,7 +39,7 @@ class IsYourCaseReadyForTrial {
     I.click('//input[@value=\'no\']');
     I.see('You will still need to continue and provide some information on trial arrangements.');
     I.see('You will need to make an application to the court if this case is not ready for the trial.');
-    I.see('The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.')
+    I.see('The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.');
     I.see('If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court.');
   }
 }
