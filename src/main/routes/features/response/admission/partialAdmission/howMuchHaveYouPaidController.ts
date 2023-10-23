@@ -7,6 +7,8 @@ import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/ho
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
@@ -17,7 +19,7 @@ howMuchHaveYouPaidController
   .get(
     CITIZEN_AMOUNT_YOU_PAID_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.PART_ADMISSION);
+        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), ResponseType.PART_ADMISSION);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
 
         res.render(howMuchHaveYouPaidPath, {
@@ -39,7 +41,7 @@ howMuchHaveYouPaidController
         });
       } else {
         try {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
