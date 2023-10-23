@@ -26,12 +26,6 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
       await saveDraftClaim(redisKey, claim, true);
     } else {
       throw new Error('Case not found...');
-    /*  claim = new Claim();
-      claim.legacyCaseReference = 'testCaseReference';
-      claim.totalClaimAmount = 200;
-      claim.claimDetails = new ClaimDetails(new Reason('reasontext'));
-      claim.totalInterest = 15;
-      claim.claimFee = {calculatedAmountInPence: 3500};*/
     }
   }
   return claim;
