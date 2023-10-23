@@ -30,7 +30,7 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
-  
+
   return dashboardNotificationsList;
 };
 
@@ -50,7 +50,6 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
   if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
     dashboardNotificationsList.push(youHaventRespondedNotification);
   }
-
   return dashboardNotificationsList;
 };
 
@@ -62,7 +61,7 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
     .addTask(new TaskItem('View the claim', '#',TaskStatus.DONE, false, TaskStatusColor[TaskStatus.DONE]) )
     .addTask(new TaskItem('View information about the claimant', '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]) )
     .build();
-    
+
   const taskListItemMock2 =  new TaskListBuilder('The response')
     .addTask(new TaskItem('View the response to the claim', '#',TaskStatus.IN_PROGRESS, false, TaskStatusColor[TaskStatus.IN_PROGRESS]) )
     .addTask(new TaskItem('View information about the defendant', '#',TaskStatus.READY_TO_VIEW, false, TaskStatusColor[TaskStatus.READY_TO_VIEW]) )
@@ -70,6 +69,6 @@ export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
 
   taskListMock.push(taskListItemMock);
   taskListMock.push(taskListItemMock2);
-    
+
   return taskListMock;
 };
