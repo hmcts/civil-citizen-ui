@@ -19,7 +19,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
   try {
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getClaimById(currentClaimId, req);
+    const caseData: Claim = await getClaimById(currentClaimId, req, true);
     await setResponseDeadline(caseData, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
