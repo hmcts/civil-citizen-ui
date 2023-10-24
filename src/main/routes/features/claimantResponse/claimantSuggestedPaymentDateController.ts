@@ -8,6 +8,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getCourtDecision} from 'services/features/claimantResponse/getCourtDecision';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
@@ -22,7 +23,7 @@ function renderView(form: GenericForm<PaymentDate | Date>, res: Response): void 
 
 claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const claimantSuggestedPaymentDate = claimantResponse.suggestedPaymentIntention?.paymentDate ?? new PaymentDate();
     renderView(new GenericForm(claimantSuggestedPaymentDate), res);
   } catch (error) {
@@ -39,7 +40,7 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
     renderView(form, res);
   } else {
     try {
-      await saveClaimantResponse(claimId, form.model, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, crPropertyName, crParentName);
       const redirectUrl = await getCourtDecision(<AppRequest> req, claimId);
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     } catch (error) {
