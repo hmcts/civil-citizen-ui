@@ -9,6 +9,7 @@ import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
+import {toCCDPaymentOption} from 'services/translation/response/convertToCCDPaymentOption';
 
 export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
   return {
@@ -22,5 +23,8 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1DQSmallClaimHearing: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.claimantResponse?.directionQuestionnaire?.hearing) : undefined,
     applicant1DQExperts: toCCDExpert(claim),
     applicant1ClaimExpertSpecRequired: toCCDYesNo(claim.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option),
+    applicant1AcceptFullAdmitPaymentPlanSpec: (claim.isFullAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
+    applicant1AcceptPartAdmitPaymentPlanSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
+    applicant1RepaymentOptionForDefendantSpec: toCCDPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
   };
 };
