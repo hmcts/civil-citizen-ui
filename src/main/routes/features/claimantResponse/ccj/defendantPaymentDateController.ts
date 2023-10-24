@@ -7,6 +7,8 @@ import {
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const defendantPaymentDateController = Router();
@@ -20,7 +22,7 @@ defendantPaymentDateController
   .get(
     CCJ_DEFENDANT_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const claimantResponse = await getClaimantResponse(req.params.id);
+        const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
         const defendantPaymentDate = claimantResponse.ccjRequest?.defendantPaymentDate ?? new PaymentDate();
         renderView(new GenericForm(defendantPaymentDate), res);
       } catch (error) {
@@ -38,7 +40,7 @@ defendantPaymentDateController
         renderView(form, res);
       } else {
         try {
-          await saveClaimantResponse(claimId, form.model, 'defendantPaymentDate', 'ccjRequest');
+          await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantPaymentDate', 'ccjRequest');
           res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
         } catch (error) {
           next(error);
