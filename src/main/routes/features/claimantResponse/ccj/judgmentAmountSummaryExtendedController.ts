@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {
-  CCJ_PAID_AMOUNT_SUMMARY_URL,
-  CCJ_PAYMENT_OPTIONS_URL,
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
@@ -11,7 +11,7 @@ import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
-const judgmentAmountSummaryController = Router();
+const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -25,7 +25,7 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(req.params.id);
@@ -36,8 +36,8 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
   }
 });
 
-judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
-  res.redirect(constructResponseUrlWithIdParams(req.params.id, CCJ_PAYMENT_OPTIONS_URL));
+judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
+  res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
 });
 
-export default judgmentAmountSummaryController;
+export default judgmentAmountSummaryExtendedController;
