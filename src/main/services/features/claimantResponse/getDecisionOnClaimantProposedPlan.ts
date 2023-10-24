@@ -17,15 +17,14 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType) {
   if (courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
-    if (claim.getPaymentIntention().paymentOption == PaymentOptionType.INSTALMENTS) {
+    if (claim.getPaymentIntention().paymentOption === PaymentOptionType.INSTALMENTS) {
       return CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
-    } else if (claim.getPaymentIntention().paymentOption == PaymentOptionType.BY_SET_DATE) {
+    } else if (claim.getPaymentIntention().paymentOption === PaymentOptionType.BY_SET_DATE) {
       return CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL;
     }
   } else if (courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
     return CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL;
   }
-  return CLAIMANT_RESPONSE_TASK_LIST_URL;
 }
 
 export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId: any) => {
