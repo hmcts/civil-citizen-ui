@@ -6,20 +6,22 @@ import {
   CCJ_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAYMENT_OPTIONS_URL,
 } from 'routes/urls';
-import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {mockCivilClaimUndefined} from '../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaimClaimantIntention,
+  mockCivilClaimUndefined,
+  mockRedisFailure,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/common/utils/dateUtils');
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Judgment Amount Summary', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  const mockClaim = new Claim();
 
   beforeAll(() => {
     nock(idamUrl)
@@ -29,12 +31,11 @@ describe('Judgment Amount Summary', () => {
 
   describe('on GET', () => {
     it('should return judgement summary page - from request CCJ', async () => {
-      nock('http://192.168.0.25:4000')
-        .get('/fees/claim/1000')
+      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      nock(civilServiceUrl)
+        .get('/fees/claim/110')
         .reply(200, {'calculatedAmountInPence': '50'});
-      mockClaim.totalClaimAmount = 1000;
 
-      mockGetCaseData.mockImplementation(() => mockClaim);
       const res = await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL);
 
@@ -43,9 +44,9 @@ describe('Judgment Amount Summary', () => {
     });
 
     it('should return http 500 when has error in the get method - from request CCJ', async () => {
-
-      nock('http://192.168.0.25:4000')
-        .get('/fees/claim/1000')
+      app.locals.draftStoreClient = mockRedisFailure;
+      nock(civilServiceUrl)
+        .get('/fees/claim/110')
         .reply(500, mockCivilClaimUndefined);
 
       await request(app)
@@ -59,6 +60,7 @@ describe('Judgment Amount Summary', () => {
 
   describe('on POST', () => {
     it('should redirect to ccj payment options - from request CCJ', async () => {
+      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
       const res = await request(app).post(CCJ_PAID_AMOUNT_SUMMARY_URL).send();
       expect(res.status).toBe(302);
       expect(res.get('location')).toBe(CCJ_PAYMENT_OPTIONS_URL);
