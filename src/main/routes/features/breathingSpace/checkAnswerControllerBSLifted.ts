@@ -3,7 +3,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
-import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkYourAnswerServiceForBreathingSpaceLifted';
 import {submitBreathingSpaceLifted} from 'services/features/breathingSpace/submission/submitBreathingSpaceLifted';
 import {BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
@@ -20,7 +20,7 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const breathingSpace = await getBreathingSpace(claimId);
+    const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     renderView(req, res, breathingSpace, claimId);
   } catch (error) {
     next(error);
@@ -30,7 +30,7 @@ breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CH
 breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     await submitBreathingSpaceLifted(<AppRequest>req);
-    await deleteDraftClaimFromStore(req.params.id);
+    await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

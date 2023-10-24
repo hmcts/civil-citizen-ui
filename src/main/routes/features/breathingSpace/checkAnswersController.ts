@@ -34,7 +34,7 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, bre
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpace(<AppRequest>req);
-    await deleteDraftClaimFromStore(userId);
+    await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
     res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
