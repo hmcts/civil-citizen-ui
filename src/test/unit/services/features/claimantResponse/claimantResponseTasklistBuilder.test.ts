@@ -459,7 +459,7 @@ describe('Claimant Response Task List builder', () => {
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         suggestedPaymentIntention :{
-          paymentOption : PaymentOptionType.BY_SET_DATE
+          paymentOption : PaymentOptionType.BY_SET_DATE,
         },
       };
       claim.partialAdmission = {
@@ -514,7 +514,7 @@ describe('Claimant Response Task List builder', () => {
         signSettlementAgreement: {signed: YesNo.YES},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         suggestedPaymentIntention :{
-          paymentOption : PaymentOptionType.BY_SET_DATE
+          paymentOption : PaymentOptionType.BY_SET_DATE,
         },
       };
       claim.partialAdmission = {
