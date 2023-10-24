@@ -1,4 +1,3 @@
-
 export interface CCDRepaymentPlan {
   paymentAmount?: number;
   repaymentFrequency?: CCDRepaymentPlanFrequency;
