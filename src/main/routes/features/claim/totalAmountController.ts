@@ -6,6 +6,8 @@ import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from '../../../common/utils/currencyFormat';
 import {calculateInterestToDate} from '../../../common/utils/interestUtils';
+import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
+import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -38,6 +40,10 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
       hasInterest: claim.hasInterest(),
       hasHelpWithFees: claim.hasHelpWithFees(),
     };
+    const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+    if(isReleaseTwoEnabled) {
+      await saveClaimFee(userId, claimFee);
+    }
     renderView(form, res);
   } catch (error) {
     next(error);
