@@ -29,7 +29,7 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
-    const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+    const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
     renderView(req, res, claim, lang, claimFee);
   } catch (error) {
     next(error);

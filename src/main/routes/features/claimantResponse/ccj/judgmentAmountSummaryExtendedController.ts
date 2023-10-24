@@ -25,19 +25,25 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
-  try {
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
-    const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
-    renderView(req, res, claim, lang, claimFee);
-  } catch (error) {
-    next(error);
-  }
-});
+judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response, next: NextFunction) => {
+  (async () => {
+    try {
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const claim = await getCaseDataFromStore(generateRedisKey(req));
+      const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
+      renderView(req, res, claim, lang, claimFee);
+    } catch (error) {
+      next(error);
+    }
+  })();
+},
+);
 
-judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
-  res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
-});
+judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {
+  (async () => {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
+  })();
+},
+);
 
 export default judgmentAmountSummaryExtendedController;
