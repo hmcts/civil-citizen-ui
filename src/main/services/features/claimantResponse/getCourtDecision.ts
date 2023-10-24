@@ -8,7 +8,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
-  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL,
+  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 
@@ -25,11 +25,14 @@ function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType) {
   } else if (courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
     return CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL;
   }
-  return undefined;
+  return CLAIMANT_RESPONSE_TASK_LIST_URL;
 }
 
 export const getCourtDecision = async (req: AppRequest, claimId: any) => {
-  const claim:Claim = await getClaimById(claimId, req);
+  const claim : Claim = await getClaimById(claimId, req);
+  if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
+    return CLAIMANT_RESPONSE_TASK_LIST_URL;
+  }
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
   const courtDecision = await civilServiceClient.getCourtDecision(claimId, <AppRequest>req, claimantProposedPlan);
   return getRedirectionUrl(claim, courtDecision);

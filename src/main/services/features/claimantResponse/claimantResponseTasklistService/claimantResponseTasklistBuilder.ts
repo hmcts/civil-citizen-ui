@@ -63,14 +63,11 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
-    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
+    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option ===  YesNo.YES && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
       if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-        const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
-        tasks.push(proposeAlternativeRepayment);
-
         if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
           (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
           const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);

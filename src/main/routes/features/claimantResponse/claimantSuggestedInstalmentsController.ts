@@ -22,14 +22,14 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: Response): void {
   res.render(claimantSuggestedInstalmentsViewPath, {form});
 }
 
-claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  (async (req, res, next: NextFunction) => {
+claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  async (req, res, next: NextFunction) => {
   try {
     const claimantSuggestedInstalmentsPlan = await getClaimantSuggestedInstalmentsPlan(req.params.id);
     renderView(new GenericForm(claimantSuggestedInstalmentsPlan), res);
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+});
 
 claimantSuggestedInstalmentsController.post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   (async (req: Request, res: Response, next: NextFunction) => {

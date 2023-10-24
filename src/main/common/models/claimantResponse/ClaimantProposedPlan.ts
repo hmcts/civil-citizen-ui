@@ -26,22 +26,22 @@ export const toCCDClaimantRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDCla
     return {
       paymentAmount: convertToPence(repaymentPlan?.paymentAmount),
       repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
-      firstRepaymentDate: DateTime.fromJSDate(new Date((repaymentPlan.firstRepaymentDate))).toFormat('yyyy-MM-dd'),
+      firstRepaymentDate: DateTime.fromJSDate(new Date((repaymentPlan?.firstRepaymentDate))).toFormat('yyyy-MM-dd'),
     };
   }
 };
 
 function toCCDRepaymentDate(suggestedPaymentIntention: PaymentIntention) {
-  if (suggestedPaymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE) {
-    return DateTime.fromJSDate(new Date((suggestedPaymentIntention.paymentDate as unknown as PaymentDate).date)).toFormat('yyyy-MM-dd');
+  if (suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE) {
+    return DateTime.fromJSDate(new Date((suggestedPaymentIntention?.paymentDate as unknown as PaymentDate).date)).toFormat('yyyy-MM-dd');
   }
   return undefined;
 }
 
 export const toCCDClaimantProposedPlan = (suggestedPaymentIntention: PaymentIntention) : CCDClaimantProposedPlan => {
   return {
-    repaymentPlanLRspec: toCCDClaimantRepaymentPlan(suggestedPaymentIntention.repaymentPlan),
-    proposedRepaymentType: toCCDPaymentOption(suggestedPaymentIntention.paymentOption),
+    repaymentPlanLRspec: toCCDClaimantRepaymentPlan(suggestedPaymentIntention?.repaymentPlan),
+    proposedRepaymentType: toCCDPaymentOption(suggestedPaymentIntention?.paymentOption),
     repaymentByDate: toCCDRepaymentDate(suggestedPaymentIntention),
   };
 };
