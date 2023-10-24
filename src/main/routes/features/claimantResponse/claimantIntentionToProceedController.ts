@@ -10,6 +10,8 @@ import {
   getClaimantResponse,
   saveClaimantResponse,
 } from '../../../services/features/claimantResponse/claimantResponseService';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const claimantIntentionToProceedController = Router();
 const claimantIntentionToProceedViewPath = 'features/claimantResponse/claimant-intention-to-proceed';
@@ -22,7 +24,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL, async (req, res, next) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(claimantResponse.intentionToProceed), res);
   } catch (error) {
     next(error);
@@ -38,7 +40,7 @@ claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED
     if (claimantIntentionToProceed.hasErrors()) {
       renderView(claimantIntentionToProceed, res);
     } else {
-      await saveClaimantResponse(claimId, claimantIntentionToProceed.model.option, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), claimantIntentionToProceed.model.option, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

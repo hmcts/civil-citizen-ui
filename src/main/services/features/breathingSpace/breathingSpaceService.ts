@@ -7,7 +7,7 @@ const logger = Logger.getLogger('breathingSpaceService');
 
 const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getCaseDataFromStore(claimId, true);
     return caseData.claimDetails?.breathingSpace ?? new BreathingSpace();
   } catch (error) {
     logger.error(error);
@@ -17,7 +17,7 @@ const getBreathingSpace = async (claimId: string): Promise<BreathingSpace> => {
 
 const saveBreathingSpace = async (claimId: string, value: any, breathingSpacePropertyName: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: any = await getCaseDataFromStore(claimId, true);
     if (!claim.claimDetails) {
       claim.claimDetails = new ClaimDetails();
     }
@@ -28,7 +28,7 @@ const saveBreathingSpace = async (claimId: string, value: any, breathingSpacePro
       breathingSpace[breathingSpacePropertyName] = value;
       claim.claimDetails.breathingSpace = breathingSpace;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;
