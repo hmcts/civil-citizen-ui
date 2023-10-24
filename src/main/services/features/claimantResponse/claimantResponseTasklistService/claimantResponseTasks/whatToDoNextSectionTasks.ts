@@ -135,7 +135,7 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
   if ((claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY')
-     || claim.claimantResponse.suggestedPaymentIntention.paymentOption !== undefined) {
+     || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption !== undefined) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
