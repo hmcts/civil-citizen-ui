@@ -105,7 +105,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
         day: '',
       };
       //When
-      const form = await getClaimantSuggestedInstalmentsForm(claimId, req);
+      const form = await getClaimantSuggestedInstalmentsForm(req);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -128,7 +128,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
         day: DAY,
       };
       //When
-      const form = await getClaimantSuggestedInstalmentsForm(claimId, req);
+      const form = await getClaimantSuggestedInstalmentsForm(req);
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
@@ -144,7 +144,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       });
       const req = request;
       //When-Then
-      await expect(getClaimantSuggestedInstalmentsForm(claimId, req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantSuggestedInstalmentsForm(req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
