@@ -8,6 +8,10 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 describe('Claimant Response - Rejection reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
