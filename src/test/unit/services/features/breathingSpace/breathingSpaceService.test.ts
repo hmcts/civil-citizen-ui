@@ -1,14 +1,14 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
 import {
   getBreathingSpace,
   saveBreathingSpace,
-} from '../../../../../main/services/features/breathingSpace/breathingSpaceService';
+} from 'services/features/breathingSpace/breathingSpaceService';
 
-import {BreathingSpace} from '../../../../../main/common/models/breathingSpace';
-import {ClaimDetails} from '../../../../../main/common/form/models/claim/details/claimDetails';
-import {DebtRespiteOptionType} from '../../../../../main/common/models/breathingSpace/debtRespiteOptionType';
-import {DebtRespiteReferenceNumber} from '../../../../../main/common/models/breathingSpace/debtRespiteReferenceNumber';
+import {BreathingSpace} from 'models/breathingSpace';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
+import {DebtRespiteReferenceNumber} from 'models/breathingSpace/debtRespiteReferenceNumber';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -137,7 +137,7 @@ describe('Breathing Space Service', () => {
           }},
       };
       await saveBreathingSpace('validClaimId', breathingSpace?.debtRespiteOption, 'debtRespiteOption');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave, true);
     });
 
     it('should update breathing space debtRespiteOption successfully', async () => {
@@ -162,7 +162,7 @@ describe('Breathing Space Service', () => {
           }},
       };
       await saveBreathingSpace('validClaimId', breathingSpaceUpdate?.debtRespiteOption, 'debtRespiteOption');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave, true);
     });
 
     describe('debtRespiteReferenceNumber', () => {
@@ -186,7 +186,7 @@ describe('Breathing Space Service', () => {
         //When
         await saveBreathingSpace('validClaimId', debtRespiteReferenceNumberValue, 'debtRespiteReferenceNumber');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave);
+        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToSave, true);
       });
 
       it('should update debt respite scheme successfully', async () => {
@@ -207,7 +207,7 @@ describe('Breathing Space Service', () => {
         //When
         await saveBreathingSpace('validClaimId', breathingSpace?.debtRespiteReferenceNumber, 'debtRespiteReferenceNumber');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToUpdate);
+        expect(spySave).toHaveBeenCalledWith('validClaimId', breathingSpaceToUpdate, true);
       });
     });
 
