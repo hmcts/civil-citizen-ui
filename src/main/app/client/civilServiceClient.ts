@@ -33,7 +33,6 @@ import {
 import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -340,12 +339,10 @@ export class CivilServiceClient {
     }
   }
 
-  async getCourtDecision(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
+  async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
     const config = this.getConfig(req);
     try{
-      console.log('JSON: ',JSON.stringify(claimantProposedPlan));
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
-      console.log('Decision: ', response.data);
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);

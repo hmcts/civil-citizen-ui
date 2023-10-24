@@ -25,9 +25,9 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -521,7 +521,7 @@ describe('Civil Service Client', () => {
         const civilServiceClient = new CivilServiceClient(baseUrl);
 
         //When
-        const courtDecision: RepaymentDecisionType = await civilServiceClient.getCourtDecision('111', mockedAppRequest, mockClaimantIntention);
+        const courtDecision: RepaymentDecisionType = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention);
 
         //Then
         expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -544,7 +544,7 @@ describe('Civil Service Client', () => {
         mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
         const civilServiceClient = new CivilServiceClient(baseUrl);
         //Then
-        await expect(civilServiceClient.getCourtDecision('111', mockedAppRequest, mockClaimantIntention)).rejects.toThrow('error');
+        await expect(civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention)).rejects.toThrow('error');
       });
     });
 

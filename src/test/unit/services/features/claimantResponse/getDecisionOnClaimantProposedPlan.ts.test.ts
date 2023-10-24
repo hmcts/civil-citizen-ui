@@ -9,14 +9,14 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {ClaimantResponse} from 'models/claimantResponse';
 import nock from 'nock';
 
-import {getCourtDecision} from 'services/features/claimantResponse/getCourtDecision';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {getClaimById} from 'modules/utilityService';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {ResponseType} from 'form/models/responseType';
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
-  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL
+  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -54,7 +54,7 @@ describe('Get Court Decision test', ()=> {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
 
     //When
-    const courtDecision = await getCourtDecision(mockedAppRequest, '11');
+    const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL);
     if (!nock.isDone()) {
@@ -82,7 +82,7 @@ describe('Get Court Decision test', ()=> {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
 
     //When
-    const courtDecision = await getCourtDecision(mockedAppRequest, '11');
+    const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
     if (!nock.isDone()) {
@@ -99,7 +99,7 @@ describe('Get Court Decision test', ()=> {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
 
     //When
-    const courtDecision = await getCourtDecision(mockedAppRequest, '11');
+    const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL);
     if (!nock.isDone()) {
@@ -119,7 +119,7 @@ describe('Get Court Decision test', ()=> {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
 
     //When
-    const courtDecision = await getCourtDecision(mockedAppRequest, '11');
+    const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
     if (!nock.isDone()) {

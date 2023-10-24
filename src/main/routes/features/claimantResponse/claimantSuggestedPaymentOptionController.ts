@@ -14,7 +14,7 @@ import {
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import {getCourtDecision} from 'services/features/claimantResponse/getCourtDecision';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {AppRequest} from 'models/AppRequest';
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -48,7 +48,7 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:
-          redirectUrl = await getCourtDecision(<AppRequest> req, claimId);
+          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest> req, claimId);
           break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;

@@ -6,17 +6,24 @@ import {
   CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+
+const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
+getCalculatedDecision.mockImplementation(() => {
+  return CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL;
+});
 
 describe('Claimant suggested Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -70,7 +77,7 @@ describe('Claimant suggested Payment Option Controller', () => {
         .send('paymentType=IMMEDIATELY')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL);
         });
     });
     it('should redirect to suggest instalments page when instalments option is selected', async () => {

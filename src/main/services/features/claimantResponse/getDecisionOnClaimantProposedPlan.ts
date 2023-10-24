@@ -28,13 +28,13 @@ function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType) {
   return CLAIMANT_RESPONSE_TASK_LIST_URL;
 }
 
-export const getCourtDecision = async (req: AppRequest, claimId: any) => {
-  const claim : Claim = await getClaimById(claimId, req);
+export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId: any) => {
+  const claim : Claim = await getClaimById(claimId, req, true);
   if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
     return CLAIMANT_RESPONSE_TASK_LIST_URL;
   }
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
-  const courtDecision = await civilServiceClient.getCourtDecision(claimId, <AppRequest>req, claimantProposedPlan);
+  const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, <AppRequest>req, claimantProposedPlan);
   return getRedirectionUrl(claim, courtDecision);
 };
 
