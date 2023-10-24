@@ -3,7 +3,7 @@ import {
   CCJ_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAYMENT_OPTIONS_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
