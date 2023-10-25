@@ -16,7 +16,7 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
   RESPONSEFORREPAYMENTPLAN,
-  RESPONSEFREQUENCY
+  RESPONSEFREQUENCY,
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
@@ -85,12 +85,12 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   const summaryRows: SummaryRow [] = [];
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
-  const paymentDate= getEmptyStringIfUndefined(formatStringDateSlash(date.date?.toString()));
+  const paymentDate = getEmptyStringIfUndefined(formatStringDateSlash(date.date?.toString()));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
     t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lang, paymentDate}),
     partAdmitAcceptedHref,
-    changeLabel(lang)
+    changeLabel(lang),
   ))
   ;
 
