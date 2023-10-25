@@ -693,7 +693,10 @@ export class Claim {
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
-    return new Date() >= this.sixWeeksBeforeHearingDate() || new Date() <= this.threeWeeksBeforeHearingDate();
+    const nowDate = new Date(new Date().setHours(0,0,0,0));
+    const sixWeeksBeforeHearingDate = this.sixWeeksBeforeHearingDate();
+    const threeWeeksBeforeHearingDate = this.threeWeeksBeforeHearingDate();
+    return nowDate >= sixWeeksBeforeHearingDate && nowDate <= threeWeeksBeforeHearingDate;
   }
 
   isBundleStitched(): boolean {
@@ -764,16 +767,18 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  threeWeeksBeforeHearingDate() {
+  private threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    return new Date(hearingDateTime - threeWeeksMilli);
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0,0,0,0);
+    return new Date(dateAtStartOfDay);
   }
 
   private  sixWeeksBeforeHearingDate(): Date {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
-    return new Date(hearingDateTime - sixWeeksMilli);
+    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0,0,0,0);
+    return new Date(dateAtStartOfDay);
   }
 
   hasRespondent1NotAgreedMediation() {
