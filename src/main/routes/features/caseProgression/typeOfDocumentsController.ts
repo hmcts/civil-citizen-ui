@@ -1,8 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CP_UPLOAD_DOCUMENTS_URL,
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
   CP_EVIDENCE_UPLOAD_CANCEL,
   TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
@@ -25,8 +23,6 @@ const dqPropertyNameClaimant = 'claimantUploadDocuments';
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
   const latestUploadUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const claim = await getCaseDataFromStore(claimId);
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId,
-    claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
   const isFastTrack = claim.isFastTrackClaim;
