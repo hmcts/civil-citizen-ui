@@ -17,6 +17,9 @@ import {
   toAdditionalPartyDetails,
 } from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
+import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
+import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
+import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -29,7 +32,6 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     totalClaimAmount: claim.totalClaimAmount,
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),
     detailsOfClaim: claim.claimDetails?.reason?.text,
-    // specResponseTimelineOfEvents: toCCDTimeline(claim.claimDetails?.timeline),
     speclistYourEvidenceList: toCCDEvidence(claim.claimDetails?.evidence),
     claimInterest: toCCDYesNo(claim.claimInterest),
     interestClaimOptions: toCCDInterestType(claim.interest?.interestClaimOptions),
@@ -44,8 +46,15 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
+    helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
+    pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
-
   };
+};
+export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
+  const ccdClaim = translateDraftClaimToCCD(claim, req);
+  ccdClaim.timelineOfEvents = toCCDTimelineEvent(claim.claimDetails?.timeline);
+  ccdClaim.claimFee = toCCDClaimFee(claim.claimFee);
+  return ccdClaim;
 };
