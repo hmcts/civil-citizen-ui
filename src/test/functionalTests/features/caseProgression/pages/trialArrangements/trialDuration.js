@@ -29,7 +29,7 @@ class HasAnythingChanged {
 
   verifyTrialDurationSectionContent() {
     I.see('Trial duration','h3');
-    I.see('The trial duration originally allocated is 2 and a half hours .');
+    I.see('The trial duration originally allocated is 2 and a half hours.');
     I.see('If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.');
     I.see('The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.');
   }

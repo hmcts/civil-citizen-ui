@@ -36,6 +36,10 @@ class LatestUpdate {
     I.see('Notices and orders');
     I.see('Documents');
   }
+  verifyTrialArrangementsFinalisedTile() {
+    I.see('You have finalised your trial arrangements','h3');
+    I.see('You can view your trial arrangements under \'Notices and orders\'.');
+  }
 
   verifyTrialArrangeentsTile(claimType) {
     //TODO - Include the hearing date in the relevant Format

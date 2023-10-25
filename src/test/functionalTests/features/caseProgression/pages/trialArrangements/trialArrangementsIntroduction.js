@@ -23,7 +23,7 @@ class TrialArrangementsIntroduction {
   }
 
   verifyHeadingDetails() {
-    I.see('Finalize your trial arrangements', 'h1');
+    I.see('Finalise your trial arrangements', 'h1');
     //I.see('Case reference');
     I.see('Test Inc v Sir John Doe');
     I.see('You have until');

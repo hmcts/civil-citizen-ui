@@ -39,7 +39,7 @@ class TrialArrangementSteps {
     trialArrangementConfirmation.checkPageFullyLoaded();
     trialArrangementConfirmation.verifyPageContent();
     trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
-    //Latest update page - verify that the Trial Arrangeent Tile appears.
+    latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangeent Tile appears.
     latestUpdateTab.nextAction('[href=\'#notices-orders\']');
     noticesAndOrders.verifyLatestUpdatePageContent();
 
