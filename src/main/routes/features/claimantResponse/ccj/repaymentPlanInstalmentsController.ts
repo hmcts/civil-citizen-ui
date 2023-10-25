@@ -9,7 +9,7 @@ import {ClaimantResponse} from '../../../../common/models/claimantResponse';
 import {InstalmentFirstPaymentDate} from '../../../../common/models/claimantResponse/ccj/instalmentFirstPaymentDate';
 import {RepaymentPlanInstalments} from '../../../../common/models/claimantResponse/ccj/repaymentPlanInstalments';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 
 const repaymentPlanInstalmentsController = Router();
@@ -25,7 +25,7 @@ function renderView(form: GenericForm<RepaymentPlanInstalments>, totalClaimAmoun
 
 repaymentPlanInstalmentsController.get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(req.params.id);
+    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const claimantResponse = claim.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
     const repaymentPlanInstalments = claimantResponse.ccjRequest
       ? claimantResponse.ccjRequest.repaymentPlanInstalments
@@ -39,6 +39,7 @@ repaymentPlanInstalmentsController.get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, async
 repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(claimId);
     const totalClaimAmount = claim.totalClaimAmount;
     const form = new GenericForm(new RepaymentPlanInstalments(
@@ -54,7 +55,7 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     } else {
       const claimantResponsePropertyName = 'repaymentPlanInstalments';
       const parentPropertyName = 'ccjRequest';
-      await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName, parentPropertyName);
+      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
     }
   } catch (error) {
