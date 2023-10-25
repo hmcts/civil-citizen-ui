@@ -5,6 +5,7 @@ import {
   CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {
@@ -47,8 +48,7 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:
-          // TODO : trigger court calculator when it's developed and update redirection url with the result of it
-          redirectUrl = CLAIMANT_RESPONSE_TASK_LIST_URL;
+          redirectUrl =   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
           break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;

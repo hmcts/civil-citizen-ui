@@ -22,6 +22,8 @@ import {
   getHaveYouBeenPaidTask,
   getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -73,6 +75,10 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
+        if(claim?.claimantResponse?.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
+          const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
+          tasks.push(chooseHowFormaliseTask);
+        }
       }
 
       if (claim?.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {

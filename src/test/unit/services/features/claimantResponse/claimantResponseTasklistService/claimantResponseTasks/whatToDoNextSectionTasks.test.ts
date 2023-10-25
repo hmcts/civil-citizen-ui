@@ -7,7 +7,11 @@ import {
   getAcceptOrRejectDefendantAdmittedTask,
   getAcceptOrRejectDefendantResponse,
   getFreeTelephoneMediationTask,
+  getProposeAlternativeRepaymentTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/whatToDoNextSectionTasks';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -47,7 +51,7 @@ describe('What to do next section task', () => {
   });
 
   it('should return incomplete for full defense states paid', () => {
-    //Given 
+    //Given
     const claim = {} as Claim;
     const resultIncomplete = {
       description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
@@ -62,7 +66,7 @@ describe('What to do next section task', () => {
   });
 
   it('should return complete for full defense states paid if claimant responded', () => {
-    //Given 
+    //Given
     const claim = { claimantResponse: { hasFullDefenceStatesPaidClaimSettled: { option: 'yes' } } } as Claim;
     const resultIncomplete = {
       description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
@@ -175,5 +179,56 @@ describe('What to do next section task', () => {
     });
 
   });
+  describe('getProposeAlternativeRepaymentTask', () => {
 
+    const resultIncomplete = {
+      description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT',
+      url: '/case/5129/claimant-response/payment-option',
+      status: TaskStatus.INCOMPLETE,
+    };
+
+    const resultComplete = {...resultIncomplete, status: TaskStatus.COMPLETE};
+
+    it('should return incomplete', () => {
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultIncomplete);
+    });
+    it('should return complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
+      };
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY,},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+
+    it('should return complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedPlan: {decision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+
+    it('should return complete', () => {
+      //Given
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+  });
 });

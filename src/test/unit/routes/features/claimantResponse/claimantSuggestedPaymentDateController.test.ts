@@ -4,7 +4,7 @@ import config from 'config';
 import request from 'supertest';
 import {
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
 } from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -118,7 +118,7 @@ describe('Claimant suggested Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIMANT_RESPONSE_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL}`);
         });
     });
   });

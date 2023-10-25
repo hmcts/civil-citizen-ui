@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
 } from 'routes/urls';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {GenericForm} from 'form/models/genericForm';
@@ -41,8 +41,7 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
   } else {
     try {
       await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, crPropertyName, crParentName);
-      // TODO : trigger court calculator when it's developed and update redirection url with the result of it
-      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
     } catch (error) {
       next(error);
     }
