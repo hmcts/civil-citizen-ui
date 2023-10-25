@@ -195,7 +195,7 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultIncomplete);
     });
-    it('should return complete', () => {
+    it('should return complete when courtProposedDate is not empty', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
@@ -208,8 +208,7 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
-
-    it('should return complete', () => {
+    it('should return complete when courtProposedPlan is not empty', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         courtProposedPlan: {decision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN},
@@ -219,11 +218,38 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
-
-    it('should return complete', () => {
+    it('should return complete when payment date is not empty', () => {
       //Given
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+
+    it('should return incomplete ', () => {
+      const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedDate: undefined,
+        courtProposedPlan: undefined,
+      };
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: null},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+    it('should return incomplete', () => {
+      const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
+      //Given
+      claim.partialAdmission = undefined;
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedPlan:  undefined,
       };
       //When
       const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
