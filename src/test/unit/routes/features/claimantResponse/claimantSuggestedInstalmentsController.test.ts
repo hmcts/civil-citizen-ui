@@ -17,6 +17,10 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
+  getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
+  saveClaimantResponse: jest.fn(),
+}));
 describe('Suggest instalments for the defendant', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
