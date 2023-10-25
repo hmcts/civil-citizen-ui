@@ -208,6 +208,16 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
+    it('should return complete', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedPlan: {decision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
     it('should return complete when payment date is not empty', () => {
       //Given
       claim.partialAdmission = {
@@ -218,7 +228,6 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
-
     it('should return incomplete ', () => {
       const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
       //Given
@@ -249,7 +258,6 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
-
     it('should return incomplete', () => {
       const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
       //Given
