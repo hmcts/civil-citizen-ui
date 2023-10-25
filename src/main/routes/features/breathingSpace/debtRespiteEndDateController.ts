@@ -9,6 +9,7 @@ import {DebtRespiteEndDate} from '../../../common/models/breathingSpace/debtResp
 import {getBreathingSpace, saveBreathingSpace} from '../../../services/features/breathingSpace/breathingSpaceService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 
 const debtRespiteEndDateController = Router();
 const debtRespiteEndDatePath = 'features/breathingSpace/debt-respite-end-date';
@@ -22,7 +23,7 @@ function renderView(form: GenericForm<DebtRespiteEndDate>, res: Response): void 
 
 debtRespiteEndDateController.get(BREATHING_SPACE_RESPITE_END_DATE_URL, breathingSpaceGuard, (async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
-    const breathingSpace = await getBreathingSpace(req.params.id);
+    const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     const debtRespiteEndDate = breathingSpace?.debtRespiteEndDate ?? new DebtRespiteEndDate();
     renderView(new GenericForm(debtRespiteEndDate), res);
   } catch (error) {
@@ -40,7 +41,7 @@ debtRespiteEndDateController.post(BREATHING_SPACE_RESPITE_END_DATE_URL, breathin
       renderView(form, res);
     } else {
       const breathingSpacePropertyName = 'debtRespiteEndDate';
-      await saveBreathingSpace(claimId, form.model, breathingSpacePropertyName);
+      await saveBreathingSpace(generateRedisKey(req as unknown as AppRequest), form.model, breathingSpacePropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL));
     }
   } catch (error) {
