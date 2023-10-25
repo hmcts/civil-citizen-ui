@@ -53,7 +53,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
-      renderView(req, res, form, claim);
+     await renderView(<AppRequest>req, res, form, claim);
     } else {
       await saveStatementOfTruth(generateRedisKey(req as unknown as AppRequest), form.model);
       await submitClaimantResponse(<AppRequest>req);
