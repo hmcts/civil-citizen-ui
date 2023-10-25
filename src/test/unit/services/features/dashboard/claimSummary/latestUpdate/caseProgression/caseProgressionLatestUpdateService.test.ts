@@ -239,7 +239,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
       isFastTrackClaim: true,
-      isSixWeeksOrLessFromTrial: () => true,
+      isBetweenSixAndThreeWeeksBeforeHearingDate: () => true,
       isBundleStitched: () => false,
       caseProgression: {
         claimantLastUploadDate: fakeDayBeforeDate,

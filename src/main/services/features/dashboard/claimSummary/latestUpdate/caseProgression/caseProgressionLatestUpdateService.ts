@@ -16,8 +16,8 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
 
   if (claim.isFinalGeneralOrderIssued()) {
     sectionContent.push(getViewFinalGeneralOrderContent(claim));
-  }  
-  
+  }
+
   if (claim.isBundleStitched()) {
     sectionContent.push(getViewBundleLatestUpdateContent(claim));
   }
@@ -31,7 +31,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   }
   if(claim.hasCaseProgressionHearingDocuments()){
     sectionContent.push(getHearingTrialUploadLatestUpdateContent(claim, lang));
-    if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
+    if (claim.isFastTrackClaim && claim.isBetweenSixAndThreeWeeksBeforeHearingDate()) {
       sectionContent.push(getFinaliseTrialArrangementsContent(claim));
     }
   }
@@ -71,7 +71,7 @@ export const getViewBundleLatestUpdateContent = (claim: Claim) : ClaimSummarySec
 
 export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySection[][] => {
   return buildViewFinalGeneralOrderContent(claim);
-};  
+};
 
 export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
   return buildClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant);

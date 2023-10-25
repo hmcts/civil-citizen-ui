@@ -1506,7 +1506,7 @@ describe('Documents', () => {
       const expectedDate = '8 July 2023';
       claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
       //When
-      const actualDate = claim.threeWeeksBeforeHearingDate();
+      const actualDate = claim.threeWeeksBeforeHearingDateString();
       //Then
       expect(expectedDate).toEqual(actualDate);
     });
@@ -1538,7 +1538,7 @@ describe('Documents', () => {
       const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksFromTrial).toBeTruthy();
     });
@@ -1548,7 +1548,7 @@ describe('Documents', () => {
       const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 - 1);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeTruthy();
     });
@@ -1558,7 +1558,7 @@ describe('Documents', () => {
       const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 + 1);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
     });

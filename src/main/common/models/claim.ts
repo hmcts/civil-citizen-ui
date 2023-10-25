@@ -685,15 +685,15 @@ export class Claim {
   }
 
   get bundleStitchingDeadline(): string {
-    return this.threeWeeksBeforeHearingDate();
+    return this.threeWeeksBeforeHearingDateString();
   }
 
   get finalisingTrialArrangementsDeadline(): string {
-    return this.threeWeeksBeforeHearingDate();
+    return this.threeWeeksBeforeHearingDateString();
   }
 
-  isSixWeeksOrLessFromTrial(): boolean {
-    return new Date() >= this.sixWeeksBeforeHearingDate();
+  isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
+    return new Date() >= this.sixWeeksBeforeHearingDate() || new Date() <= this.threeWeeksBeforeHearingDate();
   }
 
   isBundleStitched(): boolean {
@@ -758,11 +758,16 @@ export class Claim {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 
+  threeWeeksBeforeHearingDateString() {
+    const threeWeeksBefore = this.threeWeeksBeforeHearingDate();
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return threeWeeksBefore.toLocaleDateString('en-GB', options);
+  }
+
   threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+    return new Date(hearingDateTime - threeWeeksMilli);
   }
 
   private  sixWeeksBeforeHearingDate(): Date {
