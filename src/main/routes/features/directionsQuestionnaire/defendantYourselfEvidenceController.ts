@@ -8,6 +8,8 @@ import {
   getGenericOptionForm,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const defendantYourselfEvidenceController = Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
@@ -19,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req, res, next: NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName);
+    const defendantYourselfEvidence = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -35,7 +37,7 @@ defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (r
     if (defendantYourselfEvidence.hasErrors()) {
       renderView(defendantYourselfEvidence, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, dqPropertyName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), defendantYourselfEvidence.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL));
     }
   } catch (error) {

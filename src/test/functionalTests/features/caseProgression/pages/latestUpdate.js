@@ -5,19 +5,24 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent();
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent() {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag) {
     this.verifyHeadingDetails();
-    this.verifyHearingNoticeSectionContent();
-    this.verifyUploadDocumentSectionContent();
+    if (hearingInitiatedFlag === true) {
+      this.verifyHearingOrTrialNoticeSectionContent(claimType);
+    }
+    this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
+    if(orderCreatedFlag === true) {
+      this.verifyOrderCreatedTileContent();
+    }
     contactUs.verifyContactUs();
   }
 
@@ -29,21 +34,36 @@ class LatestUpdate {
     I.see('Documents');
   }
 
-  verifyHearingNoticeSectionContent() {
-    I.see('A trial has been scheduled for your case', 'h3');
+  verifyHearingOrTrialNoticeSectionContent(claimType) {
     //TODO - Include the hearing date in the relevant Format
-    I.see('Your trial has been scheduled for');
+    if (claimType === 'FastTrack') {
+      I.see('A trial has been scheduled for your case', 'h3');
+      I.see('Your trial has been scheduled for');
+    } else {
+      I.see('A hearing has been scheduled for your case', 'h3');
+      I.see('Your hearing has been scheduled for');
+    }
     I.see('at Central London County Court.');
   }
 
-  verifyUploadDocumentSectionContent() {
+  verifyUploadDocumentTileContent(hearingInitiatedFlag) {
     I.see('Upload documents', 'h3');
-    I.see('Due by:');
+    if (hearingInitiatedFlag) {
+      I.see('Due by:');
+    } else {
+      I.dontSee('Due by:');
+    }
     I.see('You can upload and submit any documents which support your claim. These can include any communications, paperwork and statements from expert and witnesses.');
     I.see('Please follow the instructions sent in the');
     I.seeElement('//a[contains(.,\'standard directions order\')]');
     I.see('which can be found under \'Notices and orders\'.');
     I.see('Any documents submitted after the due date may not be considered by the judge.');
+  }
+
+  verifyOrderCreatedTileContent() {
+    I.see('An order has been made on your claim','h3');
+    I.see('The Judge has made an order on your claim.');
+    I.see('The order is available in \'Notices and orders\'.');
   }
 }
 

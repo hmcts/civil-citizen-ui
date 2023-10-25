@@ -21,6 +21,7 @@ import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuild
 import {t} from 'i18next';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 
 const PAGES_LATEST_UPDATE_CONTENT = 'PAGES.LATEST_UPDATE_CONTENT';
 
@@ -261,7 +262,7 @@ function getStatusFDClaimDispute(claim: Claim, lng: string) {
   } else {
     if (claim.hasRespondent1NotAgreedMediation()) {
       return new LatestUpdateSectionBuilder()
-        .addTitle(t('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE', {lng}))
+        .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.AWAITING_CLAIMANT_RESPONSE', {lng}))
         .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_REJECTED_CLAIM`, {lng}))
         .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.NO_MEDIATION_REQUIRED`, {lng}))
         .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS`, {lng}))
@@ -342,6 +343,7 @@ function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_HAVE_SETTLED_CLAIM`, {lng}), {
       claimantName: claimantFullName,
     })
+    .addResponseDocumentLink(`${PAGES_LATEST_UPDATE_CONTENT}.MEDIATION_AGREEMENT`, claimId, documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url))
     .addContactLink(t(`${PAGES_LATEST_UPDATE_CONTENT}.CONTACT`, {lng}), claimId, {claimantName: claimantFullName},
       t(`${PAGES_LATEST_UPDATE_CONTENT}.THEIR_PAYMENT_DETAILS`, {lng}))
     .build();
@@ -402,7 +404,7 @@ function generateCCJRequestedLatestUpdate(claim: Claim, lng: string) {
 export function generateClaimSettledLatestUpdate(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   return new LatestUpdateSectionBuilder()
-    .addTitle(t('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED', {lng}))
+    .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIM_SETTLED', {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_CONFIRMED_SETTLED_CLAIM`, {lng}), {
       claimantName: claimantFullName,
       settlementDate: formatDateToFullDate(claim.lastModifiedDate, lng),
@@ -443,7 +445,7 @@ const getLastUpdateForNoMediation = (claim: Claim) => {
 function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string) {
   const claimantName = claim.getClaimantFullName();
   return new LatestUpdateSectionBuilder()
-    .addTitle(t('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW', {lng}))
+    .addTitle(t('PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_COURT_REVIEW', {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1`, {lng}), {
       claimantName: claimantName})
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2`, {lng}))

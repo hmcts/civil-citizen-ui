@@ -167,7 +167,7 @@ import acceptRepaymentPlanController from './features/claimantResponse/acceptRep
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
-import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
+import breathingSpaceCheckAnswersController from './features/breathingSpace/checkAnswersController';
 import totalAmountController from './features/claim/totalAmountController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
@@ -213,6 +213,7 @@ import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakD
 import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
 import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import documentViewController from 'routes/features/document/documentViewController';
+import feeChangeController from './features/claim/feeChangeController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
@@ -418,6 +419,7 @@ export default [
   hearingDurationController,
   trialCheckAnswersController,
   documentViewController,
+  feeChangeController,
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
   claimFeeController,

@@ -6,6 +6,9 @@ import {
 import {
   getHearingTrialLatestUpload,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/hearingTrialLatestUploadContent';
+import {
+  getViewTrialArrangements,
+} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/viewTrialArrangementsContent';
 import {getNewUpload} from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/newUploadContent';
 import {
   getViewFinalGeneralOrder,
@@ -20,6 +23,7 @@ import {
 import {
   getViewBundle,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/viewBundleContent';
+
 export const buildNewUploadSection = (claim: Claim): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getNewUpload(claim));
@@ -59,5 +63,11 @@ export const buildViewBundleSection = (claim: Claim): ClaimSummarySection[][] =>
 export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
   const sectionContent = [];
   sectionContent.push(getClaimDismissedHearingDueDateUploadContent(claim, lang, isClaimant));
+  return sectionContent;
+};
+
+export const buildViewTrialArrangementsSection = (isOtherParty: boolean, claim: Claim) : ClaimSummarySection[][] => {
+  const sectionContent = [];
+  sectionContent.push(getViewTrialArrangements(isOtherParty, claim));
   return sectionContent;
 };
