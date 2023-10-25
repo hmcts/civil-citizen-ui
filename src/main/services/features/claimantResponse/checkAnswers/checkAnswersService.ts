@@ -14,7 +14,7 @@ const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claimId: string, claim: Claim, lang: string): SummarySections => {
   const getYourResponseSection = () => {
-    return claim.isFullDefence() || claim.isPartialAdmission()
+    return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };

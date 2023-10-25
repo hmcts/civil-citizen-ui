@@ -13,7 +13,7 @@ import {
   CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
@@ -134,8 +134,9 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
-    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
+    || (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)
+    || (claim.isFullAdmission() && claim.claimantResponse?.suggestedPaymentIntention)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
