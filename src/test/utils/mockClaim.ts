@@ -36,6 +36,7 @@ export const buildRespondent1 = (): Party => {
   respondent.partyDetails.individualLastName = 'Mary';
   respondent.partyDetails.individualFirstName = 'Richards';
   respondent.partyDetails.partyName = 'Mrs Richards Mary';
+  respondent.partyDetails.contactPerson = 'Mrs Richards Mary';
   respondent.partyPhone = new PartyPhone('0208339922');
   respondent.dateOfBirth = new CitizenDate('2022-01-24T15:59:59');
   respondent.responseType = '';
@@ -64,6 +65,7 @@ function buildMockClaim(): Claim {
       individualFirstName: 'Jane',
       partyName: 'Mrs Jane Clark',
       primaryAddress: new Address(),
+      contactPerson: 'Mrs Jane Clark',
     },
     type: PartyType.INDIVIDUAL,
   };
@@ -141,7 +143,7 @@ function buildMockClaim(): Claim {
     },
   ];
   _mockClaim.claimFee = {
-    calculatedAmountInPence: '11500',
+    calculatedAmountInPence: 11500,
   };
   _mockClaim.claimInterest = YesNo.YES;
   _mockClaim.claimAmountBreakup = [
