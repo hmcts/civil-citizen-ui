@@ -4690,5 +4690,177 @@
       "id": 1696332888944489,
       "lastModifiedDate": "2023-10-03T11:37:47"
     }
+  },
+  {
+    "id": "1698228381283706",
+    "case_data": {
+      "pcqId": "205f2e6b-fd22-4620-9938-746878ead4b7",
+      "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
+      "defenceAdmitPartPaymentTimeRouteRequired": "IMMEDIATELY",
+      "totalClaimAmount": 9000,
+      "respondent1ClaimResponseDocumentSpec": {
+        "documentSize": 0
+      },
+      "respondent1LiPResponse": {
+        "respondent1ResponseLanguage": "ENGLISH"
+      },
+      "submittedDate": "2023-10-25T11:06:21",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2023-11-22T16:00:00",
+      "respondent1ResponseDate": "2023-10-25T11:09:32",
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "applicant1": {
+        "partyDetails": {
+          "individualLastName": "ortiz",
+          "individualFirstName": "felipe",
+          "primaryAddress": {
+            "addressLine1": "street",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "partyPhone": {
+          "phone": "01632960001",
+          "ccdPhoneExist": true
+        },
+        "type": "INDIVIDUAL"
+      },
+      "issueDate": "2023-10-25",
+      "applicant1Represented": "No",
+      "detailsOfClaim": "details",
+      "claimNotificationDate": "2023-10-25T11:07:08",
+      "specClaimResponseTimelineList": "MANUAL",
+      "helpWithFees": {
+        "helpWithFee": "No"
+      },
+      "claimInterest": "No",
+      "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+      "claimantUserDetails": {
+        "id": "23a859b9-8852-43cc-a68c-bc12d7864b3c",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC022",
+      "applicant1ResponseDeadline": "2023-11-22T16:00:00",
+      "respondent1Represented": "No",
+      "businessProcess": {
+        "status": "STARTED",
+        "activityId": "GenerateSealedLipDQPdf",
+        "camundaEvent": "DEFENDANT_RESPONSE_CUI",
+        "processInstanceId": "97919e7e-731e-11ee-8512-0242ac120003"
+      },
+      "respondent1GeneratedResponseDocument": {
+        "documentSize": 0
+      },
+      "respondent1": {
+        "partyDetails": {
+          "individualLastName": "Ortiz",
+          "individualFirstName": "felipe",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "steeet",
+            "city": "city",
+            "postCode": "SW1A 2AA"
+          }
+        },
+        "dateOfBirth": {
+          "date": "2000-10-10T00:00:00.000Z",
+          "year": 2000,
+          "month": 10,
+          "day": 10
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL",
+        "responseType": "FULL_ADMISSION"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "TDZXRCMZ8LD7",
+        "expiryDate": "2024-04-22",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "claimNotificationDeadline": "2024-02-25T23:59:59",
+      "responseClaimMediationSpecRequired": "No",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "9000",
+            "claimReason": "broken tiles"
+          }
+        }
+      ],
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "details"
+        },
+        "helpWithFees": {
+          "option": "no"
+        }
+      },
+      "statementOfMeans": {},
+      "claimBilingualLanguagePreference": "ENGLISH",
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {}
+      },
+      "directionQuestionnaire": {
+        "hearing": {},
+        "experts": {}
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": []
+      },
+      "fullAdmission": {
+        "paymentIntention": {
+          "paymentOption": "IMMEDIATELY",
+          "paymentDate": "2023-10-30T10:06:21.000Z"
+        }
+      },
+      "claimantResponse": {
+        "suggestedPaymentIntention": {}
+      },
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "id": 1698228381283706,
+      "lastModifiedDate": "2023-10-25T10:09:40"
+    }
   }
 ]
