@@ -9,7 +9,7 @@ const claimSubmittedController = Router();
 claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {

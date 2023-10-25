@@ -44,7 +44,7 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.claimantStatementOfTruth = claimantStatementOfTruth;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;

@@ -8,6 +8,8 @@ import {
 } from '../../../../../services/features/response/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const regularIncomeController = Router();
 
@@ -17,7 +19,7 @@ function renderView(form: GenericForm<RegularIncome>, res: Response) {
 
 regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: NextFunction) => {
   try {
-    const model = await getRegularIncome(req.params.id);
+    const model = await getRegularIncome(generateRedisKey(<AppRequest>req));
     renderView(new GenericForm<RegularIncome>(model), res);
   } catch (error) {
     next(error);
@@ -31,7 +33,7 @@ regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveRegularIncome(req.params.id, form.model);
+      await saveRegularIncome(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EXPLANATION_URL));
     }
   } catch (error) {
