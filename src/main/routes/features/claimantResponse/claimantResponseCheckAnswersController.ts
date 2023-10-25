@@ -54,7 +54,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       await saveStatementOfTruth(generateRedisKey(req as unknown as AppRequest), form.model);
       await submitClaimantResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(userId, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
