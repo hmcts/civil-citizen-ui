@@ -182,6 +182,7 @@
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Pob wythnos",
+      "EVERY_WEEK": "Pob wythnos",
       "TWO_WEEKS": "Pob pythefnos",
       "MONTH": "Pob mis"
     },
@@ -489,7 +490,7 @@
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
-      "IN_FULL": "In full",
+      "IN_FULL": "In full by {{paymentDate}}",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",

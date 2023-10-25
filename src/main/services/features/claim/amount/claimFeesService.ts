@@ -6,7 +6,6 @@ const logger = Logger.getLogger('claimantPhoneAsService');
 export const saveClaimFee = async (claimantId: string, claimFee: number) => {
   try{
     const claim = await getCaseDataFromStore(claimantId);
-    console.log(claimantId);
     claim.claimFee = {calculatedAmountInPence: convertToPence(claimFee)};
     await saveDraftClaim(claimantId, claim);
   }catch(error){

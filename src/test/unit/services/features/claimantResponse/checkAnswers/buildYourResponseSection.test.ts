@@ -76,7 +76,7 @@ describe('Your response Section', () => {
     //Given
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+    claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date('2022-06-01T00:00:00Z');
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
