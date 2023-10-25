@@ -24,7 +24,6 @@ import {
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 
-
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
   const viewDefendantsReponseTask = getViewDefendantsReponseTask(claim, claimId, lang);

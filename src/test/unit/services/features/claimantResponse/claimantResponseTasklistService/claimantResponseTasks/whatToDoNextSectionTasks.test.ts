@@ -201,7 +201,7 @@ describe('What to do next section task', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY,},
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
       };
       //When
       const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);

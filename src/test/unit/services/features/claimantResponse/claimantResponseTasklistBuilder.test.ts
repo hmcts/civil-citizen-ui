@@ -456,7 +456,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedPlan: {decision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN},
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,},
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
