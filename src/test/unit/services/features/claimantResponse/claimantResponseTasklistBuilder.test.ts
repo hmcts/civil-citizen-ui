@@ -470,12 +470,12 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
     });
-    it('should not display Choose how to formalise repayment task link', () => {
+    it('should display propose alternative repayment task as incomplete', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
-        courtProposedPlan: {decision: undefined},
+        courtProposedPlan: undefined,
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS},

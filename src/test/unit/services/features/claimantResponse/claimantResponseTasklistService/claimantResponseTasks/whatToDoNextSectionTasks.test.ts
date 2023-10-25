@@ -208,16 +208,6 @@ describe('What to do next section task', () => {
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
-    it('should return complete when courtProposedPlan is not empty', () => {
-      //Given
-      claim.claimantResponse = <ClaimantResponse>{
-        courtProposedPlan: {decision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN},
-      };
-      //When
-      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
-      //Then
-      expect(proposeAlternativeRepayment).toEqual(resultComplete);
-    });
     it('should return complete when payment date is not empty', () => {
       //Given
       claim.partialAdmission = {
@@ -237,19 +227,38 @@ describe('What to do next section task', () => {
         courtProposedPlan: undefined,
       };
       claim.partialAdmission = {
-        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: null},
+        paymentIntention: undefined,
       };
       //When
       const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       //Then
       expect(proposeAlternativeRepayment).toEqual(resultComplete);
     });
+    it('should return incomplete ', () => {
+      const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        courtProposedDate: undefined,
+        courtProposedPlan: undefined,
+      };
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+      };
+      //When
+      const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+      //Then
+      expect(proposeAlternativeRepayment).toEqual(resultComplete);
+    });
+
     it('should return incomplete', () => {
       const resultComplete = {...resultIncomplete, status: TaskStatus.INCOMPLETE};
       //Given
-      claim.partialAdmission = undefined;
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: null},
+      };
       claim.claimantResponse = <ClaimantResponse>{
         courtProposedPlan:  undefined,
+        courtProposedDate: undefined,
       };
       //When
       const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
