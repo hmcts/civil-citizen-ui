@@ -19,7 +19,8 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-
+import * as utilService from 'modules/utilityService';
+import { CaseState } from 'common/form/models/claimDetails';
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/common/utils/urlFormatter');
@@ -41,19 +42,23 @@ describe('Review Defendant\'s Response Controller', () => {
   mockDateFormat.mockImplementation(() => 'validDate');
   mockFinancialDetails.mockImplementation(() => [[], [], [], [], [], [], [], [], []]);
 
+  beforeEach(() => {
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    jest.spyOn(utilService, 'getClaimById').mockResolvedValue(claim);
+  });
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   it('should return defendant\'s response', async () => {
-    mockGetCaseData.mockImplementation(() => claim);
     await request(app).get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain('The defendant’s response');
       expect(res.text).toContain('Full response');
-      expect(res.text).toContain('Download their full response and hearing requirements (PDF)');
+      expect(res.text).toContain('Download their full response (PDF)');
     });
   });
 
@@ -61,6 +66,7 @@ describe('Review Defendant\'s Response Controller', () => {
     mockGetCaseData.mockImplementation(async () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
+    jest.spyOn(utilService, 'getClaimById').mockRejectedValue(TestMessages.REDIS_FAILURE);
     await request(app).get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL).expect((res) => {
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

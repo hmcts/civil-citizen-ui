@@ -8,7 +8,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -32,7 +32,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       renderView(req, res, form, claim);
@@ -48,12 +48,12 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const userId = req.params.id;
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(userId);
+      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       renderView(req, res, form, claim);
     } else {
-      await saveStatementOfTruth(userId, form.model);
+      await saveStatementOfTruth(generateRedisKey(req as unknown as AppRequest), form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(userId);
+      await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
