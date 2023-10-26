@@ -9,7 +9,7 @@ import {getClaimantResponse, saveClaimantResponse} from 'services/features/claim
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {
-  convertFrequencyToText,
+  convertFrequencyToTextForRepaymentPlan,
   getAmount,
   getFinalPaymentDate,
   getFirstRepaymentDate,
@@ -46,13 +46,13 @@ const getPaymentText = (claim: Claim, req: Request): object => {
     };
   } else if (claim.isFAPaymentOptionInstallments() || claim.isPAPaymentOptionInstallments()){
     return {
-      paymentText: t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', {
+      paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.PAYMENT_TEXT', {
         lang: lang,
         fullName: claim.getDefendantFullName(),
         amount: getAmount(claim),
         instalmentAmount: getPaymentAmount(claim),
         instalmentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lang),
-        frequency: convertFrequencyToText(getRepaymentFrequency(claim), lang).toLowerCase(),
+        frequency: convertFrequencyToTextForRepaymentPlan(getRepaymentFrequency(claim), lang).toLowerCase(),
       }),
       completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang) }),
     };
@@ -64,7 +64,7 @@ signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSe
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
     const claimantResponse = await getClaimantResponse(redisKey);
-    renderView(new GenericForm(claimantResponse.signSettlementAgreement), res, getRepaymentPlan(claim, req));
+    renderView(new GenericForm(claimantResponse.signSettlementAgreement), res, getPaymentText(claim, req));
   } catch (error) {
     next(error);
   }
