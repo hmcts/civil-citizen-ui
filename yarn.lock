@@ -4584,7 +4584,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cookie-session: ^2.0.0
     copy-webpack-plugin: ^11.0.0
-    crypto-js: ^4.1.1
+    crypto-js: ^4.2.0
     css-loader: ^6.7.2
     csurf: ^1.11.0
     dayjs: ^1.11.7
