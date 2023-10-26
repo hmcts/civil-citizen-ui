@@ -23,7 +23,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
   };
   const getHowYouWishToProceed = () => {
     return buildHowYouWishToProceed(claim, claimId, lang);
-  }
+  };
   return {
     sections: [
       getYourResponseSection(),

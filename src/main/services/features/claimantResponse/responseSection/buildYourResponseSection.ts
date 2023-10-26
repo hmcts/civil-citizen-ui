@@ -146,4 +146,4 @@ export const buildHowYouWishToProceed = (claim: Claim, claimId: string, lang: st
       summaryRows: [buildSummaryQuestionForChooseHowToProceed(claim, claimId, lang)],
     });
   }
-}
+};
