@@ -4,7 +4,7 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import { ClaimantResponse } from 'common/models/claimantResponse';
 import {getLng} from 'common/utils/languageToggleUtils';
-import { buildYourResponseSection } from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import { buildHowYouWishToProceed, buildYourResponseSection } from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import { buildSettlementAgreementSection, buildJudgmentRequestSection } from '../responseSection/buildSettlementAgreementSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -21,9 +21,13 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
+  const getHowYouWishToProceed = () => {
+    return buildHowYouWishToProceed(claim, claimId, lang);
+  }
   return {
     sections: [
       getYourResponseSection(),
+      getHowYouWishToProceed(),
       getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
     ],

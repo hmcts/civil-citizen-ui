@@ -135,8 +135,15 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
   }
 
-  if (claimantResponse.chooseHowToProceed?.option) {
-    yourResponse.summaryList.rows.push(buildSummaryQuestionForChooseHowToProceed(claim, claimId, lang));
-  }
   return yourResponse;
 };
+
+export const buildHowYouWishToProceed = (claim: Claim, claimId: string, lang: string) => {
+  const claimantResponse = claim.claimantResponse;
+  if (claimantResponse.chooseHowToProceed?.option) {
+    return summarySection({
+      title: t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED', { lang }),
+      summaryRows: [buildSummaryQuestionForChooseHowToProceed(claim, claimId, lang)],
+    });
+  }
+}

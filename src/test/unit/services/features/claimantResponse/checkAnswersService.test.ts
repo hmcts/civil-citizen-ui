@@ -83,7 +83,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse.chooseHowToProceed = undefined;
       claim.claimantResponse.ccjRequest = undefined;
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, null, undefined] }).toEqual(result);
+      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined] }).toEqual(result);
     });
   });
 });
@@ -112,6 +112,13 @@ function generateExpectedResultForDefendantPaidNone() {
                 ],
               },
             },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
             {
               key: {
                 text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
@@ -171,6 +178,7 @@ function generateExpectedResultForDefendantPaidNone() {
 
 function generateExpectedResultForDefendantPaidSome() {
   return {
+
     sections: [
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
@@ -193,6 +201,13 @@ function generateExpectedResultForDefendantPaidSome() {
                 ],
               },
             },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
             {
               key: {
                 text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
