@@ -3,7 +3,7 @@ import {
   CCJ_PAYMENT_OPTIONS_URL,
   CCJ_DEFENDANT_PAYMENT_DATE_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
-  CCJ_CHECK_AND_SEND_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -44,7 +44,7 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_INSTALMENTS_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       }
     }
   } catch (error) {
