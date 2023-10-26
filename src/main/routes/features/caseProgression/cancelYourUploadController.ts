@@ -1,6 +1,6 @@
-import {NextFunction, RequestHandler, Router} from 'express';
-import {CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
-import {AppRequest} from 'models/AppRequest';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {CP_EVIDENCE_UPLOAD_CANCEL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {cancelDocumentUpload, getCancelYourUpload} from 'services/features/caseProgression/cancelDocumentUpload';
@@ -16,27 +16,28 @@ const cancelYourUploadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-cancelYourUploadController.get([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, next: NextFunction) => {
+cancelYourUploadController.get([CP_EVIDENCE_UPLOAD_CANCEL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(new CancelDocuments());
-    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req)||new Claim();
     res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents:getCancelYourUpload(claimId, claim)});
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-cancelYourUploadController.post([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, next) => {
+cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res, next) => {
   try {
     const option = req.body.option;
+    const url = req.session.originalUrl;
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
     if (form.hasErrors()) {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       await res.render(cancelYourUploadViewPath,{form, cancelYourUploadContents:getCancelYourUpload(req.params.id, claim)});
     } else if(form.model.option === YesNo.NO) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_UPLOAD_DOCUMENTS_URL));
+      res.redirect(url);
     } else {
       const claimId = req.params.id;
       await cancelDocumentUpload(claimId);

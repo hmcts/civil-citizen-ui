@@ -11,9 +11,11 @@ import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {CaseRole} from 'form/models/caseRoles';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -49,15 +51,16 @@ describe('Cancel document upload - On GET', () => {
   });
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(404, null);
+    // Given
+    const error = new Error('Test error');
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockRejectedValueOnce(error);
     //When
     await testSession
-      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
+      .get(CP_EVIDENCE_UPLOAD_CANCEL)
     //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
+      .expect((res: Response) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
@@ -92,6 +95,8 @@ describe('Cancel document upload - on POST', () => {
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
+    await testSession
+      .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
 
     //When
     await testSession
