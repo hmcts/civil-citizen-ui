@@ -9,7 +9,8 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../services/features/claimantResponse/claimantResponseService';
 import {PaidAmount} from '../../../../common/models/claimantResponse/ccj/paidAmount';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -22,7 +23,7 @@ function renderView(form: GenericForm<PaidAmount>, res: Response): void {
 
 paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req, res, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const paidAmount = claimantResponse.ccjRequest?.paidAmount ?
       claimantResponse.ccjRequest.paidAmount : new PaidAmount();
     renderView(new GenericForm(paidAmount), res);
@@ -34,7 +35,8 @@ paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], as
 paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
+    const claim = await getCaseDataFromStore(redisKey);
     const claimedAmount = claim.totalClaimAmount;
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
@@ -45,7 +47,7 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
-      await saveClaimantResponse(claimId, paidAmount.model, crPropertyName, crParentName);
+      await saveClaimantResponse(redisKey, paidAmount.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     }
   } catch (error) {

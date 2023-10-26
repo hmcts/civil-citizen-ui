@@ -9,6 +9,8 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const ccjPaymentOptionController = Router();
 const ccjPaymentOptionViewPath = 'features/claimantResponse/ccj/ccj-payment-options';
@@ -21,7 +23,7 @@ function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type)), res);
   } catch (error) {
     next(error);
@@ -36,7 +38,7 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
     if (ccjPaymentOption.hasErrors()) {
       renderView(ccjPaymentOption, res);
     } else {
-      await saveClaimantResponse(claimId, ccjPaymentOption.model, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), ccjPaymentOption.model, crPropertyName, crParentName);
       if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEFENDANT_PAYMENT_DATE_URL));
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
