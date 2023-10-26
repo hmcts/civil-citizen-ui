@@ -10,6 +10,8 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import dependantsService from '../../../../../services/features/response/statementOfMeans/dependants/dependantsService';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';
 
@@ -19,7 +21,7 @@ dependantsController
     CITIZEN_DEPENDANTS_URL,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const dependants: Dependants = await dependantsService.getDependants(req.params.id);
+        const dependants: Dependants = await dependantsService.getDependants(generateRedisKey(<AppRequest>req));
         res.render(residenceViewPath, {form: new GenericForm(dependants)});
       } catch (error) {
         next(error);
@@ -36,7 +38,7 @@ dependantsController
         res.render(residenceViewPath, {form});
       } else {
         try {
-          const claim = await dependantsService.saveDependants(req.params.id, dependants);
+          const claim = await dependantsService.saveDependants(generateRedisKey(<AppRequest>req), dependants);
           if (dependants.hasChildrenBetween16and19()) {
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_EDUCATION_URL));
           } else if (hasDisabledChildren(claim)) {
