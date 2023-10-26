@@ -76,12 +76,7 @@
             + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a href="' + privacyPolicyUrl +'">'
             + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION') + '</a></p>'
           }) }}
-          <p class="govuk-body">
-            <span class="govuk-!-font-weight-bold">
-              {{ t('COMMON.DOWNLOAD_THE_CLAIM') }}
-            </span>
-          </p>
-          <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} rel="noreferrer noopener">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_CLAIM') }}</a></p>
+          <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.WE_HAVE_SENT') }}</a></p>
           <br>
           {{ contactUsForHelp(t) }}
         </div>

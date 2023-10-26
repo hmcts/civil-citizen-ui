@@ -35,7 +35,7 @@ class AssignCasePinInPost {
     await I.see('View amount breakdown');
     await I.see('Reason for claim:');
     await I.see('Timeline');
-    await I.see('Download the claim');
+    await I.see('We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account.');
     await I.see('How we use and store your personal information');
   }
 }
