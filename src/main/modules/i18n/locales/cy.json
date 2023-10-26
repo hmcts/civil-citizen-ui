@@ -186,9 +186,9 @@
       "MONTH": "Pob mis"
     },
     "FREQUENCY_OF_PAYMENTS": {
-      "TWO_WEEKS": "Every 2 Weeks",
-      "MONTHLY": "Monthly",
-      "WEEKLY": "Weekly"
+      "TWO_WEEKS": "Pob pythefnos",
+      "MONTHLY": "Pob mis",
+      "WEEKLY": "Pob wythnos"
     },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad penodol",
@@ -301,7 +301,7 @@
     "YOUR_RESPONSE": {
       "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }}?",
       "SETTLE_CLAIM_FOR": "Settle the claim for £{{ paidAmount }}?",
-      "TITLE": "Your response"
+      "TITLE": "Eich ymateb"
     }
   },
   "TASK_LIST": {
@@ -563,7 +563,7 @@
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
-      "YOUR_RESPONSE": "Your response"
+      "YOUR_RESPONSE": "Eich ymateb"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "ADD_ANOTHER": "Ychwanegu cyfrif arall",
@@ -966,29 +966,29 @@
     },
     "CLAIMANT_RESPONSE_TASK_LIST": {
       "PAGE_TITLE": "Claimant response task list",
-      "HEADER": "Your response"
+      "HEADER": "Eich ymateb"
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
-      "TITLE": "Terms of the agreement",
+      "TITLE": "Telerau'r cytundeb",
       "DETAILS": {
         "THE_AGREEMENT": {
-          "LABEL": "The agreement",
-          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
-          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+          "LABEL": "Y cytundeb",
+          "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
+          "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}"
         },
         "COMPLETION_DATE": {
-          "LABEL": "Completion date",
+          "LABEL": "Dyddiad cwblhau",
           "DATE": "{{ finalRepaymentDate }}"
         },
-        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
-        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
-        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
-        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
-        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
-        "SIGN_THE_AGREEMENT": "Sign the agreement",
-        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
-        "CONFIRMATION": "I confirm I’ve read and accept the terms of the agreement."
+        "FIRST_PARAGRAPH": "Mae'r cytundeb hwn yn setlo'r hawliad a wnaed gan {{ claimant }}  yn erbyn {{ defendant }}. Mae hyn yn cynnwys yr holl arian sy'n ddyledus yn yr hawliad, er enghraifft ffioedd llys, treuliau neu log.",
+        "SECOND_PARAGRAPH": "Ni all yr un o'r ddau barti wneud unrhyw hawliadau pellach yn ymwneud â'r achos hwn, heblaw ei orfodi.",
+        "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a llwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
+        "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd ofyn am Ddyfarniad Llys Sirol (CCJ) am unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
+        "SIGN_THE_AGREEMENT": "Arwyddo'r cytundeb",
+        "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych chi wedi ei gytuno â {{ defendant }} cyn arwyddo. Ni fyddwch yn gallu ei newid yn nes ymlaen.",
+        "CONFIRMATION": "Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."
       }
     },
     "COMPANY_DETAILS": {
@@ -1565,7 +1565,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
@@ -2225,7 +2225,7 @@
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "Sut mae am dalu?",
-        "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
+        "SUGGESTED_REPAYMENT": "Awgrymodd y diffynnydd y cynllun ad-dalu hwn",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
           "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
