@@ -73,7 +73,7 @@ This template app uses [Jest](https://jestjs.io//) as the test engine. You can r
 the following command:
 
 ```bash
-$ yarn test
+$ yarn test dummy
 ```
 
 Here's how to run functional tests (the template contains just one sample test):
