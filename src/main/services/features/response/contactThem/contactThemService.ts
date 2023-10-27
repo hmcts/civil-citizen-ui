@@ -5,8 +5,6 @@ import {Party} from 'models/party';
 const getAddress = (party: Party): Address => {
   if (party.partyDetails?.correspondenceAddress?.addressLine1) {
     return party.partyDetails.correspondenceAddress;
-  } else if (party.partyDetails?.primaryAddress?.addressLine1) {
-    return party.partyDetails.primaryAddress;
   }
   return party?.partyDetails.primaryAddress;
 };
