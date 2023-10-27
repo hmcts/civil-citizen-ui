@@ -4,7 +4,6 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
 import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import { YesNo } from 'common/form/models/yesNo';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
