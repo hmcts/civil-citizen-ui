@@ -41,7 +41,7 @@ describe('contact them service', () => {
     it('should return primary address when correspondence address is empty', () => {
       //Given
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
-      const claim = buildClaimWithAddress(primaryAddress, new Address());
+      const claim = buildClaimWithAddress(primaryAddress);
       //When
       const address = getAddress(claim.applicant1);
       //Then
