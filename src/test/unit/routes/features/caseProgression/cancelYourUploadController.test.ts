@@ -10,8 +10,8 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
-import {CaseRole} from 'form/models/caseRoles';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -32,19 +32,23 @@ describe('Cancel document upload - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId)
-      .reply(200, claim);
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+  it('should render page successfully', async () => {
+    // Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve, reject) => resolve(claim)),
+      );
     //When
     await testSession
-      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))
+      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
     //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
+      .expect((res:Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE'));
       });

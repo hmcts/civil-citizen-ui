@@ -16,7 +16,7 @@ const cancelYourUploadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-cancelYourUploadController.get([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, next: NextFunction) => {
+cancelYourUploadController.get(CP_EVIDENCE_UPLOAD_CANCEL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(new CancelDocuments());
