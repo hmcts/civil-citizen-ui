@@ -19,11 +19,11 @@ freeTelephoneMediationController.get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL, async
   }
 });
 
-const isBusinessUser=(claim: Claim): boolean => {
-  if(claim.isClaimant()){
+const isBusinessUser = (claim: Claim): boolean => {
+  if (claim.isClaimant()) {
     return claim.isClaimantBusiness();
   }
   return claim?.isBusiness();
-}
+};
 
 export default freeTelephoneMediationController;
