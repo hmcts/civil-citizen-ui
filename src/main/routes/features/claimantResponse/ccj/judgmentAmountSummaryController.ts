@@ -4,7 +4,7 @@ import {
   CCJ_PAID_AMOUNT_SUMMARY_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
@@ -27,11 +27,11 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryController.get([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
+judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
-    const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
     renderView(req, res, claim, lang, claimFee);
   } catch (error) {
     next(error);
