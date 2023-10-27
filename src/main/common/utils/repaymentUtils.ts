@@ -61,8 +61,9 @@ export const getFirstRepaymentDate = (claim: Claim): Date => {
 };
 
 export const getPaymentOptionType = (claim: Claim): PaymentOptionType => {
-  
-    return claim.isFullAdmission() ? claim.fullAdmission?.paymentIntention?.paymentOption : claim.partialAdmission?.paymentIntention?.paymentOption;
+  return claim.isFullAdmission()
+    ? claim.fullAdmission?.paymentIntention?.paymentOption
+    : claim.partialAdmission?.paymentIntention?.paymentOption;
 };
 
 export const convertFrequencyToText = (frequency: string, lng: string): string => {
