@@ -1,12 +1,12 @@
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {
   getAddress,
   getSolicitorName,
-} from '../../../../../../main/services/features/response/contactThem/contactThemService';
-import {Party} from '../../../../../../main/common/models/party';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
-import {Address} from '../../../../../../main/common/form/models/address';
+} from 'services/features/response/contactThem/contactThemService';
+import {Party} from 'models/party';
+import {PartyDetails} from 'form/models/partyDetails';
+import {Address} from 'form/models/address';
 
 describe('contact them service', () => {
   describe('getAddress', () => {
@@ -25,7 +25,7 @@ describe('contact them service', () => {
       const correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
       const claim = buildClaimWithAddress(primaryAddress, correspondenceAddress);
       //When
-      const address = getAddress(claim);
+      const address = getAddress(claim.applicant1);
       //Then
       expect(address).toMatchObject(correspondenceAddress);
     });
@@ -34,7 +34,7 @@ describe('contact them service', () => {
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
       const claim = buildClaimWithAddress(primaryAddress);
       //When
-      const address = getAddress(claim);
+      const address = getAddress(claim.applicant1);
       //Then
       expect(address).toMatchObject(primaryAddress);
     });
@@ -43,7 +43,7 @@ describe('contact them service', () => {
       const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
       const claim = buildClaimWithAddress(primaryAddress, new Address());
       //When
-      const address = getAddress(claim);
+      const address = getAddress(claim.applicant1);
       //Then
       expect(address).toMatchObject(primaryAddress);
     });

@@ -10,7 +10,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getClaimById,
   getRedisStoreForSession,
-} from '../../../../../main/modules/utilityService';
+} from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
@@ -49,11 +49,11 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Claim amount:');
           expect(res.text).toContain('Claim details:');
           expect(res.text).toContain('Contact us for help');
-          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.partyName);
-          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine1);
-          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine2);
-          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.addressLine3);
-          expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.postCode);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.partyName);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine1);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine2);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine3);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.postCode);
         });
     });
     it('should return http 500 when has error in the get method', async () => {
