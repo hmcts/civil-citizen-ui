@@ -12,10 +12,12 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {YesNo} from 'form/models/yesNo';
 import { AppRequest } from 'common/models/AppRequest';
+import { getClaimSettled, getPaidAmount } from 'services/features/claimantResponse/settleClaimService';
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';
 const claimantResponsePropertyName = 'hasPartPaymentBeenAccepted';
+const claimantResponseFulladmitStatesPaid = 'hasFullDefenceStatesPaidClaimSettled';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: number, isPaidInFull: boolean): void {
   res.render(settleClaimViewPath, {form, paidAmount, isPaidInFull});
@@ -26,15 +28,7 @@ let paidAmount: number;
 settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: AppRequest, res, next: NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(req));
-    let hasPaidInFull: boolean;
-    if (claim.isFullDefence()) {
-      hasPaidInFull = claim.hasPaidInFull();
-      paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
-    } else if(claim.isPartialAdmissionPaid()){
-      paidAmount = claim.partialAdmissionPaidAmount();
-    }
-    const isClaimSettled = claim.isFullDefence() && claim.hasPaidInFull() ? claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled : claim.claimantResponse?.hasPartPaymentBeenAccepted;
-    renderView(new GenericForm(isClaimSettled), res, paidAmount, hasPaidInFull);
+    renderView(new GenericForm(getClaimSettled(claim)), res, getPaidAmount(claim), claim.hasPaidInFull());
   } catch (error) {
     next(error);
   }
@@ -51,7 +45,7 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
       renderView(form, res, paidAmount, null);
     } else {
       claim.isFullDefence() && claim.hasPaidInFull() ?
-        await saveClaimantResponse(redisKey, form.model, 'hasFullDefenceStatesPaidClaimSettled') :
+        await saveClaimantResponse(redisKey, form.model, claimantResponseFulladmitStatesPaid) :
         await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName);
       const redirectionLink = form.model.option === YesNo.YES ? CLAIMANT_RESPONSE_TASK_LIST_URL : CLAIMANT_RESPONSE_REJECTION_REASON_URL;
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectionLink));

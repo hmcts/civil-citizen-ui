@@ -33,8 +33,8 @@ export function getSettleTheClaimForTask(claim: Claim, claimId: string, lang: st
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim?.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option ||
-    (claim?.hasClaimantRejectedPartAdmitPayment() && claim?.claimantResponse?.rejectionReason?.text)) {
+  if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option ||
+    (claim.hasClaimantRejectedPartAdmitPayment() && claim.claimantResponse?.rejectionReason?.text)) {
     settleTheClaimForTask.status = TaskStatus.COMPLETE;
   }
   return settleTheClaimForTask;
