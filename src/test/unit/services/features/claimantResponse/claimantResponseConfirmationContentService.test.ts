@@ -122,7 +122,7 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.mediation = new Mediation(undefined, {option: YesNo.NO}, undefined, undefined);
+    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
@@ -140,10 +140,10 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[3]).toBeUndefined();
   });
 
-  it('Claimant rejected defendant`s response as full defence states paid and want to proceed with no mediation', () => {
+  it('Claimant rejected defendant`s response as full defence states paid and says not settle with no mediation', () => {
 
     // Given
-    claim.mediation = new Mediation(undefined, {option: YesNo.NO}, undefined, {});
+    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
     // When
