@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Router} from 'express';
 import {CP_EVIDENCE_UPLOAD_CANCEL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
@@ -16,11 +16,11 @@ const cancelYourUploadController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-cancelYourUploadController.get([CP_EVIDENCE_UPLOAD_CANCEL], (async (req: AppRequest, res: Response, next: NextFunction) => {
+cancelYourUploadController.get([CP_EVIDENCE_UPLOAD_CANCEL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(new CancelDocuments());
-    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req)||new Claim();
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents:getCancelYourUpload(claimId, claim)});
   } catch (error) {
     next(error);
