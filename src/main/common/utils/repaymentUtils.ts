@@ -77,7 +77,7 @@ export const convertFrequencyToTextForRepaymentPlan = (frequency: string, lng: s
     case TransactionSchedule.TWO_WEEKS:
       return t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE', { lng });
     case TransactionSchedule.MONTH:
-      return t('COMMON.SCHEDULE.MONTHLY', { lng });
+      return t('COMMON.SCHEDULE.MONTH', { lng });
   }
 };
 

@@ -14,7 +14,7 @@ import {
   convertFrequencyToText,
   getRepaymentLength,
   getAmount,
-  getPaymentDate,
+  getPaymentDate, convertFrequencyToTextForRepaymentPlan,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
@@ -217,6 +217,21 @@ describe('repaymentUtils', () => {
     it('should translate frequency monthly to text', () => {
       const result = convertFrequencyToText(TransactionSchedule.MONTH, 'en');
       expect(result).toBe(t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY'));
+    });
+  });
+
+  describe('convertFrequencyToTextForRepaymentPlan', () => {
+    it('should translate frequency weekly for repayment to text', () => {
+      const result = convertFrequencyToTextForRepaymentPlan(TransactionSchedule.WEEK, 'en');
+      expect(result).toBe(t('COMMON.SCHEDULE.WEEK_LOWER_CASE'));
+    });
+    it('should translate frequency each two week for repayment to text', () => {
+      const result = convertFrequencyToTextForRepaymentPlan(TransactionSchedule.TWO_WEEKS, 'en');
+      expect(result).toBe(t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE\''));
+    });
+    it('should translate frequency monthly for repayment plan to text', () => {
+      const result = convertFrequencyToTextForRepaymentPlan(TransactionSchedule.MONTH, 'en');
+      expect(result).toBe(t('COMMON.SCHEDULE.MONTH'));
     });
   });
 
