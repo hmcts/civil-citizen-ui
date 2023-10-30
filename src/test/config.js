@@ -3,7 +3,7 @@ const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'http://localhost:3001';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -33,12 +33,12 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
-    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
-    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
-    dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
-    idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
-    civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
+    manageCase: process.env.URL || 'http://localhost:3333',
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://localhost:4502/testing-support',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://localhost:4452',
+    dmStore: process.env.DM_STORE_URL || 'http://dm-store:8080',
+    idamApi: process.env.IDAM_API_URL || 'http://localhost:5000',
+    civilService: process.env.CIVIL_SERVICE_URL || 'http://localhost:4000',
   },
   s2s: {
     microservice: 'civil_service',
@@ -51,7 +51,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: 'citizen2.user@gmail.com',
+    email: 'jane.smith@gmail.com',
     type: 'defendant',
   },
   defendantLRCitizenUser:{
