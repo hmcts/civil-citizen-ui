@@ -22,6 +22,6 @@ Before(async ({api}) => {
 
 Scenario('Fast Track Trial Arrangements Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-  TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType);
+    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType);
   }
 }).tag('@regression');
