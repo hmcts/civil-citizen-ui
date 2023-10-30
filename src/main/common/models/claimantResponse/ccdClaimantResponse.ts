@@ -14,7 +14,7 @@ export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
 }
 
-export interface CCDClaimantResponse extends ClaimUpdate {
+export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1DQLanguage?: CCDWelshLanguageRequirements;
   applicant1DQVulnerabilityQuestions?: CCDVulnerability;
   applicant1DQRequestedCourt?: CCDSpecificCourtLocations;
