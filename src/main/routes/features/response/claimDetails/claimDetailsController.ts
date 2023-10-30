@@ -11,7 +11,7 @@ const claimDetailsController = Router();
 
 claimDetailsController.get(CLAIM_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claim: Claim = await getClaimById(req.params.id, req);
+    const claim: Claim = await getClaimById(req.params.id, req, true);
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());

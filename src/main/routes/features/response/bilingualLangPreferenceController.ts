@@ -12,6 +12,8 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {languagePreferenceGuard} from 'routes/guards/languagePreferenceGuard';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-preference';
 const bilingualLangPreferenceController = Router();
@@ -26,7 +28,7 @@ bilingualLangPreferenceController.get(
   (req: Request, res: Response, next: NextFunction) => {
     (async () => {
       try {
-        const form: GenericYesNo = await getBilingualLangPreference(req.params.id, req);
+        const form: GenericYesNo = await getBilingualLangPreference(req);
         renderView(new GenericForm<GenericYesNo>(form), res);
       } catch (error) {
         next(error);
@@ -43,7 +45,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async 
       renderView(form, res);
     } else {
       res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
-      await saveBilingualLangPreference(req.params.id, form.model);
+      await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

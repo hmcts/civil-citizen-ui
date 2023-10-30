@@ -65,6 +65,7 @@ import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundle
 import {CaseRole} from 'form/models/caseRoles';
 import { ChooseHowProceed } from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {PinToPost} from './pinToPost';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -126,6 +127,7 @@ export class Claim {
   draftClaimCreatedAt?: Date;
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
+  respondent1PinToPostLRspec: PinToPost;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -801,6 +803,11 @@ export class Claim {
 
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
+  }
+
+  hasDefendantCompletedPaymentIntention() {
+    return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
+      this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
   }
 }
 
