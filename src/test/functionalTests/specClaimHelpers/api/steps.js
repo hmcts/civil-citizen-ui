@@ -50,10 +50,10 @@ module.exports = {
     console.log('End of performAnAssistedOrder()');
   },
 
-  performCaseProgressedToHearingInitiated: async (user, caseId) => {
+  performCaseProgressedToHearingInitiated: async (user, caseId, hearingDate = '2023-11-10') => {
     console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
     eventName = 'HEARING_SCHEDULED';
-    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
+    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated(hearingDate);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
