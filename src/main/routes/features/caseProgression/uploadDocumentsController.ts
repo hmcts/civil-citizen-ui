@@ -51,7 +51,7 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    req.session.originalUrl = req.originalUrl;
+    req.session.previousUrl = req.originalUrl;
     await renderView(res, claimId, null);
   } catch (error) {
     next(error);

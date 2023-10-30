@@ -37,7 +37,7 @@ function renderView(res: Response, form: GenericForm<documentUploadSubmissionFor
 documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    req.session.originalUrl = req.originalUrl;
+    req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(claimId);
     const form = new GenericForm(new documentUploadSubmissionForm());

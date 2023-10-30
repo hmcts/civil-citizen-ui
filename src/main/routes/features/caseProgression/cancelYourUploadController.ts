@@ -30,7 +30,7 @@ cancelYourUploadController.get(CP_EVIDENCE_UPLOAD_CANCEL, (async (req, res, next
 cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res, next) => {
   try {
     const option = req.body.option;
-    const url = req.session.originalUrl;
+    const url = req.session.previousUrl;
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
     if (form.hasErrors()) {
