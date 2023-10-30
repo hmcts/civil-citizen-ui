@@ -2492,7 +2492,7 @@
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
-      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
       "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
       "OTHER_INFORMATION_TITLE": "Other information",
