@@ -11,7 +11,7 @@ import {getClaimantResponse, saveClaimantResponse} from '../../../../services/fe
 import {PaidAmount} from '../../../../common/models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
