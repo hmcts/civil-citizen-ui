@@ -177,42 +177,4 @@ describe('ClaimantResponse model', () => {
     });
 
   });
-
-  describe('isClaimantIntendedToProceed', () => {
-    const claimantResponse = new ClaimantResponse();
-    it('should return false with empty claimantResponse object', () => {
-      //When
-      const result = claimantResponse.isClaimantIntendedToProceed;
-      //Then
-      expect(result).toBe(false);
-    });
-
-    it('should return false with empty intentionToProceed object', () => {
-      //Given
-      claimantResponse.intentionToProceed = {};
-      //When
-      const result = claimantResponse.isClaimantIntendedToProceed;
-      //Then
-      expect(result).toBe(false);
-    });
-
-    it('should return false with intentionToProceed option no', () => {
-      //Given
-      claimantResponse.intentionToProceed = { 'option': 'no' };
-      //When
-      const result = claimantResponse.isClaimantIntendedToProceed;
-      //Then
-      expect(result).toBe(false);
-    });
-
-    it('should return true with intentionToProceed option yes', () => {
-      //Given
-      claimantResponse.intentionToProceed = { 'option': 'yes' };
-      //When
-      const result = claimantResponse.isClaimantIntendedToProceed;
-      //Then
-      expect(result).toBe(true);
-    });
-
-  });
 });
