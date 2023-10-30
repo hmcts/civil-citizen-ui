@@ -26,5 +26,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1AcceptFullAdmitPaymentPlanSpec: (claim.isFullAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
     applicant1AcceptPartAdmitPaymentPlanSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
     applicant1RepaymentOptionForDefendantSpec: toCCDPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
+    applicant1PartAdmitConfirmAmountPaidSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
+    applicant1PartAdmitIntentionToSettleClaimSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) : undefined,
   };
 };
