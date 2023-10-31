@@ -4,14 +4,14 @@ import { ADDRESS_LINE_MAX_LENGTH } from '../validators/validationConstraints';
 
 export class Address {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'Address line1 must no longer than 70 characters' })
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE1_TOO_MANY' })
     addressLine1?: string;
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'Address line2 must no longer than 70 characters' })  
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE2_TOO_MANY' })  
   addressLine2?: string;
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'Address line3 must no longer than 70 characters' })
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE3_TOO_MANY' })
   addressLine3?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'Town or City must no longer than 70 characters' })
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.TOWN_CITY_TOO_MANY' })
     city?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
   @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})

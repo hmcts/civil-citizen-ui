@@ -3039,7 +3039,7 @@
     "TEXT_TOO_LONG": "Rhaid i'r rheswm fod yn 500 llythyren neu lai.",
     "TEXT_TOO_MANY": "Rydych wedi defnyddio gormod o nodau",
     "ADDRESS_LINE1_TOO_MANY": "Address line1 must no longer than 70 characters",
-    "ADDRESS_LINE2_TOO_MANY": "Address line1 must no longer than 70 characters",
+    "ADDRESS_LINE2_TOO_MANY": "Address line2 must no longer than 70 characters",
     "ADDRESS_LINE3_TOO_MANY": "Address line3 must no longer than 70 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 70 characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
