@@ -16,7 +16,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
-
+  previousUrl: string;
   claimId: string;
   taskLists: TaskList[];
   assignClaimId: string;
