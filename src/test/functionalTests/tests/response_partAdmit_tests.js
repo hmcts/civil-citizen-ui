@@ -36,7 +36,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression2 @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
