@@ -12,7 +12,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();
