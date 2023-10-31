@@ -10,10 +10,12 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
-import {CaseRole} from 'form/models/caseRoles';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -30,34 +32,39 @@ describe('Cancel document upload - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId)
-      .reply(200, claim);
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+  it('should render page successfully', async () => {
+    // Given
+    app.locals.draftStoreClient = mockCivilClaim;
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve, reject) => resolve(claim)),
+      );
     //When
     await testSession
-      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))
+      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
     //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
+      .expect((res:Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE'));
       });
   });
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(404, null);
+    // Given
+    const error = new Error('Test error');
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockRejectedValueOnce(error);
     //When
     await testSession
-      .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
+      .get(CP_EVIDENCE_UPLOAD_CANCEL)
     //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
+      .expect((res: Response) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
@@ -92,6 +99,8 @@ describe('Cancel document upload - on POST', () => {
     nock(civilServiceUrl)
       .post(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(200, claimId);
+    await testSession
+      .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
 
     //When
     await testSession
