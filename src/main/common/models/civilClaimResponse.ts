@@ -258,7 +258,7 @@ export interface CCDClaim extends ClaimUpdate {
   enterBreathing?: CCDBreathingSpaceStartInfo;
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
-  claimantResponseSubmittedDate?: Date;
+  applicant1ResponseDate?: Date;
 }
 
 export interface ClaimFeeData {
