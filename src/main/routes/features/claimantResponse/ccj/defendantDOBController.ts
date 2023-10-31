@@ -11,6 +11,8 @@ import {DefendantDOB} from 'models/claimantResponse/ccj/defendantDOB';
 import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 import {DateOfBirth} from 'models/claimantResponse/ccj/dateOfBirth';
 import {getClaimById} from 'modules/utilityService';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';
@@ -26,8 +28,8 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
 
 defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, async (req, res, next: NextFunction) => {
   try {
-    await getClaimById(req.params.id, req);
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    await getClaimById(req.params.id, req, true);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const defendantDOB = claimantResponse.ccjRequest ?
       claimantResponse.ccjRequest.defendantDOB : new DefendantDOB();
     renderView(new GenericForm(defendantDOB), res);
@@ -44,7 +46,7 @@ defendantDOBController.post(CCJ_DEFENDANT_DOB_URL, async (req: Request, res: Res
     if (defendantDOB.hasErrors()) {
       renderView(defendantDOB, res);
     } else {
-      await saveClaimantResponse(claimId, defendantDOB.model, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), defendantDOB.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL));
     }
   } catch (error) {

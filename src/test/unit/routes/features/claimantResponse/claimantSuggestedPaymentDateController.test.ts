@@ -11,6 +11,10 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 describe('Claimant suggested Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

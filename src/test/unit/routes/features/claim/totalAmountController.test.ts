@@ -1,5 +1,5 @@
 import request from 'supertest';
-
+import * as claimFeeService from 'services/features/claim/amount/claimFeesService';
 const session = require('supertest-session');
 import {app} from '../../../../../main/app';
 import nock from 'nock';
@@ -11,6 +11,7 @@ import {
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/amount/claimFeesService');
 
 describe('Total amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,11 +32,14 @@ describe('Total amount', () => {
         .get('/fees/claim/undefined')
         .reply(200, {'calculatedAmountInPence': '50'});
       app.locals.draftStoreClient = mockCivilClaimUndefined;
+      const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
+
       const res = await request(app)
         .get(CLAIM_TOTAL_URL.replace(':id', '5129'));
 
       expect(res.status).toBe(200);
       expect(res.text).toContain('Total amount you’re claiming');
+      expect(spySave).toBeCalled();
     });
 
     it('should return http 500 when has error in the claim amount fee get method', async () => {
