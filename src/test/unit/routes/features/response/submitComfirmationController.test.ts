@@ -31,7 +31,6 @@ describe('Submit confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const responsePaymentDeadlineDate = '2023-11-06';
-  
 
   beforeEach(() => {
     nock(idamUrl)
@@ -74,15 +73,14 @@ describe('Submit confirmation controller', () => {
     it('should return submit confirmation from claim', async () => {
       mockGetCaseData.mockImplementation(() => mockClaim);
       mockClaim.respondent1 = {
-         responseType: ResponseType.FULL_ADMISSION,
+        responseType: ResponseType.FULL_ADMISSION,
       };
       mockClaim.fullAdmission = {
         paymentIntention:{
           paymentOption: PaymentOptionType.IMMEDIATELY,
-        }
-      }
+        },
+      };
       mockClaim.respondent1ResponseDate = new Date('2023-10-31T15:48:15');
-      
       nock('http://localhost:4000')
         .get('/cases/:id')
         .reply(200, civilClaimResponseMock);
