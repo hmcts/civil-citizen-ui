@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
+import {NextFunction, Response, RequestHandler, Router} from 'express';
 import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -12,6 +12,7 @@ import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/cas
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -47,10 +48,10 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Uplo
   }
 }
 
-uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-
+    req.session.previousUrl = req.originalUrl;
     await renderView(res, claimId, null);
   } catch (error) {
     next(error);
