@@ -6,6 +6,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import {
+  buildJudgmentRequestSection,
   buildSettlementAgreementSection,
 } from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
@@ -15,10 +16,15 @@ import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskL
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claimId: string, claim: Claim, lang: string): SummarySections => {
+const buildSummarySections = (claimId: string, claim: Claim, lang: string, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
+      : null;
+  };
+  const getJudgmentRequestSection = () => {
+    return claim.isRequestACCJ()
+      ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
   const getFreeTelephoneMediationSection = () => {
@@ -34,6 +40,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string): Summ
   return {
     sections: [
       getYourResponseSection(),
+      getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
       getHearingRequirementsSection(),
@@ -41,9 +48,9 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string): Summ
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
-  return buildSummarySections(claimId, claim, lng);
+  return buildSummarySections(claimId, claim, lng, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
