@@ -20,7 +20,6 @@ export interface StatusTranslation {
 type DashboardStatus = {
   [propKey: string]: StatusTranslation
 }
-
 export abstract class DashboardItem {
   status: string;
   claimId: string;
@@ -59,6 +58,7 @@ export class DashboardClaimantItem extends DashboardItem {
 
   getDashboardStatus(lang: string | unknown): DashboardStatus {
     const paramDefendantName = {key: 'defendantName', value: this.defendantName};
+
     return {
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
@@ -68,6 +68,15 @@ export class DashboardClaimantItem extends DashboardItem {
         parameter: [paramDefendantName],
       },
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      ADMIT_PAY_BY_SET_DATE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      ADMIT_PAY_INSTALLMENTS : { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ADMIT_PAY_IMMEDIATELY_CLAIMANT'},
+      CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_ENDED' },
+      DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      DEFENDANT_PART_ADMIT_PAID: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
+      WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
     };
   }
 
