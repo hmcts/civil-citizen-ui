@@ -19,11 +19,11 @@ describe('translate Claim Amount to CCD model', () => {
     const claimAmountCCD: CCDClaimAmountBreakup[] = [
       {
         id: '0',
-        value: { claimAmount: '5000', claimReason: 'car' },
+        value: { claimAmount: '500000', claimReason: 'car' },
       },
       {
         id: '1',
-        value: { claimAmount: '1000', claimReason: 'roof' },
+        value: { claimAmount: '100000', claimReason: 'roof' },
       },
     ];
     const claimAmountResponseCCD = toCCDClaimAmount(claim.claimAmountBreakup);
