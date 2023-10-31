@@ -3,7 +3,6 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-//import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();

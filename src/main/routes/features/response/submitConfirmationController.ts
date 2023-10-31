@@ -20,7 +20,6 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, asyn
     if (!submittedClaim.isEmpty()) {
       submittedClaim.respondent1ResponseDate = !submittedClaim.isEmpty() ? submittedClaim.respondent1ResponseDate : undefined;
       const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(submittedClaim, <AppRequest>req);
-      console.log('---------------------------------------------------respondentPaymentDeadline-----------------------------------');
       const confirmationContent = getSubmitConfirmationContent(claimId, submittedClaim, getLng(lang), respondentPaymentDeadline);
       const claimNumber = submittedClaim.legacyCaseReference;
       const responseSubmitDate = formatDateToFullDate(submittedClaim?.respondent1ResponseDate, getLng(lang));
