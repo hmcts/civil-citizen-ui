@@ -68,10 +68,10 @@ app.use(session({
   name: 'citizen-ui-session',
   store: sessionStore,
   secret: 'local',
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   cookie : {
-    secure: false,
+    secure: productionMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
