@@ -40,6 +40,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
       const claimId = req.params.id;
       const documentsList = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
       const form = new GenericForm(documentsList);
+      req.session.previousUrl = req.originalUrl;
       await renderView(res, claimId,form);
     } catch (error) {
       next(error);
