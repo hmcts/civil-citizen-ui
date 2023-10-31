@@ -9,6 +9,8 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Party} from '../../../../../main/common/models/party';
 import {CaseRole} from 'form/models/caseRoles';
+import { ResponseType } from 'common/form/models/responseType';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -28,6 +30,8 @@ mockClaim.applicant1 = {
 describe('Submit confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const responsePaymentDeadlineDate = '2023-11-06';
+  
 
   beforeEach(() => {
     nock(idamUrl)
@@ -39,6 +43,10 @@ describe('Submit confirmation controller', () => {
     nock('http://localhost:4000')
       .get('/cases/:id/userCaseRoles')
       .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+    nock('http://localhost:4000')
+      .get('/cases/response/deadline')
+      .reply(200, responsePaymentDeadlineDate);
+
   });
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {
@@ -61,6 +69,28 @@ describe('Submit confirmation controller', () => {
         .get(CONFIRMATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
+        });
+    });
+    it('should return submit confirmation from claim', async () => {
+      mockGetCaseData.mockImplementation(() => mockClaim);
+      mockClaim.respondent1 = {
+         responseType: ResponseType.FULL_ADMISSION,
+      };
+      mockClaim.fullAdmission = {
+        paymentIntention:{
+          paymentOption: PaymentOptionType.IMMEDIATELY,
+        }
+      }
+      mockClaim.respondent1ResponseDate = new Date('2023-10-31T15:48:15');
+      
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, civilClaimResponseMock);
+      await request(app)
+        .get(CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('You&#39;ve submitted your response');
         });
     });
   });

@@ -69,8 +69,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   }
 }
 
-export function buildNextStepsSection(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
-  const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
+export function buildNextStepsSection(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] {
+  const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang, respondentPaymentDeadline);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
   const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang);
