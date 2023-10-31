@@ -91,6 +91,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     //Then
     expect(result).toBeTruthy();
   });
+
   it('should return false', () => {
     //Given
     claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
@@ -98,6 +99,45 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
     expect(result).toBeFalsy();
+  });
+});
+describe('Claim isClaimantResponseSupportRequiredYes', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+});
+
+describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
   });
 });
 
