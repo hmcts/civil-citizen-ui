@@ -7,9 +7,9 @@ export class Address {
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE1_TOO_MANY' })
     addressLine1?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE2_TOO_MANY' })  
-  addressLine2?: string;
+    addressLine2?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE3_TOO_MANY' })
-  addressLine3?: string;
+    addressLine3?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.TOWN_CITY_TOO_MANY' })
     city?: string;
