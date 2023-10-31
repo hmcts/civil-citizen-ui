@@ -9,7 +9,7 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PIN.PAGE_TITLE') }}
 {% endblock %}
-
+{% set hideLogout = true  %}
 {% set customErrorMessage %}
   {% if form.isPinEmpty %}
   <p class="govuk-body">
