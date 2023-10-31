@@ -85,49 +85,49 @@ describe('Respond To Settlement Agreement', () => {
     });
   });
 
-  describe("on POST", () => {
+  describe('on POST', () => {
     beforeEach(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    it("should return error on empty post", async () => {
+    it('should return error on empty post', async () => {
       await request(app)
         .post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(
             t(
-              "PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION"
-            )
+              'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
+            ),
           );
         });
     });
 
-    it("should redirect to the confirmation if sign agreement checkbox is selected", async () => {
+    it('should redirect to the confirmation if sign agreement checkbox is selected', async () => {
       const spySaveDraftClaimMock = jest.spyOn(
         draftStoreService,
-        "saveDraftClaim"
+        'saveDraftClaim',
       );
       const respondentSignSettlementAgreement = new GenericYesNo(
-        "yes",
-        "PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION"
+        'yes',
+        'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
       );
       jest
-        .spyOn(draftStoreService, "generateRedisKey")
-        .mockReturnValueOnce("1");
+        .spyOn(draftStoreService, 'generateRedisKey')
+        .mockReturnValueOnce('1');
       jest
-        .spyOn(draftStoreService, "getCaseDataFromStore")
+        .spyOn(draftStoreService, 'getCaseDataFromStore')
         .mockResolvedValueOnce({} as Claim);
 
       await request(app)
         .post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)
-        .send({ option: "yes" })
+        .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(spySaveDraftClaimMock).toHaveBeenCalledWith(
-            "1",
+            '1',
             { respondentSignSettlementAgreement },
-            true
+            true,
           );
 
           //TODO: Check header location with confirmation page url
@@ -135,12 +135,12 @@ describe('Respond To Settlement Agreement', () => {
         });
     });
 
-    it("should return status 500 when error thrown", async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
 
       await request(app)
         .post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)
-        .send({ option: "yes" })
+        .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
