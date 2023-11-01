@@ -39,6 +39,12 @@ claim.respondent1.responseType= ResponseType.PART_ADMISSION;
 claim.partialAdmission = new PartialAdmission();
 claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100);
 describe('Get Court Decision test', ()=> {
+  afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll();
+    }
+  });
+
   it('Get redirection URL when Court Decision is in Favour of Defendant and when Defendant response is SET_BY_DATE ', async () => {
 
     //given
@@ -57,9 +63,6 @@ describe('Get Court Decision test', ()=> {
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL);
-    if (!nock.isDone()) {
-      nock.cleanAll();
-    }
   });
 
   it('Get redirection URL when Court Decision is in Favour of Defendant and when Defendant response is PAY_BY_INSTALLMENT ', async () => {
@@ -85,9 +88,6 @@ describe('Get Court Decision test', ()=> {
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
-    if (!nock.isDone()) {
-      nock.cleanAll();
-    }
   });
 
   it('Get redirection URL when Court Decision is in Favour of Claimant ', async () => {
@@ -102,9 +102,6 @@ describe('Get Court Decision test', ()=> {
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL);
-    if (!nock.isDone()) {
-      nock.cleanAll();
-    }
   });
 
   it('Get redirection URL when Defendant is Org or Company', async () => {
@@ -122,9 +119,6 @@ describe('Get Court Decision test', ()=> {
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-    if (!nock.isDone()) {
-      nock.cleanAll();
-    }
   });
 
 });
