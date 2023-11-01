@@ -495,6 +495,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
+      "JUDGMENT_REQUEST": "Judgment request",
       "NEED_HEARING_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
@@ -865,28 +866,30 @@
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
-        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
         "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
         "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
         "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
-        "YES": "Yes",
-        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
+        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
+        "TITLE": "The defendant can’t pay by your proposed date",
+        "YES": "Yes"
       },
       "COURT_PROPOSED_PLAN": {
-        "PAGE_TITLE": "The defendant can’t afford your plan",
-        "TITLE": "The defendant can’t afford your plan",
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
         "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
         "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
-        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
+        "I_WANT_ACCEPT": "I want to accept this repayment plan",
+        "I_WANT_JUDGE": "I want a judge to make a repayment plan",
         "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
         "LENGTH_OF_REPAYMENT": "Hyd y cynllun ad-dalu",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+        "PAGE_TITLE": "The defendant can’t afford your plan",
+        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
+        "TITLE": "The defendant can’t afford your plan"
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
@@ -1150,10 +1153,15 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
+        "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu",
+        "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
         "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb."
+        "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
+        "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -2493,7 +2501,7 @@
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
-      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
       "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
       "OTHER_INFORMATION_TITLE": "Other information",
