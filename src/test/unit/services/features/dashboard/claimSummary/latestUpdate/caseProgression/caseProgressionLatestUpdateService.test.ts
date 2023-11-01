@@ -440,6 +440,7 @@ describe('Case Progression Latest Update Content service', () => {
       isBundleStitched: () => false,
       isFinalGeneralOrderIssued: () => false,
       isClaimant: () => false,
+      isBetweenSixAndThreeWeeksBeforeHearingDate: () => false,
       caseProgression: {
         claimantLastUploadDate: new Date('2020-01-01T17:59'),
       },
@@ -481,7 +482,7 @@ describe('Case Progression Latest Update Content service', () => {
       hasCaseProgressionHearingDocuments: () => true,
       hasSdoOrderDocument: () => true,
       isFastTrackClaim: true,
-      isSixWeeksOrLessFromTrial: () => true,
+      isBetweenSixAndThreeWeeksBeforeHearingDate: () => true,
       isBundleStitched: () => false,
       isClaimant: () => false,
       caseProgression: {
