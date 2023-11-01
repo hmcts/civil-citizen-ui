@@ -3,7 +3,7 @@ import { QualifiedStatementOfTruth } from 'common/form/models/statementOfTruth/q
 
 const tooLongString = '00000000000000000000000000000000000000000000000000000000000000000000000';
 describe(('For Qualified Statement Form'), () => {
-  it('should throw an error in case of exceeded max length for address', async () => {
+  it('should throw an error in case of exceeded max length for Qualified statement', async () => {
     const qualifiedStatementOfTruth = new QualifiedStatementOfTruth(true);
     qualifiedStatementOfTruth.signerName = tooLongString;
     qualifiedStatementOfTruth.signerRole = tooLongString;
