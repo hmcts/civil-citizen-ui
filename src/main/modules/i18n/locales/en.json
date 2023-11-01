@@ -3041,7 +3041,7 @@
     "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
     "JOB_TITLE_TOO_LONG": "Job title must be no longer that 70 characters",
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer that 70 characters",
-    "TOWN_CITY_TOO_MANY": "Town or City must no longer than 70 characters",
+    "TOWN_CITY_TOO_MANY": "Town or City must no longer that 70 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
