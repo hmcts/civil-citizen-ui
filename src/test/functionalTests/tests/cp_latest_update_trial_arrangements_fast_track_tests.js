@@ -21,7 +21,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Fast Track Trial Arrangements Journey.', () => {
+Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }

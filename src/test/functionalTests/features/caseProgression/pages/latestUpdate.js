@@ -5,16 +5,16 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangement = false) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangementFlag = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangement) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
@@ -26,7 +26,7 @@ class LatestUpdate {
     if(orderCreatedFlag === true) {
       this.verifyOrderCreatedTileContent();
     }
-    if (otherPartyTrialArrangement === true) {
+    if (otherPartyTrialArrangementFlag === true) {
       this.verifyOtherPartyTrialArrangementTileContent();
     }
     contactUs.verifyContactUs();
