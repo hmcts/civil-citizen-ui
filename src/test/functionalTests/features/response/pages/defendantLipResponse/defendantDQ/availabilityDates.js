@@ -16,7 +16,7 @@ const fields ={
 };
 
 const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
-const month = newDate.getMonth();
+const month = newDate.getMonth()+2;
 const year = newDate.getFullYear();
 
 class AvailabilityDates {
