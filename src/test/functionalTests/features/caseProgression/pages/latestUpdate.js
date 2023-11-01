@@ -5,7 +5,7 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangement = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
     this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag);
   }
@@ -14,7 +14,7 @@ class LatestUpdate {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangement) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
@@ -25,6 +25,9 @@ class LatestUpdate {
     }
     if(orderCreatedFlag === true) {
       this.verifyOrderCreatedTileContent();
+    }
+    if (otherPartyTrialArrangement === true) {
+      this.verifyOtherPartyTrialArrangementTileContent();
     }
     contactUs.verifyContactUs();
   }
@@ -96,6 +99,11 @@ class LatestUpdate {
     I.see('You may wish to review the original directions you supplied in the');
     I.seeElement('//a[.=\'directions questionnaire\']');
     I.see('under ‘Notices and orders’ prior to finalising your trial arrangements.');
+  }
+
+  verifyOtherPartyTrialArrangementTileContent() {
+    I.see('The other party has finalised their trial arrangements','h3');
+    I.see('You can view the other party\'s trial arrangements under \'Notices and orders\'.');
   }
 }
 
