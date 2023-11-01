@@ -18,13 +18,13 @@ export const getFinalPaymentDate = (claim: Claim): Date => {
 
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * WEEKDAYS);
       break;
     case TransactionSchedule.TWO_WEEKS:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * 2 * WEEKDAYS);
       break;
     case TransactionSchedule.MONTH:
-      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
+      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments - 1);
       break;
   }
   return finalRepaymentDate;
