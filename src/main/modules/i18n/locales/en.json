@@ -1164,10 +1164,15 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
+        "CLAIM_ENDED": "This claim has ended",
         "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond."
+        "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
+        "RESPONSE_BY_POST": "The claim will continue by post",
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
