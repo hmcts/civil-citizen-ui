@@ -14,7 +14,7 @@ jest.mock('../../../../../main/modules/utilityService');
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockGetClaimById = utilityService.getClaimById as jest.Mock;
-  const req = express.request;
+  const req = {params: {id: '123'}} as unknown as express.Request;
   describe('getBilingualLangPreference', () => {
     it('should get empty form when no data exist', async () => {
       //Given
@@ -22,7 +22,7 @@ describe('Bilingual Langiage Preference Service', () => {
         return {};
       });
       //When
-      const form = await getBilingualLangPreference('123', req);
+      const form = await getBilingualLangPreference(req);
       //Then
       expect(form.option).toBeUndefined();
     });
@@ -35,7 +35,7 @@ describe('Bilingual Langiage Preference Service', () => {
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123',req);
+      const form = await getBilingualLangPreference(req);
       //Then
       expect(form.option).toEqual(undefined);
     });
@@ -48,7 +48,7 @@ describe('Bilingual Langiage Preference Service', () => {
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123', req);
+      const form = await getBilingualLangPreference(req);
 
       //Then
       expect(form.option).toEqual(ClaimBilingualLanguagePreference.ENGLISH);
@@ -62,7 +62,7 @@ describe('Bilingual Langiage Preference Service', () => {
         return claim;
       });
       //When
-      const form = await getBilingualLangPreference('123', req);
+      const form = await getBilingualLangPreference(req);
       //Then
       expect(form.option).toEqual(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
     });
@@ -73,7 +73,7 @@ describe('Bilingual Langiage Preference Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //When-Then
-      await expect(getBilingualLangPreference('123', req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getBilingualLangPreference(req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 

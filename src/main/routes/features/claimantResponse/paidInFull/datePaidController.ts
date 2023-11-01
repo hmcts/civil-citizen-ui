@@ -11,6 +11,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 
 const claimantResponsePropertyName = 'datePaid';
 const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';
@@ -24,8 +25,7 @@ function renderView(form: GenericForm<CitizenDate>, res: Response): void {
 
 datePaidViewController.get(DATE_PAID_URL, async (req: Request,res: Response,next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const form: ClaimantResponse = await getClaimantResponse(claimId);
+    const form: ClaimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm<CitizenDate>(form.datePaid),res);
   } catch (error) {
     next(error);
@@ -42,9 +42,9 @@ datePaidViewController.post(DATE_PAID_URL, async (req: Request,res: Response,nex
     if (form.hasErrors()) {
       renderView(form,res);
     } else {
-      await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName);
-      await civilServiceClient.submitClaimSettled(req.params.id, <AppRequest> req);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DATE_PAID_CONFIRMATION_URL));
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, claimantResponsePropertyName);
+      await civilServiceClient.submitClaimSettled(claimId, <AppRequest>req);
+      res.redirect(constructResponseUrlWithIdParams(claimId, DATE_PAID_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

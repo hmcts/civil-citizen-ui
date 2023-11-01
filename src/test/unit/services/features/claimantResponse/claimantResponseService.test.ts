@@ -360,7 +360,7 @@ describe('Claimant Response Service', () => {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
       await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
     });
 
     it('should update claim determination successfully', async () => {
@@ -375,7 +375,7 @@ describe('Claimant Response Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveClaimantResponse('validClaimId', claimantResponse?.hasDefendantPaidYou.option, 'hasDefendantPaidYou');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
 
     it('should update payment option successfully from payment by date', async () => {
@@ -393,7 +393,7 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
 
     it('should update payment option successfully from pay by instalments', async () => {
@@ -414,7 +414,7 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
     it('should delete hasPartPaymentBeenAccepted and rejectionReason fields from redis when hasDefendantPaidYou is no', async () => {
       //Given
@@ -433,7 +433,7 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'hasDefendantPaidYou');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
     it('should delete rejectionReason field from redis when hasPartPaymentBeenAccepted is yes', async () => {
       //Given
@@ -451,7 +451,7 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES) , 'hasPartPaymentBeenAccepted');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
 
     describe('intentionToProceed', () => {
@@ -470,7 +470,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'intentionToProceed');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim intentionToProceed successfully', async () => {
@@ -487,7 +487,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', claimantResponse?.intentionToProceed.option, 'intentionToProceed');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
     });
 
@@ -507,7 +507,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim defendant dob successfully', async () => {
@@ -526,7 +526,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
 
       it('should save rejection response successfully', async () => {
@@ -561,7 +561,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', ccjPaymentOption, 'ccjPaymentOption', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim defendant dob successfully', async () => {
@@ -587,7 +587,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', ccjPaymentOptionUpdate, 'ccjPaymentOption', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
     });
 

@@ -18,7 +18,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
   try {
     const userId = req.session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getCaseDataFromStore(userId);
+    const caseData: Claim = await getCaseDataFromStore(userId, true);
     if (!caseData?.isDraftClaim()) {
       await createDraftClaimInStoreWithExpiryTime(userId);
     }

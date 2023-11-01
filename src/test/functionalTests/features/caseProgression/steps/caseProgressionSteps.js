@@ -51,6 +51,11 @@ class UploadEvidenceSteps {
     latestUpdateTab.open(claimRef, claimType,false);
   }
 
+  verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType)  {
+    latestUpdateTab.open(claimRef, claimType,false, true);
+    latestUpdateTab.nextAction('View the order');
+  }
+
 }
 
 module.exports = new UploadEvidenceSteps();

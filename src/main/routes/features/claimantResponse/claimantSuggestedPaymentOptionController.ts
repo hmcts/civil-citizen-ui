@@ -13,6 +13,8 @@ import {
 } from 'services/features/claimantResponse/claimantResponseService';
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
 const claimantSuggestedPaymentOptionController = Router();
@@ -25,7 +27,7 @@ function renderView(form: GenericForm<PaymentOption>, res: Response): void {
 
 claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new PaymentOption(claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
   } catch (error) {
     next(error);
@@ -41,7 +43,7 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimantResponse(claimId, form.model.paymentType, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model.paymentType, crPropertyName, crParentName);
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:

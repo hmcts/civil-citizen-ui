@@ -3,6 +3,7 @@ import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const assignClaimController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -13,6 +14,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   try{
     if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
+      deleteDraftClaimFromStore(claimId);
       res.clearCookie('firstContact');
     }
   } finally {

@@ -12,6 +12,7 @@ import {mockResponseFullAdmitPayBySetDate, mockCivilClaimOptionNo, mockRedisFail
 import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
 import disabledPartnerMock from './disabledPartnerMock.json';
 import disabledChildrenMock from './disabledChildrenMock.json';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const option1ToRedirectToCarerJson = require('./option1ToRedirectToCarerMock.json');
@@ -43,7 +44,8 @@ describe('Other Dependants', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

@@ -1,11 +1,14 @@
-import { SummarySections } from 'common/models/summaryList/summarySections';
+import { SummarySections} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import {getLng} from 'common/utils/languageToggleUtils';
-import { buildHowYouWishToProceed, buildYourResponseSection } from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
-import { buildSettlementAgreementSection, buildJudgmentRequestSection } from '../responseSection/buildSettlementAgreementSection';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import { getLng } from 'common/utils/languageToggleUtils';
+import {buildHowYouWishToProceed,buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {
+  buildJudgmentRequestSection,
+  buildSettlementAgreementSection,
+} from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -48,7 +51,7 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.claimantStatementOfTruth = claimantStatementOfTruth;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;

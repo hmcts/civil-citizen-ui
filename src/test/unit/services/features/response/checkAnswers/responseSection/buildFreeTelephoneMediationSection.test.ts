@@ -147,7 +147,7 @@ describe('Free Telephone Mediation Section', () => {
     claim.mediation = undefined;
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION]).toBeNull();
 
   });
 

@@ -7,6 +7,8 @@ import {
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
@@ -21,7 +23,7 @@ function renderView(form: GenericForm<PaymentDate | Date>, res: Response): void 
 
 claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const claimantSuggestedPaymentDate = claimantResponse.suggestedPaymentIntention?.paymentDate ?? new PaymentDate();
     renderView(new GenericForm(claimantSuggestedPaymentDate), res);
   } catch (error) {
@@ -38,7 +40,7 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
     renderView(form, res);
   } else {
     try {
-      await saveClaimantResponse(claimId, form.model, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, crPropertyName, crParentName);
       // TODO : trigger court calculator when it's developed and update redirection url with the result of it
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     } catch (error) {

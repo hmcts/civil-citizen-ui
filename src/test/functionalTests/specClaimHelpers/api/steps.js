@@ -7,6 +7,7 @@ const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantRes
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
+const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -39,10 +40,20 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  performCaseProgressedToHearingInitiated: async (user, caseId) => {
+  performAnAssistedOrder: async (user, caseId) => {
+    console.log('This is inside performAnAssistedOrder() : ' + caseId);
+    eventName = 'GENERATE_DIRECTIONS_ORDER';
+    const payload = createAnAssistedOrder.createAnAssistedOrder();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    console.log('End of performAnAssistedOrder()');
+  },
+
+  performCaseProgressedToHearingInitiated: async (user, caseId, hearingDate = '2023-11-10') => {
     console.log('This is inside performCaseProgressedToHearingInitiated() : ' + caseId);
     eventName = 'HEARING_SCHEDULED';
-    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated();
+    const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated(hearingDate);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);

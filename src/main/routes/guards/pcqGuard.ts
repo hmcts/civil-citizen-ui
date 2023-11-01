@@ -9,15 +9,17 @@ import {Claim} from 'common/models/claim';
 import {PartyType} from 'common/models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
+import {AppRequest} from 'common/models/AppRequest';
 
 const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const caseData: Claim = await getCaseDataFromStore(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const caseData: Claim = await getCaseDataFromStore(redisKey);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.pcqId) {
@@ -34,7 +36,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     if (isHealthy && isElegible) {
       const pcqId = generatePcqId();
-      await savePcqIdClaim(pcqId, claimId);
+      await savePcqIdClaim(pcqId, redisKey);
 
       const pcqUrl = generatePcqUrl(
         pcqId,

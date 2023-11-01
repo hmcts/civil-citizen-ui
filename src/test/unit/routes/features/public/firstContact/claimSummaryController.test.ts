@@ -5,11 +5,12 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../../../main/routes/urls';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 describe('First contact - claim summary controller', () => {
+  beforeAll(() => {
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  });
   it('should render page successfully if cookie has correct values', async () => {
     app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s='}};
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;

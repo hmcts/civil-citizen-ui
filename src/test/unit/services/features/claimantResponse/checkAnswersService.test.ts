@@ -7,11 +7,11 @@ import {CLAIM_ID} from '../../../../utils/checkAnswersConstants';
 import {ClaimantResponse} from 'models/claimantResponse';
 import { getSummarySections, saveStatementOfTruth } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {ResponseType} from 'common/form/models/responseType';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
-import { ChooseHowProceed } from 'common/models/chooseHowProceed';
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -54,8 +54,8 @@ describe('Check Answers service', () => {
     beforeEach(() => {
       claim = new Claim();
       claim.totalClaimAmount = 500;
-      claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
-      claim.fullAdmission = { paymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE } };
+      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
+      claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
       claim.claimantResponse = {
         chooseHowToProceed: { option: ChooseHowProceed.REQUEST_A_CCJ },
         ccjRequest: new CCJRequest(),
@@ -178,7 +178,6 @@ function generateExpectedResultForDefendantPaidNone() {
 
 function generateExpectedResultForDefendantPaidSome() {
   return {
-
     sections: [
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',

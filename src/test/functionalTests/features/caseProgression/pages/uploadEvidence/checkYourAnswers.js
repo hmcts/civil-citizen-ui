@@ -8,12 +8,16 @@ const contactUs = new ContactUs();
 
 class CheckYourAnswers {
 
+  checkPageFullyLoaded () {
+    I.waitForElement('//a[.=\'Cancel\']');
+  }
+
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(claimType) {
-
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
@@ -213,12 +217,12 @@ class CheckYourAnswers {
 
   verifyHearingDocumentsSection() {
     I.see('Hearing documents', 'h1');
-    I.see('Documentary evidence for hearing 1');
-    I.see('Documentary evidence for hearing - Type of Document 1');
+    I.see('Documentary evidence for the hearing 1');
+    I.see('Documentary evidence for the hearing - Type of Document 1');
     I.see('11/2/2023');
     I.see('TestTIF.tif');
-    I.see('Documentary evidence for hearing 2');
-    I.see('Documentary evidence for hearing - Type of Document 2');
+    I.see('Documentary evidence for the hearing 2');
+    I.see('Documentary evidence for the hearing - Type of Document 2');
     I.see('12/2/2023');
     I.see('TestTIFF.tiff');
     I.see('TestXLS.xls');

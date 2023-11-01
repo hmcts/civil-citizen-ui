@@ -15,6 +15,10 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
           trialArrangements.trialArrangementsDocument =  claimantTrialArrangementsDocuments[0];
         }
       }
+
+      if (ccdClaim.trialReadyApplicant) {
+        trialArrangements.isCaseReady = toCUIYesNo(ccdClaim.trialReadyApplicant);
+      }
     } else {
       if (ccdClaim.trialReadyDocuments) {
         const defendantTrialArrangementsDocuments : TrialArrangementsDocument[] = ccdClaim.trialReadyDocuments.filter(doc => formatOwnedBy(doc.value.ownedBy) === CaseRole.DEFENDANT);
@@ -24,9 +28,15 @@ export const toCUITrialArrangements = (ccdClaim: CCDClaim, isClaimant: boolean):
         }
       }
 
-      trialArrangements.isCaseReady = toCUIYesNo(ccdClaim?.trialReadyRespondent1);
-      trialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingRequirements), ccdClaim?.respondent1RevisedHearingRequirements?.revisedHearingComments);
-      trialArrangements.otherTrialInformation = ccdClaim?.respondent1HearingOtherComments?.hearingOtherComments;
+      if (ccdClaim.trialReadyRespondent1) {
+        trialArrangements.isCaseReady = toCUIYesNo(ccdClaim.trialReadyRespondent1);
+      }
+      if (ccdClaim.respondent1RevisedHearingRequirements?.revisedHearingRequirements || ccdClaim.respondent1RevisedHearingRequirements?.revisedHearingComments) {
+        trialArrangements.hasAnythingChanged = new HasAnythingChangedForm(toCUIYesNo(ccdClaim.respondent1RevisedHearingRequirements.revisedHearingRequirements), ccdClaim.respondent1RevisedHearingRequirements.revisedHearingComments);
+      }
+      if (ccdClaim.respondent1HearingOtherComments?.hearingOtherComments) {
+        trialArrangements.otherTrialInformation = ccdClaim.respondent1HearingOtherComments.hearingOtherComments;
+      }
     }
     return Object.keys(trialArrangements).length > 0 ? trialArrangements : undefined;
   }

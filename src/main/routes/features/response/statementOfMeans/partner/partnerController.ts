@@ -4,6 +4,8 @@ import {CohabitingService} from '../../../../../services/features/response/state
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const partnerController = Router();
@@ -15,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerController.get(CITIZEN_PARTNER_URL, async (req, res, next: NextFunction) => {
   try {
-    const cohabiting = await cohabitingService.getCohabiting(req.params.id);
+    const cohabiting = await cohabitingService.getCohabiting(generateRedisKey(<AppRequest>req));
     renderView(cohabiting, res);
   } catch (error) {
     next(error);
@@ -30,7 +32,7 @@ partnerController.post(CITIZEN_PARTNER_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await cohabitingService.saveCohabiting(req.params.id, form);
+        await cohabitingService.saveCohabiting(generateRedisKey(<AppRequest>req), form);
         form.model.option == 'yes'
           ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_AGE_URL))
           : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));

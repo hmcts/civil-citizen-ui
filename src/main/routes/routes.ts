@@ -192,6 +192,7 @@ import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLi
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
+import judgmentAmountSummaryExtendedController from './features/claimantResponse/ccj/judgmentAmountSummaryExtendedController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
@@ -399,6 +400,7 @@ export default [
   assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
+  judgmentAmountSummaryExtendedController,
   claimantResponseTasklistController,
   unavailableDatesForHearingController,
   claimantSuggestedPaymentOptionController,

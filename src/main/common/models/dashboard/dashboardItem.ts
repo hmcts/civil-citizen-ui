@@ -20,7 +20,6 @@ export interface StatusTranslation {
 type DashboardStatus = {
   [propKey: string]: StatusTranslation
 }
-
 export abstract class DashboardItem {
   status: string;
   claimId: string;
@@ -59,6 +58,7 @@ export class DashboardClaimantItem extends DashboardItem {
 
   getDashboardStatus(lang: string | unknown): DashboardStatus {
     const paramDefendantName = {key: 'defendantName', value: this.defendantName};
+
     return {
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
@@ -68,6 +68,16 @@ export class DashboardClaimantItem extends DashboardItem {
         parameter: [paramDefendantName],
       },
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      ADMIT_PAY_BY_SET_DATE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      ADMIT_PAY_INSTALLMENTS : { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ADMIT_PAY_IMMEDIATELY_CLAIMANT'},
+      CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_ENDED' },
+      DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      DEFENDANT_PART_ADMIT_PAID: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
+      WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
+      DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
     };
   }
 
@@ -100,13 +110,17 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramNumberOfDaysOverdue],
       },
       RESPONSE_DUE_NOW: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_DUE_TODAY'},
-      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS.ADMIT_PAY_IMMEDIATELY'},
+      ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_IMMEDIATELY'},
       ADMIT_PAY_BY_SET_DATE: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_BY_SET_DATE',
         parameter: [paramPaymentDate],
       },
       ADMIT_PAY_INSTALLMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_BY_INSTALLMENTS'},
       ELIGIBLE_FOR_CCJ: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
+        parameter: [paramClaimantName],
+      },
+      DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
         parameter: [paramClaimantName],
       },
@@ -118,7 +132,7 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT',
         parameter: [paramClaimantName],
       },
-      TRANSFERRED: {translationKey: 'PAGES.DASHBOARD.STATUS.CASE_SENT_TO_COURT'},
+      TRANSFERRED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_SENT_TO_COURT'},
       REQUESTED_COUNTRY_COURT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramClaimantName, paramCCJRequestedDate],
@@ -136,12 +150,12 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ASKED_TO_SIGN_AGREEMENT',
         parameter: [paramClaimantName],
       },
-      PASSED_TO_COUNTRY_COURT_BUSINESS_CENTRE: {translationKey: 'PAGES.DASHBOARD.STATUS.CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE'},
+      PASSED_TO_COUNTRY_COURT_BUSINESS_CENTRE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE'},
       CLAIMANT_ACCEPTED_ADMISSION_OF_AMOUNT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT',
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
-      SETTLEMENT_SIGNED: {translationKey: 'PAGES.DASHBOARD.STATUS.SETTLEMENT_SIGNED'},
+      SETTLEMENT_SIGNED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.SETTLEMENT_SIGNED'},
       DEFENDANT_PART_ADMIT_PAID: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.PART_ADMIT_STATES_PAID',
         parameter: [paramClaimantName],
