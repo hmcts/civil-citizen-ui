@@ -31,6 +31,7 @@ import {
   DashboardDefendantResponse,
 } from 'common/models/dashboard/dashboarddefendantresponse';
 import {CaseRole} from 'form/models/caseRoles';
+import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -244,6 +245,10 @@ export class CivilServiceClient {
 
   async submitClaimantResponseDJEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
+  }
+
+  async submitClaimantResponseForRequestJudgementAdmission(claimId: string, updatedClaim: ClaimantResponseRequestDefaultJudgementToCCD, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
   async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {

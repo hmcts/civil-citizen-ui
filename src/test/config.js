@@ -56,7 +56,7 @@ module.exports = {
   },
   defendantLRCitizenUser:{
     password: defaultPassword,
-    email: 'cuiuser@gmail.com',
+    email: 'cuiuseraat@gmail.com',
     type: 'defendant',
   },
   adminUser: {
