@@ -1,7 +1,7 @@
 import {NextFunction, Response, Router} from 'express';
 import {
   CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
-  CCJ_PAID_AMOUNT_SUMMARY_URL,
+  CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_PAYMENT_OPTIONS_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
@@ -39,7 +39,7 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
 });
 
 judgmentAmountSummaryController.post([CCJ_PAID_AMOUNT_SUMMARY_URL,CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL], async (req: AppRequest, res: Response, next: NextFunction) => {
-  let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
+  let redirectURL: string = CCJ_PAYMENT_OPTIONS_URL;
   if (req.url.includes(urlFromTaskList)) {
     redirectURL = CLAIMANT_RESPONSE_TASK_LIST_URL;
   }
