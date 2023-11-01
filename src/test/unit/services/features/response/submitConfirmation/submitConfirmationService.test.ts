@@ -56,7 +56,8 @@ describe('Submit Confirmation service', () => {
     });
 
     it('should display next steps section', () => {
-      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
+      const respondentPaymentDeadline = new Date('2023-11-06');
+      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, respondentPaymentDeadline);
       expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
       expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CAN_REQUEST_CCJ');
       expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC');
