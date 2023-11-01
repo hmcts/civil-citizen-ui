@@ -13,4 +13,4 @@ describe(('For Qualified Statement Form'), () => {
     expect(form.errorFor('signerName')).toEqual('ERRORS.FULL_NAME_TOO_LONG');
     expect(form.errorFor('signerRole')).toEqual('ERRORS.JOB_TITLE_TOO_LONG');
   });
-})
+});
