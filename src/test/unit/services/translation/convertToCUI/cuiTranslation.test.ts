@@ -49,8 +49,8 @@ const getPartyIndividualCCD = (): CCDParty => {
   };
 };
 
-describe("translateCCDCaseDataToCUIModel", () => {
-  it("should return undefined if ccdClaim", () => {
+describe('translateCCDCaseDataToCUIModel', () => {
+  it('should return undefined if ccdClaim', () => {
     //Given
     const input: CCDClaim = undefined;
     //When
@@ -59,20 +59,20 @@ describe("translateCCDCaseDataToCUIModel", () => {
     expect(output.specClaimTemplateDocumentFiles).toBe(undefined);
   });
 
-  it("should return undefined if witness appear is undefined", () => {
+  it('should return undefined if witness appear is undefined', () => {
     //Given
     const input: CCDClaim = {
       servedDocumentFiles: {
         timelineEventUpload: [
           <TimeLineDocument>{
-            id: "6f5daf35-e492-4f89-891c-bbd948263653",
+            id: '6f5daf35-e492-4f89-891c-bbd948263653',
             value: <Document>{
-              category_id: "detailsOfClaim",
+              category_id: 'detailsOfClaim',
               document_url:
-                "http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
-              document_filename: "timeline-event-summary.pdf",
+                'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
+              document_filename: 'timeline-event-summary.pdf',
               document_binary_url:
-                "http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary",
+                'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary',
             },
           },
         ],
@@ -82,26 +82,26 @@ describe("translateCCDCaseDataToCUIModel", () => {
     const output = translateCCDCaseDataToCUIModel(input);
     //Then
     expect(output.specClaimTemplateDocumentFiles.category_id).toBe(
-      "detailsOfClaim"
+      'detailsOfClaim',
     );
     expect(output.specClaimTemplateDocumentFiles.document_binary_url).toBe(
-      "http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
+      'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary',
     );
     expect(output.specClaimTemplateDocumentFiles.document_filename).toBe(
-      "timeline-event-summary.pdf"
+      'timeline-event-summary.pdf',
     );
     expect(output.specClaimTemplateDocumentFiles.document_url).toBe(
-      "http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c"
+      'http://dm-store-demo.service.core-compute-demo.internal/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
     );
   });
 
-  it("should return interest values to cui fromm ccd", () => {
+  it('should return interest values to cui fromm ccd', () => {
     const input: CCDClaim = {
       interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE,
       interestClaimOptions: CCDInterestType.SAME_RATE_INTEREST,
       interestClaimUntil: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
-      interestFromSpecificDate: "2023-01-01",
-      interestFromSpecificDateDescription: "ss",
+      interestFromSpecificDate: '2023-01-01',
+      interestFromSpecificDateDescription: 'ss',
       sameRateInterestSelection: {
         sameRateInterestType: CCDSameRateInterestType.SAME_RATE_INTEREST_8_PC,
       } as CCDSameRateInterestSelection,
@@ -111,13 +111,13 @@ describe("translateCCDCaseDataToCUIModel", () => {
     //Then
     expect(output.interest).toBeDefined();
     expect(output.interest.interestEndDate).toEqual(
-      InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE
+      InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
     );
     expect(output.interest.interestClaimFrom).toEqual(
-      InterestClaimFromType.FROM_A_SPECIFIC_DATE
+      InterestClaimFromType.FROM_A_SPECIFIC_DATE,
     );
     expect(output.interest.interestClaimOptions).toEqual(
-      CCDInterestType.SAME_RATE_INTEREST
+      CCDInterestType.SAME_RATE_INTEREST,
     );
     expect(output.interest.sameRateInterestSelection).toEqual({
       sameRateInterestType: CCDSameRateInterestType.SAME_RATE_INTEREST_8_PC,
@@ -126,11 +126,11 @@ describe("translateCCDCaseDataToCUIModel", () => {
     });
   });
 
-  it("should translate full defence fields to CUI model", () => {
+  it('should translate full defence fields to CUI model', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_DEFENCE",
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
       applicant1ProceedWithClaim: YesNoUpperCamelCase.YES,
     };
 
@@ -139,15 +139,15 @@ describe("translateCCDCaseDataToCUIModel", () => {
 
     //Then
     expect(claim.claimantResponse.intentionToProceed).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
   });
 
-  it("should translate partial admission field to CUI model", () => {
+  it('should translate partial admission field to CUI model', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "PART_ADMISSION",
+      respondent1ClaimResponseTypeForSpec: 'PART_ADMISSION',
       applicant1AcceptPartAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
       applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
       specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
@@ -158,21 +158,21 @@ describe("translateCCDCaseDataToCUIModel", () => {
 
     //Then
     expect(claim.partialAdmission.alreadyPaid).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
     expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
     expect(claim.claimantResponse.hasPartAdmittedBeenAccepted).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
   });
 
-  it("should translate full admission field to CUI model", () => {
+  it('should translate full admission field to CUI model', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_ADMISSION",
+      respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
       defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
       applicant1AcceptFullAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
     };
@@ -181,18 +181,18 @@ describe("translateCCDCaseDataToCUIModel", () => {
 
     //Then
     expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(
-      PaymentOptionType.IMMEDIATELY
+      PaymentOptionType.IMMEDIATELY,
     );
     expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
   });
 
-  it("should translate full admission field to CUI model", () => {
+  it('should translate full admission field to CUI model', () => {
     //Given
     const input: CCDClaim = {
       respondent1: getPartyIndividualCCD(),
-      respondent1ClaimResponseTypeForSpec: "FULL_ADMISSION",
+      respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
       defenceAdmitPartPaymentTimeRouteRequired: CCDPaymentOption.IMMEDIATELY,
       applicant1AcceptFullAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
     };
@@ -201,18 +201,18 @@ describe("translateCCDCaseDataToCUIModel", () => {
 
     //Then
     expect(claim.fullAdmission.paymentIntention.paymentOption).toEqual(
-      PaymentOptionType.IMMEDIATELY
+      PaymentOptionType.IMMEDIATELY,
     );
     expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toEqual(
-      new GenericYesNo(YesNo.YES)
+      new GenericYesNo(YesNo.YES),
     );
   });
 
-  it("should translate partial payment to CUI model", () => {
+  it('should translate partial payment to CUI model', () => {
     //Given
     const input: CCDClaim = {
       partialPayment: YesNoUpperCamelCase.YES,
-      partialPaymentAmount: "IMMEDIATELY",
+      partialPaymentAmount: 'IMMEDIATELY',
       paymentTypeSelection: CCDDJPaymentOption.IMMEDIATELY,
     };
 
@@ -220,7 +220,7 @@ describe("translateCCDCaseDataToCUIModel", () => {
 
     //Then
     expect(claim.claimantResponse.ccjRequest.ccjPaymentOption.type).toEqual(
-      PaymentOptionType.IMMEDIATELY
+      PaymentOptionType.IMMEDIATELY,
     );
   });
 });
