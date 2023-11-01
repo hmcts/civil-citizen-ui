@@ -287,7 +287,7 @@
       "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
-      "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
+      "DECIDE_WHETHER_TO_PROCEED": "Penderfynu a fyddwch chi'n symud ymlaen",
       "HOW_FORMALISE": "Choose how to formalise repayment",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
@@ -511,7 +511,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
-      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
+      "PROCEED_WITH_CLAIM": "Ydych chi eisiau bwrw ymlaen â'r hawliad?",
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -892,7 +892,7 @@
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
-      "CLAIM_NUMBER": "Your claim number:",
+      "CLAIM_NUMBER": "Rhif eich hawliad:",
       "PAGE_TITLE": "Claimant Intention Confirmation",
       "PA_PAY_IMMEDIATELY": {
         "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
@@ -901,8 +901,8 @@
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
-        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+        "NOT_PROCEED_WITH_CLAIM": "Wnaethoch chi ddim bwrw ymlaen â'r hawliad",
+        "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrtho."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -2214,7 +2214,7 @@
       "PAY_EXPENSES": "Do they pay any expenses?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "Do they receive any income?",
-      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
+      "REJECT_CLAIM_STATEMENT": "Mae {{ defendant }} wedi gwrthod yr hawliad.",
       "SEE_FINANCIAL_DETAILS": "See their financial details",
       "SELF_EMPLOYMENT_DETAILS": "Self-employment details",
       "SUPPORT_ANYONE_ELSE": "Do they support anyone else financially?",
