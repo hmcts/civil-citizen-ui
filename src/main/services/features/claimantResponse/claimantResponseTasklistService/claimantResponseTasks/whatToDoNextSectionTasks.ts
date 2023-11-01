@@ -135,7 +135,8 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
-    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)) {
+    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate
+     && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
