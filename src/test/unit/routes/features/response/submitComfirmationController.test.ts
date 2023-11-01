@@ -4,13 +4,12 @@ import nock from 'nock';
 import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import fullAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Party} from '../../../../../main/common/models/party';
 import {CaseRole} from 'form/models/caseRoles';
-import { ResponseType } from 'common/form/models/responseType';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -43,9 +42,8 @@ describe('Submit confirmation controller', () => {
       .get('/cases/:id/userCaseRoles')
       .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
     nock('http://localhost:4000')
-      .get('/cases/response/deadline')
+      .post('/cases/response/deadline')
       .reply(200, responsePaymentDeadlineDate);
-
   });
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {
@@ -70,20 +68,13 @@ describe('Submit confirmation controller', () => {
           expect(res.status).toBe(500);
         });
     });
-    it('should return submit confirmation from claim', async () => {
-      mockGetCaseData.mockImplementation(() => mockClaim);
-      mockClaim.respondent1 = {
-        responseType: ResponseType.FULL_ADMISSION,
-      };
-      mockClaim.fullAdmission = {
-        paymentIntention:{
-          paymentOption: PaymentOptionType.IMMEDIATELY,
-        },
-      };
-      mockClaim.respondent1ResponseDate = new Date('2023-10-31T15:48:15');
+    it('should return submit confirmation from claim for fullAdmitPayByImmediately', async () => {
       nock('http://localhost:4000')
         .get('/cases/:id')
-        .reply(200, civilClaimResponseMock);
+        .reply(200, fullAdmitPayByImmediatelyMock);
+      nock('http://localhost:4000')
+        .get('/cases/:id/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       await request(app)
         .get(CONFIRMATION_URL)
         .expect((res) => {
