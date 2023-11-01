@@ -3040,7 +3040,7 @@
     "TEXT_TOO_MANY": "Rydych wedi defnyddio gormod o nodau",
     "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
     "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
-    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer that 70 characters",
+    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 70 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must be no longer than 70 characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
