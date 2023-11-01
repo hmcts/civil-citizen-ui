@@ -1,5 +1,5 @@
 module.exports = {
-  createCaseProgressionToHearingInitiated: () => {
+  createCaseProgressionToHearingInitiated: (hearingDate) => {
     const hearingScheduledData = {
       event: 'HEARING_INITIATED',
       caseDataUpdate: {
@@ -19,7 +19,7 @@ module.exports = {
           ],
         },
         channel: 'IN_PERSON',
-        hearingDate: '2023-11-10',
+        hearingDate: hearingDate,
         hearingTimeHourMinute: '0930',
         hearingDuration: 'MINUTES_150',
         information: null,

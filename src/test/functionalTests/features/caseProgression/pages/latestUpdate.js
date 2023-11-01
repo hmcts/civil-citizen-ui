@@ -5,21 +5,24 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
     }
     this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
+    if (trialArrageentFlag === true) {
+      this.verifyTrialArrangeentTileContent();
+    }
     if(orderCreatedFlag === true) {
       this.verifyOrderCreatedTileContent();
     }
@@ -33,6 +36,22 @@ class LatestUpdate {
     I.see('Notices and orders');
     I.see('Documents');
   }
+  verifyTrialArrangementsFinalisedTile() {
+    I.see('You have finalised your trial arrangements','h3');
+    I.see('You can view your trial arrangements under \'Notices and orders\'.');
+  }
+
+  verifyTrialArrangeentsTile(claimType) {
+    //TODO - Include the hearing date in the relevant Format
+    if (claimType === 'FastTrack') {
+      I.see('A trial has been scheduled for your case', 'h3');
+      I.see('Your trial has been scheduled for');
+    } else {
+      I.see('A hearing has been scheduled for your case', 'h3');
+      I.see('Your hearing has been scheduled for');
+    }
+    I.see('at Central London County Court.');
+  }
 
   verifyHearingOrTrialNoticeSectionContent(claimType) {
     //TODO - Include the hearing date in the relevant Format
@@ -44,6 +63,10 @@ class LatestUpdate {
       I.see('Your hearing has been scheduled for');
     }
     I.see('at Central London County Court.');
+    I.see('Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. ');
+    I.see('You can update contact details by telephoning the court at 0300 123 7050.');
+    I.see('You should view the hearing notice under');
+    I.seeElement('//a[.=\'Notices and Orders\']');
   }
 
   verifyUploadDocumentTileContent(hearingInitiatedFlag) {
@@ -64,6 +87,15 @@ class LatestUpdate {
     I.see('An order has been made on your claim','h3');
     I.see('The Judge has made an order on your claim.');
     I.see('The order is available in \'Notices and orders\'.');
+  }
+
+  verifyTrialArrangeentTileContent() {
+    I.see('Finalise your trial arrangements for your upcoming trial','h3');
+    I.see('Due by:');
+    I.see('If there are changes to your trial arrangements, you should let us know by midnight,');
+    I.see('You may wish to review the original directions you supplied in the');
+    I.seeElement('//a[.=\'directions questionnaire\']');
+    I.see('under ‘Notices and orders’ prior to finalising your trial arrangements.');
   }
 }
 
