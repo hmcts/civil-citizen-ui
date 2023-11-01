@@ -14,7 +14,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
-  if(claim.isPartialAdmissionNotPaid() || (claim.isFullDefence() && (claim.isRejectAllOfClaimDispute() || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL)) || claim.isFullAdmission()) {
+  if(canShowWhatToDoNextSection(claim)) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
   if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS))
@@ -24,4 +24,18 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
   taskGroups.push(buildClaimantResponseSubmitSection(claimId, lang));
   return taskGroups.filter(item => item.tasks.length !== 0);
+}
+
+function canShowWhatToDoNextSection(claim: Claim) : boolean {
+  return (
+    claim.isPartialAdmissionNotPaid()
+    || isFullDefenceWithDisputeOrFullPaid(claim)
+    || claim.isFullAdmission()
+  )
+}
+
+function isFullDefenceWithDisputeOrFullPaid(claim: Claim) : boolean {
+  return (claim.isFullDefence()
+    && (claim.isRejectAllOfClaimDispute()
+      || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL))
 }

@@ -104,7 +104,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL) {
+  if (isFullDefenceAndPaidNotAcceptPayment(claim)) {
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
@@ -169,4 +169,10 @@ function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
   return ((claim.isPAPaymentOptionPayImmediately() && !!claim.claimantResponse?.courtProposedDate?.decision) ||
   (claim.isPAPaymentOptionByDate() && !!claim.partialAdmission?.paymentIntention?.paymentDate) ||
   (claim.isPAPaymentOptionInstallments() && !!claim.partialAdmission?.paymentIntention?.repaymentPlan));
+}
+
+function isFullDefenceAndPaidNotAcceptPayment(claim: Claim) : boolean {
+  return (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
+    && claim.isFullDefence()
+    && claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL)
 }
