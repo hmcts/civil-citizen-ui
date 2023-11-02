@@ -546,7 +546,6 @@ describe('Claimant Response Task List builder', () => {
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         ccjRequest: {paidAmount: {option: YesNo.YES}},
-        suggestedPaymentIntention: {paymentOption:PaymentOptionType.IMMEDIATELY},
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},

@@ -134,13 +134,21 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
-    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate
-     && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+  if (isPAPaymentOptionByDateSuggestionGiven(claim)) {
 
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
+}
+
+function isPAPaymentOptionByDateSuggestionGiven(claim: Claim): boolean {
+
+  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
+    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate
+      && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+    return true;
+  }
+  return false;
 }
 
 export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: string): Task {
