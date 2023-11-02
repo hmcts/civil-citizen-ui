@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const {addMonths} = require('common/utils/dateUtils');
+import {addMonths} from 'common/utils/dateUtils';
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
