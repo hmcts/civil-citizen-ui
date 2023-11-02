@@ -129,6 +129,7 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
   });
+
   it('should translate signSettlementAgreement to ccd', () => {
     //Given
     claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{
@@ -138,6 +139,42 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
     //Then
     expect(ccdClaim.applicant1LiPResponse.applicant1SignedSettlementAgreement).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1ProceedWithClaim to ccd', () => {
+
+    //Given
+    claim.claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1ProceedWithClaim).toBe(YesNoUpperCamelCase.YES);
+  });
+  
+  it('should translate applicant1PartAdmitConfirmAmountPaidSpec to ccd', () => {
+
+    //Given
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
+
+    //Given
+    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
   });
 });
 
