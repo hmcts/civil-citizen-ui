@@ -22,40 +22,43 @@ import { InterestEndDateType, SameRateInterestType } from 'common/form/models/cl
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
-export const translateCCDCaseDataToCUIModel = (ccdClaim: CCDClaim): Claim => {
-  const claim: Claim = Object.assign(new Claim(), ccdClaim);
+export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
+  const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
+  const ccdClaim: CCDClaim = Object.assign({}, ccdClaimObj);
   const claimantResponse: ClaimantResponse = new ClaimantResponse();
   claimantResponse.suggestedPaymentIntention = new PaymentIntention();
   claim.claimDetails = toCUIClaimDetails(ccdClaim);
-  claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList, ccdClaim?.respondent1LiPResponse?.evidenceComment);
-  claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
-  claim.respondent1 = toCUIPartyRespondent(ccdClaim?.respondent1,ccdClaim?.respondent1LiPResponse);
-  claim.respondent1.responseType = ccdClaim?.respondent1ClaimResponseTypeForSpec;
-  claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+  claim.evidence = toCUIEvidence(ccdClaim.specResponselistYourEvidenceList, ccdClaim.respondent1LiPResponse?.evidenceComment);
+  claim.applicant1 = toCUIParty(ccdClaim.applicant1);
+  claim.respondent1 = toCUIPartyRespondent(ccdClaim.respondent1,ccdClaim.respondent1LiPResponse);
+  claim.respondent1.responseType = ccdClaim.respondent1ClaimResponseTypeForSpec;
+  claim.mediation = toCUIMediation(ccdClaim.respondent1LiPResponse?.respondent1MediationLiPResponse);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
-  claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim?.respondent1LiPResponse?.respondent1ResponseLanguage);
+  claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
-  claim.sdoOrderDocument = ccdClaim?.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
+  claim.sdoOrderDocument = ccdClaim.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   claim.caseProgression = toCUICaseProgression(ccdClaim);
-  claim.specClaimTemplateDocumentFiles = ccdClaim?.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
+  claim.specClaimTemplateDocumentFiles = ccdClaim.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
+  
   if (claim.isFullAdmission()) {
-    claim.fullAdmission = toCUIFullAdmission(ccdClaim);
-    claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptFullAdmitPaymentPlanSpec);
+    translateFullAdmission(claim, ccdClaim, claimantResponse);
   } else if (claim.isPartialAdmission()) {
-    claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
-    claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim?.applicant1AcceptPartAdmitPaymentPlanSpec);
+    translatePartialAdmission(claim, ccdClaim, claimantResponse);
   } else if (claim.isFullDefence()) {
-    claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim?.applicant1ProceedWithClaim);
+    translateFullDefence(ccdClaim, claimantResponse);
   }
-  if(ccdClaim?.partialPayment){
+
+  if(ccdClaim.partialPayment){
     claimantResponse.ccjRequest = toCUICCJRequest(ccdClaim);
   }
+
+  claimantResponse.hasDefendantPaidYou = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec);
   claim.claimantResponse = claimantResponse;
-  claim.caseRole = ccdClaim?.caseRole;
+  claim.caseRole = ccdClaim.caseRole;
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
-  claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim?.applicant1RepaymentOptionForDefendantSpec);
+  claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   return claim;
 };
 
@@ -75,3 +78,18 @@ const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
   };
   return interest;
 };
+
+function translateFullAdmission(claim: Claim, ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
+  claim.fullAdmission = toCUIFullAdmission(ccdClaim);
+  claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec);
+}
+
+function translatePartialAdmission(claim: Claim, ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
+  claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
+  claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec);
+  claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
+}
+
+function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
+  claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim.applicant1ProceedWithClaim);
+}
