@@ -63,7 +63,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
-    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
+    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option ===  YesNo.YES && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
       const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
       tasks.push(acceptOrRejectRepayment);
 
