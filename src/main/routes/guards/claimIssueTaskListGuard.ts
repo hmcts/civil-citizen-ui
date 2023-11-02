@@ -9,7 +9,7 @@ export const claimIssueTaskListGuard = (async (req: Request, res: Response, next
     const appReq: AppRequest = <AppRequest>req;
     const userId = appReq.session?.user?.id;
     const caseData: Claim = await getCaseDataFromStore(userId, true);
-    if (!caseData?.isDraftClaim() && !req.cookies['eligibilityCompleted'] && !req.originalUrl.endsWith('/confirmation')) {
+    if (!caseData?.isDraftClaim() && !req.cookies['eligibilityCompleted'] && !req.originalUrl.endsWith('/confirmation') && !req.originalUrl.endsWith('/fee')) {
       res.redirect(BASE_ELIGIBILITY_URL);
     } else {
       next();

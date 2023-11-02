@@ -22,7 +22,7 @@ const logger = Logger.getLogger('claimantResponseService');
 
 const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(claimId, true);
     return claim.claimantResponse ?? new ClaimantResponse();
   } catch (error) {
     logger.error(error);
@@ -32,7 +32,7 @@ const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> =
 
 const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: any = await getCaseDataFromStore(claimId, true);
     if (claim.claimantResponse) {
       if (parentPropertyName && claim.claimantResponse[parentPropertyName]) {
         claim.claimantResponse[parentPropertyName][claimantResponsePropertyName] = value;
@@ -69,7 +69,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;
