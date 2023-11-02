@@ -14,13 +14,13 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-    CaseState, CCDHelpWithFees,
-    ClaimAmountBreakup,
-    ClaimantMediationLip,
-    ClaimFee, HearingFee,
-    InterestClaimFromType,
-    InterestEndDateType,
-    SameRateInterestType,
+  CaseState, CCDHelpWithFees,
+  ClaimAmountBreakup,
+  ClaimantMediationLip,
+  ClaimFee, HearingFee,
+  InterestClaimFromType,
+  InterestEndDateType,
+  SameRateInterestType,
 } from 'form/models/claimDetails';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
