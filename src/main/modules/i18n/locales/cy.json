@@ -1285,6 +1285,22 @@
       "PAGE_TITLE": "Respond to the settlement agreement",
       "TITLE": "Respond to the settlement agreement"
     },
+    "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
+      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
+      "CAN_REQUEST_CCJ": "The claimant can request a County Court Judgement (CCJ) against you. The CCJ would order you to repay the money in line with the terms of the agreement.",
+      "CANT_REQUEST_CCJ": "The claimant can't request a County Court Judgement against you unless you break the terms.",
+      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+      "COURT_REVIEWED_PLAN": "The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Download settlement agreement (PDF)",
+      "EMAIL_YOU": "We'll email you when the claimant responds.",
+      "GET_RECEIPTS": "Make sure you get receipts for any payments.",
+      "PAGE_TITLE": "Respond to the settlement agreement confirmation",
+      "PAY_BY": "The agreement says you'll repay by {{ paymentDate }}.",
+      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
+      "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
+      "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
+      "WHAT_HAPPENS_NEXT": "What happens next"
+    },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
       "THEIR_TIMELINE": "Eu llinell amser",

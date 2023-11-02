@@ -1,5 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT} from '../../urls';
+import {
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION
+} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {
   getAmount,
@@ -13,6 +16,8 @@ import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();
@@ -41,9 +46,14 @@ const getSettlementAgreementData = (claim: Claim, req: Request) => {
 respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    // TODO: Populate form from saved response once this is implemented in the model
-    renderView(new GenericForm(new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
+    const claim = await getClaimById(claimId, req, true);
+    let selectedOption: string;
+    if (claim.defendantSignedSettlementAgreement) {
+      selectedOption = 'yes';
+    } else if (claim.defendantRejectedSettlementAgreement) {
+      selectedOption = 'no'
+    }
+    renderView(new GenericForm(new GenericYesNo(selectedOption, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
   } catch (error) {
     next(error);
   }
@@ -55,12 +65,14 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
     const respondSettlementAgreement = new GenericForm(new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'));
     respondSettlementAgreement.validateSync();
 
+    const claim = await getClaimById(claimId, req);
     if (respondSettlementAgreement.hasErrors()) {
-      const claim = await getClaimById(claimId, req);
       renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     } else {
-      // TODO : Save respondSettlementAgreement.model.option value and redirect to next page
-      res.redirect(constructResponseUrlWithIdParams(claimId, '<Next page>>'));
+      claim.defendantSignedSettlementAgreement = respondSettlementAgreement.model.option === 'yes';
+      claim.defendantRejectedSettlementAgreement = respondSettlementAgreement.model.option === 'no';
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+      res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION));
     }
   } catch (error) {
     next(error);

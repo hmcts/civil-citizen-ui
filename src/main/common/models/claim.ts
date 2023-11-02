@@ -128,6 +128,8 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  defendantSignedSettlementAgreement: boolean;
+  defendantRejectedSettlementAgreement: boolean;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
