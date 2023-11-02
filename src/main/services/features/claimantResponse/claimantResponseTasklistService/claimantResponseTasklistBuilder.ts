@@ -174,5 +174,5 @@ function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
 function isFullDefenceAndPaidNotAcceptPayment(claim: Claim) : boolean {
   return (claim?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
     && claim.isFullDefence()
-    && claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL)
+    && claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL);
 }

@@ -31,11 +31,11 @@ function canShowWhatToDoNextSection(claim: Claim) : boolean {
     claim.isPartialAdmissionNotPaid()
     || isFullDefenceWithDisputeOrFullPaid(claim)
     || claim.isFullAdmission()
-  )
+  );
 }
 
 function isFullDefenceWithDisputeOrFullPaid(claim: Claim) : boolean {
   return (claim.isFullDefence()
     && (claim.isRejectAllOfClaimDispute()
-      || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL))
+      || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL));
 }
