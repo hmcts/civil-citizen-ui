@@ -107,6 +107,32 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addStartButtonWithLink(title: string, href: string, cancelHref: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: true,
+        cancelHref: cancelHref,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+
+  addMicroText(microText: string, variables?: unknown) {
+    const microTextSection = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: microText,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(microTextSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }
