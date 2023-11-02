@@ -17,8 +17,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   if(canShowWhatToDoNextSection(claim)) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
-  if(claim.isPartialAdmissionPaid() || (claim.isFullDefence() && !claim.isRejectAllOfClaimDispute() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS))
-  {
+  if(canShowYourResponseSection(claim)) {
     taskGroups.push(buildYourResponseSection(claim, claimId, lang));
   }
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
@@ -34,8 +33,21 @@ function canShowWhatToDoNextSection(claim: Claim) : boolean {
   );
 }
 
+function canShowYourResponseSection(claim: Claim) : boolean {
+  return (
+    claim.isPartialAdmissionPaid()
+    || isFullDefenceWithPaidLess(claim)
+  );
+}
+
 function isFullDefenceWithDisputeOrFullPaid(claim: Claim) : boolean {
   return (claim.isFullDefence()
     && (claim.isRejectAllOfClaimDispute()
       || claim.responseStatus === ClaimResponseStatus.RC_PAID_FULL));
+}
+
+function isFullDefenceWithPaidLess(claim: Claim) : boolean {
+  return (claim.isFullDefence()
+    && !claim.isRejectAllOfClaimDispute()
+    && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
 }
