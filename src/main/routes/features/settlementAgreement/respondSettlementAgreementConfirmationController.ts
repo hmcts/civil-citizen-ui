@@ -3,7 +3,7 @@ import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
-  getRespondSettlementAgreementConfirmationContent
+  getRespondSettlementAgreementConfirmationContent,
 } from 'services/features/settlementAgreement/respondSettlementAgreementConfirmationContentService';
 import {respondSettlementAgreementConfirmationGuard} from 'routes/guards/respondSettlementAgreementConfirmationGuard';
 

@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
 } from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {
@@ -51,7 +51,7 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (a
     if (claim.defendantSignedSettlementAgreement) {
       selectedOption = 'yes';
     } else if (claim.defendantRejectedSettlementAgreement) {
-      selectedOption = 'no'
+      selectedOption = 'no';
     }
     renderView(new GenericForm(new GenericYesNo(selectedOption, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
   } catch (error) {

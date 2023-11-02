@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
   buildNextStepsSection,
-  buildPanelSection
+  buildPanelSection,
 } from 'services/features/settlementAgreement/settlementAgreementConfirmationBuilder/confirmationContentBuilder';
 
 export const getRespondSettlementAgreementConfirmationContent = (claim: Claim, lang: string): ClaimSummarySection[] => {

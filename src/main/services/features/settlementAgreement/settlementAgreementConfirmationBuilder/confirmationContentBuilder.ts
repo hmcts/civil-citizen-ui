@@ -16,7 +16,7 @@ export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySecti
 const getAcceptConfirmationPanel = (claim: Claim, lang: string) => {
   // TODO: Replace with actual settlement agreement document id
   const documentId = 'document-id';
-  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(":id", claim.id).replace(":documentId", documentId);
+  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
   return [
     {
       type: ClaimSummaryType.PANEL,
@@ -57,7 +57,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
         data: {
           text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lgn: lang}),
         },
-      }
+      },
     );
   }
   nextSteps.push(...[
