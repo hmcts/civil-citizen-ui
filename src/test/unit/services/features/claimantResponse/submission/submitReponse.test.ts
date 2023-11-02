@@ -8,26 +8,39 @@ import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../../main/common/models/party';
 import {ClaimantResponse} from 'models/claimantResponse';
+import { CaseState } from 'common/form/models/claimDetails';
+import * as ccdTranslationForRequestJudement from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/claimantResponse/ccdTranslation');
+jest.mock('../../../../../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};
 
 const citizenBaseUrl: string = config.get('services.civilService.url');
-
 describe('Submit claimant to ccd', ()=>{
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const claim = new Claim();
-  claim.claimantResponse = new ClaimantResponse();
+  let claim: Claim;
   const claimFromService = new Claim();
   claimFromService.respondent1 = new Party();
   beforeEach(() => {
+    claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.totalClaimAmount = 500;
     nock(citizenBaseUrl)
       .get('/cases/1')
       .reply(200, claimFromService);
+    nock('http://localhost:4000')
+      .get('/fees/claim/500')
+      .reply(200, {
+        calculatedAmountInPence: 100,
+      });
   });
+  afterAll(() => {
+    nock.cleanAll();
+  });
+
   it('should submit claimant response successfully when there are no errors', async ()=> {
     //Given
     nock(citizenBaseUrl)
@@ -41,9 +54,6 @@ describe('Submit claimant to ccd', ()=>{
     await submitClaimantResponse(mockedAppRequest);
     //Then
     expect(spyOnTranslation).toHaveBeenCalled();
-    if(!nock.isDone()) {
-      nock.cleanAll();
-    }
   });
   it('should rethrow error when there is an error with redis', async () =>{
     //Given
@@ -63,5 +73,20 @@ describe('Submit claimant to ccd', ()=>{
       .reply(500, {error:'error'});
     //Then
     await expect(submitClaimantResponse(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
+  });
+  it('should submit claimant response successfully when there are no errors for claimant request by admission', async () => {
+    //Given
+    nock(citizenBaseUrl)
+      .post('/cases/1/citizen/undefined/event')
+      .reply(200, {});
+    mockGetCaseData.mockImplementation(async () => {
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      return claim;
+    });
+    const spyOnTranslation = jest.spyOn(ccdTranslationForRequestJudement, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+    //When
+    await submitClaimantResponse(mockedAppRequest);
+    //Then
+    expect(spyOnTranslation).toHaveBeenCalled();
   });
 });
