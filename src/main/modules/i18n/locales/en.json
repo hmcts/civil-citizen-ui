@@ -1146,9 +1146,22 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "HEARINGS": {
+        "ADD_TRIAL": "Add the trial arrangements",
+        "PAY_FEE": "Pay the hearing fee",
+        "TITLE": "Hearings",
+        "UPLOAD_DOCUMENTS": "Upload hearing documents",
+        "VIEW_BUNDLE": "View the bundle",
+        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_HEARINGS": "View hearings"
+      },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
+      "ORDERS_NOTICE": {
+        "TITLE": "Orders and notices from the court",
+        "VIEW": "View orders and notices"
+      },
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {

@@ -9,11 +9,13 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
-  // TODO: this is a mock data
+
   const dashboardNotificationsList = [];
   const defendantName = claim.getDefendantFullName();
   const responseDeadline = claim.formattedResponseDeadline();
 
+  // TODO: Call civil Service in order to retrieve Notifications.
+  // TODO: this is a mock data
   const waitForDefendantResponseNotification = new NotificationBuilder()
     .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND', { lng }))
     .addContent(new PageSectionBuilder()
@@ -30,7 +32,7 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
-  
+
   return dashboardNotificationsList;
 };
 
@@ -56,20 +58,24 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
 
 export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
   // TODO: this is a mock data
-  const taskListMock: TaskList[]= [];
+  const dashboard: TaskList[] = [];
 
-  const taskListItemMock =  new TaskListBuilder('The claim')
-    .addTask(new TaskItem('View the claim', '#',TaskStatus.DONE, false, TaskStatusColor[TaskStatus.DONE]) )
-    .addTask(new TaskItem('View information about the claimant', '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]) )
-    .build();
-    
-  const taskListItemMock2 =  new TaskListBuilder('The response')
-    .addTask(new TaskItem('View the response to the claim', '#',TaskStatus.IN_PROGRESS, false, TaskStatusColor[TaskStatus.IN_PROGRESS]) )
-    .addTask(new TaskItem('View information about the defendant', '#',TaskStatus.READY_TO_VIEW, false, TaskStatusColor[TaskStatus.READY_TO_VIEW]) )
+  const hearings: TaskList = new TaskListBuilder(t('PAGES.DASHBOARD.HEARINGS.TITLE'))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])).build();
+  if ((claim.isFastTrackClaim || claim.isSmallClaimsTrackDQ) && claim.isClaimant() ) {
+    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+  }
+  hearings.tasks.push(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]));
+
+  const noticeAndOrders =  new TaskListBuilder(t('PAGES.DASHBOARD.ORDERS_NOTICE.TITLE'))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.ORDERS_NOTICE.VIEW'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]) )
     .build();
 
-  taskListMock.push(taskListItemMock);
-  taskListMock.push(taskListItemMock2);
-    
-  return taskListMock;
+  dashboard.push(hearings);
+  dashboard.push(noticeAndOrders);
+
+  return dashboard;
 };

@@ -1146,9 +1146,22 @@
       "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
       "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
-      "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
-      "NEXT": "Nesaf",
-      "NEXT_STEPS": "Y camau nesaf",
+      "HEARINGS": {
+        "ADD_TRIAL": "Add the trial arrangements",
+        "PAY_FEE": "Pay the hearing fee",
+        "TITLE": "Hearings",
+        "UPLOAD_DOCUMENTS": "Upload hearing documents",
+        "VIEW_BUNDLE": "View the bundle",
+        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_HEARINGS": "View hearings"
+      },
+      "MAKE_A_NEW_CLAIM": "Make a new money claim",
+      "NEXT": "Next",
+      "NEXT_STEPS": "Next steps",
+      "ORDERS_NOTICE": {
+        "TITLE": "Orders and notices from the court",
+        "VIEW": "View orders and notices"
+      },
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
