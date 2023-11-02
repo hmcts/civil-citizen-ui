@@ -221,6 +221,8 @@ import claimantResponseCheckAnswersController from './features/claimantResponse/
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import claimantDashboardController from './features/dashboard/claimantDashboardController';
+import payHearingFeeStartScreenController
+  from 'routes/features/dashboard/caseProgression/hearingFee/payHearingFeeStartScreenController';
 
 export default [
   homeController,
@@ -428,4 +430,5 @@ export default [
   claimantResponseCheckAnswersController,
   claimFeeController,
   cancelTrialArrangementsController,
+  payHearingFeeStartScreenController,
 ];
