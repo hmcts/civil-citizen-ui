@@ -13,8 +13,12 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
-import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {
+  VulnerabilityQuestions,
+} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {
+  WelshLanguageRequirements,
+} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -454,7 +458,10 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
-        suggestedPaymentIntention: {paymentOption:PaymentOptionType.IMMEDIATELY},
+
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -478,7 +485,10 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
-        suggestedPaymentIntention: {paymentOption:PaymentOptionType.IMMEDIATELY},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
+
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -505,7 +515,9 @@ describe('Claimant Response Task List builder', () => {
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         signSettlementAgreement: {signed: YesNo.YES},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
-        suggestedPaymentIntention: {paymentOption:PaymentOptionType.IMMEDIATELY},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -528,6 +540,9 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         ccjRequest: {paidAmount: {option: YesNo.YES}},
