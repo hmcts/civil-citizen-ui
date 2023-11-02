@@ -55,9 +55,9 @@ async function runPally(url: string, actions: string[]): Promise<Pa11yResult> {
     includeWarnings: true,
     chromeLaunchConfig: {
       args: ['--no-sandbox'],
-      ignoreHTTPSErrors: true
+      ignoreHTTPSErrors: true,
     },
-    threshold: 10
+    threshold: 10,
   });
 }
 
