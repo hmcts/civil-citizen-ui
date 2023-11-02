@@ -2785,6 +2785,16 @@
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
       }
+    },
+    "PAY_HEARING_FEE": {
+      "START": {
+        "PAGE_TITLE": "Hearing Fee",
+        "TITLE": "Pay hearing fee",
+        "MICRO_TEXT": "Hearing fee",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out.",
+        "START_NOW": "Start now"
+      }
     }
   },
   "FOOTER":{
