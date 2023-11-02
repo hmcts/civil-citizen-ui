@@ -47,7 +47,31 @@ export const getRejectedResponseNoMediationNextSteps = (lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.WHAT_HAPPENS_NEXT_TEXT', {lng: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.NO_MEDIATION.WHAT_HAPPENS_NEXT_TEXT', {lng: lang}),
+      },
+    },
+  ];
+};
+
+export const getRejectedResponseYesMediationNextSteps = (lang: string) => {
+ 
+  return [
+    {
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}),
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1', {lng: lang}),
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2', {lng: lang}),
       },
     },
   ];
