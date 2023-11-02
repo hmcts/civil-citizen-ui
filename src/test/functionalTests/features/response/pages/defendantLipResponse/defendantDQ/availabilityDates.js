@@ -1,6 +1,5 @@
 const I = actor();
 const config = require('../../../../../../config');
-import {addMonths} from 'common/utils/dateUtils';
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
@@ -16,7 +15,7 @@ const fields ={
   longerPeriodEndYear: 'input[id="items[1][endYear]"]',
 };
 
-const newDate = addMonths(new Date(),4);
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
 const month = newDate.getMonth();
 const year = newDate.getFullYear();
 class AvailabilityDates {
