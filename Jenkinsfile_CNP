@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "CIV-8938_Claimant_Intent_Submit_Function_Change_state_to_JUDICIAL_REFERRAL"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
