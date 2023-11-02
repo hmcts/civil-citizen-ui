@@ -30,6 +30,10 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
 
+            {% set judgePlanHtml %}
+              <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.IF_YOU_WANT_JUDGE') }}</p>
+            {% endset -%}
+
             {{ govukRadios({
               idPrefix: "decision",
               name: "decision",
@@ -49,7 +53,10 @@
                 {
                   value: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
                   checked: form.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
-                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.NO_I_WANT_JUDGE')
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.NO_I_WANT_JUDGE'),
+                  conditional: {
+                    html: judgePlanHtml
+                  }
                 }
               ],
               errorMessage: {
