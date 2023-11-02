@@ -54,7 +54,6 @@ export const getRejectedResponseNoMediationNextSteps = (lang: string) => {
 };
 
 export const getRejectedResponseYesMediationNextSteps = (lang: string) => {
- 
   return [
     {
       type: ClaimSummaryType.TITLE,
