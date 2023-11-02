@@ -779,7 +779,7 @@ export class Claim {
     return new Date(dateAtStartOfDay);
   }
 
-    twentyEightDaysBeforeHearingDateString() {
+  twentyEightDaysBeforeHearingDateString() {
     const twentyEightDaysBefore = this.twentyEightDaysBeforeHearingDate();
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
     return twentyEightDaysBefore.toLocaleDateString('en-GB', options);
