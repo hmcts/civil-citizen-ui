@@ -49,6 +49,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyAccept(option: string) 
           ],
         },
       },
+      null,
       undefined,
       null,
       null,
@@ -84,6 +85,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
           ],
         },
       },
+      null,
       undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
@@ -248,6 +250,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
           'rows': [],
         },
       },
+      null,
       undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
@@ -413,6 +416,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedReject() {
           'rows': rows,
         },
       },
+      null,
       undefined,
       null,
       null,
@@ -447,6 +451,7 @@ function generateExpectedResultForPartAdmitAndPaidAccept() {
           ],
         },
       },
+      null,
       undefined,
       null,
       null,
@@ -481,6 +486,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
           ],
         },
       },
+      null,
       undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
@@ -663,6 +669,7 @@ function generateExpectedResultForPartAdmitAndPaymentAccept() {
           ],
         },
       },
+      null,
       undefined,
       null,
       null,
@@ -697,6 +704,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
           ],
         },
       },
+      null,
       undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
