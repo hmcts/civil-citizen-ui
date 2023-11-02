@@ -33,9 +33,9 @@ cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res,
     const url = req.session.previousUrl;
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
+    const claim: Claim = await getCaseDataFromStore(req.params.id);
     if (form.hasErrors()) {
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
-      await res.render(cancelYourUploadViewPath,{form, cancelYourUploadContents:getCancelYourUpload(req.params.id, claim)});
+      res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents: getCancelYourUpload(req.params.id, claim)});
     } else if(form.model.option === YesNo.NO) {
       res.redirect(url);
     } else {
