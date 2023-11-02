@@ -14,13 +14,13 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState, CCDHelpWithFees,
-  ClaimAmountBreakup,
-  ClaimantMediationLip,
-  ClaimFee,
-  InterestClaimFromType,
-  InterestEndDateType,
-  SameRateInterestType,
+    CaseState, CCDHelpWithFees,
+    ClaimAmountBreakup,
+    ClaimantMediationLip,
+    ClaimFee, HearingFee,
+    InterestClaimFromType,
+    InterestEndDateType,
+    SameRateInterestType,
 } from 'form/models/claimDetails';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
@@ -128,6 +128,7 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  hearingFee: HearingFee;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -692,6 +693,10 @@ export class Claim {
     return this.threeWeeksBeforeHearingDateString();
   }
 
+  get hearingFeePaymentDeadline(): string {
+    return this.twentyEightDaysBeforeHearingDateString();
+  }
+
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
     const nowDate = new Date(new Date().setHours(0,0,0,0));
     const sixWeeksBeforeHearingDate = this.sixWeeksBeforeHearingDate();
@@ -771,6 +776,19 @@ export class Claim {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0,0,0,0);
+    return new Date(dateAtStartOfDay);
+  }
+
+    twentyEightDaysBeforeHearingDateString() {
+    const twentyEightDaysBefore = this.twentyEightDaysBeforeHearingDate();
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return twentyEightDaysBefore.toLocaleDateString('en-GB', options);
+  }
+
+  private twentyEightDaysBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const twentyEightDaysMilli = 28 * 24 * 60 * 60 * 1000;
+    const dateAtStartOfDay = new Date(hearingDateTime - twentyEightDaysMilli).setHours(0,0,0,0);
     return new Date(dateAtStartOfDay);
   }
 

@@ -24,6 +24,10 @@ export interface ClaimFee {
   calculatedAmountInPence: number;
 }
 
+export interface HearingFee {
+  calculatedAmountInPence: number;
+}
+
 export interface ClaimAmountBreakup {
   value: ClaimAmountBreakupDetails,
 }
