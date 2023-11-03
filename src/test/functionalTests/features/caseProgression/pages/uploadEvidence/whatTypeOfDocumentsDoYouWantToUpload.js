@@ -5,11 +5,16 @@ const contactUs = new ContactUs();
 
 class WhatTypeOfDocumentsDoYouWantToUpload {
 
+  checkPageFullyLoaded () {
+    I.seeElement('//a[.=\'Cancel\']');
+  }
+
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
   verifyPageContent(caseType) {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     if (caseType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
@@ -126,7 +131,7 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
   }
 
   verifyHearingDocumentsSectionContent() {
-    I.see('Documentary evidence for hearing');
+    I.see('Documentary evidence for the hearing');
     I.see('Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence');
     I.see('Legal authorities');
     I.see('You can use legal authorities to support your case. These are Acts of Parliament, Rules - for example, the Civil Procedure Rules - or other court cases that have decided a point that is relevant to your case. Copy and paste the relevant extracts from Acts, Rules or cases into a document to upload');

@@ -9,7 +9,7 @@
 {% from "../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE') }}
+    {{ setPageTitle('PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,11 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE') }}</h1>
-          {{ repaymentPlanSummary(repaymentPlan, t) }}
+          {% if claimantResponseStatus == ClaimResponseStatus.FA_PAY_BY_DATE or claimantResponseStatus == ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE%}
+            <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DEFENDANT_OFFERED_TO_PAY', {defendantName: defendantName, proposedSetDate: proposedSetDate})}}</p>
+          {% else %}
+            {{ repaymentPlanSummary(repaymentPlan, t) }}
+          {% endif %}
           <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DO_YOU_ACCEPT') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}

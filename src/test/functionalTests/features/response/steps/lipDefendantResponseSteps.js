@@ -142,6 +142,11 @@ class ResponseSteps {
     await bilingualLanguagePreference.verifyContent();
   }
 
+  async RespondToClaimError(claimRef){
+    await defendantLatestUpdate.open(claimRef);
+    await bilingualLanguagePreference.verifyContentError();
+  }
+
   async DefendantSummaryPage(claimRef){
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
@@ -192,12 +197,23 @@ class ResponseSteps {
     await addYourTimeLine.addTimeLineOfEvents();
   }
 
+  async AddYourTimeLineEventsError() {
+    await addYourTimeLine.addTimeLineOfEvents();
+  }
+
   async EnterResponseToClaim(claimRef, responseType) {
     await respondTypePage.enterResponseToClaim(claimRef, responseType);
+  }
+  async EnterResponseToClaimError(claimRef, responseType) {
+    await respondTypePage.enterResponseToClaimError(claimRef, responseType);
   }
 
   async EnterPaymentOption(claimRef, responseType, paymentOption) {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+  }
+
+  async EnterRepaymentPlan(claimRef) {
+    await repaymentPlan.enterRepaymentPlan(claimRef);
   }
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
@@ -206,6 +222,10 @@ class ResponseSteps {
 
   async EnterDateToPayOn() {
     await dateToPayOn.enterDateToPayOn();
+  }
+
+  async EnterDateToPayOnError() {
+    await dateToPayOn.enterDateToPayOnError();
   }
 
   async EnterFinancialDetails(claimRef) {
@@ -326,8 +346,16 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
   }
 
+  async EnterHowMuchYouHavePaidError(claimRef, amount, responseType) {
+    await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
+  }
+
   async EnterHowMuchMoneyYouOwe(claimRef, amount) {
     await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  }
+
+  async EnterHowMuchMoneyYouOweError(claimRef) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef);
   }
 
   async EnterEmployerDetails() {
@@ -379,8 +407,8 @@ class ResponseSteps {
     await explanation.enterExplanation();
   }
 
-  async EnterRepaymentPlan(claimRef) {
-    await repaymentPlan.enterRepaymentPlan(claimRef);
+  async EnterRepaymentPlanError(claimRef) {
+    await repaymentPlan.enterRepaymentPlanError(claimRef);
   }
 
   async SelectPartAdmitAlreadyPaid(option) {
@@ -393,6 +421,10 @@ class ResponseSteps {
 
   async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
     await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  }
+
+  async EnterWhyYouDisagreeTheClaimAmountError(claimRef, responseType) {
+    await whyDoYouDisagreeTheClaimAmount.enterReasonError(claimRef, responseType);
   }
 
   async EnterWhyYouDisagree(claimRef){

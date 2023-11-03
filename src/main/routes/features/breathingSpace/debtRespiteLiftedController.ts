@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
-  BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
+  BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
@@ -9,8 +9,10 @@ import {
   getBreathingSpace,
 } from '../../../services/features/breathingSpace/breathingSpaceService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import { DebtRespiteStartDate } from 'common/models/breathingSpace/debtRespiteStartDate';
+import {DebtRespiteStartDate } from 'common/models/breathingSpace/debtRespiteStartDate';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const debtRespiteLiftedController = Router();
 const debtRespiteLiftDateViewPath = 'features/breathingSpace/debt-respite-lift-date';
@@ -21,9 +23,8 @@ function renderView(form: GenericForm<DebtRespiteStartDate>, res: Response): voi
 }
 
 debtRespiteLiftedController.get(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSpaceGuard, (async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
   try {
-    const breathingSpace = await getBreathingSpace(claimId);
+    const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     const debtRespiteLiftDate = breathingSpace.debtRespiteLiftDate ?? new DebtRespiteStartDate();
     renderView(new GenericForm(debtRespiteLiftDate), res);
   } catch (error) {
@@ -41,8 +42,8 @@ debtRespiteLiftedController.post(BREATHING_SPACE_RESPITE_LIFTED_URL, breathingSp
     if (genericForm.hasErrors()) {
       renderView(genericForm, res);
     } else {
-      await saveBreathingSpace(claimId, genericForm.model, breathingSpacePropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL));
+      await saveBreathingSpace(generateRedisKey(req as unknown as AppRequest), genericForm.model, breathingSpacePropertyName);
+      res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL));
     }
   } catch (error) {
     next(error);

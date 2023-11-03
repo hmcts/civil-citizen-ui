@@ -12,6 +12,12 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {Email} from 'models/Email';
+import axios from 'axios';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -22,6 +28,7 @@ const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
+jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -38,6 +45,11 @@ const mockGetClaim = getCaseDataFromStore as jest.Mock;
 const mockSubmitClaim = submitClaim as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
+
+const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
+const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockClaimWithPcqId = new Claim();
+mockClaimWithPcqId.pcqId = '123';
 
 describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -79,6 +91,9 @@ describe('Claim - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicDetails();
       });
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaimWithPcqId;
+      });
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
       expect(response.status).toBe(200);
@@ -118,7 +133,22 @@ describe('Claim - Check answers', () => {
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
+    it('should redirect to PCQ jouney', async () => {
+      isPcqShutterOnMock.mockResolvedValue(false);
+      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const mockClaimToRedirectToPcq = new Claim();
+        mockClaimToRedirectToPcq.respondent1 = new Party();
+        mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
+        mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
+        return mockClaimToRedirectToPcq;
+      });
 
+      await session(app).get(CLAIM_CHECK_ANSWERS_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+        });
+    });
     it('should return check your answer page', async () => {
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
         .expect((res: Response) => {

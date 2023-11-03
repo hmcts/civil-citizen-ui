@@ -48,12 +48,16 @@
               [
                 { text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.LENGTH_OF_REPAYMENT') },
                 { text: repaymentPlan.repaymentLength }
-              ]          
+              ]
             ]
           }) }}
 
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+
+            {% set judgePlanHtml %}
+              <p class="govuk-body">{{ t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.IF_YOU_WANT_JUDGE') }}</p>
+            {% endset -%}
 
             {{ govukRadios({
               idPrefix: "decision",
@@ -74,7 +78,10 @@
                 {
                   value: CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN,
                   checked: form.model.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN,
-                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.I_WANT_JUDGE')
+                  text: t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.I_WANT_JUDGE'),
+                  conditional: {
+                    html: judgePlanHtml
+                  }
                 }
               ],
               errorMessage: {

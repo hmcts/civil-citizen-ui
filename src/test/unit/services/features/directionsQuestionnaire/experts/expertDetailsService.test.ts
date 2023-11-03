@@ -9,7 +9,6 @@ import {ExpertDetails} from '../../../../../../main/common/models/directionsQues
 import {CaseState} from '../../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../../main/common/models/claimantResponse';
 
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;

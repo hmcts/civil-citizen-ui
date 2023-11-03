@@ -192,6 +192,7 @@ import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLi
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
+import judgmentAmountSummaryExtendedController from './features/claimantResponse/ccj/judgmentAmountSummaryExtendedController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
@@ -219,7 +220,7 @@ import trialArrangementsConfirmationController
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
-
+import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 export default [
   homeController,
   dashboardController,
@@ -399,6 +400,7 @@ export default [
   assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
+  judgmentAmountSummaryExtendedController,
   claimantResponseTasklistController,
   unavailableDatesForHearingController,
   claimantSuggestedPaymentOptionController,
@@ -424,4 +426,5 @@ export default [
   claimantResponseCheckAnswersController,
   claimFeeController,
   cancelTrialArrangementsController,
+  breathingSpaceLiftedCheckAnswersController,
 ];

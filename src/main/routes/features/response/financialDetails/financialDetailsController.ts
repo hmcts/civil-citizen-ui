@@ -6,10 +6,11 @@ import {
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyType} from 'models/partyType';
 import {LoggerInstance as winLogger} from 'winston';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'common/models/AppRequest';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();
@@ -28,7 +29,7 @@ financialDetailsController
   .get(
     FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const claim: Claim = await getCaseDataFromStore(req.params.id);
+        const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
@@ -37,15 +38,16 @@ financialDetailsController
     })
   .post(FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const redisKey = generateRedisKey(<AppRequest>req);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const claim: Claim = await getCaseDataFromStore(redisKey);
       const partyType: PartyType = claim.respondent1?.type;
       if (partyType) {
         if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
         } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
           claim.taskSharedFinancialDetails = true;
-          await saveDraftClaim(req.params.id, claim);
+          await saveDraftClaim(redisKey, claim);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         }
       } else {

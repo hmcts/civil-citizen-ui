@@ -9,6 +9,8 @@ import {
   getGenericOption,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const phoneOrVideoHearingController = Router();
 const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/hearing/phone-or-video-hearing';
@@ -21,7 +23,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: NextFunction) => {
   try {
-    const phoneOrVideoHearing = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
+    const phoneOrVideoHearing = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
     next(error);
@@ -38,7 +40,7 @@ phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: Re
     if (phoneOrVideoHearing.hasErrors()) {
       renderView(phoneOrVideoHearing, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, phoneOrVideoHearing.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), phoneOrVideoHearing.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL));
     }
   } catch (error) {

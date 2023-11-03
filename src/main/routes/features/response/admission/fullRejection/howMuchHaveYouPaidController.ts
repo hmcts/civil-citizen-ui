@@ -10,6 +10,8 @@ import howMuchHaveYouPaidService from '../../../../../services/features/response
 import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
@@ -21,7 +23,7 @@ howMuchHaveYouPaidController
   .get(
     CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.FULL_DEFENCE);
+        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), ResponseType.FULL_DEFENCE);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
 
         res.render(howMuchHaveYouPaidPath, {
@@ -50,7 +52,7 @@ howMuchHaveYouPaidController
         });
       } else {
         try {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.FULL_DEFENCE);
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), howMuchHaveYouPaid, ResponseType.FULL_DEFENCE);
           if (paid < howMuchHaveYouPaid.totalClaimAmount) {
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL));
           } else {

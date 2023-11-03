@@ -12,6 +12,9 @@
       "calculatedAmountInPence": "8000"
     },
     "issueDate": "2022-01-08",
+    "respondent1PinToPostLRspec":{
+      "accessCode": "H4WYG26R6PA9"
+    },
     "applicant1": {
       "type": "INDIVIDUAL",
       "individualTitle": "Mr.",

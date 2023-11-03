@@ -10,7 +10,7 @@ const claimantResponseConfirmationController = Router();
 claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, claimantResponseConfirmationGuard, (async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(req.params.id, req);
+    const claim = await getClaimById(req.params.id, req, true);
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang));
     res.render('features/claimantResponse/claimant-response-confirmation', {
       claimantResponseConfirmationContent,

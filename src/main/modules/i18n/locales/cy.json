@@ -494,6 +494,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
+      "JUDGMENT_REQUEST": "Judgment request",
       "NEED_HEARING_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
@@ -836,6 +837,13 @@
       },
       "EXPECTED_END_DATE": "Expected end date"
     },
+    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
+      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
+      "TITLE": "Lift the debt respite scheme (breathing space)",
+      "DATE_LIFTED": " Date lifted",
+      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
+      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
+    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Eich dyddiad geni",
       "TITLE": "Beth yw eich dyddiad geni?"
@@ -864,28 +872,30 @@
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
-        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
         "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
         "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
         "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
-        "YES": "Yes",
-        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan"
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
+        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
+        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
+        "TITLE": "The defendant can’t pay by your proposed date",
+        "YES": "Yes"
       },
       "COURT_PROPOSED_PLAN": {
-        "PAGE_TITLE": "The defendant can’t afford your plan",
-        "TITLE": "The defendant can’t afford your plan",
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
         "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
         "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
-        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
+        "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
+        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
+        "I_WANT_ACCEPT": "I want to accept this repayment plan",
+        "I_WANT_JUDGE": "I want a judge to make a repayment plan",
         "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
         "LENGTH_OF_REPAYMENT": "Hyd y cynllun ad-dalu",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan"
+        "PAGE_TITLE": "The defendant can’t afford your plan",
+        "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
+        "TITLE": "The defendant can’t afford your plan"
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
@@ -900,7 +910,11 @@
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
-      }
+      },
+      "REJECTED_DEFENDANT_RESPONSE": {
+        "MESSAGE": "You've rejected their response",
+        "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      } 
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -1149,10 +1163,15 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
+        "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu",
+        "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
         "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
-        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb."
+        "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
+        "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
+        "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1565,6 +1584,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
@@ -1680,6 +1700,13 @@
           "TITLE": "Claim has been struck out",
           "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
           "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
+        },
+        "VIEW_TRIAL_ARRANGEMENTS": {
+          "TITLE_OTHER_PARTY": "The other party has finalised their trial arrangements",
+          "TITLE_YOU": "You have finalised your trial arrangements",
+          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "You can view your trial arrangements under 'Notices and orders'.",
+          "YOU_CAN_VIEW_OTHER_PARTY": "You can view the other party's trial arrangements under 'Notices and orders'.",
+          "VIEW_TRIAL_ARRANGEMENTS_BUTTON": "View trial arrangements"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "Mae hyn oherwydd na wnaeth {{claimantName}} fwrw ymlaen ag ef cyn y dyddiad cau o 4pm ar {{deadline}}.",
@@ -1729,10 +1756,10 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "Gallwch ymateb i'r hawliad o hyd cyn i’r hawlydd ofyn am ddyfarniad.",
       "YOU_HAVE_BOTH_AGREED_TO_TRY_MEDIATION": "Mae'r ddau ohonoch wedi cytuno i roi cynnig ar gyfryngu. Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
       "YOU_HAVE_OFFERED_TO_PAY_BY": "Rydych chi wedi cynnig talu i {{ claimantName }} erbyn {{ paymentDate }}",
-      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu £{{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "Rydych chi wedi dweud bod arnoch chi £{{ amount }} ac wedi cynnig talu {{ claimantName }} erbyn {{ paymentDate }}",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "Rydych chi wedi dweud bod arnoch chi £{{ amount }} ac wedi cynnig talu {{ claimantName }} ar unwaith.",
-      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "Rydych chi wedi dweud bod arnoch £{{ amount }} ac wedi cynnig talu {{ claimantName }} £{{ installmentAmount }} {{ paymentSchedule }} gan ddechrau ar {{ paymentDate }} ",
+      "YOU_HAVE_OFFERED_TO_PAY_STARTING": "Rydych chi wedi cynnig talu {{ installmentAmount }} {{ paymentSchedule }} i {{ claimantName }}   gan ddechrau ar {{ paymentDate }}. ",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_BY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} erbyn {{ paymentDate }}",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_IMMEDIATELY": "Rydych chi wedi dweud bod arnoch chi {{ amount }} ac wedi cynnig talu {{ claimantName }} ar unwaith.",
+      "YOU_HAVE_SAID_YOU_OWE_AND_OFFERED_TO_PAY_STARTING": "Rydych chi wedi dweud bod arnoch {{ amount }} ac wedi cynnig talu {{ claimantName }} {{ installmentAmount }} {{ paymentSchedule }} gan ddechrau ar {{ paymentDate }} ",
       "YOU_HAVE_SETTLED_CLAIM_TITLE": "Fe wnaethoch chi setlo'r hawliad drwy gyfryngu",
       "YOU_HAVE_SETTLED_CLAIM": "Fe wnaethoch chi gytundeb sy'n golygu bod yr hawliad bellach wedi dod i ben ac yn nodi'r telerau o sut mae'n rhaid i chi ad-dalu i {{claimantName}}.",
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "Dydych chi ddim wedi ymateb i'r hawliad hwn",
@@ -1740,7 +1767,7 @@
       "YOU_MUST_PAY_THEM_BY_PAYMENT_DATE": "Mae'n rhaid i chi dalu erbyn {{paymentDate}}. Rhaid i unrhyw sieciau neu drosglwyddiadau fod yn glir yn eu cyfrif erbyn hynny.",
       "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} Dyddiau sy'n weddill).",
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "Mae angen i chi anfon manylion ariannol eich cwmni at yr hawlydd os nad ydych eisoes wedi gwneud hynny.",
-      "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu £{{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
+      "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu {{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Eich ymateb i'r hawliad",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Aros i'r llys adolygu'r achos.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
@@ -1774,7 +1801,7 @@
       "DISCLOSURE": "Disclosure",
       "DISCLOSURE_LIST": "Disclosure list",
       "DISCLOSURE_LIST_HINT": "A list of the documents that you must show the other parties",
-      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for hearing",
+      "DOCUMENTARY_EVIDENCE_HEARING": "Documentary evidence for the hearing",
       "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Documents that you wish to rely on at the hearing, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Documentary evidence for trial",
       "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Documents that you wish to rely on at the trial, including emails, receipts, invoices, contracts and photos. You do not need to add documents that you have already added under witness evidence",
@@ -2401,7 +2428,7 @@
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
-      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol { { claimantName }}.",
+      "GET_FINANCIAL_DETAILS": "Cael manylion ariannol {{ claimantName }}.",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "IF_CLAIMANT_ACCEPTS_OFFER": "Os yw {{ claimantName }} yn derbyn eich cynnig",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "Os yw {{ claimantName }} yn derbyn eich ymateb",
@@ -2484,7 +2511,7 @@
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Finalise your trial arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
-      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\"> {{ hearingDuration }} </span>.",
+      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
       "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
       "OTHER_INFORMATION_TITLE": "Other information",
@@ -2618,7 +2645,7 @@
       },
       "HEARING": {
         "TITLE": "Hearing documents",
-        "DOCUMENTARY": "Documentary evidence for hearing"
+        "DOCUMENTARY": "Documentary evidence for the hearing"
       },
       "YEAR": "Year"
     },
@@ -2721,7 +2748,7 @@
 
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalize your trial arrangements",
+      "TITLE": "Finalise your trial arrangements",
       "CASE_REFERENCE": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",

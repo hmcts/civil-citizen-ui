@@ -57,12 +57,14 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
 
   let freeTelephoneMediationSection: SummarySection = null;
 
-  freeTelephoneMediationSection = summarySection({
-    title: t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)}),
-    summaryRows: [],
-  });
+  if (canWeUse) {
+    freeTelephoneMediationSection = summarySection({
+      title: t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)}),
+      summaryRows: [],
+    });
 
-  freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION', {lng: getLng(lang)}), t(`COMMON.${canWeUse}`, {lng: getLng(lang)}), freeMediationHref, changeLabel(lang)));
+    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION', {lng: getLng(lang)}), t(`COMMON.${canWeUse}`, {lng: getLng(lang)}), freeMediationHref, changeLabel(lang)));
+  }
   if (canWeUse === YesNoUpperCase.YES) {
     if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
       const contactNameHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL);

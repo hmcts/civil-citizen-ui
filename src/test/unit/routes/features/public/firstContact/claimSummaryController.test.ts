@@ -5,13 +5,14 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../../../main/routes/urls';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 describe('First contact - claim summary controller', () => {
+  beforeAll(() => {
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  });
   it('should render page successfully if cookie has correct values', async () => {
-    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', pinVerified: YesNo.YES}};
+    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s='}};
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -20,7 +21,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should return 500 error page for redis failure', async () => {
-    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', pinVerified: YesNo.YES}};
+    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s='}};
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(FIRST_CONTACT_CLAIM_SUMMARY_URL)
@@ -40,7 +41,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should redirect to access denied page if cookie is missing claimId property', async () => {
-    app.request['cookies'] = {'firstContact': {pinVerified: YesNo.YES}};
+    app.request['cookies'] = {'firstContact': {AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s='}};
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(302);
@@ -49,7 +50,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should redirect to access denied page if cookie is missing claimId property and pinVerified is no', async () => {
-    app.request['cookies'] = {'firstContact': {pinVerified: YesNo.NO}};
+    app.request['cookies'] = {'firstContact': {AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: YesNo.NO}};
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(302);
@@ -58,7 +59,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should redirect to access denied page if cookie pinVerified value is no', async () => {
-    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', pinVerified: YesNo.NO}};
+    app.request['cookies'] = {'firstContact': {claimId: '1645882162449404', AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ: YesNo.NO}};
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(302);

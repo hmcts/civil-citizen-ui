@@ -14,6 +14,8 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {DebtRespiteOption} from '../../../common/models/breathingSpace/debtRespiteOption';
 import {DebtRespiteOptionType} from '../../../common/models/breathingSpace/debtRespiteOptionType';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { AppRequest } from 'common/models/AppRequest';
 
 const debtRespiteOptionController = Router();
 const debtRespiteOptionViewPath = 'features/breathingSpace/respite-type';
@@ -24,9 +26,8 @@ function renderView(form: GenericForm<DebtRespiteOption>, res: Response): void {
 }
 
 debtRespiteOptionController.get(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpaceGuard, (async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
   try {
-    const breathingSpace = await getBreathingSpace(claimId);
+    const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new DebtRespiteOption(breathingSpace.debtRespiteOption?.type)), res);
   } catch (error) {
     next(error);
@@ -44,7 +45,7 @@ debtRespiteOptionController.post(BREATHING_SPACE_RESPITE_TYPE_URL, breathingSpac
     if (genericForm.hasErrors()) {
       renderView(genericForm, res);
     } else {
-      await saveBreathingSpace(claimId, genericForm.model, breathingSpacePropertyName);
+      await saveBreathingSpace(generateRedisKey(req as unknown as AppRequest), genericForm.model, breathingSpacePropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_RESPITE_END_DATE_URL));
     }
   } catch (error) {

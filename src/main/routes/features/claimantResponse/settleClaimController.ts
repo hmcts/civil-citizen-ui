@@ -8,9 +8,10 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {YesNo} from 'form/models/yesNo';
+import { AppRequest } from 'common/models/AppRequest';
 
 const settleClaimController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-claim';
@@ -23,9 +24,8 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: 
 let paidAmount: number;
 
 settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Request, res, next: NextFunction) => {
-  const claimId = req.params.id;
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     let hasPaidInFull: boolean;
     if (claim.isFullDefence()) {
       hasPaidInFull = claim.hasPaidInFull();
@@ -47,7 +47,7 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
     if (form.hasErrors()) {
       renderView(form, res, paidAmount, null);
     } else {
-      await saveClaimantResponse(claimId, form.model, claimantResponsePropertyName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, claimantResponsePropertyName);
       const redirectionLink = form.model.option === YesNo.YES ? CLAIMANT_RESPONSE_TASK_LIST_URL : CLAIMANT_RESPONSE_REJECTION_REASON_URL;
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectionLink));
     }

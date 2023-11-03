@@ -6,7 +6,7 @@ import {
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('completingClaimService');
 
-export const saveCompletingClaim = async (claimId: string) => {
+export const  saveCompletingClaim = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     claim.completingClaimConfirmed = true;

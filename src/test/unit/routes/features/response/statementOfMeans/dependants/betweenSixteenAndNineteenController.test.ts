@@ -11,9 +11,9 @@ import {hasDisabledChildren}
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
@@ -27,6 +27,7 @@ describe('Dependant Teenagers', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

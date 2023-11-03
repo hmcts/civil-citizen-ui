@@ -13,6 +13,8 @@ import {
   getOtherWitnessDetailsForm,
   getOtherWitnesses,
 } from '../../../../services/features/directionsQuestionnaire/otherWitnessesService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const otherWitnessesController = Router();
 const otherWitnessesViewPath = 'features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses';
@@ -40,7 +42,7 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveDirectionQuestionnaire(req.params.id, form.model, dqPropertyName, dqParentName);
+        await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
       }
     } catch (error) {

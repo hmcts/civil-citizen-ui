@@ -4,6 +4,8 @@ import {DisabilityService} from '../../../../services/features/response/statemen
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
 const disabilityController = Router();
@@ -15,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: NextFunction) => {
   try {
-    renderView(await disabilityService.getDisability(req.params.id), res);
+    renderView(await disabilityService.getDisability(generateRedisKey(<AppRequest>req)), res);
   } catch (error) {
     next(error);
   }
@@ -29,7 +31,7 @@ disabilityController.post(CITIZEN_DISABILITY_URL,
       renderView(form, res);
     } else {
       try {
-        await disabilityService.saveDisability(req.params.id, form);
+        await disabilityService.saveDisability(generateRedisKey(<AppRequest>req), form);
         if (form.model.option == 'yes') {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_SEVERELY_DISABLED_URL));
         } else {

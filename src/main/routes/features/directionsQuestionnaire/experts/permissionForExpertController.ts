@@ -13,6 +13,8 @@ import {
   getGenericOptionForm,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const permissionForExpertController = Router();
 const permissionForExpertViewPath = 'features/directionsQuestionnaire/experts/permission-for-expert';
@@ -25,7 +27,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
-    const permissionForExpert = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
+    const permissionForExpert = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(permissionForExpert), res);
   } catch (error) {
     next(error);
@@ -41,7 +43,7 @@ permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, n
     if (permissionForExpert.hasErrors()) {
       renderView(permissionForExpert, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, permissionForExpert.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), permissionForExpert.model, dqPropertyName, dqParentName);
       (permissionForExpert.model.option === YesNo.YES) ?
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
