@@ -39,8 +39,10 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate name="repaymentPlan">
             {{ csrfProtection(csrf) }}
-            {% if claim.responseStatus === ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN %}
-            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+            {% if claim.isBusiness() === false %}
+              {% if claim.responseStatus === ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN %}
+                {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+              {% endif %}
             {% endif %}
             <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
             <p class="govuk-!-margin-0 govuk-body-m"><strong>{{t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS')}}:</strong></p>
