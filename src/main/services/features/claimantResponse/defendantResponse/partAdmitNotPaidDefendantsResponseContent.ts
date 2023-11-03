@@ -102,22 +102,6 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): Cl
     }];
 };
 
-export const getReasonsForWhyCantPayImmediately = (claim: Claim): ClaimSummarySection[] => {
-  return [
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT',
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: claim.statementOfMeans?.explanation?.text,
-      },
-    },
-  ];
-};
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim, lng),

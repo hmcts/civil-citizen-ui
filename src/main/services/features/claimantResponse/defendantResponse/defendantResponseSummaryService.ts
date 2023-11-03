@@ -33,8 +33,5 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
 };
 
 export const getResponseContentForHowTheyWantToPay = (claim: Claim, lang: string): ClaimSummarySection[] => {
-  switch (claim.responseStatus) {
-    case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-      return buildPartAdmitNotPaidResponseForHowTheyWantToPay(claim, lang);
-  }
+  return buildPartAdmitNotPaidResponseForHowTheyWantToPay(claim, lang);
 };
