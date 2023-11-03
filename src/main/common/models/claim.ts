@@ -761,10 +761,6 @@ export class Claim {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
 
-  isClaimantAcceptPaymentPlan() {
-    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
-  }
-
   threeWeeksBeforeHearingDateString() {
     const threeWeeksBefore = this.threeWeeksBeforeHearingDate();
     const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
