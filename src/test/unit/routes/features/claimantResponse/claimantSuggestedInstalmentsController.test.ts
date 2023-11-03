@@ -4,15 +4,17 @@ import nock from 'nock';
 import {t} from 'i18next';
 import {app} from '../../../../../main/app';
 import {
+  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {getNextYearValue} from '../../../../utils/dateUtils';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
@@ -21,6 +23,13 @@ jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
   getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
   saveClaimantResponse: jest.fn(),
 }));
+
+const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
+
+getCalculatedDecision.mockImplementation(() => {
+  return CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
+});
+
 describe('Suggest instalments for the defendant', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -186,7 +195,7 @@ describe('Suggest instalments for the defendant', () => {
         .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
         });
     });
 
@@ -196,7 +205,7 @@ describe('Suggest instalments for the defendant', () => {
         .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
         });
     });
 
@@ -206,7 +215,7 @@ describe('Suggest instalments for the defendant', () => {
         .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
         });
     });
 
