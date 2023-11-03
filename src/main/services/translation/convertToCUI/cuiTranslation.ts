@@ -44,6 +44,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.caseProgression = toCUICaseProgression(ccdClaim);
   claim.specClaimTemplateDocumentFiles = ccdClaim.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
   claim.specClaimTemplateDocumentFiles = ccdClaim.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
+  claim.caseRole = ccdClaim.caseRole;
+  claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
 
   if (claim.isFullAdmission()) {
     translateFullAdmission(claim, ccdClaim, claimantResponse);
@@ -59,13 +61,10 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
 
   claimantResponse.hasDefendantPaidYou = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec);
   claim.claimantResponse = claimantResponse;
-  claim.caseRole = ccdClaim.caseRole;
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed[ccdClaim.applicant1LiPResponse?.applicant1ChoosesHowToProceed];
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
 
-  claim.caseRole = ccdClaim.caseRole;
-  claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   return claim;
 };
 

@@ -9,7 +9,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -50,16 +50,15 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   try {
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
-    const userId = req.params.id;
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
       await renderView(<AppRequest>req, res, form, claim);
     } else {
-      await saveStatementOfTruth(generateRedisKey(req as unknown as AppRequest), form.model);
+      await saveStatementOfTruth(generateRedisKey(<AppRequest>req), form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
-      res.redirect(constructResponseUrlWithIdParams(userId, CLAIMANT_RESPONSE_CONFIRMATION_URL));
+      await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
