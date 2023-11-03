@@ -3,7 +3,7 @@ import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,} from '../../../../../main/routes/urls';
+import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT} from '../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
