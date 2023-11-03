@@ -175,7 +175,7 @@ describe('Claimant Response Confirmation service', () => {
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
 
     // Then
-   expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
