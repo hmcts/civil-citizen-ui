@@ -1,13 +1,13 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from '../../urls';
-import {getSummarySections} from '../../../services/features/breathingSpace/checkAnswersService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {AppRequest} from '../../../common/models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import {BreathingSpace} from 'models/breathingSpace';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
+import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -34,7 +34,7 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, bre
   try {
     const userId = req.session?.user?.id;
     await submitBreathingSpace(<AppRequest>req);
-    await deleteDraftClaimFromStore(userId);
+    await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
     res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
