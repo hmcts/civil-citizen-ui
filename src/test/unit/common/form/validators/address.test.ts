@@ -8,7 +8,6 @@ describe(('For Address Form'), () => {
     const form = new GenericForm(address);
     await form.validate();
     expect(form.hasErrors()).toBeTruthy();
-    expect(form.errorFor('addressLine1')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
     expect(form.errorFor('addressLine2')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
     expect(form.errorFor('addressLine3')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
   });

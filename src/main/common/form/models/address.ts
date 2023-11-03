@@ -3,8 +3,7 @@ import {PostcodeValidator} from '../validators/postcodeValidator';
 import { ADDRESS_LINE_MAX_LENGTH } from '../validators/validationConstraints';
 
 export class Address {
-  @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
+  @IsNotEmpty({ message: 'ERRORS.VALID_ADDRESS_LINE_1' })
     addressLine1?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })  
     addressLine2?: string;
