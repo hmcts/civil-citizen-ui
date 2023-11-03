@@ -30,26 +30,35 @@ describe('Claimant response confirmation controller', () => {
 
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
+      // Given
       const mockClaim = getMockClaim();
       mockClaim.defendantSignedSettlementAgreement = true;
       mockGetCaseData.mockImplementation(() => mockClaim);
+      // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
       expect(res.status).toBe(200);
       expect(res.text).toContain("You've both signed a settlement agreement");
     });
 
     it('should return reject settlement agreement confirmation', async () => {
+      // Given
       const mockClaim = getMockClaim();
       mockClaim.defendantRejectedSettlementAgreement = true;
       mockGetCaseData.mockImplementation(() => mockClaim);
+      // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
       expect(res.status).toBe(200);
       expect(res.text).toContain("You've rejected the settlement agreement");
     });
 
     it('should return http 500 when has error in the get method', async () => {
+      // Given
       mockGetCaseData.mockImplementation(() => {throw new Error('Test error');});
+      // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
