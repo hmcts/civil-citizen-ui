@@ -3,18 +3,19 @@ import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
+  CCJ_EXTENDED_PAID_AMOUNT_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
-  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
-  CCJ_EXTENDED_PAID_AMOUNT_URL,
-  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
+import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -145,7 +146,16 @@ function isPAPaymentOptionByDateSuggestionGiven(claim: Claim): boolean {
 
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
     (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate
-      && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+      && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption
+      && ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
+          && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)
+        ||
+        (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
+          && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan)
+        ||
+        (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY)
+      )
+    )) {
     return true;
   }
   return false;
