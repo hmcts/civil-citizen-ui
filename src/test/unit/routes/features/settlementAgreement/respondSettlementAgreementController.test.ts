@@ -37,20 +37,27 @@ describe('Respond To Settlement Agreement', () => {
       .reply(200, { id_token: citizenRoleToken });
   });
 
+  function getMockClaim() {
+    const date = new Date(Date.now());
+    const mockClaim = new Claim();
+    mockClaim.defendantSignedSettlementAgreement = true;
+    mockClaim.respondent1 = new Party();
+    mockClaim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    mockClaim.partialAdmission = new PartialAdmission();
+    mockClaim.partialAdmission.alreadyPaid = new GenericYesNo('yes');
+    mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
+    mockClaim.partialAdmission.paymentIntention = new PaymentIntention();
+    mockClaim.partialAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
+    mockClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
+    mockClaim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
+    mockClaim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate = date;
+    return mockClaim;
+  }
+
   describe('on GET', () => {
     const date = new Date(Date.now());
     it('should return respond to settlement agreement page', async () => {
-      const mockClaim = new Claim();
-      mockClaim.respondent1 = new Party();
-      mockClaim.respondent1.responseType = ResponseType.PART_ADMISSION;
-      mockClaim.partialAdmission = new PartialAdmission();
-      mockClaim.partialAdmission.alreadyPaid = new GenericYesNo('yes');
-      mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
-      mockClaim.partialAdmission.paymentIntention = new PaymentIntention();
-      mockClaim.partialAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
-      mockClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
-      mockClaim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
-      mockClaim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate = date;
+      const mockClaim = getMockClaim();
       (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
 
       await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
@@ -87,9 +94,11 @@ describe('Respond To Settlement Agreement', () => {
     });
 
     it('should redirect to the claimant response task-list if sign agreement checkbox is selected', async () => {
+      const mockClaim = getMockClaim();
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).send({option: 'yes'})
         .expect((res) => {
-          // TODO: Change to 302 once redirect is implemented
           expect(res.status).toBe(302);
         });
     });
