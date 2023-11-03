@@ -7,6 +7,7 @@ import {
 } from 'services/features/settlementAgreement/respondSettlementAgreementConfirmationContentService';
 import {respondSettlementAgreementConfirmationGuard} from 'routes/guards/respondSettlementAgreementConfirmationGuard';
 
+const respondSettlementAgreementConfirmationViewPath = 'features/settlementAgreement/respond-settlement-agreement-confirmation';
 const respondSettlementAgreementConfirmationController = Router();
 
 respondSettlementAgreementConfirmationController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION, respondSettlementAgreementConfirmationGuard, (async (req, res, next) => {
@@ -16,7 +17,7 @@ respondSettlementAgreementConfirmationController.get(DEFENDANT_SIGN_SETTLEMENT_A
     const claim = await getClaimById(claimId, req, true);
     claim.id = claimId;
     const claimantResponseConfirmationContent = getRespondSettlementAgreementConfirmationContent(claim, getLng(lang));
-    res.render('features/settlementAgreement/respond-settlement-agreement-confirmation', {
+    res.render(respondSettlementAgreementConfirmationViewPath, {
       claimantResponseConfirmationContent,
     });
   } catch (error) {
