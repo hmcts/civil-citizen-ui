@@ -61,7 +61,7 @@ describe('Claimant response confirmation controller', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {throw new Error()});
+      mockGetCaseData.mockImplementation(() => {throw new Error();});
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
