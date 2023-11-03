@@ -8,7 +8,7 @@ import {
   getAmount,
   getFinalPaymentDate,
   getFirstRepaymentDate,
-  getPaymentAmount, getPaymentDate, getPaymentOptionType,
+  getPaymentAmount, getPaymentDate,
   getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -32,7 +32,7 @@ const getSettlementAgreementData = (claim: Claim, req: Request) => {
     amount: getAmount(claim),
     claimant: claim.getClaimantFullName(),
     defendant: claim.getDefendantFullName(),
-    paymentOption: getPaymentOptionType(claim),
+    paymentOption: claim.getPaymentIntention()?.paymentOption,
     firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lang),
     finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
     paymentDate: formatDateToFullDate(getPaymentDate(claim), lang),

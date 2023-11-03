@@ -13,7 +13,6 @@ import {
   getFirstRepaymentDate,
   getPaymentAmount,
   getPaymentDate,
-  getPaymentOptionType,
   getRepaymentFrequency,
   getRepaymentLength,
 } from 'common/utils/repaymentUtils';
@@ -445,25 +444,6 @@ describe('repaymentUtils', () => {
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
       expect(repaymentLength).toContain('20');
-    });
-  });
-
-  describe('getPaymentOption', () => {
-    it('should return payment option when response type is part admission', () => {
-      //Given
-      const claim = getClaimForPA(TransactionSchedule.WEEK);
-      //When
-      const paymentOption = getPaymentOptionType(claim);
-      //Then
-      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
-    });
-    it('should return payment option when response type is full admission', () => {
-      //Given
-      const claim = getClaimForFA(TransactionSchedule.WEEK);
-      //When
-      const paymentOption = getPaymentOptionType(claim);
-      //Then
-      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
     });
   });
 });
