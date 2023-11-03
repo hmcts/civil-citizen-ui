@@ -60,14 +60,6 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
 
-function getTrialArrangementUndefined() {
-  const defendantTrialArrangement = new TrialArrangements();
-  defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(undefined, undefined),
-  defendantTrialArrangement.isCaseReady = undefined,
-  defendantTrialArrangement.otherTrialInformation = undefined;
-  return defendantTrialArrangement;
-}
-
 function getTrialArrangementFilled() {
   const defendantTrialArrangement = new TrialArrangements();
   defendantTrialArrangement.hasAnythingChanged = new HasAnythingChangedForm(YesNo.YES, 'textArea');
