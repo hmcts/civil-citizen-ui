@@ -36,17 +36,17 @@ describe('save responsetype = "FULL_ADMISSION" setting to datastore and clear pr
     //Given
     const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
     const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
-mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+    mockGetCaseDataFromDraftStore.mockImplementation(async () => {
       mockClaim.directionQuestionnaire = {
         defendantYourselfEvidence: {
-          option: 'yes'
+          option: 'yes',
         },
       } as DirectionQuestionnaire;
       mockClaim.mediation = {
         canWeUse: {
           option: YesNo.YES,
-        }
-      } as Mediation
+        },
+      } as Mediation;
       return mockClaim;
     });
     //When

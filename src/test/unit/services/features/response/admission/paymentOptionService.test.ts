@@ -83,14 +83,14 @@ describe('payment option service', () => {
       claim.partialAdmission = new FullAdmission();
       claim.statementOfMeans = {
         disability: { option: YesNo.YES },
-      }
+      };
       mockGetCaseData.mockResolvedValueOnce(claim);
       jest.spyOn(draftStoreService, 'saveDraftClaim');
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY), ResponseType.FULL_ADMISSION);
 
       expect(claim.statementOfMeans).toBeUndefined();
 
-    })
+    });
   });
   describe('get payment option form when part admission', () => {
     it('should get populated form when data exists', async () => {
@@ -167,14 +167,14 @@ describe('payment option service', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.statementOfMeans = {
         disability: { option: YesNo.YES },
-      }
+      };
       mockGetCaseData.mockResolvedValueOnce(claim);
       jest.spyOn(draftStoreService, 'saveDraftClaim');
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY), ResponseType.PART_ADMISSION);
 
       expect(claim.statementOfMeans).toBeUndefined();
 
-    })
+    });
     it('should throw error when draft store throws error', async () => {
       //Given
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
