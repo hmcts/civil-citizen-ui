@@ -5,7 +5,7 @@ import {PartyType} from 'common/models/partyType';
 import {Party} from 'common/models/party';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
-  getDefendantsResponseContent,
+  getDefendantsResponseContent, getResponseContentForHowTheyWantToPay,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
@@ -217,6 +217,18 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[10].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
       expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
       expect(defendantsResponseContent[12].data?.text).toEqual('evidence comments');
+    });
+
+    it('Part admission - Not paid - By date - how they want to pay page', () => {
+      // Given
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      const reason = "Not able to pay the amount now";
+      claim.statementOfMeans.explanation = {text: reason};
+      // When
+      const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, lang);
+      // Then
+      expect(defendantsResponseContent[0].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE');
+      expect(defendantsResponseContent[1].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT');
     });
   });
 
