@@ -18,6 +18,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();
@@ -47,13 +48,7 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (a
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    let selectedOption: string;
-    if (claim.defendantSignedSettlementAgreement) {
-      selectedOption = 'yes';
-    } else if (claim.defendantRejectedSettlementAgreement) {
-      selectedOption = 'no';
-    }
-    renderView(new GenericForm(new GenericYesNo(selectedOption, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
+    renderView(new GenericForm(new GenericYesNo(claim.defendantSignedSettlementAgreement, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getSettlementAgreementData(claim, req));
   } catch (error) {
     next(error);
   }
@@ -69,8 +64,7 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
     if (respondSettlementAgreement.hasErrors()) {
       renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     } else {
-      claim.defendantSignedSettlementAgreement = respondSettlementAgreement.model.option === 'yes';
-      claim.defendantRejectedSettlementAgreement = respondSettlementAgreement.model.option === 'no';
+      claim.defendantSignedSettlementAgreement = respondSettlementAgreement.model.option as YesNo;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION));
     }

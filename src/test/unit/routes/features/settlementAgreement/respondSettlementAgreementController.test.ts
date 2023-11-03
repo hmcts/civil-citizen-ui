@@ -1,24 +1,23 @@
 import config from 'config';
-import { t } from 'i18next';
+import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {
-  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-} from '../../../../../main/routes/urls';
+import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,} from '../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getClaimById} from 'modules/utilityService';
-import {Claim} from'models/claim';
+import {Claim} from 'models/claim';
 import {PartialAdmission} from 'models/partialAdmission';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {Party} from 'common/models/party';
-import {PaymentIntention } from 'common/form/models/admission/paymentIntention';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -40,7 +39,7 @@ describe('Respond To Settlement Agreement', () => {
   function getMockClaim() {
     const date = new Date(Date.now());
     const mockClaim = new Claim();
-    mockClaim.defendantSignedSettlementAgreement = true;
+    mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
     mockClaim.respondent1 = new Party();
     mockClaim.respondent1.responseType = ResponseType.PART_ADMISSION;
     mockClaim.partialAdmission = new PartialAdmission();

@@ -10,7 +10,7 @@ export const respondSettlementAgreementConfirmationGuard = (async (req: Request,
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    if (!claim.defendantSignedSettlementAgreement && !claim.defendantRejectedSettlementAgreement) {
+    if (!claim.defendantSignedSettlementAgreement) {
       logger.info('Redirecting to settlement agreement response from ', req.url);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT));
     } else {

@@ -7,6 +7,7 @@ import {getClaimById} from 'modules/utilityService';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {FullAdmission} from 'models/fullAdmission';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -32,7 +33,7 @@ describe('Claimant response confirmation controller', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantSignedSettlementAgreement = true;
+      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
       mockGetCaseData.mockImplementation(() => mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
@@ -44,7 +45,7 @@ describe('Claimant response confirmation controller', () => {
     it('should return reject settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantRejectedSettlementAgreement = true;
+      mockClaim.defendantSignedSettlementAgreement = YesNo.NO;
       mockGetCaseData.mockImplementation(() => mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);

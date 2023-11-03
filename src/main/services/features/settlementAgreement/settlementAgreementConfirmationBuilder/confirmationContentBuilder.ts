@@ -4,11 +4,12 @@ import {t} from 'i18next';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {YesNo} from 'form/models/yesNo';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  if (claim.defendantSignedSettlementAgreement) {
+  if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
     return getAcceptConfirmationPanel(claim, lang);
-  } else if (claim.defendantRejectedSettlementAgreement) {
+  } else if (claim.defendantSignedSettlementAgreement === YesNo.NO) {
     return getRejectConfirmationPanel(claim, lang);
   }
 }
@@ -40,9 +41,9 @@ const getRejectConfirmationPanel = (claim: Claim, lang: string) => {
 };
 
 export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  if (claim.defendantSignedSettlementAgreement) {
+  if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
     return getAcceptSettlementAgreementNextSteps(claim, lang);
-  } else if (claim.defendantRejectedSettlementAgreement) {
+  } else if (claim.defendantSignedSettlementAgreement === YesNo.NO) {
     return getRejectSettlementAgreementNextSteps(claim, lang);
   }
 }
