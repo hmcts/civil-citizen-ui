@@ -132,6 +132,5 @@ export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string):
 export const buildPartAdmitNotPaidResponseForHowTheyWantToPay = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getPayByDateResponseForHowTheyWantToPay(claim, lng),
-    ...getReasonsForWhyCantPayImmediately(claim),
   ];
 };

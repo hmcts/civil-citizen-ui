@@ -222,13 +222,10 @@ describe("Defendant's response summary service", () => {
     it('Part admission - Not paid - By date - how they want to pay page', () => {
       // Given
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-      const reason = 'Not able to pay the amount now';
-      claim.statementOfMeans.explanation = {text: reason};
       // When
       const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, lang);
       // Then
       expect(defendantsResponseContent[0].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE');
-      expect(defendantsResponseContent[1].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT');
     });
   });
 
