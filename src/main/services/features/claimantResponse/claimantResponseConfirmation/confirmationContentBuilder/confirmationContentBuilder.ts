@@ -40,7 +40,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
   }
-  if (claim.isClaimantAcceptPaymentPlan() && claimantResponse.isCCJRequested) {
+  if (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) {
     return ccjNextSteps;
   }
 
