@@ -222,7 +222,7 @@ describe("Defendant's response summary service", () => {
     it('Part admission - Not paid - By date - how they want to pay page', () => {
       // Given
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-      const reason = "Not able to pay the amount now";
+      const reason = 'Not able to pay the amount now';
       claim.statementOfMeans.explanation = {text: reason};
       // When
       const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, lang);

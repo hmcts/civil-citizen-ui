@@ -128,7 +128,7 @@ describe('Review Defendant\'s Response Controller', () => {
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.partialAdmission.paymentIntention.paymentDate = new Date();
     claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(700,1200);
-    const reason = "Not able to pay the amount now";
+    const reason = 'Not able to pay the amount now';
     claim.statementOfMeans.explanation = {text: reason};
     mockGetCaseData.mockImplementation(() => claim);
     await request(app)
