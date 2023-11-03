@@ -1,6 +1,4 @@
 import request from 'supertest';
-import nock from 'nock';
-import config from 'config';
 import {app} from '../../../../../main/app';
 import {Claim} from 'common/models/claim';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
@@ -21,8 +19,6 @@ jest.mock('routes/guards/respondSettlementAgreementConfirmationGuard', () => ({
 const mockGetCaseData = getClaimById as jest.Mock;
 
 describe('Claimant response confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
 
   function getMockClaim() {
     const mockClaim = new Claim();
@@ -31,15 +27,6 @@ describe('Claimant response confirmation controller', () => {
     mockClaim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     return mockClaim;
   }
-
-  beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock('http://localhost:4000')
-      .get('/cases/:id')
-      .reply(200, getMockClaim());
-  });
 
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
@@ -61,7 +48,7 @@ describe('Claimant response confirmation controller', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {throw new Error();});
+      mockGetCaseData.mockImplementation(() => {throw new Error('Test error');});
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
