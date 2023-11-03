@@ -2,6 +2,7 @@ import {CaseEvent} from './caseEvent';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {CCDApplicantLiPResponse} from 'models/ccdResponse/ccdApplicant1LiPResponse';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export interface EventDto {
   event: CaseEvent,
@@ -15,4 +16,6 @@ export interface ClaimUpdate {
   respondent1ResponseDeadline?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
   applicant1LiPResponse?: CCDApplicantLiPResponse;
+  applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
+  applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
 }

@@ -685,15 +685,18 @@ export class Claim {
   }
 
   get bundleStitchingDeadline(): string {
-    return this.threeWeeksBeforeHearingDate();
+    return this.threeWeeksBeforeHearingDateString();
   }
 
   get finalisingTrialArrangementsDeadline(): string {
-    return this.threeWeeksBeforeHearingDate();
+    return this.threeWeeksBeforeHearingDateString();
   }
 
-  isSixWeeksOrLessFromTrial(): boolean {
-    return new Date() >= this.sixWeeksBeforeHearingDate();
+  isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
+    const nowDate = new Date(new Date().setHours(0,0,0,0));
+    const sixWeeksBeforeHearingDate = this.sixWeeksBeforeHearingDate();
+    const threeWeeksBeforeHearingDate = this.threeWeeksBeforeHearingDate();
+    return nowDate >= sixWeeksBeforeHearingDate && nowDate <= threeWeeksBeforeHearingDate;
   }
 
   isBundleStitched(): boolean {
@@ -762,17 +765,24 @@ export class Claim {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
 
-  threeWeeksBeforeHearingDate() {
+  threeWeeksBeforeHearingDateString() {
+    const threeWeeksBefore = this.threeWeeksBeforeHearingDate();
+    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return threeWeeksBefore.toLocaleDateString('en-GB', options);
+  }
+
+  private threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(hearingDateTime - threeWeeksMilli).toLocaleDateString('en-GB', options);
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0,0,0,0);
+    return new Date(dateAtStartOfDay);
   }
 
   private  sixWeeksBeforeHearingDate(): Date {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
-    return new Date(hearingDateTime - sixWeeksMilli);
+    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0,0,0,0);
+    return new Date(dateAtStartOfDay);
   }
 
   hasRespondent1NotAgreedMediation() {

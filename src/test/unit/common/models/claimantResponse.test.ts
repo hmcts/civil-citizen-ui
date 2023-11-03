@@ -150,4 +150,42 @@ describe('ClaimantResponse model', () => {
       expect(result).toBe(true);
     });
   });
+
+  describe('isClaimantNotAcceptedPartAdmittedAmount', () => {
+    const claimantResponse = new ClaimantResponse();
+    it('should return false with empty claimantResponse object', () => {
+      //When
+      const result = claimantResponse.isClaimantNotAcceptedPartAdmittedAmount;
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with empty hasPartAdmittedBeenAccepted object', () => {
+      //Given
+      claimantResponse.hasPartAdmittedBeenAccepted = {};
+      //When
+      const result = claimantResponse.isClaimantNotAcceptedPartAdmittedAmount;
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with hasPartAdmittedBeenAccepted option yes', () => {
+      //Given
+      claimantResponse.hasPartAdmittedBeenAccepted = { 'option': 'Yes' };
+      //When
+      const result = claimantResponse.isClaimantNotAcceptedPartAdmittedAmount;
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with hasPartAdmittedBeenAccepted option no', () => {
+      //Given
+      claimantResponse.hasPartAdmittedBeenAccepted = { 'option': 'no' };
+      //When
+      const result = claimantResponse.isClaimantNotAcceptedPartAdmittedAmount;
+      //Then
+      expect(result).toBe(true);
+    });
+
+  });
 });

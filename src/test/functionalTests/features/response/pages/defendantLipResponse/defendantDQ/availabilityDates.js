@@ -15,10 +15,9 @@ const fields ={
   longerPeriodEndYear: 'input[id="items[1][endYear]"]',
 };
 
-const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
 const month = newDate.getMonth();
 const year = newDate.getFullYear();
-
 class AvailabilityDates {
 
   async enterUnavailableDates() {
