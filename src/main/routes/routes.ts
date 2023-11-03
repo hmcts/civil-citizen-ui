@@ -220,7 +220,7 @@ import trialArrangementsConfirmationController
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
-
+import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 export default [
   homeController,
   dashboardController,
@@ -426,4 +426,5 @@ export default [
   claimantResponseCheckAnswersController,
   claimFeeController,
   cancelTrialArrangementsController,
+  breathingSpaceLiftedCheckAnswersController,
 ];
