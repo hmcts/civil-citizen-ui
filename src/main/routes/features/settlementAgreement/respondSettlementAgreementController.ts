@@ -11,7 +11,7 @@ import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreSe
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {
-  getRespondSettlementAgreementText
+  getRespondSettlementAgreementText,
 } from 'services/features/settlementAgreement/respondSettlementAgreementService';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
