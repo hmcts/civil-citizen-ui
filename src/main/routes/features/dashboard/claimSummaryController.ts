@@ -19,7 +19,7 @@ import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentServi
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {
-  getClaimWithExtendedPaymentDeadline
+  getClaimWithExtendedPaymentDeadline,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
