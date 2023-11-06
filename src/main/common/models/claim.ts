@@ -212,6 +212,15 @@ export class Claim {
     return this.getName(this.respondent1);
   }
 
+  isDefendantResponsePayBySetDate():boolean{
+    if(this.isFullAdmission() && this.isFAPaymentOptionBySetDate()){
+      return true;
+    }
+    if(this.isPartialAdmission() && this.isPAPaymentOptionByDate()){
+      return true;
+    }
+  }
+
   formattedResponseDeadline(lng?: string): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
