@@ -214,4 +214,43 @@ describe('PageSectionBuilder tests', ()=> {
     //Then
     expect(htmlElementBuilt).toEqual([expectedHtmlElement]);
   });
+
+  it('should add start button with cancel link', () => {
+    //Given
+    const startButtonWithCancelLinkExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        isStartButton: true,
+        cancelHref: 'cancel-href',
+      },
+    });
+
+    //When
+    const startButtonWithCancelLinkBuilt = new PageSectionBuilder()
+      .addStartButtonWithLink(startButtonWithCancelLinkExpected.data.text, startButtonWithCancelLinkExpected.data.href, startButtonWithCancelLinkExpected.data.cancelHref)
+      .build();
+
+    //Then
+    expect(startButtonWithCancelLinkBuilt).toEqual([startButtonWithCancelLinkExpected]);
+  });
+
+  it('should add micro text', () => {
+    //Given
+    const microTextExpected = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const microTextBuilt = new PageSectionBuilder()
+      .addMicroText(microTextExpected.data.text, microTextExpected.data.variables).build();
+
+    //Then
+    expect(microTextBuilt).toEqual([microTextExpected]);
+  });
 });
