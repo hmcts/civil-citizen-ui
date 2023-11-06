@@ -41,20 +41,6 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     return this;
   }
 
-  addStartButtonWithLink(title: string, href: string, cancelHref: string) {
-    const startButtonSection = ({
-      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
-      data: {
-        text: title,
-        href: href,
-        isStartButton: true,
-        cancelHref: cancelHref,
-      },
-    });
-    this._claimSummarySections.push(startButtonSection);
-    return this;
-  }
-
   addParagraphWithHTML(text: string, variables?: any) {
     const paragraphSection = ({
       type: ClaimSummaryType.HTML,
