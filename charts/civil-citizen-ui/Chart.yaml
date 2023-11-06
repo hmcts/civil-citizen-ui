@@ -45,7 +45,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-case-event-handler
-    version: 0.0.35
+    version: 0.0.37
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: wa-workflow-api
