@@ -2,14 +2,14 @@ const config = require('../../../config');
 const restHelper = require('./restHelper');
 const NodeCache = require('node-cache');
 //Idam access token expires for every 8 hrs
-const idamTokenCache = new NodeCache({ stdTTL: 25200, checkperiod: 1800 });
+const idamTokenCache = new NodeCache({stdTTL: 25200, checkperiod: 1800});
 
 const loginEndpoint = config.idamStub.enabled ? 'oauth2/token' : 'loginUser';
 const idamUrl = config.idamStub.enabled ? config.idamStub.url : config.url.idamApi;
 
 async function getAccessTokenFromIdam(user) {
   return restHelper.retriedRequest(
-    `${idamUrl}/${loginEndpoint}?username=${encodeURIComponent(user.email)}&password=${user.password}`, { 'Content-Type': 'application/x-www-form-urlencoded' })
+    `${idamUrl}/${loginEndpoint}?username=${encodeURIComponent(user.email)}&password=${user.password}`, {'Content-Type': 'application/x-www-form-urlencoded'})
     .then(response => response.json()).then(data => data.access_token);
 }
 
@@ -25,7 +25,7 @@ async function accessToken(user) {
       console.log('user access token coming from idam', user.email);
       return accessToken;
     } else {
-      console.log('*******Missing user details. Cannot get access token******')
+      console.log('*******Missing user details. Cannot get access token******');
     }
   }
 }
