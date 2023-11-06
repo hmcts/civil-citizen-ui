@@ -18,6 +18,7 @@ import {Party} from 'common/models/party';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {YesNo} from 'form/models/yesNo';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -46,6 +47,7 @@ describe('Respond To Settlement Agreement', () => {
     mockClaim.partialAdmission.alreadyPaid = new GenericYesNo('yes');
     mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
     mockClaim.partialAdmission.paymentIntention = new PaymentIntention();
+    mockClaim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     mockClaim.partialAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
     mockClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
     mockClaim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
@@ -63,7 +65,7 @@ describe('Respond To Settlement Agreement', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
-          {defendant: '', amount: '200', paymentAmount: '50', theAgreementRepaymentFrequency: 'week', firstRepaymentDate: formatDateToFullDate(date)},
+          {defendant: '', amount: '200', paymentAmount: '50', frequency: 'week', firstRepaymentDate: formatDateToFullDate(date)},
         ));
       });
     });
