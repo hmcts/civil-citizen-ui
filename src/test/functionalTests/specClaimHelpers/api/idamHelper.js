@@ -19,10 +19,14 @@ async function accessToken(user) {
     console.log('User access token coming from cache', user.email);
     return idamTokenCache.get(user.email);
   } else {
-    const accessToken = await getAccessTokenFromIdam(user);
-    idamTokenCache.set(user.email, accessToken);
-    console.log('user access token coming from idam', user.email);
-    return accessToken;
+    if (user.email && user.password) {
+      const accessToken = await getAccessTokenFromIdam(user);
+      idamTokenCache.set(user.email, accessToken);
+      console.log('user access token coming from idam', user.email);
+      return accessToken;
+    } else {
+      console.log('*******Missing user details. Cannot get access token******')
+    }
   }
 }
 
