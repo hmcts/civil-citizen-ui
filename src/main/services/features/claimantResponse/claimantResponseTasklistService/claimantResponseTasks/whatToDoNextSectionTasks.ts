@@ -15,7 +15,7 @@ import {
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {

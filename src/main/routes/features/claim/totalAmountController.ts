@@ -21,6 +21,8 @@ function renderView(form: object, res: Response): void {
 totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
+    const user = req.session?.user;
+    console.log('user'); console.log(user);
     const claim = await getCaseDataFromStore(userId);
     const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
