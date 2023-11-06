@@ -44,6 +44,12 @@ class TrialArrangementSteps {
     noticesAndOrders.verifyLatestUpdatePageContent();
 
   }
+
+  verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {
+    console.log('The value of the Claim Reference : ' + claimRef);
+    latestUpdateTab.open(claimRef, claimType, true, false, true, true);
+    latestUpdateTab.nextAction('View trial arrangements');
+  }
 }
 
 module.exports = new TrialArrangementSteps();
