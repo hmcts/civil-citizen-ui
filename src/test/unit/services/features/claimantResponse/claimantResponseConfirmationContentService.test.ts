@@ -184,7 +184,6 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
   });
 
-
   it('Claimant accepted defendant`s repayment plan and ask for CCJ', () => {
     // Given
     claim.respondent1 = new Party();
