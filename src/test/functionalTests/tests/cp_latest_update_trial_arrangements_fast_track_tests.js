@@ -6,7 +6,7 @@ const TrialArrangementSteps = require('../features/caseProgression/steps/trialAr
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression - Trial Arrangements journey - Fast Track');
+Feature('Case progression - Latest Update Trial Arrangements journey - Fast Track');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -16,18 +16,13 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', () => {
+Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
-  }
-}).tag('@regression');
-
-Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
+    TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
 }).tag('@regression');
