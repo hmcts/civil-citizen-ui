@@ -74,7 +74,7 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
   const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang);
-  const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
+  const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang, respondentPaymentDeadline);
   const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
   const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
   const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);

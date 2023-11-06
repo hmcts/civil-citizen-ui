@@ -5,6 +5,7 @@ import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 import fullAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
+import partAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
@@ -72,6 +73,20 @@ describe('Submit confirmation controller', () => {
       nock('http://localhost:4000')
         .get('/cases/:id')
         .reply(200, fullAdmitPayByImmediatelyMock);
+      nock('http://localhost:4000')
+        .get('/cases/:id/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      await request(app)
+        .get(CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('You&#39;ve submitted your response');
+        });
+    });
+    it('should return submit confirmation from claim for partAdmitPayByImmediately', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, partAdmitPayByImmediatelyMock);
       nock('http://localhost:4000')
         .get('/cases/:id/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);

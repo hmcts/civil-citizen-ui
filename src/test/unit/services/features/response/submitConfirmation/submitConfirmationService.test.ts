@@ -177,7 +177,8 @@ describe('Submit Confirmation service', () => {
     });
 
     it('should display next steps section', () => {
-      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
+      const respondentPaymentDeadline = new Date('2023-11-06');
+      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, respondentPaymentDeadline);
       expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY');

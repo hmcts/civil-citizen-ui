@@ -21,7 +21,7 @@ export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang
 
 export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppRequest): Promise<Date> => {
   try {
-    if (claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) {
+    if ((claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) || (claim.isPartialAdmission() && claim.isPAPaymentOptionPayImmediately())) {
       return await civilServiceClient.calculateExtendedResponseDeadline(addDaysToDate(claim?.respondent1ResponseDate, 5) , <AppRequest>req);
     }
     return undefined;
