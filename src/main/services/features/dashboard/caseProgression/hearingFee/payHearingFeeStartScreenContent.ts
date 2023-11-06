@@ -1,8 +1,9 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 function getHearingFee(claim: Claim) {
-  return claim?.hearingFee?.calculatedAmountInPence / 100;
+  return convertToPoundsFilter(claim?.hearingFee?.calculatedAmountInPence);
 }
 
 export const getPayHearingFeeStartScreenContent = (claim: Claim) => {
