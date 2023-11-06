@@ -27,19 +27,13 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string, claim
       : null;
   };
   const getFreeTelephoneMediationSection = () => {
-    return (claim.hasClaimantRejectedDefendantAdmittedAmount()
-      || claim.hasClaimantIntentToProceedResponse()
-      || claim.hasClaimantRejectedDefendantPaid()
-      || claim.hasClaimantRejectedPartAdmitPayment()
+    return (directionQuestionnaireFromClaimant(claim)
     )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
   const getHearingRequirementsSection = () => {
-    return (claim.hasClaimantRejectedDefendantAdmittedAmount()
-      || claim.hasClaimantIntentToProceedResponse()
-      || claim.hasClaimantRejectedDefendantPaid()
-      || claim.hasClaimantRejectedPartAdmitPayment()
+    return (directionQuestionnaireFromClaimant(claim)
     )
       ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
       : null;
@@ -75,3 +69,12 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
     throw error;
   }
 };
+
+function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
+  return (
+    claim.hasClaimantRejectedDefendantAdmittedAmount()
+    || claim.hasClaimantIntentToProceedResponse()
+    || claim.hasClaimantRejectedDefendantPaid()
+    || claim.hasClaimantRejectedPartAdmitPayment()
+  );
+}
