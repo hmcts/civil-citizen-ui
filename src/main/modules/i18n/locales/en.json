@@ -914,7 +914,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "How do you want the defandant to pay?",
@@ -1287,7 +1287,7 @@
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
