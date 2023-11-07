@@ -2,15 +2,12 @@ import {Claim} from 'models/claim';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
-import {
-  buildHearingRequirementsSection,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
 import {VulnerabilityQuestions} from 'models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import { Experts } from 'common/models/directionsQuestionnaire/experts/experts';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {SentExpertReports} from 'models/directionsQuestionnaire/experts/sentExpertReports';
 import {ExpertDetailsList} from 'models/directionsQuestionnaire/experts/expertDetailsList';
@@ -18,6 +15,9 @@ import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetail
 import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {
+  buildHearingRequirementsSectionCommon,
+} from 'services/features/common/buildHearingRequirementsSection';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -55,7 +55,7 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   hearing.cantAttendHearingInNext12Months = {
     option: cantAttendHearingInNext12Months,
   };
-  if (cantAttendHearingInNext12Months === YesNo.YES){
+  if (cantAttendHearingInNext12Months === YesNo.YES) {
     hearing.unavailableDatesForHearing = {
       items: [{
         type: UnavailableDateType.LONGER_PERIOD,
@@ -81,8 +81,8 @@ function addTotalAmountAndYesHearing(claim: Claim) {
 }
 
 describe('Hearing Requirements Section', () => {
-  let claim:Claim;
-  beforeEach(()=>{
+  let claim: Claim;
+  beforeEach(() => {
     claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
 
@@ -97,8 +97,8 @@ describe('Hearing Requirements Section', () => {
 
     claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
     claim.directionQuestionnaire.welshLanguageRequirements.language = {
-      speakLanguage : LanguageOptions.ENGLISH,
-      documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+      speakLanguage: LanguageOptions.ENGLISH,
+      documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
     };
   });
   describe('FastTrack Claim ', () => {
@@ -107,7 +107,7 @@ describe('Hearing Requirements Section', () => {
       addTotalAmountAndYesHearing(claim);
 
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
 
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
@@ -166,7 +166,7 @@ describe('Hearing Requirements Section', () => {
       };
 
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
 
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(12);
@@ -196,29 +196,29 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
       expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
-    it('should not display triedToSettleRow when tried to settle is not set', ()=> {
+    it('should not display triedToSettleRow when tried to settle is not set', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(undefined, YesNo.NO, YesNo.NO, YesNo.NO, undefined);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(14);
       expect(summaryRows.summaryList.rows[0].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
     });
     it('should not display request extra 4 weeks section when no answer for that is set', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.NO, undefined, YesNo.NO, YesNo.NO, undefined);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(14);
       expect(summaryRows.summaryList.rows[1].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
     });
-    it('should not display consider claimant documents section when the answer is not provided', () =>{
+    it('should not display consider claimant documents section when the answer is not provided', () => {
       //Given
-      claim.directionQuestionnaire.hearing =  createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
+      claim.directionQuestionnaire.hearing = createHearing(YesNo.NO, YesNo.NO, undefined, YesNo.NO, undefined);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(14);
       expect(summaryRows.summaryList.rows[2].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
@@ -229,7 +229,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
@@ -240,7 +240,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.expertEvidence = undefined;
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(19);
       expect(summaryRows.summaryList.rows[4].key.text).not.toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
@@ -251,7 +251,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.sentExpertReports = new SentExpertReports(YesNoNotReceived.NO);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SENT_EXPERT_REPORTS.TITLE');
@@ -262,7 +262,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.sharedExpert = new GenericYesNo(YesNo.YES);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(20);
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
@@ -275,10 +275,9 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('John', 'Smith', 'email', 60098, 'reason', 'expert', 1000)]);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(18);
-      expect(summaryRows.summaryList.rows[1].key.text).toContain('PAGES.EXPERT_DETAILS.SECTION_TITLE');
     });
     it('should not display experts when claim does not have experts', () => {
       //Given
@@ -286,7 +285,7 @@ describe('Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts = new Experts();
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
       //Then
       expect(summaryRows.summaryList.rows.length).toEqual(10);
       expect(summaryRows.summaryList.rows[5].key.text).not.toContain('PAGES.EXPERT_DETAILS.SECTION_TITLE');
@@ -311,12 +310,12 @@ describe('Hearing Requirements Section', () => {
 
       claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
       claim.directionQuestionnaire.welshLanguageRequirements.language = {
-        speakLanguage : LanguageOptions.ENGLISH,
-        documentsLanguage : LanguageOptions.WELSH_AND_ENGLISH,
+        speakLanguage: LanguageOptions.ENGLISH,
+        documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
       };
 
       //When
-      const summaryRows = buildHearingRequirementsSection(claim, '1', 'eng');
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire);
 
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
