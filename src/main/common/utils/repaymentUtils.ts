@@ -5,10 +5,10 @@ import {t} from 'i18next';
 
 const WEEKDAYS = 7;
 const frequencyTextMap: Record<TransactionSchedule, string> = {
-  [TransactionSchedule.WEEK]: 'COMMON.FREQUENCY_OF_PAYMENTS.WEEKLY',
-  [TransactionSchedule.TWO_WEEKS]: 'COMMON.FREQUENCY_OF_PAYMENTS.TWO_WEEKS',
-  [TransactionSchedule.FOUR_WEEKS]: 'COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY',
-  [TransactionSchedule.MONTH]: 'COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY',
+  [TransactionSchedule.WEEK]: 'COMMON.SCHEDULE.WEEK_LOWER_CASE',
+  [TransactionSchedule.TWO_WEEKS]: 'COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE',
+  [TransactionSchedule.FOUR_WEEKS]: 'COMMON.SCHEDULE.MONTH',
+  [TransactionSchedule.MONTH]: 'COMMON.SCHEDULE.MONTH',
 };
 
 export const getNumberOfInstalments = (claim: Claim): number => {

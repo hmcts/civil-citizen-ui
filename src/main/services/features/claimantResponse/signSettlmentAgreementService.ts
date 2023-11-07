@@ -13,11 +13,14 @@ import {t} from 'i18next';
 
 export const getPaymentText = (claim: Claim, req: Request): object => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  let data: object;
   if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
-    return getTextForPayByDate(claim, lang);
+    data = getTextForPayByDate(claim, lang);
   } else if (claim.isFAPaymentOptionInstallments() || claim.isPAPaymentOptionInstallments()){
-    return getTextForPayByInstallments(claim, lang);
+    data = getTextForPayByInstallments(claim, lang);
   }
+  data = {...data, claimant: claim.getClaimantFullName(), defendant: claim.getDefendantFullName()};
+  return data;
 };
 
 function getTextForPayByDate(claim: Claim, lang: string){
@@ -28,7 +31,7 @@ function getTextForPayByDate(claim: Claim, lang: string){
       amount: getAmount(claim),
       paymentDate: formatDateToFullDate(claim.getPaymentDate()),
     }),
-    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(claim.getPaymentDate()) }),
+    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(claim.getPaymentDate(), lang) }),
   };
 }
 

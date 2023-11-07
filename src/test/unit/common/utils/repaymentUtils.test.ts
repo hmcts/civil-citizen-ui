@@ -22,6 +22,11 @@ import {YesNo} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from 'common/models/claim';
 
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
 const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
   const amount = paymentAmount ? paymentAmount : 50;
   const claim = new Claim();
@@ -227,7 +232,7 @@ describe('repaymentUtils', () => {
     });
     it('should translate frequency each two week for repayment to text', () => {
       const result = convertFrequencyToTextForRepaymentPlan(TransactionSchedule.TWO_WEEKS, 'en');
-      expect(result).toBe(t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE\''));
+      expect(result).toBe(t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE'));
     });
     it('should translate frequency monthly for repayment plan to text', () => {
       const result = convertFrequencyToTextForRepaymentPlan(TransactionSchedule.MONTH, 'en');
