@@ -242,5 +242,6 @@ export const HEARING_DURATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/heari
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/confirmation`;
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;
+export const HEARING_FEE_APPLY_HELP_FEE_SELECTION = `${BASE_CASE_PROGRESSION_URL}/apply-help-fee-selection`;
 export const CP_PAY_HEARING_FEE_URL = `${BASE_CASE_PROGRESSION_URL}/pay-hearing-fee`;
 export const CP_PAY_HEARING_FEE_START_URL = `${CP_PAY_HEARING_FEE_URL}/start`;
