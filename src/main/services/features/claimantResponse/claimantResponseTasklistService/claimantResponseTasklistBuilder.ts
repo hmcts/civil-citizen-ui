@@ -22,6 +22,7 @@ import {
   getHaveYouBeenPaidTask,
   getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -53,6 +54,13 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
       const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       tasks.push(proposeAlternativeRepaymentTask);
+      if (claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE) {
+        const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
+        tasks.push(chooseHowFormaliseTask);
+      } else if (claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE) {
+        const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+        tasks.push(countyCourtJudgmentTask);
+      }
     }
 
   } else if (claim.isPartialAdmission()) {

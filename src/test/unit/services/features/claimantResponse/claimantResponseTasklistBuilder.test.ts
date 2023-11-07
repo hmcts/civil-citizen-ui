@@ -35,7 +35,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {Party} from 'common/models/party';
@@ -46,6 +46,7 @@ import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -246,6 +247,46 @@ describe('Claimant Response Task List builder', () => {
         expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
         expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Choose how to formalise repayment task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+        claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.courtProposedDate = new CourtProposedDate();
+        claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE;
+
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.HOW_FORMALISE');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+      it('should display Request a County Court Judgment task as incomplete', () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+        claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.courtProposedDate = new CourtProposedDate();
+        claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.JUDGE_REPAYMENT_DATE;
+
+        //When
+        const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+        //Then
+        expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_REPAYMENT');
+        expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.PROPOSE_ALTERNATIVE_REPAYMENT');
+        expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+        expect(whatToDoNext.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT');
+        expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       });
     });
     it('should display Accept or reject the amount task as incomplete', () => {
