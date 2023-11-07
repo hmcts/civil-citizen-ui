@@ -481,6 +481,7 @@
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "YOUR_HEARING_REQUIREMENTS_TITLE": "Your hearing requirements",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "INCOME_REGULAR": "Regular income",
@@ -2006,6 +2007,7 @@
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
       "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "AGREE_THEIR_REPAYMENT_PLAN": "You can agree to their repayment plan or suggest your own",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
       "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
       "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
