@@ -2007,6 +2007,7 @@
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
       "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "AGREE_THEIR_REPAYMENT_PLAN": "You can agree to their repayment plan or suggest your own",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
       "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
       "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
