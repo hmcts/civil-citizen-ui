@@ -19,7 +19,7 @@ import {
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
-import {getSummarySections} from 'services/features/breathingSpace/checkAnswersService';
+import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
