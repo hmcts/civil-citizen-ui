@@ -135,27 +135,29 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (isPAPaymentOptionByDateSuggestionGiven(claim)) {
+  if (taskCoveredForNewPaymentPlan(claim)) {
 
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
 }
 
-function isPAPaymentOptionByDateSuggestionGiven(claim: Claim): boolean {
-
-  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision) ||
-    (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate
-      && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption
-      && ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
-          && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)
-        || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
-          && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan)
-        || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY)
-        || (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY')
-      )
-    )) {
+function taskCoveredForNewPaymentPlan(claim: Claim): boolean {
+  if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
     return true;
+  }
+  if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption) {
+    if ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
+      && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)) {
+      return true;
+    }
+    if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
+      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan) {
+      return true
+    }
+    if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
+      return true
+    }
   }
   return false;
 }

@@ -461,6 +461,7 @@ describe('Claimant Response Task List builder', () => {
 
         suggestedPaymentIntention :{
           paymentOption : PaymentOptionType.BY_SET_DATE,
+          paymentDate: new Date(),
         },
       };
       claim.partialAdmission = {
@@ -487,6 +488,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         suggestedPaymentIntention :{
           paymentOption : PaymentOptionType.BY_SET_DATE,
+          paymentDate: new Date(),
         },
 
       };
@@ -517,6 +519,7 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         suggestedPaymentIntention :{
           paymentOption : PaymentOptionType.BY_SET_DATE,
+          paymentDate: new Date(),
         },
       };
       claim.partialAdmission = {
@@ -542,6 +545,7 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         suggestedPaymentIntention :{
           paymentOption : PaymentOptionType.BY_SET_DATE,
+          paymentDate: new Date(),
         },
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},

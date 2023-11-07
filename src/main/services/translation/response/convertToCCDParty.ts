@@ -4,10 +4,9 @@ import {PartyType} from 'models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
 
 export const toCCDParty = (party: Party): CCDParty => {
-  console.log(party.dateOfBirth);
   return {
     companyName: party?.type === PartyType.COMPANY ? party?.partyDetails?.partyName : undefined,
-    individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth.toString().substring(0,10) : undefined,
+    individualDateOfBirth: party?.type === PartyType.INDIVIDUAL ? party?.dateOfBirth?.toString().substring(0,10) : undefined,
     individualFirstName: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.individualFirstName : undefined,
     individualLastName: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.individualLastName : undefined,
     individualTitle: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.individualTitle : undefined,
@@ -15,7 +14,7 @@ export const toCCDParty = (party: Party): CCDParty => {
     partyEmail: party?.emailAddress?.emailAddress,
     partyPhone: party?.partyPhone?.phone,
     primaryAddress: toCCDAddress(party?.partyDetails?.primaryAddress),
-    soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ? party?.dateOfBirth.toString().substring(0,10) : undefined,
+    soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ? party?.dateOfBirth?.toString().substring(0,10) : undefined,
     soleTraderFirstName: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualFirstName : undefined,
     soleTraderLastName: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualLastName : undefined,
     soleTraderTitle: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualTitle : undefined,

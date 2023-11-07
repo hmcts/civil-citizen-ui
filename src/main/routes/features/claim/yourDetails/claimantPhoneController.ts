@@ -5,7 +5,6 @@ import {getTelephone, saveTelephone} from '../../../../services/features/claim/y
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {saveClaimantProperty} from "services/features/claim/yourDetails/claimantDetailsService";
 
 const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = Router();
@@ -27,7 +26,7 @@ claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest, r
 claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = (<AppRequest>req).session.user?.id;
-    const user=(<AppRequest>req).session.user;
+
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber));
     form.validateSync();
 
@@ -35,9 +34,6 @@ claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest |
       renderView(form, res);
     } else {
       await saveTelephone(claimId, form.model, ClaimantOrDefendant.CLAIMANT);
-      if(user && user.email){
-        await saveClaimantProperty(claimId, 'emailAddress', user.email);
-      }
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {
