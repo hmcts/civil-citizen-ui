@@ -32,6 +32,14 @@ const MOCK_REQUEST = () => {
     params: {
       id: CLAIM_ID,
     },
+    session: {
+      user: {
+        id: '123',
+      }
+    },
+    query: {
+      lang: 'en',
+    },
   } as unknown as AppRequest;
 };
 
