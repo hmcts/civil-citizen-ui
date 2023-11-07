@@ -5,7 +5,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {translateDraftClaimToCCD, translateDraftClaimToCCDR2} from 'services/translation/claim/ccdTranslation';
 import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
-import {Email} from "models/Email";
+import {Email} from 'models/Email';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
