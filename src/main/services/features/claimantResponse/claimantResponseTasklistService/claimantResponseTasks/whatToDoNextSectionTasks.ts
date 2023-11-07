@@ -149,11 +149,10 @@ function isPAPaymentOptionByDateSuggestionGiven(claim: Claim): boolean {
       && claim.claimantResponse?.suggestedPaymentIntention?.paymentOption
       && ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
           && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)
-        ||
-        (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
+        || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
           && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan)
-        ||
-        (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY)
+        || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY)
+        || (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY')
       )
     )) {
     return true;
