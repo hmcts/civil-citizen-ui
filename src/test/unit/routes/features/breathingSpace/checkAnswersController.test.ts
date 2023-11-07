@@ -5,6 +5,7 @@ import {BREATHING_SPACE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
+import { NextFunction, Request } from 'express';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -18,7 +19,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/breathingSpace/breathingSpaceService');
 jest.mock('../../../../../main/services/features/breathingSpace/checkYourAnswer/checkAnswersService');
 jest.mock('../../../../../main/services/features/breathingSpace/submission/submitBreathingSpace');
-
+jest.mock('../../../../../main/routes/guards/breathingSpaceGuard', () => ({ breathingSpaceGuard: (req: Request, res: Response, next: NextFunction) => { next(); } }));
 const mockGetSummarySections = getSummarySections as jest.Mock;
 
 export function getDebtRespite(): SummarySections {
