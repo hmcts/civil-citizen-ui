@@ -33,6 +33,7 @@ const getRepaymentPlan = (claim: Claim, req: Request) => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const data = {
     amount: getAmount(claim),
+    claimant: claim.getClaimantFullName(),
     defendant: claim.getDefendantFullName(),
     firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), lang),
     finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
