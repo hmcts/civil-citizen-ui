@@ -5,7 +5,7 @@ import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 import fullAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
-import partAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
+import partAdmitPayByImmediatelyMock from '../../../../utils/mocks/partAdmitPayByImmediatelyMock.json';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
