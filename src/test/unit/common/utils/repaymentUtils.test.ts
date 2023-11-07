@@ -415,7 +415,7 @@ describe('repaymentUtils', () => {
       //When
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
-      expect(repaymentLength).toBeUndefined();
+      expect(repaymentLength).toBe(t('COMMON.SCHEDULE.TWO_WEEKS'));
     });
     it('should return repayment length when response type is part admission on weekly schedule', () => {
       //Given
@@ -447,7 +447,7 @@ describe('repaymentUtils', () => {
       //When
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
-      expect(repaymentLength).toBeUndefined();
+      expect(repaymentLength).toBe(t('COMMON.SCHEDULE.TWO_WEEKS'));
     });
     it('should return repayment length when response type is full admission on weekly schedule', () => {
       //Given
