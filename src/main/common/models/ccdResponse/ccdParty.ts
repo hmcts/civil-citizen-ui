@@ -3,7 +3,7 @@ import {CCDAddress} from './ccdAddress';
 
 export interface CCDParty {
   companyName: string,
-  individualDateOfBirth: string,
+  individualDateOfBirth: Date,
   individualFirstName: string,
   individualLastName: string,
   individualTitle: string,
@@ -13,7 +13,7 @@ export interface CCDParty {
   partyPhone: string,
   partyTypeDisplayValue?: string,
   primaryAddress: CCDAddress,
-  soleTraderDateOfBirth: string,
+  soleTraderDateOfBirth: Date,
   soleTraderFirstName: string,
   soleTraderLastName: string,
   soleTraderTitle: string,

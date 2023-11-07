@@ -6,6 +6,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {Address} from 'common/form/models/address';
 import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
+import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
 import {req} from '../../../../utils/UserDetails';
 import {Email} from 'models/Email';
@@ -17,6 +18,7 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
+const dateOfBirth = new CitizenDate('10', '10', '1990');
 const email = new Email(req.session.user.email);
 const emailCCD = req.session.user.email;
 
@@ -69,6 +71,7 @@ const partyIndividual: Party = {
     individualLastName: lastName,
     ...commonParty,
   },
+  dateOfBirth: dateOfBirth,
 };
 
 const partySoleTrader: Party = {
@@ -83,6 +86,7 @@ const partySoleTrader: Party = {
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },
+  dateOfBirth: dateOfBirth,
   ...commonParty,
 };
 
@@ -106,7 +110,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -132,7 +136,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,

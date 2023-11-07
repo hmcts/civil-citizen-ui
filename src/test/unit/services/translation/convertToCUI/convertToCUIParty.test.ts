@@ -141,7 +141,7 @@ const getPartySoleTraderCCD = () : CCDParty => {
     partyEmail: emailCCD,
     partyPhone: phoneCCD,
     primaryAddress: addressCCD,
-    soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    soleTraderDateOfBirth: undefined,
     soleTraderTitle: title,
     soleTraderFirstName: firstName,
     soleTraderLastName: lastName,

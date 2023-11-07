@@ -43,7 +43,7 @@ export const toCUIPartyRespondent = (ccdParty: CCDParty, ccdRespondent1: CCDResp
   return cuiParty;
 };
 
-const toCitizenDate = (ccdDateOfBirth : string) : CitizenDate => {
+const toCitizenDate = (ccdDateOfBirth : Date) : CitizenDate => {
   if(ccdDateOfBirth){
     const dateOfBirth = new Date(ccdDateOfBirth);
     return new CitizenDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString());

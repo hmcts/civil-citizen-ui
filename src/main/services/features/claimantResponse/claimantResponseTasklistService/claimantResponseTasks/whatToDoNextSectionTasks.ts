@@ -17,6 +17,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {PaymentIntention} from "form/models/admission/paymentIntention";
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -149,23 +150,32 @@ function taskCoveredForNewPaymentPlan(claim: Claim): boolean {
   }
   const paymentIntention = claim.claimantResponse?.suggestedPaymentIntention;
   if (paymentIntention?.paymentOption) {
-    if (paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
-      && paymentIntention?.paymentDate
-      && (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
-        || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
-        && claim.claimantResponse.rejectionReason)) {
+
+    if ((paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
+        || paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE)
+      && taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntention, claim)) {
       return true;
-    }
-    if (paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
-      && paymentIntention?.repaymentPlan
-      && (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
-        || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
-        && claim.claimantResponse.rejectionReason)) {
+    } else if (paymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
       return true
     }
-    if (paymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
-      return true
-    }
+  }
+  return false;
+}
+
+function taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntention: PaymentIntention, claim: Claim): boolean {
+  if ((paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE && paymentIntention?.paymentDate
+      || paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS && paymentIntention?.repaymentPlan)
+    && checkCourtProposedDate(claim)) {
+    return true
+  }
+  return false;
+}
+
+function checkCourtProposedDate(claim: Claim): boolean {
+  if ((claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
+    || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+    && claim.claimantResponse.rejectionReason)) {
+    return true;
   }
   return false;
 }
