@@ -11,7 +11,6 @@ import {
 import { Task } from 'common/models/taskList/task';
 import { TaskStatus } from 'common/models/taskList/TaskStatus';
 
-
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];

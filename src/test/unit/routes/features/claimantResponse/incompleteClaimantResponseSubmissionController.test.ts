@@ -33,17 +33,17 @@ const TASK_DESCRIPTION = 'Task description';
 const TASK_URL = 'Task URL';
 const incompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL);
 
-describe("on GET should display incomplete submission page", () => {
-  const citizenRoleToken: string = config.get("citizenRoleToken");
-  const idamServiceUrl: string = config.get("services.idam.url");
+describe('on GET should display incomplete submission page', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamServiceUrl: string = config.get('services.idam.url');
 
   beforeAll(() => {
     nock(idamServiceUrl)
-      .post("/o/token")
+      .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
   });
 
-  it("should return incomplete submission page", async () => {
+  it('should return incomplete submission page', async () => {
     mockClaim.mockImplementation(async () => {
       const claim = new Claim();
       claim.id = CLAIM_ID;
@@ -65,16 +65,16 @@ describe("on GET should display incomplete submission page", () => {
     const dom = new JSDOM(response.text);
     const htmlDocument = dom.window.document;
     const header = getElementsByXPath(
-      "//h1[@class='govuk-heading-l']",
-      htmlDocument
+      '//h1[@class="govuk-heading-l"]',
+      htmlDocument,
     );
     const bulletPoints = getElementsByXPath(
-      "//ul[@class='govuk-list govuk-list--bullet']/li",
-      htmlDocument
+      '//ul[@class="govuk-list govuk-list--bullet"]/li',
+      htmlDocument,
     );
 
     expect(header.length).toBe(1);
-    expect(header[0].textContent).toBe("You need to complete all sections before you submit your response");
+    expect(header[0].textContent).toBe('You need to complete all sections before you submit your response');
     expect(bulletPoints.length).toBe(1);
     expect(bulletPoints[0].textContent?.trim()).toBe(TASK_DESCRIPTION);
   });
