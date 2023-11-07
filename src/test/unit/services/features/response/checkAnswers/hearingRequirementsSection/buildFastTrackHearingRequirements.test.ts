@@ -3,6 +3,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {summaryRow} from 'models/summaryList/summaryList';
+import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {
   considerClaimantDocQuestion,
   considerClaimantDocResponse,
@@ -11,12 +12,8 @@ import {
   getUseExpertEvidence,
   requestExtra4WeeksQuestion,
   triedToSettleQuestion,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildFastTrackHearingRequirements';
-import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
-
-import {
-  getSummaryRowForDisplayEvidenceYourself,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
+} from 'services/features/common/buildFastTrackHearingRequirements';
+import {getSummaryRowForDisplayEvidenceYourself} from 'services/features/common/buildCommonHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -64,7 +61,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //Then
-        expect(triedToSettleQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(triedToSettleQuestion(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return No when direction questionnaire hearing is undefined', () => {
         //Given
@@ -76,7 +73,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //When
-        const row = triedToSettleQuestion(claimWithNoHearing, claimId, lng);
+        const row = triedToSettleQuestion(claimWithNoHearing, claimId, lng, claim.directionQuestionnaire);
         //Then
         expect(row).toStrictEqual(mockSummarySection);
       });
@@ -90,7 +87,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //When
-        const row = triedToSettleQuestion(claim, claimId, lng);
+        const row = triedToSettleQuestion(claim, claimId, lng, claim.directionQuestionnaire);
         //Then
         expect(row).toStrictEqual(mockSummarySection);
       });
@@ -109,7 +106,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //Then
-        expect(requestExtra4WeeksQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(requestExtra4WeeksQuestion(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return No when direction questioner and hearing are undefined', () => {
         //Given
@@ -121,7 +118,8 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //When
-        const row = requestExtra4WeeksQuestion(claimWithNoHearing, claimId, lng);
+        const row =
+          requestExtra4WeeksQuestion(claimWithNoHearing, claimId, lng, claim.directionQuestionnaire);
         //Then
         expect(row).toStrictEqual(mockSummarySection);
       });
@@ -140,7 +138,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //Then
-        expect(considerClaimantDocQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(considerClaimantDocQuestion(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return no for considerClaimantDocuments when direction questonnaire and hearin are undefined', () => {
         //Given
@@ -152,7 +150,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           changeButton,
         );
         //Then
-        expect(considerClaimantDocQuestion(claimWithNoHearing, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(considerClaimantDocQuestion(claimWithNoHearing, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return summaryRow for document details if considerClaimantDocuments option is Yes', () => {
         //Given
@@ -165,7 +163,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           'Test doc',
         );
         //Then
-        expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(considerClaimantDocResponse(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return empty string when details are not provided', () => {
         //Given
@@ -177,7 +175,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           '',
         );
         //Then
-        expect(considerClaimantDocResponse(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(considerClaimantDocResponse(claim, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
       it('should return empty string when no hearing', () => {
         //Given
@@ -187,7 +185,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           '',
         );
         //Then
-        expect(considerClaimantDocResponse(claimWithNoHearing, claimId, lng)).toStrictEqual(mockSummarySection);
+        expect(considerClaimantDocResponse(claimWithNoHearing, claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
       });
 
     });
@@ -209,7 +207,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng);
+      const doWantUseExpectEvidence = getUseExpertEvidence(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(doWantUseExpectEvidence).toStrictEqual(mockSummarySection);
     });
@@ -223,7 +221,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const personalEvidence = getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng);
+      const personalEvidence = getSummaryRowForDisplayEvidenceYourself( claim.directionQuestionnaire, claimId, lng);
       //Then
       expect(personalEvidence).toStrictEqual(mockSummarySection);
     });
@@ -237,7 +235,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
+      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
@@ -251,7 +249,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng);
+      const shareExpertWithClaimant = getShareExpertWithClaimant(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(shareExpertWithClaimant).toStrictEqual(mockSummarySection);
     });
@@ -265,7 +263,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
+      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
@@ -279,7 +277,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
+      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
@@ -293,7 +291,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //When
-      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng);
+      const sentReportToOtherParties = getSentReportToOtherParties(claim, claimId, lng, claim.directionQuestionnaire);
       //Then
       expect(sentReportToOtherParties).toStrictEqual(mockSummarySection);
     });
