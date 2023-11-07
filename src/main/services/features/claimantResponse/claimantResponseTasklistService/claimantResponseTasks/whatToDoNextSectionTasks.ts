@@ -16,6 +16,7 @@ import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -143,19 +144,26 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
 }
 
 function taskCoveredForNewPaymentPlan(claim: Claim): boolean {
-  if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
+  if (claim.isBusiness()) {
     return true;
   }
-  if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption) {
-    if ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
-      && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)) {
+  const paymentIntention = claim.claimantResponse?.suggestedPaymentIntention;
+  if (paymentIntention?.paymentOption) {
+    if (paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE
+      && paymentIntention?.paymentDate
+      && (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
+        || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        && claim.claimantResponse.rejectionReason)) {
       return true;
     }
-    if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
-      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan) {
+    if (paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS
+      && paymentIntention?.repaymentPlan
+      && (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
+        || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        && claim.claimantResponse.rejectionReason)) {
       return true
     }
-    if (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
+    if (paymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
       return true
     }
   }
