@@ -35,7 +35,7 @@ const MOCK_REQUEST = () => {
     session: {
       user: {
         id: '123',
-      }
+      },
     },
     query: {
       lang: 'en',
