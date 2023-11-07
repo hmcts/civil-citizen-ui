@@ -3,9 +3,9 @@ import {Task} from 'models/taskList/task';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
-import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import { getClaimById } from 'modules/utilityService';
-import { getClaimantResponseTaskLists, outstandingClaimantResponseTasks } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
+import {outstandingClaimantResponseTasks } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 
 export const claimantResponsecheckYourAnswersGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -14,24 +14,14 @@ export const claimantResponsecheckYourAnswersGuard = async (req: AppRequest, res
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
     const claim: Claim = await getClaimById(claimId, req, true);
 
-    
-    const claim: Claim = await getClaimById(claimId, req, true);
-    const taskLists = outstandingClaimantResponseTasks(claim, userId, lang);
-    const taskLists = getClaimantResponseTaskLists(claim,  userId, lang);
-    
-    /**
-     * We have to check that all sections are completed except Submit section
-     * so we mark submit section as COMPLETE to ignore it.
-     */
-    taskLists[2].tasks[0].status = TaskStatus.COMPLETE;
-    const outstandingTasks: Task[] = outstandingClaimantResponseTasks(taskLists);
+    const outstandingTasks: Task[]  = outstandingClaimantResponseTasks(claim, userId, lang);
     const allTasksCompleted = outstandingTasks?.length === 0;
-
+    
     if (allTasksCompleted) {
       return next();
     }
 
-    return res.redirect(CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL);
+    return res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL));
   } catch (error) {
     next(error);
   }
