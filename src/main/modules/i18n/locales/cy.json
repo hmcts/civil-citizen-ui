@@ -914,7 +914,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -1166,9 +1166,9 @@
         "VIEW_DOCUMENTS": "View documents",
         "VIEW_HEARINGS": "View hearings"
       },
-      "MAKE_A_NEW_CLAIM": "Make a new money claim",
-      "NEXT": "Next",
-      "NEXT_STEPS": "Next steps",
+      "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
+      "NEXT": "Nesaf",
+      "NEXT_STEPS": "Y camau nesaf",
       "ORDERS_NOTICE": {
         "TITLE": "Orders and notices from the court",
         "VIEW": "View orders and notices"
