@@ -1,4 +1,3 @@
-import config from 'config';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
@@ -16,16 +15,14 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
 import {YesNo} from 'common/form/models/yesNo';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+  const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
   const summarySections = getSummarySections(req.params.id, claim, lang, claimFee);
 
   res.render(checkAnswersViewPath, {

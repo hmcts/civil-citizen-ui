@@ -9,13 +9,12 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 export const checkIfClaimFeeHasChanged = async (claimId: string, claim: Claim, req: AppRequest) => {
-
-  const currentClaimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
-  if (convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence) !== currentClaimFee) {
-    await saveClaimFee(generateRedisKey(req), currentClaimFee);
+  const newClaimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
+  const oldClaimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
+  if (oldClaimFee !== newClaimFee) {
+    await saveClaimFee(generateRedisKey(req), newClaimFee);
     return true;
   } else {
     return false;
   }
-
 };
