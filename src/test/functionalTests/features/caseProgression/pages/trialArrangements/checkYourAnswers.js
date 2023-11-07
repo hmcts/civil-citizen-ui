@@ -26,9 +26,13 @@ class CheckYourAnswers {
     I.see('Test Inc v Sir John Doe');
   }
 
-  verifyCheckYourAnswersContent() {
+  verifyCheckYourAnswersContent(readyForTrial) {
     I.see('Is the case ready for trial?');
-    I.see('No');
+    if (readyForTrial==='no'){
+      I.see('No');
+    } else {
+      I.see('Yes');
+    }
     I.see('Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?');
     I.see('Yes');
     I.see('Autoation Test execution of Trial Arrangeents...%$£');
