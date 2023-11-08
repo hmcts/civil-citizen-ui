@@ -1882,4 +1882,65 @@ describe('Documents', () => {
       expect(result).not.toBeNull();
     });
   });
+
+  describe('isDefendantResponsePayBySetDate', () => {
+    const claim = new Claim();
+    it('should return undefined with empty claim', () => {
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return undefined with Full Admissions pay in installments', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()},
+      };
+
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+
+    it('should return true with Full Admissions pay by set date', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return undefined with Part Admissions pay in installments', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+
+    it('should return true with Part Admissions pay by set date', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
 });
