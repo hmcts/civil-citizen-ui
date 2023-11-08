@@ -65,7 +65,11 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Submit"
+      "SUBMIT": "Submit",
+      "START_NOW": "Start now"
+    },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Hearing fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -915,7 +919,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "How do you want the defandant to pay?",
@@ -2792,7 +2796,14 @@
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
       }
-    }
+    },
+    "PAY_HEARING_FEE": {
+      "START_PAGE": {
+        "PAGE_TITLE": "Hearing Fee",
+        "TITLE": "Pay hearing fee",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+      }
   },
   "FOOTER":{
     "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
