@@ -2,7 +2,7 @@ import {TaskStatus} from './TaskStatus';
 
 export interface Task {
   description: string,
-  url: string,
+  url?: string,
   status: TaskStatus,
   isCheckTask?: boolean;
   statusColor?: string;
@@ -10,14 +10,16 @@ export interface Task {
 
 export class TaskItem implements Task {
   description: string;
-  url: string;
+  url?: string;
   status: TaskStatus;
   isCheckTask?: boolean;
   statusColor?: string;
 
   constructor(description: string, url: string, status: TaskStatus, isCheckTask?: boolean, statusColor?: string) {
     this.description = description;
-    this.url = url;
+    if (url !== undefined){
+      this.url = url;
+    }
     this.status = status;
     if (isCheckTask !== undefined) {
       this.isCheckTask = isCheckTask;

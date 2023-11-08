@@ -1,9 +1,5 @@
 import {CaseState} from 'common/form/models/claimDetails';
 import {Claim} from 'common/models/claim';
-import {TaskStatus, TaskStatusColor} from 'common/models/taskList/TaskStatus';
-import {TaskItem} from 'common/models/taskList/task';
-import {TaskList} from 'common/models/taskList/taskList';
-import {TaskListBuilder} from 'common/models/taskList/taskListBuilder';
 import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
@@ -54,30 +50,4 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
   }
 
   return dashboardNotificationsList;
-};
-
-export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
-  // TODO: this is a mock data
-  const dashboard: TaskList[] = [];
-
-  const hearings: TaskList = new TaskListBuilder(t('PAGES.DASHBOARD.HEARINGS.TITLE'))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])).build();
-  if (claim.isClaimant() ) {
-    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
-  }
-  if (claim.isFastTrackClaim){
-    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
-  }
-  hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
-
-  const noticeAndOrders =  new TaskListBuilder(t('PAGES.DASHBOARD.ORDERS_NOTICE.TITLE'))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.ORDERS_NOTICE.VIEW'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
-    .build();
-
-  dashboard.push(hearings);
-  dashboard.push(noticeAndOrders);
-
-  return dashboard;
 };
