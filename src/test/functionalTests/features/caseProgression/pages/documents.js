@@ -14,13 +14,22 @@ class Documents {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType) {
+  verifyLatestUpdatePageContent(claimType, claimantFlag = false) {
     this.verifyHeadingDetails();
     this.verifyDocumentSectionContent();
-    if (claimType === 'FastTrack') {
-      this.verifyFastTrackDocumentsUploadedSectionContent();
-    } else if (claimType === 'SmallClaims') {
-      this.verifySmallClaimsDocumentsUploadedSectionContent();
+    if (claimantFlag === false) {
+      if (claimType === 'FastTrack') {
+        this.verifyFastTrackDocumentsUploadedSectionDefendantContent();
+      } else if (claimType === 'SmallClaims') {
+        this.verifySmallClaimsDocumentsUploadedSectionDefendantContent();
+      }
+    }
+    if (claimantFlag === true) {
+      if (claimType === 'FastTrack') {
+        this.verifyFastTrackDocumentsUploadedSectionClaimantContent();
+      } else if (claimType === 'SmallClaims') {
+        // this.verifySmallClaimsDocumentsUploadedSectionDefendantContent();
+      }
     }
     contactUs.verifyContactUs();
   }
@@ -33,8 +42,7 @@ class Documents {
     I.see('Documents');
   }
 
-  verifyFastTrackDocumentsUploadedSectionContent() {
-
+  verifyFastTrackDocumentsUploadedSectionDefendantContent() {
     I.see('Defendant disclosure');
     I.see('Defendant documents for disclosure');
     I.see('Date uploaded');
@@ -80,11 +88,9 @@ class Documents {
     I.see('Defendant documentary evidence');
     I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for trial - Type of Document 1 15-02-2\')]');
     I.seeElement('//a[contains(.,\'Documentary Evidence Documentary evidence for trial - Type of Document 2 15-02-2\')]');
-
   }
 
-  verifySmallClaimsDocumentsUploadedSectionContent() {
-
+  verifySmallClaimsDocumentsUploadedSectionDefendantContent() {
     I.see('Defendant witness evidence');
     I.see('Defendant witness statement');
     I.see('Date uploaded');
@@ -115,6 +121,47 @@ class Documents {
     I.see('Defendant legal authorities');
     I.seeElement('//a[.=\'TestXLS.xls\']');
     I.seeElement('//a[.=\'TestXLSX.xlsx\']');
+  }
+
+  verifyFastTrackDocumentsUploadedSectionClaimantContent() {
+    I.see('Claimant disclosure');
+    I.see('Claimant disclosure list');
+    I.see('Date uploaded');
+    I.see('Order_2023-10-09.pdf');
+    I.see('Claimant documents for disclosure');
+    I.see('Document for disclosure Testing 01-03-2023.pdf');
+
+    I.see('Claimant witness evidence');
+    I.see('Claimant witness statement');
+    I.see('Witness Statement of Witness Nae 01-03-2023.pdf');
+    I.see('Claimant witness summary');
+    I.see('Witness Summary of Suary 23.pdf');
+    I.see('Claimant intention to rely on hearsay evidence');
+    I.see('Hearsay evidence Witness 01-03-2023.pdf');
+    I.see('Claimant documents referred to in statement');
+    I.see('Referred Document Upper 01-01-2023.pdf');
+
+    I.see('Claimant expert evidence');
+    I.see('Claimant expert report');
+    I.see('Experts report nae Expertise 02-03-2023.pdf');
+    I.see('Joint statement of experts');
+    I.see('Joint report Nae expertise 01-04-2023.pdf');
+    I.see('Claimant questions for other party\'s expert or joint expert');
+    I.see('testing Party Document.pdf');
+    I.see('Claimant answers to questions asked by other party');
+    I.see('Ep Other party Question.pdf');
+
+    I.see('Claimant trial documents');
+    I.see('Claimant case summary');
+    I.see('Order_2023-10-09.pdf');
+    I.see('Claimant skeleton argument');
+    I.see('fast_track_sdo_000MC014.pdf');
+    I.see('Claimant legal authorities');
+    I.see('000MC038-claim-response.pdf');
+    I.see('Claimant costs');
+    I.see('hearing_small_claim_000MC013.pdf');
+    I.see('Claimant documentary evidence');
+    I.see('Documentary Evidence Deadline 01-02-2023.pdf');
   }
 
   verifyDocumentSectionContent() {
