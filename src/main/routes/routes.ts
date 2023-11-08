@@ -221,6 +221,10 @@ import claimantResponseCheckAnswersController from './features/claimantResponse/
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
+import applyHelpFeeSelectionController
+  from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
+import cancelHearingFeeJourneyController
+  from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 export default [
   homeController,
   dashboardController,
@@ -427,4 +431,6 @@ export default [
   claimFeeController,
   cancelTrialArrangementsController,
   breathingSpaceLiftedCheckAnswersController,
+  applyHelpFeeSelectionController,
+  cancelHearingFeeJourneyController,
 ];

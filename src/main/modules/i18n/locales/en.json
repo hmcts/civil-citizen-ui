@@ -914,7 +914,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "How do you want the defandant to pay?",
@@ -1662,6 +1662,17 @@
       "CLAIMANT_CONFIRMED_YOU_PAID": "{{ claimantName }} confirmed you paid £{{amount}} on {{ moneyReceivedOn }}.",
       "CONTACT": "Contact {{ claimantName }}",
       "CASE_PROGRESSION": {
+        "HEARING_FEE": {
+          "APPLY_HELP_FEE_SELECTION": {
+            "CONTINUE": "Continue",
+            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
+            "LINK_TEXT": "help with fees (opens in a new tab).",
+            "PAGE_TITLE": "Hearing fee",
+            "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
+            "QUESTION_TITLE": "Do you want to apply for help with fees?",
+            "TITLE": "Pay hearing fee"
+          }
+        },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
