@@ -481,6 +481,7 @@
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
       "GIVE_EVIDENCE": "Ydych chi eisiau rhoi tystiolaeth?",
       "HEARING_REQUIREMENTS_TITLE": "Gofynion ar gyfer gwrandawiad",
+      "YOUR_HEARING_REQUIREMENTS_TITLE": "Eich gofynion ar gyfer gwrandawiad",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "INCOME_REGULAR": "Incwm rheolaidd",
@@ -837,6 +838,13 @@
       },
       "EXPECTED_END_DATE": "Expected end date"
     },
+    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
+      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
+      "TITLE": "Lift the debt respite scheme (breathing space)",
+      "DATE_LIFTED": " Date lifted",
+      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
+      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
+    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Eich dyddiad geni",
       "TITLE": "Beth yw eich dyddiad geni?"
@@ -903,7 +911,11 @@
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
-      }
+      },
+      "REJECTED_DEFENDANT_RESPONSE": {
+        "MESSAGE": "You've rejected their response",
+        "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      } 
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -2022,6 +2034,7 @@
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
       "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?",
+      "AGREE_THEIR_REPAYMENT_PLAN": "Gallwch gytuno i'w cynllun ad-dalu neu awgrymu eich cynllun eich hun",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "Bydd yr hawliad yn parhau am y cyfanswm a hawliwyd gennych",
       "THIS_IS_THE_TOTAL_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol",
       "TITLE": "Ydych chi eisiau setlo'r cais am y £{{ admittedAmount }} a addefir gan y diffynnydd?"

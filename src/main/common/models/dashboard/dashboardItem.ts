@@ -77,6 +77,7 @@ export class DashboardClaimantItem extends DashboardItem {
       RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
       WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
+      DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
     };
   }
 
@@ -116,6 +117,10 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       ADMIT_PAY_INSTALLMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.ADMIT_PAY_BY_INSTALLMENTS'},
       ELIGIBLE_FOR_CCJ: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
+        parameter: [paramClaimantName],
+      },
+      DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
         parameter: [paramClaimantName],
       },
