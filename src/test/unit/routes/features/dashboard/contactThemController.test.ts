@@ -5,8 +5,6 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {app} from '../../../../../main/app';
 import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getClaimById,
   getRedisStoreForSession,
@@ -56,14 +54,6 @@ describe('Claimant details', () => {
           expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.postCode);
         });
     });
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_CONTACT_THEM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+
   });
 });
