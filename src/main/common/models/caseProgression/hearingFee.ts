@@ -17,7 +17,7 @@ export class HearingFeeInformation {
     this.hearingDueDate = hearingDueDate;
   }
 
-  getHearingFeeFeeFormatted(): number {
+  getHearingFeeFormatted(): number {
     return convertToPoundsFilter(this.hearingFee.calculatedAmountInPence);
   }
 

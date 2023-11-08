@@ -60,7 +60,7 @@ describe('testing of caseProgressionHearingFee class', ()=> {
 
   it('should getClaimFeeFormatted returns with correct information', () => {
     //When
-    const resultHourExpected = caseProgressionHearing.hearingFeeInformation.getHearingFeeFeeFormatted();
+    const resultHourExpected = caseProgressionHearing.hearingFeeInformation.getHearingFeeFormatted();
     //Then
     expect(resultHourExpected).toBe(10);
   });
