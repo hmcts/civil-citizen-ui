@@ -20,7 +20,6 @@ import {
   getRepaymentLength,
 } from 'common/utils/repaymentUtils';
 
-
 const acceptRepaymentPlanController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/accept-repayment-plan';
 let repaymentPlan: RepaymentPlanSummary;
