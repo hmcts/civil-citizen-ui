@@ -23,7 +23,7 @@ claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (r
       description: getDescription(taskLists, lang),
     });
   } catch (error) {
-    next(error);
+    next(error); //
   }
 });
 
