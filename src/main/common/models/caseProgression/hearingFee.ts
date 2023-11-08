@@ -1,12 +1,13 @@
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
+
 export class HearingFee implements CCDClaimFee {
   calculatedAmountInPence: string;
   code: string;
   version: string;
-
 }
+
 export class HearingFeeInformation {
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
@@ -20,7 +21,7 @@ export class HearingFeeInformation {
     return convertToPoundsFilter(this.hearingFee.calculatedAmountInPence);
   }
 
-  getHearingDueDateFormatted(lang:string): string {
+  getHearingDueDateFormatted(lang: string): string {
     return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDueDate, lang);
   }
 }
