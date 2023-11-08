@@ -1,9 +1,9 @@
 {% from "../../../../macro/external-link.njk" import externalLink %}
 {% import "external-urls.njk" as externalURLs %}
-
+{% set hideLogout = true  %}
 <p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.NOT_USED_FOR_TENANCY_DEPOSIT') }}</p>
 <p class="govuk-body">
-  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.GET') }} 
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.GET') }}
   {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.HELP_TO_RESOLVE_YOUR_DISPUTE', externalURLs.tenancyServiceUrl, true) }}
-  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.WITH_A_LANLORD_OR_TENANT') }} 
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.TENANCY_DEPOSIT.WITH_A_LANLORD_OR_TENANT') }}
 </p>
