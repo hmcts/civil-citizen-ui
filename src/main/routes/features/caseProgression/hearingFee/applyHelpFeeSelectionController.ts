@@ -12,9 +12,9 @@ import {GenericForm} from 'form/models/genericForm';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
-import {FeeType} from 'form/models/fee';
 import {ApplyHelpFeeForm} from 'models/caseProgression/hearingFee/applyHelpFeeForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {CaseProgressionHearingFeeType} from 'models/caseProgression/hearingFee';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
@@ -38,7 +38,7 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
   } else if(form.model.option === YesNo.NO) {
     res.redirect(constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CREATION));  // TODO: set URL of payment creation
   } else {
-    const feeType : FeeType = FeeType.HEARING;
+    const feeType : CaseProgressionHearingFeeType = CaseProgressionHearingFeeType.HEARING;
     await saveCaseProgression(req.params.id, feeType, dqPropertyName);
     res.redirect(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START));
   }

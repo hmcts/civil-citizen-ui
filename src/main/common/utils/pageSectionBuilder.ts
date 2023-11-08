@@ -107,6 +107,18 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addMicroText(microText: string, variables?: unknown) {
+    const microTextSection = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: microText,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(microTextSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }

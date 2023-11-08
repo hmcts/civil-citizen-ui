@@ -1,7 +1,5 @@
-import {
-  ApplyHelpFeeSelectionSectionBuilder,
-} from 'models/caseProgression/hearingFee/applyHelpFeeSelectionSectionBuilder';
 import {t} from 'i18next';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 const HELP_FEE_SELECTION = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION';
 
@@ -11,7 +9,7 @@ export const getApplyHelpFeeSelectionContents = () => {
   const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore)}
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">${t(`${HELP_FEE_SELECTION}.LINK_TEXT`)}</a>
     </p>`;
-  return new ApplyHelpFeeSelectionSectionBuilder()
+  return new PageSectionBuilder()
     .addMicroText(`${HELP_FEE_SELECTION}.PAGE_TITLE`)
     .addMainTitle(`${HELP_FEE_SELECTION}.TITLE`)
     .addRawHtml(linkParagraph)
