@@ -17,7 +17,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
-import {PaymentIntention} from "form/models/admission/paymentIntention";
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -156,7 +156,7 @@ function taskCoveredForNewPaymentPlan(claim: Claim): boolean {
       && taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntention, claim)) {
       return true;
     } else if (paymentIntention?.paymentOption == PaymentOptionType.IMMEDIATELY) {
-      return true
+      return true;
     }
   }
   return false;
@@ -166,7 +166,7 @@ function taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntent
   if ((paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE && paymentIntention?.paymentDate
       || paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS && paymentIntention?.repaymentPlan)
     && checkCourtProposedDate(claim)) {
-    return true
+    return true;
   }
   return false;
 }
