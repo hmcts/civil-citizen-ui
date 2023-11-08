@@ -260,6 +260,7 @@ export interface CCDClaim extends ClaimUpdate {
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
   applicant1ResponseDate?: Date;
+  liftBreathing?: CCDBreathingSpaceStartInfo;
 }
 
 export interface ClaimFeeData {

@@ -1,4 +1,4 @@
-import {getSummarySections} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
+import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 import {getClaimWithFewDetails, getClaimWithNoDetails} from '../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../utils/checkAnswersConstants';
 import {
