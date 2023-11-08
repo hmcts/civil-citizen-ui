@@ -225,6 +225,8 @@ import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
+import applyHelpWithFeesController from 'routes/features/helpWithFees/helpWithFees';
+
 export default [
   homeController,
   dashboardController,
@@ -433,4 +435,5 @@ export default [
   breathingSpaceLiftedCheckAnswersController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  applyHelpWithFeesController,
 ];

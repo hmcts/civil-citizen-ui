@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -42,6 +41,19 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addSubTitle(title: string, variables?: any, classes?: string) {
+    const titleSection = ({
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: title,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
+
   addParagraph(text: string, variables?: any, classes?: string) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
@@ -59,7 +71,7 @@ export class PageSectionBuilder {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: t(text),
+        html: text,
         variables: variables,
       },
     });
@@ -132,6 +144,7 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(startButtonSection);
     return this;
   }
+
   build() {
     return this._claimSummarySections;
   }
