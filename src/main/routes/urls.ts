@@ -245,6 +245,6 @@ export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/c
 export const HEARING_FEE_APPLY_HELP_FEE_SELECTION = `${BASE_CASE_PROGRESSION_URL}/apply-help-fee-selection`;
 export const HEARING_FEE_APPLY_HELP_FEE_HEARING_FEE = `${BASE_CASE_PROGRESSION_URL}/apply-help-fee-hearing-fee`;
 export const HEARING_FEE_PAYMENT_CREATION = `${BASE_CASE_PROGRESSION_URL}/payment-creation`;
-export const APPLY_HELP_WITH_FEES = `${BASE_CASE_URL}/apply-help-with-fees`;
+export const APPLY_HELP_WITH_FEES = `${BASE_CASE_PROGRESSION_URL}/apply-help-with-fees`;
 export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
 export const HEARING_FEE_CANCEL_JOURNEY = `${BASE_CASE_PROGRESSION_URL}/hearing-fee-cancel`;
