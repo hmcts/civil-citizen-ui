@@ -65,7 +65,11 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Submit"
+      "SUBMIT": "Submit",
+      "START_NOW": "Start now"
+    },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Hearing fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",

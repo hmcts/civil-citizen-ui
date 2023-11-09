@@ -65,7 +65,11 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Cyflwyno"
+      "SUBMIT": "Cyflwyno",
+      "START_NOW": "Dechrau nawr"
+    },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Ffi gwrandawiad"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
