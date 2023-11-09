@@ -119,20 +119,19 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addButtonWithCancel(title: string, href: string, startButton: boolean,cancelHref: string) {
+  addButtonWithCancelLink(title: string, href: string, startButton?: false, cancelHref?: string) {
     const startButtonSection = ({
       type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
       data: {
         text: title,
         href: href,
-        isStartButton: true,
+        isStartButton: startButton,
         cancelHref: cancelHref,
       },
     });
     this._claimSummarySections.push(startButtonSection);
     return this;
   }
-
   build() {
     return this._claimSummarySections;
   }

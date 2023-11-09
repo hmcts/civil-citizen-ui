@@ -26,6 +26,3 @@ export class HearingFeeInformation {
   }
 }
 
-export enum CaseProgressionHearingFeeType {
-  HEARING = 'HEARING',
-}
