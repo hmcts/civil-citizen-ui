@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Router} from 'express';
-import {CP_PAY_HEARING_FEE_START_URL} from 'routes/urls';
+import {PAY_HEARING_FEE_START_URL} from 'routes/urls';
 import {
   getPayHearingFeeStartScreenContent,
 } from 'services/features/dashboard/caseProgression/hearingFee/payHearingFeeStartScreenContent';
@@ -23,7 +23,7 @@ const getPayHearingFeeStartScreenContent = (claimId: string, claim: Claim): PayH
     .addStartButtonWithLink('PAGES.PAY_HEARING_FEE.START.START_NOW', startHref, cancelHref).build();
 };
 }
-payHearingFeeStartScreenController.get(CP_PAY_HEARING_FEE_START_URL, (async (req, res, next: NextFunction) => {
+payHearingFeeStartScreenController.get(PAY_HEARING_FEE_START_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

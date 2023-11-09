@@ -2803,7 +2803,6 @@
         "TITLE": "Pay hearing fee",
         "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
         "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out.",
-        "START": "sTART"
       }
   },
   "FOOTER":{
