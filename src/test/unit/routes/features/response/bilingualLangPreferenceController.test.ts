@@ -28,7 +28,7 @@ describe('Bilingual language preference', () => {
       await request(app).get(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you want to respond to this claim in Welsh?');
+          expect(res.text).toContain('You must choose which language to use to respond to this claim.');
         });
     });
 

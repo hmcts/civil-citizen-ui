@@ -352,11 +352,14 @@
       "PAGE_TITLE": "Severely disabled"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
-      "TITLE": "Do you want to respond to this claim in Welsh?",
-      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "PAGE_TITLE": "Language",
+      "TITLE": "Language",
+      "DESCRIPTION_1": "You must choose which language to use to respond to this claim.",
+      "DESCRIPTION_2": " You can switch between reading information in English or Welsh at any point during your response by selecting the Cymraeg or English toggle.",
+      "DESCRIPTION_3": "Only do this directly after selecting 'Save and continue', or you may lose information that you have added to a page.",
+      "QUESTION": "In which language do you want to respond to this claim?",
       "ENGLISH": "English",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "WELSH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -915,7 +918,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "How do you want the defandant to pay?",

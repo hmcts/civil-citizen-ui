@@ -12,6 +12,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("PAGES.BILINGUAL_LANGUAGE_PREFERENCE.TITLE") %}
+      {% set question = t("PAGES.BILINGUAL_LANGUAGE_PREFERENCE.QUESTION") %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
@@ -25,14 +26,27 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          <p class="govuk-body-m">
+            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1') }}
+            <br>
+            <br>
+            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_2') }}
+            <br>
+            <br>
+            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_3') }}
+            <br>
+            <br>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-two-thirds">
+                <h4 class="govuk-heading-m">{{ question }}</h4>
+              </div>
+             </div>
+          </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
               idPrefix: id,
               name: name,
-              hint: {
-                text: t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION')
-              },
               items: [
                 {
                   value: ClaimBilingualLanguagePreference.ENGLISH,
@@ -42,7 +56,7 @@
                 {
                   value: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
                   checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH else false,
-                  html: "<span>" + t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.WELSH_AND_ENGLISH') + "</span>"
+                  html: "<span>" + t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.WELSH') + "</span>"
                 }
               ],
               errorMessage: {

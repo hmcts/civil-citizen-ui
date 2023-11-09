@@ -352,11 +352,14 @@
       "PAGE_TITLE": "Anabledd difrifol"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Ydych chi eisiau ymateb i'r hawliad hwn yn Gymraeg?",
-      "TITLE": "Ydych chi eisiau ymateb i'r hawliad hwn yn Gymraeg?",
-      "DESCRIPTION": "Gallwch ymateb i'r hawliad hwn yn Gymraeg. Ar ôl i chi gyflwyno eich ymateb, bydd unrhyw beth arall y bydd yn rhaid i chi ei wneud yn ymwneud â'r hawliad yn Saesneg. Byddwch yn cael e-byst a llythyrau yn Saesneg.",
+      "PAGE_TITLE": "Iaith",
+      "TITLE": "Iaith",
+      "DESCRIPTION_1": "Mae'n rhaid ichi ddewis pa iaith yr hoffech ei defnyddio i ymateb i'r hawliad hwn.",
+      "DESCRIPTION_2": "Gallwch ddewis darllen gwybodaeth yn Gymraeg neu'n Saesneg unrhyw bryd yn ystod eich ymateb drwy glicio ar y botwm Cymraeg neu English.",
+      "DESCRIPTION_3": "Dylech wneud hyn yn syth ar ôl clicio ar 'Cadw a pharhau', neu efallai y byddwch yn colli gwybodaeth rydych wedi'i rhoi ar y dudalen.",
+      "QUESTION": "Ym mha iaith yr hoffech chi ymateb i'r hawliad hwn?",
       "ENGLISH": "Saesneg",
-      "WELSH_AND_ENGLISH": "Y Gymraeg a'r Saesneg"
+      "WELSH": "Cymraeg"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen (dewisol):",
@@ -915,7 +918,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
