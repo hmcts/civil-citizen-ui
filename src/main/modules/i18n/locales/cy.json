@@ -929,7 +929,7 @@
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
       },
       "REJECTED_PAYMENT_PLAN": {
-        "MESSAGE": "You've propose a different repayment plan"
+        "MESSAGE": "You've proposed a different repayment plan"
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
