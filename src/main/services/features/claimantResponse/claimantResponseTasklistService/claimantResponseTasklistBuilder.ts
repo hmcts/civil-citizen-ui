@@ -83,6 +83,13 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
+        if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+          const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
+          tasks.push(chooseHowFormaliseTask);
+        } else if (isRequestJudgePaymentPlan(claim)) {
+          const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+          tasks.push(countyCourtJudgmentTask);
+        }
       }
 
       if (claim?.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
