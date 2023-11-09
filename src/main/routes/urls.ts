@@ -244,3 +244,4 @@ export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publicat
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;
 export const PAY_HEARING_FEE_URL = `${BASE_CASE_PROGRESSION_URL}/pay-hearing-fee`;
 export const HEARING_FEE_CANCEL_JOURNEY = `${PAY_HEARING_FEE_URL}/cancel`;
+export const HEARING_FEE_APPLY_HELP_FEE_SELECTION = `${PAY_HEARING_FEE_URL}/apply-help-fee-selection`;
