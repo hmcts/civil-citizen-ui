@@ -6,6 +6,7 @@ import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNext
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import { YesNo } from 'common/form/models/yesNo';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -18,6 +19,8 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   } else if (hasClaimantRejectedDefendantResponse(claim)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE';
+  } else if (isClaimantRejectPaymentPlan(claim)) {
+    claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   }
 
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
@@ -30,7 +33,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
 
-  if (claimantResponse.isSignSettlementAgreement) {
+  if (claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
@@ -65,4 +68,10 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
     claim.isFullDefence() &&
     claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
   );
+}
+
+function isClaimantRejectPaymentPlan(claim: Claim): boolean {
+  return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
 }
