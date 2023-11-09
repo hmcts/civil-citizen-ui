@@ -11,7 +11,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (claimantResponse.isSignSettlementAgreement) {
+  if (claimantResponse.isSignSettlementAgreement && !isClaimantRejectPaymentPlan(claim)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
@@ -19,7 +19,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   } else if (hasClaimantRejectedDefendantResponse(claim)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE';
-  } else if (isClaimantRejectPaymentPlan(claim)) {
+  } else if (claimantResponse.isSignSettlementAgreement && isClaimantRejectPaymentPlan(claim)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   }
 
