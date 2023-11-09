@@ -65,7 +65,11 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Cyflwyno"
+      "SUBMIT": "Cyflwyno",
+      "START_NOW": "Dechrau nawr"
+    },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Ffi gwrandawiad"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -1677,6 +1681,15 @@
       "CLAIMANT_CONFIRMED_YOU_PAID": "Cadarnhaodd {{claimantName}} eich bod wedi talu £{{amount}} ar {{moneyReceivedOn}}.",
       "CONTACT": "Cysylltu â {{ claimantName }}",
       "CASE_PROGRESSION": {
+        "HEARING_FEE": {
+          "APPLY_HELP_FEE_SELECTION": {
+            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
+            "LINK_TEXT": "help with fees (opens in a new tab).",
+            "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
+            "QUESTION_TITLE": "Do you want to apply for help with fees?",
+            "TITLE": "Pay hearing fee"
+          }
+        },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "Mae treial wedi'i drefnu ar gyfer eich achos",
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
