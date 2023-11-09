@@ -181,7 +181,9 @@ module.exports = {
           'SHOW',
         ],
         disposalHearingMethod: 'disposalHearingMethodInPerson',
-        disposalHearingMethodInPerson: null,
+        disposalHearingMethodInPerson: {
+          value: { code: '192280' },
+        },
         disposalHearingMethodVideoConferenceHearing: null,
         disposalHearingMethodTelephoneHearing: null,
         disposalHearingBundleToggle: [
