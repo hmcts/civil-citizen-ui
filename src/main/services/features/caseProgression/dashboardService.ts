@@ -9,7 +9,7 @@ import {Dashboard} from 'models/caseProgression/dashboard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
-const getDashboardForm = async (claim: Claim,claimId: string, lng: string):Promise<TaskList[]> => {
+export const getDashboardForm = async (claim: Claim,claimId: string, lng: string):Promise<TaskList[]> => {
   try {
     const cachedDashboard:Dashboard = await getDashboardFromCache(claimId);
     if(!cachedDashboard || !cachedDashboard.items.length) {
@@ -23,7 +23,7 @@ const getDashboardForm = async (claim: Claim,claimId: string, lng: string):Promi
   }
 };
 
-const saveDashboard = async (dashboard:TaskList[], claimId:string) =>{
+export const saveDashboard = async (dashboard:TaskList[], claimId:string) =>{
   try {
     await saveDashboardToCache(dashboard, claimId);
   } catch (error) {
@@ -31,24 +31,24 @@ const saveDashboard = async (dashboard:TaskList[], claimId:string) =>{
     throw error;
   }
 };
-const generateNewDashboard = (claim: Claim, lng: string): TaskList[] => {
+export const generateNewDashboard = (claim: Claim, lng: string): TaskList[] => {
 
   const newDashboard: TaskList[] = [];
 
   const hearings: TaskList = new TaskListBuilder(t('PAGES.DASHBOARD.HEARINGS.TITLE'))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])).build();
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS'), '#', TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS'), '#', TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])).build();
   if (claim.isClaimant() ) {
-    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
   }
   if (claim.isFastTrackClaim){
-    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+    hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
   }
-  hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+  hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#',TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
 
   const noticeAndOrders =  new TaskListBuilder(t('PAGES.DASHBOARD.ORDERS_NOTICE.TITLE'))
-    .addTask(new TaskItem(t('PAGES.DASHBOARD.ORDERS_NOTICE.VIEW'), '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
+    .addTask(new TaskItem(t('PAGES.DASHBOARD.ORDERS_NOTICE.VIEW'), '#',TaskStatus.NOT_AVAILABLE_YET, true, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
     .build();
 
   newDashboard.push(hearings);
@@ -57,8 +57,3 @@ const generateNewDashboard = (claim: Claim, lng: string): TaskList[] => {
   return newDashboard;
 };
 
-export {
-  getDashboardForm,
-  saveDashboard,
-  generateNewDashboard,
-};
