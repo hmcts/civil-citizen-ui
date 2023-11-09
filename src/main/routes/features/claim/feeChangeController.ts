@@ -12,7 +12,7 @@ feeChangeController.get(CLAIM_FEE_CHANGE_URL, (async (req: AppRequest, res: Resp
   try {
     const user: UserDetails = req.session.user;
     const claim = await getClaimById(req.params.id, req, true);
-    const claimFee =  convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence);
+    const claimFee =  convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const redirectUrl = draftClaimData?.draftClaim ? CLAIMANT_TASK_LIST_URL : draftClaimData.claimCreationUrl;
     return res.render(feeChangeViewPath, {claimFee, redirectUrl});
