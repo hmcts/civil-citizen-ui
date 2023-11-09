@@ -5,7 +5,6 @@ export interface Task {
   url: string,
   status: TaskStatus,
   isCheckTask?: boolean;
-  isUrlDisable?: boolean;
   statusColor?: string;
 }
 
@@ -14,20 +13,14 @@ export class TaskItem implements Task {
   url: string;
   status: TaskStatus;
   isCheckTask?: boolean;
-  isUrlDisable?: boolean;
   statusColor?: string;
 
-  constructor(description: string, url: string, status: TaskStatus,isUrlDisable?:boolean, isCheckTask?: boolean, statusColor?: string) {
+  constructor(description: string, url: string, status: TaskStatus, isCheckTask?: boolean, statusColor?: string) {
     this.description = description;
-    if (url !== undefined){
-      this.url = url;
-    }
+    this.url = url;
     this.status = status;
     if (isCheckTask !== undefined) {
       this.isCheckTask = isCheckTask;
-    }
-    if (isUrlDisable !== undefined) {
-      this.isUrlDisable = isUrlDisable;
     }
     if (statusColor) {
       this.statusColor = statusColor;

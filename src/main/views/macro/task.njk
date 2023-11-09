@@ -4,9 +4,9 @@
 
   <div>
     <li class="app-task-list__item">
-       {% if task.isUrlDisable %}
+       {% if task.status===TaskStatus.NOT_AVAILABLE_YET %}
           <span class="app-task-list__task-name">
-             <p>{{ t(task.description) }}</p>
+             <a>{{ t(task.description) }}</a>
           </span>
        {% else %}
           <span class="app-task-list__task-name">
