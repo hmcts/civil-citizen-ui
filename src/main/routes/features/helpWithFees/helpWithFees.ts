@@ -1,9 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   APPLY_HELP_WITH_FEES_START,
-  APPLY_HELP_WITH_FEES_APPLICATION,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
-  DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL, APPLY_HELP_WITH_FEES,
 } from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -16,7 +15,7 @@ import {YesNo} from 'form/models/yesNo';
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
 
-applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES_START, (async (req: Request, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req);
@@ -28,7 +27,7 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES_START, (async (req: Request
   }
 }) as RequestHandler);
 
-applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES_START, (async (req: Request, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req);
@@ -40,7 +39,7 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES_START, (async (req: Reques
     } else {
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_APPLICATION);
+        redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START);
       } else {
         redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
       }

@@ -56,6 +56,16 @@
     {% endif %}
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.SPAN %}
+    {% set object = '' %}
+    {% if content.data.variables %}
+      {% set object = content.data.variables %}
+      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</span>
+    {% else %}
+      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</span>
+    {% endif %}
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.INSET_TEXT %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}

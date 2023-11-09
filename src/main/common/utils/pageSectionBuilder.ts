@@ -67,6 +67,19 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addSpan(text: string, variables?: any, classes?: string) {
+    const spanSection = ({
+      type: ClaimSummaryType.SPAN,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(spanSection);
+    return this;
+  }
+
   addInsetText(text: string, variables?: unknown) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
