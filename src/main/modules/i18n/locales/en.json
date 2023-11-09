@@ -352,13 +352,13 @@
       "PAGE_TITLE": "Severely disabled"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Language",
-      "TITLE": "Language",
       "DESCRIPTION_1": "You must choose which language to use to respond to this claim.",
       "DESCRIPTION_2": " You can switch between reading information in English or Welsh at any point during your response by selecting the Cymraeg or English toggle.",
       "DESCRIPTION_3": "Only do this directly after selecting 'Save and continue', or you may lose information that you have added to a page.",
-      "QUESTION": "In which language do you want to respond to this claim?",
       "ENGLISH": "English",
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In which language do you want to respond to this claim?",
+      "TITLE": "Language",
       "WELSH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
