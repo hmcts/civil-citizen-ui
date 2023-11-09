@@ -243,5 +243,3 @@ export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TR
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;
 export const PAY_HEARING_FEE_URL = `${BASE_CASE_PROGRESSION_URL}/pay-hearing-fee`;
-export const PAY_HEARING_FEE_START_URL = `${PAY_HEARING_FEE_URL}/start`;
-

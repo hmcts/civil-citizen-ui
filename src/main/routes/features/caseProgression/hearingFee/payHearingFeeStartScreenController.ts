@@ -1,33 +1,21 @@
 import {NextFunction, RequestHandler, Router} from 'express';
-import {PAY_HEARING_FEE_START_URL} from 'routes/urls';
-import {
-  getPayHearingFeeStartScreenContent,
-} from 'services/features/dashboard/caseProgression/hearingFee/payHearingFeeStartScreenContent';
+import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/hearingFeeStartPageContent';
 
-const payHearingFeeStartScreenViewPath = 'features/dashboard/caseProgression/hearingFee/pay-hearing-fee-start';
+const payHearingFeeStartScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-start';
 const payHearingFeeStartScreenController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const getPayHearingFeeStartScreenContent = (claimId: string, claim: Claim): PayHearingFeeStartScreenContent => {
-  return new PageSectionBuilder().addMicroText('PAGES.PAY_HEARING_FEE.START.MICRO_TEXT')
-    .addMainTitle('PAGES.PAY_HEARING_FEE.START.TITLE')
-    .addParagraph('PAGES.PAY_HEARING_FEE.START.YOU_MUST_PAY', {
-      hearingFee:hearingFee,
-      hearingFeePaymentDeadline:hearingFeePaymentDeadline,
-    })
-    .addParagraph('PAGES.PAY_HEARING_FEE.START.IF_YOU_DO_NOT_PAY')
-    .addStartButtonWithLink('PAGES.PAY_HEARING_FEE.START.START_NOW', startHref, cancelHref).build();
-};
-}
-payHearingFeeStartScreenController.get(PAY_HEARING_FEE_START_URL, (async (req, res, next: NextFunction) => {
+payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    res.render(payHearingFeeStartScreenViewPath, {payHearingFeeStartScreenContent:getPayHearingFeeStartScreenContent(claim)});
+    res.render(payHearingFeeStartScreenViewPath, {payHearingFeeStartScreenContent:getHearingFeeStartPageContent(claimId, lang, claim.caseProgressionHearing.hearingFeeInformation)});
   } catch (error) {
     next(error);
   }

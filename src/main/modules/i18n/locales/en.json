@@ -679,7 +679,7 @@
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
-    "CLAIM_TASK_LIST":{
+    "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "APPLICATION_COMPLETE": "Application complete",
       "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -1172,7 +1172,7 @@
         "CLAIM_ENDED": "This claim has ended",
         "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
-        "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
+        "NO_RESPONSE_ELIGIBLE_CCJ": "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
@@ -2210,7 +2210,7 @@
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
-      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
         "HOW_THEY_WANT_PAY": "How they want to pay?",
         "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
@@ -2751,7 +2751,6 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalise your trial arrangements",
@@ -2801,9 +2800,10 @@
       "START_PAGE": {
         "PAGE_TITLE": "Hearing Fee",
         "TITLE": "Pay hearing fee",
-        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
-        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out.",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingDueDate }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
       }
+    }
   },
   "FOOTER":{
     "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
