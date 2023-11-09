@@ -12,11 +12,11 @@ const logger = Logger.getLogger('dashboardService');
 export const getDashboardForm = async (claim: Claim,claimId: string, lng: string):Promise<TaskList[]> => {
   try {
     const cachedDashboard:Dashboard = await getDashboardFromCache(claimId);
-    if(!cachedDashboard || !cachedDashboard.items.length) {
-      const dashboard:TaskList[] = generateNewDashboard(claim,lng);
-      return dashboard;
+    if(cachedDashboard?.items?.length) {
+      return cachedDashboard.items;
     }
-    return cachedDashboard.items;
+    const dashboard:TaskList[] = generateNewDashboard(claim);
+    return dashboard;
   } catch (error) {
     logger.error(error);
     throw error;
@@ -31,7 +31,7 @@ export const saveDashboard = async (dashboard:TaskList[], claimId:string) =>{
     throw error;
   }
 };
-export const generateNewDashboard = (claim: Claim, lng: string): TaskList[] => {
+export const generateNewDashboard = (claim: Claim): TaskList[] => {
 
   const newDashboard: TaskList[] = [];
 
