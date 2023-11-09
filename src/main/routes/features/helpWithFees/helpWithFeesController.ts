@@ -1,8 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  APPLY_HELP_WITH_FEES,
   APPLY_HELP_WITH_FEES_START,
+  DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
-  DASHBOARD_CLAIMANT_URL, APPLY_HELP_WITH_FEES,
 } from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -11,10 +12,12 @@ import {getApplyHelpWithFeesContent} from 'services/features/helpWithFees/applyH
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
 
+//TODO: Check test coverage + it works with Miguel's latest version.
 applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -41,7 +44,12 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: Request, res
       if (req.body.option == YesNo.YES) {
         redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START);
       } else {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
+        if(claim.feeTypeHelpRequested === FeeType.HEARING) {
+          redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
+        } else {
+          //TODO: Check if this placeholder needs replacing. Do we want to put in a guard checking on FeeType - spoke to Alex but inconclusive. I don't think we need one, but we'll need some default value.
+          redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+        }
       }
       res.redirect(redirectUrl);
     }

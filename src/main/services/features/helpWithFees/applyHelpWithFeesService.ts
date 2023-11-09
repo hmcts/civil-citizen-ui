@@ -1,16 +1,18 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 function getHearingFee(claim: Claim) {
-  return 70;
+  return claim?.caseProgressionHearing?.hearingFeeInformation?.getHearingFeeFormatted();
 }
 
 export const getApplyHelpWithFeesContent = (claim: Claim) => {
-  //Make sure CIV-11185 needs to save a feeType in Redis for our use.
-  //Currently it's implemented to be saved in caseProgression - not very helpful.
-  let feeAmount, feeType;
-  feeAmount = getHearingFee(claim);
-  feeType = 'HEARING';
+  const feeType = claim?.feeTypeHelpRequested;
+  let feeAmount;
+  if (claim?.feeTypeHelpRequested === FeeType.HEARING) {
+    feeAmount = getHearingFee(claim);
+  }
+  //TODO: Currently, arriving on page with no feeType looks ugly. Is there a better implementation? Or accept that users shouldn't visit page without feeType anyway. Guard?
   return new PageSectionBuilder()
     .addMicroText('PAGES.APPLY_HELP_WITH_FEES.START.'+feeType+'_FEE')
     .addMainTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE')

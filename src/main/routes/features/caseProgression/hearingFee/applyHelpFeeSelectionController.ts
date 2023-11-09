@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  APPLY_HELP_WITH_FEES_START,
+  APPLY_HELP_WITH_FEES,
   DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_CANCEL_JOURNEY,
   HEARING_FEE_PAYMENT_CREATION,
@@ -54,7 +54,7 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
     const claim: any = await getCaseDataFromStore(redisClaimId);
     claim.feeTypeHelpRequested = FeeType.HEARING;
     await saveDraftClaim(redisClaimId, claim);
-    res.redirect(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START));
+    res.redirect(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES));
   }
 })as RequestHandler);
 
