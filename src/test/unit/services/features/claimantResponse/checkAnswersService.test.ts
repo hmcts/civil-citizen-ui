@@ -66,28 +66,27 @@ describe('Check Answers service', () => {
     });
 
     it('should check answers for defendant paid some of the money', () => {
+      const expectedResult = generateExpectedResultForDefendantPaidSome();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(5).toEqual(result.sections.length);
+      expect(expectedResult).toEqual(result);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
       const expectedResult = generateExpectedResultForDefendantPaidNone();
       claim.claimantResponse.ccjRequest.paidAmount = { option: YesNo.NO };
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(5).toEqual(result.sections.length);
+      expect(expectedResult).toEqual(result);
     });
-    
     it('should check answers be empty if non of the tasks completed', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
       claim.claimantResponse.chooseHowToProceed = undefined;
       claim.claimantResponse.ccjRequest = undefined;
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined] }).toEqual(result);
+      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined, null, null] }).toEqual(result);
     });
   });
 });
-
 
 function generateExpectedResultForDefendantPaidNone() {
   return {
@@ -173,6 +172,8 @@ function generateExpectedResultForDefendantPaidNone() {
         },
       },
       undefined,
+      null,
+      null,
     ],
   };
 }
@@ -269,6 +270,8 @@ function generateExpectedResultForDefendantPaidSome() {
         },
       },
       undefined,
+      null,
+      null,
     ],
   };
 }
