@@ -81,6 +81,9 @@ module.exports = {
             id: 'ce85c060-23ce-4858-be42-9243e98977d5',
           },
         ],
+        smallClaimsMethodInPerson: {
+          value: { code: '192280'},
+        },
       },
     };
   },
