@@ -12,7 +12,7 @@ const viewPath = 'features/claim/payment/claim-fee-breakdown';
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim =  await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+    const claim =  await getCaseDataFromStore(generateRedisKey(req));
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
     const interestAmount = calculateInterestToDate(claim);
