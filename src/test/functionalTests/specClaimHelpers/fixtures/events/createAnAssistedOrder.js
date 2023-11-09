@@ -172,6 +172,9 @@ module.exports = {
           document_filename: 'Order_2023-10-09.pdf',
           document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce',
         },
+        smallClaimsMethodInPerson: {
+          value: { code: '192280'},
+        },
       },
     };
     return assistedOrderData;
