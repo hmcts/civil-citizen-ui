@@ -29,19 +29,15 @@
             {{ itemContent(content,t) }}
           {% endfor %}
 
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml}) }}
-
-            <div class="govuk-form-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
-              }) }}
-              <a href="{{ latestUploadUrl }}" class="govuk-!-font-size-19 govuk-link govuk-!-margin-left-5" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-            </div>
+            {% for content in applyHelpFeeSelectionButtonContents %}
+              {{ itemContent(content,t) }}
+            {% endfor %}
           </form>
-
 
 
         </div>

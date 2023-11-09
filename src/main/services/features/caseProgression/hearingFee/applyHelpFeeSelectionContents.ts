@@ -10,7 +10,7 @@ export const getApplyHelpFeeSelectionContents = () => {
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">${t(`${HELP_FEE_SELECTION}.LINK_TEXT`)}</a>
     </p>`;
   return new PageSectionBuilder()
-    .addMicroText(`${HELP_FEE_SELECTION}.PAGE_TITLE`)
+    .addMicroText('COMMON.MICRO_TEXT.HEARING_FEE')
     .addMainTitle(`${HELP_FEE_SELECTION}.TITLE`)
     .addRawHtml(linkParagraph)
     .addParagraph('')

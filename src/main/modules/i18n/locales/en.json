@@ -1669,10 +1669,8 @@
       "CASE_PROGRESSION": {
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
-            "CONTINUE": "Continue",
             "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
             "LINK_TEXT": "help with fees (opens in a new tab).",
-            "PAGE_TITLE": "Hearing fee",
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
