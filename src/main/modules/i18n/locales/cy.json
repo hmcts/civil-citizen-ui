@@ -675,7 +675,7 @@
       "TIMELINE": "Amserlen",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
-    "CLAIM_TASK_LIST": {
+    "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "APPLICATION_COMPLETE": "Application complete",
       "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -915,7 +915,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      }
+      } 
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -1168,7 +1168,7 @@
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
         "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
-        "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
+        "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
@@ -2208,7 +2208,7 @@
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
-      "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
         "HOW_THEY_WANT_PAY": "How they want to pay?",
         "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."

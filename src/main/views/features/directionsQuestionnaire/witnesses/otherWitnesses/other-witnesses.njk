@@ -40,10 +40,12 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l govuk-!-static-margin-bottom-2">{{ t('PAGES.OTHER_WITNESSES.PAGE_TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.OTHER_WITNESSES.THIS_IS_SOMEONE_WHO_CAN_CONFIRM') }}</p>
+          {% if isDefendant %}
           {{ govukNotificationBanner({
               html:notificationHtml,
               titleText:t('PAGES.OTHER_WITNESSES.SUPPORT_REQUIREMENTS_HEADING')
           }) }}
+          {% endif %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
