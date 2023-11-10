@@ -7,6 +7,6 @@ export class CaseDocumentInfoExtractor {
     const sealedDocument = systemGeneratedCaseDocuments.find((document) => {
       return document.value.documentType === documentType;
     });
-    return documentIdExtractor(sealedDocument.value.documentLink.document_binary_url);
+    return sealedDocument ? documentIdExtractor(sealedDocument.value?.documentLink?.document_binary_url) : null;
   });
 }
