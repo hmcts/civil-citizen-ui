@@ -17,7 +17,7 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
-    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef);xx
+    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
