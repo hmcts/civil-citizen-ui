@@ -32,7 +32,7 @@ async function renderView(res: Response, claimId: string, form: any, redirectUrl
     });
 }
 
-applyHelpFeeSelectionController.get([HEARING_FEE_APPLY_HELP_FEE_SELECTION], (async (req, res, next: NextFunction) => {
+applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req, res, next: NextFunction) => {
   const form = new GenericForm(new ApplyHelpFeeForm());
   const claimId = req.params.id;
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
@@ -48,7 +48,7 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
     const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
     await renderView(res, claimId, form, redirectUrl);
   } else if(form.model.option === YesNo.NO) {
-    res.redirect(constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CREATION));  // TODO: set URL of payment creation
+    res.redirect(constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CREATION));
   } else {
     const redisClaimId = generateRedisKey(<AppRequest>req);
     const claim: any = await getCaseDataFromStore(redisClaimId);
