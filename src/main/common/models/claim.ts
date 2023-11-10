@@ -212,10 +212,10 @@ export class Claim {
     return this.getName(this.respondent1);
   }
 
-  isDefendantResponsePayBySetDate():boolean{
-    const isFullAdmitBySetDate =  this.isFullAdmission() && this.isFAPaymentOptionBySetDate()
-    const isPartAdmitBysetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate()
-    return isFullAdmitBySetDate || isPartAdmitBysetDate;
+  isDefendantResponsePayBySetDate(): boolean {
+    const isFullAdmitBySetDate = this.isFullAdmission() && this.isFAPaymentOptionBySetDate();
+    const isPartAdmitBySetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate();
+    return isFullAdmitBySetDate || isPartAdmitBySetDate;
   }
 
   formattedResponseDeadline(lng?: string): string {
