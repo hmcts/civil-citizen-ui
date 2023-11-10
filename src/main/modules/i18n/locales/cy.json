@@ -352,6 +352,23 @@
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
+    "APPLY_HELP_WITH_FEES": {
+      "START": {
+        "HEARING_FEE": "Hearing fee",
+        "TITLE" : "Help with fees",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
+        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
+        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
+        "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
+        "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
+        "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
+        "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
+        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
+        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?"
+      }
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Anabledd difrifol"
     },
