@@ -1,9 +1,8 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {buildSubmitStatus, buildNextStepsSection} from './submitConfirmationBuilder/submitConfirmationBuilder';
 import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {AppRequest} from 'models/AppRequest';
-import {addDaysToDate} from 'common/utils/dateUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
@@ -21,8 +20,8 @@ export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang
 
 export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppRequest): Promise<Date> => {
   try {
-    if ((claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) || (claim.isPartialAdmission() && claim.isPAPaymentOptionPayImmediately())) {
-      return await civilServiceClient.calculateExtendedResponseDeadline(addDaysToDate(claim?.respondent1ResponseDate, 5) , <AppRequest>req);
+    if (claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) {
+      return await civilServiceClient.calculateExtendedResponseDeadline(claim?.respondent1ResponseDate, 5, <AppRequest>req);
     }
     return undefined;
   } catch (error) {
