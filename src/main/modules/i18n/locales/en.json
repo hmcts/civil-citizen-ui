@@ -2971,7 +2971,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to respond to this claim in Welsh",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",

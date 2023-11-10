@@ -2971,7 +2971,7 @@
     "REDIS_FAILURE": "Methiant Redis DraftStore.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "Nid oedd y cod diogelwch yn iawn neu mae wedi dod i ben",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg a Saesneg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
