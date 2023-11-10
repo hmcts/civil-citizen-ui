@@ -9,12 +9,15 @@ import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
+import {
+  ClaimantResponseRequestDefaultJudgementToCCD
+} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
 }
 
-export interface CCDClaimantResponse extends ClaimUpdate{
+export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseRequestDefaultJudgementToCCD {
   applicant1DQLanguage?: CCDWelshLanguageRequirements;
   applicant1DQVulnerabilityQuestions?: CCDVulnerability;
   applicant1DQRequestedCourt?: CCDSpecificCourtLocations;
