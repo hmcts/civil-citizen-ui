@@ -2,13 +2,14 @@ import {getHearingFeeStartPageContent} from 'services/features/caseProgression/h
 import {Claim} from 'models/claim';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-const fixedDate = new Date(2023, 3, 26);
+import {FIXED_DATE} from '../../../../../utils/dateUtils';
+
 describe('getPayHearingFeeStartScreenContent', () => {
   it('should return all the content', () => {
     //Given
     const claim = new Claim();
     claim.id = '1234567890';
-    claim.caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, fixedDate));
+    claim.caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, FIXED_DATE));
     //When
     const payHearingFeeStartScreenContentActual = getHearingFeeStartPageContent(claim.id, 'en', claim.caseProgressionHearing.hearingFeeInformation);
 

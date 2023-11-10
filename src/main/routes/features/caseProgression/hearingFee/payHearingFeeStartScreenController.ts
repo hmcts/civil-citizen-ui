@@ -15,7 +15,7 @@ payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, ne
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    res.render(payHearingFeeStartScreenViewPath, {payHearingFeeStartScreenContent:getHearingFeeStartPageContent(claimId, lang, claim.caseProgressionHearing.hearingFeeInformation)});
+    res.render(payHearingFeeStartScreenViewPath, {payHearingFeeStartScreenContent: getHearingFeeStartPageContent(claimId, lang, claim.caseProgressionHearing.hearingFeeInformation)});
   } catch (error) {
     next(error);
   }
