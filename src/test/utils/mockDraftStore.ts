@@ -23,7 +23,7 @@ import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTele
 import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
 import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDocumentUploadedMock.json';
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
-import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json'
+import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
 
 import {LoggerInstance} from 'winston';
 
