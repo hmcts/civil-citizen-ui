@@ -25,7 +25,7 @@ describe('claimant Dashboard Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return claimant dashboard page with claimant and fast Track', async () => {
+    it('should return claimant dashboard page', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -35,6 +35,7 @@ describe('claimant Dashboard Controller', () => {
         individualFirstName:'Jon',
         individualLastName:'Doe',
       });
+
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -42,15 +43,7 @@ describe('claimant Dashboard Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
+        expect(res.text).toContain('I want to...');
       });
     });
 

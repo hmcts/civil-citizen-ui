@@ -1,6 +1,7 @@
 
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
+
 export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgressionHearing => {
   if (ccdClaim) {
     const caseProgressionHearing : CaseProgressionHearing = new CaseProgressionHearing();
@@ -12,3 +13,4 @@ export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgression
     return caseProgressionHearing;
   }
 };
+

@@ -1,17 +1,19 @@
 import {CaseState} from 'common/form/models/claimDetails';
 import {Claim} from 'common/models/claim';
+import {TaskStatus, TaskStatusColor} from 'common/models/taskList/TaskStatus';
+import {TaskItem} from 'common/models/taskList/task';
+import {TaskList} from 'common/models/taskList/taskList';
+import {TaskListBuilder} from 'common/models/taskList/taskListBuilder';
 import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
-
+  // TODO: this is a mock data
   const dashboardNotificationsList = [];
   const defendantName = claim.getDefendantFullName();
   const responseDeadline = claim.formattedResponseDeadline();
 
-  // TODO: Call civil Service in order to retrieve Notifications.
-  // TODO: this is a mock data
   const waitForDefendantResponseNotification = new NotificationBuilder()
     .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND', { lng }))
     .addContent(new PageSectionBuilder()
@@ -50,4 +52,23 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
   }
 
   return dashboardNotificationsList;
+};
+export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
+  // TODO: this is a mock data
+  const taskListMock: TaskList[]= [];
+
+  const taskListItemMock =  new TaskListBuilder('The claim')
+    .addTask(new TaskItem('View the claim', '#',TaskStatus.DONE, false, TaskStatusColor[TaskStatus.DONE]) )
+    .addTask(new TaskItem('View information about the claimant', '#',TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]) )
+    .build();
+
+  const taskListItemMock2 =  new TaskListBuilder('The response')
+    .addTask(new TaskItem('View the response to the claim', '#',TaskStatus.IN_PROGRESS, false, TaskStatusColor[TaskStatus.IN_PROGRESS]) )
+    .addTask(new TaskItem('View information about the defendant', '#',TaskStatus.READY_TO_VIEW, false, TaskStatusColor[TaskStatus.READY_TO_VIEW]) )
+    .build();
+
+  taskListMock.push(taskListItemMock);
+  taskListMock.push(taskListItemMock2);
+
+  return taskListMock;
 };

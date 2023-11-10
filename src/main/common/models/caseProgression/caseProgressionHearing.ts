@@ -42,11 +42,12 @@ export class CaseProgressionHearing {
   hearingDate?: Date;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
+
   constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
     hearingLocation?: HearingLocation,
     hearingDate?: Date,
     hearingTimeHourMinute?: string,
-    hearingDuration?: HearingDuration){
+    hearingDuration?: HearingDuration) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;

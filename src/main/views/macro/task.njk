@@ -1,12 +1,12 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
 {% macro taskComponent(task, t) %}
-
   <div>
     <li class="app-task-list__item">
       <span class="app-task-list__task-name">
         <a href={{task.url}}>{{ t(task.description) }}</a>
       </span>
+
       {{govukTag({
         text: t('PAGES.TASK_LIST.' + task.status),
         classes: 'app-task-list__tag ' + task.statusColor
