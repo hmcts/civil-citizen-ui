@@ -3,7 +3,6 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 import { isDecimal } from 'common/utils/numberConverter';
 import {YesNo} from 'common/form/models/yesNo';
 
@@ -255,12 +254,11 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   ];
 };
 
-export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
+  const paymentDate = formatDateToFullDate(respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
 
   return [
