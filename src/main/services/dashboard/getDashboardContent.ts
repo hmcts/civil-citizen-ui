@@ -10,8 +10,6 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
   const defendantName = claim.getDefendantFullName();
   const responseDeadline = claim.formattedResponseDeadline();
 
-  // TODO: Call civil Service in order to retrieve Notifications.
-  // TODO: this is a mock data
   const waitForDefendantResponseNotification = new NotificationBuilder()
     .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND', { lng }))
     .addContent(new PageSectionBuilder()
@@ -33,7 +31,7 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 };
 
 export const getDefendantNotifications = (claim: Claim, lng: string) => {
-  // TODO: this is a mock data
+
   const dashboardNotificationsList = [];
   const responseDeadline = claim.formattedResponseDeadline();
   const remainingDays = claim.getRemainingDays();

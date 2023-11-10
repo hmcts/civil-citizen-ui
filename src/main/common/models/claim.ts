@@ -128,6 +128,8 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  applicant1Represented?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -857,6 +859,14 @@ export class Claim {
     return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
       this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
   }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
+  }
+
 }
 
 export interface StatementOfTruth {

@@ -19,9 +19,9 @@ export const saveDashboardToCache = async (taskLists: TaskList[],caseRole:Claima
   }
 };
 
-export const getDashboardFromCache = async (redisKey:string): Promise<Dashboard> => {
+export const getDashboardFromCache = async (caseRole:ClaimantOrDefendant,redisKey:string): Promise<Dashboard> => {
   try{
-    const data = await app.locals.draftStoreClient.get(dashboardKey+redisKey);
+    const data = await app.locals.draftStoreClient.get(caseRole+dashboardKey+redisKey);
     if(data) {
       const jsonData = JSON.parse(data);
       return plainToInstance(Dashboard, jsonData as object);
