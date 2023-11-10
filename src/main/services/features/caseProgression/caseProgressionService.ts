@@ -54,7 +54,7 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
 
     if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
     {
-      if (!claim?.caseProgression.hearingFeeHelpSelection) {
+      if (!claim.caseProgression.hearingFeeHelpSelection) {
         claim.caseProgression.hearingFeeHelpSelection = new GenericYesNo();
       }
       claim.feeTypeHelpRequested = FeeType.HEARING;

@@ -28,7 +28,7 @@ async function renderView(res: Response, req: any, form: any, claimId: string, r
     form = new GenericForm(new GenericYesNo(null, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
     if(claim.caseProgression?.hearingFeeHelpSelection)
     {
-      form = new GenericForm(claim.caseProgression?.hearingFeeHelpSelection);
+      form = new GenericForm(claim.caseProgression.hearingFeeHelpSelection);
     }
   }
   const startPayHearingFee = constructResponseUrlWithIdParams(req.params.id, PAY_HEARING_FEE_URL);

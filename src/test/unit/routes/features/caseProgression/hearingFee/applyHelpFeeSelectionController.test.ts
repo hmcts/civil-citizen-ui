@@ -7,7 +7,7 @@ import {
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
   HEARING_FEE_PAYMENT_CREATION,
 } from 'routes/urls';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisWithoutAdmittedPaymentAmount} from '../../../../../utils/mockDraftStore';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -28,6 +28,16 @@ describe('Apply for help with fees', () => {
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Hearing fee');
+        });
+    });
+
+    it('should return resolving apply help fees page with no case progression data', async () => {
+      app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
       await request(app)
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
