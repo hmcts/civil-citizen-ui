@@ -53,6 +53,7 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
 
   return dashboardNotificationsList;
 };
+
 export const getDashboardTaskList = (claim: Claim, lng: string): TaskList[] => {
   // TODO: this is a mock data
   const taskListMock: TaskList[]= [];
