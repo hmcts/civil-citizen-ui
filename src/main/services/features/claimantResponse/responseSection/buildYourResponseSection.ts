@@ -15,14 +15,14 @@ import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {RESPONSEFORNOTPAIDPAYIMMEDIATELY} from 'models/claimantResponse/checkAnswers';
 
-export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
+export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
   const intentionToProceed = claim.claimantResponse?.intentionToProceed?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM', {lang}),
-    t(`COMMON.${intentionToProceed}`, {lang}),
+    t('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM', {lng}),
+    t(`COMMON.${intentionToProceed}`, {lng}),
     intentionToProceedHref,
-    changeLabel(lang));
+    changeLabel(lng));
 };
 
 export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{

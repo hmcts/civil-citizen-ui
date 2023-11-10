@@ -2227,7 +2227,7 @@
       "WHERE_THEY_LIVE": "Where are they living?",
       "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
       "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
-      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
+      "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â'r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol.",

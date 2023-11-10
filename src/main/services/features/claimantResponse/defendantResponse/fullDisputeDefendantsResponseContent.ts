@@ -136,7 +136,7 @@ export const getDisagreementStatementWithEvidence = (claim: Claim): ClaimSummary
   ];
 };
 
-export const getTheirDefence = (text: string): ClaimSummarySection[] => {
+export const getTheirDefence = (text: string, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.TITLE,
     data: {
@@ -146,7 +146,7 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
   {
     type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_CLAIM',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_CLAIM', {lng}),
     },
   },
   {
@@ -210,8 +210,8 @@ export const getWhyTheyDisagreeWithClaim = (text: string): ClaimSummarySection[]
 
 export const buildFullDisputeResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT'),
-    ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text),
+    ...getResponseStatement(claim.getDefendantFullName(), t('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT', {lng})),
+    ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text, lng),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),
