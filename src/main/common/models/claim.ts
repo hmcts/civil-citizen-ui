@@ -213,9 +213,9 @@ export class Claim {
   }
 
   isDefendantResponsePayBySetDate():boolean{
-   const isFullAdmitBySetDate =  this.isFullAdmission() && this.isFAPaymentOptionBySetDate()
-   const isPartAdmitBysetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate()
-   return isFullAdmitBySetDate || isPartAdmitBysetDate;
+    const isFullAdmitBySetDate =  this.isFullAdmission() && this.isFAPaymentOptionBySetDate()
+    const isPartAdmitBysetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate()
+    return isFullAdmitBySetDate || isPartAdmitBysetDate;
   }
 
   formattedResponseDeadline(lng?: string): string {
