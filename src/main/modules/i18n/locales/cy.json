@@ -915,7 +915,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -1986,8 +1986,8 @@
       "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "Tyst yw rhywun sy’n gallu cadarnhau eich fersiwn chi o beth ddigwyddodd.",
       "TITLE": "A oes gennych dystion eraill?",
       "WHAT_THEY_WITNESSED_LABEL": "Dywedwch wrthym beth welsant",
-      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts have support requirements, add them as a witness.",
-      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
+      "SUPPORT_REQUIREMENTS_MESSAGE": "Os oes gennych chi neu eich arbenigwyr anghenion cymorth, ychwanegwch nhw fel tyst.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -2553,8 +2553,8 @@
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
       "TITLE": "Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?",
       "WHAT_LANGUAGE": "Pa iaith sydd angen ei chyfieithu?",
-      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
-      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
+      "SUPPORT_REQUIREMENTS_MESSAGE": "Os ydych chi neu eich arbenigwyr angen cymorth, ond nad yw wedi’i restru isod, ychwanegwch y cymorth sydd ei angen arnoch ar y dudalen tystion eraill.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
       "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu gyfnod arall o amser",
