@@ -1,6 +1,6 @@
 import {NextFunction, Router} from 'express';
 import config from 'config';
-import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
+import {getSubmitConfirmationContent, getClaimWithExtendedPaymentDeadline} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
 import {CONFIRMATION_URL} from '../../urls';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
@@ -19,7 +19,8 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, asyn
     const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!submittedClaim.isEmpty()) {
       submittedClaim.respondent1ResponseDate = !submittedClaim.isEmpty() ? submittedClaim.respondent1ResponseDate : undefined;
-      const confirmationContent = getSubmitConfirmationContent(claimId, submittedClaim, getLng(lang));
+      const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(submittedClaim, <AppRequest>req);
+      const confirmationContent = getSubmitConfirmationContent(claimId, submittedClaim, getLng(lang), respondentPaymentDeadline);
       const claimNumber = submittedClaim.legacyCaseReference;
       const responseSubmitDate = formatDateToFullDate(submittedClaim?.respondent1ResponseDate, getLng(lang));
       res.render('features/response/submit-confirmation', {claimNumber, confirmationContent, responseSubmitDate});
