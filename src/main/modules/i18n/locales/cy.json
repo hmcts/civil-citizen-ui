@@ -919,7 +919,7 @@
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've proposed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
