@@ -22,7 +22,6 @@ import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentServi
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {getDefendantNotifications} from 'services/dashboard/getDashboardContent';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getDashboardForm} from 'services/features/caseProgression/dashboardService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';

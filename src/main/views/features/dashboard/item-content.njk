@@ -14,10 +14,6 @@
     {{ content.data.html | safe }}
   {% endif %}
 
-  {% if content.type === ClaimSummaryType.MICRO_TEXT %}
-    <span class="govuk-caption-l">{{ t(content.data.text) }}</span>
-  {% endif %}
-
   {% if content.type === ClaimSummaryType.MAINTITLE %}
     <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}

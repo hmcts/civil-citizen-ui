@@ -4,16 +4,9 @@
 
   <div>
     <li class="app-task-list__item">
-       {% if task.status===TaskStatus.NOT_AVAILABLE_YET %}
-          <span class="app-task-list__task-name">
-             <a>{{ t(task.description) }}</a>
-          </span>
-       {% else %}
-          <span class="app-task-list__task-name">
-            <a href={{task.url}}>{{ t(task.description) }}</a>
-          </span>
-       {% endif %}
-
+      <span class="app-task-list__task-name">
+        <a href={{task.url}}>{{ t(task.description) }}</a>
+      </span>
       {{govukTag({
         text: t('PAGES.TASK_LIST.' + task.status),
         classes: 'app-task-list__tag ' + task.statusColor

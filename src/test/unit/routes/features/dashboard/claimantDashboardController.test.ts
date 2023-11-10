@@ -10,7 +10,6 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {Party} from 'common/models/party';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
-import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -36,106 +35,6 @@ describe('claimant Dashboard Controller', () => {
         individualFirstName:'Jon',
         individualLastName:'Doe',
       });
-      claim.totalClaimAmount=12000;
-      claim.caseRole = CaseRole.CLAIMANT;
-
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Add the trial arrangements');
-        expect(res.text).toContain('Pay the hearing fee');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
-      });
-    });
-    it('should return defendant dashboard page with claimant and small claims', async () => {
-
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.type = PartyType.INDIVIDUAL;
-      claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
-      });
-      claim.totalClaimAmount=500;
-      claim.caseRole = CaseRole.CLAIMANT;
-
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Pay the hearing fee');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
-      });
-    });
-    it('should return defendant dashboard page with defendant and fast track', async () => {
-
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.type = PartyType.INDIVIDUAL;
-      claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
-      });
-      claim.totalClaimAmount=12000;
-      claim.caseRole = CaseRole.DEFENDANT;
-
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Add the trial arrangements');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
-      });
-    });
-    it('should return defendant dashboard page with defendant and small claims', async () => {
-
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.type = PartyType.INDIVIDUAL;
-      claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
-      });
-      claim.totalClaimAmount=500;
-      claim.caseRole = CaseRole.DEFENDANT;
-
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);

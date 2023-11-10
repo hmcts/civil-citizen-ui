@@ -1,4 +1,4 @@
-import {SummaryRow, TableCell} from '../../../common/models/summaryList/summaryList';
+import {SummaryRow, TableCell} from 'common/models/summaryList/summaryList';
 
 export interface ClaimSummaryContent {
   contentSections?: ClaimSummarySection[];
@@ -57,5 +57,4 @@ export enum ClaimSummaryType {
   SELECT = 'select',
   BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink',
   NEW_TAB_BUTTON = 'newTabButton',
-  MICRO_TEXT = 'microText'
 }

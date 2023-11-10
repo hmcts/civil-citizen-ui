@@ -66,7 +66,6 @@ import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
-import {FeeType} from 'form/models/helpWithFees/feeType';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -129,7 +128,6 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
-  feeTypeHelpRequested: FeeType;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
