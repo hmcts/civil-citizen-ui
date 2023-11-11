@@ -229,22 +229,22 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
     const input: CCDClaim = {
       respondToClaimAdmitPartLRspec : {
-        whenWillThisAmountBePaid: deadlineDate
-      }
+        whenWillThisAmountBePaid: deadlineDate,
+      },
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
-    expect(claim.respondentPaymentDeadline).toEqual(deadlineDate,);
+    expect(claim.respondentPaymentDeadline).toEqual(deadlineDate);
   });
 
   it('should return undefined for undefined payment date', () => {
     //Given
     const input: CCDClaim = {
       respondToClaimAdmitPartLRspec : {
-        whenWillThisAmountBePaid: undefined
-      }
+        whenWillThisAmountBePaid: undefined,
+      },
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
@@ -256,7 +256,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
   it('should return undefined for undefined claim admit object', () => {
     //Given
     const input: CCDClaim = {
-      respondToClaimAdmitPartLRspec : undefined
+      respondToClaimAdmitPartLRspec : undefined,
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
