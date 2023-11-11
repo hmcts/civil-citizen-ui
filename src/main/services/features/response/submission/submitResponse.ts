@@ -6,7 +6,7 @@ import {Claim} from '../../../../common/models/claim';
 import {translateDraftResponseToCCD} from '../../../translation/response/ccdTranslation';
 import {addressHasChange} from './compareAddress';
 import {
-  getClaimWithExtendedPaymentDeadline
+  getClaimWithExtendedPaymentDeadline,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
