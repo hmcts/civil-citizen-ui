@@ -1,5 +1,5 @@
-import {toCCDPayBySetDate} from "services/translation/response/convertToCCDPayBySetDate";
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {toCCDPayBySetDate} from 'services/translation/response/convertToCCDPayBySetDate';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 describe('translate Payment Deadline Date to CCD model', () => {
 
@@ -11,7 +11,7 @@ describe('translate Payment Deadline Date to CCD model', () => {
     //Then
     const expected = {
       whenWillThisAmountBePaid: deadlineDate,
-    }
+    };
     expect(output).toEqual(expected);
   });
 
@@ -23,7 +23,7 @@ describe('translate Payment Deadline Date to CCD model', () => {
     //Then
     const expected = {
       whenWillThisAmountBePaid: paymentDate,
-    }
+    };
     expect(output).toEqual(expected);
   });
 });
