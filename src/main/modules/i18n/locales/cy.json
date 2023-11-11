@@ -2432,6 +2432,7 @@
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
       "GET_FINANCIAL_DETAILS": "Cael manylion ariannol {{ claimantName }}.",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
+      "IF_CLAIMANT_REJECTS_NO_MEDIATION": "Os yw'n gwrthod eich ymateb bydd y llys yn adolygu'r achos. Efallai y bydd rhaid mynd i wrandawiad.",
       "IF_CLAIMANT_ACCEPTS_OFFER": "Os yw {{ claimantName }} yn derbyn eich cynnig",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "Os yw {{ claimantName }} yn derbyn eich ymateb",
       "IF_CLAIMANT_REJECTS_OFFER": "Os yw {{ claimantName }} yn gwrthod eich cynnig",
