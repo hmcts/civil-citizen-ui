@@ -3,8 +3,7 @@ import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {addDaysToDate} from 'common/utils/dateUtils';
-import { isDecimal } from 'common/utils/numberConverter';
+import {isDecimal} from 'common/utils/numberConverter';
 import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
@@ -271,12 +270,11 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   ];
 };
 
-export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
+  const paymentDate = formatDateToFullDate(respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
