@@ -20,8 +20,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
-    const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
-    claim.respondentPaymentDeadline = respondentPaymentDeadline;
+    claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
     const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
     logger.info(ccdResponse);

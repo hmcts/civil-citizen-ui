@@ -97,7 +97,7 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
   ];
 }
 
-export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[]{
+export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantFullName();
   const immediatePaymentDeadline = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   return [
