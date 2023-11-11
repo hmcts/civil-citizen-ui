@@ -1,9 +1,9 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
-import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {addDaysToDate} from 'common/utils/dateUtils';
 import { isDecimal } from 'common/utils/numberConverter';
 import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
 

@@ -1,5 +1,5 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {buildSubmitStatus, buildNextStepsSection} from './submitConfirmationBuilder/submitConfirmationBuilder';
 import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {YesNo} from 'form/models/yesNo';

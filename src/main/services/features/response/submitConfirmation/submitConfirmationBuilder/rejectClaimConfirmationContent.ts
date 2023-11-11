@@ -1,8 +1,8 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {
-  isDefendantRejectedMediationOrFastTrackClaim
+  isDefendantRejectedMediationOrFastTrackClaim,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySection[] {
