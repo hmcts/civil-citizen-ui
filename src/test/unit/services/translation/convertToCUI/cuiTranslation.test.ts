@@ -223,4 +223,45 @@ describe('translateCCDCaseDataToCUIModel', () => {
       PaymentOptionType.IMMEDIATELY,
     );
   });
+
+  it('should translate payment date to CUI model', () => {
+    const deadlineDate: Date = new Date(2023, 2, 20);
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : {
+        whenWillThisAmountBePaid: deadlineDate
+      }
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(deadlineDate,);
+  });
+
+  it('should return undefined for undefined payment date', () => {
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : {
+        whenWillThisAmountBePaid: undefined
+      }
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(undefined);
+  });
+
+  it('should return undefined for undefined claim admit object', () => {
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : undefined
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(undefined);
+  });
 });
