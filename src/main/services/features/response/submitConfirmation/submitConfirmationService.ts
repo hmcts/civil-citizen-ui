@@ -11,10 +11,10 @@ const logger = Logger.getLogger('submitConfirmationService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
+export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const submitStatusSection = buildSubmitStatus(claimId, claim, lang);
   const nextStepsTitle = getNextStepsTitle(lang);
-  const nextStepsSection = buildNextStepsSection(claimId, claim, lang, respondentPaymentDeadline);
+  const nextStepsSection = buildNextStepsSection(claimId, claim, lang);
   return [submitStatusSection, nextStepsTitle, nextStepsSection].flat();
 };
 

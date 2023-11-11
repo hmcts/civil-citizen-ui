@@ -293,8 +293,8 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
-          responseDate: extendedDeadline,
-          plusDays: plusDays
+        responseDate: extendedDeadline,
+        plusDays: plusDays,
       }, config);
       return response.data as Date;
     } catch (err: unknown) {
