@@ -15,7 +15,7 @@ const buttons = {
 
 const newDate = new Date();
 const extendedDay = newDate.getDate();
-const extendedMonth = newDate.getMonth();
+const extendedMonth = newDate.getMonth() + 1;
 const extendedYear = newDate.getFullYear();
 
 class AddYourTimeLine {
