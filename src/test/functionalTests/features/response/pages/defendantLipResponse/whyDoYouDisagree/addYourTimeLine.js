@@ -14,7 +14,7 @@ const buttons = {
 };
 
 const newDate = new Date();
-const extendedDay = newDate.getDate();
+const extendedDay = newDate.getDay();
 const extendedMonth = newDate.getMonth();
 const extendedYear = newDate.getFullYear();
 
