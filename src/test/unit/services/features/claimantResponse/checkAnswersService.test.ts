@@ -65,13 +65,13 @@ describe('Check Answers service', () => {
     it('should check answers for defendant paid some of the money', () => {
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(3).toEqual(result.sections.length);
+      expect(5).toEqual(result.sections.length);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
       claim.claimantResponse.ccjRequest.paidAmount = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(3).toEqual(result.sections.length);
+      expect(5).toEqual(result.sections.length);
     });
   });
 });
