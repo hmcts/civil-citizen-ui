@@ -167,10 +167,15 @@ module.exports = {
         finalOrderGiveReasonsComplex: null,
         finalOrderDocumentCollection: null,
         finalOrderDocument: {
-          document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-          document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
-          document_filename: 'Order_2023-10-09.pdf',
-          document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce',
+          documentLink: {
+            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
+            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+            document_filename: 'Order_2023-10-09.pdf',
+            document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce',
+          },
+        },
+        smallClaimsMethodInPerson: {
+          value: { code: '192280'},
         },
       },
     };

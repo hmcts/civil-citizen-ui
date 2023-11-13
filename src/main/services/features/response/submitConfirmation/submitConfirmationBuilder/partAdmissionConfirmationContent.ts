@@ -1,11 +1,10 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
-import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
-import { isDecimal } from 'common/utils/numberConverter';
-import {YesNo} from 'common/form/models/yesNo';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {isDecimal} from 'common/utils/numberConverter';
+import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -24,6 +23,7 @@ export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummar
 
 export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
   return [
     {
       type: ClaimSummaryType.HTML,
@@ -36,10 +36,15 @@ export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string): ClaimSum
         <h3 class="govuk-heading-s govuk-!-margin-bottom-1">${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE', {
     claimantName,
     lng: lang,
-  })}</h3>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_ASK_CLAIMANT_FOR_MEDIATION', {lng: lang})}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.CLAIMANT_REFUSE_MEDIATION', {lng: lang})}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', {lng: lang})}</p>`,
+  })}</h3>`,
+      },
+    },
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {...getParagraphDontWantMediationForPAPaid(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', {lng: lang}),
       },
     },
   ];
@@ -54,8 +59,8 @@ const getSubtitleIfClaimantRejectOwe = (claimantName: string, partialAmount: str
   };
 };
 
-const getParagraphAskMediation = (lang: string, isDefendantRejectedMediation?: boolean) => {
-  if (isDefendantRejectedMediation) {
+const getParagraphAskMediation = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  if (isDefendantRejectedMediationOrIsFastTrackClaim) {
     return undefined;
   }
   return {
@@ -66,12 +71,22 @@ const getParagraphAskMediation = (lang: string, isDefendantRejectedMediation?: b
   };
 };
 
-const getParagraphDontWantMediation = (claimAmount: number, partialAmount: string, lang: string, isDefendantRejectedMediation?: boolean) => {
-  const textContent = isDefendantRejectedMediation ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE' : 'PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION';
+const getParagraphDontWantMediation = (claimAmount: number, partialAmount: string, lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE' : 'PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION';
   return {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t(textContent, {claimAmount, partialAmount, lng: lang}),
+    },
+  };
+};
+
+const getParagraphDontWantMediationForPAPaid = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE_HEARING' : 'PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.CLAIMANT_REFUSE_MEDIATION';
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t(textContent, {lng: lang}),
     },
   };
 };
@@ -165,7 +180,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
   const claimantName = claim.getClaimantFullName();
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const claimAmount = claim.totalClaimAmount;
-  const isDefendantRejectedMediation = claim.mediation?.mediationDisagreement?.option === YesNo.NO;
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
   return [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
@@ -193,8 +208,8 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediation)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediation)},
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
@@ -210,7 +225,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const paymentDate = formatDateToFullDate(claim.partialAdmission?.paymentIntention?.paymentDate, lang);
   const claimAmount = claim.totalClaimAmount;
-  const isDefendantRejectedMediation = claim.mediation?.mediationDisagreement?.option === YesNo.NO;
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
   return [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
@@ -239,8 +254,8 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediation)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediation)},
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
@@ -255,13 +270,13 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   ];
 };
 
-export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
+  const paymentDate = formatDateToFullDate(respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
   return [
     {
@@ -315,12 +330,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
         text: `${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER', {claimantName, lng: lang})}`,
       },
     },
-    {...getParagraphAskMediation(lang)},
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', {lng: lang, claimAmount}),
-      },
-    },
+    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
   ];
 };
