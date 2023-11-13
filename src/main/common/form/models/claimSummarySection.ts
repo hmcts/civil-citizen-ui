@@ -1,4 +1,4 @@
-import {SummaryRow, TableCell} from 'common/models/summaryList/summaryList';
+import {SummaryRow, TableCell} from '../../../common/models/summaryList/summaryList';
 
 export interface ClaimSummaryContent {
   contentSections?: ClaimSummarySection[];
