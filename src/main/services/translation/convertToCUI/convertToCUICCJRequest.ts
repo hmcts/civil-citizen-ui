@@ -20,7 +20,7 @@ export const toCUICCJRequest = (ccdClaim: CCDClaim): CCJRequest => {
 
 };
 
-const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOptionType => {
+export const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOptionType => {
   switch(paymentOptionType) {
     case CCDDJPaymentOption.REPAYMENT_PLAN:
       return PaymentOptionType.INSTALMENTS;
