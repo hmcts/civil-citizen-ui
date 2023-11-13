@@ -9,18 +9,18 @@ const fields = {
 class BilingualLanguagePreference {
 
   async verifyContent() {
-    await I.waitForText('Do you want to respond to this claim in Welsh?', config.WaitForText);
-    await I.see('You can respond to this claim in Welsh. After you\'ve submitted your response, anything else you may have to do relating to the claim will be in English. You\'ll receive emails and letters in English.');
+    await I.waitForText('Language', config.WaitForText);
+    await I.see('You must choose which language to use to respond to this claim');
     await I.click(fields.english);
     await I.click('Save and continue');
   }
 
   async verifyContentError() {
-    await I.waitForText('Do you want to respond to this claim in Welsh?', config.WaitForText);
-    await I.see('You can respond to this claim in Welsh. After you\'ve submitted your response, anything else you may have to do relating to the claim will be in English. You\'ll receive emails and letters in English.');
+    await I.waitForText('Language', config.WaitForText);
+    await I.see('You must choose which language to use to respond to this claim');
     await I.click('Save and continue');
     await I.see('There was a problem');
-    await I.see('Select Welsh and English if you want to respond to this claim in Welsh');
+    await I.see('Select Welsh if you want to respond to this claim in Welsh');
   }
 }
 
