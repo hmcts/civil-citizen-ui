@@ -270,11 +270,11 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   ];
 };
 
-export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
+export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDate = formatDateToFullDate(respondentPaymentDeadline, lang);
+  const paymentDate = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
