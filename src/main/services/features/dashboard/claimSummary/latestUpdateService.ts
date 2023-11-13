@@ -3,8 +3,8 @@ import {Claim} from 'models/claim';
 import {
   buildResponseToClaimSection,
 } from './latestUpdate/latestUpdateContentBuilder';
-export const getLatestUpdateContent = (claimId: string, claim: Claim, lng: string): ClaimSummaryContent[] => {
-  const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
+export const getLatestUpdateContent = (claimId: string, claim: Claim, lng: string, respondentPaymentDeadline?: Date): ClaimSummaryContent[] => {
+  const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng, respondentPaymentDeadline);
   const latestUpdateContent = [responseToClaimSection];
 
   const filteredLatestUpdateContent = latestUpdateContent.filter(sectionContent => sectionContent.length);
