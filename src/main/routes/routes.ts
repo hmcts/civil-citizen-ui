@@ -223,6 +223,8 @@ import cancelTrialArrangementsController from 'routes/features/caseProgression/t
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
+import payHearingFeeConfirmationController
+  from "routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController";
 export default [
   homeController,
   dashboardController,
@@ -430,4 +432,5 @@ export default [
   cancelTrialArrangementsController,
   breathingSpaceLiftedCheckAnswersController,
   cancelHearingFeeJourneyController,
+  payHearingFeeConfirmationController,
 ];
