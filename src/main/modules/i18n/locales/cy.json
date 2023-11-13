@@ -915,7 +915,7 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "Sut ydych chi am i'r diffynnydd dalu?",
@@ -2432,6 +2432,7 @@
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
       "GET_FINANCIAL_DETAILS": "Cael manylion ariannol {{ claimantName }}.",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
+      "IF_CLAIMANT_REJECTS_NO_MEDIATION": "Os yw'n gwrthod eich ymateb bydd y llys yn adolygu'r achos. Efallai y bydd rhaid mynd i wrandawiad.",
       "IF_CLAIMANT_ACCEPTS_OFFER": "Os yw {{ claimantName }} yn derbyn eich cynnig",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "Os yw {{ claimantName }} yn derbyn eich ymateb",
       "IF_CLAIMANT_REJECTS_OFFER": "Os yw {{ claimantName }} yn gwrthod eich cynnig",
@@ -2450,7 +2451,8 @@
       "WE_CONTACT_YOU": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "SETUP_REPAYMENT_PLAN": "sefydlwch eich cynllun ad-dalu i ddechrau pan ddywedoch chi y byddai’n dechrau",
       "THE_CLAIM_WILL_BE_SETTLED": "Bydd yr honiad yn cael ei setlo",
-      "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
+      "THE_COURT_WILL_REVIEW_CASE": "Bydd y llys yn adolygu'r achos dros y swm llawn o £{{ claimAmount }}.",
+      "THE_COURT_WILL_REVIEW_CASE_HEARING": "Bydd y llys yn adolygu'r achos. Efallai y bydd rhaid mynd i wrandawiad.",
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
@@ -3051,10 +3053,16 @@
     },
     "TEXT_TOO_LONG": "Rhaid i'r rheswm fod yn 500 llythyren neu lai.",
     "TEXT_TOO_MANY": "Rydych wedi defnyddio gormod o nodau",
+    "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
+    "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
+    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY": "Town or City must be no longer than 50 characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
+    "ADDRESS_LINE_TOO_MANY_CORRESPONDENCE": "Each address line must be no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY_CORRESPONDENCE": "Town or City must no longer than 50 characters",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_ADDRESS_LINE_1_CORRESPONDENCE": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
     "VALID_AGREED_RESPONSE_DATE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno",
