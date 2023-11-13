@@ -2146,6 +2146,13 @@
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
     },
+    "REPAYMENT_PLAN_SUMMARY": {
+      "CLAIMANTS_REPAYMENT_PLAN": "The claimant's repayment plan",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you can't afford the repayment plan, you can ask a judge to make a new repayment plan by emailing contactocmc@justice.gov.uk",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to make a new repayment plan by emailing[ contactocmc@justice.gov.uk|mailto:contactocmc@justice.gov.uk]"
+    },
     "REQUEST_EXTRA_4WEEKS": {
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
