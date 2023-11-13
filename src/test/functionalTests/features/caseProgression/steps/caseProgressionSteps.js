@@ -5,7 +5,6 @@ const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/wh
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
-const ContactUs = require('../../common/contactUs');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -15,7 +14,6 @@ const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToU
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
-const contactUs = new ContactUs();
 
 class UploadEvidenceSteps {
 
