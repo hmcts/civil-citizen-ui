@@ -1,10 +1,10 @@
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {Claim} from '../../../../common/models/claim';
-import {getViewOptionsBeforeDeadlineTask} from '../../../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
-import {TaskStatus} from '../../../../common/models/taskList/TaskStatus';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {getViewOptionsBeforeDeadlineTask} from 'common/utils/taskList/tasks/viewOptionsBeforeDeadline';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 import {toCCDRespondentResponseLanguage} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -20,7 +20,7 @@ const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Cl
     if (!claim.responseDeadline?.agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
     }
-    claim.responseDeadline.calculatedResponseDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, req);
+    claim.responseDeadline.calculatedResponseDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, 0, req);
     await saveDraftClaim(redisKey, claim);
     return claim;
   } catch (error) {
