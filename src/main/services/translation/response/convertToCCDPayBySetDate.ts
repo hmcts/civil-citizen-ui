@@ -1,7 +1,15 @@
-import {CCDPayBySetDate} from '../../../common/models/ccdResponse/ccdPayBySetDate';
+import {CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
-export const toCCDPayBySetDate = (paymentDate: Date): CCDPayBySetDate => {
-  return {
-    whenWillThisAmountBePaid: paymentDate,
-  };
+export const toCCDPayBySetDate = (paymentDate: Date, paymentOption: PaymentOptionType | undefined, respondentPaymentDeadline: Date): CCDPayBySetDate => {
+  if(paymentOption === PaymentOptionType.IMMEDIATELY) {
+    return  {
+      whenWillThisAmountBePaid: respondentPaymentDeadline,
+    };
+  }
+  else {
+    return {
+      whenWillThisAmountBePaid: paymentDate,
+    };
+  }
 };

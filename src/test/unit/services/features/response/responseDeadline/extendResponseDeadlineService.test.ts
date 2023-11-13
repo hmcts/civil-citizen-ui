@@ -1,13 +1,13 @@
 import {
   submitExtendedResponseDeadline,
-} from '../../../../../../main/services/features/response/responseDeadline/extendResponseDeadlineService';
+} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
 import * as requestModels from '../../../../../../main/common/models/AppRequest';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import nock from 'nock';
 import config from 'config';
-import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
+import {ResponseOptions} from 'form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
