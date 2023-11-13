@@ -1,20 +1,25 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
-import {Party} from './party';
-import {StatementOfMeans} from './statementOfMeans';
-import {PartyType} from './partyType';
-import {FullAdmission} from './fullAdmission';
-import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
-import {Mediation} from './mediation/mediation';
-import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
-import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
-import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import { Party } from './party';
+import { StatementOfMeans } from './statementOfMeans';
+import { PartyType } from './partyType';
+import { FullAdmission } from './fullAdmission';
+import { PartialAdmission } from './partialAdmission';
+import { DefendantEvidence } from './evidence/evidence';
+import { Mediation } from './mediation/mediation';
+import { RejectAllOfClaim } from 'form/models/rejectAllOfClaim';
+import { TimeLineOfEvents } from './timelineOfEvents/timeLineOfEvents';
 import {
-  CaseState, CCDHelpWithFees,
+  convertDateToLuxonDate,
+  currentDateTime,
+  isPastDeadline,
+} from '../utils/dateUtils';
+import { StatementOfTruthForm } from 'form/models/statementOfTruth/statementOfTruthForm';
+import { PaymentOptionType } from 'form/models/admission/paymentOption/paymentOptionType';
+import {
+  CaseState,
+  CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -22,50 +27,50 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
-import {ResponseType} from 'form/models/responseType';
-import {Document} from 'common/models/document/document';
-import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
-import {CaseDocument} from './document/caseDocument';
-import {DocumentType} from './document/documentType';
-import {ResponseDeadline} from './responseDeadline';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {ClaimResponseStatus} from './claimResponseStatus';
-import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {ResponseOptions} from 'common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
-import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
-import {Interest} from 'form/models/interest/interest';
-import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
-import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
-import {ClaimantResponse} from './claimantResponse';
-import {SelfEmployedAs} from 'models/selfEmployedAs';
-import {TaxPayments} from 'models/taxPayments';
-import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
-import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
-import {Debts} from 'form/models/statementOfMeans/debts/debts';
-import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {analyseClaimType, claimType} from 'common/form/models/claimType';
-import {PaymentIntention} from 'form/models/admission/paymentIntention';
-import {CCDClaim} from 'models/civilClaimResponse';
-import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
-import {toCUIParty} from 'services/translation/convertToCUI/convertToCUIParty';
-import {toCUIMediation} from 'services/translation/convertToCUI/convertToCUIMediation';
-import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
-import {CCDRespondentLiPResponse} from './ccdResponse/ccdRespondentLiPResponse';
-import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-import {DateTimeFormatOptions} from 'luxon';
-import {CaseProgression} from 'common/models/caseProgression/caseProgression';
-import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import {Bundle} from 'models/caseProgression/bundles/bundle';
-import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
-import {CaseRole} from 'form/models/caseRoles';
-import {ChooseHowProceed} from './chooseHowProceed';
-import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
-import {PinToPost} from './pinToPost';
+import { YesNo, YesNoUpperCamelCase, YesNoUpperCase } from 'form/models/yesNo';
+import { ResponseType } from 'form/models/responseType';
+import { Document } from 'common/models/document/document';
+import { QualifiedStatementOfTruth } from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
+import { SystemGeneratedCaseDocuments } from './document/systemGeneratedCaseDocuments';
+import { CaseDocument } from './document/caseDocument';
+import { DocumentType } from './document/documentType';
+import { ResponseDeadline } from './responseDeadline';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { ClaimResponseStatus } from './claimResponseStatus';
+import { DirectionQuestionnaire } from 'models/directionsQuestionnaire/directionQuestionnaire';
+import { ResponseOptions } from 'common/form/models/responseDeadline';
+import { AdditionalTimeOptions } from 'common/form/models/additionalTime';
+import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
+import { Interest } from 'form/models/interest/interest';
+import { RejectAllOfClaimType } from 'common/form/models/rejectAllOfClaimType';
+import { ClaimDetails } from 'common/form/models/claim/details/claimDetails';
+import { ClaimantResponse } from './claimantResponse';
+import { SelfEmployedAs } from 'models/selfEmployedAs';
+import { TaxPayments } from 'models/taxPayments';
+import { RegularIncome } from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import { RegularExpenses } from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import { CourtOrders } from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import { PriorityDebts } from 'form/models/statementOfMeans/priorityDebts';
+import { Debts } from 'form/models/statementOfMeans/debts/debts';
+import { ClaimBilingualLanguagePreference } from './claimBilingualLanguagePreference';
+import { analyseClaimType, claimType } from 'common/form/models/claimType';
+import { PaymentIntention } from 'form/models/admission/paymentIntention';
+import { CCDClaim } from 'models/civilClaimResponse';
+import { toCUIEvidence } from 'services/translation/convertToCUI/convertToCUIEvidence';
+import { toCUIParty } from 'services/translation/convertToCUI/convertToCUIParty';
+import { toCUIMediation } from 'services/translation/convertToCUI/convertToCUIMediation';
+import { toCUIClaimDetails } from 'services/translation/convertToCUI/convertToCUIClaimDetails';
+import { CCDRespondentLiPResponse } from './ccdResponse/ccdRespondentLiPResponse';
+import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
+import { DateTimeFormatOptions } from 'luxon';
+import { CaseProgression } from 'common/models/caseProgression/caseProgression';
+import { MediationAgreement } from 'models/mediation/mediationAgreement';
+import { Bundle } from 'models/caseProgression/bundles/bundle';
+import { BundlesFormatter } from 'services/features/caseProgression/bundles/bundlesFormatter';
+import { CaseRole } from 'form/models/caseRoles';
+import { ChooseHowProceed } from './chooseHowProceed';
+import { CCDBreathingSpaceStartInfo } from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import { PinToPost } from './pinToPost';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 
 export class Claim {
@@ -126,10 +131,11 @@ export class Claim {
   caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
-  helpWithFees ?: CCDHelpWithFees;
+  helpWithFees?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
-  respondentSignSettlementAgreement? : GenericYesNo;
+  respondentSignSettlementAgreement?: GenericYesNo;
+  respondentPaymentDeadline: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -137,7 +143,9 @@ export class Claim {
     claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
-    claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
+    claim.mediation = toCUIMediation(
+      ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse,
+    );
     return claim;
   }
 
@@ -146,64 +154,116 @@ export class Claim {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
+    if (
+      this.isFullAdmission() &&
+      this.isFAPaymentOptionInstallments() &&
+      !this.isClaimantRejectedPaymentPlan()
+    ) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
-    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate() && !this.isClaimantRejectedPaymentPlan()) {
+    if (
+      this.isFullAdmission() &&
+      this.isFAPaymentOptionBySetDate() &&
+      !this.isClaimantRejectedPaymentPlan()
+    ) {
       return ClaimResponseStatus.FA_PAY_BY_DATE;
     }
 
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES) {
+    if (
+      this.isPartialAdmission() &&
+      this.partialAdmission?.alreadyPaid?.option === YesNo.YES
+    ) {
+      if (
+        this?.applicant1PartAdmitConfirmAmountPaidSpec ===
+          YesNoUpperCamelCase.YES &&
+        this?.applicant1PartAdmitIntentionToSettleClaimSpec ===
+          YesNoUpperCamelCase.YES
+      ) {
         return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED;
       }
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.NO) {
+      if (
+        this?.applicant1PartAdmitConfirmAmountPaidSpec ===
+          YesNoUpperCamelCase.YES &&
+        this?.applicant1PartAdmitIntentionToSettleClaimSpec ===
+          YesNoUpperCamelCase.NO
+      ) {
         return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED;
       }
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.NO) {
+      if (
+        this?.applicant1PartAdmitConfirmAmountPaidSpec ===
+        YesNoUpperCamelCase.NO
+      ) {
         return ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED;
       }
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO && this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO) {
+    if (
+      this.isPartialAdmission() &&
+      this.partialAdmission?.alreadyPaid?.option === YesNo.NO &&
+      this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO
+    ) {
       return ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED;
     }
 
     if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
-      if (this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES) {
+      if (
+        this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES
+      ) {
         return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED;
       }
       return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
     }
 
-    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate() && !this.isClaimantRejectedPaymentPlan()) {
+    if (
+      this.isPartialAdmission() &&
+      this.isPAPaymentOptionByDate() &&
+      !this.isClaimantRejectedPaymentPlan()
+    ) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
     }
 
-    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
+    if (
+      this.isPartialAdmission() &&
+      this.isPAPaymentOptionInstallments() &&
+      !this.isClaimantRejectedPaymentPlan()
+    ) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
     }
 
-    if ((this.isPartialAdmission() || this.isFullAdmission()) && this.isClaimantRejectedPaymentPlan()) {
+    if (
+      (this.isPartialAdmission() || this.isFullAdmission()) &&
+      this.isClaimantRejectedPaymentPlan()
+    ) {
       return ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN;
     }
 
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
-      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    if (
+      this.isRejectAllOfClaimAlreadyPaid() &&
+      this.hasConfirmedAlreadyPaid()
+    ) {
+      return this.hasPaidInFull()
+        ? ClaimResponseStatus.RC_PAID_FULL
+        : ClaimResponseStatus.RC_PAID_LESS;
     }
 
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
+    if (
+      this.isFullDefence() &&
+      this.isRejectAllOfClaimDispute() &&
+      this.ccdState !== CaseState.JUDICIAL_REFERRAL
+    ) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
 
-    if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
-      && (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
-      && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
+    if (
+      this.isFullDefence() &&
+      this.ccdState === CaseState.JUDICIAL_REFERRAL &&
+      (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim) &&
+      this.claimantResponse.intentionToProceed.option === YesNo.YES
+    ) {
       return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
     }
-
   }
 
   getClaimantFullName(): string {
@@ -215,7 +275,11 @@ export class Claim {
   }
 
   formattedResponseDeadline(lng?: string): string {
-    return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
+    return this.respondent1ResponseDeadline
+      ? dayjs(this.respondent1ResponseDeadline)
+          .locale(getLng(lng))
+          .format('DD MMMM YYYY')
+      : '';
   }
 
   formattedTotalClaimAmount(): string {
@@ -223,7 +287,9 @@ export class Claim {
   }
 
   getRemainingDays(): number {
-    const remainingDuration = convertDateToLuxonDate(this.respondent1ResponseDeadline).diff(currentDateTime(), 'days');
+    const remainingDuration = convertDateToLuxonDate(
+      this.respondent1ResponseDeadline,
+    ).diff(currentDateTime(), 'days');
     return Math.trunc(remainingDuration.days);
   }
 
@@ -236,31 +302,52 @@ export class Claim {
   }
 
   isFAPaymentOptionBySetDate(): boolean {
-    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+    return (
+      this.fullAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.BY_SET_DATE
+    );
   }
 
   isFAPaymentOptionPayImmediately(): boolean {
-    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+    return (
+      this.fullAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.IMMEDIATELY
+    );
   }
 
   isFAPaymentOptionInstallments(): boolean {
-    return this.fullAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+    return (
+      this.fullAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.INSTALMENTS
+    );
   }
 
   isPAPaymentOptionPayImmediately(): boolean {
-    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+    return (
+      this.partialAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.IMMEDIATELY
+    );
   }
 
   isPAPaymentOptionInstallments(): boolean {
-    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+    return (
+      this.partialAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.INSTALMENTS
+    );
   }
 
   isPAPaymentOptionByDate(): boolean {
-    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+    return (
+      this.partialAdmission?.paymentIntention?.paymentOption ===
+      PaymentOptionType.BY_SET_DATE
+    );
   }
 
   isInterestEndDateUntilSubmitDate(): boolean {
-    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+    return (
+      this.interest?.interestEndDate ===
+      InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE
+    );
   }
 
   isInterestClaimOptionExists(): boolean {
@@ -268,19 +355,31 @@ export class Claim {
   }
 
   isInterestFromClaimSubmitDate(): boolean {
-    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    return (
+      this.interest?.interestClaimFrom ===
+      InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE
+    );
   }
 
   isInterestFromASpecificDate(): boolean {
-    return this.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    return (
+      this.interest?.interestClaimFrom ===
+      InterestClaimFromType.FROM_A_SPECIFIC_DATE
+    );
   }
 
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST;
+    return (
+      this.interest?.interestClaimOptions ===
+      InterestClaimOptionsType.SAME_RATE_INTEREST
+    );
   }
 
   isSameRateTypeEightPercent(): boolean {
-    return this.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+    return (
+      this.interest?.sameRateInterestSelection?.sameRateInterestType ===
+      SameRateInterestType.SAME_RATE_INTEREST_8_PC
+    );
   }
 
   isDefendantDisabled(): boolean {
@@ -296,17 +395,25 @@ export class Claim {
   }
 
   isPartnerDisabled(): boolean {
-    return this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
-      this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
+    return (
+      this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
+      this.statementOfMeans?.partnerDisability?.option === YesNo.YES
+    );
   }
 
   isChildrenDisabled(): boolean {
-    return this.statementOfMeans?.dependants?.declared === true &&
-      this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
+    return (
+      this.statementOfMeans?.dependants?.declared === true &&
+      this.statementOfMeans?.childrenDisability?.option === YesNo.YES
+    );
   }
 
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
-    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverelyDisabled();
+    return (
+      this.isChildrenDisabled() ||
+      this.isPartnerDisabled() ||
+      this.isDefendantDisabledAndSeverelyDisabled()
+    );
   }
 
   isFullAdmission(): boolean {
@@ -318,11 +425,17 @@ export class Claim {
   }
 
   isPartialAdmissionPaid(): boolean {
-    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES;
+    return (
+      this.isPartialAdmission() &&
+      this.partialAdmission?.alreadyPaid?.option === YesNo.YES
+    );
   }
 
   isPartialAdmissionNotPaid(): boolean {
-    return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
+    return (
+      this.isPartialAdmission() &&
+      this.partialAdmission?.alreadyPaid?.option === YesNo.NO
+    );
   }
 
   hasClaimantConfirmedDefendantPaid(): boolean {
@@ -334,7 +447,9 @@ export class Claim {
   }
 
   hasClaimantRejectedPartAdmitPayment(): boolean {
-    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
+    return (
+      this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
+    );
   }
 
   isFullDefence(): boolean {
@@ -362,14 +477,17 @@ export class Claim {
   }
 
   isRejectionReasonCompleted(): boolean {
-    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.claimantResponse?.rejectionReason?.text;
+    return (
+      this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO &&
+      !!this.claimantResponse?.rejectionReason?.text
+    );
   }
 
   getPaidAmount(): number {
-    if(this.hasConfirmedAlreadyPaid()){
+    if (this.hasConfirmedAlreadyPaid()) {
       return this.isRejectAllOfClaimAlreadyPaid();
     }
-    if(this.isPartialAdmissionPaid()){
+    if (this.isPartialAdmissionPaid()) {
       return this.partialAdmissionPaidAmount();
     }
   }
@@ -379,11 +497,17 @@ export class Claim {
   }
 
   isSignASettlementAgreement(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+    return (
+      this.claimantResponse?.chooseHowToProceed?.option ===
+      ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT
+    );
   }
 
   isRequestACCJ(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+    return (
+      this.claimantResponse?.chooseHowToProceed?.option ===
+      ChooseHowProceed.REQUEST_A_CCJ
+    );
   }
 
   hasConfirmedAlreadyPaid(): boolean {
@@ -391,7 +515,9 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
+    return (
+      this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount
+    );
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -425,19 +551,25 @@ export class Claim {
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
-    if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
-      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
-        return document.value.documentType === documentType;
-      });
+    if (
+      documentType === DocumentType.HEARING_FORM &&
+      this.hasCaseProgressionHearingDocuments()
+    ) {
+      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(
+        (document) => {
+          return document.value.documentType === documentType;
+        },
+      );
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
     }
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
-      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
-        return document?.value.documentType === documentType;
-      });
+      const filteredDocumentDetailsByType =
+        this.systemGeneratedCaseDocuments?.find((document) => {
+          return document?.value.documentType === documentType;
+        });
       return filteredDocumentDetailsByType?.value;
     }
     return undefined;
@@ -452,11 +584,17 @@ export class Claim {
   }
 
   isBusiness(): boolean {
-    return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
+    return (
+      this.respondent1?.type === PartyType.COMPANY ||
+      this.respondent1?.type === PartyType.ORGANISATION
+    );
   }
 
   isClaimantBusiness(): boolean {
-    return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
+    return (
+      this.applicant1?.type === PartyType.COMPANY ||
+      this.applicant1?.type === PartyType.ORGANISATION
+    );
   }
 
   isDeadlineExtended(): boolean {
@@ -464,7 +602,11 @@ export class Claim {
   }
 
   hasRespondentAskedForMoreThan28Days(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
+    return (
+      this.responseDeadline?.option === ResponseOptions.YES &&
+      this.responseDeadline?.additionalTime ===
+        AdditionalTimeOptions.MORE_THAN_28_DAYS
+    );
   }
 
   hasInterest(): boolean {
@@ -489,7 +631,8 @@ export class Claim {
 
   isBreakDownCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
+      this.interest?.interestClaimOptions ===
+        InterestClaimOptionsType.BREAK_DOWN_INTEREST &&
       !!this.interest?.totalInterest?.amount &&
       !!this.interest?.totalInterest?.reason
     );
@@ -497,7 +640,8 @@ export class Claim {
 
   isInterestSameRateCompleted(): boolean {
     return (
-      this.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST &&
+      this.interest?.interestClaimOptions ===
+        InterestClaimOptionsType.SAME_RATE_INTEREST &&
       !!this.interest?.sameRateInterestSelection?.sameRateInterestType
     );
   }
@@ -514,10 +658,9 @@ export class Claim {
     return (
       this.claimInterest === YesNo.YES &&
       (this.isBreakDownCompleted() ||
-        (
-          this.isInterestSameRateCompleted() &&
-          (this.isInterestFromClaimSubmitDate() || this.isInterestFromSpecificDateCompleted())
-        ))
+        (this.isInterestSameRateCompleted() &&
+          (this.isInterestFromClaimSubmitDate() ||
+            this.isInterestFromSpecificDateCompleted())))
     );
   }
 
@@ -526,7 +669,8 @@ export class Claim {
       !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
       ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.individualFirstName))
+        (!this.isBusiness() &&
+          !!this.respondent1?.partyDetails?.individualFirstName))
     );
   }
 
@@ -534,27 +678,40 @@ export class Claim {
     return (
       !!this.applicant1?.type &&
       !!this.applicant1?.partyDetails?.primaryAddress &&
-      ((this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.partyName) ||
-        (!this.isClaimantBusiness() && !!this.applicant1?.partyDetails?.individualFirstName && !!this.applicant1?.dateOfBirth))
+      ((this.isClaimantBusiness() &&
+        !!this.applicant1?.partyDetails?.partyName) ||
+        (!this.isClaimantBusiness() &&
+          !!this.applicant1?.partyDetails?.individualFirstName &&
+          !!this.applicant1?.dateOfBirth))
     );
   }
 
   get hasSupportRequiredList(): boolean {
-    return this.isClaimantIntentionPending() ? !!this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList : !!this.directionQuestionnaire?.hearing?.supportRequiredList;
+    return this.isClaimantIntentionPending()
+      ? !!this.claimantResponse?.directionQuestionnaire?.hearing
+          ?.supportRequiredList
+      : !!this.directionQuestionnaire?.hearing?.supportRequiredList;
   }
 
   get contactNameFromClaimantResponse(): string {
-    return this.claimantResponse.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
-      this.claimantResponse.mediation.companyTelephoneNumber.mediationContactPerson :
-      this.applicant1?.partyDetails?.contactPerson;
+    return this.claimantResponse.mediation?.companyTelephoneNumber?.option ===
+      YesNo.NO
+      ? this.claimantResponse.mediation.companyTelephoneNumber
+          .mediationContactPerson
+      : this.applicant1?.partyDetails?.contactPerson;
   }
 
   get contactNumberFromClaimantResponse(): string {
     if (this.claimantResponse.mediation?.companyTelephoneNumber) {
-      return this.claimantResponse.mediation.companyTelephoneNumber.option !== YesNo.YES ?
-        this.claimantResponse.mediation.companyTelephoneNumber.mediationPhoneNumber
-        : this.claimantResponse.mediation.companyTelephoneNumber.mediationPhoneNumberConfirmation;
-    } else if (this.claimantResponse.mediation?.canWeUse?.mediationPhoneNumber) {
+      return this.claimantResponse.mediation.companyTelephoneNumber.option !==
+        YesNo.YES
+        ? this.claimantResponse.mediation.companyTelephoneNumber
+            .mediationPhoneNumber
+        : this.claimantResponse.mediation.companyTelephoneNumber
+            .mediationPhoneNumberConfirmation;
+    } else if (
+      this.claimantResponse.mediation?.canWeUse?.mediationPhoneNumber
+    ) {
       return this.claimantResponse.mediation.canWeUse.mediationPhoneNumber;
     } else {
       return this.applicant1?.partyPhone?.phone;
@@ -575,31 +732,56 @@ export class Claim {
   }
 
   get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+    return (
+      this.directionQuestionnaire?.hearing?.supportRequiredList?.option ===
+      YesNo.YES
+    );
   }
 
   get isClaimantResponseSupportRequiredYes(): boolean {
-    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
+    return (
+      this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList
+        ?.option === YesNo.YES
+    );
   }
 
   get isSupportRequiredDetailsAvailable(): boolean {
-    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0 : this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+    return this.isClaimantIntentionPending()
+      ? this.claimantResponse?.directionQuestionnaire?.hearing
+          ?.supportRequiredList?.items?.length > 0
+      : this.directionQuestionnaire?.hearing?.supportRequiredList?.items
+          ?.length > 0;
   }
 
   get isClaimantResponseSupportRequiredDetailsAvailable(): boolean {
-    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
+    return (
+      this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList
+        ?.items?.length > 0
+    );
   }
 
   hasExpertReportDetails(): boolean {
-    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES : this.directionQuestionnaire?.experts?.expertReportDetails?.option === YesNo.YES;
+    return this.isClaimantIntentionPending()
+      ? this.claimantResponse?.directionQuestionnaire?.experts
+          ?.expertReportDetails?.option === YesNo.YES
+      : this.directionQuestionnaire?.experts?.expertReportDetails?.option ===
+          YesNo.YES;
   }
 
   hasPermissionForExperts(): boolean {
-    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES  : this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+    return this.isClaimantIntentionPending()
+      ? this.claimantResponse?.directionQuestionnaire?.experts
+          ?.permissionForExpert?.option === YesNo.YES
+      : this.directionQuestionnaire?.experts?.permissionForExpert?.option ===
+          YesNo.YES;
   }
 
   hasEvidenceExpertCanStillExamine(): boolean {
-    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES : this.directionQuestionnaire?.experts?.expertCanStillExamine?.option === YesNo.YES;
+    return this.isClaimantIntentionPending()
+      ? this.claimantResponse?.directionQuestionnaire?.experts
+          ?.expertCanStillExamine?.option === YesNo.YES
+      : this.directionQuestionnaire?.experts?.expertCanStillExamine?.option ===
+          YesNo.YES;
   }
 
   getExplanationText(): string {
@@ -643,7 +825,10 @@ export class Claim {
   }
 
   isInterestClaimOptionsBreakDownInterest(): boolean {
-    return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+    return (
+      this.interest?.interestClaimOptions ===
+      InterestClaimOptionsType.BREAK_DOWN_INTEREST
+    );
   }
 
   getDefendantPaidAmount(): number | undefined {
@@ -654,8 +839,11 @@ export class Claim {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
   }
 
-  isCCJComplete(){
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  isCCJComplete() {
+    return (
+      this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM &&
+      this.claimantResponse?.ccjRequest?.paidAmount?.option
+    );
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -664,23 +852,33 @@ export class Claim {
 
   detailsOfWhyYouDisputeTheClaim(): string {
     if (this.rejectAllOfClaim) {
-      return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
+      return (
+        this.rejectAllOfClaim?.defence?.text ??
+        this.rejectAllOfClaim?.whyDoYouDisagree?.text
+      );
     } else if (this.partialAdmission) {
       return this.partialAdmission?.whyDoYouDisagree?.text;
     }
   }
 
   getPaymentIntention(): PaymentIntention {
-    return this.isPartialAdmission() ? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
+    return this.isPartialAdmission()
+      ? this.partialAdmission?.paymentIntention
+      : this.fullAdmission?.paymentIntention;
   }
 
   hasExpertDetails(): boolean {
-    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
-      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
+    return (
+      this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length &&
+      this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES
+    );
   }
 
   private getName(party: Party): string {
-    if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
+    if (
+      party?.type == PartyType.INDIVIDUAL ||
+      party?.type == PartyType.SOLE_TRADER
+    ) {
       if (party.partyDetails?.individualTitle) {
         return `${party.partyDetails.individualTitle} ${party.partyDetails.individualFirstName} ${party.partyDetails.individualLastName}`;
       } else {
@@ -711,13 +909,21 @@ export class Claim {
   }
 
   hasClaimantNotAgreedToMediation(): boolean {
-    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
+    return (
+      this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation ===
+      'No'
+    );
   }
 
   hasApplicant1DeadlinePassed(): boolean {
-    const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
+    const applicant1ResponseDeadline =
+      this.applicant1ResponseDeadline &&
+      new Date(this.applicant1ResponseDeadline).getTime();
     const now = new Date();
-    return applicant1ResponseDeadline <= now.getTime() && !this?.applicant1ResponseDate;
+    return (
+      applicant1ResponseDeadline <= now.getTime() &&
+      !this?.applicant1ResponseDate
+    );
   }
 
   hasCaseProgressionHearingDocuments(): boolean {
@@ -733,16 +939,19 @@ export class Claim {
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
-    const nowDate = new Date(new Date().setHours(0,0,0,0));
+    const nowDate = new Date(new Date().setHours(0, 0, 0, 0));
     const sixWeeksBeforeHearingDate = this.sixWeeksBeforeHearingDate();
     const threeWeeksBeforeHearingDate = this.threeWeeksBeforeHearingDate();
-    return nowDate >= sixWeeksBeforeHearingDate && nowDate <= threeWeeksBeforeHearingDate;
+    return (
+      nowDate >= sixWeeksBeforeHearingDate &&
+      nowDate <= threeWeeksBeforeHearingDate
+    );
   }
 
   isBundleStitched(): boolean {
     const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
 
-    if(!caseBundles || caseBundles.length < 1) {
+    if (!caseBundles || caseBundles.length < 1) {
       return false;
     }
 
@@ -752,16 +961,14 @@ export class Claim {
   lastBundleCreatedDate(): Date {
     const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
 
-    if(!caseBundles || caseBundles.length < 1) {
+    if (!caseBundles || caseBundles.length < 1) {
       return undefined;
     }
 
     BundlesFormatter.orderBundlesNewToOld(caseBundles);
 
-    for(const bundle of caseBundles)
-    {
-      if(bundle.createdOn)
-      {
+    for (const bundle of caseBundles) {
+      if (bundle.createdOn) {
         return bundle.createdOn;
       }
     }
@@ -770,7 +977,12 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return (
+      this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM &&
+      !this.defaultJudgmentDocuments &&
+      !this.ccjJudgmentStatement &&
+      !this.isClaimantRejectedPaymentPlan()
+    );
   }
 
   hasMediationSuccessful() {
@@ -794,30 +1006,50 @@ export class Claim {
   }
 
   isDefendantAgreedForMediation() {
-    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+    return (
+      Object.entries(this.mediation.canWeUse).length > 0 ||
+      Object.entries(this.mediation.companyTelephoneNumber).length > 0
+    );
   }
 
   isClaimantRejectedPaymentPlan() {
-    return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
+    return (
+      this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO
+    );
   }
 
   threeWeeksBeforeHearingDateString() {
     const threeWeeksBefore = this.threeWeeksBeforeHearingDate();
-    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    const options: DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    };
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
   private threeWeeksBeforeHearingDate() {
-    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const hearingDateTime = new Date(
+      this.caseProgressionHearing.hearingDate,
+    ).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0,0,0,0);
+    const dateAtStartOfDay = new Date(
+      hearingDateTime - threeWeeksMilli,
+    ).setHours(0, 0, 0, 0);
     return new Date(dateAtStartOfDay);
   }
 
   private sixWeeksBeforeHearingDate(): Date {
-    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const hearingDateTime = new Date(
+      this.caseProgressionHearing.hearingDate,
+    ).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
-    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0,0,0,0);
+    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(
+      0,
+      0,
+      0,
+      0,
+    );
     return new Date(dateAtStartOfDay);
   }
 
@@ -826,7 +1058,10 @@ export class Claim {
   }
 
   hasRespondent1AgreedMediation() {
-    return this.mediation?.canWeUse?.option || this.mediation?.companyTelephoneNumber?.option;
+    return (
+      this.mediation?.canWeUse?.option ||
+      this.mediation?.companyTelephoneNumber?.option
+    );
   }
 
   getFormattedCaseReferenceNumber(claimId: string): string {
@@ -836,7 +1071,10 @@ export class Claim {
   }
 
   isClaimant() {
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+    return (
+      this.caseRole === CaseRole.APPLICANTSOLICITORONE ||
+      this.caseRole === CaseRole.CLAIMANT
+    );
   }
 
   isDraftClaim(): boolean {
@@ -844,20 +1082,31 @@ export class Claim {
   }
 
   hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
-    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
+    return (
+      this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES
+    );
   }
 
   hasClaimantRejectedDefendantAdmittedAmount() {
-    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+    return (
+      this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO
+    );
   }
 
   hasClaimantRejectedDefendantResponse() {
-    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
+    return (
+      this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option ===
+      YesNo.NO
+    );
   }
 
   hasDefendantCompletedPaymentIntention() {
-    return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
-      this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
+    return (
+      this.partialAdmission?.paymentIntention?.repaymentPlan ||
+      this.fullAdmission?.paymentIntention?.repaymentPlan ||
+      this.partialAdmission?.paymentIntention?.paymentDate ||
+      this.fullAdmission?.paymentIntention?.paymentDate
+    );
   }
 }
 
