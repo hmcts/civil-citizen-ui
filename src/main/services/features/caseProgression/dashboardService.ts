@@ -14,7 +14,7 @@ export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Tas
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
     const cachedDashboard:Dashboard = await getDashboardFromCache(caseRole,claimId);
-    if(cachedDashboard) {
+    if(cachedDashboard?.items.length) {
       return cachedDashboard.items;
     }
     const dashboard:TaskList[] = generateNewDashboard(claim);

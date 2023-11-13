@@ -11,6 +11,7 @@ import {Party} from 'common/models/party';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {CaseRole} from 'form/models/caseRoles';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -38,6 +39,7 @@ describe('claimant Dashboard Controller', () => {
       });
       claim.totalClaimAmount=12000;
       claim.caseRole = CaseRole.CLAIMANT;
+      claim.applicant1Represented = YesNoUpperCamelCase.NO;
 
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -103,6 +105,7 @@ describe('claimant Dashboard Controller', () => {
       });
       claim.totalClaimAmount=12000;
       claim.caseRole = CaseRole.DEFENDANT;
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
 
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
