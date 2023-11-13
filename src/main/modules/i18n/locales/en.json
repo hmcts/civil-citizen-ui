@@ -352,11 +352,14 @@
       "PAGE_TITLE": "Severely disabled"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
-      "TITLE": "Do you want to respond to this claim in Welsh?",
-      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "DESCRIPTION_1": "You must choose which language to use to respond to this claim.",
+      "DESCRIPTION_2": " You can switch between reading information in English or Welsh at any point during your response by selecting the Cymraeg or English toggle.",
+      "DESCRIPTION_3": "Only do this directly after selecting 'Save and continue', or you may lose information that you have added to a page.",
       "ENGLISH": "English",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In which language do you want to respond to this claim?",
+      "TITLE": "Language",
+      "WELSH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -481,6 +484,7 @@
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "YOUR_HEARING_REQUIREMENTS_TITLE": "Your hearing requirements",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "INCOME_REGULAR": "Regular income",
@@ -837,6 +841,13 @@
       },
       "EXPECTED_END_DATE": "Expected end date"
     },
+    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
+      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
+      "TITLE": "Lift the debt respite scheme (breathing space)",
+      "DATE_LIFTED": " Date lifted",
+      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
+      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
+    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
@@ -903,6 +914,10 @@
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+      },
+      "REJECTED_DEFENDANT_RESPONSE": {
+        "MESSAGE": "You've rejected their response",
+        "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1994,6 +2009,7 @@
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
       "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "AGREE_THEIR_REPAYMENT_PLAN": "You can agree to their repayment plan or suggest your own",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
       "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
       "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
@@ -2419,6 +2435,7 @@
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
       "GO_TO_ACCOUNT": "Go to your account",
+      "IF_CLAIMANT_REJECTS_NO_MEDIATION": "If they reject your response the court will review the case. You might have to go to a hearing.",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "If {{ claimantName }} accepts your response",
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
@@ -2438,6 +2455,7 @@
       "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
       "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
       "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
+      "THE_COURT_WILL_REVIEW_CASE_HEARING": "The court will review the case. You might have to go to a hearing.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
@@ -2955,7 +2973,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to respond to this claim in Welsh",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",
@@ -3038,10 +3056,16 @@
     },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
+    "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
+    "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
+    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
+    "ADDRESS_LINE_TOO_MANY_CORRESPONDENCE": "Each address line must be no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY_CORRESPONDENCE": "Town or City must no longer than 50 characters",
     "VALID_ADDRESS_LINE_1": "Enter first address line",
     "VALID_ADDRESS_LINE_1_CORRESPONDENCE": "Enter first correspondence address line",
     "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",

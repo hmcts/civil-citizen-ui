@@ -20,8 +20,14 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Fast Track Trial Arrangements Journey.', () => {
+Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType);
+    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
+  }
+}).tag('@regression');
+
+Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
   }
 }).tag('@regression');
