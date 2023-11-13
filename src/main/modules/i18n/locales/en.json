@@ -1162,22 +1162,9 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
-      "HEARINGS": {
-        "ADD_TRIAL": "Add the trial arrangements",
-        "PAY_FEE": "Pay the hearing fee",
-        "TITLE": "Hearings",
-        "UPLOAD_DOCUMENTS": "Upload hearing documents",
-        "VIEW_BUNDLE": "View the bundle",
-        "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
-      },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
-      "ORDERS_NOTICE": {
-        "TITLE": "Orders and notices from the court",
-        "VIEW": "View orders and notices"
-      },
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
@@ -1673,7 +1660,6 @@
       "DEFAULT_JUDGMENT_MSG1": "{{ claimantName }} has requested a CCJ against you because the deadline for your response has passed.",
       "DEFAULT_JUDGMENT_MSG2": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
       "DEFAULT_JUDGMENT_MSG3": "If your deadline has passed, but the CCJ has not been issued, you can still respond. Contact us for more information:",
-      "DEFENDANT_HAS_UNTIL_TO_RESPOND": "{{ defendantName }} has until {{ responseDeadline }} to respond. They can request up to an extra 28 days if they need it.",
       "EMAIL": "Email :",
       "EMAIL_ID": "contactocmc@justice.gov.uk",
       "CLAIM_SETTLED": "This claim is settled.",
@@ -1682,13 +1668,6 @@
       "CONTACT": "Contact {{ claimantName }}",
       "CASE_PROGRESSION": {
         "HEARING_FEE": {
-          "APPLY_HELP_FEE_SELECTION": {
-            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
-            "LINK_TEXT": "help with fees (opens in a new tab).",
-            "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
-            "QUESTION_TITLE": "Do you want to apply for help with fees?",
-            "TITLE": "Pay hearing fee"
-          },
           "APPLY_HELP_WITH_FEES": {
             "LINK":"Apply for Help with Fees (open in a new window)",
             "PAGE_TITLE":"Help with fees",
@@ -1806,7 +1785,6 @@
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "You need to send them your company’s financial details if you haven’t already.",
       "YOU_SAID_YOU_WILL_PAY": "You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
-      "WAIT_DEFENDANT_TO_RESPOND": "Wait for the defendant to respond",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Wait for the court to review the case.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "We’ll contact you when they respond.",
       "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
@@ -2502,11 +2480,7 @@
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "COMPLETE": "Complete",
-      "DONE": "Done",
-      "INCOMPLETE": "Incomplete",
-      "IN_PROGRESS": "In progress",
-      "READY_TO_VIEW": "Ready to view",
-      "NOT_AVAILABLE_YET": "Not available yet"
+      "INCOMPLETE": "Incomplete"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
