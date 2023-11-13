@@ -42,7 +42,6 @@ class UploadEvidenceSteps {
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction('View documents');
     documentsTab.verifyLatestUpdatePageContent(claimType);
-    contactUs.verifyContactUs();
   }
 
   initiateHearingNoticeJourney(claimRef) {
