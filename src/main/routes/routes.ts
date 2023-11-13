@@ -184,6 +184,7 @@ import settleAdmittedController from './features/claimantResponse/settleAdmitted
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import repaymentPlanSummaryDefendantController from './features/claimantResponse/ccj/repaymentPlanSummaryDefendant';
 import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
@@ -392,6 +393,7 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  repaymentPlanSummaryDefendantController,
   courtProposedDateController,
   signSettlementAgreementController,
   repaymentPlanAcceptedController,
