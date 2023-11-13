@@ -14,22 +14,22 @@ import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemploy
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {addDaysFilter, addDaysFilterTranslated, dateFilter, formatDate} from './filters/dateFilter';
-import {SignatureType} from 'common/models/signatureType';
-import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from 'common/models/eligibility/totalAmountOptions';
-import {ClaimTypeOptions} from 'common/models/eligibility/claimTypeOptions';
-import {AgeEligibilityOptions} from 'common/form/models/eligibility/defendant/AgeEligibilityOptions';
-import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
+import {SignatureType} from '../../common/models/signatureType';
+import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
+import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
+import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
+import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
+import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
 import {
   CaseState,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from 'common/form/models/claimDetails';
+} from '../../common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
-import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
@@ -38,7 +38,6 @@ import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import config from 'config';
 import crypto from 'crypto';
-import {TaskStatus} from 'models/taskList/TaskStatus';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -155,7 +154,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
     nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
-    nunjucksEnv.addGlobal('TaskStatus', TaskStatus);
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
 
