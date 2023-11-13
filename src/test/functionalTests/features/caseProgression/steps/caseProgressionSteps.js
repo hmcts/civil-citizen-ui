@@ -5,6 +5,7 @@ const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/wh
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
+const ContactUs = require('../../common/contactUs');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -14,6 +15,7 @@ const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToU
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
+const contactUs = new ContactUs();
 
 class UploadEvidenceSteps {
 
@@ -40,6 +42,7 @@ class UploadEvidenceSteps {
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction('View documents');
     documentsTab.verifyLatestUpdatePageContent(claimType);
+    contactUs.verifyContactUs();
   }
 
   initiateHearingNoticeJourney(claimRef) {
@@ -57,9 +60,7 @@ class UploadEvidenceSteps {
   }
 
   verifyDocumentsUploadedBySolicitor(claimRef, claimType) {
-    latestUpdateTab.open(claimRef, claimType);
-    documentsTab.nextAction('//*[@id="tab_documents"]')
-    documentsTab.verifyLatestUpdatePageContent(claimType, true);
+    documentsTab.open(claimRef, claimType, true);
   }
 
 }

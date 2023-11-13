@@ -42,11 +42,15 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  performEvidenceUpload: async (user, caseId) => {
+  performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
-    // await apiRequest.uploadCivilDocument();
     eventName = 'EVIDENCE_UPLOAD_APPLICANT';
-    const payload = evidenceUpload.evidenceUpload();
+    let payload;
+    if (claimType === 'FastTrack') {
+      payload = evidenceUpload.evidenceUploadFastTrack();
+    } else if (claimType === 'SmallClaims') {
+      payload = evidenceUpload.evidenceUploadSmallClaims();
+    }
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);

@@ -5,9 +5,10 @@ const contactUs = new ContactUs();
 
 class Documents {
 
-  open(claimRef, claimType) {
+  open(claimRef, claimType, claimantFlag) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType);
+    this.nextAction('//*[@id="tab_documents"]')
+    this.verifyLatestUpdatePageContent(claimType, claimantFlag);
   }
 
   nextAction(nextAction) {
@@ -28,7 +29,7 @@ class Documents {
       if (claimType === 'FastTrack') {
         this.verifyFastTrackDocumentsUploadedSectionClaimantContent();
       } else if (claimType === 'SmallClaims') {
-        // this.verifySmallClaimsDocumentsUploadedSectionDefendantContent();
+        this.verifySmallClaimsDocumentsUploadedSectionClaimantContent();
       }
     }
     contactUs.verifyContactUs();
@@ -156,6 +157,30 @@ class Documents {
     I.see('Order_2023-10-09.pdf');
     I.see('Claimant skeleton argument');
     I.see('fast_track_sdo_000MC014.pdf');
+    I.see('Claimant legal authorities');
+    I.see('000MC038-claim-response.pdf');
+    I.see('Claimant costs');
+    I.see('hearing_small_claim_000MC013.pdf');
+    I.see('Claimant documentary evidence');
+    I.see('Documentary Evidence Deadline 01-02-2023.pdf');
+  }
+
+  verifySmallClaimsDocumentsUploadedSectionClaimantContent() {
+    I.see('Claimant witness evidence');
+    I.see('Claimant witness statement');
+    I.see('Witness Statement of Witness Nae 01-03-2023.pdf');
+    I.see('Claimant witness summary');
+    I.see('Witness Summary of Suary 23.pdf');
+    I.see('Claimant documents referred to in statement');
+    I.see('Referred Document Upper 01-01-2023.pdf');
+
+    I.see('Claimant expert evidence');
+    I.see('Claimant expert report');
+    I.see('Experts report nae Expertise 02-03-2023.pdf');
+    I.see('Joint statement of experts');
+    I.see('Joint report Nae expertise 01-04-2023.pdf');
+
+    I.see('Claimant hearing documents');
     I.see('Claimant legal authorities');
     I.see('000MC038-claim-response.pdf');
     I.see('Claimant costs');

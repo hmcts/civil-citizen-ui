@@ -11,14 +11,14 @@ Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
-    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
   }
 });
 
