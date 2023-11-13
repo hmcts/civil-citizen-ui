@@ -36,13 +36,13 @@ const respondSettlementAgreementViewPath =
 const respondSettlementAgreementController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(
-  civilServiceApiBaseUrl
+  civilServiceApiBaseUrl,
 );
 
 function renderView(
   form: GenericForm<GenericYesNo>,
   res: Response,
-  data?: object
+  data?: object,
 ): void {
   res.render(respondSettlementAgreementViewPath, { form, data });
 }
@@ -56,7 +56,7 @@ const getSettlementAgreementData = (claim: Claim, req: Request) => {
     paymentOption: getPaymentOptionType(claim),
     firstRepaymentDate: formatDateToFullDate(
       getFirstRepaymentDate(claim),
-      lang
+      lang,
     ),
     finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), lang),
     paymentDate: formatDateToFullDate(getPaymentDate(claim), lang),
@@ -78,16 +78,16 @@ respondSettlementAgreementController.get(
         new GenericForm(
           new GenericYesNo(
             req.body.option || claim.respondentSignSettlementAgreement?.option,
-            'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'
-          )
+            'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
+          ),
         ),
         res,
-        getSettlementAgreementData(claim, req)
+        getSettlementAgreementData(claim, req),
       );
     } catch (error) {
       next(error);
     }
-  }) as RequestHandler
+  }) as RequestHandler,
 );
 
 respondSettlementAgreementController.post(
@@ -98,10 +98,10 @@ respondSettlementAgreementController.post(
       const redisKey = generateRedisKey(req as unknown as AppRequest);
       const respondSettlementAgreementOption = new GenericYesNo(
         req.body.option,
-        'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'
+        'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
       );
       const respondSettlementAgreement = new GenericForm(
-        respondSettlementAgreementOption
+        respondSettlementAgreementOption,
       );
 
       respondSettlementAgreement.validateSync();
@@ -110,7 +110,7 @@ respondSettlementAgreementController.post(
         renderView(
           respondSettlementAgreement,
           res,
-          getSettlementAgreementData(claim, req)
+          getSettlementAgreementData(claim, req),
         );
       } else {
         // TODO : Save respondSettlementAgreement.model.option value and redirect to next page
@@ -122,17 +122,17 @@ respondSettlementAgreementController.post(
           claimId,
           {
             respondentSignSettlementAgreement: toCCDYesNo(
-              claim.respondentSignSettlementAgreement.option
+              claim.respondentSignSettlementAgreement.option,
             ),
           },
-          <AppRequest>req
+          <AppRequest>req,
         );
         res.redirect(constructResponseUrlWithIdParams(claimId, '<Next page>>'));
       }
     } catch (error) {
       next(error);
     }
-  }) as RequestHandler
+  }) as RequestHandler,
 );
 
 export default respondSettlementAgreementController;

@@ -30,8 +30,8 @@ describe('Respond To Settlement Agreement', () => {
       .post(
         CIVIL_SERVICE_SUBMIT_EVENT.replace(':submitterId', 'undefined').replace(
           ':caseId',
-          ':id'
-        )
+          ':id',
+        ),
       )
       .reply(200, {});
   });
@@ -65,7 +65,7 @@ describe('Respond To Settlement Agreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() =>
-          Promise.resolve(JSON.stringify(civilClaimResponseMock))
+          Promise.resolve(JSON.stringify(civilClaimResponseMock)),
         ),
       };
 
@@ -74,7 +74,7 @@ describe('Respond To Settlement Agreement', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(
-            t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE')
+            t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'),
           );
           expect(res.text).toContain(
             t(
@@ -85,8 +85,8 @@ describe('Respond To Settlement Agreement', () => {
                 paymentAmount: '50',
                 theAgreementRepaymentFrequency: 'week',
                 firstRepaymentDate: formatDateToFullDate(date),
-              }
-            )
+              },
+            ),
           );
         });
     });
@@ -114,8 +114,8 @@ describe('Respond To Settlement Agreement', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(
             t(
-              'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'
-            )
+              'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
+            ),
           );
         });
     });
@@ -123,11 +123,11 @@ describe('Respond To Settlement Agreement', () => {
     it('should redirect to the confirmation if sign agreement checkbox is selected', async () => {
       const spySaveDraftClaimMock = jest.spyOn(
         draftStoreService,
-        'saveDraftClaim'
+        'saveDraftClaim',
       );
       const respondentSignSettlementAgreement = new GenericYesNo(
         'yes',
-        'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'
+        'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION',
       );
       jest
         .spyOn(draftStoreService, 'generateRedisKey')
@@ -144,7 +144,7 @@ describe('Respond To Settlement Agreement', () => {
           expect(spySaveDraftClaimMock).toHaveBeenCalledWith(
             '1',
             { respondentSignSettlementAgreement },
-            true
+            true,
           );
 
           //TODO: Check header location with confirmation page url
