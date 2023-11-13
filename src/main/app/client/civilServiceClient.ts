@@ -289,10 +289,13 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {
+  async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
+        responseDate: extendedDeadline,
+        plusDays: plusDays,
+      }, config);
       return response.data as Date;
     } catch (err: unknown) {
       logger.error(err);
