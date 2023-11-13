@@ -1,11 +1,12 @@
-import {Claim} from '../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {buildSubmitStatus, buildNextStepsSection} from './submitConfirmationBuilder/submitConfirmationBuilder';
 import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {AppRequest} from 'models/AppRequest';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {YesNo} from 'form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitConfirmationService');
@@ -30,3 +31,7 @@ export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppR
     throw error;
   }
 };
+
+export function isDefendantRejectedMediationOrFastTrackClaim(claim: Claim) : boolean {
+  return claim.mediation?.mediationDisagreement?.option === YesNo.NO || claim.isFastTrackClaim;
+}
