@@ -9,11 +9,13 @@ import {
 import {ClaimantOrDefendant, PartyType} from 'models/partyType';
 import {GenericForm} from 'form/models/genericForm';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
-import {PartyPhone} from 'models/PartyPhone';
+import {PartyPhone, PartyPhoneMandatory} from 'models/PartyPhone';
 import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getClaimById} from "modules/utilityService";
+import {Claim} from "models/claim";
 
 const citizenDetailsController = Router();
 
@@ -62,10 +64,15 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const currentClaimId = req.params.id;
+    const caseData: Claim = await getClaimById(currentClaimId, req, true);
+    const isCarmEnabledForCase = caseData.isSubmittedAfterCarmDate();
     const redisKey = generateRedisKey(<AppRequest>req);
     const respondent = await getDefendantInformation(redisKey);
     const partyDetails = new GenericForm(new PartyDetails(req.body));
-    const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
+    const partyPhone = isCarmEnabledForCase ? new GenericForm<PartyPhoneMandatory>(new PartyPhoneMandatory(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist))
+      : new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
+
 
     partyDetails.validateSync();
     partyPhone.validateSync();

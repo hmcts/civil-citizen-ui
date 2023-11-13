@@ -25,6 +25,7 @@ import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {getTestCarmTask} from "common/utils/taskList/tasks/testCarmTask";
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
@@ -52,6 +53,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
   const tellUsHowMuchYouHavePaidTask = getTellUsHowMuchYouHavePaidTask(caseData, claimId, lang);
   const tellUsWhyDisagreeWithClaimTask = getTellUsWhyDisagreeWithClaimTask(caseData, claimId, lang);
+  const testCarmTask = getTestCarmTask(caseData, claimId, lang);
 
   tasks.push(chooseAResponseTask);
 
@@ -103,6 +105,10 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
       } else if (caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE) {
         tasks.push(tellUsWhyDisagreeWithClaimTask);
       }
+    }
+
+    if (caseData.isSubmittedAfterCarmDate()) {
+      tasks.push(testCarmTask);
     }
 
   }

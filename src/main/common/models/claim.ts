@@ -339,6 +339,11 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
 
+  isSubmittedAfterCarmDate(): boolean {
+    console.log('submitted date: ' + this.submittedDate);
+    return new Date(this.submittedDate) >= new Date(2024, 10, 9);
+  }
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.fullAdmission?.paymentIntention?.paymentOption?.length > 0;
   }
