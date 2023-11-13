@@ -3,8 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  APPLY_HELP_WITH_FEES,
-  HEARING_FEE_APPLY_HELP_FEE_SELECTION,
+  APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
 } from 'routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -23,7 +22,7 @@ describe('Apply for help with fees', () => {
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
       await request(app)
-        .get(APPLY_HELP_WITH_FEES)
+        .get(APPLY_HELP_WITH_FEES_START)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Apply for Help with Fees (open in a new window)');
@@ -41,11 +40,11 @@ describe('Apply for help with fees', () => {
 
     it('should redirect to help with fee selection if continue', async () => {
       await request(app)
-        .post(APPLY_HELP_WITH_FEES)
+        .post(APPLY_HELP_WITH_FEES_START)
         .send()
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(HEARING_FEE_APPLY_HELP_FEE_SELECTION);
+          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES_REFERENCE);
         });
     });
   });
