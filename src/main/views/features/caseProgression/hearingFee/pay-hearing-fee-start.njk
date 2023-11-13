@@ -4,12 +4,24 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.PAY_HEARING_FEE.START.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.PAY_HEARING_FEE.START_PAGE.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
+  {{ govukBreadcrumbs({
+          items: [
+            {
+              text: "Home",
+              href: homeUrl
+            },
+            {
+              text: t('PAGES.PAY_HEARING_FEE.START_PAGE.PAGE_TITLE')
+            }
+          ]
+        }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
