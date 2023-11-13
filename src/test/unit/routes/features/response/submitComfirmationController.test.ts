@@ -4,6 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import fullAdmitPayByImmediatelyMock from '../../../../utils/mocks/fullAdmitPayByImmediatelyMock.json';
+import partAdmitPayByImmediatelyMock from '../../../../utils/mocks/partAdmitPayByImmediatelyMock.json';
 import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {PartyType} from '../../../../../main/common/models/partyType';
@@ -28,6 +30,7 @@ mockClaim.applicant1 = {
 describe('Submit confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const responsePaymentDeadlineDate = '2023-11-06';
 
   beforeEach(() => {
     nock(idamUrl)
@@ -39,6 +42,9 @@ describe('Submit confirmation controller', () => {
     nock('http://localhost:4000')
       .get('/cases/:id/userCaseRoles')
       .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+    nock('http://localhost:4000')
+      .post('/cases/response/deadline')
+      .reply(200, responsePaymentDeadlineDate);
   });
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {
@@ -61,6 +67,34 @@ describe('Submit confirmation controller', () => {
         .get(CONFIRMATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
+        });
+    });
+    it('should return submit confirmation from claim for fullAdmitPayByImmediately', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, fullAdmitPayByImmediatelyMock);
+      nock('http://localhost:4000')
+        .get('/cases/:id/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      await request(app)
+        .get(CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('You&#39;ve submitted your response');
+        });
+    });
+    it('should return submit confirmation from claim for partAdmitPayByImmediately', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, partAdmitPayByImmediatelyMock);
+      nock('http://localhost:4000')
+        .get('/cases/:id/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      await request(app)
+        .get(CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('You&#39;ve submitted your response');
         });
     });
   });
