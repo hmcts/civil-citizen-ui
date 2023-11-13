@@ -1667,7 +1667,7 @@
       "CLAIMANT_CONFIRMED_YOU_PAID": "{{ claimantName }} confirmed you paid £{{amount}} on {{ moneyReceivedOn }}.",
       "CONTACT": "Contact {{ claimantName }}",
       "CASE_PROGRESSION": {
-        "HEARING_FEE": {
+        "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
             "LINK":"Apply for Help with Fees (open in a new window)",
             "PAGE_TITLE":"Help with fees",
