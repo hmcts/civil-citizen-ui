@@ -7,7 +7,7 @@ class Documents {
 
   open(claimRef, claimType, claimantFlag) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.nextAction('//*[@id="tab_documents"]')
+    this.nextAction('//*[@id="tab_documents"]');
     this.verifyLatestUpdatePageContent(claimType, claimantFlag);
   }
 
