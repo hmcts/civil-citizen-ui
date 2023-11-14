@@ -29,7 +29,7 @@ export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION_2.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL),
     changeLabel(lng),
   );

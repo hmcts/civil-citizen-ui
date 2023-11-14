@@ -11,7 +11,7 @@
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE') }}</p>
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
   {% endif %}
-  {% if true %}
+  {% if form.model.type === SignatureType.QUALIFIED %}
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.SENIOR_POSITION_REQUIREMENT') }}</p>
     {{ typesOfSeniorPosition(t) }}
     {{ govukInput({
