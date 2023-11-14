@@ -2,7 +2,7 @@ import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
-import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
+import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps, getRejectedResponseYesMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { YesNo } from 'common/form/models/yesNo';
 
@@ -26,6 +26,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
+  const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
 
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
     return RCDisputeNotContinueNextSteps;
@@ -35,23 +36,44 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return PAPayImmediatelyAcceptedNextSteps;
   }
 
-  if (hasClaimantRejectedDefendantResponse(claim)) {
+  if (
+    hasClaimantRejectedDefendantResponse(claim) &&
+    hasEitherPartyNotAgreedToMediation(claim)
+  ) {
     return RejectedResponseNoMediationNextSteps;
+  }
+
+  if (
+    hasClaimantRejectedDefendantResponse(claim) &&
+    claim.hasClaimantAgreedToMediation()
+  ) {
+    return RejectedResponseYesMediationNextSteps;
   }
 }
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
-  const hasMediationDisagreement = claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation();
-  const isFullDefenceWithClaimantRejected = claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
-  
+  const isFullDefenceWithClaimantRejected =
+    claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
+
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED,
-    ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED];
+    ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED,
+  ];
 
-  return hasMediationDisagreement && (isFullDefenceWithClaimantRejected || isFullDefenceWithIntentionToProceed(claim) || claimantResponseStatus.includes(claim.responseStatus));
+  return (
+    isFullDefenceWithClaimantRejected ||
+    isFullDefenceWithIntentionToProceed(claim) ||
+    claimantResponseStatus.includes(claim.responseStatus)
+  );
+}
 
+function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
+  return (
+    claim.hasClaimantNotAgreedToMediation() ||
+    claim.hasRespondent1NotAgreedMediation()
+  );
 }
 
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
