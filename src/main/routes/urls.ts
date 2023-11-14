@@ -248,3 +248,4 @@ export const HEARING_FEE_CANCEL_JOURNEY = `${PAY_HEARING_FEE_URL}/cancel`;
 export const HEARING_FEE_PAYMENT_CREATION = `${BASE_CASE_PROGRESSION_URL}/payment-creation`;
 export const APPLY_HELP_WITH_FEES = `${BASE_CASE_URL}/apply-help-with-fees`;
 export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
+
