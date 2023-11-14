@@ -203,7 +203,7 @@ const mockCivilClaimDocumentUploaded = {
 const mockCivilClaimWithFeeType = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithFeeType))),
-   del: jest.fn(() => Promise.resolve({})),
+  del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
 };

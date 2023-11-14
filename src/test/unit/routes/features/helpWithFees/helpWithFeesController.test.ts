@@ -13,7 +13,7 @@ import {YesNo} from 'form/models/yesNo';
 import * as helpWithFeesContentService from 'services/features/helpWithFees/applyHelpWithFeesService';
 import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-import {HearingFee, HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 
@@ -37,7 +37,7 @@ describe('Arrive on help with fees', () => {
       const claimMock = new Claim();
       claimMock.caseProgressionHearing = new CaseProgressionHearing();
       claimMock.caseProgressionHearing.hearingFeeInformation = new HearingFeeInformation();
-      claimMock.caseProgressionHearing.hearingFeeInformation.hearingFee = new HearingFee(7000, '1', '1');
+      claimMock.caseProgressionHearing.hearingFeeInformation.hearingFee = {calculatedAmountInPence:'7000', version: 'text', code: '1'};
       claimMock.feeTypeHelpRequested = FeeType.HEARING;
 
       const spyOn = jest.spyOn(helpWithFeesContentService, 'getApplyHelpWithFeesContent');

@@ -13,7 +13,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {helpWithFeesGuard} from 'routes/guards/helpWithFees/helpWithFeesGuard';
 
 const applyHelpWithFeesController = Router();
@@ -36,10 +36,10 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, helpWithFeesGuard, (async 
   }
 }) as RequestHandler);
 
-applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, <AppRequest>req);
+    const claim = await getClaimById(claimId, <AppRequest>req, true);
     const option = req.body.option;
     const form = new GenericForm(new GenericYesNo(option, 'ERRORS.VALID_YES_NO_SELECTION'));
     await form.validate();
@@ -55,7 +55,8 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: Request, res
         }
       }
       claim.helpWithFeesRequested = req.body.option;
-      await saveDraftClaim(claimId, claim);
+      const redisKey = generateRedisKey(req);
+      await saveDraftClaim(redisKey, claim);
       res.redirect(redirectUrl);
     }
   } catch (error) {

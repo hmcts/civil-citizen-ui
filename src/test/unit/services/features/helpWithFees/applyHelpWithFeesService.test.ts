@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {getApplyHelpWithFeesContent} from 'services/features/helpWithFees/applyHelpWithFeesService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-import {HearingFee, HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFee, HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 describe('hasAnythingChanged', () => {
 
@@ -13,7 +13,7 @@ describe('hasAnythingChanged', () => {
     claim.caseProgressionHearing = new CaseProgressionHearing();
     claim.caseProgressionHearing.hearingFeeInformation = new HearingFeeInformation();
     claim.caseProgressionHearing.hearingFeeInformation.hearingFee = new HearingFee();
-    claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence = 7000;
+    claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence = '7000';
 
     //when
     const actualHelpWithFeesContent = getApplyHelpWithFeesContent(claim);

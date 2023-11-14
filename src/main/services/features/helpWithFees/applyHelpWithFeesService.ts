@@ -1,9 +1,11 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 function getHearingFee(claim: Claim) {
-  return claim?.caseProgressionHearing?.hearingFeeInformation?.getHearingFeeFormatted();
+  const hearingFeeInformation = new HearingFeeInformation(claim.caseProgressionHearing.hearingFeeInformation.hearingFee);
+  return hearingFeeInformation.getHearingFeeFormatted();
 }
 
 export const getApplyHelpWithFeesContent = (claim: Claim) => {
