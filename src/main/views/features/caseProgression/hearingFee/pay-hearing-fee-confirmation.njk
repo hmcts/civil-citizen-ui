@@ -21,7 +21,7 @@
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           {{ csrfProtection(csrf) }}
           {{ govukPanel({
-            titleText: t('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.'+ feeType),
+            titleText: confirmationTitle,
             html: panelContent
           }) }}
           {% for content in confirmationContent %}

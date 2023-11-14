@@ -5,6 +5,7 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {t} from 'i18next';
 
 const payHearingFeeStartScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-confirmation';
 const payHearingFeeConfirmationController = Router();
@@ -21,9 +22,9 @@ payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (re
     const claimId = req.params.id;
     //TODO: we need to revisit this controller once we have all pay hearing fee confirmation in place
     res.render(payHearingFeeStartScreenViewPath, {
-      confirmationContent: getHearingFeeConfirmationContent(claimId),
+      confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`),
       referenceNumber: claimId,
-      feeType : FeeType.HEARING,
+      confirmationContent: getHearingFeeConfirmationContent(claimId),
     });
   } catch (error) {
     next(error);
