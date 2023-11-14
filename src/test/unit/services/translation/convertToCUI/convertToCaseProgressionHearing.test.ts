@@ -8,7 +8,7 @@ import {FIXED_DATE, FIXED_TIME_HOUR_MINUTE} from '../../../../utils/dateUtils';
 import {DocumentType} from 'models/document/documentType';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),

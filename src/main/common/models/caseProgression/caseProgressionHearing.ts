@@ -7,7 +7,7 @@ import {
 } from 'services/features/caseProgression/hearingDurationFormatter';
 import {DocumentType} from 'models/document/documentType';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
-import {HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 export class HearingLocation {
   value: {

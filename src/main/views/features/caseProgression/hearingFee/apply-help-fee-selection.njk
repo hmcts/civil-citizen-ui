@@ -11,12 +11,18 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
 {% endblock %}
 
 {% block content %}
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: startPayHearingFee,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% if form.hasErrors() %}
