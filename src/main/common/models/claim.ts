@@ -538,6 +538,11 @@ export class Claim {
     );
   }
 
+  // carm is enabled for cases created after 1st May 2024
+  isSubmittedAfterCarmDate(): boolean {
+    return new Date(this.submittedDate) >= new Date(2024, 4, 1);
+  }
+
   get hasSupportRequiredList(): boolean {
     return this.isClaimantIntentionPending() ? !!this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList : !!this.directionQuestionnaire?.hearing?.supportRequiredList;
   }
