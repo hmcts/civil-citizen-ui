@@ -665,7 +665,7 @@
     "CLAIM_DETAILS": {
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
-      "CLAIM_FEE": "Ffi hawliad",
+      "CLAIM_FEE": "Ffi’r hawliad",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
