@@ -224,7 +224,7 @@ import breathingSpaceLiftedCheckAnswersController from './features/breathingSpac
 import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 import payHearingFeeConfirmationController
-  from "routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController";
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
 export default [
   homeController,
   dashboardController,
