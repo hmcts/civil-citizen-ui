@@ -318,7 +318,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest);
+      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate,5, mockedAppRequest);
 
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -336,7 +336,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, 5, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getCourtLocations test', () => {
