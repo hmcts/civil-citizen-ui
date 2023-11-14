@@ -279,6 +279,10 @@
     "VARIATION_4": {
       "YES": "Ydy",
       "NO": "Nac ydy"
+    },
+    "VARIATION_5": {
+      "YES": "Do",
+      "NO": "Naddo"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
