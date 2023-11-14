@@ -130,6 +130,7 @@ export class Claim {
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
   feeTypeHelpRequested: FeeType;
+  helpWithFeesRequested: string;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

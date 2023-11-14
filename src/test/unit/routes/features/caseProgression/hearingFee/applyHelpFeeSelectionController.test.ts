@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  APPLY_HELP_WITH_FEES_START,
+  APPLY_HELP_WITH_FEES,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
   HEARING_FEE_PAYMENT_CREATION,
 } from 'routes/urls';
@@ -87,7 +87,7 @@ describe('Apply for help with fees', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES_START);
+          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES);
         });
     });
   });

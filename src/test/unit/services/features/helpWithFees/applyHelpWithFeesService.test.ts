@@ -1,13 +1,9 @@
 import {Claim} from 'models/claim';
 import {getApplyHelpWithFeesContent} from 'services/features/helpWithFees/applyHelpWithFeesService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFee, HearingFeeInformation} from 'models/caseProgression/hearingFee';
 
-jest.mock('.../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 describe('hasAnythingChanged', () => {
 
   it('should return all the content if Hearing Fee Type', () => {
@@ -17,11 +13,7 @@ describe('hasAnythingChanged', () => {
     claim.caseProgressionHearing = new CaseProgressionHearing();
     claim.caseProgressionHearing.hearingFeeInformation = new HearingFeeInformation();
     claim.caseProgressionHearing.hearingFeeInformation.hearingFee = new HearingFee();
-    claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence = '7000';
-
-    mockGetCaseData.mockImplementation(async () => {
-      return claim;
-    });
+    claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence = 7000;
 
     //when
     const actualHelpWithFeesContent = getApplyHelpWithFeesContent(claim);
@@ -45,10 +37,6 @@ describe('hasAnythingChanged', () => {
   it('should return partially undefined if no feeType', () => {
     //Given
     const claim = new Claim();
-
-    mockGetCaseData.mockImplementation(async () => {
-      return claim;
-    });
 
     //when
     const actualHelpWithFeesContent = getApplyHelpWithFeesContent(claim);

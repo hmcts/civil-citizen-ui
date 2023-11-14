@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -11,6 +12,13 @@
 {% endblock %}
 
 {% block content %}
+
+  {{ govukBackLink({
+    text: t('COMMON.BUTTONS.BACK'),
+    href: backUrl,
+    classes: 'govuk-!-margin-top-0'
+  }) }}
+
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">

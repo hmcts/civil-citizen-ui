@@ -13,18 +13,24 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {helpWithFeesGuard} from 'routes/guards/helpWithFees/helpWithFeesGuard';
 
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
+const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
 
-//TODO: Check test coverage + it works with Miguel's latest version.
-applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, helpWithFeesGuard, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, <AppRequest>req);
-    const form = new GenericForm(new GenericYesNo('', 'ERRORS.VALID_YES_NO_SELECTION'));
+    const claim = await getClaimById(claimId, <AppRequest>req, true);
+    const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, 'ERRORS.VALID_YES_NO_SELECTION'));
+    let backUrl;
+    if(claim.feeTypeHelpRequested === FeeType.HEARING){
+      backUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
+    }
     const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl});
+    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl, backUrl: backUrl});
   } catch (error) {
     next(error);
   }
@@ -45,12 +51,11 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: Request, res
         redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START);
       } else {
         if(claim.feeTypeHelpRequested === FeeType.HEARING) {
-          redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
-        } else {
-          //TODO: Check if this placeholder needs replacing. Do we want to put in a guard checking on FeeType - spoke to Alex but inconclusive. I don't think we need one, but we'll need some default value.
-          redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+          redirectUrl = constructResponseUrlWithIdParams(claimId, hearingFeeBackUrl);
         }
       }
+      claim.helpWithFeesRequested = req.body.option;
+      await saveDraftClaim(claimId, claim);
       res.redirect(redirectUrl);
     }
   } catch (error) {

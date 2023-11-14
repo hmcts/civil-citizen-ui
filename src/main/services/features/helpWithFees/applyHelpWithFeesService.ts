@@ -12,7 +12,7 @@ export const getApplyHelpWithFeesContent = (claim: Claim) => {
   if (claim?.feeTypeHelpRequested === FeeType.HEARING) {
     feeAmount = getHearingFee(claim);
   }
-  //TODO: Currently, arriving on page with no feeType looks ugly. Is there a better implementation? Or accept that users shouldn't visit page without feeType anyway. Guard?
+
   return new PageSectionBuilder()
     .addMicroText('PAGES.APPLY_HELP_WITH_FEES.START.'+feeType+'_FEE')
     .addMainTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE')
