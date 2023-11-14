@@ -41,19 +41,6 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addSubTitle(title: string, variables?: any, classes?: string) {
-    const titleSection = ({
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: title,
-        variables: variables,
-        classes: classes,
-      },
-    });
-    this._claimSummarySections.push(titleSection);
-    return this;
-  }
-
   addParagraph(text: string, variables?: any, classes?: string) {
     const paragraphSection = ({
       type: ClaimSummaryType.PARAGRAPH,
