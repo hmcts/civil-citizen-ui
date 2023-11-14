@@ -17,7 +17,7 @@ const getHearingFeeConfirmationContent = (claimId: string) => {
     .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW',constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
 };
 
-//TODO: we need to revisit this controller once we have all pay hearing fee confirmation in place
+//TODO: we need to revisit this controller once we have all pay hearing fee journey in place
 payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
   res.render(payHearingFeeStartScreenViewPath, {
