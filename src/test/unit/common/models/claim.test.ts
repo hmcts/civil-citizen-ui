@@ -1929,7 +1929,7 @@ describe('Documents', () => {
       //When
       const result = claim.isDefendantResponsePayBySetDate();
       //Then
-      expect(result).toBeUndefined();
+      expect(result).toBe(false);
     });
     it('should return undefined with Full Admissions pay in installments', () => {
       //Given
@@ -1941,7 +1941,7 @@ describe('Documents', () => {
 
       const result = claim.isDefendantResponsePayBySetDate();
       //Then
-      expect(result).toBeUndefined();
+      expect(result).toBe(false);
     });
 
     it('should return true with Full Admissions pay by set date', () => {
@@ -1967,7 +1967,7 @@ describe('Documents', () => {
       //When
       const result = claim.isDefendantResponsePayBySetDate();
       //Then
-      expect(result).toBeUndefined();
+      expect(result).toBe(false);
     });
 
     it('should return true with Part Admissions pay by set date', () => {
