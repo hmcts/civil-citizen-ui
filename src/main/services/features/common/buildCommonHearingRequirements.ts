@@ -51,13 +51,11 @@ export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, c
 };
 
 export const getSummaryRowForDisplayEvidenceYourself = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
-  const option = directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
-  ? YesNoUpperCase.YES
-  : YesNoUpperCase.NO;
+  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
-    t(`COMMON.VARIATION_2.${option}`, {lng}),
+    giveEvidenceYourselfAnswer,
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
