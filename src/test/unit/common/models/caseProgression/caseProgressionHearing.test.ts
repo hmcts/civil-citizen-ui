@@ -56,7 +56,7 @@ describe('testing of caseProgressionHearing class', ()=> {
 
 });
 describe('testing of caseProgressionHearingFee class', ()=> {
-  const caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, null, new HearingFeeInformation({calculatedAmountInPence: 1000, code: 'test', version: '1'}, fixedDate));
+  const caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, fixedDate));
 
   it('should getClaimFeeFormatted returns with correct information', () => {
     //When
