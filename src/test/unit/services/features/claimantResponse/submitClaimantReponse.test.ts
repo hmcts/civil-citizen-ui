@@ -1,8 +1,10 @@
 import nock from 'nock';
 import config from 'config';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import * as ccdTranslationService from '../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation';
-import * as ccdCCJTranslationService from '../../../../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import * as ccdTranslationService
+  from '../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation';
+import * as ccdCCJTranslationService
+  from '../../../../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {Claim} from '../../../../../main/common/models/claim';
 import * as requestModels from '../../../../../main/common/models/AppRequest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -16,6 +18,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PartialAdmission} from 'models/partialAdmission';
 import {ResponseType} from 'form/models/responseType';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation');
@@ -69,7 +72,7 @@ describe('Submit claimant response to ccd', () => {
     //Then
     await expect(submitClaimantResponse(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
   });
-  describe('Submit claimant response to ccd', () => {
+  describe('Submit claimant response with CCJ data to ccd', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     claim.respondent1 = new Party();
     it('should submit claimant response with ccj data successfully when there are no errors', async () => {

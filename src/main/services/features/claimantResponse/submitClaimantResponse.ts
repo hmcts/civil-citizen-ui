@@ -2,7 +2,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
@@ -20,12 +20,12 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     let ccdResponse = translateClaimantResponseToCCD(claim);
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-    if(claimantResponse.isCCJRequested && isResponseTypeRequestedCCJRequest(claim)) {
+    if (claimantResponse.isCCJRequested && hasRespondTypeWithCCJRequest(claim)) {
       const claimFeeAmount = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFeeAmount);
-      ccdResponse = {...ccdResponseForRequestDefaultJudgement,...ccdResponse};
+      ccdResponse = {...ccdResponseForRequestDefaultJudgement, ...ccdResponse};
     }
-    logger.info('Sumbmitting claimant intention...',ccdResponse);
+    logger.info('Sumbmitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
@@ -33,7 +33,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   }
 };
 
-function isResponseTypeRequestedCCJRequest(claim: Claim): boolean {
+function hasRespondTypeWithCCJRequest(claim: Claim): boolean {
   return ((claim.isFullAdmission() && (claim.isFAPaymentOptionInstallments() || claim.isFAPaymentOptionBySetDate())) ||
-    (claim.isPartialAdmission() && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())));
+    (claim.isPartialAdmission() && (claim.isPAPaymentOptionInstallments() || claim.isPAPaymentOptionByDate())));
 }
