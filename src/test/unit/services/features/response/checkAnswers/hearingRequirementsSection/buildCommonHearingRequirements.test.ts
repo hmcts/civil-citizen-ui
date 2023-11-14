@@ -221,7 +221,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
@@ -238,7 +238,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
@@ -334,7 +334,7 @@ describe('Common Hearing Requirements Section', () => {
       });
       const mockSummarySection = summaryRow(
         'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.NO'),
+        t('COMMON.VARIATION_3.NO'),
         `/case/${claimId}/directions-questionnaire/support-required`,
         changeButton,
       );
@@ -361,7 +361,7 @@ describe('Common Hearing Requirements Section', () => {
       });
       const mockSummarySection = summaryRow(
         'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.YES'),
+        t('COMMON.VARIATION_3.YES'),
         `/case/${claimId}/directions-questionnaire/support-required`,
         changeButton,
       );
@@ -476,7 +476,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/phone-or-video-hearing`,
         changeButton,
       );
@@ -494,7 +494,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/phone-or-video-hearing`,
         changeButton,
       );

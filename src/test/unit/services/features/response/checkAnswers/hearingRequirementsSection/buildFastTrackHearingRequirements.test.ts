@@ -230,7 +230,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       claim.directionQuestionnaire.experts.sharedExpert = {option: YesNo.NO};
       const mockSummarySection = summaryRow(
         'PAGES.SHARED_EXPERT.WITH_CLAIMANT',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         '/case/validClaimId/directions-questionnaire/shared-expert',
         changeButton,
       );
