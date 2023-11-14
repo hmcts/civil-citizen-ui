@@ -1989,12 +1989,14 @@
     "OTHER_WITNESSES": {
       "ADD_ANOTHER_WITNESS": "Ychwanegu tyst arall",
       "EMAIL_LABEL": "Cyfeiriad e-bost (dewisol)",
-      "PAGE_TITLE": "A oes gennych dystion eraill?",
+      "PAGE_TITLE": "A oes gennych chi dystion eraill?",
       "PHONE_LABEL": "Rhif ffôn (dewisol)",
       "REMOVE_WITNESS": "Tynnu'r tyst",
       "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "Tyst yw rhywun sy’n gallu cadarnhau eich fersiwn chi o beth ddigwyddodd.",
-      "TITLE": "A oes gennych dystion eraill?",
-      "WHAT_THEY_WITNESSED_LABEL": "Dywedwch wrthym beth welsant"
+      "TITLE": "A oes gennych chi dystion eraill?",
+      "WHAT_THEY_WITNESSED_LABEL": "Dywedwch wrthym beth welsant",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "Os oes gennych chi neu eich arbenigwyr anghenion cymorth, ychwanegwch nhw fel tyst.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -2561,7 +2563,9 @@
       "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol.",
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
       "TITLE": "Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?",
-      "WHAT_LANGUAGE": "Pa iaith sydd angen ei chyfieithu?"
+      "WHAT_LANGUAGE": "Pa iaith sydd angen ei chyfieithu?",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "Os ydych chi neu eich arbenigwyr angen cymorth, ond nad yw wedi’i restru isod, ychwanegwch y cymorth sydd ei angen arnoch ar y dudalen tystion eraill.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
       "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu gyfnod arall o amser",
