@@ -12,7 +12,7 @@ import {
   getSupportRequiredForm,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 import {SupportRequiredList} from 'common/models/directionsQuestionnaire/supportRequired';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const supportRequiredController = Router();
@@ -23,7 +23,8 @@ const dqParentName = 'hearing';
 async function renderView(form: GenericForm<SupportRequiredList>, claimId: string, lang: string, res: Response) {
   const selectedNames = form.model?.items?.map(item => item.fullName);
   const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
-  res.render(supportRequiredViewPath, {form, peopleLists});
+  const claim = await getCaseDataFromStore(claimId);
+  res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded() });
 }
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
