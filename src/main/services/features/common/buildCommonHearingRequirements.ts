@@ -189,7 +189,7 @@ export const getSpecificCourtLocation = ( claimId: string, lng: string, directio
   
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
-    t(`COMMON.VARIATION_2.${option}`, {lng}),
+    directionQuestionnaire?.hearing?.specificCourtLocation?.option ? t(`COMMON.VARIATION_2.${option}`, {lng}) : '',
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
     changeLabel(lng),
   );

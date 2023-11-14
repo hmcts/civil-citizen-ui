@@ -56,7 +56,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         };
         const mockSummarySection = summaryRow(
           'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-          'COMMON.YES',
+          'COMMON.VARIATION_2.YES',
           `/case/${claimId}/directions-questionnaire/tried-to-settle`,
           changeButton,
         );
@@ -68,7 +68,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         const claimWithNoHearing = new Claim();
         const mockSummarySection = summaryRow(
           'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-          'COMMON.NO',
+          'COMMON.VARIATION_2.NO',
           `/case/${claimId}/directions-questionnaire/tried-to-settle`,
           changeButton,
         );
@@ -82,7 +82,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         claim.directionQuestionnaire.hearing = undefined;
         const mockSummarySection = summaryRow(
           'PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE',
-          'COMMON.NO',
+          'COMMON.VARIATION_2.NO',
           `/case/${claimId}/directions-questionnaire/tried-to-settle`,
           changeButton,
         );
