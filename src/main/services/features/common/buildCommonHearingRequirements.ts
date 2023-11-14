@@ -183,10 +183,13 @@ export const displayUnavailabilityForHearing = ( claimId: string, lng: string, d
 };
 
 export const getSpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  const hasSpecificCourtLocation = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
+  const option = directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
+  
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
-    hasSpecificCourtLocation,
+    t(`COMMON.VARIATION_2.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
     changeLabel(lng),
   );
