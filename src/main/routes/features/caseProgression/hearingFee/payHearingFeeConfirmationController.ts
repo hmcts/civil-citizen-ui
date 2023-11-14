@@ -17,18 +17,14 @@ const getHearingFeeConfirmationContent = (claimId: string) => {
     .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW',constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
 };
 
+//TODO: we need to revisit this controller once we have all pay hearing fee confirmation in place
 payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
-  try {
-    const claimId = req.params.id;
-    //TODO: we need to revisit this controller once we have all pay hearing fee confirmation in place
-    res.render(payHearingFeeStartScreenViewPath, {
-      confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`),
-      referenceNumber: claimId,
-      confirmationContent: getHearingFeeConfirmationContent(claimId),
-    });
-  } catch (error) {
-    next(error);
-  }
+  const claimId = req.params.id;
+  res.render(payHearingFeeStartScreenViewPath, {
+    confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`),
+    referenceNumber: claimId,
+    confirmationContent: getHearingFeeConfirmationContent(claimId),
+  });
 }) as RequestHandler);
 
 export default payHearingFeeConfirmationController;

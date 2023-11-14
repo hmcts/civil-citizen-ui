@@ -2801,7 +2801,7 @@
     "PAY_HEARING_FEE": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
-        "CONFIRMATION_TITLE": "Your application for help with the {{ feeType }} fee is complete ",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
         "REFERENCE_NUMBER": "Your reference number",
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
