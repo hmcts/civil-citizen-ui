@@ -3,7 +3,6 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -100,8 +99,7 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
 
 export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantFullName();
-  const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lang);
+  const immediatePaymentDeadline = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   return [
     {
       type: ClaimSummaryType.HTML,
