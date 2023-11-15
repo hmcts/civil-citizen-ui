@@ -11,6 +11,9 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Mediation} from 'common/models/mediation/mediation';
+import { HowMuchHaveYouPaid, HowMuchHaveYouPaidParams } from 'common/form/models/admission/howMuchHaveYouPaid';
+import { WhyDoYouDisagree } from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import { Defence } from 'common/form/models/defence';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -269,7 +272,21 @@ describe('Claimant Response Confirmation service', () => {
     claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
-    claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid{amount : 1000};
+    const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
+      amount: 120,
+      totalClaimAmount: 1000,
+      year: '2022',
+      month: '2',
+      day: '14',
+      text: 'Some text here...',
+    };
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.ALREADY_PAID,
+      new HowMuchHaveYouPaid(howMuchHaveYouPaidParams),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+   
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
 
