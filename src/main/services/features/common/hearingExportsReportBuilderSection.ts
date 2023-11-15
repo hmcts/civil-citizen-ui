@@ -30,7 +30,7 @@ const buildExpertReportSection = (claim: Claim, claimId: string, lang: string, d
 
 const buildHasExportReportSectionOption = (claim: Claim, claimId: string, lang: string, hrefReportDetails: string): SummaryRow => {
   const value = claim?.hasExpertReportDetails() ?
-    t('COMMON.VARIATION_2.YES', {lng: lang}) : t('COMMON.VARIATION_2.NO', {lng: lang});
+    t('COMMON.YES', {lng: lang}) : t('COMMON.NO', {lng: lang});
   return summaryRow(t('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE', {lng: lang}),
     value, hrefReportDetails, changeLabel(lang));
 };
