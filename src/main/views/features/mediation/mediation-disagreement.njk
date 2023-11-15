@@ -48,9 +48,9 @@
           <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.WILL_YOU_CHANGE_YOUR_DECISION') }}</h2>
           <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.IF_YOU_CHOOSE_NOT') }}</p>
             {% if claimStatus == CaseState.AWAITING_APPLICANT_INTENTION %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% else %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% endif %}
               {{ govukButton({
                 text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
