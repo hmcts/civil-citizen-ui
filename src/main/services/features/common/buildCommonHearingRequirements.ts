@@ -51,11 +51,13 @@ export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, c
 };
 
 export const getSummaryRowForDisplayEvidenceYourself = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow => {
-  const giveEvidenceYourselfAnswer = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.defendantYourselfEvidence?.option, lng);
+  const option = directionQuestionnaire?.defendantYourselfEvidence?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE', {lng}),
-    giveEvidenceYourselfAnswer,
+    directionQuestionnaire?.defendantYourselfEvidence?.option ? t(`COMMON.VARIATION_2.${option}`, {lng}) : '',
     constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL),
     changeLabel(lng),
   );
@@ -68,7 +70,7 @@ export const vulnerabilityQuestion = ( directionQuestionnaire : DirectionQuestio
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION_2.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
     changeLabel(lng),
   );
@@ -137,7 +139,7 @@ export const phoneAndVideoQuestion = ( claimId: string, lng: string, directionQu
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION_2.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL),
     changeLabel(lng),
   );
@@ -183,10 +185,13 @@ export const displayUnavailabilityForHearing = ( claimId: string, lng: string, d
 };
 
 export const getSpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  const hasSpecificCourtLocation = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.hearing?.specificCourtLocation?.option, lng);
+  const option = directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
+  
   return summaryRow(
     t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
-    hasSpecificCourtLocation,
+    directionQuestionnaire?.hearing?.specificCourtLocation?.option ? t(`COMMON.VARIATION_2.${option}`, {lng}) : '',
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
     changeLabel(lng),
   );
