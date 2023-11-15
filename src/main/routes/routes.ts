@@ -221,7 +221,7 @@ import claimantResponseCheckAnswersController from './features/claimantResponse/
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
-
+import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 export default [
   homeController,
   dashboardController,
@@ -428,4 +428,5 @@ export default [
   claimFeeController,
   cancelTrialArrangementsController,
   respondSettlementAgreementController,
+  breathingSpaceLiftedCheckAnswersController,
 ];
