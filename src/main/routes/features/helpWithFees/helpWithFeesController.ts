@@ -14,13 +14,12 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {helpWithFeesGuard} from 'routes/guards/helpWithFees/helpWithFeesGuard';
 
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
 const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
 
-applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, helpWithFeesGuard, (async (req: Request, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
