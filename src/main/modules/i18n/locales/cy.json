@@ -997,7 +997,7 @@
         "THE_AGREEMENT": {
           "LABEL": "Y cytundeb",
           "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
-          "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}"
+          "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}",
           "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
