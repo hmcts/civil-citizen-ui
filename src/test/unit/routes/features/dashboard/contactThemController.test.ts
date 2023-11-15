@@ -39,7 +39,7 @@ describe('Claimant details', () => {
         .get(CITIZEN_CONTACT_THEM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Claimant');
+          expect(res.text).toContain('claimant');
           expect(res.text).toContain('Address');
           expect(res.text).toContain('Phone:');
           expect(res.text).toContain('About claim');
