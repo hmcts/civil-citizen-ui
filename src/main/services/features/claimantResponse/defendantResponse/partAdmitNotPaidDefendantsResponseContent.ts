@@ -92,6 +92,17 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
   }];
 };
 
+const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): ClaimSummarySection[] => {
+  return [
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE',
+        variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang)},
+      },
+    }];
+};
+
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim, lng),
@@ -100,5 +111,11 @@ export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string):
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),
     ...getDisagreementStatementWithEvidence(claim),
+  ];
+};
+
+export const buildPartAdmitNotPaidResponseForHowTheyWantToPay = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  return [
+    ...getPayByDateResponseForHowTheyWantToPay(claim, lng),
   ];
 };
