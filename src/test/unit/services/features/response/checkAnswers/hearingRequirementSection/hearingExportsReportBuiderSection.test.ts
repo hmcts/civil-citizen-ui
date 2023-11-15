@@ -142,7 +142,7 @@ describe('test buildExportReportSection', ()=>{
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
     expect(summaryRows[0].value.html).toEqual('COMMON.NO');
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
-    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.YES');
+    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION_2.YES');
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
     expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.YES');
     expect(summaryRows[3].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE');
