@@ -996,8 +996,7 @@
       "DETAILS": {
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
-          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
-          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
