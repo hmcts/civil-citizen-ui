@@ -5,9 +5,9 @@ import config from 'config';
 import nock from 'nock';
 import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {CivilServiceClient} from "client/civilServiceClient";
-import civilClaimDocumentUploaded from "../../../../utils/mocks/civilClaimResponseMock.json";
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import civilClaimDocumentUploaded from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -56,7 +56,10 @@ describe('Documents uploaded controller', () => {
 
   it('should return 500 error when there is a Redis failure', async () => {
 
-    app.locals.draftStoreClient = mockRedisFailure;
+    const error = new Error('Test error');
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockRejectedValueOnce(error);
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
     caseData.caseProgression = new CaseProgression();
