@@ -6,8 +6,8 @@ import nock from 'nock';
 import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {CivilServiceClient} from "client/civilServiceClient";
-import civilClaimDocumentUploaded from "../../../../utils/mocks/civilClaimResponseMock.json";
+import {CivilServiceClient} from 'client/civilServiceClient';
+import civilClaimDocumentUploaded from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 
