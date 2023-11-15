@@ -1983,4 +1983,39 @@ describe('Documents', () => {
       expect(result).toBe(true);
     });
   });
+
+  describe('Claim getPaymentDate', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return partialAdmission payment Date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('02-01-2023');
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBe(date);
+    });
+    it('should return full admission payment date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('04-01-2023');
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toEqual(date);
+    });
+  });
 });
