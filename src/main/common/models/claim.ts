@@ -130,6 +130,7 @@ export class Claim {
   respondent1PinToPostLRspec: PinToPost;
   applicant1Represented?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
+  respondentPaymentDeadline: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
