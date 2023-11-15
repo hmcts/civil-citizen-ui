@@ -13,6 +13,7 @@
 {% set hideLogout = true  %}
 {% set evidenceRows = claim.evidence.evidenceItem %}
 {% set timelineRows = claim.timelineOfEvents %}
+{% set claimantName = claim.getClaimantFullName() %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -72,7 +73,7 @@
           }) }}
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION_USAGE'),
-            html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claim.getClaimantFullName()})
+            html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claimantName})
             + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a href="' + privacyPolicyUrl +'">'
             + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION') + '</a></p>'
           }) }}
