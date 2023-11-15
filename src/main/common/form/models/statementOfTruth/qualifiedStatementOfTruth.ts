@@ -5,11 +5,11 @@ import {SIGNER_NAME_MAX_LENGTH, SIGNER_ROLE_MAX_LENGTH} from 'form/validators/va
 
 export class QualifiedStatementOfTruth extends StatementOfTruthForm {
 
-  @MaxLength(SIGNER_NAME_MAX_LENGTH, { message: 'ERRORS.FULL_NAME_TOO_LONG' })
+  @MaxLength(SIGNER_NAME_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})
   @IsNotEmpty({message: 'ERRORS.SIGNER_NAME_REQUIRED'})
     signerName?: string;
 
-  @MaxLength(SIGNER_ROLE_MAX_LENGTH, { message: 'ERRORS.JOB_TITLE_TOO_LONG' })
+  @MaxLength(SIGNER_ROLE_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})
   @IsNotEmpty({message: 'ERRORS.SIGNER_ROLE_REQUIRED'})
     signerRole?: string;
 

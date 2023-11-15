@@ -13,9 +13,9 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-const newDate = new Date();
-const extendedDay = newDate.getDate();
-const extendedMonth = newDate.getMonth() + 1;
+const newDate = new Date(new Date().setMonth(new Date().getMonth()));
+const extendedDay = newDate.getDay();
+const extendedMonth = newDate.getMonth();
 const extendedYear = newDate.getFullYear();
 
 class AddYourTimeLine {

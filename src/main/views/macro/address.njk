@@ -41,9 +41,7 @@
     id: addressType + "[addressLine2]",
     name: "addressLine2",
     autocomplete: addressType + "AddressLine-2",
-    value: citizenAddress.addressLine2 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine2,
-    errorMessage: { text: t(party.errorFor('primaryAddress[addressLine2]')) } if (addressType == 'primaryAddress' and party.errorFor('primaryAddress[addressLine2]'))
-      else ({ text: t(party.errorFor('correspondenceAddress[addressLine2]')) } if (addressType == 'correspondenceAddress' and party.errorFor('correspondenceAddress[addressLine2]')))
+    value: citizenAddress.addressLine2 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine2
   }) }}
     {{ govukInput({
     label: {
@@ -53,9 +51,7 @@
     id: addressType + "[addressLine3]",
     name: "addressLine3",
     autocomplete: addressType + "AddressLine-3",
-    value: citizenAddress.addressLine3 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine3,
-    errorMessage: { text: t(party.errorFor('primaryAddress[addressLine3]')) } if (addressType == 'primaryAddress' and party.errorFor('primaryAddress[addressLine3]'))
-      else ({ text: t(party.errorFor('correspondenceAddress[addressLine3]')) } if (addressType == 'correspondenceAddress' and party.errorFor('correspondenceAddress[addressLine3]')))
+    value: citizenAddress.addressLine3 if addressType == 'primaryAddress' else citizenCorrespondenceAddress.addressLine3
   }) }}
   </div>
   {{ govukInput({

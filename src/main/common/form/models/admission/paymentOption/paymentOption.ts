@@ -12,8 +12,4 @@ export class PaymentOption {
   paymentOptionBySetDateSelected() {
     return this.paymentType && this.paymentType === PaymentOptionType.BY_SET_DATE;
   }
-
-  paymentOptionByImmediately() {
-    return this.paymentType && this.paymentType === PaymentOptionType.IMMEDIATELY;
-  }
 }

@@ -1,9 +1,6 @@
 import {t} from 'i18next';
-import {Claim} from 'models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {
-  isDefendantRejectedMediationOrFastTrackClaim,
-} from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {Claim} from '../../../../../common/models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 
 export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
@@ -18,8 +15,9 @@ export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySecti
 };
 
 export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
+
   const claimantName = claim.getClaimantFullName();
-  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
+
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -33,29 +31,17 @@ export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string
         text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS', {claimantName, lng}),
       },
     },
-    {...getParagraphAskMediation(lng, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediation(lng, isDefendantRejectedMediationOrIsFastTrackClaim)},
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS', {claimantName, lng}),
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT', {lng}),
+      },
+    },
   ];
-};
-
-const getParagraphAskMediation = (lang: string, claimantName: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
-  if (isDefendantRejectedMediationOrIsFastTrackClaim) {
-    return undefined;
-  }
-  return {
-    type: ClaimSummaryType.PARAGRAPH,
-    data: {
-      text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS', {claimantName, lng: lang}),
-    },
-  };
-};
-
-const getParagraphDontWantMediation = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
-  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_NO_MEDIATION' : 'PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT';
-  return {
-    type: ClaimSummaryType.PARAGRAPH,
-    data: {
-      text: t(textContent, {lng: lang}),
-    },
-  };
 };

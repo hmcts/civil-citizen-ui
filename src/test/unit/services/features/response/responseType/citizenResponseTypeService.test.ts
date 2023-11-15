@@ -5,9 +5,6 @@ import {
   saveResponseType,
 } from '../../../../../../main/services/features/response/responseType/citizenResponseTypeService';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-import { DirectionQuestionnaire } from 'common/models/directionsQuestionnaire/directionQuestionnaire';
-import { YesNo } from 'common/form/models/yesNo';
-import { Mediation } from 'common/models/mediation/mediation';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -36,17 +33,8 @@ describe('save responsetype = "FULL_ADMISSION" setting to datastore and clear pr
     //Given
     const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
     const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //mockClaim?.partialAdmission?.howMuchDoYouOwe?.totalAmount = 1000;
     mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-      mockClaim.directionQuestionnaire = {
-        defendantYourselfEvidence: {
-          option: 'yes',
-        },
-      } as DirectionQuestionnaire;
-      mockClaim.mediation = {
-        canWeUse: {
-          option: YesNo.YES,
-        },
-      } as Mediation;
       return mockClaim;
     });
     //When
@@ -55,8 +43,6 @@ describe('save responsetype = "FULL_ADMISSION" setting to datastore and clear pr
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(spySaveDraftClaim).toBeCalled();
     expect(mockClaim?.partialAdmission?.howMuchDoYouOwe?.totalAmount).toBeUndefined();
-    expect(mockClaim.directionQuestionnaire).toBeUndefined();
-    expect(mockClaim.mediation).toBeUndefined();
   });
 });
 

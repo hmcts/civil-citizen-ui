@@ -81,9 +81,6 @@ module.exports = {
             id: 'ce85c060-23ce-4858-be42-9243e98977d5',
           },
         ],
-        smallClaimsMethodInPerson: {
-          value: { code: '192280'},
-        },
       },
     };
   },
@@ -181,9 +178,7 @@ module.exports = {
           'SHOW',
         ],
         disposalHearingMethod: 'disposalHearingMethodInPerson',
-        disposalHearingMethodInPerson: {
-          value: { code: '192280' },
-        },
+        disposalHearingMethodInPerson: null,
         disposalHearingMethodVideoConferenceHearing: null,
         disposalHearingMethodTelephoneHearing: null,
         disposalHearingBundleToggle: [

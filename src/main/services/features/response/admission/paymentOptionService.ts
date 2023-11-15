@@ -49,10 +49,6 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption, respo
         claim.partialAdmission.paymentIntention.paymentDate = undefined;
       }
     }
-
-    if (form.paymentOptionByImmediately()) {
-      delete claim.statementOfMeans;
-    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

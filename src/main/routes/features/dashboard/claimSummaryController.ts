@@ -18,9 +18,6 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/sys
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {
-  getClaimWithExtendedPaymentDeadline,
-} from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = Router();
@@ -34,8 +31,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim && !claim.isEmpty()) {
       await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
-      const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
-      const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
+      const tabContent = await getTabs(claimId, claim, lang);
       const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
       res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
     }
@@ -44,7 +40,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
   }
 });
 
-async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
+async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
   const caseProgressionEnabled = await isCaseProgressionV1Enable();
   const bundleAvailable = claim.isBundleStitched();
@@ -52,7 +48,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
 
   let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
   let latestUpdateTabId = TabId.LATEST_UPDATE;
-  let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang, respondentPaymentDeadline);
+  let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
 
   let noticesTabLabel= TabLabel.DOCUMENTS;
   let noticesTabId = TabId.DOCUMENTS;

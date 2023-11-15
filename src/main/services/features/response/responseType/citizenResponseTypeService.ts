@@ -37,8 +37,6 @@ const resetPreviousResponseTypeSetting = (claim: Claim) => {
     claim.partialAdmission.paymentIntention.paymentDate = undefined;
     claim.partialAdmission.paymentIntention.repaymentPlan = undefined;
     claim.evidence = undefined;
-    delete claim.mediation;
-    delete claim.directionQuestionnaire;
   } else if (claim?.isPartialAdmission()) {
     claim.rejectAllOfClaim = new RejectAllOfClaim();
     claim.fullAdmission = new FullAdmission();

@@ -13,7 +13,7 @@ const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 const currentDate = new Date();
-const day = currentDate.getDate();
+const day = currentDate.getDay();
 const month = currentDate.getMonth();
 const year = currentDate.getFullYear() - 1;
 const dayError = currentDate.getDay() + 1000;

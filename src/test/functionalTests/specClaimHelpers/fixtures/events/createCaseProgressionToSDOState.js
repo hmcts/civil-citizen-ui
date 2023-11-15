@@ -73,9 +73,6 @@ module.exports = {
           createdDatetime: '2023-09-20T10:08:24',
           createdBy: 'Civil',
         },
-        smallClaimsMethodInPerson: {
-          value: { code: '192280'},
-        },
       },
     };
     return judgeToSDOData;

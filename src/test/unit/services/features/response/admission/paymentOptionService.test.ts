@@ -14,7 +14,6 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {FullAdmission} from 'common/models/fullAdmission';
-import { YesNo } from 'common/form/models/yesNo';
 
 jest.mock('.../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -76,20 +75,6 @@ describe('payment option service', () => {
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.FULL_ADMISSION);
       //Then
       expect(spy).toBeCalled();
-    });
-    it('should clear financial details when switching to immediate option if exists ', async () => {
-      //Given
-      const claim = new Claim();
-      claim.partialAdmission = new FullAdmission();
-      claim.statementOfMeans = {
-        disability: { option: YesNo.YES },
-      };
-      mockGetCaseData.mockResolvedValueOnce(claim);
-      jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY), ResponseType.FULL_ADMISSION);
-
-      expect(claim.statementOfMeans).toBeUndefined();
-
     });
   });
   describe('get payment option form when part admission', () => {
@@ -160,20 +145,6 @@ describe('payment option service', () => {
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.PART_ADMISSION);
       //Then
       expect(spy).toBeCalled();
-    });
-    it('should clear financial details when switching to immediate option if exists ', async () => {
-      //Given
-      const claim = new Claim();
-      claim.partialAdmission = new PartialAdmission();
-      claim.statementOfMeans = {
-        disability: { option: YesNo.YES },
-      };
-      mockGetCaseData.mockResolvedValueOnce(claim);
-      jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY), ResponseType.PART_ADMISSION);
-
-      expect(claim.statementOfMeans).toBeUndefined();
-
     });
     it('should throw error when draft store throws error', async () => {
       //Given

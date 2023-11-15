@@ -157,7 +157,7 @@ function getFullAdmitPayByDate(claim: Claim, lng: string) {
     .build();
 }
 
-function getFullAdmitPayImmediately(claim: Claim, lng: string, respondentPaymentDeadline?: Date) {
+function getFullAdmitPayImmediately(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
   return new LatestUpdateSectionBuilder()
@@ -165,7 +165,7 @@ function getFullAdmitPayImmediately(claim: Claim, lng: string, respondentPayment
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_SAID_YOU_WILL_PAY`, {lng}), {
       claimantName: claimantFullName,
       amount: currencyFormat(getAmount(claim)),
-      paymentDate: formatDateToFullDate(respondentPaymentDeadline, lng),
+      paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
     })
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`, {lng}))
     .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`, {lng}))
@@ -291,9 +291,9 @@ function getStatusFDClaimantIntentToProceed(claim: Claim, lng: string) {
     .build();
 }
 
-function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string, respondentPaymentDeadline?: Date) {
+function generateLastUpdateResponseSections(claimResponseStatus: ClaimResponseStatus, claim: Claim, lng: string) {
   const claimResponsesStatus = {
-    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng, respondentPaymentDeadline),
+    [ClaimResponseStatus.FA_PAY_IMMEDIATELY]: getFullAdmitPayImmediately(claim, lng),
     [ClaimResponseStatus.FA_PAY_BY_DATE]: getFullAdmitPayByDate(claim, lng),
     [ClaimResponseStatus.FA_PAY_INSTALLMENTS]: getFullAdmitPayInstallments(claim, lng),
     [ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY]: getPartAdmitPaidPayImmediately(claim, lng),
@@ -453,7 +453,7 @@ function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string
     .build();
 }
 
-export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
+export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
 
@@ -491,7 +491,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   } else if (![ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED, ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED].includes(responseStatus) && claim.hasClaimantNotAgreedToMediation() && !claim.hasSdoOrderDocument() && !claim.isClaimantRejectedPaymentPlan()) {
     sectionContent.push(getLastUpdateForNoMediation(claim));
   } else {
-    sectionContent.push(generateLastUpdateResponseSections(responseStatus, claim, lng, respondentPaymentDeadline));
+    sectionContent.push(generateLastUpdateResponseSections(responseStatus, claim, lng));
   }
   return sectionContent.flat();
 };
