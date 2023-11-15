@@ -279,6 +279,10 @@
     "VARIATION_4": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_5": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
