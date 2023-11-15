@@ -279,6 +279,10 @@
     "VARIATION_4": {
       "YES": "Ydy",
       "NO": "Nac ydy"
+    },
+    "VARIATION_5": {
+      "YES": "Do",
+      "NO": "Naddo"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -441,7 +445,7 @@
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
       "CONSIDER_CLAIMANT_DOCUMENT": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
-      "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
+      "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer anfon gohebiaeth",
       "COURT_ORDERS_TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?",
       "COURT_ORDERS_CLAIM_NUMBER": "Rhif hawlio",
       "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
@@ -479,7 +483,7 @@
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim?",
-      "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
+      "FIRST_PAYMENT": "Gwneud y taliad cyntaf ar",
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
       "GIVE_EVIDENCE": "Ydych chi eisiau rhoi tystiolaeth?",
@@ -550,7 +554,7 @@
       "THEIR_DETAILS_TITLE": "Ei fanylion",
       "THEIR_DETAILS_TITLE_DEFENDANT": "Ei fanylion (diffynnydd)",
       "THE_AGREEMENT_CYA": "The agreement",
-      "TITLE": "Gwiriwch eich ateb",
+      "TITLE": "Gwiriwch eich atebion",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
@@ -665,7 +669,7 @@
     "CLAIM_DETAILS": {
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
-      "CLAIM_FEE": "Ffi hawliad",
+      "CLAIM_FEE": "Ffi’r hawliad",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
@@ -776,7 +780,7 @@
     },
     "CLAIM_SUMMARY": {
       "1_DAY_REMAINING": "1 diwrnod yn weddill",
-      "ABOUT_CLAIM": "Am hawliad",
+      "ABOUT_CLAIM": "Am yr hawliad",
       "BUNDLES": {
         "TAB_TITLE": "Bundles",
         "FIND_BUNDLE_BELOW": "You can find the bundle below.",
@@ -796,14 +800,14 @@
       },
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
-      "CLAIM_DOCUMENTS": "Dogfennau hawlio",
+      "CLAIM_DOCUMENTS": "Dogfennau’r hawliad",
       "CLAIMANT": "Claimant ",
       "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "CLAIMANT_RESPONSE": "Ymateb y Hawlydd",
       "DATE_DOCUMENT_UPLOADED": "Date uploaded ",
-      "DAYS_REMAINING": " dyddiau sy`n weddill",
-      "DEADLINE_AT": "{{responseDeadline}} ar 4pm",
+      "DAYS_REMAINING": " diwrnod sy`n weddill",
+      "DEADLINE_AT": "{{responseDeadline}} am 4pm",
       "DEFENDANT": "Defendant ",
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
@@ -820,7 +824,7 @@
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
       "NOTICES_AND_ORDERS": "Notices and orders",
-      "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "LATEST_UPDATE": "Yr wybodaeth ddiweddaraf",
       "UPDATES": "Updates",
       "VIEW_CLAIM": "Gweld yr hawliad",
       "WITNESS_EVIDENCE": "witness evidence",
@@ -1019,7 +1023,7 @@
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
       "COMPANY_REGISTERED_OFFICE": "Rhowch swyddfa gofrestredig y cwmni neu gyfeiriad cwmni sydd â chysylltiad â'r hawliad.",
       "COMPANY_NAME": "Enw'r cwmni",
-      "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
+      "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer anfon gohebiaeth",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad'",
@@ -1158,7 +1162,7 @@
       "CLAIMANT_TITLE": "Hawliadau rydych chi wedi'u gwneud",
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
-      "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
+      "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
       "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
@@ -1769,7 +1773,7 @@
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "Dydych chi ddim wedi ymateb i'r hawliad hwn",
       "YOU_MIGHT_HAVE_TO_GO_TO_A_COURT_HEARING": "Efallai y bydd yn rhaid i chi fynd i wrandawiad llys. Byddwn yn cysylltu â chi os ydym yn pennu dyddiad gwrandawiad i ddweud wrthych sut i baratoi.",
       "YOU_MUST_PAY_THEM_BY_PAYMENT_DATE": "Mae'n rhaid i chi dalu erbyn {{paymentDate}}. Rhaid i unrhyw sieciau neu drosglwyddiadau fod yn glir yn eu cyfrif erbyn hynny.",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} Dyddiau sy'n weddill).",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "Mae angen i chi ymateb cyn 4pm ar {{ responseDeadline }}  ({{ remainingDays }} diwrnod sy'n weddill).",
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "Mae angen i chi anfon manylion ariannol eich cwmni at yr hawlydd os nad ydych eisoes wedi gwneud hynny.",
       "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu {{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Eich ymateb i'r hawliad",
@@ -2345,7 +2349,7 @@
       "PAGE_TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
       "PREPARE_REPORT": "Byddant yn paratoi adroddiad ar gyfer y llys ar ran dau neu fwy o’r partïon, gan gynnwys y parti arall.”",
       "SINGLE_JOINT_EXPERT": "Gelwir hyn yn ‘arbenigwr sengl ar y cyd’.",
-      "WITH_CLAIMANT": "Do you want to share an expert with the claimant?",
+      "WITH_CLAIMANT": "Ydych chi eisiau rhannu arbenigwr gyda’r hawlydd?",
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r parti arall?”"
     },
     "SPECIFIC_COURT": {
