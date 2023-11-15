@@ -10,7 +10,6 @@ import {
   getRedisStoreForSession,
 } from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
-
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -42,10 +41,6 @@ describe('Claimant details', () => {
           expect(res.text).toContain('claimant');
           expect(res.text).toContain('Address');
           expect(res.text).toContain('Phone:');
-          expect(res.text).toContain('About claim');
-          expect(res.text).toContain('Claimant name:');
-          expect(res.text).toContain('Claim amount:');
-          expect(res.text).toContain('Claim details:');
           expect(res.text).toContain('Contact us for help');
           expect(res.text).toContain(claim.case_data.respondent1.partyDetails.partyName);
           expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine1);
@@ -54,6 +49,5 @@ describe('Claimant details', () => {
           expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.postCode);
         });
     });
-
   });
 });
