@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
-import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
-import {Claim} from '../../common/models/claim';
-import {generateRedisKey, getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
 export class SignSettlmentAgreementGuard {
