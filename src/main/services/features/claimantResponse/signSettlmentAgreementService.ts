@@ -26,7 +26,7 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
 function getTextForPayByDate(claim: Claim, lang: string){
   return {
     paymentText: t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', {
-      lang: lang,
+      lng: lang,
       fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
       paymentDate: formatDateToFullDate(claim.getPaymentDate()),
