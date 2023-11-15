@@ -60,6 +60,8 @@ function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
     ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED,
     ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED,
+    ClaimResponseStatus.RC_PAID_FULL,
+    ClaimResponseStatus.RC_PAID_LESS,
   ];
 
   return (

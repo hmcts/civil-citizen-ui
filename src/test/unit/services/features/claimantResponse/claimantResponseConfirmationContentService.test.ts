@@ -268,7 +268,8 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-    claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
+    claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+    claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid{amount : 1000};
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
 
