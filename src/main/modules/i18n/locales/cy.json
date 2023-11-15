@@ -287,20 +287,20 @@
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
-      "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
-      "ACCEPT_OR_REJECT_REPAYMENT": " Accept or reject their repayment plan",
+      "ACCEPT_OR_REJECT_ADMITTED": "Derbyn neu wrthod y £{{ admittedAmount }}",
+      "ACCEPT_OR_REJECT_REPAYMENT": "Derbyn neu wrthod eu cynllun ad-dalu",
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
       "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
-      "HOW_FORMALISE": "Choose how to formalise repayment",
-      "PROPOSE_ALTERNATIVE_REPAYMENT": "Propose an alternative repayment plan",
-      "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
-      "SIGN_SETTLEMENT": "Sign a settlement agreement",
-      "TITLE": "Choose what to do next"
+      "HOW_FORMALISE": "Dewiswch sut i ffurfioli ad-daliad",
+      "PROPOSE_ALTERNATIVE_REPAYMENT": "Cynnig cynllun ad-dalu amgen",
+      "REQUEST_COUNTY_COURT_JUDGMENT": "Gwneud cais am Ddyfarniad Llys Sirol",
+      "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
+      "TITLE": "Dewiswch beth i'w wneud nesaf"
     },
     "HOW_THEY_RESPONDED": {
-      "TITLE": "How they responded",
-      "VIEW_DEFENDANTS_RESPONSE": "View the defendant's response"
+      "TITLE": "Sut wnaethant ymateb",
+      "VIEW_DEFENDANTS_RESPONSE": "Gweld ymateb y diffynnydd"
     },
     "YOUR_RESPONSE": {
       "HAVE_BEEN_PAID": "Have you been paid the £{{ paidAmount }}?",
@@ -2829,7 +2829,7 @@
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
