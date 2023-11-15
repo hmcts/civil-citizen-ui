@@ -1,5 +1,4 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 
 export class TabItem {
   label: string;
@@ -7,7 +6,7 @@ export class TabItem {
   panels: ClaimSummaryContent[];
 
   constructor(label: string, id: string, panels?: ClaimSummaryContent[]) {
-    this.label = t(label);
+    this.label = label;
     this.id = id;
     this.panels = panels;
   }
