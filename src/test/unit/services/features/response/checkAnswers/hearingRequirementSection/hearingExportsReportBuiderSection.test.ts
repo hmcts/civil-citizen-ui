@@ -36,7 +36,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
-    expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.YES');
+    expect(summaryRows[0].value.html).toEqual('COMMON.YES');
   });
   it('should display No when claim has report written by an export and have two rows', ()=>{
     //Given
@@ -49,7 +49,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
-    expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
+    expect(summaryRows[0].value.html).toEqual('COMMON.NO');
   });
   it('should display yes when claim has something to examine', ()=> {
     //Given
@@ -92,7 +92,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
-    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.YES');
+    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION_2.YES');
   });
   it('should display no when claim has no permission to use expert', ()=> {
     //Given
@@ -107,7 +107,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
-    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.NO');
+    expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION_2.NO');
   });
   it('should display rows of expert reports when claim has expert reports', () =>{
     //Given
@@ -140,7 +140,7 @@ describe('test buildExportReportSection', ()=>{
     //Then
     expect(summaryRows.length).toEqual(12);
     expect(summaryRows[0].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
-    expect(summaryRows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
+    expect(summaryRows[0].value.html).toEqual('COMMON.NO');
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
     expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION.YES');
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
