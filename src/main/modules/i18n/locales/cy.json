@@ -1213,7 +1213,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "Rydych wedi gwneud cais i newid yr hawliad",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae angen i chi ymateb cyn 4pm   ar {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
-        "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; bydd yr hawliad hwn nawr yn mynd rhagddo all-lein.",
+        "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
       },
@@ -1890,7 +1890,7 @@
       "THE_CLAIM_WILL_CONTINUE": "Bydd yr hawliad yn parhau ac efallai y bydd rhaid ichi fynychu gwrandawiad.",
       "THE_MEDIATOR_SPEAKS": "bydd y cyfryngwr yn siarad â bob ochr ar wahân, ni fyddwch yn siarad â’r parti arall yn ystod y cyfryngu",
       "WELL_ASK_THE_CLAIMANT": "Byddwn yn gofyn i'r cleient a yw am roi cynnig ar gyfryngu am ddim. Os bydd yn gwrthod, bydd yr hawliad yn mynd i wrandawiad.",
-      "WILL_YOU_CHANGE_YOUR_DECISION": "A wnewch chi newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
+      "WILL_YOU_CHANGE_YOUR_DECISION": "Ydych chi’n fodlon newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
