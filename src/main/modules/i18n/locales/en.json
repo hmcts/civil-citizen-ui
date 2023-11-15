@@ -354,19 +354,19 @@
     },
     "APPLY_HELP_WITH_FEES": {
       "START": {
-        "HEARING_FEE": "Hearing fee",
-        "TITLE" : "Help with fees",
-        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
-        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
-        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
-        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
         "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
         "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
         "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
         "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
-        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
+        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
+        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
+        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
         "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
-        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?"
+        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "TITLE" : "Help with fees"
       }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
@@ -696,7 +696,7 @@
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
-    "CLAIM_TASK_LIST": {
+    "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "APPLICATION_COMPLETE": "Application complete",
       "APPLICATION_INCOMPLETE": "Application incomplete",
@@ -2820,14 +2820,6 @@
         "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "If there are any changes to the arrangements between now and the trial date you will need to",
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
-      }
-    },
-    "PAY_HEARING_FEE": {
-      "START_PAGE": {
-        "PAGE_TITLE": "Hearing Fee",
-        "TITLE": "Pay hearing fee",
-        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingDueDate }}.",
-        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
       }
     }
   },
