@@ -995,9 +995,8 @@
       "TITLE": "Terms of the agreement",
       "DETAILS": {
         "THE_AGREEMENT": {
-          "LABEL": "The agreement",
-          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
-          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+          "LABEL": "Y cytundeb",
+          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
