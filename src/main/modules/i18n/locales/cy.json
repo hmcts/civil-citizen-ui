@@ -590,7 +590,7 @@
       "ADDRESS": "Eich cyfeiriad",
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
-      "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
+      "ALL_CORRESPONDENCE": "Anfonir pob gohebiaeth i’r cyfeiriad hwn.",
       "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON_HINT": "Gall y diffynnydd gysylltu â'r unigolyn yma i drafod yr hawliad",
@@ -1016,7 +1016,7 @@
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
-      "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
+      "ALL_CORRESPONDENCE": "Anfonir pob gohebiaeth i’r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CLAIMANT_PAGE_TITLE": "Enter company details",
       "CLAIMANT_TITLE": "Enter company details",
@@ -1331,7 +1331,7 @@
       "CLAIM_DETERMINATION_WITHOUT_HEARING": "A ydych yn credu bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad,",
       "IE": "h.y. gan farnwr yn darllen ac yn ystyried yr achos ar sail y papurau, y datganiadau tystion a dogfennau eraill a gaiff eu ffeilio gan y partïon, yn gwneud penderfyniad ac yn gwneud datganiad o resymau dros y penderfyniad hwnnw?",
       "PAGE_TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
-      "TELL_US_WHY": "Wrthym pam",
+      "TELL_US_WHY": "Dywedwch wrthym pam",
       "TITLE": "Cwestiynau Penderfynu heb Wrandawiad"
     },
     "DISABILITY": {
