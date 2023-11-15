@@ -18,6 +18,7 @@ import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/task
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -165,7 +166,7 @@ function taskCoveredForNewPaymentPlan(claim: Claim): boolean {
 function taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntention: PaymentIntention, claim: Claim): boolean {
   if ((paymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE && paymentIntention?.paymentDate
       || paymentIntention?.paymentOption == PaymentOptionType.INSTALMENTS && paymentIntention?.repaymentPlan)
-    && checkCourtProposedDate(claim)) {
+    && (checkCourtProposedDate(claim) || checkCourtProposedPlan(claim))) {
     return true;
   }
   return false;
@@ -174,7 +175,16 @@ function taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntent
 function checkCourtProposedDate(claim: Claim): boolean {
   if (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
     || (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
-    && claim.claimantResponse.rejectionReason)) {
+      && claim.claimantResponse.rejectionReason)) {
+    return true;
+  }
+  return false;
+}
+
+function checkCourtProposedPlan(claim: Claim): boolean {
+  if (claim.claimantResponse.courtProposedPlan?.decision == CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN
+    || (claim.claimantResponse.courtProposedPlan?.decision == CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN
+      && claim.claimantResponse.rejectionReason)) {
     return true;
   }
   return false;
