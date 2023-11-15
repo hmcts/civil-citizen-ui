@@ -1567,7 +1567,7 @@
       "PERSONAL_INFORMATION": "gwybodaeth bersonol",
       "PERSONAL_INFORMATION_USAGE": "Sut rydym yn defnyddio ac yn storio eich gwybodaeth bersonol",
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad:",
-      "THIS_CLAIM_INFORMATION": "Mae’r hawliad hwn yn cynnwys gwybodaeth bersonol amdanoch chi y mae {{claimant}} wedi darparu, er enghraifft eich enw a’ch cyfeiriad.",
+      "THIS_CLAIM_INFORMATION": "Mae’r hawliad hwn yn cynnwys gwybodaeth bersonol amdanoch chi y mae {{claimant}} wedi’i darparu, er enghraifft eich enw a’ch cyfeiriad.",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
       "WE_HAVE_SENT": "Rydym wedi anfon y ffurflen hawlio atoch drwy’r post. Mewngofnodwch i’ch cyfrif i weld y ffurflen hawlio ar-lein neu i lwytho copi ohoni."
     },
