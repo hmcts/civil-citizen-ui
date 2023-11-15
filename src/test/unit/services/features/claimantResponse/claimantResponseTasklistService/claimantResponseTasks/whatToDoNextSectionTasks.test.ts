@@ -117,7 +117,7 @@ describe('What to do next section task', () => {
       claim.claimantResponse = <ClaimantResponse>{
         mediation: new Mediation({
           option: YesNo.NO,
-          mediationPhoneNumber: '666555444'
+          mediationPhoneNumber: '666555444',
         }, {option: YesNo.YES}, undefined, undefined),
       };
       //When
@@ -235,7 +235,7 @@ describe('What to do next section task', () => {
       claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
         paymentAmount: 1,
         repaymentFrequency: '',
-        firstRepaymentDate: new Date()
+        firstRepaymentDate: new Date(),
       };
       //When
       const response = getProposeAlternativeRepaymentTask(claim, claimId, lang);
@@ -252,7 +252,7 @@ describe('What to do next section task', () => {
       claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
         paymentAmount: 1,
         repaymentFrequency: '',
-        firstRepaymentDate: new Date()
+        firstRepaymentDate: new Date(),
       };
       claim.claimantResponse.courtProposedDate = new CourtProposedDate();
       claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE;
@@ -261,7 +261,6 @@ describe('What to do next section task', () => {
       //Then
       expect(response.status).toEqual('COMPLETE');
     });
-
 
     it('should return complete for suggested installment, court proposed plan  selected ', () => {
       //Given
@@ -272,10 +271,10 @@ describe('What to do next section task', () => {
       claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
         paymentAmount: 1,
         repaymentFrequency: '',
-        firstRepaymentDate: new Date()
+        firstRepaymentDate: new Date(),
       };
       claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
-      claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN
+      claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
       claim.claimantResponse.rejectionReason = new RejectionReason();
       //When
       const response = getProposeAlternativeRepaymentTask(claim, claimId, lang);
