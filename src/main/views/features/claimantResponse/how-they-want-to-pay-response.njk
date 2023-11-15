@@ -1,0 +1,45 @@
+import {set} from "lodash";
+import {t} from "i18next";
+
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
+{% endblock %}
+{% block content %}
+   {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
+   {% set reasonsWhyYouCantPayImmediately = t(claim.statementOfMeans.explanation.text) %}
+   <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.TITLE') }}</h1>
+          {% for item in defendantsResponseContent %}
+            {{ itemContent(item,t) }}
+          {% endfor %}
+          {% if claim.isBusiness() === false %}
+            {% if unableToPayFullAmunt %}
+              <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
+              <p class="govuk-body">{{ reasonsWhyYouCantPayImmediately }}</p>
+            {% endif %}
+            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+          {% endif %}
+          <div class="govuk-form-group">
+            {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE'),
+                href: continueLink
+            }) }}
+            {{ contactUsForHelp(t) }}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
