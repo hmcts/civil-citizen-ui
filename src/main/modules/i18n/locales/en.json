@@ -283,6 +283,10 @@
     "VARIATION_4": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_5": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1992,7 +1996,9 @@
       "REMOVE_WITNESS": "Remove witness",
       "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
       "TITLE": "Do you have other witnesses?",
-      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts have support requirements, add them as a witness.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -2559,7 +2565,9 @@
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
-      "WHAT_LANGUAGE": "What language needs to be interpreted?"
+      "WHAT_LANGUAGE": "What language needs to be interpreted?",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
       "ADD_ANOTHER_DATE": "Add another date or period of time",
