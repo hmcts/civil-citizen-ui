@@ -49,7 +49,7 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
 applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:any, res) => {
   const claimId = req.params.id;
   const redisClaimId = generateRedisKey(<AppRequest>req);
-  const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option));
+  const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
   form.validateSync();
   await form.validate();
   if (form.hasErrors()) {
