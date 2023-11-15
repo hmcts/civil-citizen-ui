@@ -530,7 +530,7 @@
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
       "RESPONSE_DETAILS_MONEY_PAID": "Faint o arian ydych chi wedi ei dalu?",
-      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Pryd y gwnaethoch dalu’r swm hwn?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "Faint o arian ydych chi'n cyfaddef bod arnoch chi?",
