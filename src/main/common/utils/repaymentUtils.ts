@@ -4,6 +4,12 @@ import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesA
 import {t} from 'i18next';
 
 const WEEKDAYS = 7;
+const frequencyTextMap: Record<TransactionSchedule, string> = {
+  [TransactionSchedule.WEEK]: 'COMMON.SCHEDULE.WEEK_LOWER_CASE',
+  [TransactionSchedule.TWO_WEEKS]: 'COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE',
+  [TransactionSchedule.FOUR_WEEKS]: 'COMMON.SCHEDULE.MONTH',
+  [TransactionSchedule.MONTH]: 'COMMON.SCHEDULE.MONTH',
+};
 
 export const getNumberOfInstalments = (claim: Claim): number => {
   return Math.ceil(getAmount(claim) / getPaymentAmount(claim));
@@ -68,6 +74,11 @@ export const convertFrequencyToText = (frequency: string, lng: string): string =
     case TransactionSchedule.MONTH:
       return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', { lng });
   }
+};
+
+export const convertFrequencyToTextForRepaymentPlan = (frequency: string, lng: string): string => {
+  const transactionKey = frequency as TransactionSchedule;
+  return t(frequencyTextMap[transactionKey], { lng });
 };
 
 export const getRepaymentLength = (claim: Claim, lng: string): string => {
