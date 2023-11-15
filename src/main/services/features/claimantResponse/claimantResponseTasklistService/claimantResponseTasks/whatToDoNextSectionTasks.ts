@@ -172,8 +172,8 @@ function taskCoveredForNewPaymentPlanSuggestedSetDateOrInstallment(paymentIntent
 }
 
 function checkCourtProposedDate(claim: Claim): boolean {
-  if ((claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
-    || claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+  if (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
+    || (claim.claimantResponse.courtProposedDate?.decision == CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
     && claim.claimantResponse.rejectionReason)) {
     return true;
   }
