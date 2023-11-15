@@ -85,8 +85,7 @@ const partySoleTrader: Party = {
     individualLastName: lastName,
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
-  },
-  dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
+  }
 };
 
 const getPartyCompanyCCD = () : CCDParty => {
