@@ -33,15 +33,15 @@
 
                         <p class="govuk-body-m govuk-!-padding-bottom-3">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE')}}</p>
                         <p class="govuk-body govuk-!-padding-bottom-6">
-                            <a target="_blank" class="govuk-redirectUrl " rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">{{t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK')}}</a>
+                            <a target="_blank" class="govuk-link " rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">{{t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK')}}</a>
                         </p>
 
 
-                    <div class="govuk-form-group">
-                       {{ govukButton({
-                          text: t('COMMON.BUTTONS.CONTINUE')
-                       }) }}
-                       <a href={{ redirectUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                    <div class="govuk-button-group">
+                         {{ govukButton({
+                            text: t('COMMON.BUTTONS.CONTINUE')
+                         }) }}
+                        <a class="govuk-link govuk-!-margin-left-2" href={{ redirectUrl }} rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
                     </div>
                   </form>
               </div>
