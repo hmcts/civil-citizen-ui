@@ -3,9 +3,7 @@ import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {
-  isCaseProgressionV1Enable,
-} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
@@ -29,13 +27,11 @@ const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFunction) => {
+claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextFunction) => {
   try {
-
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    // RELEASE 1
     if (claim && !claim.isEmpty()) {
       await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
       const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
@@ -43,11 +39,10 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
       res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
     }
-
   } catch (error) {
     next(error);
   }
-}));
+});
 
 async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
 {

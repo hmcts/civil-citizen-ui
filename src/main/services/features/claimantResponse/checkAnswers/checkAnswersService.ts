@@ -4,7 +4,7 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
-import {buildHowYouWishToProceed,buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import {
   buildJudgmentRequestSection,
   buildSettlementAgreementSection,
@@ -16,9 +16,9 @@ import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskL
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string, claimFee?: number): SummarySections => {
+const buildSummarySections = (claimId: string, claim: Claim, lang: string, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
-    return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
+    return claim.isFullDefence() || claim.isPartialAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };
@@ -26,9 +26,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     return claim.isRequestACCJ()
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
-  };
-  const getHowYouWishToProceed = () => {
-    return buildHowYouWishToProceed(claim, claimId, lang);
   };
   const getFreeTelephoneMediationSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission()
@@ -43,7 +40,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
   return {
     sections: [
       getYourResponseSection(),
-      getHowYouWishToProceed(),
       getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
@@ -54,7 +50,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
-  return buildSummarySections(claim, claimId, lng, claimFee);
+  return buildSummarySections(claimId, claim, lng, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
@@ -67,20 +63,6 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
       claim.claimantResponse.claimantStatementOfTruth = claimantStatementOfTruth;
     }
     await saveDraftClaim(claimId, claim, true);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-export const saveSubmitDate = async (claimId: string, claimantResponse: ClaimantResponse) => {
-  try {
-    const claim = await getCaseDataFromStore(claimId);
-    if (!claim.claimantResponse) {
-      claim.claimantResponse = new ClaimantResponse();
-    }
-    claim.claimantResponse.submittedDate = claimantResponse?.submittedDate;
-    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
