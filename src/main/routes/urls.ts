@@ -23,7 +23,6 @@ export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
 export const DASHBOARD_URL = '/dashboard';
 export const DASHBOARD_CLAIMANT_URL = '/dashboard/:id/claimant';
-export const BREATHING_SPACE_CHECK_ANSWERS_URL = `${BASE_BREATHING_SPACE_URL}/check-answers`;
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;
 export const ROOT_URL = '/';
 export const HOME_URL = '/home';
