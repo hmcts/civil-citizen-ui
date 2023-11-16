@@ -10,13 +10,14 @@ import {
 } from 'services/features/claimantResponse/claimantResponseService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
-  getDefendantsResponseContent,
+  getDefendantsResponseContent, getResponseContentForHowTheyWantToPay,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import { getSystemGeneratedCaseDocumentIdByType } from 'common/models/document/systemGeneratedCaseDocuments';
 import { getClaimById } from 'modules/utilityService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 const reviewDefendantsResponseController = Router();
 const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
@@ -49,7 +50,21 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
   try {
     const claimId = req.params.id;
     await saveClaimantResponse(generateRedisKey(<AppRequest>req), true, crPropertyName);
-    res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+    const claim: Claim = await getClaimById(claimId, req, true);
+    if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE) {
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, getLng(lang));
+      const financialDetails = getFinancialDetails(claim, lang);
+      const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
+      res.render('features/claimantResponse/how-they-want-to-pay-response', {
+        claim,
+        defendantsResponseContent,
+        continueLink,
+        financialDetails,
+      });
+    } else {
+      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+    }
   } catch (error) {
     next(error);
   }
