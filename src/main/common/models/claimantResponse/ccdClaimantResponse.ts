@@ -8,7 +8,7 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
-import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDClaimantPaymentOption} from "models/ccdResponse/ccdClaimantPaymentOption";
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -27,7 +27,7 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
-  applicant1RepaymentOptionForDefendantSpec?: CCDDJPaymentOption;
+  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
