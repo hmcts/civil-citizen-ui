@@ -36,18 +36,13 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return PAPayImmediatelyAcceptedNextSteps;
   }
 
-  if (
-    hasClaimantRejectedDefendantResponse(claim) &&
-    hasEitherPartyNotAgreedToMediation(claim)
-  ) {
-    return RejectedResponseNoMediationNextSteps;
-  }
-
-  if (
-    hasClaimantRejectedDefendantResponse(claim) &&
-    claim.hasClaimantAgreedToMediation()
-  ) {
-    return RejectedResponseYesMediationNextSteps;
+  if (hasClaimantRejectedDefendantResponse(claim)) {
+    if(hasEitherPartyNotAgreedToMediation(claim)) {
+      return RejectedResponseNoMediationNextSteps;
+    }
+    else if(claim.hasClaimantAgreedToMediation()) {
+      return RejectedResponseYesMediationNextSteps;
+    }
   }
 }
 
