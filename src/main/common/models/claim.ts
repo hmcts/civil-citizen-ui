@@ -868,6 +868,14 @@ export class Claim {
     return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
+
+  getPaymentDate() {
+    if(this.isPAPaymentOptionByDate()) {
+      return this.partialAdmission.paymentIntention.paymentDate;
+    } else if (this.isFAPaymentOptionBySetDate()){
+      return this.fullAdmission.paymentIntention.paymentDate;
+    }
+  }
 }
 
 export interface StatementOfTruth {
