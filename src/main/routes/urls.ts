@@ -243,9 +243,7 @@ export const HEARING_DURATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/heari
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/confirmation`;
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;
-
 export const HEARING_FEE_APPLY_HELP_FEE_HEARING_FEE = `${BASE_CASE_PROGRESSION_URL}/apply-help-fee-hearing-fee`;
-export const HEARING_FEE_PAYMENT_CREATION = `${BASE_CASE_PROGRESSION_URL}/payment-creation`;
 export const APPLY_HELP_WITH_FEES = `${BASE_CASE_PROGRESSION_URL}/apply-help-with-fees`;
 export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
 export const APPLY_HELP_WITH_FEES_REFERENCE = `${APPLY_HELP_WITH_FEES}/reference-number`;
@@ -253,6 +251,4 @@ export const PAY_HEARING_FEE_URL = `${BASE_CASE_PROGRESSION_URL}/pay-hearing-fee
 export const HEARING_FEE_APPLY_HELP_FEE_SELECTION = `${PAY_HEARING_FEE_URL}/apply-help-fee-selection`;
 export const HEARING_FEE_CANCEL_JOURNEY = `${PAY_HEARING_FEE_URL}/cancel`;
 export const HEARING_FEE_PAYMENT_CREATION = `${BASE_CASE_PROGRESSION_URL}/payment-creation`;
-export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
-
 
