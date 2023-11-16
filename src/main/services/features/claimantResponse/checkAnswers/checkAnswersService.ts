@@ -4,7 +4,8 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
-import {buildHowYouWishToProceed,buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';import {
+import {buildHowYouWishToProceed,buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {
   buildJudgmentRequestSection,
   buildSettlementAgreementSection,
 } from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
