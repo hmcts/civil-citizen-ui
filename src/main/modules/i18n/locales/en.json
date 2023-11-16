@@ -67,6 +67,9 @@
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit"
     },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Hearing fee"
+    },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
       "COUNCIL_TAX": "Council Tax",
@@ -1679,6 +1682,17 @@
           "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice",
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+        },
+        "PAY_HEARING_FEE": {
+          "APPLY_HELP_WITH_FEES": {
+            "LINK":"Apply for Help with Fees (open in a new window)",
+            "PAGE_TITLE":"Help with fees",
+            "PARAGRAPH_IF": "If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.",
+            "PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
+            "PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'hearing fee' followed by short explanation, for example 'hearing fee small claims' or 'hearing fee for fast track'.",
+            "PARAGRAPH_ONCE": "Once you have made your application, return to this page and click continue to proceed.",
+            "TITLE": "Apply for help with fees"
+          }
         },
         "VIEW_ORDER": {
           "TITLE": "An order has been made on your claim",
