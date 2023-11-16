@@ -4,10 +4,19 @@ import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {CaseRole} from 'form/models/caseRoles';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
-  //TODO: When claimant directions are available, add check for claimant DQ documentId
-  const documentId = getDocumentId(claim, DocumentType.DEFENDANT_DEFENCE);
+  let defendantOrClaimant;
+
+  if (claim?.caseRole === CaseRole.CLAIMANT) {
+    defendantOrClaimant = DirectionQuestionnaireType.CLAIMANT;
+  } else {
+    defendantOrClaimant = DirectionQuestionnaireType.DEFENDANT;
+  }
+
+  const documentId = getDocumentId(claim, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant);
   return new PageSectionBuilder()
     .addMainTitle('PAGES.HAS_ANYTHING_CHANGED.FINALISE')
     .addLeadParagraph('PAGES.HAS_ANYTHING_CHANGED.CLAIM_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-0')
@@ -19,12 +28,12 @@ export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
     .addLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS',CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
     .build();
 
-  function getDocumentId(claim:Claim, documentType: DocumentType):string {
+  function getDocumentId(claim:Claim, documentType: DocumentType, defendantOrClaimant?: string):string {
     let documentId;
     if (claim.systemGeneratedCaseDocuments?.length > 0) {
       claim.systemGeneratedCaseDocuments.forEach(doc => {
         if (doc.value.documentType == documentType) {
-          documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, documentType);
+          documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
         }});
       return documentId;
     } else {

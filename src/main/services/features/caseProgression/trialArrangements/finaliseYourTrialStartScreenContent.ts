@@ -1,14 +1,20 @@
 import {Claim} from 'models/claim';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {
-  FinaliseYourTrialSectionBuilder,
-} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {CaseRole} from 'form/models/caseRoles';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
-  //TODO: When claimant directions are available, add check for claimant documents
+  let defendantOrClaimant;
+
+  if (claim?.caseRole === CaseRole.CLAIMANT) {
+    defendantOrClaimant = DirectionQuestionnaireType.CLAIMANT;
+  } else {
+    defendantOrClaimant = DirectionQuestionnaireType.DEFENDANT;
+  }
 
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
@@ -26,7 +32,7 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOUR_CASE_NOT_READY')
     .addCustomInsetText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOU_NEED_TO_MAKE_APPLICATION','PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_ONLY_MAKE_AN_APPLICATION','PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOU_MAKE_APPLICATION')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.HEARING_ADJUSTMENTS_AND_DURATION')
-    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
+    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_WILL_REMIND_YOU')
