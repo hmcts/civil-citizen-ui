@@ -320,13 +320,13 @@ describe('Hearing Requirements Section', () => {
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE');
-      expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('my reason');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION_2.NO');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
-      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION.NO');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
