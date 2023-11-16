@@ -18,7 +18,7 @@ const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
 const buildSummarySections = (claimId: string, claim: Claim, lang: string, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
-    return claim.isFullDefence() || claim.isPartialAdmission()
+    return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };
@@ -63,6 +63,20 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
       claim.claimantResponse.claimantStatementOfTruth = claimantStatementOfTruth;
     }
     await saveDraftClaim(claimId, claim, true);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveSubmitDate = async (claimId: string, claimantResponse: ClaimantResponse) => {
+  try {
+    const claim = await getCaseDataFromStore(claimId);
+    if (!claim.claimantResponse) {
+      claim.claimantResponse = new ClaimantResponse();
+    }
+    claim.claimantResponse.submittedDate = claimantResponse?.submittedDate;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;

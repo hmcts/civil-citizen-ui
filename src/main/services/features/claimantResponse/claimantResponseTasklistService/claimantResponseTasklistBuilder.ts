@@ -109,18 +109,22 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
-  const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
-  tasks.push(haveYouBeenPaidTask);
-  if (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
-    if(claim.hasClaimantConfirmedDefendantPaid()){
-      tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
-    }
-    if(claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()){
-      tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
-    }
-  }
+  const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
+  const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
+  const isSettleTheClaim = (isPartialPaid && claim.hasClaimantConfirmedDefendantPaid()) || isFullPaid;
+  const isFreePhoneMediation = (isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse();
 
-  return {title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', {lng: lang}), tasks};
+  if (!isFullPaid) {
+    const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
+    tasks.push(haveYouBeenPaidTask);
+  }
+  if (isSettleTheClaim) {
+    tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
+  }
+  if (isFreePhoneMediation) {
+    tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
+  }
+  return { title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', { lng: lang }), tasks };
 }
 
 export function buildClaimantResponseSubmitSection(claimId: string, lang: string) {
