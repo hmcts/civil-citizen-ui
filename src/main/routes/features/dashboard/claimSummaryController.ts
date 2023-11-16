@@ -36,9 +36,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, async (req, res, next: NextFun
   try {
 
     const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-      const claimId = req.params.id;
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const claimId = req.params.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
       // RELEASE 2
       const dashboardNotifications = getDefendantNotifications(claim, lang);
@@ -47,9 +47,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, async (req, res, next: NextFun
     } else {
       // RELEASE 1
       if (claim && !claim.isEmpty()) {
-          await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
-          const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
-          const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
+        await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
+        const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
+        const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
         const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
