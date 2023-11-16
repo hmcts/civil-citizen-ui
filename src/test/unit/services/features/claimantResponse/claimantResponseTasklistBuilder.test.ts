@@ -46,8 +46,8 @@ import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {CourtProposedPlan, CourtProposedPlanOptions} from "form/models/claimantResponse/courtProposedPlan";
-import {RejectionReason} from "form/models/claimantResponse/rejectionReason";
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
