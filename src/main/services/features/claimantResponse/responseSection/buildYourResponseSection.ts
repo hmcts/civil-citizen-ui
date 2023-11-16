@@ -60,7 +60,6 @@ export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang:
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
@@ -115,6 +114,7 @@ export const buildSummaryQuestionForChooseHowToProceed = (claim: Claim, claimId:
     constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     changeLabel(lang));
 };
+
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
   const claimantResponse = claim.claimantResponse;
   const yourResponse = summarySection({
@@ -161,3 +161,4 @@ export const buildHowYouWishToProceed = (claim: Claim, claimId: string, lang: st
     });
   }
 };
+
