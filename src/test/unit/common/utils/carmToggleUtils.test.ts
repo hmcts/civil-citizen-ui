@@ -1,7 +1,7 @@
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import * as launchDarklyClient from '../../../../main/app/auth/launchDarkly/launchDarklyClient';
+import * as launchDarklyClient from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
-jest.mock('../../../../main/app/auth/launchDarkly/launchDarklyClient');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const mockCheckFlagEnabled = launchDarklyClient.isCARMEnabled as jest.Mock;
 
 describe('isCarmEnabledForCase', () => {
