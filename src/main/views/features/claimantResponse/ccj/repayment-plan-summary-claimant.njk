@@ -9,7 +9,6 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.PAGE_TITLE') }}
 {% endblock %}
@@ -19,31 +18,27 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
           <h1 class="govuk-heading-l">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.CLAIMANTS_REPAYMENT_PLAN') }}</h1>
-          {# <p class="govuk-body">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TOTAL_CLAIM_AMOUNT', {totalClaimAmount: totalClaimAmount}) }}</p> #}
         </div>
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-          <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.THEY_HAVE_SUGGESTED_THIS') }}</p>
-
           {% if paymentOption === PaymentOptionType.BY_SET_DATE%}
             <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.DEFENDANT_WILL_PAY_SET_DATE', {amount: repaymentPlan.paymentAmount, paymentDate: paymentDate})}}</p>
-          {% else if paymentOption === PaymentOptionType.INSTALMENTS%}
+          {% endif %}
+          
+          {% if paymentOption === PaymentOptionType.INSTALMENTS%}
+            <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.THEY_HAVE_SUGGESTED_THIS') }}</p>
             {{ repaymentPlanSummary(repaymentPlan, t) }}
           {% endif %}
-
+          
           <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.IF_THINK_DEFENDANT_CAN_REPAY') }}
             <a href="mailto:contactocmc@justice.gov.uk">contactocmc@justice.gov.uk</a>
           </p>
           
         </div>
       </div>
-
-      {# AND IF Plan was proposed by Defendant
-      THEN  Include text "If you think the defendant can repay you sooner, you can ask a judge to make a new repayment plan by emailing[ contactocmc@justice.gov.uk|mailto:contactocmc@justice.gov.uk] #}
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-thirds">

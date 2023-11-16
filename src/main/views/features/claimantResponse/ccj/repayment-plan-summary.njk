@@ -1,0 +1,50 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(title) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          {% if paymentOption === PaymentOptionType.BY_SET_DATE%}
+            <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.DEFENDANT_WILL_PAY_SET_DATE', {amount: repaymentPlan.paymentAmount, paymentDate: paymentDate})}}</p>
+          {% endif %}
+          
+          {% if paymentOption === PaymentOptionType.INSTALMENTS%}
+            <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.THEY_HAVE_SUGGESTED_THIS') }}</p>
+            {{ repaymentPlanSummary(repaymentPlan, t) }}
+          {% endif %}
+
+          <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.IF_THINK_DEFENDANT_CAN_REPAY') }}
+            <a href="mailto:contactocmc@justice.gov.uk">contactocmc@justice.gov.uk</a>
+          </p>
+          
+        </div>
+      </div>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
