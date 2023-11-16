@@ -1,5 +1,24 @@
-import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
+import {
+  IsDefined,
+  IsNotEmpty,
+  Validate,
+  ValidateIf,
+  ValidatorConstraint,
+  ValidatorConstraintInterface
+} from 'class-validator';
 import {YesNo} from 'common/form/models/yesNo';
+
+@ValidatorConstraint({name: 'referenceNumberSize', async: false})
+export class ReferenceNumberValidator implements ValidatorConstraintInterface {
+
+  validate(value: string) {
+    return value.length === 11;
+  }
+
+  defaultMessage() {
+    return 'ERRORS.VALID_ENTER_REFERENCE_NUMBER';
+  }
+}
 
 export class ApplyHelpFeesReferenceForm {
 
@@ -8,6 +27,7 @@ export class ApplyHelpFeesReferenceForm {
   @ValidateIf(o =>  o.isReferenceRequired())
   @IsDefined({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
+  @Validate(ReferenceNumberValidator, {message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   referenceNumber: string;
 
   constructor(option?: string, referenceNumber?: string) {
@@ -28,3 +48,4 @@ export class ApplyHelpFeesReferenceForm {
   }
 
 }
+
