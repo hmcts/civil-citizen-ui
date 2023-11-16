@@ -15,9 +15,9 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {CaseState} from '../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
 import {Mediation} from '../../../../../main/common/models/mediation/mediation';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 const applicantTypeMock = require('./applicantTypeMock.json');
 
@@ -29,6 +29,7 @@ describe('Mediation Disagreement', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

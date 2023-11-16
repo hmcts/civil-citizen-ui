@@ -1,5 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {CP_UPLOAD_DOCUMENTS_URL, DEFENDANT_SUMMARY_URL, TYPES_OF_DOCUMENTS_URL} from '../../urls';
+import {
+  CP_EVIDENCE_UPLOAD_CANCEL,
+  CP_UPLOAD_DOCUMENTS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -17,7 +21,7 @@ const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const claim = await getCaseDataFromStore(claimId);
   const claimantFullName = claim.getClaimantFullName();
   const defendantFullName = claim.getDefendantFullName();
@@ -36,6 +40,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
       const claimId = req.params.id;
       const documentsList = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
       const form = new GenericForm(documentsList);
+      req.session.previousUrl = req.originalUrl;
       await renderView(res, claimId,form);
     } catch (error) {
       next(error);
@@ -60,5 +65,4 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     next(error);
   }
 })as RequestHandler);
-
 export default typeOfDocumentsController;

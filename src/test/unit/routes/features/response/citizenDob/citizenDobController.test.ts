@@ -20,9 +20,9 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,6 +31,7 @@ describe('Citizen date of birth', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

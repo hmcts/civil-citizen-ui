@@ -30,7 +30,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Company personal detail error screen', async () => {
+Scenario('Company personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetailError(claimRef);
 });

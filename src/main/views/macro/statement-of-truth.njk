@@ -13,7 +13,7 @@
   {% endif %}
   {% if form.model.type === SignatureType.QUALIFIED %}
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.SENIOR_POSITION_REQUIREMENT') }}</p>
-    {{ typesOfSeniorPosition() }}
+    {{ typesOfSeniorPosition(t) }}
     {{ govukInput({
       classes: "govuk-!-width-one-half",
       label: {
@@ -23,8 +23,8 @@
       id: 'signerName',
       name: 'signerName',
       errorMessage: {
-        text:t(form.errorFor(signerName))
-      } if form.errorFor(signerName)
+        text:t(form.errorFor('signerName'))
+      } if form.errorFor('signerName')
     }) }}
     {{ govukInput({
       classes: "govuk-!-width-one-half",
@@ -35,8 +35,8 @@
       id: 'signerRole',
       name: 'signerRole',
       errorMessage: {
-        text:t(form.errorFor(signerRole))
-      } if form.errorFor(signerRole)
+        text:t(form.errorFor('signerRole'))
+      } if form.errorFor('signerRole')
     }) }}
   {% endif %}
   {{ govukCheckboxes({
@@ -50,8 +50,8 @@
       }
     ],
     errorMessage: {
-      text:t(form.errorFor(signed))
-    } if form.errorFor(signed)
+      text:t(form.errorFor('signed'))
+    } if form.errorFor('signed')
   }) }}
   {% if form.model.isFullAmountRejected === true %}
     {{ govukCheckboxes({

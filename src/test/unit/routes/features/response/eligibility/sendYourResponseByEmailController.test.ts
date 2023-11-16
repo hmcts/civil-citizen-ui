@@ -5,13 +5,13 @@ import config from 'config';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Send your response by email', () => {
   const data = require('../../../../../utils/mocks/feeRangesMock.json');
-  const feesUrl: string = config.get('feesUrl');
+  const citizenBaseUrl: string = config.get('services.civilService.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -19,7 +19,8 @@ describe('Send your response by email', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    nock(feesUrl).get('/ranges/').reply(200, data);
+    nock(citizenBaseUrl).get('/fees/ranges/').reply(200, data);
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

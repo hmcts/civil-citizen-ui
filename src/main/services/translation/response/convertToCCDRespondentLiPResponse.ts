@@ -17,7 +17,6 @@ export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPRespon
     respondent1LiPContactPerson: claim.respondent1?.partyDetails?.contactPerson,
     respondent1LiPCorrespondenceAddress: claim.respondent1?.partyDetails?.postToThisAddress === YesNo.YES ? toCCDAddress(claim.respondent1?.partyDetails?.correspondenceAddress) : undefined,
     respondent1ResponseLanguage: toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference),
-    helpWithFeesReferenceNumberLip: claim?.claimDetails?.helpWithFees?.referenceNumber,
   };
 };
 

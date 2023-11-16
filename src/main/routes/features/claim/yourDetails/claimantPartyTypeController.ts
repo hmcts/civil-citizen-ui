@@ -1,12 +1,12 @@
 import {NextFunction, Response, Router} from 'express';
-import {CLAIMANT_PARTY_TYPE_SELECTION_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PartyTypeSelection} from '../../../../common/form/models/claim/partyTypeSelection';
-import {ClaimantOrDefendant, PartyType} from '../../../../common/models/partyType';
-import {redirectToPage} from '../../../../services/features/claim/partyTypeService';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {getClaimantInformation, saveClaimantProperty} from '../../../../../main/services/features/claim/yourDetails/claimantDetailsService';
-import {Party} from '../../../../common/models/party';
+import {CLAIMANT_PARTY_TYPE_SELECTION_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {PartyTypeSelection} from 'form/models/claim/partyTypeSelection';
+import {ClaimantOrDefendant, PartyType} from 'models/partyType';
+import {redirectToPage} from 'services/features/claim/partyTypeService';
+import {AppRequest} from 'models/AppRequest';
+import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
+import {Party} from 'models/party';
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();

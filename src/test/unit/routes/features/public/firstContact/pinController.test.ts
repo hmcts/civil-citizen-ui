@@ -8,7 +8,6 @@ import {
   FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
@@ -56,7 +55,6 @@ describe('Respond to Claim - Pin Controller', () => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
         expect(app.request.cookies.firstContact.claimReference).toBe('000MC000');
-        expect(app.request.cookies.firstContact.pinVerified).toBe(YesNo.YES);
       });
     });
 

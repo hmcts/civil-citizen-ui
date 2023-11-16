@@ -203,12 +203,13 @@ describe('Latest Update Content Builder', () => {
       it('Immediately', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        const respondentPaymentDeadline = new Date('2023-11-13');
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
           .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_SAID_YOU_WILL_PAY`, {lng}), {
             claimantName: claim.getClaimantFullName(),
             amount: currencyFormat(getAmount(claim)),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
+            paymentDate: formatDateToFullDate(respondentPaymentDeadline, lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
@@ -217,7 +218,7 @@ describe('Latest Update Content Builder', () => {
           .build();
 
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng, respondentPaymentDeadline);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);
@@ -770,7 +771,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(3);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.CLAIM_SETTLED');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIM_SETTLED');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_CONFIRMED_SETTLED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.DOWNLOAD_YOUR_RESPONSE');
       expect(responseToClaimSection[2].data.href).toBe('/case/1/documents/123');
@@ -788,7 +789,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(4);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.WAITING_COURT_REVIEW');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_COURT_REVIEW');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG1');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG2');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIMANT_REJECT_PAYMENT_PLAN_MSG3');
@@ -796,7 +797,7 @@ describe('Latest Update Content Builder', () => {
   });
 
   describe('Test FD with/without mediation  and for FT claim buildResponseToClaimSection', () => {
-    it('FD and dispute all and respondant rejected free mediation', () => {
+    it('FD and dispute all and respondent rejected free mediation', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
       claim.rejectAllOfClaim = {
@@ -817,7 +818,7 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[4].data.href).toBe('/case/1/documents/123');
     });
 
-    it('FD and dispute all and respondant agreed for free mediation.', () => {
+    it('FD and dispute all and respondent agreed for free mediation.', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
       claim.rejectAllOfClaim = {
@@ -830,7 +831,7 @@ describe('Latest Update Content Builder', () => {
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
       // Then
       expect(responseToClaimSection.length).toBe(4);
-      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS.AWAITING_CLAIMANT_RESPONSE');
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.AWAITING_CLAIMANT_RESPONSE');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVE_REJECTED_CLAIM');
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.NO_MEDIATION_REQUIRED');
       expect(responseToClaimSection[3].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.WILL_CONTACT_WHEN_CLAIMANT_RESPONDS');

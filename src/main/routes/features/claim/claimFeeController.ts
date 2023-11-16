@@ -4,6 +4,7 @@ import {getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
+import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 const claimFeeController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -11,13 +12,10 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimFeeController.get(CLAIM_FEE_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     claim.issueDate = new Date();
-    // Need change to use the real deadline
-    const date = new Date();
-    date.setDate(date.getDate() + 28);
-    claim.respondent1ResponseDeadline = date;
     // TODO: Need to create a separate service when we do the fee and pay page
+    await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
     await civilServiceClient.submitClaimAfterPayment(claimId, claim, <AppRequest>req);
   } catch (error) {
     next(error);

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {CCJ_CHECK_AND_SEND_URL, CCJ_CONFIRMATION_URL} from 'routes/urls';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -31,7 +31,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params?.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(req, res, form, claim);
     } catch (error) {
@@ -43,17 +43,18 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(claimId);
+      const claim = await getCaseDataFromStore(redisKey);
       renderView(req, res, form, claim);
     } else {
-      await saveStatementOfTruth(claimId, form.model);
+      await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(claimId);
+      await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }
   } catch (error) {

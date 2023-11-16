@@ -5,9 +5,9 @@ import {app} from '../../../../../../../main/app';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('You Have Paid Less Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -17,6 +17,7 @@ describe('You Have Paid Less Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
     app.locals.draftStoreClient = mockCivilClaim;
   });
 

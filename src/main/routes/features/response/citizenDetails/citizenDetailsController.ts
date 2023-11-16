@@ -12,6 +12,8 @@ import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/mod
 import {PartyPhone} from 'models/PartyPhone';
 import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const citizenDetailsController = Router();
 
@@ -49,7 +51,7 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent: Party = await getDefendantInformation(req.params.id);
+    const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
     const partyDetails = new GenericForm(respondent.partyDetails);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.ccdPhoneExist));
     renderPage(res, req, partyDetails, respondent.type, partyPhoneForm);
@@ -60,7 +62,8 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent = await getDefendantInformation(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const respondent = await getDefendantInformation(redisKey);
     const partyDetails = new GenericForm(new PartyDetails(req.body));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
@@ -71,10 +74,10 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
       generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, respondent.type, partyPhone);
     } else {
-      await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
+      await saveDefendantProperty(redisKey, propertyName, partyDetails.model);
       if (req.body?.partyPhone || (respondent?.partyPhone?.phone && respondent?.partyPhone?.ccdPhoneExist)) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone, true);
-        await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephone(redisKey, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
       redirect(respondent, req, res);
     }

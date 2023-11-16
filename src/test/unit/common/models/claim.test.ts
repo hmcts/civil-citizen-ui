@@ -40,6 +40,7 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -90,6 +91,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     //Then
     expect(result).toBeTruthy();
   });
+
   it('should return false', () => {
     //Given
     claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
@@ -97,6 +99,45 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
     expect(result).toBeFalsy();
+  });
+});
+describe('Claim isClaimantResponseSupportRequiredYes', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+});
+
+describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
   });
 });
 
@@ -1505,7 +1546,7 @@ describe('Documents', () => {
       const expectedDate = '8 July 2023';
       claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
       //When
-      const actualDate = claim.threeWeeksBeforeHearingDate();
+      const actualDate = claim.threeWeeksBeforeHearingDateString();
       //Then
       expect(expectedDate).toEqual(actualDate);
     });
@@ -1534,32 +1575,68 @@ describe('Documents', () => {
 
     it('should return true if a date is exactly six weeks from trial', () => {
       //Given
-      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000);
+      const trialDateTime = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksFromTrial).toBeTruthy();
     });
 
     it('should return true if a date is less than six weeks from trial', () => {
       //Given
-      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 - 1);
+      const trialDateTime = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 - 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeTruthy();
     });
 
     it('should return false if a date is more than six weeks from trial', () => {
       //Given
-      const trialDate = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 + 1);
+      const trialDateTime = new Date(Date.now() + 6 * 7 * 24 * 60 * 60 * 1000 + 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
       claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
       //When
-      const isSixWeeksOrLessFromTrial = claim.isSixWeeksOrLessFromTrial();
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
       //Then
       expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+
+    it('should return true if a date is exactly three weeks from trial', () => {
+      //Given
+      const trialDateTime = new Date(Date.now() + 3 * 7 * 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
+      //Then
+      expect(isSixWeeksFromTrial).toBeTruthy();
+    });
+
+    it('should return false if a date is less than three weeks from trial', () => {
+      //Given
+      const trialDateTime = new Date(Date.now() + 3 * 7 * 24 * 60 * 60 * 1000 - 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeFalsy();
+    });
+
+    it('should return true if a date is more than three weeks from trial', () => {
+      //Given
+      const trialDateTime = new Date(Date.now() + 3 * 7 * 24 * 60 * 60 * 1000 + 24 * 60 * 60 * 1000).setHours(0,0,0,0);
+      const trialDate = new Date(trialDateTime);
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, trialDate, null);
+      //When
+      const isSixWeeksOrLessFromTrial = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
+      //Then
+      expect(isSixWeeksOrLessFromTrial).toBeTruthy();
     });
   });
 
@@ -1796,6 +1873,88 @@ describe('Documents', () => {
 
       //Then
       expect(dateActual).toBeUndefined();
+    });
+  });
+  describe('Test of method hasDefendantCompletedPaymentIntention', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasDefendantCompletedPaymentIntention();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return true with partialAdmission by installment', () => {
+      //Given
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+      };
+    });
+    it('should return true with fullAdmission by installment', () => {
+      //Given
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date(Date.now())}},
+      };
+      //When
+      const result = claim.hasDefendantCompletedPaymentIntention();
+      //Then
+      expect(result).not.toBeNull();
+    });
+    it('should return true with partialAdmission by set date', () => {
+      //Given
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.hasDefendantCompletedPaymentIntention();
+      //Then
+      expect(result).not.toBeNull();
+    });
+    it('should return true with fullAdmission by set date', () => {
+      //Given
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.hasDefendantCompletedPaymentIntention();
+      //Then
+      expect(result).not.toBeNull();
+    });
+  });
+
+  describe('Claim getPaymentDate', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return partialAdmission payment Date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('02-01-2023');
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBe(date);
+    });
+    it('should return full admission payment date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('04-01-2023');
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toEqual(date);
     });
   });
 });

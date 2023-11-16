@@ -10,9 +10,9 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {EvidenceType} from 'models/evidence/evidenceType';
 import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 const civilClaimResponseMock = require('./evidenceListMock.json');
 const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);
@@ -40,6 +40,7 @@ describe('Repayment Plan', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {

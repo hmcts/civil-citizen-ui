@@ -24,10 +24,16 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
+  memoryRequests: 1024Mi
+  cpuRequests: 2500m
+  memoryLimits: 2048Mi
+  cpuLimits: 2500m
   devcpuRequests: 500m
   devmemoryRequests: 1Gi
   devcpuLimits: 2
   devmemoryLimits: 2Gi
+  readinessDelay: 130
+  livenessDelay: 130
   keyVaults:
     civil-cui:
       resourceGroup: civil-citizen-ui
@@ -62,7 +68,7 @@ nodejs:
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
 
   autoscaling:
-    enabled: false
-    maxReplicas: 16
+    enabled: true
+    maxReplicas: 5
     targetCPUUtilizationPercentage: 80
 

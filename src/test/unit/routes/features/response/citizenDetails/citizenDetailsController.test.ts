@@ -13,7 +13,6 @@ import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 

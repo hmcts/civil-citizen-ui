@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {ResponseType} from 'form/models/responseType';
 import {SignSettlmentAgreementGuard} from 'routes/guards/signSettlmentAgreementGuard';
@@ -24,7 +24,7 @@ jest.mock('i18next', () => ({
 }));
 
 const CLAIM_ID = '123';
-const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL);
+const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, CLAIMANT_RESPONSE_TASK_LIST_URL);
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const MOCK_REQUEST = {params: {id: CLAIM_ID}} as unknown as Request;
@@ -47,6 +47,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
       claim.partialAdmission.howMuchDoYouOwe.amount = 200;
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+      claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.partialAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 50,
         repaymentFrequency: TransactionSchedule.WEEK,
@@ -57,7 +58,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
         return claim;
       });
       // When
-      await SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalledWith();
     });
@@ -70,6 +71,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
+      claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.fullAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 50,
         repaymentFrequency: TransactionSchedule.WEEK,
@@ -80,7 +82,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
         return claim;
       });
       // When
-      await SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalledWith();
     });
@@ -94,7 +96,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
         return claim;
       });
       // When
-      await SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(respondentIncompleteSubmissionUrl);
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
@@ -110,6 +112,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
       claim.partialAdmission.howMuchDoYouOwe.amount = 200;
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+      claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.partialAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 50,
         repaymentFrequency: TransactionSchedule.WEEK,
@@ -121,7 +124,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       });
 
       // When
-      await SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalled();
     });
@@ -134,6 +137,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
+      claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.fullAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: 50,
         repaymentFrequency: TransactionSchedule.WEEK,
@@ -145,7 +149,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       });
 
       // When
-      await SignSettlmentAgreementGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+      await SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
       // Then
       expect(MOCK_NEXT).toHaveBeenCalled();
     });

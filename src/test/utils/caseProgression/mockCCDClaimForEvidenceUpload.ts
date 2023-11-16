@@ -13,6 +13,7 @@ import {
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const mockUUID = '1221';
 
@@ -169,6 +170,8 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
     caseDocumentUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
+    trialReadyApplicant: YesNoUpperCamelCase.NO,
+    trialReadyRespondent1: YesNoUpperCamelCase.YES,
   };
 }
 
@@ -253,4 +256,3 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
 
   return [uploadEvidenceElementCCD];
 }
-

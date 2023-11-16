@@ -12,6 +12,8 @@ import {getMediation, saveMediation} from '../../../services/features/response/m
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const companyTelephoneNumberController = Router();
 
@@ -21,7 +23,7 @@ function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: Response, co
 
 companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, next: NextFunction) => {
   try {
-    const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(req.params.id);
+    const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(generateRedisKey(<AppRequest>req));
     const form = new GenericForm(telephoneNumberData);
     renderForm(form, res, contactPerson);
   } catch (error) {
@@ -42,16 +44,17 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
     new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   const form = new GenericForm(companyTelephoneNumber);
   try {
-    const mediation = await getMediation(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const mediation = await getMediation(redisKey);
     await form.validate();
     if (form.hasErrors()) {
       renderForm(form, res, contactPerson);
     } else {
       if (mediation?.mediationDisagreement) {
-        await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
+        await saveMediation(redisKey, new GenericYesNo(), 'mediationDisagreement');
       }
-      await saveCompanyTelephoneNumberData(req.params.id, form.model);
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      await saveCompanyTelephoneNumberData(redisKey, form.model);
+      const claim: Claim = await getCaseDataFromStore(redisKey);
       const redirectUrl = constructResponseUrlWithIdParams(req.params.id, claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL);
       res.redirect(redirectUrl);
     }
