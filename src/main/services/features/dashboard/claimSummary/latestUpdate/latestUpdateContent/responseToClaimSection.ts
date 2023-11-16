@@ -21,7 +21,7 @@ export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean
 };
 
 export const getNotPastResponseDeadlineContent = (claim: Claim, lang: string): ClaimSummarySection => {
-  const responseDeadline = claim.formattedResponseDeadline();
+  const responseDeadline = claim.formattedResponseDeadline(lang);
   const remainingDays = claim.getRemainingDays();
   return {
     type: ClaimSummaryType.PARAGRAPH,

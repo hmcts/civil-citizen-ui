@@ -128,6 +128,7 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  respondentPaymentDeadline: Date;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -856,6 +857,14 @@ export class Claim {
   hasDefendantCompletedPaymentIntention() {
     return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
       this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
+  }
+
+  getPaymentDate() {
+    if(this.isPAPaymentOptionByDate()) {
+      return this.partialAdmission.paymentIntention.paymentDate;
+    } else if (this.isFAPaymentOptionBySetDate()){
+      return this.fullAdmission.paymentIntention.paymentDate;
+    }
   }
 }
 
