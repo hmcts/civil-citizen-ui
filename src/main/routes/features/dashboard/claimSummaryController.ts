@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
@@ -30,7 +30,8 @@ const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign'
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-claimSummaryController.get(DEFENDANT_SUMMARY_URL, async (req, res, next: NextFunction) => {
+
+claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFunction) => {
   try {
 
     const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
@@ -41,17 +42,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, async (req, res, next: NextFun
       const dashboardNotifications = getDefendantNotifications(claim, lang);
       const dashboardTaskList = await getDashboardForm(claim, claimId);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
-    } else if (claim && !claim.isEmpty()) {
-      await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
-      const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
-      const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
-      const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
-      res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
+    } else {
+      // RELEASE 1
+      if (claim && !claim.isEmpty()) {
+        await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
+        const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
+        const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
+        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+        res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
+      }
     }
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
 {

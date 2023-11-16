@@ -867,6 +867,7 @@ export class Claim {
   isLRDefendant() {
     return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
+
   getPaymentDate() {
     if(this.isPAPaymentOptionByDate()) {
       return this.partialAdmission.paymentIntention.paymentDate;
