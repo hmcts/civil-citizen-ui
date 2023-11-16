@@ -8,7 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
@@ -31,6 +31,8 @@ import {
   DashboardDefendantResponse,
 } from 'common/models/dashboard/dashboarddefendantresponse';
 import {CaseRole} from 'form/models/caseRoles';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -263,6 +265,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
 
+  async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
@@ -283,10 +289,13 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {
+  async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
+        responseDate: extendedDeadline,
+        plusDays: plusDays,
+      }, config);
       return response.data as Date;
     } catch (err: unknown) {
       logger.error(err);
@@ -338,6 +347,17 @@ export class CivilServiceClient {
         .at(0);
 
     } catch (err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+
+  async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
+      return response.data as unknown as RepaymentDecisionType;
+    } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
       throw err;
     }

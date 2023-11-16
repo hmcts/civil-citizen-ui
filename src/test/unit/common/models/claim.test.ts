@@ -91,6 +91,7 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     //Then
     expect(result).toBeTruthy();
   });
+
   it('should return false', () => {
     //Given
     claim.interest = {interestClaimFrom: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
@@ -98,6 +99,45 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
     expect(result).toBeFalsy();
+  });
+});
+describe('Claim isClaimantResponseSupportRequiredYes', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+  });
+});
+
+describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
+  const claim = new Claim();
+  claim.claimantResponse=new ClaimantResponse();
+  it('should return undefined', () => {
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
+  });
+  it('should return true', () => {
+    //Given
+    claim.claimantResponse=new ClaimantResponse();
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
+  });
+  it('should return false', () => {
+    //Given
+    //Then
+    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
   });
 });
 
@@ -1880,6 +1920,41 @@ describe('Documents', () => {
       const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).not.toBeNull();
+    });
+  });
+
+  describe('Claim getPaymentDate', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return partialAdmission payment Date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('02-01-2023');
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBe(date);
+    });
+    it('should return full admission payment date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('04-01-2023');
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toEqual(date);
     });
   });
 });

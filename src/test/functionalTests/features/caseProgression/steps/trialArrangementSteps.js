@@ -19,14 +19,14 @@ const noticesAndOrders =  new NoticesAndOrders();
 
 class TrialArrangementSteps {
 
-  initiateTrialArrangementJourney(claimRef, claimType) {
+  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial) {
     console.log('The value of the Claim Reference : ' + claimRef);
     latestUpdateTab.open(claimRef, claimType, true, false, true);
     latestUpdateTab.nextAction('Finalise trial arrangements');
     trialArrangementsIntroduction.verifyPageContent();
     trialArrangementsIntroduction.nextAction('Start now');
     isYourCaseReadyForTrial.verifyPageContent();
-    isYourCaseReadyForTrial.inputDataForIsThisCaseReadyForTrialPage();
+    isYourCaseReadyForTrial.inputDataForIsThisCaseReadyForTrialPage(readyForTrial);
     isYourCaseReadyForTrial.nextAction('Continue');
     hasAnythingChanged.verifyPageContent();
     hasAnythingChanged.inputDataForHasAnythingChangedSection();
@@ -39,10 +39,16 @@ class TrialArrangementSteps {
     trialArrangementConfirmation.checkPageFullyLoaded();
     trialArrangementConfirmation.verifyPageContent();
     trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
-    latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangeent Tile appears.
+    latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangement Tile appears.
     latestUpdateTab.nextAction('[href=\'#notices-orders\']');
     noticesAndOrders.verifyLatestUpdatePageContent();
 
+  }
+
+  verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {
+    console.log('The value of the Claim Reference : ' + claimRef);
+    latestUpdateTab.open(claimRef, claimType, true, false, true, true);
+    latestUpdateTab.nextAction('View trial arrangements');
   }
 }
 

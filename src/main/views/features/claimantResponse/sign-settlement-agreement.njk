@@ -13,17 +13,7 @@
 {% set signed = 'signed' %}
 {% set signedSelection = form.model.signed %}
 {% set signedError = form.errorFor(signed) %}
-{% set theAgreementPartOne = t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN_PART_ONE', {defendant: data.defendant, amount: data.amount, paymentAmount: data.paymentAmount}) %}
-{% if data.repaymentFrequency === TransactionSchedule.WEEK %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.WEEK_LOWER_CASE') %}
-{% endif %}
-{% if data.repaymentFrequency === TransactionSchedule.TWO_WEEKS %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE') %}
-{% endif %}
-{% if data.repaymentFrequency === TransactionSchedule.MONTH %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.MONTH') %}
-{% endif %}
-{% set theAgreementPartTwo = t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN_PART_TWO', {firstRepaymentDate: data.firstRepaymentDate }) %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -42,7 +32,7 @@
                   text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.LABEL')
                 },
                 value: {
-                  text: theAgreementPartOne + theAgreementRepaymentFrequency + '. ' + theAgreementPartTwo + '. '
+                  text: data.paymentText
                 }
               },
               {
@@ -50,18 +40,18 @@
                   text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.LABEL')
                 },
                 value: {
-                  text: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate : data.finalRepaymentDate })
+                  text: data.completionDate
                 }
               }
             ]
           }) }}
-          <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.FIRST_PARAGRAPH', { claimant: claimant, defendant: defendant }) }}</p>
+          <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.FIRST_PARAGRAPH', { claimant: data.claimant, defendant: data.defendant }) }}</p>
           <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.SECOND_PARAGRAPH') }}</p>
           <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THIRD_PARAGRAPH') }}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.IF_THE_AGREEMENT_IS_BROKEN') }}</h2>
           <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.CLAIMANT_REQUEST_CCJ') }}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.SIGN_THE_AGREEMENT') }}</h2>
-          <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.AGREEMENT_NOTE', { defendant: defendant}) }}</p>
+          <p class="govuk-body">{{ t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.AGREEMENT_NOTE', { defendant: data.defendant}) }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukCheckboxes({
