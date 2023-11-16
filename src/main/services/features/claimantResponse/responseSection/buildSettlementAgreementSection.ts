@@ -15,9 +15,10 @@ import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_UR
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const paymentDate = formatDateToFullDate(getPaymentDate(claim));
+  const paymentDate = formatDateToFullDate(getPaymentDate(claim), getLng(lang));
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   return summarySection({
@@ -34,12 +35,12 @@ export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, 
   const amount = getAmount(claim);
   const instalmentAmount = getPaymentAmount(claim);
   const frequency = t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, { lang })?.toLowerCase();
-  const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim));
+  const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim), getLng(lang));
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lang }),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lang }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lang, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lang as string)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${formatDateToFullDate(getFinalPaymentDate(claim))}`),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${formatDateToFullDate(getFinalPaymentDate(claim), getLng(lang))}`),
     ],
   });
 };
