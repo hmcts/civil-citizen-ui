@@ -213,6 +213,12 @@ export class Claim {
     return this.getName(this.respondent1);
   }
 
+  isDefendantResponsePayBySetDate(): boolean {
+    const isFullAdmitBySetDate = this.isFullAdmission() && this.isFAPaymentOptionBySetDate();
+    const isPartAdmitBySetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate();
+    return isFullAdmitBySetDate || isPartAdmitBySetDate;
+  }
+
   formattedResponseDeadline(lng?: string): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
