@@ -9,7 +9,7 @@ import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
-import {toCCDClaimantPaymentOption} from "services/translation/claimantResponse/convertToCCDClaimantPaymentOption";
+import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 
 export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
   return {
