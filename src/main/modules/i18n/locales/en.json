@@ -419,7 +419,8 @@
       "INSTALMENT_AMOUNT_HELP": "For example £10",
       "PAGE_TITLE": "Suggest instalments for the defendant",
       "TITLE": "Suggest instalments for the defendant",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}."
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}.",
+      "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",

@@ -419,7 +419,8 @@
       "INSTALMENT_AMOUNT_HELP": "Er enghraifft £10",
       "PAGE_TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
       "TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
-      "TOTAL_CLAIM_AMOUNT": "Cyfanswm y swm hawlio yw £{{ totalClaimAmount }}."
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm y swm hawlio yw £{{ totalClaimAmount }}.",
+      "INSET": "Bydd y llys yn adolygu eich awgrym a gall ei wrthod os yw'n fwy nag y gall y diffynnydd ei fforddio."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
