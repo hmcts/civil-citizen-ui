@@ -13,7 +13,10 @@ import {
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
-import {RESPONSEFORNOTPAIDPAYIMMEDIATELY} from 'models/claimantResponse/checkAnswers';
+import {
+  RESPONSEFORHOWDOYOUWANTTOPROCEED,
+  RESPONSEFORNOTPAIDPAYIMMEDIATELY,
+} from 'models/claimantResponse/checkAnswers';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -36,7 +39,18 @@ export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
 
 };
 
-export const getDoYouAgreeDefendantPaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
+export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
+    t(RESPONSEFORHOWDOYOUWANTTOPROCEED[selectedOption], {lang}),
+    partAdmitAcceptedHref,
+    changeLabel(lang));
+
+};
+
+export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
 
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
     ? YesNoUpperCase.YES
@@ -108,5 +122,8 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
   }
 
+  if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+    yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+  }
   return yourResponse;
 };
