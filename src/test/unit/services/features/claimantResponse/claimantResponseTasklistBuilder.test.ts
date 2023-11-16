@@ -766,6 +766,30 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
+    it('should display settle the claim task as complete for full defense states paid', () => {
+      jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.YES } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display not settle the claim task as complete for full defense states paid', () => {
+      jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
   });
 
   describe('Your hearing requirements section', () => {
