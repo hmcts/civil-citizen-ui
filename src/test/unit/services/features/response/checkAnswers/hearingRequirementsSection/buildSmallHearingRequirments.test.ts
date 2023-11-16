@@ -34,7 +34,7 @@ describe('Small Claim Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );
@@ -52,7 +52,7 @@ describe('Small Claim Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/determination-without-hearing`,
         changeButton,
       );

@@ -19,7 +19,7 @@ export const determinationWithoutHearingQuestion = (claim: Claim, claimId: strin
 
   return summaryRow(
     determinationWithoutHearingQuestion,
-    t(`COMMON.${determinationWithoutHearingOption}`, {lng}),
+    t(`COMMON.VARIATION_2.${determinationWithoutHearingOption}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL),
     changeLabel(lng),
   );
