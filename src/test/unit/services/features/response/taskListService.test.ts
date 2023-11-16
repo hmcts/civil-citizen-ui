@@ -1,7 +1,8 @@
 import {Claim} from 'common/models/claim';
 import {getDescription, getTaskLists, getTitle} from 'services/features/common/taskListService';
 import {
-  buildPrepareYourResponseSection, buildResolvingTheClaimSection,
+  buildPrepareYourResponseSection,
+  buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildSubmitSection,
 } from 'common/utils/taskList/taskListBuilder';
