@@ -1,11 +1,12 @@
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
-import {toCUICCJRequest} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {toCUICCJRequest, toCUIClaimantPaymentOption} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
+import {CCDClaimantPaymentOption} from "models/ccdResponse/ccdClaimantPaymentOption";
 
 describe('translate CCJ Request to CUI model', () => {
 
@@ -54,5 +55,45 @@ describe('translate CCJ Request to CUI model', () => {
     expected.paidAmount = new PaidAmount(YesNo.YES, 100);
     expected.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.IMMEDIATELY);
     expect(output).toEqual(expected);
+  });
+})
+
+describe('translate CCJ Request to CUI model', () => {
+  it('should return data if it is set date', () => {
+    //Given
+    const ccdClaimantPaymentOption = CCDClaimantPaymentOption.SET_DATE;
+    //When
+    const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
+    //ccdClaimMock
+    const expected = PaymentOptionType.BY_SET_DATE
+    expect(output).toEqual(expected);
+  });
+
+  it('should return data if it is immediately', () => {
+    //Given
+    const ccdClaimantPaymentOption = CCDClaimantPaymentOption.IMMEDIATELY;
+    //When
+    const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
+    //ccdClaimMock
+    const expected = PaymentOptionType.IMMEDIATELY
+    expect(output).toEqual(expected);
+  });
+
+  it('should return data if it is repayment plan', () => {
+    //Given
+    const ccdClaimantPaymentOption = CCDClaimantPaymentOption.REPAYMENT_PLAN;
+    //When
+    const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
+    //ccdClaimMock
+    const expected = PaymentOptionType.INSTALMENTS
+    expect(output).toEqual(expected);
+  });
+
+  it('should return undefined if it is undefined', () => {
+    //Given
+    //When
+    const output = toCUIClaimantPaymentOption(undefined);
+    //ccdClaimMock
+    expect(output).toBe(undefined);
   });
 });
