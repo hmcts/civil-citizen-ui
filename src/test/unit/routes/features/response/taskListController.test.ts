@@ -5,12 +5,26 @@ import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
+import {TaskList} from 'models/taskList/taskList';
+import {Claim} from 'models/claim';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
+import * as taskListService from 'services/features/common/taskListService';
+import * as utilityService from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
+
+const carmToggleSpy = (calmEnabled: boolean) => jest.spyOn(caarmTogglesUtils, 'isCarmEnabledForCase')
+  .mockReturnValue(Promise.resolve(calmEnabled));
+
+const getTaskListSpy = (taskList: TaskList[]) => jest.spyOn(taskListService, 'getTaskLists')
+  .mockReturnValue(taskList);
+
+const getCaseByIdSpy = (claim: Claim) => jest.spyOn(utilityService, 'getClaimById')
+  .mockReturnValue(Promise.resolve(claim));
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -46,6 +60,30 @@ describe('Claimant details', () => {
           expect(res.text).toContain(claim.case_data.totalClaimAmount.toString());
           expect(res.text).toContain('Claim details:');
         });
+    });
+
+    it('should call isCarmEnabledForCase with claim submitted date', async () => {
+      const mockClaim = { submittedDate: new Date(2022, 5, 23) } as Claim;
+      getCaseByIdSpy(mockClaim);
+      const calmEnabledSpy = carmToggleSpy(true);
+
+      await request(app).get(RESPONSE_TASK_LIST_URL);
+
+      expect(calmEnabledSpy).toBeCalledTimes(1);
+      expect(calmEnabledSpy).toBeCalledWith(mockClaim.submittedDate);
+    });
+
+    it('should call getTaskLists with carm toggle value', async () => {
+      const isCarmEnabled = true;
+      const mockClaim = { applicant1: {}} as Claim;
+      getCaseByIdSpy(mockClaim);
+      carmToggleSpy(isCarmEnabled);
+      const taskListSpy = getTaskListSpy([]);
+
+      await request(app).get(RESPONSE_TASK_LIST_URL);
+
+      expect(taskListSpy).toBeCalledTimes(1);
+      expect(taskListSpy).toBeCalledWith(mockClaim, ':id', undefined, isCarmEnabled);
     });
 
     it('should return http 500 when has error in the get method', async () => {

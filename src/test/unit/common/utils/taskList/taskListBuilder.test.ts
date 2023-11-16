@@ -235,7 +235,7 @@ describe('Task List Builder', () => {
 
     it('should have freeTelephoneMediationTask for small track cases', () => {
       const claim = new Claim();
-      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
       claim.partialAdmission.whyDoYouDisagree.text = 'test';
@@ -247,14 +247,26 @@ describe('Task List Builder', () => {
 
     it('should not have freeTelephoneMediationTask for fast track cases', () => {
       const claim = new Claim();
-      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
       claim.partialAdmission.whyDoYouDisagree.text = 'test';
-      claim.partialAdmission.paymentIntention = { paymentOption: PaymentOptionType.BY_SET_DATE };
+      claim.partialAdmission.paymentIntention = {paymentOption: PaymentOptionType.BY_SET_DATE};
       claim.totalClaimAmount = 10001;
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
       expect(resolvingTheClaimSection.tasks.length).toBe(0);
+    });
+
+    it('should have availabilityForMediation for small track cases when carm applicable', () => {
+      const claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
+      claim.partialAdmission.whyDoYouDisagree.text = 'test';
+      claim.totalClaimAmount = 9000;
+      const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang, true);
+      expect(resolvingTheClaimSection.tasks.length).toBe(2);
+      expect(resolvingTheClaimSection.tasks[1].url).toBe(`/case/${claimId}/response/availability-for-mediation`);
     });
   });
 
