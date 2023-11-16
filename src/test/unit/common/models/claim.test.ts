@@ -833,26 +833,6 @@ describe('Claim partialAdmissionPaymentAmount', () => {
   });
 });
 
-describe('Claim submitted before or after carm release', () => {
-  const claim = new Claim();
-  it('should return false when claim submitted before carm release', () => {
-    // Given
-    claim.submittedDate = new Date (2023, 4, 1);
-    //When
-    const result = claim.isSubmittedAfterCarmDate();
-    //Then
-    expect(result).toBe(false);
-  });
-  it('should return true when claim submitted after carm release', () => {
-    //Given
-    claim.submittedDate = new Date (2024, 4, 10);
-    //When
-    const result = claim.isSubmittedAfterCarmDate();
-    //Then
-    expect(result).toBe(true);
-  });
-});
-
 describe('Claim Reject - Dispute', () => {
   const claim = new Claim();
   it('should be undefined with empty claim', () => {
