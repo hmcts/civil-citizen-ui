@@ -487,7 +487,7 @@
       "EXPERT_WITNESSES_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
-      "FREE_TELEPHONE_MEDIATION": "A wnewch chi roi cynnig ar gyfryngu am ddim?",
+      "FREE_TELEPHONE_MEDIATION": "Ydych chi’n fodlon rhoi cynnig ar gyfryngu am ddim?",
       "FIRST_PAYMENT": "Gwneud y taliad cyntaf ar",
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
@@ -535,7 +535,7 @@
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
       "RESPONSE_DETAILS_MONEY_PAID": "Faint o arian ydych chi wedi ei dalu?",
-      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Pryd y gwnaethoch dalu’r swm hwn?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "Faint o arian ydych chi'n cyfaddef bod arnoch chi?",
@@ -595,7 +595,7 @@
       "ADDRESS": "Eich cyfeiriad",
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
-      "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
+      "ALL_CORRESPONDENCE": "Anfonir pob gohebiaeth i’r cyfeiriad hwn.",
       "BUSINESS_NAME": "Enw'r busnes",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONTACT_PERSON_HINT": "Gall y diffynnydd gysylltu â'r unigolyn yma i drafod yr hawliad",
@@ -1020,7 +1020,7 @@
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
-      "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
+      "ALL_CORRESPONDENCE": "Anfonir pob gohebiaeth i’r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CLAIMANT_PAGE_TITLE": "Enter company details",
       "CLAIMANT_TITLE": "Enter company details",
@@ -1218,7 +1218,7 @@
         "REQUESTED_CHANGE_BY_DEFENDANT": "Rydych wedi gwneud cais i newid yr hawliad",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae angen i chi ymateb cyn 4pm   ar {{ responseDeadline }}.",
         "SETTLEMENT_SIGNED": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
-        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
+        "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
       },
@@ -1335,7 +1335,7 @@
       "CLAIM_DETERMINATION_WITHOUT_HEARING": "A ydych yn credu bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad,",
       "IE": "h.y. gan farnwr yn darllen ac yn ystyried yr achos ar sail y papurau, y datganiadau tystion a dogfennau eraill a gaiff eu ffeilio gan y partïon, yn gwneud penderfyniad ac yn gwneud datganiad o resymau dros y penderfyniad hwnnw?",
       "PAGE_TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
-      "TELL_US_WHY": "Wrthym pam",
+      "TELL_US_WHY": "Dywedwch wrthym pam",
       "TITLE": "Cwestiynau Penderfynu heb Wrandawiad"
     },
     "DISABILITY": {
@@ -1572,12 +1572,12 @@
       "PERSONAL_INFORMATION": "gwybodaeth bersonol",
       "PERSONAL_INFORMATION_USAGE": "Sut rydym yn defnyddio ac yn storio eich gwybodaeth bersonol",
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad:",
-      "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{claimant}} has provided, for example your name and address.",
+      "THIS_CLAIM_INFORMATION": "Mae’r hawliad hwn yn cynnwys gwybodaeth bersonol amdanoch chi y mae {{claimant}} wedi’i darparu, er enghraifft eich enw a’ch cyfeiriad.",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
-      "WE_HAVE_SENT": "We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account."
+      "WE_HAVE_SENT": "Rydym wedi anfon y ffurflen hawlio atoch drwy’r post. Mewngofnodwch i’ch cyfrif i weld y ffurflen hawlio ar-lein, neu i lwytho copi ohoni."
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "AUTOMATICALLY_REGISTERED": "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
+      "AUTOMATICALLY_REGISTERED": "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EF.",
       "CLAIMANT_MUST_AGREE": "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
       "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
       "EITHER_PARTY_BREAKS_TERMS": "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
@@ -1589,7 +1589,7 @@
       "MEDIATION_FAILS": "Os bydd y cyfryngu yn methu a bod angen cynnal gwrandawiad llys, ni ellir cyfeirio at yr hyn a ddigwyddodd yn y cyfryngu yn y llys.",
       "MEDIATION_QUICKER": "Gall cyfryngu fod yn gyflymach, yn rhatach ac achosi llai o straen na mynd i’r llys.",
       "NO_AGREE": "Nid wyf yn cytuno i gyfryngu am ddim",
-      "NEUTRAL_MEDIATOR_LISTEN": "Bydd cyfryngwyr hyfforddedig, niwtral o Wasanaeth Llysoedd a Thribiwnlysoedd EM yn gwrando ar eich safbwyntiau ac yn eich helpu i setlo eich anghydfod.",
+      "NEUTRAL_MEDIATOR_LISTEN": "Bydd cyfryngwyr hyfforddedig, niwtral o Wasanaeth Llysoedd a Thribiwnlysoedd EF yn gwrando ar eich safbwyntiau ac yn eich helpu i setlo eich anghydfod.",
       "NO_WAIT_COURT_HEARING": "Ni fydd rhaid i chi aros yn hirach am wrandawiad llys os byddwch yn dewis cyfryngu.",
       "OPENS_IN_NEW_TAB": "gwasanaeth cyfryngu dros y ffôn am ddim (yn agor mewn ffenestr newydd).",
       "PAGE_TITLE": "Cyfryngu dros y ffôn am ddim",
@@ -1895,7 +1895,7 @@
       "THE_CLAIM_WILL_CONTINUE": "Bydd yr hawliad yn parhau ac efallai y bydd rhaid ichi fynychu gwrandawiad.",
       "THE_MEDIATOR_SPEAKS": "bydd y cyfryngwr yn siarad â bob ochr ar wahân, ni fyddwch yn siarad â’r parti arall yn ystod y cyfryngu",
       "WELL_ASK_THE_CLAIMANT": "Byddwn yn gofyn i'r cleient a yw am roi cynnig ar gyfryngu am ddim. Os bydd yn gwrthod, bydd yr hawliad yn mynd i wrandawiad.",
-      "WILL_YOU_CHANGE_YOUR_DECISION": "A wnewch chi newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
+      "WILL_YOU_CHANGE_YOUR_DECISION": "Ydych chi’n fodlon newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
