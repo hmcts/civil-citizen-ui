@@ -1292,6 +1292,34 @@
       "PAGE_TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?",
       "TITLE": "Yn erbyn pwy ydych chi'n gwneud yr hawliad?"
     },
+    "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT": {
+      "DETAILS": {
+        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ claimant }} before signing. You won’t be able to change this later.",
+        "CHOOSE_NOT_TO_SIGN": "You can choose not to sign the settlement agreement, for example if you think you can't afford it.",
+        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "COMPLETION_DATE": {
+          "DATE": "{{ finalRepaymentDate }}",
+          "LABEL": "Completion date"
+        },
+        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "NO": "No - I reject the terms of the agreement.",
+        "ON_HOLD": "The claim will be put on hold and the claimant can't request a CCJ against you.",
+        "REQUEST_CCJ": "The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement. You can ask a judge to change the plan based on your financial details. The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
+        "THE_AGREEMENT": {
+          "LABEL": "The agreement",
+          "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+        },
+        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
+        "YES": "Yes - I confirm I've read and accept the terms of the agreement."
+      },
+      "PAGE_TITLE": "Respond to the settlement agreement",
+      "TITLE": "Respond to the settlement agreement"
+    },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
       "THEIR_TIMELINE": "Eu llinell amser",
