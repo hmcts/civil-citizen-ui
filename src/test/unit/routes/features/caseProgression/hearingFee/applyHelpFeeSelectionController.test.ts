@@ -4,10 +4,11 @@ import nock from 'nock';
 import config from 'config';
 import {APPLY_HELP_WITH_FEES, HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_PAYMENT_CREATION,
 } from 'routes/urls';
-import {mockCivilClaim, mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure, mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -50,6 +51,16 @@ describe('Apply for help with fees', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Hearing fee');
+        });
+    });
+
+    it('should return 500 error page for redis failure', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
