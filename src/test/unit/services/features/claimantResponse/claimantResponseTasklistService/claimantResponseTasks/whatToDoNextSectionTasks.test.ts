@@ -254,6 +254,9 @@ describe('What to do next section task', () => {
         repaymentFrequency: '',
         firstRepaymentDate: new Date(),
       };
+      claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
+      claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+      claim.claimantResponse.rejectionReason = new RejectionReason();
       claim.claimantResponse.courtProposedDate = new CourtProposedDate();
       claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE;
       //When
@@ -262,12 +265,12 @@ describe('What to do next section task', () => {
       expect(response.status).toEqual('COMPLETE');
     });
 
-    it('should return complete for suggested installment, court proposed plan  selected ', () => {
+    it('should return complete for suggested immediate, court proposed plan  selected ', () => {
       //Given
       const claim = new Claim();
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-      claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
         paymentAmount: 1,
         repaymentFrequency: '',
