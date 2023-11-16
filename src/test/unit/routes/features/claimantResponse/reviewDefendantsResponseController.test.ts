@@ -119,4 +119,35 @@ describe('Review Defendant\'s Response Controller', () => {
         expect(res.text).toContain('The defendant suggested this repayment plan:');
       });
   });
+
+  it('should redirect How they want to pay page', async () => {
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.partialAdmission.paymentIntention.paymentDate = new Date();
+    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(700,1200);
+    const reason = 'Not able to pay the amount now';
+    claim.statementOfMeans.explanation = {text: reason};
+    mockGetCaseData.mockImplementation(() => claim);
+    await request(app)
+      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('How they want to pay');
+      });
+  });
+
+  it('should redirect to claimant response task list.', async () => {
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    mockGetCaseData.mockImplementation(() => claim);
+    await request(app)
+      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual('VALID_URL');
+      });
+  });
 });
