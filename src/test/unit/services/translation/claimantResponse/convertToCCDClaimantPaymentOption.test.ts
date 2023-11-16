@@ -1,6 +1,6 @@
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
-import {toCCDClaimantPaymentOption} from "services/translation/claimantResponse/convertToCCDClaimantPaymentOption";
-import {CCDClaimantPaymentOption} from "models/ccdResponse/ccdClaimantPaymentOption";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 describe('translate Claimant Payment Option to CCD model', () => {
   it('payment option is IMMEDIATELY should return IMMEDIATELY', () => {

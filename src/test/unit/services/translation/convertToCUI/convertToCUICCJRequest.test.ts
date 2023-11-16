@@ -6,7 +6,7 @@ import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
-import {CCDClaimantPaymentOption} from "models/ccdResponse/ccdClaimantPaymentOption";
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 describe('translate CCJ Request to CUI model', () => {
 
@@ -56,7 +56,7 @@ describe('translate CCJ Request to CUI model', () => {
     expected.ccjPaymentOption = new CcjPaymentOption(PaymentOptionType.IMMEDIATELY);
     expect(output).toEqual(expected);
   });
-})
+});
 
 describe('translate CCJ Request to CUI model', () => {
   it('should return data if it is set date', () => {
@@ -65,7 +65,7 @@ describe('translate CCJ Request to CUI model', () => {
     //When
     const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
     //ccdClaimMock
-    const expected = PaymentOptionType.BY_SET_DATE
+    const expected = PaymentOptionType.BY_SET_DATE;
     expect(output).toEqual(expected);
   });
 
@@ -75,7 +75,7 @@ describe('translate CCJ Request to CUI model', () => {
     //When
     const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
     //ccdClaimMock
-    const expected = PaymentOptionType.IMMEDIATELY
+    const expected = PaymentOptionType.IMMEDIATELY;
     expect(output).toEqual(expected);
   });
 
@@ -85,7 +85,7 @@ describe('translate CCJ Request to CUI model', () => {
     //When
     const output = toCUIClaimantPaymentOption(ccdClaimantPaymentOption);
     //ccdClaimMock
-    const expected = PaymentOptionType.INSTALMENTS
+    const expected = PaymentOptionType.INSTALMENTS;
     expect(output).toEqual(expected);
   });
 
