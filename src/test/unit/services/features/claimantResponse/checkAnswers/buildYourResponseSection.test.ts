@@ -8,6 +8,7 @@ import { Party } from 'common/models/party';
 import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
 import { t } from 'i18next';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -21,7 +22,12 @@ describe('Your response Section', () => {
 
   const claimId = '123';
   const lng = 'en';
-
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo();
+  claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.NO;
   it('should return Your response sections when FA', async () => {
     //Given
     const claim = new Claim();
@@ -68,4 +74,31 @@ describe('Your response Section', () => {
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
     expect(yourResponseSection.summaryList.rows.length).toBe(3);
   });
+
+  it('should return Your response sections when accepted and settled', async () => {
+    //Given
+
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT};
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.summaryList.rows.length).toBe(1);
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_SETTLEMENT', {lng}));
+  });
+
+  it('should return Your response sections when accepted and issue a CCJ', async () => {
+    //Given
+
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.REQUEST_A_CCJ};
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.summaryList.rows.length).toBe(1);
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.REQUEST_A_CCJ', {lng}));
+  });
+
 });

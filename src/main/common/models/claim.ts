@@ -213,6 +213,12 @@ export class Claim {
     return this.getName(this.respondent1);
   }
 
+  isDefendantResponsePayBySetDate(): boolean {
+    const isFullAdmitBySetDate = this.isFullAdmission() && this.isFAPaymentOptionBySetDate();
+    const isPartAdmitBySetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate();
+    return isFullAdmitBySetDate || isPartAdmitBySetDate;
+  }
+
   formattedResponseDeadline(lng?: string): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
@@ -857,6 +863,14 @@ export class Claim {
   hasDefendantCompletedPaymentIntention() {
     return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
       this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
+  }
+
+  getPaymentDate() {
+    if(this.isPAPaymentOptionByDate()) {
+      return this.partialAdmission.paymentIntention.paymentDate;
+    } else if (this.isFAPaymentOptionBySetDate()){
+      return this.fullAdmission.paymentIntention.paymentDate;
+    }
   }
 }
 

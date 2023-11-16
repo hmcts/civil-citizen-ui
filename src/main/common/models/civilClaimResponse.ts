@@ -259,6 +259,7 @@ export interface CCDClaim extends ClaimUpdate {
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
+  applicant1ResponseDate?: Date;
   liftBreathing?: CCDBreathingSpaceStartInfo;
 }
 

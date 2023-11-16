@@ -1,4 +1,3 @@
-
 import { YesNo } from 'common/form/models/yesNo';
 import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
