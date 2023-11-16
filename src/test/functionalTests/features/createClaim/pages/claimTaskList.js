@@ -9,11 +9,13 @@ const fields = {
   individualTitle: '#individualTitle',
   individualFirstName: '#individualFirstName',
   individualLastName: '#individualLastName',
-  addrLine1: '#primaryAddress[addressLine1]',
-  addrLine2: '#primaryAddress[addressLine2]',
-  addrLine3: '#primaryAddress[addressLine3]',
-  city:  '#primaryAddress[city]',
-  postCode: '#primaryAddress[postCode]',
+  primaryAddressPostCode: 'input[name="primaryAddressPostcode"]',
+  primaryAddressPostCodeDropdown: 'select[id="primaryAddresspostcodeAddress"]',
+  addrLine1: 'input[id="primaryAddress[addressLine1]"]',
+  addrLine2: 'input[id="primaryAddress[addressLine2]"]',
+  addrLine3: 'input[id="primaryAddress[addressLine3]"]',
+  city:  'input[id="primaryAddress[city]"]',
+  postCode: 'input[id="primaryAddress[postCode]"]',
   correspondenceAddressYes: '#provideCorrespondenceAddress-2',
   corresAddrLine1: '#correspondenceAddress[addressLine1]',
   corresAddrLine2: '#correspondenceAddress[addressLine2]',
@@ -105,19 +107,15 @@ class ClaimTaskList {
         await I.fillField(fields.individualTitle, 'Mr');
         await I.fillField(fields.individualFirstName, 'TestFName');
         await I.fillField(fields.individualLastName, 'TestLName');
+        // await I.fillField(fields.primaryAddressPostCode, 'IG2 6QP');
+        // await I.click('Find address');
+
         await I.click('Enter address manually');
         await I.fillField(fields.addrLine1, 'addr street 1');
         await I.fillField(fields.addrLine2, 'addr street 2');
         await I.fillField(fields.addrLine3, 'addr street 3');
         await I.fillField(fields.city, 'London');
         await I.fillField(fields.postCode, 'IG2 6QU');
-        await I.click(fields.correspondenceAddressYes);
-        await I.click('Enter address manually');
-        await I.fillField(fields.addrLine1, 'correst addr street 1');
-        await I.fillField(fields.addrLine2, 'correst addr street 2');
-        await I.fillField(fields.addrLine3, 'correst addr street 3');
-        await I.fillField(fields.city, 'London');
-        await I.fillField(fields.postCode, 'IG2 6QP');
         break;
       }
       case 'soleTrader':{
@@ -133,6 +131,7 @@ class ClaimTaskList {
         break;
       }
     }
+    await I.click('Save and continue');
   }
 }
 
