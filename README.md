@@ -8,7 +8,7 @@
 
 ## Getting Started
 
-### Prerequisites
+### Prerequisitestest
 
 Running the application requires the following tools to be installed in your environment:
 
