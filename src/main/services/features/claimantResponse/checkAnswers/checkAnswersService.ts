@@ -4,7 +4,7 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getLng } from 'common/utils/languageToggleUtils';
-import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import {buildHowYouWishToProceed,buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import {
   buildJudgmentRequestSection,
   buildSettlementAgreementSection,
@@ -16,7 +16,7 @@ import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskL
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claimId: string, claim: Claim, lang: string, claimFee?: number): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
@@ -26,6 +26,9 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string, claim
     return claim.isRequestACCJ()
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
+  };
+  const getHowYouWishToProceed = () => {
+    return buildHowYouWishToProceed(claim, claimId, lang);
   };
   const getFreeTelephoneMediationSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission()
@@ -40,6 +43,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string, claim
   return {
     sections: [
       getYourResponseSection(),
+      getHowYouWishToProceed(),
       getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
@@ -50,7 +54,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string, claim
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number): SummarySections => {
   const lng = getLng(lang);
-  return buildSummarySections(claimId, claim, lng, claimFee);
+  return buildSummarySections(claim, claimId, lng, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
