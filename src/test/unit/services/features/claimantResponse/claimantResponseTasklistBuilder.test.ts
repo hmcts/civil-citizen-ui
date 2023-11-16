@@ -46,6 +46,8 @@ import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {CourtProposedPlan, CourtProposedPlanOptions} from "form/models/claimantResponse/courtProposedPlan";
+import {RejectionReason} from "form/models/claimantResponse/rejectionReason";
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -476,7 +478,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[3].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.SIGN_SETTLEMENT');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
     });
     it('should display Request a County Court Judgment task as incomplete', () => {
@@ -504,7 +506,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[3].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
@@ -534,7 +536,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[3].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.SIGN_SETTLEMENT');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
-      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(whatToDoNext.tasks[3].status).toEqual(TaskStatus.COMPLETE);
     });
 
@@ -551,6 +553,9 @@ describe('Claimant Response Task List builder', () => {
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         ccjRequest: {paidAmount: {option: YesNo.YES}},
       };
+      claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
+      claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+      claim.claimantResponse.rejectionReason = new RejectionReason();
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
       };
