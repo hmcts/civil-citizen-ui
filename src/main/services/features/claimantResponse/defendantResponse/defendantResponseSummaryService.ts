@@ -7,7 +7,7 @@ import {
   buildFullDisputeResponseContent,
 } from './fullDisputeDefendantsResponseContent';
 import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResponseContent';
-import {buildPartAdmitNotPaidResponseContent} from './partAdmitNotPaidDefendantsResponseContent';
+import {buildPartAdmitNotPaidResponseContent, buildPartAdmitNotPaidResponseForHowTheyWantToPay} from './partAdmitNotPaidDefendantsResponseContent';
 import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPaidDefendantsResponseContent';
 import {buildFullAdmissionInstallmentsResponseContent} from './fullAdmissionPayInstallmentsDefendantResponseContent';
 
@@ -30,4 +30,8 @@ export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimS
     case ClaimResponseStatus.PA_ALREADY_PAID:
       return buildPartAdmitAlreadyPaidResponseContent(claim, lang);
   }
+};
+
+export const getResponseContentForHowTheyWantToPay = (claim: Claim, lang: string): ClaimSummarySection[] => {
+  return buildPartAdmitNotPaidResponseForHowTheyWantToPay(claim, lang);
 };
