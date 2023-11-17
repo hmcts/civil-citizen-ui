@@ -928,7 +928,7 @@
         "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
-        "WE_EMAILED": "We've emailed {{ defendantName }} the repayment plan and the settlement agreement for them to sign.",
+        "WE_EMAILED": "We've emailed {{ defendantName }} your proposed repayment plan and settlement agreement for them to sign.",
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "REJECTED_DEFENDANT_RESPONSE": {
