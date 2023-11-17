@@ -17,13 +17,15 @@ jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedSe
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
-const carmToggleSpy = (calmEnabled: boolean) => jest.spyOn(caarmTogglesUtils, 'isCarmEnabledForCase')
+const configureSpy = (service: any, method: string)  => jest.spyOn(service, method).mockReset();
+
+const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
-const getTaskListSpy = (taskList: TaskList[]) => jest.spyOn(taskListService, 'getTaskLists')
+const getTaskListSpy = (taskList: TaskList[]) => configureSpy(taskListService, 'getTaskLists')
   .mockReturnValue(taskList);
 
-const getCaseByIdSpy = (claim: Claim) => jest.spyOn(utilityService, 'getClaimById')
+const getCaseByIdSpy = (claim: Claim) => configureSpy(utilityService, 'getClaimById')
   .mockReturnValue(Promise.resolve(claim));
 
 describe('Claimant details', () => {
@@ -43,6 +45,7 @@ describe('Claimant details', () => {
 
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
+      carmToggleSpy(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(RESPONSE_TASK_LIST_URL)
@@ -65,6 +68,7 @@ describe('Claimant details', () => {
     it('should call isCarmEnabledForCase with claim submitted date', async () => {
       const mockClaim = { submittedDate: new Date(2022, 5, 23) } as Claim;
       getCaseByIdSpy(mockClaim);
+      carmToggleSpy(true);
       const calmEnabledSpy = carmToggleSpy(true);
 
       await request(app).get(RESPONSE_TASK_LIST_URL);
