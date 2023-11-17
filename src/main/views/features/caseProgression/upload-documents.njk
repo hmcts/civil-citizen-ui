@@ -11,6 +11,11 @@
 {{ setPageTitle('PAGES.EVIDENCE.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
+  <style>
+    .javaScriptOnly {
+      display: none;
+    }
+  </style>
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
     {% if form != null and form.hasErrors() %}
@@ -58,7 +63,7 @@
                   }) }}
                   {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="moj-button-action javaScriptOnly">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
@@ -92,7 +97,7 @@
                   }) }}
                   {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="moj-button-action javaScriptOnly">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
@@ -126,7 +131,7 @@
                   }) }}
                   {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="moj-button-action javaScriptOnly">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
@@ -164,7 +169,7 @@
                   }) }}
                   {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="moj-button-action javaScriptOnly">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
@@ -196,4 +201,11 @@
     </div>
   </main>
 </div>
+<script type="text/javascript">
+  var elements = document.getElementsByClassName('javaScriptOnly');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.display = 'block';
+  }
+</script>
 {% endblock %}
+
