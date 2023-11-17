@@ -6,15 +6,19 @@ import {
   UPLOAD_YOUR_DOCUMENTS_URL,
 } from '../../urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 
 const uploadDocumentsViewPath = 'features/caseProgression/documents-uploaded';
 const documentsUploadedController = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 documentsUploadedController.get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const uploadYourDocumentsUrl = UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId);
     let documentsTabUrl;
     if (claim.isClaimant()) {
