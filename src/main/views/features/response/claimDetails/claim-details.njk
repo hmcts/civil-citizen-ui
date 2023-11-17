@@ -48,7 +48,7 @@
           </p>
           {{ govukDetails({
             summaryText: t('PAGES.CLAIM_DETAILS.VIEW_AMOUNT_BREAKDOWN'),
-            html: amountBreakdownTable(claim, interestData, totalAmount)
+            html: amountBreakdownTable(claim, interestData, totalAmount, t)
           }) }}
           <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.REASON_FOR_CLAIM')+' :' }}</h2>
           <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
