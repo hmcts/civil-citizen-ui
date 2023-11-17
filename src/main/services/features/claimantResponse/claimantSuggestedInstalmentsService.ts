@@ -1,6 +1,7 @@
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import { AppRequest } from 'common/models/AppRequest';
 import {Request} from 'express';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantSuggestedInstalmentsService');
@@ -24,9 +25,9 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
   }
 };
 
-export const getClaimantSuggestedInstalmentsForm = async (claimId: string, req: Request): Promise<RepaymentPlanForm> => {
+export const getClaimantSuggestedInstalmentsForm = async (req: Request): Promise<RepaymentPlanForm> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     return new RepaymentPlanForm(
       claim.totalClaimAmount,
       req.body.paymentAmount,

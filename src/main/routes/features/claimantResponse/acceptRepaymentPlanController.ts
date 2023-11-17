@@ -6,7 +6,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {getSetDatePaymentDetails} from 'services/features/claimantResponse/getSetDatePaymentDetails';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -32,8 +32,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
 acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const details = await getSetDatePaymentDetails(claim);
     const claimantResponseStatus : ClaimResponseStatus = claim.responseStatus;
     const frequency = getRepaymentFrequency(claim);
@@ -54,9 +53,10 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
 acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(<AppRequest>req);
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
     const details = await getSetDatePaymentDetails(claim);
     const displayHintTextForNoOption = claim.isBusiness();
     const claimantResponseStatus : ClaimResponseStatus = claim.responseStatus;
@@ -64,7 +64,7 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
     if (form.hasErrors()) {
       renderView(form, repaymentPlan, res, displayHintTextForNoOption, claimantResponseStatus, details?.defendantName, details?.proposedSetDate);
     } else {
-      await saveClaimantResponse(claimId, form.model, propertyName);
+      await saveClaimantResponse(redisKey, form.model, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

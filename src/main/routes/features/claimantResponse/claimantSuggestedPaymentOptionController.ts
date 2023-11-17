@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
@@ -13,6 +13,9 @@ import {
 } from 'services/features/claimantResponse/claimantResponseService';
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
+import {AppRequest} from 'models/AppRequest';
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
 const claimantSuggestedPaymentOptionController = Router();
@@ -23,16 +26,16 @@ function renderView(form: GenericForm<PaymentOption>, res: Response): void {
   res.render(claimantSuggestedPaymentOptionViewPath, {form: form, isClaimantResponse : true});
 }
 
-claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(req.params.id);
+    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new PaymentOption(claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
-claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, async (req: Request, res: Response, next) => {
+claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next) => {
   try {
     const claimId = req.params.id;
     const claimantResponsePaymentOption = new PaymentOption(req.body.paymentType);
@@ -41,12 +44,11 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimantResponse(claimId, form.model.paymentType, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model.paymentType, crPropertyName, crParentName);
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:
-          // TODO : trigger court calculator when it's developed and update redirection url with the result of it
-          redirectUrl = CLAIMANT_RESPONSE_TASK_LIST_URL;
+          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest> req, claimId);
           break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;
@@ -63,6 +65,6 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default claimantSuggestedPaymentOptionController;

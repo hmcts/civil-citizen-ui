@@ -5,10 +5,10 @@ import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIMANT,
-  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -25,6 +25,9 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -315,7 +318,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest);
+      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate,5, mockedAppRequest);
 
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -333,7 +336,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, 5, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getCourtLocations test', () => {
@@ -500,6 +503,49 @@ describe('Civil Service Client', () => {
       expect(claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.textArea).toEqual('revised');
       expect(claim.caseProgression.defendantTrialArrangements.hasAnythingChanged.option).toEqual('yes');
 
+    });
+
+    describe('get court decision event', () => {
+      it('should get court decision', async () => {
+        //Given
+        const mockResponse= RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+
+        const mockClaimantIntention: CCDClaimantProposedPlan = {
+          repaymentPlanLRspec: undefined,
+          proposedRepaymentType: CCDPaymentOption.IMMEDIATELY,
+          repaymentByDate: undefined,
+        };
+
+        const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
+        mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+
+        //When
+        const courtDecision: RepaymentDecisionType = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention);
+
+        //Then
+        expect(mockedAxios.create).toHaveBeenCalledWith({
+          baseURL: baseUrl,
+        });
+        expect(courtDecision).toEqual(RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
+
+      });
+      it('should throw error when there is an error with api', async () => {
+        //Given
+        const mockClaimantIntention: CCDClaimantProposedPlan = {
+          repaymentPlanLRspec: undefined,
+          proposedRepaymentType: CCDPaymentOption.IMMEDIATELY,
+          repaymentByDate: undefined,
+        };
+
+        const mockPost = jest.fn().mockImplementation(() => {
+          throw new Error('error');
+        });
+        mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+        //Then
+        await expect(civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention)).rejects.toThrow('error');
+      });
     });
 
     it('should throw error when there is an error with api', async () => {

@@ -37,7 +37,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
         const privacyPolicyUrl = `${ocmcBaseUrl}/privacy-policy`;
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData,timelinePdfUrl, privacyPolicyUrl, claimId,
+          claim, totalAmount, interestData, timelinePdfUrl, privacyPolicyUrl, claimId,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);

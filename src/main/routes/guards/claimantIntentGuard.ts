@@ -10,7 +10,7 @@ export const claimantIntentGuard = (
 ) => {
   (async () => {
     try {
-      const caseData: Claim = await getClaimById(req.params.id, req);
+      const caseData: Claim = await getClaimById(req.params.id, req, true);
       if (caseData.isClaimantIntentionPending() || req.originalUrl.includes('claimant-response/confirmation')) {
         next();
       } else {

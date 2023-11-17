@@ -14,6 +14,10 @@ import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesA
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 describe('Sign Settlement Agreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
