@@ -81,7 +81,7 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   } else {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date), '', changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date, getLng(lang)), '', changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED', {lng: getLng(lang)}), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
     ]);
   }
@@ -99,7 +99,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
   if (claim.rejectAllOfClaim.option !== RejectAllOfClaimType.DISPUTE) {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date), howMuchHaveYouPaidUrl, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date, getLng(lang)), howMuchHaveYouPaidUrl, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', {lng: getLng(lang)}), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
     ]);
   }
