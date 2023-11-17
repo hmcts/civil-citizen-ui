@@ -16,6 +16,7 @@ const PHONE_NUMBER = '01632960001';
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
