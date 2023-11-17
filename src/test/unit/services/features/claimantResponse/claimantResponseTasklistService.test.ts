@@ -106,6 +106,7 @@ describe('getClaimantResponseTaskLists', () => {
 
   it('should return an array of TaskLists with expected task groups for full defence and paid less', () => {
     // given
+
     const claim = {
       isFullDefence: jest.fn(),
       isClaimantIntentionPending: jest.fn(),
@@ -119,6 +120,7 @@ describe('getClaimantResponseTaskLists', () => {
       hasClaimantRejectedDefendantPaid: jest.fn(),
       isRejectAllOfClaimAlreadyPaid: jest.fn(),
       hasClaimantConfirmedDefendantPaid: jest.fn(),
+      hasClaimantSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
       responseStatus: ClaimResponseStatus.RC_PAID_LESS,
     } as any;
     claim.isFullDefence.mockReturnValue(true);
@@ -131,6 +133,7 @@ describe('getClaimantResponseTaskLists', () => {
     claim.hasPaidInFull.mockReturnValue(true);
     claim.hasClaimantRejectedDefendantPaid.mockReturnValue(true);
     claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
+    claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(true);
     claim.hasClaimantConfirmedDefendantPaid.mockReturnValue(false);
     claim.isFullAdmission.mockReturnValue(false);
 

@@ -14,7 +14,6 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
-import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED } from 'models/claimantResponse/checkAnswers';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
@@ -53,7 +52,7 @@ export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang:
   const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
-    t(RESPONSEFORHOWDOYOUWANTTOPROCEED[selectedOption], {lang}),
+    t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
     partAdmitAcceptedHref,
     changeLabel(lang));
 
@@ -145,7 +144,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
   if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
     yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
   }
-
   if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
     yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
   }

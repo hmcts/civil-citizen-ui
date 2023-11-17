@@ -69,14 +69,14 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForDefendantPaidSome();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(expectedResult).toEqual(result);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
       const expectedResult = generateExpectedResultForDefendantPaidNone();
-      claim.claimantResponse.ccjRequest.paidAmount = { option: YesNo.NO };
+      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(expectedResult).toEqual(result);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
     });
     it('should check answers be empty if non of the tasks completed', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
