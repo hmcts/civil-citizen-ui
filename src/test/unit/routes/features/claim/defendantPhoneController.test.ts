@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';

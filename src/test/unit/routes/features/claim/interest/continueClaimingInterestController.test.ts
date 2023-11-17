@@ -7,7 +7,7 @@ import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
   CLAIM_INTEREST_HOW_MUCH_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
