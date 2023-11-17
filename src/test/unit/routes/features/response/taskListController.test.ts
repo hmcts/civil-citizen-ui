@@ -3,30 +3,36 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim, mockDefendantResponseSmallClaimFullReject,
+  mockRedisFailure,
+} from '../../../../utils/mockDraftStore';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {TaskList} from 'models/taskList/taskList';
+import {configureSpy} from '../../../../utils/spyConfiguration';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Claim} from 'models/claim';
+import {deepCopy} from '../../../../utils/deepCopy';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
+import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 import * as taskListService from 'services/features/common/taskListService';
-import * as utilityService from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
-const configureSpy = (service: any, method: string)  => jest.spyOn(service, method).mockReset();
-
-const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 const getTaskListSpy = (taskList: TaskList[]) => configureSpy(taskListService, 'getTaskLists')
   .mockReturnValue(taskList);
 
-const getCaseByIdSpy = (claim: Claim) => configureSpy(utilityService, 'getClaimById')
-  .mockReturnValue(Promise.resolve(claim));
+const responseTaskListUrl = (lang = 'en') => {
+  return RESPONSE_TASK_LIST_URL
+    .replace(':id', '1645882162449409')
+    .concat(`?lang=${lang}`);
+};
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -43,12 +49,15 @@ describe('Claimant details', () => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
+  beforeEach(() => {
+    isCarmEnabledSpy(true);
+  });
+
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
-      carmToggleSpy(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(RESPONSE_TASK_LIST_URL)
+        .get(responseTaskListUrl())
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Respond to a money claim');
@@ -65,29 +74,69 @@ describe('Claimant details', () => {
         });
     });
 
-    it('should call isCarmEnabledForCase with claim submitted date', async () => {
-      const mockClaim = { submittedDate: new Date(2022, 5, 23) } as Claim;
-      getCaseByIdSpy(mockClaim);
-      carmToggleSpy(true);
-      const calmEnabledSpy = carmToggleSpy(true);
-
-      await request(app).get(RESPONSE_TASK_LIST_URL);
-
-      expect(calmEnabledSpy).toBeCalledTimes(1);
-      expect(calmEnabledSpy).toBeCalledWith(mockClaim.submittedDate);
+    it('should return Availability for mediation task when isCarmEnabledForCase returns true', async () => {
+      app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
+      await request(app)
+        .get(responseTaskListUrl())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Availability for mediation');
+        });
     });
 
-    it('should call getTaskLists with carm toggle value', async () => {
-      const isCarmEnabled = true;
-      const mockClaim = { applicant1: {}} as Claim;
-      getCaseByIdSpy(mockClaim);
-      carmToggleSpy(isCarmEnabled);
-      const taskListSpy = getTaskListSpy([]);
+    it('should not return Availability for mediation task when isCarmEnabledForCase returns false', async () => {
+      app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
+      isCarmEnabledSpy(false);
 
-      await request(app).get(RESPONSE_TASK_LIST_URL);
+      await request(app)
+        .get(responseTaskListUrl())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Availability for mediation');
+        });
+    });
 
-      expect(taskListSpy).toBeCalledTimes(1);
-      expect(taskListSpy).toBeCalledWith(mockClaim, ':id', undefined, isCarmEnabled);
+    it('should call isCarmEnabledForCase with claim submitted date', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const dateSubmitted = civilClaimResponseMock.case_data.submittedDate;
+      const isCarmEnabled = isCarmEnabledSpy(true);
+
+      await request(app).get(responseTaskListUrl());
+
+      expect(isCarmEnabled).toBeCalledTimes(1);
+      expect(isCarmEnabled).toBeCalledWith(dateSubmitted);
+    });
+
+    describe('should call getTaskLists with expected arguments', () => {
+      let taskListSpy: jest.SpyInstance;
+      let caseData: Claim;
+
+      beforeEach(() => {
+        app.locals.draftStoreClient = mockCivilClaim;
+        taskListSpy = getTaskListSpy([]);
+        caseData = {
+          ...deepCopy(civilClaimResponseMock.case_data),
+          id: civilClaimResponseMock.id,
+        } as unknown as Claim;
+      });
+
+      it('when isCarmEnabledForCase returns true', async () => {
+        isCarmEnabledSpy(true);
+
+        await request(app).get(responseTaskListUrl());
+
+        expect(taskListSpy).toBeCalledTimes(1);
+        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', true);
+      });
+
+      it('when isCarmEnabledForCase returns false', async () => {
+        isCarmEnabledSpy(false);
+
+        await request(app).get(responseTaskListUrl());
+
+        expect(taskListSpy).toBeCalledTimes(1);
+        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', false);
+      });
     });
 
     it('should return http 500 when has error in the get method', async () => {

@@ -23,6 +23,7 @@ import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTele
 import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
 import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDocumentUploadedMock.json';
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
+import mockDefendantResponseSmallClaimRejectClaimMock from './mocks/mockDefendantResponseSmallClaimRejectClaimMock.json';
 
 import {LoggerInstance} from 'winston';
 
@@ -198,6 +199,14 @@ const mockCivilClaimDocumentUploaded = {
   del: jest.fn(() => Promise.resolve({})),
 };
 
+const mockDefendantResponseSmallClaimFullReject = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(mockDefendantResponseSmallClaimRejectClaimMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimClaimantIntention,
@@ -226,4 +235,5 @@ export {
   mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
   civilClaimResponseMock,
+  mockDefendantResponseSmallClaimFullReject,
 };
