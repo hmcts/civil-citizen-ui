@@ -17,10 +17,11 @@
     },
     "applicant1": {
       "type": "INDIVIDUAL",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Jan",
-      "individualLastName": "Clark",
-      "partyName": "Mr. Jan Clark",
+      "partyDetails": {
+        "individualTitle": "Mr",
+        "individualFirstName": "Jon",
+        "individualLastName": "Doe"
+      },
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",
