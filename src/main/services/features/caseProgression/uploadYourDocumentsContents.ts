@@ -16,7 +16,7 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.THE_OTHER_PARTIES')
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.DEADLINES_FOR_UPLOADING')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CHECK_THE_ORDER_DEADLINES')
-    .addLink('PAGES.UPLOAD_YOUR_DOCUMENTS.APPLY_TO_THE_COURT', 'TODO: apply to the court URL',
+    .addLink('PAGES.UPLOAD_YOUR_DOCUMENTS.APPLY_TO_THE_COURT', 'https://www.gov.uk/government/publications/form-n244-application-notice',
       'PAGES.UPLOAD_YOUR_DOCUMENTS.AFTER_THE_DEADLINE',
       'PAGES.UPLOAD_YOUR_DOCUMENTS.IF_YOU_WANT_ANY')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.YOU_DO_NOT_HAVE')
