@@ -85,7 +85,6 @@ describe('Check Answers service', () => {
     });
   });
   
-
   describe('Build check answers for pay by set date either for part admit or full admit ', () => {
     let claim: Claim;
     beforeEach(() => {
