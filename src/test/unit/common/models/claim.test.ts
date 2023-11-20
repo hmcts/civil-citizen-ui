@@ -41,6 +41,8 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {Mediation} from "models/mediation/mediation";
+import {CompanyTelephoneNumber} from "form/models/mediation/companyTelephoneNumber";
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1955,6 +1957,49 @@ describe('Documents', () => {
       const result = claim.getPaymentDate();
       //Then
       expect(result).toEqual(date);
+    });
+  });
+
+  describe('Claim isDefendantAgreedForMediation', () => {
+    it('should return false if no mediation object', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should return false if mediation is undefined', () => {
+      //Given
+      const claim = new Claim();
+      claim.mediation = new Mediation(undefined, undefined, undefined, undefined);
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should return true if can we use is set', () => {
+      //Given
+      const claim = new Claim();
+      const canWeUse = {
+        option: YesNo.YES
+      }
+      claim.mediation = new Mediation(canWeUse, undefined, undefined, undefined);
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(true);
+    });
+    it('should return true if company phone number is set', () => {
+      //Given
+      const claim = new Claim();
+      const companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, undefined)
+      const canWeUse = {};
+      claim.mediation = new Mediation(canWeUse, undefined, undefined, companyTelephoneNumber);
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(true);
     });
   });
 });
