@@ -8,14 +8,14 @@ import {
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../../main/common/models/party';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../../../main/services/features/common/defendantDetailsService';
+} from 'services/features/common/defendantDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
