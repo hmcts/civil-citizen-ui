@@ -8,7 +8,6 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {
-  getClaimantResponse,
   saveClaimantResponse,
 } from 'services/features/claimantResponse/claimantResponseService';
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
@@ -31,13 +30,12 @@ claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_UR
   try {
     const claimId = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(claimId, true);
-    await clearClaimantSuggestion( claimId,claim);
-    const claimantResponse = await getClaimantResponse(claimId);
-    renderView(new GenericForm(new PaymentOption(claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
+    const updatedClaim = await clearClaimantSuggestion(claimId, claim);
+    renderView(new GenericForm(new PaymentOption(updatedClaim.claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+}) as RequestHandler);
 
 claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next) => {
   try {
@@ -52,7 +50,7 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:
-          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest> req, claimId);
+          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest>req, claimId);
           break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;
@@ -69,6 +67,6 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+}) as RequestHandler);
 
 export default claimantSuggestedPaymentOptionController;
