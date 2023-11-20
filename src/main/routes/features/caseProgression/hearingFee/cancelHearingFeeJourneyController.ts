@@ -7,7 +7,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
-
 const cancelHearingFeeJourneyController: Router = Router();
 
 cancelHearingFeeJourneyController.get(HEARING_FEE_CANCEL_JOURNEY, (async (req, res, next: NextFunction) => {
