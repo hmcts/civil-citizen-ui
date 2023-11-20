@@ -25,6 +25,7 @@ import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
@@ -121,12 +122,11 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
   }
 
   if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
-    tasks.push(freeTelephoneMediationTask);
-
     if(carmApplicable) {
-      const availabilityForMediationTask = getAvailabilityForMediationTask(caseData, claimId, lang);
-      tasks.push(availabilityForMediationTask);
+      tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
+      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
+    } else {
+      tasks.push(getFreeTelephoneMediationTask(caseData, claimId, lang));
     }
   }
 

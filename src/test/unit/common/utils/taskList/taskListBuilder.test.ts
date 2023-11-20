@@ -257,7 +257,7 @@ describe('Task List Builder', () => {
       expect(resolvingTheClaimSection.tasks.length).toBe(0);
     });
 
-    it('should have availabilityForMediation for small track cases when carm applicable', () => {
+    it('should have availabilityForMediation and telephoneMediation tasks for small track cases when carm applicable', () => {
       const claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = new PartialAdmission();
@@ -266,7 +266,20 @@ describe('Task List Builder', () => {
       claim.totalClaimAmount = 9000;
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang, true);
       expect(resolvingTheClaimSection.tasks.length).toBe(2);
+      expect(resolvingTheClaimSection.tasks[0].url).toBe(`/case/${claimId}/mediation/telephone-mediation`);
       expect(resolvingTheClaimSection.tasks[1].url).toBe(`/case/${claimId}/response/availability-for-mediation`);
+    });
+
+    it('should have freeTelephoneMediation task for small track cases when not carm applicable', () => {
+      const claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
+      claim.partialAdmission.whyDoYouDisagree.text = 'test';
+      claim.totalClaimAmount = 9000;
+      const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang, false);
+      expect(resolvingTheClaimSection.tasks.length).toBe(1);
+      expect(resolvingTheClaimSection.tasks[0].url).toBe(`/case/${claimId}/mediation/free-telephone-mediation`);
     });
   });
 

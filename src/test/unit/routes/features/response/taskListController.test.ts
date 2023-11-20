@@ -74,17 +74,19 @@ describe('Claimant details', () => {
         });
     });
 
-    it('should return Availability for mediation task when isCarmEnabledForCase returns true', async () => {
+    it('should return Telephone Mediation and Availability for mediation tasks when isCarmEnabledForCase returns true', async () => {
       app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
       await request(app)
         .get(responseTaskListUrl())
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Telephone mediation');
           expect(res.text).toContain('Availability for mediation');
+          expect(res.text).not.toContain('Free telephone mediation');
         });
     });
 
-    it('should not return Availability for mediation task when isCarmEnabledForCase returns false', async () => {
+    it('should not return Free telephone mediation task when isCarmEnabledForCase returns false', async () => {
       app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
       isCarmEnabledSpy(false);
 
@@ -92,6 +94,8 @@ describe('Claimant details', () => {
         .get(responseTaskListUrl())
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Free telephone mediation');
+          expect(res.text).not.toContain('Telephone mediation');
           expect(res.text).not.toContain('Availability for mediation');
         });
     });
