@@ -2444,12 +2444,12 @@ __metadata:
   linkType: hard
 
 "@types/cookie-session@npm:^2.0.44":
-  version: 2.0.46
-  resolution: "@types/cookie-session@npm:2.0.46"
+  version: 2.0.47
+  resolution: "@types/cookie-session@npm:2.0.47"
   dependencies:
     "@types/express": "*"
     "@types/keygrip": "*"
-  checksum: 63f81d19f712be7e40e45caabe030d2ec3a535cc4df9b0d93e4fec50d273afd2653765437f3ac7257ca934165ab4e0396a6d454d081626e0a603d3139a8b8184
+  checksum: edaf88c19c03281036ed66f3c2cf4fff970ff14566f832d519416091ee0e3a461cc003198b0ff8a5123b1b68c9a1f5f4c48fa80c23b8dec436109f840b27a616
   languageName: node
   linkType: hard
 
