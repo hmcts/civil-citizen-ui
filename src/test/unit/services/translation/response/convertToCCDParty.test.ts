@@ -88,7 +88,7 @@ const partySoleTrader: Party = {
 
 const partyCompanyCCD: CCDParty = {
   companyName: companyName,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: null,
   individualFirstName: undefined,
   individualLastName: undefined,
   individualTitle: undefined,
@@ -96,7 +96,7 @@ const partyCompanyCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: null,
   soleTraderFirstName: undefined,
   soleTraderLastName: undefined,
   soleTraderTitle: undefined,
@@ -114,7 +114,7 @@ const partyIndividualCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: null,
   soleTraderTitle: undefined,
   soleTraderFirstName: undefined,
   soleTraderLastName: undefined,
@@ -124,7 +124,7 @@ const partyIndividualCCD: CCDParty = {
 
 const partySoleTraderCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: null,
   individualFirstName: undefined,
   individualLastName: undefined,
   individualTitle: undefined,
