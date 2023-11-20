@@ -33,18 +33,18 @@ describe('Telephone Mediation Controller', () => {
   });
 
   describe('on POST', () => {
+    it('should redirect to task-list page when the user hit into continue button', async () => {
+      await request(app).post(TELEPHONE_MEDIATION_URL).expect(res => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+      });
+    });
+
     it('should return status 500 when there is Redis error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app).post(TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-    });
-
-    it('should redirect to task-list page when the user hit into continue button', async () => {
-      await request(app).post(TELEPHONE_MEDIATION_URL).expect(res => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
       });
     });
 
