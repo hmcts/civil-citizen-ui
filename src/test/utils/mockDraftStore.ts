@@ -25,7 +25,7 @@ import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDo
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 
 import {LoggerInstance} from 'winston';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const mockDraftClaim = (claim: Claim) => ({
   set: jest.fn(() => Promise.resolve({})),
