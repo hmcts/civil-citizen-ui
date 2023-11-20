@@ -28,7 +28,7 @@ const buildClaimOfApplicant = (): Claim => {
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
   claim.applicant1.partyDetails.partyName = 'partyName';
   claim.applicant1.partyDetails.contactPerson = 'contactPerson';
-  return claim
+  return claim;
 };
 
 const buildClaimOfApplicantType = (type: PartyType): Claim => {
