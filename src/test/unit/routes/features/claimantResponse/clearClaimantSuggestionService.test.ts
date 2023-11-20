@@ -1,14 +1,14 @@
-import {clearClaimantSuggestion} from 'routes/features/claimantResponse/clearClaimantSuggestionService';
 import {Claim} from 'models/claim';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {clearClaimantSuggestion} from 'routes/features/claimantResponse/clearClaimantSuggestionService';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-describe('clear claimant suggestion', () => {
+describe('Clear claimant suggestion', () => {
   it('clear claimant suggestion ', async () => {
     //Given
     const claim = new Claim();
