@@ -5,20 +5,6 @@ import {
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
-import {
-  documentsLanguagePreference, getSummaryRowForDisplayEvidenceYourself,
-  getWitnesses,
-  phoneAndVideoInfo,
-  phoneAndVideoQuestion,
-  speakingLanguagePreference,
-  vulnerabilityInfo,
-  vulnerabilityQuestion,
-  displaySpecificCourtLocation,
-  displayUnavailabilityForHearing,
-  getSpecificCourtLocation,
-  getUnavailabilityReason,
-  getUnavailableDatesList,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildCommonHearingRequirements';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   VulnerabilityQuestions,
@@ -32,10 +18,25 @@ import {summarySection} from 'models/summaryList/summarySections';
 import {OtherWitnessItems} from 'common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
-import {UnavailableDatePeriod, UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
+import {
+  UnavailableDatePeriod,
+  UnavailableDateType,
+} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getClaimWithDirectionQuestionnaireAndHearing} from './buildFastTrackHearingRequirements.test';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {
+  displaySpecificCourtLocation,
+  displayUnavailabilityForHearing,
+  documentsLanguagePreference, getSpecificCourtLocation,
+  getSummaryRowForDisplayEvidenceYourself, getUnavailabilityReason, getUnavailableDatesList,
+  getWitnesses,
+  phoneAndVideoInfo,
+  phoneAndVideoQuestion,
+  speakingLanguagePreference,
+  vulnerabilityInfo,
+  vulnerabilityQuestion,
+} from 'services/features/common/buildCommonHearingRequirements';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -44,7 +45,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-const witness1 =  new OtherWitnessItems({
+const witness1 = new OtherWitnessItems({
   firstName: 'Joe',
   lastName: 'Doe',
   telephone: '000000000',
@@ -52,7 +53,7 @@ const witness1 =  new OtherWitnessItems({
   details: 'Here is some of details',
 });
 
-const witness2 =  new OtherWitnessItems({
+const witness2 = new OtherWitnessItems({
   firstName: 'Jane',
   lastName: 'Does',
   telephone: '111111111',
@@ -81,7 +82,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.ENGLISH',
       );
       //Then
-      expect(speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(speakingLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is welsh', () => {
@@ -98,7 +99,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.WELSH',
       );
       //Then
-      expect(speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(speakingLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is english and welsh', () => {
@@ -115,7 +116,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
       );
       //Then
-      expect(speakingLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(speakingLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if language preference is not provided', () => {
@@ -134,7 +135,7 @@ describe('Common Hearing Requirements Section', () => {
         '',
       );
       //Then
-      expect(speakingLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(speakingLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -153,7 +154,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.ENGLISH',
       );
       //Then
-      expect(documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(documentsLanguagePreference(lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is welsh', () => {
@@ -170,7 +171,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.WELSH',
       );
       //Then
-      expect(documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(documentsLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is not provided', () => {
@@ -189,7 +190,7 @@ describe('Common Hearing Requirements Section', () => {
         '',
       );
       //Then
-      expect(documentsLanguagePreference(claimCopy, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(documentsLanguagePreference( lng, claimCopy.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if document language preference is english and welsh', () => {
@@ -206,7 +207,7 @@ describe('Common Hearing Requirements Section', () => {
         'PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH',
       );
       //Then
-      expect(documentsLanguagePreference(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(documentsLanguagePreference( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -220,12 +221,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if give evidence yourself option is yes', () => {
@@ -237,12 +238,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/give-evidence-yourself`,
         changeButton,
       );
       //Then
-      expect(getSummaryRowForDisplayEvidenceYourself(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(getSummaryRowForDisplayEvidenceYourself(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -257,12 +258,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
       //Then
-      expect(vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityQuestion(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability question option is yes', () => {
@@ -275,12 +276,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
       //Then
-      expect(vulnerabilityQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityQuestion(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -299,7 +300,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityInfo(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if vulnerability details is not set', () => {
@@ -314,7 +315,7 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(vulnerabilityInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(vulnerabilityInfo(claim.directionQuestionnaire, claimId, lng)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -333,7 +334,7 @@ describe('Common Hearing Requirements Section', () => {
       });
       const mockSummarySection = summaryRow(
         'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.NO'),
+        t('COMMON.VARIATION_3.NO'),
         `/case/${claimId}/directions-questionnaire/support-required`,
         changeButton,
       );
@@ -360,7 +361,7 @@ describe('Common Hearing Requirements Section', () => {
       });
       const mockSummarySection = summaryRow(
         'PAGES.SUPPORT_REQUIRED.TITLE',
-        t('COMMON.YES'),
+        t('COMMON.VARIATION_3.YES'),
         `/case/${claimId}/directions-questionnaire/support-required`,
         changeButton,
       );
@@ -382,7 +383,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.option = YesNo.NO;
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng');
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows[0].value.html).toEqual('COMMON.NO');
@@ -398,7 +399,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1];
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng');
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
       expect(summaryRows[0].value.html).toEqual('COMMON.YES');
@@ -432,7 +433,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.witnesses.otherWitnesses.witnessItems = [witness1, witness2];
 
       //When
-      const summaryRows = getWitnesses(claim, '1', 'eng');
+      const summaryRows = getWitnesses(claim.directionQuestionnaire, '1', 'eng');
 
       //Then
       expect(summaryRows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
@@ -475,12 +476,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         `/case/${claimId}/directions-questionnaire/phone-or-video-hearing`,
         changeButton,
       );
       //Then
-      expect(phoneAndVideoQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(phoneAndVideoQuestion( claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if phone or video hearing question option is yes', () => {
@@ -493,12 +494,12 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         `/case/${claimId}/directions-questionnaire/phone-or-video-hearing`,
         changeButton,
       );
       //Then
-      expect(phoneAndVideoQuestion(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(phoneAndVideoQuestion( claimId, lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
   });
@@ -519,7 +520,7 @@ describe('Common Hearing Requirements Section', () => {
         'Test reason.',
       );
       //Then
-      expect(phoneAndVideoInfo(claim, claimId, lng)).toStrictEqual(mockSummarySection);
+      expect(phoneAndVideoInfo( lng, claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -538,7 +539,8 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //GIVEN
-      const defendantUnavailableDate = displayUnavailabilityForHearing(claim, claimId, lng);
+      const defendantUnavailableDate =
+        displayUnavailabilityForHearing( claimId, lng, claim.directionQuestionnaire);
       // THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
     });
@@ -553,7 +555,8 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //GIVEN
-      const defendantUnavailableDate = displayUnavailabilityForHearing(claim, claimId, lng);
+      const defendantUnavailableDate =
+        displayUnavailabilityForHearing( claimId, lng, claim.directionQuestionnaire);
       //THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
     });
@@ -582,7 +585,8 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //GIVEN
-      const defendantUnavailableDate = getUnavailableDatesList(claim, claimId, lng);
+      const defendantUnavailableDate =
+        getUnavailableDatesList( claimId, lng, claim.directionQuestionnaire);
       //THEN
       expect(defendantUnavailableDate).toStrictEqual(mockSummarySection);
     });
@@ -613,7 +617,8 @@ describe('Common Hearing Requirements Section', () => {
         changeButton,
       );
       //GIVEN
-      const defendantUnavailableDates = getUnavailableDatesList(claim, claimId, lng);
+      const defendantUnavailableDates =
+        getUnavailableDatesList( claimId, lng, claim.directionQuestionnaire);
       //THEN
       expect(defendantUnavailableDates).toStrictEqual(mockSummarySection);
     });
@@ -649,7 +654,8 @@ describe('Common Hearing Requirements Section', () => {
           changeButton,
         );
         // GIVEN
-        const unavailableHearingDays = getUnavailabilityReason(claim, claimId, 10, lng);
+        const unavailableHearingDays =
+          getUnavailabilityReason(claimId, 10, lng, claim.directionQuestionnaire);
         //THEN
         expect(unavailableHearingDays).toStrictEqual(mockSummarySection);
       });
@@ -667,7 +673,8 @@ describe('Common Hearing Requirements Section', () => {
           changeButton,
         );
         // GIVEN
-        const unavailableHearingDays = getUnavailabilityReason(claim, claimId, 20, lng);
+        const unavailableHearingDays =
+          getUnavailabilityReason( claimId, 20, lng, claim.directionQuestionnaire);
         //THEN
         expect(unavailableHearingDays).toStrictEqual(mockSummarySection);
       });
@@ -688,12 +695,13 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.NO, courtLocations[0].label, 'reason');
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.TITLE',
-        'COMMON.NO',
+        'COMMON.VARIATION_2.NO',
         '/case/validClaimId/directions-questionnaire/court-location',
         changeButton,
       );
       //WHEN
-      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
+      const specificCourtLocation: SummaryRow =
+        getSpecificCourtLocation(claimId, lng, claim.directionQuestionnaire);
       //THEN
       expect(specificCourtLocation).toStrictEqual(mockSummarySection);
     });
@@ -701,10 +709,11 @@ describe('Common Hearing Requirements Section', () => {
       //GIVEN
       claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
       //WHEN
-      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claim, claimId, lng);
+      const specificCourtLocation: SummaryRow =
+        getSpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.TITLE',
-        'COMMON.YES',
+        'COMMON.VARIATION_2.YES',
         '/case/validClaimId/directions-questionnaire/court-location',
         changeButton,
       );
@@ -715,7 +724,8 @@ describe('Common Hearing Requirements Section', () => {
       //GIVEN
       const claimWithNoHearing = new Claim();
       //WHEN
-      const specificCourtLocation: SummaryRow = getSpecificCourtLocation(claimWithNoHearing, claimId, lng);
+      const specificCourtLocation: SummaryRow =
+        getSpecificCourtLocation( claimId, lng, claimWithNoHearing.directionQuestionnaire);
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.TITLE',
         '',
@@ -728,9 +738,11 @@ describe('Common Hearing Requirements Section', () => {
 
     it('should display court location if the defendant does have a preference for  hearing', function () {
       //GIVEN
-      claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
+      claim.directionQuestionnaire.hearing.specificCourtLocation =
+        new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
       //WHEN
-      const specificCourtLocation: SummaryRow = displaySpecificCourtLocation(claim, claimId, lng);
+      const specificCourtLocation: SummaryRow =
+        displaySpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);
       const mockSummarySection: SummaryRow = summaryRow(
         'PAGES.SPECIFIC_COURT.SELECTED_COURT',
         courtLocations[0].label,

@@ -8,7 +8,7 @@ import {
   getTheirTOEs,
 } from './fullDisputeDefendantsResponseContent';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
-import { t } from 'i18next';
+import {t} from 'i18next';
 
 const getResponseStatement = (claim: Claim, lang: string) => {
   switch(claim.responseStatus) {
@@ -55,33 +55,33 @@ const getResponseStatementPayImmediately = (claim: Claim, lng: string): ClaimSum
   }];
 };
 
-const getResponseStatementPayByDate = (claim: Claim, lang: string): ClaimSummarySection[] => {
+const getResponseStatementPayByDate = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
       variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE',
-      variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang)},
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
+      variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
     },
   }];
 };
 
-export const getTheirDefence = (text: string): ClaimSummarySection[] => {
+export const getTheirDefence = (text: string, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.TITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE', {lng}),
     },
   },
   {
     type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.WHY_THEY_DONT_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.WHY_THEY_DONT_OWE', {lng}),
     },
   },
   {
@@ -92,13 +92,30 @@ export const getTheirDefence = (text: string): ClaimSummarySection[] => {
   }];
 };
 
+const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): ClaimSummarySection[] => {
+  return [
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE',
+        variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang)},
+      },
+    }];
+};
+
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim, lng),
-    ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text),
+    ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text, lng),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),
     ...getDisagreementStatementWithEvidence(claim),
+  ];
+};
+
+export const buildPartAdmitNotPaidResponseForHowTheyWantToPay = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  return [
+    ...getPayByDateResponseForHowTheyWantToPay(claim, lng),
   ];
 };

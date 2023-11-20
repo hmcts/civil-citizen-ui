@@ -33,7 +33,7 @@ const getMediationContactNumber = (companyTelephoneNumber : CompanyTelephoneNumb
 const getContactName = (claim: Claim) => {
   return claim.mediation?.companyTelephoneNumber?.option === YesNo.NO ?
     claim.mediation.companyTelephoneNumber.mediationContactPerson :
-    claim.respondent1.partyDetails.contactPerson;
+    claim.respondent1.partyDetails?.contactPerson;
 };
 
 const getCanWeUse = (claim: Claim) => {
@@ -63,7 +63,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
       summaryRows: [],
     });
 
-    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION', {lng: getLng(lang)}), t(`COMMON.${canWeUse}`, {lng: getLng(lang)}), freeMediationHref, changeLabel(lang)));
+    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION', {lng: getLng(lang)}), t(`COMMON.VARIATION_2.${canWeUse}`, {lng: getLng(lang)}), freeMediationHref, changeLabel(lang)));
   }
   if (canWeUse === YesNoUpperCase.YES) {
     if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {

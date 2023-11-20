@@ -453,7 +453,24 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
-
+    it('should delete rejectionReason field from redis when hasFullDefenceStatesPaidClaimSettled is yes', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.rejectionReason = { text: 'test' };
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasFullDefenceStatesPaidClaimSettled: new GenericYesNo(YesNo.YES),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'hasFullDefenceStatesPaidClaimSettled');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
+    });
     describe('intentionToProceed', () => {
       claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
       it('should save claimant response successfully', async () => {

@@ -40,7 +40,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
     if (areTrialArrangementsFinalised) {
       sectionContent.push(getViewTrialArrangementsContent(false, claim));
     }
-    if (claim.isFastTrackClaim && claim.isSixWeeksOrLessFromTrial()) {
+    if (claim.isFastTrackClaim && claim.isBetweenSixAndThreeWeeksBeforeHearingDate()) {
       sectionContent.push(getFinaliseTrialArrangementsContent(claim));
     }
   }
