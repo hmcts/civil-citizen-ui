@@ -2,6 +2,7 @@ import {Claim} from 'common/models/claim';
 import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {t} from 'i18next';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const WEEKDAYS = 7;
 const frequencyTextMap: Record<TransactionSchedule, string> = {
@@ -23,13 +24,13 @@ export const getFinalPaymentDate = (claim: Claim): Date => {
 
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * WEEKDAYS);
       break;
     case TransactionSchedule.TWO_WEEKS:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * 2 * WEEKDAYS);
       break;
     case TransactionSchedule.MONTH:
-      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
+      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments - 1);
       break;
   }
   return finalRepaymentDate;
@@ -63,6 +64,12 @@ export const getFirstRepaymentDate = (claim: Claim): Date => {
     return new Date(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
   }
   return new Date(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
+};
+
+export const getPaymentOptionType = (claim: Claim): PaymentOptionType => {
+  return claim.isFullAdmission()
+    ? claim.fullAdmission?.paymentIntention?.paymentOption
+    : claim.partialAdmission?.paymentIntention?.paymentOption;
 };
 
 export const convertFrequencyToText = (frequency: string, lng: string): string => {
