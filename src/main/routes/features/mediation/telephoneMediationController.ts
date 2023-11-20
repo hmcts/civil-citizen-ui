@@ -1,16 +1,21 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {AVAILABILITY_FOR_MEDIATION, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
 import {t} from 'i18next';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveMediation} from 'services/features/response/mediation/mediationService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 
-const availabilityForMediationViewPath = 'features/carm/availability-for-mediation.njk';
-const availabilityForMediationController = Router();
+const availabilityForMediationViewPath = 'features/mediation/telephone-mediation.njk';
+const telephoneMediationController = Router();
 const PAGES = 'PAGES.AVAILABILITY_FOR_MEDIATION.';
 
-const availabilityForMediationContent = (claimId: string, lang:string) => {
+const HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME = 'hasTelephoneMeditationAccessed';
+
+const telephoneMediationContent = (claimId: string, lang:string) => {
   return new PageSectionBuilder()
     .addMainTitle(`${PAGES}PAGE_TITLE`)
     .addParagraph(`${PAGES}IF_THE_CLAIMANT_DISAGREES`)
@@ -34,23 +39,24 @@ const availabilityForMediationContent = (claimId: string, lang:string) => {
     .build();
 };
 
-availabilityForMediationController.get(AVAILABILITY_FOR_MEDIATION, (async (req, res, next: NextFunction) => {
+telephoneMediationController.get(TELEPHONE_MEDIATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    res.render(availabilityForMediationViewPath, {availabilityForMediationContent:availabilityForMediationContent(claimId, lang)});
+    res.render(availabilityForMediationViewPath, {telephoneMediationContent:telephoneMediationContent(claimId, lang)});
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-availabilityForMediationController.post(AVAILABILITY_FOR_MEDIATION, (async (req, res, next: NextFunction) => {
+telephoneMediationController.post(TELEPHONE_MEDIATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    //await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    await saveMediation(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
     res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-export default availabilityForMediationController;
+export default telephoneMediationController;

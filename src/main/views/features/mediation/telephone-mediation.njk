@@ -16,7 +16,7 @@
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
-            {% for content in availabilityForMediationContent %}
+            {% for content in telephoneMediationContent %}
               {{ itemContent(content,t) }}
             {% endfor %}
             <div class="govuk-button-group">

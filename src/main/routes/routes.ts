@@ -221,7 +221,7 @@ import claimantResponseCheckAnswersController from './features/claimantResponse/
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
-import availabilityForMediationController from 'routes/features/carm/availabilityForMediationController';
+import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
 export default [
   homeController,
   dashboardController,
@@ -428,5 +428,5 @@ export default [
   claimFeeController,
   cancelTrialArrangementsController,
   breathingSpaceLiftedCheckAnswersController,
-  availabilityForMediationController
+  telephoneMediationController,
 ];
