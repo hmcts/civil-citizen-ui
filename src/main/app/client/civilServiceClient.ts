@@ -155,11 +155,16 @@ export class CivilServiceClient {
   }
 
   async getClaimAmountFee(amount: number, req: AppRequest): Promise<number> {
+    const claimFeeData = await this.getClaimFeeData(amount, req);
+    return convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
+  }
+
+  async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       const claimFeeResponse: ClaimFeeData = response.data;
-      return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
+      return claimFeeResponse;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
