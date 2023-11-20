@@ -7,14 +7,16 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 import {Party} from 'common/models/party';
 import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
 import {
+  convertFrequencyToText,
+  getAmount,
   getFinalPaymentDate,
   getFirstRepaymentDate,
   getPaymentAmount,
+  getPaymentDate,
+  getPaymentOptionType,
   getRepaymentFrequency,
-  convertFrequencyToText,
   getRepaymentLength,
-  getAmount,
-  getPaymentDate, convertFrequencyToTextForRepaymentPlan,
+  convertFrequencyToTextForRepaymentPlan,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
@@ -59,6 +61,7 @@ const getClaimForPA = (repaymentFrequency: TransactionSchedule, paymentAmount?: 
   };
   claim.partialAdmission.howMuchDoYouOwe.amount = 200;
   claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
   claim.partialAdmission.paymentIntention.repaymentPlan = {
     paymentAmount: amount,
     repaymentFrequency: repaymentFrequency,
@@ -129,12 +132,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
       //When
-      getPaymentAmount(claim);
-      getRepaymentFrequency(claim);
-      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
+      const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (3 * WEEKDAYS));
       expect(finalRepaymentDate).toEqual(expected);
     });
 
@@ -142,12 +142,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.TWO_WEEKS;
       //When
-      getPaymentAmount(claim);
-      getRepaymentFrequency(claim);
-      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
+      const expected = addDaysToDate(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (6 * WEEKDAYS));
       expect(finalRepaymentDate).toEqual(expected);
     });
 
@@ -155,12 +152,9 @@ describe('repaymentUtils', () => {
       //Given
       claim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.MONTH;
       //When
-      getPaymentAmount(claim);
-      getRepaymentFrequency(claim);
-      getFirstRepaymentDate(claim);
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addMonths(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
+      const expected = addMonths(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 3);
       expect(finalRepaymentDate).toEqual(expected);
     });
   });
@@ -185,7 +179,7 @@ describe('repaymentUtils', () => {
       //When
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (4 * WEEKDAYS));
+      const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (3 * WEEKDAYS));
       expect(finalRepaymentDate).toEqual(expected);
     });
 
@@ -195,7 +189,7 @@ describe('repaymentUtils', () => {
       //When
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (8 * WEEKDAYS));
+      const expected = addDaysToDate(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, (6 * WEEKDAYS));
       expect(finalRepaymentDate).toEqual(expected);
     });
 
@@ -205,7 +199,7 @@ describe('repaymentUtils', () => {
       //When
       const finalRepaymentDate = getFinalPaymentDate(claim);
       //Then
-      const expected = addMonths(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 4);
+      const expected = addMonths(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate, 3);
       expect(finalRepaymentDate).toEqual(expected);
     });
   });
@@ -472,6 +466,25 @@ describe('repaymentUtils', () => {
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
       expect(repaymentLength).toContain('20');
+    });
+  });
+
+  describe('getPaymentOption', () => {
+    it('should return payment option when response type is part admission', () => {
+      //Given
+      const claim = getClaimForPA(TransactionSchedule.WEEK);
+      //When
+      const paymentOption = getPaymentOptionType(claim);
+      //Then
+      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
+    });
+    it('should return payment option when response type is full admission', () => {
+      //Given
+      const claim = getClaimForFA(TransactionSchedule.WEEK);
+      //When
+      const paymentOption = getPaymentOptionType(claim);
+      //Then
+      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
     });
   });
 });
