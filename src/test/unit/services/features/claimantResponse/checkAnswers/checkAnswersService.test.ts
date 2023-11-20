@@ -5,7 +5,7 @@ import {SignatureType} from 'models/signatureType';
 import {Claim} from 'models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {getSummarySections, saveStatementOfTruth, saveSubmitDate} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
+import {getSummarySections, saveStatementOfTruth} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {ResponseType} from 'common/form/models/responseType';
@@ -61,30 +61,6 @@ describe('Check Answers service', () => {
     });
   });
 
-  describe('saveSubmitDate', () => {
-
-    it('should throw error when save Submit Date', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(
-        saveSubmitDate(CLAIM_ID, new ClaimantResponse())).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-
-    it('should save Submit Date', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return new Claim();
-      });
-
-      //Then
-      await expect(
-        saveSubmitDate(CLAIM_ID, new ClaimantResponse())).toBeTruthy();
-    });
-  });
-  
   describe('Build check answers for pay by set date either for part admit or full admit ', () => {
     let claim: Claim;
     beforeEach(() => {
