@@ -247,11 +247,11 @@ describe('Task List Builder', () => {
 
     it('should not have freeTelephoneMediationTask for fast track cases', () => {
       const claim = new Claim();
-      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
       claim.partialAdmission.whyDoYouDisagree.text = 'test';
-      claim.partialAdmission.paymentIntention = {paymentOption: PaymentOptionType.BY_SET_DATE};
+      claim.partialAdmission.paymentIntention = { paymentOption: PaymentOptionType.BY_SET_DATE };
       claim.totalClaimAmount = 10001;
       const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
       expect(resolvingTheClaimSection.tasks.length).toBe(0);
