@@ -1,7 +1,7 @@
 
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
-import {HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgressionHearing => {
   if (ccdClaim) {
