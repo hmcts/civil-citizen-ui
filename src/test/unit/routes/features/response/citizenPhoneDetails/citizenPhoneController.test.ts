@@ -6,13 +6,13 @@ import {CITIZEN_PHONE_NUMBER_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockRedisFailure,
-  civilClaimResponseMock, mockDraftClaim
+  civilClaimResponseMock, mockDraftClaim,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {cloneDeep} from "lodash";
-import {Claim} from "models/claim";
+import {cloneDeep} from 'lodash';
+import {Claim} from 'models/claim';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 
