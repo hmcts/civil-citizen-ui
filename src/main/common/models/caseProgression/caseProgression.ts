@@ -3,6 +3,7 @@ import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialA
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
@@ -15,4 +16,5 @@ export class CaseProgression{
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
   defendantDocuments?: UploadDocumentsUserForm;
   claimantDocuments?: UploadDocumentsUserForm;
+  hearingFeeHelpSelection?: GenericYesNo;
 }
