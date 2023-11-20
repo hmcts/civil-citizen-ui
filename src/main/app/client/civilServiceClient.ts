@@ -269,6 +269,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
 
+  async submitCreateServiceRequestEvent(claimId: string, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_SERVICE_REQUEST_CUI, claimId, {}, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;

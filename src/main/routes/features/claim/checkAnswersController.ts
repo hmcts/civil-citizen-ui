@@ -21,6 +21,11 @@ import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
@@ -76,9 +81,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        //TODO Will be implemented after integration ready
-        //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
-        //res.redirect(paymentUrlWithId);
+        await civilServiceClient.submitCreateServiceRequestEvent(submittedClaim.id, <AppRequest>req);
         await deleteDraftClaimFromStore(userId);
         res.clearCookie('eligibilityCompleted');
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
