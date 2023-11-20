@@ -59,7 +59,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
 
-    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO && claim.isDefendantAgreedForMediation()) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
@@ -99,7 +99,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
+  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO && claim.isDefendantAgreedForMediation())  {
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
@@ -115,7 +115,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
     if(claim.hasClaimantConfirmedDefendantPaid()){
       tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
     }
-    if(claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()){
+    if((claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()) && claim.isDefendantAgreedForMediation()){
       tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
     }
   }

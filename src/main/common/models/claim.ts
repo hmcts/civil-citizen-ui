@@ -793,7 +793,8 @@ export class Claim {
   }
 
   isDefendantAgreedForMediation() {
-    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+    return (this.mediation?.canWeUse != null || this.mediation?.companyTelephoneNumber != null) &&
+      (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
   }
 
   isClaimantRejectedPaymentPlan() {
