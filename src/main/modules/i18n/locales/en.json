@@ -1171,14 +1171,16 @@
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
-        "CLAIM_ENDED": "This claim has ended",
-        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "CLAIM_ENDED": "You stopped this claim",
+        "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1215,7 +1217,9 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "CLAIMANT_ACCEPTED_PARTIAL_ADMISSION": "{{ claimantName }} accepted your admission of £{{ amount }}",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "Wait for the court to review the case"
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
