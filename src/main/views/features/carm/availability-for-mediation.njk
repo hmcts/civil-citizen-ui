@@ -14,10 +14,17 @@
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          {{ csrfProtection(csrf) }}
-          {% for content in availabilityForMediationContent %}
-            {{ itemContent(content,t) }}
-          {% endfor %}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            {% for content in availabilityForMediationContent %}
+              {{ itemContent(content,t) }}
+            {% endfor %}
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+            </div>
+          </form>
           {{ contactUsForHelp(t) }}
         </div>
       </div>

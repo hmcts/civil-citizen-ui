@@ -1,10 +1,9 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {AVAILABILITY_FOR_MEDIATION, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
+import {AVAILABILITY_FOR_MEDIATION, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {t} from 'i18next';
 
-import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const availabilityForMediationViewPath = 'features/carm/availability-for-mediation.njk';
@@ -32,7 +31,6 @@ const availabilityForMediationContent = (claimId: string, lang:string) => {
     .addParagraph(`${PAGES}IF_MEDIATION_IS_SUCCESSFUL`)
     .addParagraph(`${PAGES}IF_EITHER_PARTY`)
     .addParagraph(`${PAGES}IF_YOU_DO_NOT_REACH`)
-
     .build();
 };
 
@@ -49,8 +47,8 @@ availabilityForMediationController.get(AVAILABILITY_FOR_MEDIATION, (async (req, 
 availabilityForMediationController.post(AVAILABILITY_FOR_MEDIATION, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
-    res.redirect(constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION));
+    //await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
+    res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
   } catch (error) {
     next(error);
   }
