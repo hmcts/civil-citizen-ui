@@ -9,6 +9,7 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}
@@ -29,7 +30,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}</h1>
           {{ govukInsetText({
-              text: t('PAGES.CCJ_DEFENDANT_PAYMENT_DATE.INSET')
+              text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.INSET')
           }) }}
           <p class="govuk-body">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TOTAL_CLAIM_AMOUNT', {totalClaimAmount: totalAmount}) }}</p>
         </div>
@@ -38,6 +39,11 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate name="repaymentPlan">
             {{ csrfProtection(csrf) }}
+            {% if claim.isBusiness() === false %}
+              {% if claim.responseStatus === ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN %}
+                {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+              {% endif %}
+            {% endif %}
             <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
             <p class="govuk-!-margin-0 govuk-body-m"><strong>{{t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS')}}:</strong></p>
             {{ govukInput({

@@ -54,7 +54,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   if(ccdClaim.partialPayment){
     claimantResponse.ccjRequest = toCUICCJRequest(ccdClaim);
   }
-
+  claimantResponse.submittedDate = ccdClaim?.applicant1ResponseDate;
   claimantResponse.hasDefendantPaidYou = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec);
   claim.claimantResponse = claimantResponse;
   claim.caseRole = ccdClaim.caseRole;
