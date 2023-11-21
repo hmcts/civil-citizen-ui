@@ -33,7 +33,7 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
   }
 });
 
-judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
   res.redirect(constructResponseUrlWithIdParams(req.params.id, CCJ_PAYMENT_OPTIONS_URL));
 });
 
