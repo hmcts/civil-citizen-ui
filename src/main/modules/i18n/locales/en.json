@@ -928,6 +928,14 @@
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
       "CLAIM_NUMBER": "Your claim number:",
+      "COURT_BELIEVES_CAN_AFFORD": {
+        "TITLE": "If the court believes the defendant can afford your plan",
+        "CCJ_WILL_BE_ISSUED": "A County Court Judgement (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
+      },
+      "COURT_BELIEVES_CANT_AFFORD": {
+        "TITLE": "If the court believes the defendant can not afford your plan",
+        "COURT_WILL_SET": "The court will set its own repayment terms and issue a CCJ."
+      },
       "PAGE_TITLE": "Claimant Intention Confirmation",
       "PA_PAY_IMMEDIATELY": {
         "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
@@ -938,6 +946,12 @@
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+      },
+      "SEND_FINANCIAL_DETAILS": {
+        "MAKE_SURE": "Make sure you include your claim number: {{ caseNumber }}.",
+        "THE_COURT_WILL_REVIEW": "The court will review the details to see if the defendant can afford your repayment plan.",
+        "TITLE": "Send financial details",
+        "YOU_NEED_TO_SEND": "You need to send the defendant's financial details to the court."
       },
       "SIGN_SETTLEMENT_AGREEMENT": {
         "AFTER_REQUESTED": "After you've requested a CCJ you can ask the court to enforce payment.",
@@ -954,6 +968,17 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+<<<<<<< Updated upstream
+=======
+      },
+      "REJECTED_PAYMENT_PLAN": {
+        "MESSAGE": "You've proposed a different repayment plan"
+      },
+      "USE_THIS_ADDRESS": {
+        "TITLE": "Use this address",
+        "THE_DENFENDANT_SHOULD": "The defendant should have sent you the details - send them to:",
+        "OR_EMAIL": "Or email them to:"
+>>>>>>> Stashed changes
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
