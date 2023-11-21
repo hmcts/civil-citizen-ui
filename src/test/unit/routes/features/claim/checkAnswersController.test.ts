@@ -1,23 +1,23 @@
 import nock from 'nock';
 import config from 'config';
-import { getSummarySections } from 'services/features/claim/checkAnswers/checkAnswersService';
-import { CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL } from 'routes/urls';
-import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { getElementsByXPath } from '../../../../utils/xpathExtractor';
-import { createClaimWithBasicDetails } from '../../../../utils/mocks/claimDetailsMock';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { YesNo } from 'form/models/yesNo';
-import { Claim } from 'models/claim';
-import { ClaimDetails } from 'form/models/claim/details/claimDetails';
-import { HelpWithFees } from 'form/models/claim/details/helpWithFees';
-import { Response } from 'supertest';
-import { submitClaim } from 'services/features/claim/submission/submitClaim';
+import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getElementsByXPath} from '../../../../utils/xpathExtractor';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {Response} from 'supertest';
+import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Party } from 'models/party';
-import { PartyType } from 'models/partyType';
-import { Email } from 'models/Email';
+import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {Email} from 'models/Email';
 import axios from 'axios';
-import { CivilServiceClient } from 'client/civilServiceClient';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -34,21 +34,8 @@ jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
-jest.mock('../../../../../main/services/translation/response/claimantIdamDetails', () => ({
-  getClaimantIdamDetails: jest.fn((userDetails) => {
-    return {
-      email: 'email',
-      id: 'id',
-    };
-  }),
-}));
 jest.mock('../../../../../main/routes/guards/checkYourAnswersGuard', () => ({
   checkYourAnswersClaimGuard: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
-jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
-  claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
@@ -59,6 +46,7 @@ const mockSubmitClaim = submitClaim as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 
+const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockClaimWithPcqId = new Claim();
 mockClaimWithPcqId.pcqId = '123';
@@ -85,7 +73,6 @@ describe('Claim - Check answers', () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
-        claim.pcqId = '123';
         return claim;
       });
 
@@ -147,14 +134,13 @@ describe('Claim - Check answers', () => {
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
     it('should redirect to PCQ jouney', async () => {
+      isPcqShutterOnMock.mockResolvedValue(false);
       axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const mockClaimToRedirectToPcq = new Claim();
         mockClaimToRedirectToPcq.respondent1 = new Party();
         mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
         mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
-        mockClaimToRedirectToPcq.applicant1 = new Party();
-        mockClaimToRedirectToPcq.applicant1.type = PartyType.INDIVIDUAL;
         return mockClaimToRedirectToPcq;
       });
 
@@ -279,11 +265,6 @@ describe('Claim - Check answers', () => {
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
-      mockSubmitClaim.mockImplementation(() => {
-        const submittedClaim = new Claim();
-        submittedClaim.id = ':id';
-        return submittedClaim;
-      });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -300,11 +281,6 @@ describe('Claim - Check answers', () => {
         signerName: 'Test',
         acceptNoChangesAllowed: 'true',
       };
-      jest.spyOn(CivilServiceClient.prototype, 'submitCreateServiceRequestEvent')
-        .mockReturnValue(
-          new Promise((resolve, reject) => resolve(new Claim()),
-          ),
-        );
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
