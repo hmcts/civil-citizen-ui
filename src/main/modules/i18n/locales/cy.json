@@ -194,9 +194,9 @@
       "MONTH": "Pob mis"
     },
     "FREQUENCY_OF_PAYMENTS": {
-      "TWO_WEEKS": "Every 2 Weeks",
-      "MONTHLY": "Monthly",
-      "WEEKLY": "Weekly"
+      "TWO_WEEKS": "Pob pythefnos",
+      "MONTHLY": "Pob mis",
+      "WEEKLY": "Pob wythnos"
     },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad penodol",
@@ -2321,7 +2321,7 @@
       "SUPPORT_ANYONE_ELSE": "A yw'n cefnogi unrhyw un arall yn ariannol?",
       "THEIR_DEFENCE": "Ei amddiffyniad",
       "THEIR_EVIDENCE": "Their evidence",
-      "THEIR_TOE": "Their timeline of events",
+      "THEIR_TOE": "Ei linell amser o ddigwyddiadau",
       "TITLE": "Ymateb y diffynnydd",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Pam na all dalu'r swm llawn nawr?",
@@ -2334,7 +2334,7 @@
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu £{{ amount }} i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "Sut mae am dalu?",
-        "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
+        "SUGGESTED_REPAYMENT": "Awgrymodd y diffynnydd y cynllun ad-dalu hwn",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
           "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",

@@ -87,7 +87,7 @@ const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object>
 };
 
 export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: RepaymentPlan): Array<object> => {
-  return [
+  return [,
     {
       key: {
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
@@ -111,7 +111,7 @@ export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: R
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate, lng),
+        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate),
       },
       classes: 'govuk-summary-list__row--no-border',
     },
@@ -120,7 +120,7 @@ export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: R
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
+        text: formatDateToFullDate(getFinalPaymentDate(claim)),
       },
       classes: 'govuk-summary-list__row--no-border',
     },

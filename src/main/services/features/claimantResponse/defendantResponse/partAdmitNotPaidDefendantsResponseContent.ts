@@ -10,10 +10,10 @@ import {
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {t} from 'i18next';
 
-const getResponseStatement = (claim: Claim, lang: string) => {
+const getResponseStatement = (claim: Claim, lang: string, lng: string) => {
   switch(claim.responseStatus) {
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
-      return getResponseStatementPayInstallments(claim);
+      return getResponseStatementPayInstallments(claim, lng);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
       return getResponseStatementPayImmediately(claim);
@@ -23,17 +23,17 @@ const getResponseStatement = (claim: Claim, lang: string) => {
   }
 };
 
-const getResponseStatementPayInstallments = (claim: Claim): ClaimSummarySection[] => {
+const getResponseStatementPayInstallments = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', { lng }),
       variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU', { lng }),
       variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     },
   }];
@@ -105,7 +105,7 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): Cl
 
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim, lng),
+    ...getResponseStatement(claim, lng, lng),
     ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text, lng),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
