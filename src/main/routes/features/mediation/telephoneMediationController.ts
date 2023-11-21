@@ -11,31 +11,32 @@ import {AppRequest} from 'models/AppRequest';
 
 const availabilityForMediationViewPath = 'features/mediation/telephone-mediation.njk';
 const telephoneMediationController = Router();
-const PAGES = 'PAGES.AVAILABILITY_FOR_MEDIATION.';
+const PAGES = 'PAGES.TELEPHONE_FOR_MEDIATION.';
 
 const HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME = 'hasTelephoneMeditationAccessed';
 
 const telephoneMediationContent = (claimId: string, lang:string) => {
   return new PageSectionBuilder()
-    .addMainTitle(`${PAGES}PAGE_TITLE`)
-    .addParagraph(`${PAGES}IF_THE_CLAIMANT_DISAGREES`)
-    .addParagraph(`${PAGES}A_TELEPHONE_MEDIATION_APPOINTMENT`)
-    .addParagraph(`${PAGES}AN_IMPARTIAL_MEDIATOR`)
-    .addParagraph(`${PAGES}MEDIATION_WILL_LAST`)
-    .addTitle(`${PAGES}WHAT_HAPPENS`)
-    .addParagraph(`${PAGES}WE_WILL_ARRANGE`)
+    .addMainTitle(t(`${PAGES}PAGE_TITLE`, {lng: lang}))
+    .addParagraph(t(`${PAGES}IF_THE_CLAIMANT_DISAGREES`, {lng: lang}))
+    .addParagraph(t(`${PAGES}A_TELEPHONE_MEDIATION_APPOINTMENT`, {lng: lang}))
+    .addParagraph(t(`${PAGES}AN_IMPARTIAL_MEDIATOR`, {lng: lang}))
+    .addParagraph(t(`${PAGES}MEDIATION_WILL_LAST`, {lng: lang}))
+    .addTitle(t(`${PAGES}WHAT_HAPPENS`, {lng: lang}))
+    .addParagraph(t(`${PAGES}WE_WILL_ARRANGE`, {lng: lang}))
     .addRawHtml(
       `<ul class="govuk-list govuk-list--bullet">
                 <li>${t(PAGES+'BULLET_LIST_ITEM1', {lng: lang})}</li>
                 <li>${t(PAGES+'BULLET_LIST_ITEM2', {lng: lang})}</li>
                 <li>${t(PAGES+'BULLET_LIST_ITEM3', {lng: lang})}</li>
             </ul>`)
-    .addTitle(`${PAGES}WHAT_HAPPENS_IF`)
-    .addParagraph(`${PAGES}IF_YOU_DO_NOT_ATTEND`)
-    .addTitle(`${PAGES}AFTER_THE_PHONE_CALL`)
-    .addParagraph(`${PAGES}IF_MEDIATION_IS_SUCCESSFUL`)
-    .addParagraph(`${PAGES}IF_EITHER_PARTY`)
-    .addParagraph(`${PAGES}IF_YOU_DO_NOT_REACH`)
+    .addTitle(t(`${PAGES}WHAT_HAPPENS_IF`, {lng: lang}))
+    .addParagraph(t(`${PAGES}IF_YOU_DO_NOT_ATTEND`, {lng: lang}))
+    .addTitle(t(`${PAGES}AFTER_THE_PHONE_CALL`, {lng: lang}))
+    .addParagraph(t(`${PAGES}IF_MEDIATION_IS_SUCCESSFUL`, {lng: lang}))
+    .addParagraph(t(`${PAGES}IF_EITHER_PARTY`, {lng: lang}))
+    .addParagraph(t(`${PAGES}IF_YOU_DO_NOT_REACH`, {lng: lang}))
+    .addButton(`${t('COMMON.BUTTONS.CONTINUE', {lng: lang})}`,'')
     .build();
 };
 

@@ -342,7 +342,7 @@
     }
   },
   "PAGES": {
-    "AVAILABILITY_FOR_MEDIATION": {
+    "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Telephone mediation",
       "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
       "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",

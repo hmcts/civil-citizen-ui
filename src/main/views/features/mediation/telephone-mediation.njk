@@ -6,7 +6,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.AVAILABILITY_FOR_MEDIATION.PAGE_TITLE') }}
+  {{ setPageTitle(t('PAGES.TELEPHONE_FOR_MEDIATION.PAGE_TITLE')) }}
 {% endblock %}
 
 {% block content %}
@@ -19,11 +19,6 @@
             {% for content in telephoneMediationContent %}
               {{ itemContent(content,t) }}
             {% endfor %}
-            <div class="govuk-button-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
-              }) }}
-            </div>
           </form>
           {{ contactUsForHelp(t) }}
         </div>
