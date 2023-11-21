@@ -103,8 +103,8 @@ class Documents {
     I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2.docx\']');
 
     I.see('Defendant documents referred to in statement');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 1 05-02-2023.jpeg\']');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 2 06-02-2023.jpg\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 1 referred to in the statement of null 05-02-2023.jpeg\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 2 referred to in the statement of null 06-02-2023.jpg\']');
 
     I.see('Defendant expert evidence');
     I.see('Defendant expert report');
