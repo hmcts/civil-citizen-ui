@@ -65,7 +65,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
       delete claim.claimantResponse?.rejectionReason;
     }
-    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount()) {
+    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || !claim.hasClaimantRejectedDefendantResponse()) {
       logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
     }
