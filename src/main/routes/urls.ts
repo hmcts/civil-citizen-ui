@@ -78,6 +78,7 @@ export const CITIZEN_ALREADY_PAID_URL = `${PARTIAL_ADMISSION_URL}/already-paid`;
 export const CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL = `${PARTIAL_ADMISSION_URL}/payment-option`;
 export const CITIZEN_AMOUNT_YOU_PAID_URL = `${PARTIAL_ADMISSION_URL}/how-much-have-you-paid`;
 export const MEDIATION_DISAGREEMENT_URL = `${MEDIATION_URL}/mediation-disagreement`;
+export const MEDIATION_EMAIL_CONFIRMATION_URL = `${MEDIATION_URL}/email-confirmation`;
 export const DONT_WANT_FREE_MEDIATION_URL = `${MEDIATION_URL}/i-dont-want-free-mediation`;
 export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;
 export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;

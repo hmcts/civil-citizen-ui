@@ -8,13 +8,13 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.MEDIATION_DISAGREEMENT.PAGE_TITLE') }}
+  {{ setPageTitle(t(pageTitle)) }}
 {% endblock %}
 
 {% block content %}
   {% set yesHtml %}
     <p class="govuk-body">
-      {{ t('PAGES.MEDIATION_DISAGREEMENT.WELL_ASK_THE_CLAIMANT') }}
+      {{ t(pageTitle) }}
     </p>
   {% endset -%}
   <div class="govuk-width-container">
@@ -24,37 +24,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT') }}</h1>
           <div class="govuk-!-margin-bottom-8">
             <form method="post" novalidate>
              {{ csrfProtection(csrf) }}
-            <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_CLAIM_WILL_CONTINUE') }}</p>
-          <div class="govuk-!-margin-bottom-8">
-            <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.ADVANTAGES_OF_FREE_MEDIATION') }}</h2>
-            <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.MANY_ADVANTAGES_TO_FREE_MEDIATION') }}</p>
-            <ul class="govuk-list govuk-list--bullet">
-              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_CAN_BE') }}</li>
-              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_MEDIATOR_SPEAKS') }}</li>
-              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.IT_GIVES_YOU_CONTROL') }}</li>
-              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.CAN_BE_USED_IN_COURT') }}</li>
-              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_1') + ' ' }}
-                <a target="_blank" rel="noreferrer noopener"
-                   href="https://www.gov.uk/county-court-judgments-ccj-for-debt">
-                  {{ t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_2') }}
-                </a>
-                {{ ' ' + t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_3') }}</li>
-            </ul>
-          </div>
-          <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.WILL_YOU_CHANGE_YOUR_DECISION') }}</h2>
-          <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.IF_YOU_CHOOSE_NOT') }}</p>
-            {% if claimStatus == CaseState.AWAITING_APPLICANT_INTENTION %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            {% else %}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            {% endif %}
-              {{ govukButton({
-                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
-              }) }}
+                {{ yesNoRadioButton(t, 'option', 'option', pageText, form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+                {{ govukButton({
+                  text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+                }) }}
               {{ contactUsForHelp(t) }}
           </form>
           </div>
