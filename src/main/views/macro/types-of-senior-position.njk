@@ -1,6 +1,6 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% macro typesOfSeniorPosition() %}
+{% macro typesOfSeniorPosition(t) %}
   {% set positionCouldBe = '<p class="govuk-body">' + t('COMMON.TYPES_OF_SENIOR_POSITION.POSITION_COULD_BE') + '</p>' %}
   {% set seniorPositionsList = '<ul class="govuk-!-padding-left-4"><li>'  +
     t('COMMON.TYPES_OF_SENIOR_POSITION.SENIOR_POSITIONS.DIRECTOR') + '</li><li>' +
