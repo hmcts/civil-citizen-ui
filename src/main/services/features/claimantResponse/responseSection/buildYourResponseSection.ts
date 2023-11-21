@@ -60,7 +60,8 @@ export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang:
     t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
     partAdmitAcceptedHref,
     changeLabel(lang));
-}
+};
+
 export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
   const selectedOption = claim.claimantResponse?.suggestedPaymentIntention.paymentOption;
@@ -73,14 +74,14 @@ export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId
     changeLabel(lang));
 };
 
-export const buildSummaryForInstalmentDetails = (claim: Claim, claimId: string, lang: string,): SummaryRow[] => {
-  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
+export const buildSummaryForInstalmentDetails = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
+  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL);
   const repaymentPlan = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
   return [
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', { lang }), `${currencyFormatWithNoTrailingZeros(repaymentPlan.paymentAmount)}`, pageRef, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', { lang }), t(`COMMON.PAYMENT_FREQUENCY.${repaymentPlan.repaymentFrequency}`, { lang }), pageRef, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', { lang }), formatDateToFullDate(repaymentPlan.firstRepaymentDate), pageRef, changeLabel(lang)),
-  ]
+  ];
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {

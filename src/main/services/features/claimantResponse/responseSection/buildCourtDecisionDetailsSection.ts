@@ -6,7 +6,6 @@ import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { getAmount, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getPaymentDate, getRepaymentFrequency } from 'common/utils/repaymentUtils';
 import { t } from 'i18next';
 
-
 const buildSummaryCourtDecisionByInstallments = (claim: Claim, lang: string): SummaryRow[] => {
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
@@ -17,20 +16,20 @@ const buildSummaryCourtDecisionByInstallments = (claim: Claim, lang: string): Su
 
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN', { lang }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lang, fullName, amount, instalmentAmount, instalmentDate, frequency })),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${formatDateToFullDate(getFinalPaymentDate(claim))}`),
-  ]
-}
+  ];
+};
 
 const buildSummaryCourtDecisionBySetDate = (claim: Claim, lang: string) => {
   const paymentDate = formatDateToFullDate(getPaymentDate(claim));
   return [
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN', { lang }), t('PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL', { lang, paymentDate })),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lang }), `${paymentDate}`),
-  ]
-}
+  ];
+};
 
 const buildSummaryCourtDecisionStatement = (lang: string) => {
-  return summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW', { lang }), t('PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN', { lang }))
-}
+  return summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW', { lang }), t('PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN', { lang }));
+};
 
 export const buildSummaryForCourtDecisionDetails = (claim: Claim, lang: string): SummarySection => {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -47,7 +46,7 @@ export const buildSummaryForCourtDecisionDetails = (claim: Claim, lang: string):
 
   if (isPayBySetDate) {
     courtDecision.summaryList.rows.push(buildSummaryCourtDecisionStatement(lang));
-    courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionBySetDate(claim, lang))
+    courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionBySetDate(claim, lang));
   }
-  return courtDecision
-}
+  return courtDecision;
+};

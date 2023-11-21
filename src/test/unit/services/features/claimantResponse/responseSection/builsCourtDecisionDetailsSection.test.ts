@@ -28,28 +28,28 @@ describe('Check Answers Page :Court Decision Section', () => {
       expect(result.sections[6].summaryList.rows.length).toEqual(3);
       expect(result.sections[6].summaryList.rows[0]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN",
+          html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
       expect(result.sections[6].summaryList.rows[1]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL",
+          html: 'PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL',
         },
       });
       expect(result.sections[6].summaryList.rows[2]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
         value: {
           html: expectedPaymentDate,
         },
-      })
+      });
     });
 
     it('should show the check your answers for pay by set date for full admit', () => {
@@ -64,23 +64,23 @@ describe('Check Answers Page :Court Decision Section', () => {
       expect(result.sections[6].summaryList.rows.length).toEqual(3);
       expect(result.sections[6].summaryList.rows[0]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN",
+          html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
       expect(result.sections[6].summaryList.rows[1]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL",
+          html: 'PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL',
         },
       });
       expect(result.sections[6].summaryList.rows[2]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
         value: {
           html: expectedPaymentDate,
@@ -99,28 +99,28 @@ describe('Check Answers Page :Court Decision Section', () => {
       expect(result.sections[6].summaryList.rows.length).toEqual(3);
       expect(result.sections[6].summaryList.rows[0]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN",
+          html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
       expect(result.sections[6].summaryList.rows[1]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS",
+          html: 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS',
         },
       });
       expect(result.sections[6].summaryList.rows[2]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
         value: {
           html: expectedPaymentDate,
         },
-      })
+      });
     });
 
     it('should show the check your answers for pay by installments for full admit', () => {
@@ -135,23 +135,23 @@ describe('Check Answers Page :Court Decision Section', () => {
       expect(result.sections[6].summaryList.rows.length).toEqual(3);
       expect(result.sections[6].summaryList.rows[0]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN",
+          html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
       expect(result.sections[6].summaryList.rows[1]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
         value: {
-          html: "PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS",
+          html: 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS',
         },
       });
       expect(result.sections[6].summaryList.rows[2]).toEqual({
         key: {
-          text: "PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA",
+          text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
         value: {
           html: expectedPaymentDate,
