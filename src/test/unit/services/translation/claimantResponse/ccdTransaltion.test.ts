@@ -15,20 +15,20 @@ import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
 
 describe('Translate claimant response to ccd version', () => {
-  let claim: Claim;
+  let claim: Claim = new Claim();
   beforeEach(() => {
     claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     claim.claimantResponse = new ClaimantResponse();
     claim.respondent1 = new Party();
-  });
-  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
-    //Given
     claim.respondent1 = {
       responseType: ResponseType.PART_ADMISSION,
       partyDetails: {primaryAddress: new Address()},
       type: PartyType.COMPANY,
     };
+  });
+  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
+    //Given
     claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
@@ -140,7 +140,7 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1ProceedWithClaim).toBe(YesNoUpperCamelCase.YES);
   });
-  
+
   it('should translate applicant1PartAdmitConfirmAmountPaidSpec to ccd', () => {
 
     //Given

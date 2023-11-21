@@ -1,6 +1,6 @@
 import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/hearingFeeStartPageContent';
 import {Claim} from 'models/claim';
-import {HearingFeeInformation} from 'models/caseProgression/hearingFee';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
 
