@@ -4,7 +4,7 @@ import {
   Validate,
   ValidateIf,
   ValidatorConstraint,
-  ValidatorConstraintInterface
+  ValidatorConstraintInterface,
 } from 'class-validator';
 import {YesNo} from 'common/form/models/yesNo';
 
@@ -28,7 +28,7 @@ export class ApplyHelpFeesReferenceForm {
   @IsDefined({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   @Validate(ReferenceNumberValidator, {message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
-  referenceNumber: string;
+    referenceNumber: string;
 
   constructor(option?: string, referenceNumber?: string) {
     this.option = option;
