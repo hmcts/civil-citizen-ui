@@ -48,5 +48,6 @@ export const buildSummaryForCourtDecisionDetails = (claim: Claim, lang: string):
     courtDecision.summaryList.rows.push(buildSummaryCourtDecisionStatement(lang));
     courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionBySetDate(claim, lang));
   }
-  return courtDecision;
+
+  if (isPayByInstallment || isPayBySetDate) return courtDecision;
 };

@@ -117,13 +117,13 @@ describe('Check Answers service', () => {
     it('should check answers for part admit pay immediately for yes option', () => {
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
     });
   });
 });
