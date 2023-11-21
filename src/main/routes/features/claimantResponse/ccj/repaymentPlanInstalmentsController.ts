@@ -1,16 +1,16 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'form/models/genericForm';
 import {
   CCJ_CHECK_AND_SEND_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
-} from '../../../../routes/urls';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {ClaimantResponse} from '../../../../common/models/claimantResponse';
-import {InstalmentFirstPaymentDate} from '../../../../common/models/claimantResponse/ccj/instalmentFirstPaymentDate';
-import {RepaymentPlanInstalments} from '../../../../common/models/claimantResponse/ccj/repaymentPlanInstalments';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import { generateRedisKey, getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
-import {saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
+} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {InstalmentFirstPaymentDate} from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 
 const repaymentPlanInstalmentsController = Router();
 const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-instalments';
@@ -40,7 +40,7 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(redisKey);
     const totalClaimAmount = claim.totalClaimAmount;
     const form = new GenericForm(new RepaymentPlanInstalments(
       req.body.amount,
