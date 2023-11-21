@@ -26,7 +26,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
     const currentClaimId = req.params.id;
     const claim: Claim = await getClaimById(currentClaimId, req, true);
-    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res, carmEnabled);
   } catch (error) {
     next(error);
