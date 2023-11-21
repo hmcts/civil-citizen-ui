@@ -6,10 +6,15 @@ import {
   APPLY_HELP_WITH_FEES_REFERENCE,
   HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisWithoutAdmittedPaymentAmount} from '../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim, mockCivilClaimDocumentUploaded,
+  mockRedisFailure,
+  mockRedisWithoutAdmittedPaymentAmount,
+} from '../../../../../utils/mockDraftStore';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('services/features/caseProgression/hearingFee/hearingFeeService');
 jest.mock('../../../../../../main/modules/oidc');
@@ -55,6 +60,26 @@ describe('Apply for help with fees', () => {
           expect(res.text).toContain('Do you have a help with fees reference number?');
         });
     });
+
+    it('should return page if no case progression data', async () => {
+      app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
+      await request(app)
+        .get(APPLY_HELP_WITH_FEES_REFERENCE)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Do you have a help with fees reference number?');
+        });
+    });
+
+    it('should return 500 error page for redis failure', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(APPLY_HELP_WITH_FEES_REFERENCE)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 
   describe('on POST', () => {
@@ -88,6 +113,16 @@ describe('Apply for help with fees', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(HEARING_FEE_CONFIRMATION_URL);
+        });
+    });
+
+    it('should return 500 error page for redis failure', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(APPLY_HELP_WITH_FEES_REFERENCE)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

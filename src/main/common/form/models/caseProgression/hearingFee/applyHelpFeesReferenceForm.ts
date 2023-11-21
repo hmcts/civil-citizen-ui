@@ -14,10 +14,6 @@ export class ReferenceNumberValidator implements ValidatorConstraintInterface {
   validate(value: string) {
     return value.length === 11;
   }
-
-  defaultMessage() {
-    return 'ERRORS.VALID_ENTER_REFERENCE_NUMBER';
-  }
 }
 
 export class ApplyHelpFeesReferenceForm {
@@ -42,10 +38,5 @@ export class ApplyHelpFeesReferenceForm {
   isReferenceRequired(){
     return this.option === YesNo.YES;
   }
-
-  public static fromObject(record: Record<string, string>){
-    return new ApplyHelpFeesReferenceForm(record?.option, record?.referenceNumber);
-  }
-
 }
 
