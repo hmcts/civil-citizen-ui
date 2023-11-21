@@ -19,7 +19,7 @@ import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timeli
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {Address} from '../../main/common/form/models/address';
-import {PartyDetails} from '../../main/common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
 import {CitizenDate} from '../../main/common/form/models/claim/claimant/citizenDate';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
@@ -31,7 +31,7 @@ export const buildAddress = (): Address => {
 
 export const buildRespondent1 = (): Party => {
   const respondent = new Party();
-  respondent.partyDetails = new PartyDetails({});
+  respondent.partyDetails = new PartyDetailsCARM({});
   respondent.partyDetails.individualTitle = 'Mrs.';
   respondent.partyDetails.individualLastName = 'Mary';
   respondent.partyDetails.individualFirstName = 'Richards';

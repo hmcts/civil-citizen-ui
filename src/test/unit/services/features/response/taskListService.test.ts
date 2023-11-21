@@ -14,7 +14,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {YesNo} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
@@ -128,7 +128,7 @@ describe('Response Task List service', () => {
   describe('Respond to claim task list', () => {
     const caseData = new Claim();
     caseData.respondent1 = new Party();
-    caseData.respondent1.partyDetails = new PartyDetails({});
+    caseData.respondent1.partyDetails = new PartyDetailsCARM({});
     caseData.respondent1.partyDetails.individualFirstName = 'Joe';
     caseData.respondent1.type = PartyType.INDIVIDUAL;
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;

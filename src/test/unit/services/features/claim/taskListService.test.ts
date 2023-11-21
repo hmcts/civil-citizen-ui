@@ -20,7 +20,7 @@ import {t} from 'i18next';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {Party} from 'common/models/party';
 import {PartyType} from 'common/models/partyType';
-import {PartyDetails} from 'common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {YesNo} from 'common/form/models/yesNo';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {Reason} from 'common/form/models/claim/details/reason';
@@ -140,11 +140,11 @@ describe('Claim Task List service', () => {
       caseData.applicant1 = new Party();
       caseData.respondent1.type = PartyType.COMPANY;
       caseData.applicant1.type = PartyType.COMPANY;
-      caseData.respondent1.partyDetails = new PartyDetails({
+      caseData.respondent1.partyDetails = new PartyDetailsCARM({
         partyName: 'Test Company',
         primaryAddress: 'test',
       });
-      caseData.applicant1.partyDetails = new PartyDetails({
+      caseData.applicant1.partyDetails = new PartyDetailsCARM({
         partyName: 'Test Company',
         primaryAddress: 'test',
       });
@@ -183,11 +183,11 @@ describe('Claim Task List service', () => {
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.claimInterest = YesNo.YES;
-      caseData.respondent1.partyDetails = new PartyDetails({
+      caseData.respondent1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });
-      caseData.applicant1.partyDetails = new PartyDetails({
+      caseData.applicant1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });
@@ -232,11 +232,11 @@ describe('Claim Task List service', () => {
       caseData.applicant1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
-      caseData.respondent1.partyDetails = new PartyDetails({
+      caseData.respondent1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });
-      caseData.applicant1.partyDetails = new PartyDetails({
+      caseData.applicant1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });
@@ -285,11 +285,11 @@ describe('Claim Task List service', () => {
       caseData.applicant1 = new Party();
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
-      caseData.respondent1.partyDetails = new PartyDetails({
+      caseData.respondent1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });
-      caseData.applicant1.partyDetails = new PartyDetails({
+      caseData.applicant1.partyDetails = new PartyDetailsCARM({
         individualFirstName: 'Test Company',
         primaryAddress: 'test',
       });

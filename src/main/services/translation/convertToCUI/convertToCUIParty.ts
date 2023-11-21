@@ -1,7 +1,7 @@
 import {CCDParty} from 'models/ccdResponse/ccdParty';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
-import {PartyDetails} from 'form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {PartyPhone} from 'models/PartyPhone';
 import {Email} from 'models/Email';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
@@ -11,7 +11,7 @@ import {YesNo} from 'form/models/yesNo';
 
 export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
-  cuiParty.partyDetails = new PartyDetails({});
+  cuiParty.partyDetails = new PartyDetailsCARM({});
   if (ccdParty?.type === PartyType.INDIVIDUAL) {
     cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
     cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;

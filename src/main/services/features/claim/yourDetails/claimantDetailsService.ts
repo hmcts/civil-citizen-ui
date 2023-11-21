@@ -1,17 +1,17 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Party} from '../../../../common/models/party';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
   return Object.assign(new Party(), responseData?.applicant1);
 };
 //TODO remove that method and use saveClaimantProperty
-export const saveClaimant = async (claimId: string, partyDetails: PartyDetails): Promise<void> => {
+export const saveClaimant = async (claimId: string, partyDetails: PartyDetailsCARM): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (!responseData?.applicant1) {
     responseData.applicant1 = new Party();
-    responseData.applicant1.partyDetails = new PartyDetails({});
+    responseData.applicant1.partyDetails = new PartyDetailsCARM({});
   }
   responseData.applicant1.partyDetails.provideCorrespondenceAddress = partyDetails?.provideCorrespondenceAddress;
   responseData.applicant1.partyDetails.primaryAddress = partyDetails?.primaryAddress;

@@ -12,7 +12,7 @@ import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {PartyDetails} from 'form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,7 +25,7 @@ const claim = new Claim();
 
 const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails = new PartyDetailsCARM({});
   claim.applicant1.partyDetails.individualTitle = 'individualTitle';
   claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
   claim.applicant1.partyDetails.individualLastName = 'individualLastName';
@@ -39,7 +39,7 @@ const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
 
 const buildClaimOfApplicantType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails = new PartyDetailsCARM({});
   claim.applicant1.type = type;
   claim.applicant1.partyDetails.primaryAddress = buildAddress();
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
@@ -128,7 +128,7 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails = new PartyDetailsCARM({});
         claim.applicant1.type = PartyType.ORGANISATION;
         claim.applicant1.partyDetails.individualTitle = 'individualTitle';
         claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
@@ -150,7 +150,7 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails = new PartyDetailsCARM({});
         claim.applicant1.partyDetails.primaryAddress = undefined;
         claim.applicant1.type = PartyType.ORGANISATION;
         return claim;
@@ -458,7 +458,7 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with information without correspondent address', async () => {
       const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails = new PartyDetailsCARM({});
         claim.applicant1.type = PartyType.COMPANY;
         claim.applicant1.partyDetails.individualTitle = 'individualTitle';
         claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
@@ -480,7 +480,7 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with no primary, correspondence address or claimant details', async () => {
       const buildClaimOfApplicantWithoutInformation = (): Claim => {
         claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
+        claim.applicant1.partyDetails = new PartyDetailsCARM({});
         claim.applicant1.type = PartyType.COMPANY;
         claim.applicant1.partyDetails.primaryAddress = undefined;
         return claim;

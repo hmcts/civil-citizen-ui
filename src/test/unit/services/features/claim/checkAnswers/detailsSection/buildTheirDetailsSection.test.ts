@@ -12,7 +12,7 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
-import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 
@@ -104,7 +104,7 @@ describe('Citizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.SOLE_TRADER;
-      claim.respondent1.partyDetails = new PartyDetails({});
+      claim.respondent1.partyDetails = new PartyDetailsCARM({});
       claim.respondent1.partyDetails.soleTraderTradingAs = 'Business name';
     }
     //When

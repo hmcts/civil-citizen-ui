@@ -5,7 +5,7 @@ import {
   getSolicitorName,
 } from '../../../../../../main/services/features/response/contactThem/contactThemService';
 import {Party} from '../../../../../../main/common/models/party';
-import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {Address} from '../../../../../../main/common/form/models/address';
 
 describe('contact them service', () => {
@@ -73,7 +73,7 @@ describe('contact them service', () => {
 function buildClaimWithAddress(address: Address, correspondenceAddress?: Address, solicitorAddress?: Address): Claim {
   const claim = new Claim();
   claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetails({});
+  claim.applicant1.partyDetails = new PartyDetailsCARM({});
   claim.applicant1.partyDetails.partyName = 'Some Very Important Company Ltd';
   claim.applicant1.partyDetails.primaryAddress = address;
   claim.applicant1.type = PartyType.COMPANY;

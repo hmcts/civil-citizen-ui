@@ -4,7 +4,7 @@ import {YesNo} from '../../main/common/form/models/yesNo';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {GenericForm} from '../../main/common/form/models/genericForm';
 import {Party} from '../../main/common/models/party';
-import {PartyDetails} from '../../main/common/form/models/partyDetails';
+import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {PartyPhone} from '../../main/common/models/PartyPhone';
 
 export const buildCitizenAddress = (): GenericForm<Address> => {
@@ -19,7 +19,7 @@ export const buildCitizenAddress = (): GenericForm<Address> => {
 
 export const buildParty = (): GenericForm<Party> => {
   const party = new Party();
-  party.partyDetails = new PartyDetails({});
+  party.partyDetails = new PartyDetailsCARM({});
   party.partyDetails.postToThisAddress = YesNo.NO;
   party.partyDetails.contactPerson = 'Jane Smith';
   party.partyPhone = new PartyPhone('123456');

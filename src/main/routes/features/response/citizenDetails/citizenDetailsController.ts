@@ -8,7 +8,7 @@ import {
 } from 'services/features/common/defendantDetailsService';
 import {ClaimantOrDefendant, PartyType} from 'models/partyType';
 import {GenericForm} from 'form/models/genericForm';
-import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
+import {generateCorrespondenceAddressErrorMessages, PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 import {PartyPhone} from 'models/PartyPhone';
 import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
@@ -17,7 +17,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {PartyDetailsOptional} from 'form/models/PartyDetailsOptional';
+import {PartyDetails} from 'form/models/partyDetails';
 
 const citizenDetailsController = Router();
 
@@ -32,7 +32,7 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetails>, type: PartyType, partyPhone: GenericForm<PartyPhone>, carmEnabled: boolean): void {
+function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetailsCARM>, type: PartyType, partyPhone: GenericForm<PartyPhone>, carmEnabled: boolean): void {
 
   res.render(getViewPathWithType(type), {
     party: partyDetails,
@@ -75,7 +75,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
     const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     const redisKey = generateRedisKey(<AppRequest>req);
     const respondent = await getDefendantInformation(redisKey);
-    const partyDetails = carmEnabled ? new GenericForm(new PartyDetails(req.body)) : new GenericForm(new PartyDetailsOptional(req.body));
+    const partyDetails = carmEnabled ? new GenericForm(new PartyDetailsCARM(req.body)) : new GenericForm(new PartyDetails(req.body));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
     partyDetails.validateSync();

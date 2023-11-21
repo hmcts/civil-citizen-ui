@@ -16,7 +16,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
 import {PartyType} from 'models/partyType';
-import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
+import {generateCorrespondenceAddressErrorMessages, PartyDetailsCARM} from 'form/models/partyDetails-CARM';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
@@ -29,7 +29,7 @@ const detailsURLs = [
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 ];
 
-function renderPage(res: Response, req: Request, claimantDetails: GenericForm<PartyDetails>, partyType: PartyType): void {
+function renderPage(res: Response, req: Request, claimantDetails: GenericForm<PartyDetailsCARM>, partyType: PartyType): void {
   if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
     res.render(claimantOrganisationDetailsPath, {
       party: claimantDetails,
@@ -47,7 +47,7 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
-    const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
+    const claimantDetails = new GenericForm<PartyDetailsCARM>(claimant.partyDetails);
     renderPage(res, req, claimantDetails, claimant.type);
   } catch (error) {
     next(error);
@@ -59,7 +59,7 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
 
   try {
     const claimant = await getClaimantInformation(caseId);
-    const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
+    const partyDetails = new GenericForm<PartyDetailsCARM>(new PartyDetailsCARM(req.body));
 
     partyDetails.validateSync();
 

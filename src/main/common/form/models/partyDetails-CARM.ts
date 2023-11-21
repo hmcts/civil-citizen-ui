@@ -2,7 +2,7 @@ import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'clas
 import {Address} from 'form/models/address';
 import {GenericForm} from 'form/models/genericForm';
 
-export class PartyDetailsOptional {
+export class PartyDetailsCARM {
 
   @ValidateIf(o => o.individualTitle !== undefined)
   @MaxLength(35, {message: 'ERRORS.ENTER_VALID_TITLE'})
@@ -23,7 +23,9 @@ export class PartyDetailsOptional {
   @ValidateIf(o => o.partyName !== undefined)
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
-  contactPerson?: string;
+  @ValidateIf(o => o.contactPerson !== undefined)
+  @IsNotEmpty({message: 'ERRORS.VALID_CONTACT_PERSON'})
+    contactPerson?: string;
   postToThisAddress?: string;
   provideCorrespondenceAddress?: string;
   @ValidateNested()
@@ -52,7 +54,7 @@ export class PartyDetailsOptional {
 
 }
 
-export function generateCorrespondenceAddressErrorMessages(partyDetailsForm : GenericForm<PartyDetailsOptional>) {
+export function generateCorrespondenceAddressErrorMessages(partyDetailsForm : GenericForm<PartyDetailsCARM>) {
   partyDetailsForm.errors =  partyDetailsForm.errors
     .map(error => error.property === 'correspondenceAddress' ? ({...error, 'children' : error.children.map(childrenError => ({
       ...childrenError,
