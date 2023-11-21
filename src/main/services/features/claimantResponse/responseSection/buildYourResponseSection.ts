@@ -84,28 +84,28 @@ export const getReasonForRejecting = (claim : Claim, claimId: string, lng: strin
   );
 };
 
-export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
+export const buildYourResponseSection = (claim: Claim, claimId: string, lng: string): SummarySection => {
   const yourResponse = summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lang}),
+    title: t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}),
     summaryRows: [],
   });
 
   if (claim.claimantResponse?.hasDefendantPaidYou?.option) {
-    yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
   }
   if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
-    yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
   if (claim.isRejectionReasonCompleted()) {
-    yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 
   if (claim.isRejectAllOfClaimDispute()) {
-    yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lng));
   }
 
   if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY) {
-    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lng));
   }
 
   return yourResponse;
