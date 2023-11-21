@@ -1,3 +1,4 @@
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 import { YesNo } from 'common/form/models/yesNo';
 import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 
@@ -15,3 +16,9 @@ export const RESPONSFORCYAFORCHOOSEHOWTOPROCEED = {
   [ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT]: 'PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT',
   [ChooseHowProceed.REQUEST_A_CCJ]: 'PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ',
 };
+
+export const SUGGESTEDPLANPAYMENTOPTION = {
+  [PaymentOptionType.IMMEDIATELY]: "PAGES.CHECK_YOUR_ANSWER.IMMEDIATELY",
+  [PaymentOptionType.BY_SET_DATE]: "PAGES.CHECK_YOUR_ANSWER.IN_FULL_BY",
+  [PaymentOptionType.INSTALMENTS]: "PAGES.CHECK_YOUR_ANSWER.BY_INSTALMENTS",
+}

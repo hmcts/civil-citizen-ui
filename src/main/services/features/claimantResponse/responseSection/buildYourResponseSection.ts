@@ -8,13 +8,18 @@ import {
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
-import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED } from 'models/claimantResponse/checkAnswers';
+import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED, SUGGESTEDPLANPAYMENTOPTION } from 'models/claimantResponse/checkAnswers';
+import { PaymentDate } from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { currencyFormatWithNoTrailingZeros } from 'common/utils/currencyFormat';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -55,7 +60,27 @@ export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang:
     t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
     partAdmitAcceptedHref,
     changeLabel(lang));
+}
+export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
+  const selectedOption = claim.claimantResponse?.suggestedPaymentIntention.paymentOption;
+  const claimantSetDate = formatDateToFullDate((claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate)?.date);
 
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY', { lang }),
+    t(SUGGESTEDPLANPAYMENTOPTION[selectedOption], { lang, claimantSetDate }),
+    pageRef,
+    changeLabel(lang));
+};
+
+export const buildSummaryForInstalmentDetails = (claim: Claim, claimId: string, lang: string,): SummaryRow[] => {
+  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
+  const repaymentPlan = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
+  return [
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', { lang }), `${currencyFormatWithNoTrailingZeros(repaymentPlan.paymentAmount)}`, pageRef, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', { lang }), t(`COMMON.PAYMENT_FREQUENCY.${repaymentPlan.repaymentFrequency}`, { lang }), pageRef, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', { lang }), formatDateToFullDate(repaymentPlan.firstRepaymentDate), pageRef, changeLabel(lang)),
+  ]
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
@@ -146,6 +171,14 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
   }
   if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
     yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+  }
+
+  if (claimantResponse.suggestedPaymentIntention?.paymentOption) {
+    yourResponse.summaryList.rows.push(buildSummaryForSuggestedPlanDefendantToPay(claim, claimId, lang));
+  }
+
+  if (claimantResponse.suggestedPaymentIntention?.repaymentPlan) {
+    yourResponse.summaryList.rows.push(...buildSummaryForInstalmentDetails(claim, claimId, lang));
   }
   return yourResponse;
 };

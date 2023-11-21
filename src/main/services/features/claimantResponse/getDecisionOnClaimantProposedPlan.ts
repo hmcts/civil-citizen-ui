@@ -11,6 +11,8 @@ import {
   CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
+import { saveClaimantResponse } from './claimantResponseService';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,6 +36,7 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
   }
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
   const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, <AppRequest>req, claimantProposedPlan);
+  await saveClaimantResponse(generateRedisKey(req), courtDecision, 'courtDecision');
   return getRedirectionUrl(claim, courtDecision);
 };
 
