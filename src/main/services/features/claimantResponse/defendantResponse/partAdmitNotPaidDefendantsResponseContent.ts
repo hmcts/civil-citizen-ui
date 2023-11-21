@@ -8,7 +8,7 @@ import {
   getTheirTOEs,
 } from './fullDisputeDefendantsResponseContent';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
-import { t } from 'i18next';
+import {t} from 'i18next';
 
 const getResponseStatement = (claim: Claim, lng: string) => {
   switch(claim.responseStatus) {
@@ -71,17 +71,17 @@ const getResponseStatementPayByDate = (claim: Claim, lng: string): ClaimSummaryS
   }];
 };
 
-export const getTheirDefence = (text: string): ClaimSummarySection[] => {
+export const getTheirDefence = (text: string, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.TITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE', {lng}),
     },
   },
   {
     type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.WHY_THEY_DONT_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.WHY_THEY_DONT_OWE', {lng}),
     },
   },
   {
@@ -106,7 +106,7 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): Cl
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim, lng),
-    ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text),
+    ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text, lng),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
     ...getTheirEvidence(claim, lng),
