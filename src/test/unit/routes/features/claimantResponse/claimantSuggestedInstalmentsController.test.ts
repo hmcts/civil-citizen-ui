@@ -19,6 +19,10 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
+  getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
+  saveClaimantResponse: jest.fn(),
+}));
 
 const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
 
