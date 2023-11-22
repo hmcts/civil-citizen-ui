@@ -1,33 +1,40 @@
-import {NextFunction, Router, Response} from 'express';
+import {NextFunction, Router, Response, Request} from 'express';
 import {
-  MEDIATION_EMAIL_CONFIRMATION_URL,
+  MEDIATION_ALTERNATIVE_EMAIL_URL,
+  MEDIATION_EMAIL_CONFIRMATION_URL, MEDIATION_NEXT_3_MONTHS_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const emailMediationConfirmationViewPath = 'features/mediation/mediation-email-confirmation';
 const emailMediationConfirmationController = Router();
-const PAGES = 'PAGES.MEDIATION_EMAIL_CONFIRMATION.';
+const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_EMAIL_CONFIRMATION.';
 
-function renderView(form: GenericForm<GenericYesNo>, res: Response, lang: string): void {
-  const pageTitle = `${PAGES}PAGE_TITLE`;
-  //TODO add defendant email
-  const pageText = t(`${PAGES}PAGE_TEXT`, {lng: lang, email: 'defendant email'});
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText});
-}
+const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, defendantEmail: string): void => {
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
+  const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, defendantEmail: defendantEmail });
+  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText });
+};
+
+const getDefendantEmail = async (redisKey: string): Promise<string> => {
+  const claim = await getCaseDataFromStore(redisKey);
+  return claim.respondent1.emailAddress.emailAddress;
+};
 
 emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    const defendantEmail = await getDefendantEmail(redisKey);
     const mediation = await getMediation(redisKey);
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new GenericYesNo(mediation.isMediationEmailCorrect?.option));
-    renderView(form, res, lang);
+    renderView(form, res,req, defendantEmail);
   } catch (error) {
     next(error);
   }
@@ -35,20 +42,17 @@ emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, async
 
 emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
   try {
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claimId = req.params.id;
     const form = new GenericForm(new GenericYesNo(req.body.option));
     await form.validate();
-
     if (form.hasErrors()) {
-      renderView(form, res, lang);
+      const defendantEmail = await getDefendantEmail(redisKey);
+      renderView(form, res, req, defendantEmail);
     } else {
-      const redisKey = generateRedisKey(<AppRequest>req);
       await saveMediation(redisKey, form.model, 'isMediationEmailCorrect');
-      if (req.body.option === YesNo.NO) {
-        //TODO add the redirection when is no
-      } else {
-        //TODO add the redirection when is no
-      }
+      (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL))
+        : res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     }
   } catch (error) {
     next(error);

@@ -1957,7 +1957,7 @@
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ email }} to contact you about your mediation appointment?"
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
