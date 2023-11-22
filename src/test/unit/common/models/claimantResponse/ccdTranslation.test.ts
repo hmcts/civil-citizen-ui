@@ -1,249 +1,229 @@
-import {Claim} from 'common/models/claim';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
-import {ClaimantResponse} from 'common/models/claimantResponse';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {Mediation} from 'common/models/mediation/mediation';
-import {mockExpertDetailsList} from '../../features/directionsQuestionnaire/experts/expertDetailsService.test';
-import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
-import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
-import {CaseState} from 'common/form/models/claimDetails';
-import {Party} from 'models/party';
-import {ResponseType} from 'form/models/responseType';
-import {Address} from 'form/models/address';
-import {PartyType} from 'models/partyType';
-import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
-import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import { Claim } from 'models/claim';
+import { translateClaimantResponseDJToCCD } from 'services/translation/claimantResponse/ccdTranslation';
+import { YesNo } from 'common/form/models/yesNo';
+import { Party } from 'common/models/party';
+import { PartyType } from 'common/models/partyType';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 
-describe('Translate claimant response to ccd version', () => {
-  let claim: Claim = new Claim();
-  beforeEach(() => {
-    claim = new Claim();
-    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-    claim.claimantResponse = new ClaimantResponse();
+describe('translate draft claim to ccd version', () => {
+  it('should translate applicant 1 to ccd', () => {
+    //Given
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    claim.applicant1.type = PartyType.COMPANY;
+    claim.applicant1.partyDetails = {
+      partyName: 'test',
+    };
+    //When
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1).not.toBeUndefined();
+    expect(ccdClaim.applicant1?.companyName).toBe('test');
+  });
+  it('should translate respondent 1 to ccd', () => {
+    //Given
+    const claim = new Claim();
     claim.respondent1 = new Party();
-    claim.respondent1 = {
-      responseType: ResponseType.PART_ADMISSION,
-      partyDetails: {primaryAddress: new Address()},
-      type: PartyType.COMPANY,
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.respondent1.partyDetails = {
+      partyName: 'test',
     };
-  });
-  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
-    //Given
-    claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
     //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
     //Then
-    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBeUndefined();
+    expect(ccdClaim.respondent1).not.toBeUndefined();
+    expect(ccdClaim.respondent1?.companyName).toBe('test');
+  });
 
+  it('should translate the total claim amount', () => {
+    // given
+    const claim = new Claim();
+    claim.totalClaimAmount = 100;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // then
+    expect(ccdClaim.totalClaimAmount).toEqual(100);
   });
-  it('should translate fullAdmitSetDateAcceptPayment to ccd - full admission', () => {
-    //Given
-    claim.respondent1 = {
-      responseType: ResponseType.FULL_ADMISSION,
-      partyDetails: {primaryAddress: new Address()},
-      type: PartyType.ORGANISATION,
-    };
-    claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBeUndefined();
-  });
-  it('should set fullAdmitSetDateAcceptPayment (full admission) related ccd fields to undefined', () => {
-    //Given
-    claim.respondent1 = {
-      responseType: ResponseType.FULL_ADMISSION,
-      partyDetails: {primaryAddress: new Address()},
-      type: PartyType.ORGANISATION,
-    };
-    claim.claimantResponse = undefined;
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBeUndefined();
-    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBeUndefined();
-  });
-  it('should set fullAdmitSetDateAcceptPayment (part admission) related ccd fields to undefined', () => {
-    //Given
-    claim.respondent1 = {
-      responseType: ResponseType.PART_ADMISSION,
-      partyDetails: {primaryAddress: new Address()},
-      type: PartyType.ORGANISATION,
-    };
-    claim.claimantResponse = undefined;
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1AcceptFullAdmitPaymentPlanSpec).toBeUndefined();
-    expect(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec).toBeUndefined();
-  });
-  it('should translate hasPartAdmittedBeenAccepted to ccd', () => {
-    //Given
-    claim.claimantResponse.hasPartAdmittedBeenAccepted = <GenericYesNo>{option: YesNo.NO};
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1AcceptAdmitAmountPaidSpec).toBe(YesNoUpperCamelCase.NO);
-  });
-  it('should translate mediation to ccd', () => {
-    //Given
-    claim.claimantResponse.mediation = <Mediation>{
-      noMediationReason: {
-        iDoNotWantMediationReason: 'NO_DELAY_IN_HEARING',
+
+  it('should translate the partial payment amount when option is Yes', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        paidAmount: {
+          option: YesNo.YES,
+          amount: 10,
+        },
       },
-      mediationDisagreement: {
-        option: YesNo.NO,
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // then
+    expect(ccdClaim.partialPaymentAmount).toEqual('1000');
+  });
+
+  it('should not translate the partial payment amount when option is No', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        paidAmount: {
+          option: YesNo.NO,
+          amount: 10,
+        },
       },
-    };
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1ClaimMediationSpecRequiredLip.noMediationReasonLiP).toBe('NO_DELAY_IN_HEARING');
-    expect(ccdClaim.applicant1ClaimMediationSpecRequiredLip.hasAgreedFreeMediation).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1ClaimMediationSpecRequiredLip.mediationDisagreementLiP).toBe(YesNoUpperCamelCase.NO);
-  });
-  it('should translate small claim DQ to ccd', () => {
-    //Given
-    claim = getClaimantResponseDQ(claim);
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //Then
-    expect(ccdClaim.applicant1DQLanguage.court).toBe('WELSH');
-    expect(ccdClaim.applicant1DQLanguage.documents).toBe('ENGLISH');
-    expect(ccdClaim.applicant1DQVulnerabilityQuestions.vulnerabilityAdjustmentsRequired).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1DQRequestedCourt.requestHearingAtSpecificCourt).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1DQWitnesses.witnessesToAppear).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1ClaimExpertSpecRequired).toBe(YesNoUpperCamelCase.YES);
-    expect(ccdClaim.applicant1DQExperts.expertRequired).toBe(YesNoUpperCamelCase.YES);
-    expect(ccdClaim.applicant1DQExperts.details.length).toBe(1);
-    expect(ccdClaim.applicant1DQSmallClaimHearing.unavailableDatesRequired).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.giveEvidenceYourSelf).toBe(YesNoUpperCamelCase.YES);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.applicant1DQLiPExpert.expertReportRequired).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.applicant1DQLiPExpert.expertCanStillExamineDetails).toBe('test');
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.wantPhoneOrVideoHearing).toBe(YesNoUpperCamelCase.YES);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.whyPhoneOrVideoHearing).toBe('Need Phone hearing');
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
-    expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // then
+    expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
-  it('should translate applicant1ProceedWithClaim to ccd', () => {
+  it('should translate the payment type selection', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+          type: PaymentOptionType.IMMEDIATELY,
+        },
+      },
+    } as any;
 
-    //Given
-    claim.claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1ProceedWithClaim).toBe(YesNoUpperCamelCase.YES);
+    // then
+    expect(ccdClaim.paymentTypeSelection).toEqual('IMMEDIATELY');
   });
 
-  it('should translate applicant1PartAdmitConfirmAmountPaidSpec to ccd', () => {
+  it('should translate the payment set date when payment option type is BY_SET_DATE', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+          type: PaymentOptionType.BY_SET_DATE,
+        },
+        defendantPaymentDate: {
+          date: '2022-01-01',
+        },
+      },
+    } as any;
 
-    //Given
-    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
+    // then
+    expect(ccdClaim.paymentSetDate).toEqual('2022-01-01');
   });
 
-  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
+  it('should not translate the payment set date when payment option type is not BY_SET_DATE', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+          type: PaymentOptionType.IMMEDIATELY,
+        },
+        defendantPaymentDate: {
+          date: '2022-01-01',
+        },
+      },
+    } as any;
 
-    //Given
-    claim.respondent1 ={
-      responseType: ResponseType.PART_ADMISSION,
-    };
-    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+    // then
+    expect(ccdClaim.paymentSetDate).toBeUndefined();
   });
 
-  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in less', () => {
+  it('should translate the repayment due when option is Yes', () => {
+  // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        paidAmount: {
+          option: YesNo.YES,
+          totalAmount: 20,
+          amount: 10,
+        },
+      },
+    } as any;
 
-    //Given
-    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+    // then
+    expect(ccdClaim.repaymentDue).toEqual('10');
   });
 
-  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in full', () => {
+  it('should not translate the repayment due when option is No', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        paidAmount: {
+          option: YesNo.NO,
+          totalAmount: 20,
+          amount: 10,
+        },
+      },
+    } as any;
 
-    //Given
-    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = new GenericYesNo(YesNo.YES);
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
+    // then
+    expect(ccdClaim.repaymentDue).toBeUndefined();
+  });
 
-    //Then
-    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  it('should translate the repayment suggestion when payment option type is INSTALMENTS', () => {
+  // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+          type: PaymentOptionType.INSTALMENTS,
+        },
+        repaymentPlanInstalments: {
+          amount: 100,
+        },
+      },
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // then
+    expect(ccdClaim.repaymentSuggestion).toEqual('100');
+  });
+
+  it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {
+          type: PaymentOptionType.IMMEDIATELY,
+        },
+        repaymentPlanInstalments: {
+          amount: 100,
+        },
+      },
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // then
+    expect(ccdClaim.repaymentSuggestion).toBeUndefined();
   });
 });
-
-function getClaimantResponseDQ(claim: Claim): Claim {
-  claim.totalClaimAmount = 1500;
-  claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
-  claim.claimantResponse.directionQuestionnaire.hearing = {
-    phoneOrVideoHearing: {
-      option: YesNo.YES,
-      details: 'Need Phone hearing',
-    },
-    cantAttendHearingInNext12Months: new GenericYesNo(YesNo.NO),
-    supportRequiredList: {option: YesNo.NO},
-    whyUnavailableForHearing: {
-      reason: 'out of city',
-    },
-    determinationWithoutHearing: {
-      option: YesNo.NO,
-      reasonForHearing: 'reasonForHearing',
-    },
-    specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
-  };
-
-  claim.claimantResponse.directionQuestionnaire.experts = {
-    expertRequired: true,
-    expertReportDetails: {option: YesNo.NO},
-    permissionForExpert: new GenericYesNo(YesNo.YES),
-    expertCanStillExamine: {
-      option: YesNo.YES,
-      details: 'test',
-    },
-    expertDetailsList: mockExpertDetailsList,
-    expertEvidence: new GenericYesNo('Yes'),
-  };
-  claim.claimantResponse.directionQuestionnaire.defendantYourselfEvidence = new GenericYesNo(YesNo.YES);
-  claim.claimantResponse.directionQuestionnaire.witnesses = {
-    otherWitnesses: {
-      option: YesNo.NO,
-    },
-  };
-  claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = {
-    vulnerability: new GenericYesNo(YesNo.NO),
-  };
-  claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = {
-    language: {
-      speakLanguage: LanguageOptions.WELSH,
-      documentsLanguage: LanguageOptions.ENGLISH,
-    },
-  };
-  return claim;
-}
