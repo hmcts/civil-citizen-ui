@@ -131,3 +131,7 @@ export const formatStringTimeHMS = (date: Date) => {
 export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
   return Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
 }
+
+export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
+  return date >= specificDate;
+}
