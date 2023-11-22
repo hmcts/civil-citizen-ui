@@ -16,6 +16,7 @@ import {
   getPaymentDate,
   getRepaymentFrequency,
   getRepaymentLength,
+  convertFrequencyToTextForRepaymentPlan,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';

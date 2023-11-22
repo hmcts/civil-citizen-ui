@@ -5,6 +5,12 @@ import {t} from 'i18next';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const WEEKDAYS = 7;
+const frequencyTextMap: Record<TransactionSchedule, string> = {
+  [TransactionSchedule.WEEK]: 'COMMON.SCHEDULE.WEEK_LOWER_CASE',
+  [TransactionSchedule.TWO_WEEKS]: 'COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE',
+  [TransactionSchedule.FOUR_WEEKS]: 'COMMON.SCHEDULE.MONTH',
+  [TransactionSchedule.MONTH]: 'COMMON.SCHEDULE.MONTH',
+};
 
 const frequencyTextMap: Record<TransactionSchedule, string> = {
   [TransactionSchedule.WEEK]: 'COMMON.SCHEDULE.WEEK_LOWER_CASE',

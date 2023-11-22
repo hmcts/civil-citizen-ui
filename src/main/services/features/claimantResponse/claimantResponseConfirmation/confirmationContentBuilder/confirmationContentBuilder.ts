@@ -4,13 +4,15 @@ import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
 import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import { YesNo } from 'common/form/models/yesNo';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-
-  if (claimantResponse.isClaimantNotIntendedToProceed) {
+  if (claimantResponse.isSignSettlementAgreement) {
+    claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
+  } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
   } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
@@ -25,8 +27,12 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
+  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
 
+  if (claimantResponse.isSignSettlementAgreement) {
+    return SignSettlementAgreementNextSteps;
+  }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
     return RCDisputeNotContinueNextSteps;
   }
@@ -43,7 +49,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const hasMediationDisagreement = claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation();
   const isFullDefenceWithClaimantRejected = claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
-  
+
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
