@@ -251,3 +251,4 @@ export const APPLY_HELP_WITH_FEES = `${BASE_CASE_URL}/apply-help-with-fees`;
 export const HEARING_FEE_APPLY_HELP_FEE_HEARING_FEE = `${BASE_CASE_PROGRESSION_URL}/apply-help-fee-hearing-fee`;
 export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
 export const APPLY_HELP_WITH_FEES_REFERENCE = `${APPLY_HELP_WITH_FEES}/reference-number`;
+export const PAY_HEARING_FEE_UNSUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/payment-unsuccessful`;
