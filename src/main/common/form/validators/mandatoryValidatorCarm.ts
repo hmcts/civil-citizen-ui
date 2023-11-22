@@ -4,7 +4,7 @@ import {ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments} 
  * Validates that the input value is not empty
  */
 @ValidatorConstraint({name: 'mandatoryValidatorCam', async: false})
-export class IsNotEmpty implements ValidatorConstraintInterface {
+export class IsNotEmptyForCarm implements ValidatorConstraintInterface {
 
   // Returns true if it passes validation or if carm is not enabled
   validate(input: any, validationArguments?: ValidationArguments) {
