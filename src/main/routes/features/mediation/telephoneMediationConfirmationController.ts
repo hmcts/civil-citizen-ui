@@ -46,8 +46,8 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, asyn
     const form = new GenericForm(new GenericYesNo(req.body.option));
     await form.validate();
     if (form.hasErrors()) {
-      const defendantEmail = await getDefendantPhone(redisKey);
-      renderView(form, res, req, defendantEmail);
+      const defendantPhone = await getDefendantPhone(redisKey);
+      renderView(form, res, req, defendantPhone);
     } else {
       await saveMediation(redisKey, form.model, 'isMediationPhoneCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, TELEPHONE_MEDIATION_URL))
