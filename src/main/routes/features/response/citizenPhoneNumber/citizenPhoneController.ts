@@ -9,9 +9,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
 import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
@@ -24,8 +22,8 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, ca
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
-    const currentClaimId = req.params.id;
-    const claim: Claim = await getClaimById(currentClaimId, req, true);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res, carmEnabled);
   } catch (error) {
@@ -35,8 +33,8 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res, next: NextFunction) => {
     try {
-      const currentClaimId = req.params.id;
-      const claim: Claim = await getClaimById(currentClaimId, req, true);
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claim = await getCaseDataFromStore(redisKey);
       const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
       const model = carmEnabled ?  new CitizenTelephoneNumber(req.body.telephoneNumber)
         : new CitizenTelephoneNumberOptional(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber);
