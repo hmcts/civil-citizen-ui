@@ -1,9 +1,12 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {PhoneUKValidator} from '../validators/phoneUKValidator';
 
-export class CitizenTelephoneNumberOptional {
+// This class will be used after CARM release
+export class CitizenTelephoneNumber {
+  @ValidateIf(o => o.telephoneNumber !== undefined)
   @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    telephoneNumber?: string;
+  @IsNotEmpty({message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
+  telephoneNumber?: string;
   ccdPhoneExist?: boolean;
 
   constructor(telephoneNumber?: string,  ccdPhoneExist?: boolean) {
@@ -12,15 +15,12 @@ export class CitizenTelephoneNumberOptional {
   }
 }
 
-export class CitizenTelephoneNumber {
-  @ValidateIf(o => o.telephoneNumber !== undefined)
+// This class will be deleted after CARM release
+export class CitizenTelephoneNumberOptional extends CitizenTelephoneNumber {
   @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-  @IsNotEmpty({message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
     telephoneNumber?: string;
-  ccdPhoneExist?: boolean;
 
   constructor(telephoneNumber?: string,  ccdPhoneExist?: boolean) {
-    this.telephoneNumber = telephoneNumber?.trim();
-    this.ccdPhoneExist = ccdPhoneExist;
+    super(telephoneNumber, ccdPhoneExist);
   }
 }
