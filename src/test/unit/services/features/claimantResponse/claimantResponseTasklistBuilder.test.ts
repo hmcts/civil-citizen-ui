@@ -13,8 +13,12 @@ import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
-import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
-import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {
+  VulnerabilityQuestions,
+} from 'common/models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
+import {
+  WelshLanguageRequirements,
+} from 'common/models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,6 +46,7 @@ import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {Mediation} from 'common/models/mediation/mediation';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -63,6 +68,9 @@ describe('Full Defence', () => {
       isFullAdmission: jest.fn(),
       claimantResponse: {
         hasFullDefenceStatesPaidClaimSettled: {
+          option: 'no',
+        },
+        hasPartPaymentBeenAccepted: {
           option: 'no',
         },
       },
@@ -100,6 +108,51 @@ describe('Full Defence', () => {
     expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
     expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
   });
+  it('should display decide wether to proceed task with proceed value as no as complete and mediation part is built for full defense states paid', () => {
+    //Given
+    const claim = {
+      isPartialAdmission: jest.fn(),
+      isPartialAdmissionPaid: jest.fn(),
+      isFullDefence: jest.fn(),
+      hasPaidInFull: jest.fn(),
+      hasConfirmedAlreadyPaid: jest.fn(),
+      isFullAdmission: jest.fn(),
+      claimantResponse: {
+        hasPartPaymentBeenAccepted: {
+          option: 'no',
+        },
+      },
+      totalClaimAmount: 9000,
+      rejectAllOfClaim: {
+        howMuchHaveYouPaid: {
+          amount: '900000',
+        },
+      },
+      responseStatus: ClaimResponseStatus.RC_PAID_FULL,
+      isClaimantIntentionPending: jest.fn(),
+      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
+      hasClaimantRejectedDefendantResponse: jest.fn(),
+      hasClaimantRejectedDefendantPaid: jest.fn(),
+      hasClaimantRejectedPartAdmitPayment: jest.fn(),
+    } as any;
+    claim.isFullDefence.mockReturnValue(true);
+    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
+    claim.isClaimantIntentionPending.mockReturnValue(true);
+    claim.hasPaidInFull.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
+    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
+    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+    //When
+    const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
+    //Then
+    expect(whatToDoNext.tasks.length).toBe(2);
+    expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
+    expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    expect(whatToDoNext.tasks[1].description).toEqual(
+      'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+    expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+  });
   it('should display decide wether to proceed task with proceed value as yes as complete for full defense states paid', () => {
     //Given
     const claim = new Claim();
@@ -112,6 +165,9 @@ describe('Full Defence', () => {
     claim.totalClaimAmount = 9000;
     claim.claimantResponse = {
       hasFullDefenceStatesPaidClaimSettled: {
+        option: 'yes',
+      },
+      hasPartPaymentBeenAccepted: {
         option: 'yes',
       },
     } as ClaimantResponse;
@@ -454,6 +510,9 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -477,6 +536,9 @@ describe('Claimant Response Task List builder', () => {
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -503,6 +565,9 @@ describe('Claimant Response Task List builder', () => {
         chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
         signSettlementAgreement: {signed: YesNo.YES},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
@@ -525,6 +590,9 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse = <ClaimantResponse>{
         hasPartAdmittedBeenAccepted: {option: YesNo.YES},
         fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
+        suggestedPaymentIntention :{
+          paymentOption : PaymentOptionType.BY_SET_DATE,
+        },
         chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
         courtProposedDate: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE},
         ccjRequest: {paidAmount: {option: YesNo.YES}},
@@ -749,6 +817,30 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display settle the claim task as complete for full defense states paid', () => {
+      jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.YES } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+    });
+    it('should display not settle the claim task as complete for full defense states paid', () => {
+      jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.NO } };
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      //Then
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
+      expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
     });
   });
 

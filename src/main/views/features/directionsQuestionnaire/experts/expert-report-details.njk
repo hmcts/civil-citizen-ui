@@ -53,7 +53,7 @@
           <div>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: reportDetailsHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: reportDetailsHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

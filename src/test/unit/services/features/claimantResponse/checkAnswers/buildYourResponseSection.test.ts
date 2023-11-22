@@ -8,8 +8,9 @@ import {Party} from 'common/models/party';
 import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
 import {t} from 'i18next';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -31,6 +32,10 @@ describe('Your response Section', () => {
   claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.NO;
   it('should return Your response sections when FA', async () => {
     //Given
+    const claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
@@ -81,19 +86,35 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(2);
+    expect(yourResponseSection.summaryList.rows.length).toBe(4);
   });
 
-  it('should return Your response sections when rejection immediate', async () => {
+  it('should return Your response sections when accepted and settled', async () => {
     //Given
 
-    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT};
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(2);
+    expect(yourResponseSection.summaryList.rows.length).toBe(6);
+    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT', {lng}));
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
+  });
+
+  it('should return Your response sections when accepted and issue a CCJ', async () => {
+    //Given
+
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.REQUEST_A_CCJ};
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.summaryList.rows.length).toBe(6);
+    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
   });
 
   it('should return Your response sections when rejection installments', async () => {
@@ -111,7 +132,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(5);
+    expect(yourResponseSection.summaryList.rows.length).toBe(9);
   });
 
 });

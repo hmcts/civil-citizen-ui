@@ -8,6 +8,8 @@ const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantR
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
+const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
+const evidenceUpload = require('../fixtures/events/evidenceUpload');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -39,6 +41,31 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performEvidenceUpload: async (user, caseId, claimType) => {
+    console.log('This is inside performEvidenceUpload() : ' + caseId);
+    eventName = 'EVIDENCE_UPLOAD_APPLICANT';
+    let payload;
+    if (claimType === 'FastTrack') {
+      payload = evidenceUpload.evidenceUploadFastTrack();
+    } else if (claimType === 'SmallClaims') {
+      payload = evidenceUpload.evidenceUploadSmallClaims();
+    }
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    console.log('End of performEvidenceUpload()');
+  },
+
+  performTrialArrangements: async (user, caseId) => {
+    console.log('This is inside performTrialArrangements() : ' + caseId);
+    eventName = 'TRIAL_READINESS';
+    const payload = createATrialArrangement.createATrialArrangement();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    console.log('End of performTrialArrangements()');
+  },
 
   performAnAssistedOrder: async (user, caseId) => {
     console.log('This is inside performAnAssistedOrder() : ' + caseId);

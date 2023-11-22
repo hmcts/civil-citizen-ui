@@ -4,6 +4,8 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
@@ -11,19 +13,19 @@ import {
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
-import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
 import {
+  RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
-  RESPONSEFORREPAYMENTPLAN,
-  RESPONSEFREQUENCY,
+  RESPONSEFORREPAYMENTPLAN, RESPONSEFREQUENCY,
+  RESPONSFORCYAFORCHOOSEHOWTOPROCEED
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {formatStringDateSlash} from 'common/utils/dateUtils';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
-export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
   const intentionToProceed = claim.claimantResponse?.intentionToProceed?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   return summaryRow(
@@ -33,14 +35,35 @@ export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string,
     changeLabel(lang));
 };
 
-export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+export const buildPartAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
-  const selectedOption = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option;
+  const selectedOption = claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option as YesNo;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', {lang}),
     t(RESPONSEFORNOTPAIDPAYIMMEDIATELY[selectedOption], {lang}),
     partAdmitAcceptedHref,
     changeLabel(lang));
+
+};
+
+export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL);
+  const selectedOption = claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option as YesNo;
+  return summaryRow(
+      t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN', { lang }),
+      t(RESPONSEFORDEFENDANTREPAYMENTPLAN[selectedOption], { lang }),
+      pageRef,
+      changeLabel(lang));
+};
+
+export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
+  return summaryRow(
+      t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
+      t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
+      partAdmitAcceptedHref,
+      changeLabel(lang));
 
 };
 
@@ -109,7 +132,6 @@ export const buildRejectPlan = (claim: Claim, claimId: string, lang: string): Su
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
@@ -129,7 +151,7 @@ export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: s
   );
 };
 
-export const getDoYouWantToSettlePaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
   const option = claim.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES
     ? YesNoUpperCase.YES
@@ -147,7 +169,7 @@ export const getDoYouWantToSettlePaid = (claim: Claim, claimId: string, lng: str
   );
 };
 
-export const getReasonForRejecting = (claim: Claim, claimId: string, lng: string): SummaryRow => {
+export const getReasonForRejecting = (claim : Claim, claimId: string, lng: string): SummaryRow => {
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_REJECTING', {lng}),
     claim.claimantResponse?.rejectionReason?.text,
@@ -156,18 +178,34 @@ export const getReasonForRejecting = (claim: Claim, claimId: string, lng: string
   );
 };
 
+export const buildSummaryQuestionForChooseHowToProceed = (claim: Claim, claimId: string, lang: string) => {
+  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN', { lang }),
+    t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], { lang }),
+    constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
+    changeLabel(lang));
+};
+
 export const buildYourResponseSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
+  const claimantResponse = claim.claimantResponse;
   const yourResponse = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lang}),
     summaryRows: [],
   });
 
-  if (claim.claimantResponse?.hasDefendantPaidYou?.option) {
+  if (claimantResponse.hasPartAdmittedBeenAccepted?.option) {
+    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
+  }
+
+  if (claimantResponse.hasDefendantPaidYou?.option) {
     yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lang));
   }
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
+
+  if (claimantResponse.hasPartPaymentBeenAccepted?.option) {
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lang));
   }
+
   if (claim.isRejectionReasonCompleted()) {
     yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lang));
   }
@@ -175,12 +213,20 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
   if (claim.isRejectAllOfClaimDispute()) {
     yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lang));
   }
-  if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY) {
-    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
-  }
 
+  if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
+    yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
+  }
+  if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+    yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+  }
   if (claim.isClaimantRejectedPaymentPlan) {
-    yourResponse.summaryList.rows.push(buildRejectPlan(claim, claimId, lang));
+    if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
+      yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
+    }
+    if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+      yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+    }    yourResponse.summaryList.rows.push(buildRejectPlan(claim, claimId, lang));
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
       yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lang));
     }
@@ -194,4 +240,14 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
   }
 
   return yourResponse;
+};
+
+export const buildHowYouWishToProceed = (claim: Claim, claimId: string, lang: string) => {
+  const claimantResponse = claim.claimantResponse;
+  if (claimantResponse.chooseHowToProceed?.option) {
+    return summarySection({
+      title: t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED', { lang }),
+      summaryRows: [buildSummaryQuestionForChooseHowToProceed(claim, claimId, lang)],
+    });
+  }
 };

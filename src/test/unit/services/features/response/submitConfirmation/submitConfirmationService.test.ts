@@ -380,6 +380,7 @@ describe('Submit Confirmation service', () => {
         new WhyDoYouDisagree(''),
         new Defence(),
       );
+      claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.YES}};
 
       it('should display submit status', () => {
         const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
@@ -396,9 +397,9 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_RESPONSE');
         expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.THE_CLAIM_WILL_BE_SETTLED');
         expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.WE_ASK_CLAIMANT_FOR_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
+        expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.WE_ASK_CLAIMANT_FOR_MEDIATION');
+        expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION');
+        expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
       });
     });
 
@@ -434,9 +435,9 @@ describe('Submit Confirmation service', () => {
       it('should display next steps section', () => {
         const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
         expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
+        expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION');
+        expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE');
+        expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
       });
     });
 

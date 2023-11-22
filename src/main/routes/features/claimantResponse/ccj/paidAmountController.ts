@@ -11,18 +11,20 @@ import {getClaimantResponse, saveClaimantResponse} from '../../../../services/fe
 import {PaidAmount} from '../../../../common/models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
+import {getClaimById} from 'modules/utilityService';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
 const crPropertyName = 'paidAmount';
 const crParentName = 'ccjRequest';
-const urlFromTaskList = 'county-court-judgement';
+export const urlFromTaskList = 'county-court-judgement';
 function renderView(form: GenericForm<PaidAmount>, res: Response): void {
   res.render(paidAmountViewPath, {form});
 }
 
 paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req, res, next: NextFunction) => {
   try {
+    await getClaimById(req.params.id, req, true);
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const paidAmount = claimantResponse.ccjRequest?.paidAmount ?
       claimantResponse.ccjRequest.paidAmount : new PaidAmount();
@@ -40,7 +42,7 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     const claimedAmount = claim.totalClaimAmount;
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
-    if(req.url.includes(urlFromTaskList)){
+    if (req.url.includes(urlFromTaskList)) {
       redirectURL = CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL;
     }
     paidAmount.validateSync();
