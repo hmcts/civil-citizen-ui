@@ -87,7 +87,7 @@ const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object>
 };
 
 export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: RepaymentPlan): Array<object> => {
-  return [,
+  return [
     {
       key: {
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.REGULAR_PAYMENTS', {lng}),
