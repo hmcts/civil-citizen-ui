@@ -78,10 +78,14 @@ export const CITIZEN_ALREADY_PAID_URL = `${PARTIAL_ADMISSION_URL}/already-paid`;
 export const CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL = `${PARTIAL_ADMISSION_URL}/payment-option`;
 export const CITIZEN_AMOUNT_YOU_PAID_URL = `${PARTIAL_ADMISSION_URL}/how-much-have-you-paid`;
 export const MEDIATION_DISAGREEMENT_URL = `${MEDIATION_URL}/mediation-disagreement`;
+export const MEDIATION_EMAIL_CONFIRMATION_URL = `${MEDIATION_URL}/email-confirmation`;
+export const MEDIATION_PHONE_CONFIRMATION_URL = `${MEDIATION_URL}/phone-confirmation`;
+export const TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/telephone-mediation`;
 export const DONT_WANT_FREE_MEDIATION_URL = `${MEDIATION_URL}/i-dont-want-free-mediation`;
 export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;
 export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
+
 export const CITIZEN_REJECT_ALL_CLAIM_URL = `${BASE_CASE_RESPONSE_URL}/reject-all-of-claim`;
 export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;
 export const RESPONSE_CHECK_ANSWERS_URL = `${BASE_CASE_RESPONSE_URL}/check-and-send`;
