@@ -23,6 +23,12 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const caseData: Claim = await getClaimById(currentClaimId, req, true);
     const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
 
+    console.log();
+    console.log('FILE: taskListController.ts');
+    console.log('FUNCTION: taskListController.get()');
+    console.log('VALUES: ');
+    console.log('carmApplicable: ' + carmApplicable);
+
     await setResponseDeadline(caseData, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang, carmApplicable);
 

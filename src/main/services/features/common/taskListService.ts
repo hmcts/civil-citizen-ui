@@ -13,6 +13,11 @@ import {t} from 'i18next';
 import {Claim} from '../../../common/models/claim';
 
 const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, carmApplicable = false) => {
+  console.log();
+  console.log('FILE: taskListService.ts');
+  console.log('FUNCTION: getTaskLists()');
+  console.log('VALUES: ');
+  console.log('carmApplicable: ' + carmApplicable);
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array

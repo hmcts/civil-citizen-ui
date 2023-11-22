@@ -133,5 +133,12 @@ export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
 }
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
+  console.log();
+  console.log('FILE: dateUtils.ts');
+  console.log('FUNCTION: isDateOnOrAfterSpecificDate()');
+  console.log('VALUES: ');
+  console.log('date: ' + date);
+  console.log('specificDate: ' + specificDate);
+  console.log('date >= specificDate: ' + (date >= specificDate));
   return date >= specificDate;
 }

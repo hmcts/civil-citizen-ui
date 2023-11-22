@@ -121,6 +121,12 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
     whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
   }
 
+  console.log();
+  console.log('FILE: taskListBuilder.ts');
+  console.log('FUNCTION: buildResolvingTheClaimSection()');
+  console.log('VALUES: ');
+  console.log('carmApplicable: ' + carmApplicable);
+
   if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
     if(carmApplicable) {
       tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
