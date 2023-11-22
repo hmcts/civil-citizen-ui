@@ -1,7 +1,7 @@
 import {
   addDaysBefore4pm,
   addMonths, checkEvidenceUploadTime, formatStringDateDMY, formatStringTimeHMS,
-  getDOBforAgeFromCurrentTime,
+  getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
 describe('addDaysBefore4pm', () => {
@@ -142,5 +142,28 @@ describe('formatStringTimeHMS', () => {
     const mockDate = new Date('2023-01-01T12:00:00');
     const result = formatStringTimeHMS(mockDate);
     expect(result).toStrictEqual('12:00:00 PM');
+  });
+});
+
+describe('isDateOnOrAfterSpecificDate', () => {
+  it('should return false when date is before specified date', () => {
+    const date = new Date('2023-01-01T17:59');
+    const specifiedDate = new Date('2024-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(false);
+  });
+
+  it('should return true when date is on specified date', () => {
+    const date = new Date('2023-01-01T17:59');
+    const specifiedDate = new Date('2023-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(true);
+  });
+
+  it('should return true when date is after specified date', () => {
+    const date = new Date('2023-02-01T17:59');
+    const specifiedDate = new Date('2023-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(true);
   });
 });
