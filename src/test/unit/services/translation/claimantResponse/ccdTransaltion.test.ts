@@ -165,7 +165,7 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
   });
 
-t('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
 
     //Given
     claim.respondent1 ={
