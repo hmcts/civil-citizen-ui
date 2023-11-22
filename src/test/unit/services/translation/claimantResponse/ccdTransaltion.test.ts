@@ -14,6 +14,7 @@ import {ResponseType} from 'form/models/responseType';
 import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
+import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 describe('Translate claimant response to ccd version', () => {
