@@ -12,7 +12,6 @@ import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
-import * as utilityService from 'modules/utilityService';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -79,7 +78,7 @@ const validDataForPost = {
 };
 
 const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
-const getCaseByIdSpy = (claim: Claim) => jest.spyOn(utilityService, 'getClaimById')
+const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
   .mockReturnValue(Promise.resolve(claim));
 const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
@@ -97,7 +96,7 @@ describe('Confirm Details page', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
-    getCaseByIdSpy(mockClaim);
+    getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
   });
 

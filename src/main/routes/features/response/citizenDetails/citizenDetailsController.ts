@@ -12,12 +12,10 @@ import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/mod
 import {PartyPhone} from 'models/PartyPhone';
 import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {PartyDetailsOptional} from 'form/models/PartyDetailsOptional';
+import {PartyDetailsOptional} from 'form/models/partyDetailsOptional';
 
 const citizenDetailsController = Router();
 
@@ -56,8 +54,8 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const currentClaimId = req.params.id;
-    const claim: Claim = await getClaimById(currentClaimId, req, true);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
     const partyDetails = new GenericForm(respondent.partyDetails);
@@ -70,10 +68,9 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const currentClaimId = req.params.id;
-    const claim: Claim = await getClaimById(currentClaimId, req, true);
-    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     const respondent = await getDefendantInformation(redisKey);
     const partyDetails = carmEnabled ? new GenericForm(new PartyDetails(req.body)) : new GenericForm(new PartyDetailsOptional(req.body));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));

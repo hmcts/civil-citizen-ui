@@ -2,6 +2,7 @@ import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'clas
 import {Address} from 'form/models/address';
 import {GenericForm} from 'form/models/genericForm';
 
+// This will be the new model after CARM release
 export class PartyDetails {
 
   @ValidateIf(o => o.individualTitle !== undefined)
