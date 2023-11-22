@@ -1,11 +1,11 @@
-import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
+import {Validate} from 'class-validator';
 import {PhoneUKValidator} from '../validators/phoneUKValidator';
+import {IsNotEmpty} from "form/validators/mandatoryValidatorCarm";
 
 export class CitizenTelephoneNumber {
   carmEnabled?: boolean;
-  @ValidateIf(o => o.carmEnabled === true)
   @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-  @IsNotEmpty({message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
+  @Validate(IsNotEmpty, ['carmEnabled', (o: CitizenTelephoneNumber) => o.carmEnabled], {message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
     telephoneNumber?: string;
   ccdPhoneExist?: boolean;
 
