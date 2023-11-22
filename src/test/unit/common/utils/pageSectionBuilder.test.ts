@@ -214,4 +214,34 @@ describe('PageSectionBuilder tests', ()=> {
     //Then
     expect(htmlElementBuilt).toEqual([expectedHtmlElement]);
   });
+
+  it('should add micro text', ()=> {
+    //Given
+    const microTextExpected = new PageSectionBuilder()
+      .addMicroText('text')
+      .build();
+
+    //When
+    const microTextResult = new PageSectionBuilder()
+      .addMicroText('text')
+      .build();
+
+    //Then
+    expect(microTextResult).toEqual(microTextExpected);
+  });
+
+  it('should add addButtonWithCancelLink', ()=> {
+    //Given
+    const buttonWithCancelLinkExpected = new PageSectionBuilder()
+      .addButtonWithCancelLink('text', 'href')
+      .build();
+
+    //When
+    const buttonWithCancelLinkResult = new PageSectionBuilder()
+      .addButtonWithCancelLink('text', 'href')
+      .build();
+
+    //Then
+    expect(buttonWithCancelLinkExpected).toEqual(buttonWithCancelLinkResult);
+  });
 });
