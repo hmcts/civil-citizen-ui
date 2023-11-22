@@ -29,15 +29,15 @@
 
       <div class="govuk-body">
         <h2
-          class="govuk-heading-l">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.WHAT_HAPPENS_NEXT') }}</h2>
+          class="govuk-heading-m">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.WHAT_HAPPENS_NEXT') }}</h2>
         <h3
-          class="govuk-heading-m">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD') }}</h3>
+          class="govuk-heading-s">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD') }}</h3>
         <p
-          class="govuk-body govuk-!-padding-top-0">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD_PARAGRAPH_PART_1') }}
+          class="govuk-body">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD_PARAGRAPH_PART_1') }}
           {{ externalLink(t, 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL', externalURLs.callChargesUrl, false) }}
           {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_CARD_PARAGRAPH_PART_2') }}</p>
         <h3
-          class="govuk-heading-m">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE') }}</h3>
+          class="govuk-heading-s">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE') }}</h3>
         <p
           class="govuk-body">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_1',{claimId : claimNumber}) }}</p>
         <p
@@ -46,13 +46,15 @@
           class="govuk-body">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1') }}
           {{ externalLink(t, 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2', externalURLs.callChargesUrl, true) }}</p>
       </div>
+
+      <hr class="govuk-section-break govuk-section-break--l">
+
       <div class="form-group">
         {{ govukButton({
           text: t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.RETURN_TO_CASE_OVERVIEW'),
           href: claimDashboardUrl
         }) }}
       </div>
-
     </div>
     <div class="govuk-grid-column-one-third">
       {{ contactUsForHelp(t) }}
