@@ -12,7 +12,7 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartialAdmission} from 'common/models/partialAdmission';
 
-const lang = 'en-gb'
+const lang = 'en-gb';
 const claim = new Claim();
 claim.claimantResponse = new ClaimantResponse();
 claim.respondent1 = new Party();
