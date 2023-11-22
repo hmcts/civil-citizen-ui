@@ -24,7 +24,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {YesNo} from 'common/form/models/yesNo';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'common/form/models/partyDetails';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
@@ -411,14 +411,14 @@ describe('Task List Helpers', () => {
 
     it('should return false if only has primaryAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetailsCARM({});
+      caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
     });
 
     it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetailsCARM({});
+      caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;
       caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
@@ -426,7 +426,7 @@ describe('Task List Helpers', () => {
 
     it('should return true if has primaryAdress and NO', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetailsCARM({});
+      caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = new Address('test', 'test', 'test', 'test', 'test');
       caseData.respondent1.partyDetails.postToThisAddress = YesNo.NO;
       expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
@@ -434,7 +434,7 @@ describe('Task List Helpers', () => {
 
     it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
       caseData.respondent1 = new Party();
-      caseData.respondent1.partyDetails = new PartyDetailsCARM({});
+      caseData.respondent1.partyDetails = new PartyDetails({});
       caseData.respondent1.partyDetails.primaryAddress = address;
       caseData.respondent1.partyDetails.correspondenceAddress = address;
       caseData.respondent1.partyDetails.postToThisAddress = YesNo.YES;

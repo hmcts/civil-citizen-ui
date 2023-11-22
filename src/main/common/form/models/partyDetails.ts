@@ -23,7 +23,9 @@ export class PartyDetails {
   @ValidateIf(o => o.partyName !== undefined)
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
-  contactPerson?: string;
+  @ValidateIf(o => o.contactPerson !== undefined)
+  @IsNotEmpty({message: 'ERRORS.VALID_CONTACT_PERSON'})
+    contactPerson?: string;
   postToThisAddress?: string;
   provideCorrespondenceAddress?: string;
   @ValidateNested()

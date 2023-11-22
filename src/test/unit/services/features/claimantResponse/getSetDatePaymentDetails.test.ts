@@ -6,7 +6,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Party} from 'common/models/party';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
@@ -15,7 +15,7 @@ import {PartialAdmission} from 'common/models/partialAdmission';
 const claim = new Claim();
 claim.claimantResponse = new ClaimantResponse();
 claim.respondent1 = new Party();
-claim.respondent1.partyDetails = new PartyDetailsCARM({});
+claim.respondent1.partyDetails = new PartyDetails({});
 claim.fullAdmission = new FullAdmission();
 claim.fullAdmission.paymentIntention = new PaymentIntention();
 claim.partialAdmission = new PartialAdmission();
@@ -119,22 +119,22 @@ describe('Full Admit Set Date Payment Service', () => {
       expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate));
     });
-
+  
     it('should catch and throw an error', () => {
       // Given
       const claim = new Claim();
       const expectedError = new Error('Test error message');
-
+      
       claim.getDefendantFullName = () => {
         throw expectedError;
       };
-
+      
       claim.getPaymentIntention = () => null;
-
+      
       try {
         // When
         getSetDatePaymentDetails(claim);
-
+        
         expect(true).toBe(false);
       } catch (error) {
         // Then

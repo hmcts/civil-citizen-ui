@@ -13,7 +13,7 @@ import {
 } from '../../../../services/features/common/defendantDetailsService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PartyType} from '../../../../common/models/partyType';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from '../../../../common/form/models/partyDetails';
 import {Party} from '../../../../common/models/party';
 
 const defendantDetailsController = Router();
@@ -26,7 +26,7 @@ const detailsURLs = [
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 ];
 
-function renderView(res: Response, form: GenericForm<PartyDetailsCARM>, defendantType: PartyType) {
+function renderView(res: Response, form: GenericForm<PartyDetails>, defendantType: PartyType) {
   if (defendantType === PartyType.COMPANY || defendantType === PartyType.ORGANISATION) {
     res.render(defendantDetailsCompanyOrOrganisationViewPath, {form, defendantType});
   } else {
@@ -38,7 +38,7 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
   try {
     const userId = req.session?.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
-    const partyDetails = new GenericForm<PartyDetailsCARM>(defendantDetails.partyDetails);
+    const partyDetails = new GenericForm<PartyDetails>(defendantDetails.partyDetails);
 
     renderView(res, partyDetails, defendantDetails.type);
   } catch (error) {
@@ -51,7 +51,7 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest | Request, r
 
   try {
     const defendant: Party = await getDefendantInformation(userId);
-    const partyDetails = new GenericForm(new PartyDetailsCARM(req.body));
+    const partyDetails = new GenericForm(new PartyDetails(req.body));
     partyDetails.validateSync();
 
     if (partyDetails.hasErrors()) {

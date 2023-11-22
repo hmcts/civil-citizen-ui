@@ -8,7 +8,7 @@ import {Party} from 'models/party';
 import {buildAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
@@ -26,7 +26,7 @@ const claim = new Claim();
 
 const buildClaimOfRespondent = (): Party => {
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetailsCARM({});
+  claim.respondent1.partyDetails = new PartyDetails({});
   claim.respondent1.partyDetails.individualTitle = 'individualTitle';
   claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
   claim.respondent1.partyDetails.individualLastName = 'individualLastName';
@@ -37,7 +37,7 @@ const buildClaimOfRespondent = (): Party => {
 
 const buildClaimOfRespondentType = (type: PartyType): Party => {
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetailsCARM({});
+  claim.respondent1.partyDetails = new PartyDetails({});
   claim.respondent1.type = type;
   claim.respondent1.partyDetails.primaryAddress = buildAddress();
   claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
@@ -46,7 +46,7 @@ const buildClaimOfRespondentType = (type: PartyType): Party => {
 
 const buildClaimOfRespondentTypeWithCcdPhone = (type: PartyType): Party => {
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetailsCARM({});
+  claim.respondent1.partyDetails = new PartyDetails({});
   claim.respondent1.type = type;
   claim.respondent1.partyDetails.primaryAddress = buildAddress();
   claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
@@ -58,7 +58,7 @@ const buildClaimOfRespondentTypeWithCcdPhone = (type: PartyType): Party => {
 
 const buildClaimOfRespondentTypeWithoutCcdPhone = (type: PartyType): Party => {
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetailsCARM({});
+  claim.respondent1.partyDetails = new PartyDetails({});
   claim.respondent1.type = type;
   claim.respondent1.partyDetails.primaryAddress = buildAddress();
   claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
@@ -155,7 +155,7 @@ describe('Confirm Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfRespondentWithoutCorrespondent = (): Party => {
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = new PartyDetailsCARM({});
+      claim.respondent1.partyDetails = new PartyDetails({});
       claim.respondent1.partyDetails.individualTitle = 'individualTitle';
       claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
       claim.respondent1.partyDetails.individualLastName = 'individualLastName';

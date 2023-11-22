@@ -9,7 +9,7 @@ import {buildAddress, mockClaim} from '../../../../../utils/mockClaim';
 import {Party} from '../../../../../../main/common/models/party';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress} from '../../../../../utils/mockForm';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from '../../../../../../main/common/form/models/partyDetails';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -18,7 +18,7 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 const claimData = new Claim();
-const claimantDetails = new PartyDetailsCARM({
+const claimantDetails = new PartyDetails({
   individualTitle: 'Mr.',
   individualFirstName: 'John',
   individualLastName: 'Doe',
@@ -96,7 +96,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({});
+      claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.individualTitle = 'Mr.';
       claimData.applicant1.partyDetails.individualFirstName = 'John';
       claimData.applicant1.partyDetails.individualLastName = 'Doe';
@@ -121,7 +121,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({});
+      claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.individualTitle = 'Mr.';
       claimData.applicant1.partyDetails.individualFirstName = 'John';
       claimData.applicant1.partyDetails.individualLastName = 'Doe';
@@ -143,7 +143,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({});
+      claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.partyName = 'PartyName';
       claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
       claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
@@ -167,7 +167,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({});
+      claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.partyName = 'PartyName';
       claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
       //When
@@ -183,7 +183,7 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetailsCARM({});
+        claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.partyDetails.partyName = 'PartyName';
         claim.applicant1.partyDetails.contactPerson = 'Contact Person';
         claim.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
@@ -193,7 +193,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({});
+      claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.partyName = 'PartyName';
       claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
       claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
@@ -217,12 +217,12 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
-      claimData.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'PartyName', contactPerson: 'Contact Person'});
+      claimData.applicant1.partyDetails = new PartyDetails({partyName: 'PartyName', contactPerson: 'Contact Person'});
 
       mockGetCaseData.mockImplementation(async () => {
         const claim = mockClaim;
         const claimant = new Party();
-        claimant.partyDetails = new PartyDetailsCARM({});
+        claimant.partyDetails = new PartyDetails({});
         claimant.partyDetails.primaryAddress = buildAddress();
         claim.respondent1 = claimant;
         return mockClaim;

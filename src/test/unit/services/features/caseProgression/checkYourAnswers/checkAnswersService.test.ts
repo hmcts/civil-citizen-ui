@@ -14,7 +14,7 @@ import {SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {Party} from 'models/party';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'form/models/partyDetails';
 import {t} from 'i18next';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -79,10 +79,10 @@ describe('checkAnswersServiceTest', () => {
       const claim = new Claim();
       claim.id = '1234';
       claim.applicant1 = new Party();
-      claim.applicant1.partyDetails = {partyName: 'John Smith', individualFirstName: 'John', individualLastName: 'Smith', individualTitle: 'Dr'} as PartyDetailsCARM;
+      claim.applicant1.partyDetails = {partyName: 'John Smith', individualFirstName: 'John', individualLastName: 'Smith', individualTitle: 'Dr'} as PartyDetails;
 
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {partyName: 'John Smith', individualFirstName: 'John', individualLastName: 'Smith', individualTitle: 'Dr'} as PartyDetailsCARM;
+      claim.respondent1.partyDetails = {partyName: 'John Smith', individualFirstName: 'John', individualLastName: 'Smith', individualTitle: 'Dr'} as PartyDetails;
 
       //when
       const topElementsActual = getTopElements(claim);

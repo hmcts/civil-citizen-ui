@@ -8,7 +8,7 @@ import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'form/models/partyDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -21,7 +21,7 @@ const claim = new Claim();
 
 const buildClaimOfApplicant = (): Party => {
   claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetailsCARM({});
+  claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.partyDetails.individualTitle = 'individualTitle';
   claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
   claim.applicant1.partyDetails.individualLastName = 'individualLastName';
@@ -34,7 +34,7 @@ const buildClaimOfApplicant = (): Party => {
 
 const buildClaimOfApplicantType = (type: PartyType): Party => {
   claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetailsCARM({});
+  claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.type = type;
   claim.applicant1.partyDetails.primaryAddress = buildAddress();
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
@@ -122,7 +122,7 @@ describe('Claimant Individual Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Party();
-      claim.applicant1.partyDetails = new PartyDetailsCARM({});
+      claim.applicant1.partyDetails = new PartyDetails({});
       claim.applicant1.type = PartyType.INDIVIDUAL;
       claim.applicant1.partyDetails.individualTitle = 'individualTitle';
       claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
@@ -144,7 +144,7 @@ describe('Claimant Individual Details page', () => {
   it('should return your details page with no primary, correspondence address or claimant details', async () => {
     const buildClaimOfApplicantWithoutInformation = (): Party => {
       claim.applicant1 = new Party();
-      claim.applicant1.partyDetails = new PartyDetailsCARM({});
+      claim.applicant1.partyDetails = new PartyDetails({});
       claim.applicant1.partyDetails.primaryAddress = undefined;
       return claim.applicant1;
     };

@@ -3,7 +3,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {Party} from 'common/models/party';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'common/form/models/partyDetails';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
@@ -188,7 +188,7 @@ function getClaim (){
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   claim.legacyCaseReference = '000MC009';
   claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+  claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
   claim.respondent1ResponseDeadline = new Date();
   claim.claimantResponse = new ClaimantResponse();
   return claim;

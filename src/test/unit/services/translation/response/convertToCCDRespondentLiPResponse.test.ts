@@ -2,7 +2,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPRespo
 import {toCCDRespondentLiPResponse} from 'services/translation/response/convertToCCDRespondentLiPResponse';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
@@ -44,7 +44,7 @@ const setUpUndefinedDQHearingSupport = () : CCDHearingSupport => {
 const setUPEmptyRespondent = () : Claim => {
   const input = new Claim();
   input.respondent1 = new Party();
-  input.respondent1.partyDetails = new PartyDetailsCARM({});
+  input.respondent1.partyDetails = new PartyDetails({});
   return input;
 };
 

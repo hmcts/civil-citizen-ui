@@ -17,7 +17,7 @@ import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
 import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from 'common/form/models/defence';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
-import {PartyDetailsCARM} from 'form/models/partyDetails-CARM';
+import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {YesNo} from 'common/form/models/yesNo';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -40,9 +40,9 @@ describe('Submit Confirmation service', () => {
     claim.fullAdmission.paymentIntention.paymentDate = new Date('2035-06-01T00:00:00.000Z');
     claim.respondent1 = new Party();
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     it('should display submit status', () => {
@@ -74,12 +74,12 @@ describe('Submit Confirmation service', () => {
     claim.fullAdmission.paymentIntention = new PaymentIntention();
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.respondent1 = new Party();
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
 
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
 
     it('should display submit status', () => {
@@ -115,12 +115,12 @@ describe('Submit Confirmation service', () => {
     claim.fullAdmission.paymentIntention = new PaymentIntention();
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.respondent1 = new Party();
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
 
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
 
     it('should display submit status', () => {
@@ -156,11 +156,11 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
 
     claim.respondent1 = new Party();
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -199,11 +199,11 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
 
     claim.respondent1 = new Party();
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -273,11 +273,11 @@ describe('Submit Confirmation service', () => {
     claim.partialAdmission.paymentIntention = new PaymentIntention();
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.applicant1 = new Party();
-    claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
     claim.applicant1.type = PartyType.COMPANY;
 
     claim.respondent1 = new Party();
-    claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+    claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
     claim.respondent1.type = PartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
 
@@ -355,10 +355,10 @@ describe('Submit Confirmation service', () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.applicant1 = new Party();
-      claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
       claim.applicant1.type = PartyType.COMPANY;
 
-      claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+      claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
       claim.respondent1.type = PartyType.ORGANISATION;
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
 
@@ -448,11 +448,11 @@ describe('Submit Confirmation service', () => {
     const getClaim = () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = new PartyDetailsCARM({partyName: 'Version 1'});
+      claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
       claim.respondent1.type = PartyType.ORGANISATION;
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       claim.applicant1 = new Party();
-      claim.applicant1.partyDetails = new PartyDetailsCARM({partyName: 'Some Very Important Company Ltd'});
+      claim.applicant1.partyDetails = new PartyDetails({partyName: 'Some Very Important Company Ltd'});
       claim.applicant1.type = PartyType.COMPANY;
       return claim;
     };
