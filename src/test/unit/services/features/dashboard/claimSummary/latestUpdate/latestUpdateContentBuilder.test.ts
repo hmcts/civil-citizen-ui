@@ -203,12 +203,13 @@ describe('Latest Update Content Builder', () => {
       it('Immediately', () => {
         // Given
         const claim = getClaim(PartyType.COMPANY, ResponseType.FULL_ADMISSION, PaymentOptionType.IMMEDIATELY);
+        const respondentPaymentDeadline = new Date('2023-11-13');
         const lastUpdateSectionExpected = new LatestUpdateSectionBuilder()
           .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOUR_RESPONSE_TO_THE_CLAIM`, {lng}))
           .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.YOU_SAID_YOU_WILL_PAY`, {lng}), {
             claimantName: claim.getClaimantFullName(),
             amount: currencyFormat(getAmount(claim)),
-            paymentDate: formatDateToFullDate(getPaymentDate(claim), lng),
+            paymentDate: formatDateToFullDate(respondentPaymentDeadline, lng),
           })
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_YOU_PAY_BY_CHEQUE`)
           .addParagraph(`${PAGES_LATEST_UPDATE_CONTENT}.IF_THEY_DONT_RECEIVE_THE_MONEY_BY_THEN`)
@@ -217,7 +218,7 @@ describe('Latest Update Content Builder', () => {
           .build();
 
         // When
-        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng);
+        const responseToClaimSection = buildResponseToClaimSection(claim, claimId, lng, respondentPaymentDeadline);
 
         // Then
         expect(lastUpdateSectionExpected.flat()).toEqual(responseToClaimSection);

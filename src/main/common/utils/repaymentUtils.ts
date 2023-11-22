@@ -5,6 +5,12 @@ import {t} from 'i18next';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 const WEEKDAYS = 7;
+const frequencyTextMap: Record<TransactionSchedule, string> = {
+  [TransactionSchedule.WEEK]: 'COMMON.SCHEDULE.WEEK_LOWER_CASE',
+  [TransactionSchedule.TWO_WEEKS]: 'COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE',
+  [TransactionSchedule.FOUR_WEEKS]: 'COMMON.SCHEDULE.MONTH',
+  [TransactionSchedule.MONTH]: 'COMMON.SCHEDULE.MONTH',
+};
 
 export const getNumberOfInstalments = (claim: Claim): number => {
   return Math.ceil(getAmount(claim) / getPaymentAmount(claim));
@@ -18,13 +24,13 @@ export const getFinalPaymentDate = (claim: Claim): Date => {
 
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * WEEKDAYS);
       break;
     case TransactionSchedule.TWO_WEEKS:
-      finalRepaymentDate = addDaysToDate(firstRepaymentDate, ((numberOfInstalments * 2) * WEEKDAYS));
+      finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * 2 * WEEKDAYS);
       break;
     case TransactionSchedule.MONTH:
-      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments);
+      finalRepaymentDate = addMonths(firstRepaymentDate, numberOfInstalments - 1);
       break;
   }
   return finalRepaymentDate;
@@ -61,10 +67,9 @@ export const getFirstRepaymentDate = (claim: Claim): Date => {
 };
 
 export const getPaymentOptionType = (claim: Claim): PaymentOptionType => {
-  if (claim.isFullAdmission()) {
-    return claim.fullAdmission?.paymentIntention?.paymentOption;
-  }
-  return claim.partialAdmission?.paymentIntention?.paymentOption;
+  return claim.isFullAdmission()
+    ? claim.fullAdmission?.paymentIntention?.paymentOption
+    : claim.partialAdmission?.paymentIntention?.paymentOption;
 };
 
 export const convertFrequencyToText = (frequency: string, lng: string): string => {
@@ -76,6 +81,11 @@ export const convertFrequencyToText = (frequency: string, lng: string): string =
     case TransactionSchedule.MONTH:
       return t('COMMON.FREQUENCY_OF_PAYMENTS.MONTHLY', { lng });
   }
+};
+
+export const convertFrequencyToTextForRepaymentPlan = (frequency: string, lng: string): string => {
+  const transactionKey = frequency as TransactionSchedule;
+  return t(frequencyTextMap[transactionKey], { lng });
 };
 
 export const getRepaymentLength = (claim: Claim, lng: string): string => {
