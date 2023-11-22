@@ -19,6 +19,8 @@ import {
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
 import {Claim} from 'models/claim';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -50,6 +52,14 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
       claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
     } else if (parentPropertyName == 'claimantTrialArrangements' && !claim?.caseProgression.claimantTrialArrangements) {
       claim.caseProgression.claimantTrialArrangements = new TrialArrangements();
+    }
+
+    if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
+    {
+      if (!claim.caseProgression.hearingFeeHelpSelection) {
+        claim.caseProgression.hearingFeeHelpSelection = new GenericYesNo();
+      }
+      claim.feeTypeHelpRequested = FeeType.HEARING;
     }
 
     if (claim?.caseProgression) {
