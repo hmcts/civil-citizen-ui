@@ -1,7 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {
   CitizenTelephoneNumber,
-  CitizenTelephoneNumberOptional,
 } from '../../../../common/form/models/citizenTelephoneNumber';
 import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -36,8 +35,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
       const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
-      const model = carmEnabled ?  new CitizenTelephoneNumber(req.body.telephoneNumber)
-        : new CitizenTelephoneNumberOptional(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber);
+      const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, carmEnabled);
       const citizenTelephoneNumberForm = new GenericForm(model);
       citizenTelephoneNumberForm.validateSync();
       if (citizenTelephoneNumberForm.hasErrors()) {
