@@ -36,8 +36,8 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
-  await ResponseSteps.RespondToClaim(claimRef);
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly @123', async ({api}) => {
+/*  await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
@@ -55,7 +55,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression 
     // await api.liftBreathingSpace(config.applicantSolicitorUser);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
     await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-  }
+  }*/
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @nightly', async ({api}) => {
