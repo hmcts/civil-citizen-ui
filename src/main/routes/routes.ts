@@ -439,5 +439,5 @@ export default [
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
-  emailMediationConfirmationController
+  emailMediationConfirmationController,
 ];
