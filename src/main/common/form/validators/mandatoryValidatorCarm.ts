@@ -6,7 +6,7 @@ import {ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments} 
 @ValidatorConstraint({name: 'mandatoryValidatorCam', async: false})
 export class IsNotEmpty implements ValidatorConstraintInterface {
 
-  // Returns true if it passes validation of carm is not enabled
+  // Returns true if it passes validation or if carm is not enabled
   validate(input: any, validationArguments?: ValidationArguments) {
     const property = validationArguments.constraints[0];
     const carmEnabled = (validationArguments.object as any)[property];
