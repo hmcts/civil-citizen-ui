@@ -214,12 +214,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lang));
   }
 
-  if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
-    yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
-  }
-  if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-    yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
-  }
   if (claim.isClaimantRejectedPaymentPlan) {
     if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
       yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
