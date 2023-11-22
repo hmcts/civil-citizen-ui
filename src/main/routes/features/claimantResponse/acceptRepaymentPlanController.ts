@@ -38,8 +38,8 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
     repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
       repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim)),
-      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim)),
+      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), getLng(lang)),
+      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lang)),
       lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
     };
     const displayHintTextForNoOption = claim.isBusiness();
