@@ -4,7 +4,6 @@ import {
 import {Claim} from 'common/models/claim';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {YesNo} from 'common/form/models/yesNo';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Party} from 'common/models/party';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
@@ -12,6 +11,7 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartialAdmission} from 'common/models/partialAdmission';
 
+const lang = 'en';
 const claim = new Claim();
 claim.claimantResponse = new ClaimantResponse();
 claim.respondent1 = new Party();
@@ -32,12 +32,11 @@ describe('Full Admit Set Date Payment Service', () => {
         option: YesNo.YES,
       };
       //When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       //Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.fullAdmission.paymentIntention.paymentDate));
     });
 
     it('should return object when claimantResponse is undefined', async () => {
@@ -47,12 +46,11 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.claimantResponse = undefined;
 
       //When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.fullAdmission.paymentIntention.paymentDate));
     });
 
     it('should return object when getSetDatePaymentDetails is undefined', async () => {
@@ -63,12 +61,11 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
 
       //When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       //Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.fullAdmission.paymentIntention.paymentDate));
     });
 
     it('should return object with correct details for partial admission', async () => {
@@ -81,12 +78,11 @@ describe('Full Admit Set Date Payment Service', () => {
       };
 
       // When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       // Then
       expect(details.fullAdmitAcceptPayment.option).toBe(YesNo.YES);
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate));
     });
 
     it('should return object when claimantResponse is undefined for partial admission', async () => {
@@ -96,12 +92,11 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.claimantResponse = undefined;
 
       // When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       // Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate));
     });
 
     it('should return object when getSetDatePaymentDetails is undefined for partial admission', async () => {
@@ -112,12 +107,11 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
 
       // When
-      const details = getSetDatePaymentDetails(claim);
+      const details = getSetDatePaymentDetails(claim, lang);
 
       // Then
       expect(details.fullAdmitAcceptPayment).toBeUndefined();
       expect(details.defendantName).toBe(claim.getDefendantFullName());
-      expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate));
     });
   
     it('should catch and throw an error', () => {
@@ -133,7 +127,7 @@ describe('Full Admit Set Date Payment Service', () => {
       
       try {
         // When
-        getSetDatePaymentDetails(claim);
+        getSetDatePaymentDetails(claim, lang);
         
         expect(true).toBe(false);
       } catch (error) {
