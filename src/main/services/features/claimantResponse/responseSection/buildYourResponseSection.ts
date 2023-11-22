@@ -18,7 +18,7 @@ import {
   RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
   RESPONSEFORREPAYMENTPLAN, RESPONSEFREQUENCY,
-  RESPONSFORCYAFORCHOOSEHOWTOPROCEED
+  RESPONSFORCYAFORCHOOSEHOWTOPROCEED,
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
 import {formatStringDateSlash} from 'common/utils/dateUtils';
@@ -50,20 +50,20 @@ export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, clai
   const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL);
   const selectedOption = claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option as YesNo;
   return summaryRow(
-      t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN', { lang }),
-      t(RESPONSEFORDEFENDANTREPAYMENTPLAN[selectedOption], { lang }),
-      pageRef,
-      changeLabel(lang));
+    t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN', { lang }),
+    t(RESPONSEFORDEFENDANTREPAYMENTPLAN[selectedOption], { lang }),
+    pageRef,
+    changeLabel(lang));
 };
 
 export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
   const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
   return summaryRow(
-      t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
-      t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
-      partAdmitAcceptedHref,
-      changeLabel(lang));
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lang}),
+    t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lang}),
+    partAdmitAcceptedHref,
+    changeLabel(lang));
 
 };
 

@@ -83,8 +83,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse.chooseHowToProceed = undefined;
       claim.claimantResponse.ccjRequest = undefined;
       const result = getSummarySections('12345', claim, 'en', 70);
-    //  expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined, null, null] }).toEqual(result);
-        expect(result.sections).toHaveLength(6);
+      expect(result.sections).toHaveLength(6);
     });
   });
 });
