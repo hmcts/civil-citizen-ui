@@ -12,7 +12,7 @@ import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
-const emailMediationConfirmationViewPath = 'features/mediation/mediation-email-confirmation';
+const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
 const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_EMAIL_CONFIRMATION.';
 
