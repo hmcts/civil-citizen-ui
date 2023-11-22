@@ -1,6 +1,6 @@
 import {Validate} from 'class-validator';
 import {PhoneUKValidator} from '../validators/phoneUKValidator';
-import {IsNotEmpty} from "form/validators/mandatoryValidatorCarm";
+import {IsNotEmpty} from 'form/validators/mandatoryValidatorCarm';
 
 export class CitizenTelephoneNumber {
   carmEnabled?: boolean;
