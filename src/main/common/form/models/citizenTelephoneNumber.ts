@@ -6,7 +6,7 @@ export class CitizenTelephoneNumber {
   @ValidateIf(o => o.telephoneNumber !== undefined)
   @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
   @IsNotEmpty({message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
-  telephoneNumber?: string;
+    telephoneNumber?: string;
   ccdPhoneExist?: boolean;
 
   constructor(telephoneNumber?: string,  ccdPhoneExist?: boolean) {
