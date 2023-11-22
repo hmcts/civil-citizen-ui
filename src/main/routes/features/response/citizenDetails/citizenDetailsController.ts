@@ -15,7 +15,6 @@ import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {PartyDetailsOptional} from 'form/models/partyDetailsOptional';
 
 const citizenDetailsController = Router();
 
@@ -72,7 +71,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
     const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
     const respondent = await getDefendantInformation(redisKey);
-    const partyDetails = carmEnabled ? new GenericForm(new PartyDetails(req.body)) : new GenericForm(new PartyDetailsOptional(req.body));
+    const partyDetails = new GenericForm(new PartyDetails(req.body, carmEnabled));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
     partyDetails.validateSync();

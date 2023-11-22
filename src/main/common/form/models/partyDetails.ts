@@ -24,7 +24,7 @@ export class PartyDetails {
   @ValidateIf(o => o.partyName !== undefined)
   @IsNotEmpty({message: 'ERRORS.VALID_PARTY_NAME'})
     partyName?: string;
-  @ValidateIf(o => o.contactPerson !== undefined)
+  @ValidateIf(o => o.contactPerson !== undefined && o.carmEnabled === true)
   @IsNotEmpty({message: 'ERRORS.VALID_CONTACT_PERSON'})
     contactPerson?: string;
   postToThisAddress?: string;
@@ -34,8 +34,9 @@ export class PartyDetails {
   @ValidateIf(o => o.provideCorrespondenceAddress === 'yes' || o.postToThisAddress === 'yes')
   @ValidateNested()
     correspondenceAddress?: Address;
+  carmEnabled?: boolean;
 
-  constructor(value: Record<string, string>) {
+  constructor(value: Record<string, string>, carmEnabled?: boolean) {
     this.individualTitle = value?.individualTitle;
     this.individualLastName = value?.individualLastName;
     this.individualFirstName = value?.individualFirstName;
@@ -50,6 +51,7 @@ export class PartyDetails {
     }else{
       this.primaryAddress = new Address(value?.addressLine1, value?.addressLine2, value?.addressLine3, value?.city, value?.postCode);
     }
+    this.carmEnabled = carmEnabled;
 
   }
 
