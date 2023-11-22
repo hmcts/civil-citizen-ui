@@ -103,6 +103,7 @@ module.exports = {
         documentReferredInStatement: [
           {
             value: {
+              witnessOptionName:'john',
               typeOfDocument: 'Upper',
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
@@ -320,6 +321,7 @@ module.exports = {
         documentReferredInStatement: [
           {
             value: {
+              witnessOptionName:'john',
               typeOfDocument: 'Upper',
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
