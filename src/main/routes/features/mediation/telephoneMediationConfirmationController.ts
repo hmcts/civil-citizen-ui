@@ -58,5 +58,4 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
   }
 }) as RequestHandler);
 
-
 export default emailMediationConfirmationController;
