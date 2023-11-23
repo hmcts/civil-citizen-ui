@@ -133,5 +133,10 @@ export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
 }
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
+  console.log('submitted date: ', date);
+  console.log('carm date: ', specificDate);
+  console.log('converted submitted date: ', convertDateToLuxonDate(date));
+  console.log('converted carm date: ', convertDateToLuxonDate(specificDate));
+  console.log('date after carm? ', convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate));
   return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);
 }

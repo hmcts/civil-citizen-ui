@@ -23,7 +23,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res, carmEnabled);
   } catch (error) {
     next(error);
@@ -34,7 +34,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
-      const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, carmEnabled);
       const citizenTelephoneNumberForm = new GenericForm(model);
       citizenTelephoneNumberForm.validateSync();
