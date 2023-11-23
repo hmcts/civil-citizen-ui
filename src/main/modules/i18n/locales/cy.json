@@ -1747,7 +1747,7 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8.30am to 5pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "Find out about call charges",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
             }
           }

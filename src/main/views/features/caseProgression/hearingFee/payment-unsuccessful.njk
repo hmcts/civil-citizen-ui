@@ -44,17 +44,19 @@
           class="govuk-body">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_2') }}</p>
         <p
           class="govuk-body">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1') }}
-          {{ externalLink(t, 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2', externalURLs.callChargesUrl, true) }}</p>
+          {{ externalLink(t, 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2', externalURLs.callChargesUrl, false) }}</p>
       </div>
 
       <hr class="govuk-section-break govuk-section-break--l">
 
-      <div class="form-group">
-        {{ govukButton({
-          text: t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.RETURN_TO_CASE_OVERVIEW'),
-          href: claimDashboardUrl
-        }) }}
-      </div>
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+        <div class="form-group">
+          {{ govukButton({
+            text: t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.RETURN_TO_CASE_OVERVIEW')
+          }) }}
+        </div>
+      </form>
     </div>
     <div class="govuk-grid-column-one-third">
       {{ contactUsForHelp(t) }}
