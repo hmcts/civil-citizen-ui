@@ -1,6 +1,6 @@
 import {
   PAY_HEARING_FEE_UNSUCCESSFUL_URL,
-  DASHBOARD_CLAIMANT_URL
+  DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 
 import nock from 'nock';
