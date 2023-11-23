@@ -1,6 +1,6 @@
-import { LatestUpdateSectionBuilder } from "common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder";
-import { Claim } from "common/models/claim";
-import { t } from "i18next";
+import { LatestUpdateSectionBuilder } from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import { Claim } from 'common/models/claim';
+import { t } from 'i18next';
 
 export const getSendFinancialDetails = (claim: Claim, lang: string) => {
 
@@ -15,10 +15,10 @@ export const getSendFinancialDetails = (claim: Claim, lang: string) => {
     .addTitle(t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.USE_THIS_ADDRESS.TITLE', {lng: lang}))
     .addParagraph(t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.USE_THIS_ADDRESS.THE_DENFENDANT_SHOULD', {lng: lang}))
     .addInsetText(
-      `<p class="govuk-body">${t('COMMON.POSTAL_ADDRESS.BUILDING')}</p>
-      <p class="govuk-body">${t('COMMON.POSTAL_ADDRESS.PO_BOX')}</p>
-      <p class="govuk-body">${t('COMMON.POSTAL_ADDRESS.CITY')}</p>
-      <p class="govuk-body">${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`
+      `<p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.BUILDING')}</p>
+      <p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.PO_BOX')}</p>
+      <p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.CITY')}</p>
+      <p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`,
     )
     .addLink( email, `mailto:${email}`, t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.USE_THIS_ADDRESS.OR_EMAIL', {lng: lang}), null, null)
     .addTitle(t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.COURT_BELIEVES_CAN_AFFORD.TITLE', {lng: lang}))
