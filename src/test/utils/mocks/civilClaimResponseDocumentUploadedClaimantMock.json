@@ -1,16 +1,15 @@
-
-
 {
   "id": 1645882162449409,
   "jurisdiction": "CIVIL",
   "case_type_id": "CIVIL",
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
-  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "state": "JUDICIAL_REFERRAL",
   "security_classification": "PUBLIC",
   "case_data": {
+    "caseRole" : "[CLAIMANT]",
     "pcqId":"123",
-    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+    "ccdState": "JUDICIAL_REFERRAL",
     "claimFee": {
       "code": "FEE0204",
       "version": "4",
@@ -194,7 +193,7 @@
     },
     "respondent1ResponseDeadline": "2025-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
-    "totalClaimAmount": 15000,
+    "totalClaimAmount": 110,
     "claimInterest": "Yes",
     "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
@@ -303,21 +302,38 @@
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
-      "defendantTrialArrangements": {
-        "otherTrialInformation": "Other Information",
-        "isCaseReady": "yes",
-        "hasAnythingChanged": {
-          "textArea": "Changed",
-          "option": "yes"
-        }
+      "defendantTrialArrangements": "",
+      "claimantTrialArrangements": "",
+      "claimantDocuments": {
+        "documentsForDisclosure": [
+          {
+            "typeOfDocument": "type",
+            "fileUpload": {
+              "fieldname": "field name",
+              "originalname": "original name",
+              "mimetype": "application/pdf",
+              "size": 1234
+            }
+          }
+        ]
       },
-      "claimantTrialArrangements": {
-        "otherTrialInformation": "Other Information",
-        "isCaseReady": "yes",
-        "hasAnythingChanged": {
-          "textArea": "Changed",
-          "option": "yes"
-        }
+      "defendantDocuments": {
+        "documentsForDisclosure": [
+          {
+            "typeOfDocument": "type",
+            "fileUpload": {
+              "fieldname": "field name",
+              "originalname": "original name",
+              "mimetype": "application/pdf",
+              "size": 1234
+            },
+            "dateInputFields":{
+              "dateDay": "01",
+              "dateMonth": "01",
+              "dateYear": "2023"
+          }
+          }
+        ]
       },
       "claimantUploadDocuments":{
         "disclosure": [
@@ -332,15 +348,15 @@
             },
             "selected": true},
           {"documentType": "DISCLOSURE_LIST",
-          "caseDocument": {
-            "documentUpload": {
-              "document_url": "1234",
-              "document_filename": "testfile.txt",
-              "document_binary_url":"1244-binary"
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
             },
-            "createdDatetime": "2022-02-20T13:20"
-          },
-          "selected": true}],
+            "selected": true}],
         "witness": [
           {"documentType": "WITNESS_STATEMENT",
             "caseDocument": {
@@ -413,58 +429,58 @@
               "createdDatetime": "2022-02-20T13:20"
             },
             "selected": true}],
-          "trial": [
-            {"documentType": "CASE_SUMMARY",
-              "caseDocument": {
-                "documentUpload": {
-                  "document_url": "1234",
-                  "document_filename": "testfile.txt",
-                  "document_binary_url":"1244-binary"
-                },
-                "createdDatetime": "2022-02-20T13:20"
+        "trial": [
+          {"documentType": "CASE_SUMMARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
               },
-              "selected": true},
-            {"documentType": "SKELETON_ARGUMENT",
-              "caseDocument": {
-                "documentUpload": {
-                  "document_url": "1234",
-                  "document_filename": "testfile.txt",
-                  "document_binary_url":"1244-binary"
-                },
-                "createdDatetime": "2022-02-20T13:20"
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "SKELETON_ARGUMENT",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
               },
-              "selected": true},
-            {"documentType": "AUTHORITIES",
-              "caseDocument": {
-                "documentUpload": {
-                  "document_url": "1234",
-                  "document_filename": "testfile.txt",
-                  "document_binary_url":"1244-binary"
-                },
-                "createdDatetime": "2022-02-20T13:20"
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "AUTHORITIES",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
               },
-              "selected": true},
-            {"documentType": "COSTS",
-              "caseDocument": {
-                "documentUpload": {
-                  "document_url": "1234",
-                  "document_filename": "testfile.txt",
-                  "document_binary_url":"1244-binary"
-                },
-                "createdDatetime": "2022-02-20T13:20"
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "COSTS",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
               },
-              "selected": true},
-            {"documentType": "DOCUMENTARY",
-              "caseDocument": {
-                "documentUpload": {
-                  "document_url": "1234",
-                  "document_filename": "testfile.txt",
-                  "document_binary_url":"1244-binary"
-                },
-                "createdDatetime": "2022-02-20T13:20"
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
               },
-              "selected": true}
-          ],
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}
+        ],
         "checkboxGrp": [
           true,
           true

@@ -1,16 +1,15 @@
-
-
 {
-  "id": 1645882162449409,
+  "id": 1645882162449489,
   "jurisdiction": "CIVIL",
   "case_type_id": "CIVIL",
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
-  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "state": "JUDICIAL_REFERRAL",
   "security_classification": "PUBLIC",
   "case_data": {
+    "caseRole" : "[DEFENDANT]",
     "pcqId":"123",
-    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+    "ccdState": "JUDICIAL_REFERRAL",
     "claimFee": {
       "code": "FEE0204",
       "version": "4",
@@ -194,7 +193,7 @@
     },
     "respondent1ResponseDeadline": "2025-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
-    "totalClaimAmount": 15000,
+    "totalClaimAmount": 110,
     "claimInterest": "Yes",
     "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
@@ -303,22 +302,9 @@
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
-      "defendantTrialArrangements": {
-        "otherTrialInformation": "Other Information",
-        "isCaseReady": "yes",
-        "hasAnythingChanged": {
-          "textArea": "Changed",
-          "option": "yes"
-        }
-      },
-      "claimantTrialArrangements": {
-        "otherTrialInformation": "Other Information",
-        "isCaseReady": "yes",
-        "hasAnythingChanged": {
-          "textArea": "Changed",
-          "option": "yes"
-        }
-      },
+      "defendantTrialArrangements": "",
+      "claimantTrialArrangements": "",
+      "defendantDocuments": "",
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
@@ -620,6 +606,14 @@
           true,
           true
         ]
+      },
+      "defendantTrialArrangements": {
+        "isCaseReady": "no",
+        "hasAnythingChanged": {
+          "option": "yes",
+          "textArea": "a witness requires a courtroom with step-free access."
+        },
+        "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
       }
     }
   }
