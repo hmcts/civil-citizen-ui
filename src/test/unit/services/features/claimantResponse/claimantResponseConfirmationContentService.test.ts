@@ -12,6 +12,9 @@ import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {Mediation} from 'common/models/mediation/mediation';
+import {PartyType} from 'common/models/partyType';
+import {FullAdmission} from 'common/models/fullAdmission';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -113,6 +116,28 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.WHAT_HAPPENS_NEXT_TEXT');
     expect(claimantResponseConfirmationContent[3]).toBeUndefined();
+  });
+
+  it('Claimant Intent reject the defendant plan + Defendant = ORG or LTD Company', () => {
+
+    // Given
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = {option: YesNo.NO};
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    
+    // Then
+    expect(claimantResponseConfirmationContent[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SEND_FINANCIAL_DETAILS.TITLE');
+    expect(claimantResponseConfirmationContent[6].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.USE_THIS_ADDRESS.TITLE');
+    expect(claimantResponseConfirmationContent[10].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.COURT_BELIEVES_CAN_AFFORD.TITLE');
+    expect(claimantResponseConfirmationContent[12].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.COURT_BELIEVES_CANT_AFFORD.TITLE');
+    expect(claimantResponseConfirmationContent[14]).toBeUndefined();
   });
 
   it('Claimant rejected defendant`s response as part admit paid already with no mediation', () => {
