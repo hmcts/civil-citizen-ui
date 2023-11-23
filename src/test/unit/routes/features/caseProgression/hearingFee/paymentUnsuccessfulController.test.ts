@@ -1,4 +1,7 @@
-import {PAY_HEARING_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
+import {
+  PAY_HEARING_FEE_UNSUCCESSFUL_URL,
+  DASHBOARD_CLAIMANT_URL
+} from 'routes/urls';
 
 import nock from 'nock';
 import request from 'supertest';
@@ -39,6 +42,18 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+  });
+
+  describe('on POST', () => {
+    it('should redirect to claimant dashboard', async () => {
+      await request(app)
+        .post(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
+        .send()
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
         });
     });
   });
