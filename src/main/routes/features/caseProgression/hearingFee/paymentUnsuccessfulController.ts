@@ -19,7 +19,7 @@ paymentUnsuccessfulController.get(PAY_HEARING_FEE_UNSUCCESSFUL_URL, async (req, 
       res.render(paymentUnsuccessfulViewPath, {
         claimNumber,
         claimId,
-        claimDashboardUrl
+        claimDashboardUrl,
       });
     }
   } catch (error) {
