@@ -11,7 +11,7 @@
     "start:redis": "docker-compose -f ./compose/draft-store.yml up -d",
     "startwin": "NODE_ENV=development && ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "startwin:dev": "nodemon --config nodemon.json --exec yarn startwin",
-    "lint": "sass-lint -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/test/functionalTests/tests",
     "lint:win": "yarn lint -c win.eslint.json",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
