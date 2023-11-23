@@ -6,7 +6,6 @@ import config from 'config';
 const CARM_RELEASE_DATE = new Date(config.get<string>('services.carmDate'));
 
 export async function isCarmEnabledForCase(claimSubmittedDate: Date, carmDate: Date = CARM_RELEASE_DATE) {
-  carmDate = new Date(2023, 4, 1);
   const isCarmEnabled = await isCARMEnabled();
   return isDateOnOrAfterSpecificDate(claimSubmittedDate, carmDate) && isCarmEnabled;
 }
