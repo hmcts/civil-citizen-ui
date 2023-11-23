@@ -5,15 +5,8 @@ import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './dis
 import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import { YesNo } from 'common/form/models/yesNo';
-// import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {
-  getCourtBelievesCanAfford,
-  getCourtBelievesCanntAfford,
-  getSendFinancialDetails,
-  getUseThisAddress,
-} from './financialDetailsBuilder';
-// import { CourtProposedPlanOptions } from 'common/form/models/claimantResponse/courtProposedPlan';
+import {YesNo} from 'common/form/models/yesNo';
+import {getSendFinancialDetails} from './financialDetailsBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -37,7 +30,17 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
   const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
+  const sendFinancialDetails = getSendFinancialDetails(claim, lang);
 
+  if (claim.isBusiness() &&
+    (claim.isFAPaymentOptionInstallments() ||
+    claim.isFAPaymentOptionBySetDate() ||
+    claim.isPAPaymentOptionInstallments() ||
+    claim.isPAPaymentOptionByDate()) &&
+    claim.isClaimantRejectedPaymentPlan()) {
+    return sendFinancialDetails;
+  }
+  
   if (claimantResponse.isSignSettlementAgreement) {
     return SignSettlementAgreementNextSteps;
   }
@@ -51,55 +54,6 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
   if (hasClaimantRejectedDefendantResponse(claim)) {
     return RejectedResponseNoMediationNextSteps;
-  }
-}
-
-export function buildSendFinancialDetailsSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  // TODO: WIP
-
-  // AND the defence was a Part Admit Not Paid (e.g. immediately or Instalments or Set Date)
-  // AND No mediation opted
-  // AND Claimant rejects the response
-  // AND Court accepts the claimant new repayment plan
-
-  // if (
-  //   claim.isBusiness() &&
-  //   claim.isPartialAdmissionNotPaid() &&
-  //   !claim.isDefendantAgreedForMediation() &&
-  //   isClaimantRejectPaymentPlan(claim) &&
-  //   claim.claimantResponse.courtProposedPlan.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN
-  //   ) {
-  //   console.log('DENTRO');
-    
-  // }
-
-  const sendFinancialDetails = getSendFinancialDetails(claim, lang);
-  if (claim) {
-    return sendFinancialDetails;
-  }
-}
-
-export function buildUseThisAddressSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  // TODO: WIP
-  const useThisAddress = getUseThisAddress(lang);
-  if (claim) {
-    return useThisAddress;
-  }
-}
-
-export function buildCourtBelievesCanAffordSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  // TODO: WIP
-  const courtBelievesCanAfford = getCourtBelievesCanAfford(lang);
-  if (claim) {
-    return courtBelievesCanAfford;
-  }
-}
-
-export function buildCourtBelievesCanntAffordSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  // TODO: WIP
-  const courtBelievesCanntAfford = getCourtBelievesCanntAfford(lang);
-  if (claim) {
-    return courtBelievesCanntAfford;
   }
 }
 

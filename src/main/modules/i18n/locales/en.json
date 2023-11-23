@@ -968,8 +968,6 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-<<<<<<< Updated upstream
-=======
       },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
@@ -978,7 +976,6 @@
         "TITLE": "Use this address",
         "THE_DENFENDANT_SHOULD": "The defendant should have sent you the details - send them to:",
         "OR_EMAIL": "Or email them to:"
->>>>>>> Stashed changes
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
