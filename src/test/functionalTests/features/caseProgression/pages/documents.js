@@ -64,8 +64,8 @@ class Documents {
     I.seeElement('//a[.=\'Hearsay evidence Notice of intention witness nae 1 07-02-2023.rtf\']');
     I.seeElement('//a[.=\'Hearsay evidence Notice of intention witness nae 2 08-02-2023.tif\']');
     I.see('Defendant documents referred to in statement');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 1 09-02-2023.tiff\']');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 2 10-02-2023.docx\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 1 referred to in the statement of null 09-02-2023.tiff\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 2 referred to in the statement of null 10-02-2023.docx\']');
 
     I.see('Defendant expert evidence');
     I.see('Defendant expert report');
@@ -103,8 +103,8 @@ class Documents {
     I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2.docx\']');
 
     I.see('Defendant documents referred to in statement');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 1 05-02-2023.jpeg\']');
-    I.seeElement('//a[.=\'Referred Document Docuents referred Type of Docuent 2 06-02-2023.jpg\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 1 referred to in the statement of null 05-02-2023.jpeg\']');
+    I.seeElement('//a[.=\'Docuents referred Type of Docuent 2 referred to in the statement of null 06-02-2023.jpg\']');
 
     I.see('Defendant expert evidence');
     I.see('Defendant expert report');
@@ -140,7 +140,7 @@ class Documents {
     I.see('Claimant intention to rely on hearsay evidence');
     I.see('Hearsay evidence Witness 01-03-2023.pdf');
     I.see('Claimant documents referred to in statement');
-    I.see('Referred Document Upper 01-01-2023.pdf');
+    I.see('Upper referred to in the statement of john 01-01-2023.pdf');
 
     I.see('Claimant expert evidence');
     I.see('Claimant expert report');
@@ -172,7 +172,7 @@ class Documents {
     I.see('Claimant witness summary');
     I.see('Witness Summary of Suary 23.pdf');
     I.see('Claimant documents referred to in statement');
-    I.see('Referred Document Upper 01-01-2023.pdf');
+    I.see('Upper referred to in the statement of john 01-01-2023.pdf');
 
     I.see('Claimant expert evidence');
     I.see('Claimant expert report');
