@@ -930,7 +930,7 @@
       "CLAIM_NUMBER": "Your claim number:",
       "COURT_BELIEVES_CAN_AFFORD": {
         "TITLE": "If the court believes the defendant can afford your plan",
-        "CCJ_WILL_BE_ISSUED": "A County Court Judgement (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
+        "CCJ_WILL_BE_ISSUED": "A County Court Judgment (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
       },
       "COURT_BELIEVES_CANT_AFFORD": {
         "TITLE": "If the court believes the defendant can not afford your plan",
