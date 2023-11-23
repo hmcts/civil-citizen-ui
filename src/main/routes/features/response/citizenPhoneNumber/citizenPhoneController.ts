@@ -8,8 +8,10 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
 import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {Claim} from "models/claim";
+import {getClaimById} from 'modules/utilityService';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const citizenPhoneController = Router();
@@ -21,8 +23,8 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, ca
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const currentClaimId = req.params.id;
+    const claim: Claim = await getClaimById(currentClaimId, req, true);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     renderView(new GenericForm<CitizenTelephoneNumber>(citizenTelephoneNumber), res, carmEnabled);
   } catch (error) {
@@ -32,8 +34,8 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      const claim = await getCaseDataFromStore(redisKey);
+      const currentClaimId = req.params.id;
+      const claim: Claim = await getClaimById(currentClaimId, req, true);
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, carmEnabled);
       const citizenTelephoneNumberForm = new GenericForm(model);
