@@ -1,12 +1,18 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
 {% macro taskComponent(task, t) %}
- 
+
   <div>
     <li class="app-task-list__item">
-      <span class="app-task-list__task-name">
-        <a href={{task.url}}>{{ t(task.description) }}</a>
-      </span>
+       {% if task.status===TaskStatus.NOT_AVAILABLE_YET %}
+          <span class="app-task-list__task-name">
+             <a>{{ t(task.description) }}</a>
+          </span>
+       {% else %}
+          <span class="app-task-list__task-name">
+            <a href={{task.url}}>{{ t(task.description) }}</a>
+          </span>
+       {% endif %}
 
       {{govukTag({
         text: t('PAGES.TASK_LIST.' + task.status),
