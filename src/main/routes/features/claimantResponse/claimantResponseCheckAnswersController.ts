@@ -9,7 +9,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -58,7 +58,6 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       const redisKey = generateRedisKey(req as unknown as AppRequest);
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
