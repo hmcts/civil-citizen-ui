@@ -65,6 +65,7 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_OVER_18 = 'Is your partner aged 18 or over?',
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
+  MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   MORTGAGE_AMOUNT_ERROR = 'Enter how much you pay for mortgage',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid mortgage amount, maximum two decimal places',

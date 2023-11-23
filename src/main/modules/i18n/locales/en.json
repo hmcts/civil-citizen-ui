@@ -350,6 +350,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_PHONE_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation telephone confirmation",
+      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
