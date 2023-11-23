@@ -41,6 +41,5 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-
   });
 });
