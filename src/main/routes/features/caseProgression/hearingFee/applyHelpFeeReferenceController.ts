@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
-  DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL, GENERIC_HELP_FEES_URL,
   HEARING_FEE_CANCEL_JOURNEY, HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -20,23 +20,20 @@ import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/h
 
 const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-reference';
 const applyHelpFeeReferenceController: Router = Router();
+const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
 async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
   const redisClaimId = generateRedisKey(<AppRequest>req);
   const claim: Claim = await getCaseDataFromStore(redisClaimId);
-  if (!form) {
-    form = new GenericForm(new ApplyHelpFeesReferenceForm());
-    if(claim.caseProgression?.helpFeeReferenceNumberForm)
-    {
-      form = new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm);
-    }
-  }
+  form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   const startApplyHelpFee = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
+  const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpFeeReferenceViewPath,
     {
       redirectUrl,
       form,
       startApplyHelpFee,
+      genericHelpFeeUrl,
       applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(),
       applyHelpFeeReferenceButtonContents: getButtonsContents(claimId),
     });
@@ -46,7 +43,7 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
   try{
     const claimId = req.params.id;
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    await renderView(res, req, null, claimId, redirectUrl);
+    await renderView(res, req, new GenericForm(new ApplyHelpFeesReferenceForm()), claimId, redirectUrl);
   }catch (error) {
     next(error);
   }
@@ -65,7 +62,7 @@ applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req
       await renderView(res, req, form, claimId, redirectUrl);
     } else {
       const redirectUrl = HEARING_FEE_CONFIRMATION_URL;
-      await saveCaseProgression(redisClaimId, form.model, 'helpFeeReferenceNumberForm');
+      await saveCaseProgression(redisClaimId, form.model, helpFeeReferenceNumberForm);
       if (form.model.option === YesNo.YES) {
         await triggerNotifyEvent(claimId, req, redisClaimId);
       }
