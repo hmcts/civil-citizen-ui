@@ -7,7 +7,6 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'common/models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
-
 const paymentUnsuccessfulViewPath = 'features/caseProgression/hearingFee/payment-unsuccessful';
 const paymentUnsuccessfulController: Router = Router();
 
