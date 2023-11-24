@@ -2,6 +2,7 @@
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
+const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
