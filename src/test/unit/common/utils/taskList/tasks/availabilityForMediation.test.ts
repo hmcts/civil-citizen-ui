@@ -1,6 +1,7 @@
 import {Claim} from 'models/claim';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
+import {Mediation} from 'models/mediation/mediation';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -9,25 +10,44 @@ jest.mock('i18next', () => ({
 }));
 
 describe('Availability for mediation', () => {
-  const claim = new Claim();
+  let claim = new Claim();
   const claimId = '5129';
   const lang = 'en';
 
   const resultComplete = {
     description: 'COMMON.AVAILABILITY_FOR_MEDIATION',
     url: '/case/5129/response/availability-for-mediation',
-    status: TaskStatus.COMPLETE,
   };
+
+  beforeEach(() => {
+    claim = new Claim();
+  });
 
   describe('getAvailabilityForMediationTask', () => {
 
     it('should return complete', () => {
-      const freeTelephoneMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
-      expect(freeTelephoneMediationTask).toEqual(resultComplete);
+      claim.mediation = new Mediation();
+      claim.mediation.hasAvailabilityMediationFinished = true;
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
+      expect(availabilityForMediationTask.url).toEqual(resultComplete.url);
+      expect(availabilityForMediationTask.description).toEqual(resultComplete.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.COMPLETE);
     });
+
     it('should return incomplete', () => {
-      const freeTelephoneMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
-      expect(freeTelephoneMediationTask).toEqual(resultComplete);
+      claim.mediation = new Mediation();
+      claim.mediation.hasAvailabilityMediationFinished = false;
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
+      expect(availabilityForMediationTask.url).toEqual(resultComplete.url);
+      expect(availabilityForMediationTask.description).toEqual(resultComplete.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+    });
+
+    it('should return incomplete when is undefined', () => {
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
+      expect(availabilityForMediationTask.url).toEqual(resultComplete.url);
+      expect(availabilityForMediationTask.description).toEqual(resultComplete.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
   });
 });

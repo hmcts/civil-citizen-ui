@@ -7,7 +7,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
 const hasTelephoneMeditationCompleted = (claim: Claim): boolean => {
-  return claim.mediation.hasTelephoneMeditationAccessed !== undefined;
+  return claim.mediation?.hasTelephoneMeditationAccessed === undefined ? false : claim.mediation.hasTelephoneMeditationAccessed;
 };
 
 export const getTelephoneMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
