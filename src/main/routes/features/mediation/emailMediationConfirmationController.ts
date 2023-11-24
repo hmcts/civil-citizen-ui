@@ -1,4 +1,4 @@
-import {NextFunction, Router, Response, Request} from 'express';
+import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   MEDIATION_ALTERNATIVE_EMAIL_URL,
   MEDIATION_EMAIL_CONFIRMATION_URL, MEDIATION_NEXT_3_MONTHS_URL,
@@ -28,7 +28,7 @@ const getDefendantEmail = async (redisKey: string): Promise<string> => {
   return claim.respondent1.emailAddress.emailAddress;
 };
 
-emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const defendantEmail = await getDefendantEmail(redisKey);
@@ -38,9 +38,9 @@ emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, async
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claimId = req.params.id;
@@ -58,6 +58,6 @@ emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, asyn
     next(error);
   }
 
-});
+}) as RequestHandler);
 
 export default emailMediationConfirmationController;
