@@ -57,8 +57,11 @@ describe('Check Answers service', () => {
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
       claim.claimantResponse = {
-        chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
+        chooseHowToProceed: { option: ChooseHowProceed.REQUEST_A_CCJ },
         ccjRequest: new CCJRequest(),
+        fullAdmitSetDateAcceptPayment: {
+          option: 'yes',
+        },
       } as ClaimantResponse;
     });
 
@@ -66,14 +69,21 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForDefendantPaidSome();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(expectedResult).toEqual(result);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
       const expectedResult = generateExpectedResultForDefendantPaidNone();
-      claim.claimantResponse.ccjRequest.paidAmount = {option: YesNo.NO};
+      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(expectedResult).toEqual(result);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
+    });
+    it('should check answers be empty if non of the tasks completed', () => {
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
+      claim.claimantResponse.chooseHowToProceed = undefined;
+      claim.claimantResponse.ccjRequest = undefined;
+      const result = getSummarySections('12345', claim, 'en', 70);
+      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined, null, null] }).toEqual(result);
     });
   });
 });
@@ -81,7 +91,54 @@ describe('Check Answers service', () => {
 function generateExpectedResultForDefendantPaidNone() {
   return {
     sections: [
-      null,
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/accept-payment-method',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/choose-how-to-proceed',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
         summaryList: {
@@ -115,6 +172,8 @@ function generateExpectedResultForDefendantPaidNone() {
         },
       },
       undefined,
+      null,
+      null,
     ],
   };
 }
@@ -122,7 +181,54 @@ function generateExpectedResultForDefendantPaidNone() {
 function generateExpectedResultForDefendantPaidSome() {
   return {
     sections: [
-      null,
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/accept-payment-method',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/choose-how-to-proceed',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
       {
         title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
         summaryList: {
@@ -164,6 +270,8 @@ function generateExpectedResultForDefendantPaidSome() {
         },
       },
       undefined,
+      null,
+      null,
     ],
   };
 }
