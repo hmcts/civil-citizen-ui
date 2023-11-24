@@ -155,10 +155,12 @@ module.exports = {
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
     if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
       await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 4, 2);
+        const submittedDate = new Date(2024, 4, 3);
         return {...caseData, submittedDate: submittedDate};
       });
+      console.log('submitted date update to after carm date');
     }
     return caseId;
   },
@@ -410,7 +412,7 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
 }
 
 const addData = async (caseId, user, cb) => {
-  const event = 'ADD_CASE_NOTE';
+  const event = 'UPDATE_CASE_DATA';
   await apiRequest.setupTokens(user);
   const startEventData = await apiRequest.startEvent(event, caseId);
   const caseData = cb(startEventData);

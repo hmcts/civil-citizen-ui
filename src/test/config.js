@@ -95,7 +95,7 @@ module.exports = {
     type: 'caseworker',
   },
   systemUpdate: {
-    password: 'Password12',
+    password: defaultPasswordSystemUser,
     email: 'civil-system-update@mailnesia.com',
     type: 'systemupdate',
   },
