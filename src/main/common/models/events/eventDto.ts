@@ -16,4 +16,5 @@ export interface ClaimUpdate {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
+  respondentSignSettlementAgreement? : YesNoUpperCamelCase;
 }
