@@ -19,6 +19,7 @@ import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoY
 import {Party} from 'common/models/party';
 import {PaymentIntention } from 'common/form/models/admission/paymentIntention';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
+import {CIVIL_SERVICE_SUBMIT_EVENT} from 'client/civilServiceUrls';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -30,11 +31,16 @@ jest.mock('modules/utilityService', () => ({
 describe('Respond To Settlement Agreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
+  
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
+    nock('http://localhost:4000')
+      .post(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId','undefined')
+        .replace(':caseId',':id'))
+      .reply(200, {});  
   });
 
   describe('on GET', () => {
@@ -87,10 +93,14 @@ describe('Respond To Settlement Agreement', () => {
     });
 
     it('should redirect to the claimant response task-list if sign agreement checkbox is selected', async () => {
+      const mockClaim = new Claim();
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).send({option: 'yes'})
         .expect((res) => {
-          // TODO: Change to 302 once redirect is implemented
           expect(res.status).toBe(302);
+          //TODO: Add location for next page
+          // expect(res.get('location')).toBe(SIGN_SETTLEMENT_CONFIRMTION_PAGE);
         });
     });
 
