@@ -228,6 +228,7 @@ import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
 export default [
   homeController,
   dashboardController,
@@ -438,4 +439,5 @@ export default [
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  telephoneMediationController,
 ];
