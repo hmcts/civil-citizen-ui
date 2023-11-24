@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
+import {BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
@@ -39,7 +39,7 @@ export function getDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -55,7 +55,7 @@ export function getDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -71,7 +71,7 @@ export function getDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -87,7 +87,7 @@ export function getDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -120,7 +120,7 @@ describe('Response - Check answers', () => {
         return getDebtRespite();
       });
 
-      const response = await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL);
+      const response = await session(app).get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL);
       expect(response.status).toBe(200);
 
       const dom = new JSDOM(response.text);
@@ -161,7 +161,7 @@ describe('Response - Check answers', () => {
         return createDebtRespite();
       });
 
-      const response = await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL);
+      const response = await session(app).get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL);
       expect(response.status).toBe(200);
 
       const dom = new JSDOM(response.text);
@@ -198,7 +198,7 @@ describe('Response - Check answers', () => {
     });
 
     it('should pass english translation via query', async () => {
-      await session(app).get(BREATHING_SPACE_CHECK_ANSWERS_URL)
+      await session(app).get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL)
         .query({lang: 'en'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -210,7 +210,7 @@ describe('Response - Check answers', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await session(app)
-        .get(BREATHING_SPACE_CHECK_ANSWERS_URL)
+        .get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -220,7 +220,7 @@ describe('Response - Check answers', () => {
   describe('on Post', () => {
     it('should redirect dashboard claimant', async () => {
       await session(app)
-        .post(BREATHING_SPACE_CHECK_ANSWERS_URL)
+        .post(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL)
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
@@ -246,7 +246,7 @@ export function createDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -262,7 +262,7 @@ export function createDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -278,7 +278,7 @@ export function createDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],
@@ -294,7 +294,7 @@ export function createDebtRespite(): SummarySections {
               actions: {
                 items: [
                   {
-                    href: BREATHING_SPACE_CHECK_ANSWERS_URL,
+                    href: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
                     text: 'Change',
                   },
                 ],

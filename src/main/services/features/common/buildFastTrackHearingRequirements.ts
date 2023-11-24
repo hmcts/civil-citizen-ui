@@ -29,7 +29,7 @@ export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION_2.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL),
     changeLabel(lng),
   );
@@ -93,11 +93,13 @@ export const getSentReportToOtherParties = (claim: Claim, claimId: string, lng: 
 };
 
 export const getShareExpertWithClaimant = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  const shouldConsiderSharedExpert = getFormattedAnswerForYesNoNotReceived(directionQuestionnaire?.experts?.sharedExpert?.option, lng);
+  const option = directionQuestionnaire?.experts?.sharedExpert?.option === YesNo.YES
+    ? YesNoUpperCase.YES
+    : YesNoUpperCase.NO;
 
   return summaryRow(
     t('PAGES.SHARED_EXPERT.WITH_CLAIMANT', {lng}),
-    shouldConsiderSharedExpert,
+    directionQuestionnaire?.experts?.sharedExpert?.option ? t(`COMMON.VARIATION_2.${option}`, {lng}) : '',
     constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL),
     changeLabel(lng),
   );

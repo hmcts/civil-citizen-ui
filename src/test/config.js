@@ -3,7 +3,7 @@ const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
