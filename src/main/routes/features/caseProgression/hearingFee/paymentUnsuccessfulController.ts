@@ -16,10 +16,8 @@ paymentUnsuccessfulController.get(PAY_HEARING_FEE_UNSUCCESSFUL_URL, (req, res, n
       const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
       const claimNumber = claim.getFormattedCaseReferenceNumber(claimId);
-      const claimDashboardUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
       res.render(paymentUnsuccessfulViewPath, {
         claimNumber,
-        claimDashboardUrl,
       });
     } catch (error) {
       next(error);
