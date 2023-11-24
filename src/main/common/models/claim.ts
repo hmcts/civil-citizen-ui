@@ -67,7 +67,6 @@ import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
