@@ -28,6 +28,7 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
+const {submitEvent} = require('./apiRequest');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -115,7 +116,7 @@ module.exports = {
     console.log('End of performCitizenResponse()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -152,6 +153,13 @@ module.exports = {
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
+
+    if (carmEnabled) {
+      await addData(caseId, config.systemUpdate, (caseData) => {
+        const submittedDate = new Date(2024, 4, 2);
+        return {...caseData, submittedDate: submittedDate};
+      })
+    }
     return caseId;
   },
 
@@ -399,6 +407,14 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
       }
     }
   }
+}
+
+const addData = async (caseId, user, cb) => {
+  const event = 'ADD_CASE_NOTE';
+  await apiRequest.setupTokens(user);
+  const startEventData = await apiRequest.startEvent(event, caseId);
+  const caseData = cb(startEventData);
+  return await submitEvent(event, caseData, caseId);
 }
 
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
