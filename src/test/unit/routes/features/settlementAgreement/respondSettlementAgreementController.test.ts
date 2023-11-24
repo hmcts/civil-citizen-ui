@@ -5,7 +5,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
