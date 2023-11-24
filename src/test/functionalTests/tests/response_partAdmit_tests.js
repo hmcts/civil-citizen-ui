@@ -58,6 +58,3 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression 
   //   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   // }
 });
-
-
-
