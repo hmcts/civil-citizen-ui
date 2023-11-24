@@ -66,6 +66,8 @@ import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
+import {FeeType} from 'form/models/helpWithFees/feeType';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -128,7 +130,9 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  feeTypeHelpRequested: FeeType;
   respondentPaymentDeadline: Date;
+  respondentSignSettlementAgreement? : GenericYesNo;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -211,6 +215,12 @@ export class Claim {
 
   getDefendantFullName(): string {
     return this.getName(this.respondent1);
+  }
+
+  isDefendantResponsePayBySetDate(): boolean {
+    const isFullAdmitBySetDate = this.isFullAdmission() && this.isFAPaymentOptionBySetDate();
+    const isPartAdmitBySetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate();
+    return isFullAdmitBySetDate || isPartAdmitBySetDate;
   }
 
   formattedResponseDeadline(lng?: string): string {
@@ -859,12 +869,21 @@ export class Claim {
       this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
   }
 
+
   hasClaimantIntentToProceedResponse() {
     return this?.claimantResponse?.intentionToProceed?.option === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
     return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+
+  getPaymentDate() {
+    if(this.isPAPaymentOptionByDate()) {
+      return this.partialAdmission.paymentIntention.paymentDate;
+    } else if (this.isFAPaymentOptionBySetDate()){
+      return this.fullAdmission.paymentIntention.paymentDate;
+    }
+
   }
 }
 
