@@ -158,7 +158,7 @@ module.exports = {
       await addData(caseId, config.systemUpdate, (caseData) => {
         const submittedDate = new Date(2024, 4, 2);
         return {...caseData, submittedDate: submittedDate};
-      })
+      });
     }
     return caseId;
   },
@@ -415,7 +415,7 @@ const addData = async (caseId, user, cb) => {
   const startEventData = await apiRequest.startEvent(event, caseId);
   const caseData = cb(startEventData);
   return await submitEvent(event, caseData, caseId);
-}
+};
 
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);

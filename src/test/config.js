@@ -97,7 +97,7 @@ module.exports = {
   systemUpdate: {
     password: 'Password12',
     email: 'civil-system-update@mailnesia.com',
-    type: 'systemupdate'
+    type: 'systemupdate',
   },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
