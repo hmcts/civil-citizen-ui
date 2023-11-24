@@ -349,6 +349,24 @@
     }
   },
   "PAGES": {
+    "TELEPHONE_FOR_MEDIATION": {
+      "PAGE_TITLE": "Telephone mediation",
+      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
+      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
+      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
+      "WHAT_HAPPENS": "What happens at mediation?",
+      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
+      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
+      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
+      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
+      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
+      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
+      "AFTER_THE_PHONE_CALL":"After the phone call",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
+      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
@@ -633,7 +651,8 @@
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "They can accept the amount you've paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.",
@@ -3049,6 +3068,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
     "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",

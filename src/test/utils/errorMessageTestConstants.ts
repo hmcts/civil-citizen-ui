@@ -36,6 +36,7 @@ export const enum TestMessages {
   ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO = 'Date they are unavailable to must be in the next 12 months',
   ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE = 'Date they are unavailable from must be before the date they are unavailable to',
   ENTER_PHONE_NUMBER_OPTIONAL = 'Enter a phone number (optional)',
+  ENTER_PHONE_NUMBER = 'Enter a phone number',
   ENTER_DATE_OF_BIRTH = 'Enter your date of birth',
   ENTER_FIRST_ADDRESS = 'Enter first address line',
   ENTER_FIRST_NAME = 'Enter first name',

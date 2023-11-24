@@ -29,6 +29,15 @@ import mockDefendantResponseSmallClaimRejectClaimMock from './mocks/mockDefendan
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
 
 import {LoggerInstance} from 'winston';
+import {Claim} from 'models/claim';
+
+const mockDraftClaim = (claim: Claim) => ({
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(claim))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
+});
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -264,4 +273,5 @@ export {
   civilClaimResponseMock,
   mockDefendantResponseSmallClaimFullReject,
   mockCivilClaimHearingFee,
+  mockDraftClaim,
 };
