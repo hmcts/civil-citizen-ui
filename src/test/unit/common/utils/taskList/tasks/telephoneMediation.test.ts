@@ -28,26 +28,26 @@ describe('Telephone mediation', () => {
     it('should return complete', () => {
       claim.mediation = new Mediation();
       claim.mediation.hasTelephoneMeditationAccessed = true;
-      const freeTelephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
-      expect(freeTelephoneMediationTask.url).toEqual(resultComplete.url);
-      expect(freeTelephoneMediationTask.description).toEqual(resultComplete.description);
-      expect(freeTelephoneMediationTask.status).toEqual(TaskStatus.COMPLETE);
+      const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
+      expect(telephoneMediationTask.url).toEqual(resultComplete.url);
+      expect(telephoneMediationTask.description).toEqual(resultComplete.description);
+      expect(telephoneMediationTask.status).toEqual(TaskStatus.COMPLETE);
     });
 
     it('should return incomplete', () => {
       claim.mediation = new Mediation();
       claim.mediation.hasTelephoneMeditationAccessed = false;
-      const freeTelephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
-      expect(freeTelephoneMediationTask.url).toEqual(resultComplete.url);
-      expect(freeTelephoneMediationTask.description).toEqual(resultComplete.description);
-      expect(freeTelephoneMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
+      expect(telephoneMediationTask.url).toEqual(resultComplete.url);
+      expect(telephoneMediationTask.description).toEqual(resultComplete.description);
+      expect(telephoneMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
 
     it('should return incomplete when is undefined', () => {
-      const freeTelephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
-      expect(freeTelephoneMediationTask.url).toEqual(resultComplete.url);
-      expect(freeTelephoneMediationTask.description).toEqual(resultComplete.description);
-      expect(freeTelephoneMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
+      expect(telephoneMediationTask.url).toEqual(resultComplete.url);
+      expect(telephoneMediationTask.description).toEqual(resultComplete.description);
+      expect(telephoneMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
   });
 });
