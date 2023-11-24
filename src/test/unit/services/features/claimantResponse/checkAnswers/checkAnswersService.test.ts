@@ -49,6 +49,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyAccept(option: string) 
           ],
         },
       },
+      undefined,
       null,
       undefined,
       null,
@@ -85,6 +86,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
           ],
         },
       },
+      undefined,
       null,
       undefined,
       {
@@ -96,7 +98,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
                 'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -120,7 +122,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
                 'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -137,7 +139,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
                 'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION_2.NO',
+                'html': 'COMMON.NO',
               },
               'actions': {
                 'items': [
@@ -154,7 +156,7 @@ function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) 
                 'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -250,6 +252,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
           'rows': [],
         },
       },
+      undefined,
       null,
       undefined,
       {
@@ -261,7 +264,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -285,7 +288,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -302,7 +305,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION_2.NO',
+                'html': 'COMMON.NO',
               },
               'actions': {
                 'items': [
@@ -319,7 +322,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -416,6 +419,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedReject() {
           'rows': rows,
         },
       },
+      undefined,
       null,
       undefined,
       null,
@@ -451,6 +455,7 @@ function generateExpectedResultForPartAdmitAndPaidAccept() {
           ],
         },
       },
+      undefined,
       null,
       undefined,
       null,
@@ -486,6 +491,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
           ],
         },
       },
+      undefined,
       null,
       undefined,
       {
@@ -497,7 +503,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -521,7 +527,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -538,7 +544,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION_2.NO',
+                'html': 'COMMON.NO',
               },
               'actions': {
                 'items': [
@@ -555,7 +561,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -669,6 +675,7 @@ function generateExpectedResultForPartAdmitAndPaymentAccept() {
           ],
         },
       },
+      undefined,
       null,
       undefined,
       null,
@@ -704,6 +711,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
           ],
         },
       },
+      undefined,
       null,
       undefined,
       {
@@ -715,7 +723,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -739,7 +747,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
               },
               'value': {
-                'html': 'COMMON.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -756,7 +764,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION_2.NO',
+                'html': 'COMMON.NO',
               },
               'actions': {
                 'items': [
@@ -773,7 +781,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_2.NO',
               },
               'actions': {
                 'items': [
@@ -964,7 +972,7 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForPartAdmitPayImmediatelyReject(YesNo.NO);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(5).toEqual(result.sections.length);
+      expect(6).toEqual(result.sections.length);
       expect(expectedResult).toEqual(result);
     });
   });
