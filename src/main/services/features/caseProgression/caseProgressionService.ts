@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
-import {ClaimantOrDefendant} from 'models/partyType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
 import {
@@ -19,17 +18,19 @@ import {
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
 import {Claim} from 'models/claim';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-export const getDocuments = async (claimId: string,claimantOrDefendant: ClaimantOrDefendant): Promise<UploadDocuments> => {
+export const getDocuments = async (claimId: string): Promise<UploadDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.caseProgression?.defendantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.DEFENDANT) {
+    if (caseData?.caseProgression?.defendantUploadDocuments && !caseData.isClaimant()) {
       return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
-    else if (caseData?.caseProgression?.claimantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.CLAIMANT) {
+    else if (caseData?.caseProgression?.claimantUploadDocuments && caseData.isClaimant()) {
       return caseData?.caseProgression?.claimantUploadDocuments ? caseData?.caseProgression.claimantUploadDocuments : new UploadDocuments();
     }
   } catch (error) {
@@ -48,6 +49,14 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
     {
       claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    }
+
+    if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
+    {
+      if (!claim.caseProgression.hearingFeeHelpSelection) {
+        claim.caseProgression.hearingFeeHelpSelection = new GenericYesNo();
+      }
+      claim.feeTypeHelpRequested = FeeType.HEARING;
     }
 
     if (claim?.caseProgression) {
@@ -74,17 +83,21 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
   }
 };
 
-export const deleteUntickedDocumentsFromStore = async (claimId: string, claimantOrDefendant: ClaimantOrDefendant) => {
+export const deleteUntickedDocumentsFromStore = async (claimId: string, isClaimant: boolean) => {
   const claim: Claim = await getCaseDataFromStore(claimId);
   let documentsTicked: UploadDocuments;
   let documentsSaved: UploadDocumentsUserForm;
   let propertyName: string;
   const documentsToSave: UploadDocumentsUserForm = new UploadDocumentsUserForm();
 
-  if(claimantOrDefendant === ClaimantOrDefendant.DEFENDANT){
+  if(!isClaimant){
     documentsTicked = claim.caseProgression.defendantUploadDocuments;
     documentsSaved = claim.caseProgression.defendantDocuments;
     propertyName = 'defendantDocuments';
+  } else {
+    documentsTicked = claim.caseProgression.claimantUploadDocuments;
+    documentsSaved = claim.caseProgression.claimantDocuments;
+    propertyName = 'claimantDocuments';
   }
 
   if(documentsSaved)
