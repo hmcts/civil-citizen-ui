@@ -18,4 +18,5 @@ export interface ClaimUpdate {
   applicant1LiPResponse?: CCDApplicantLiPResponse;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
+  respondentSignSettlementAgreement? : YesNoUpperCamelCase;
 }
