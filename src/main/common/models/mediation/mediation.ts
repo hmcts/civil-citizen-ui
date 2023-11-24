@@ -8,11 +8,13 @@ export class Mediation {
   mediationDisagreement?: GenericYesNo;
   noMediationReason?: NoMediationReason;
   companyTelephoneNumber: CompanyTelephoneNumber;
+  isMediationContactNameCorrect?: GenericYesNo;
 
-  constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason, companyTelephoneNumber?: CompanyTelephoneNumber) {
+  constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason, companyTelephoneNumber?: CompanyTelephoneNumber, mediationContactNameCorrect?: GenericYesNo) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
     this.companyTelephoneNumber = companyTelephoneNumber;
+    this.isMediationContactNameCorrect = mediationContactNameCorrect;
   }
 }
