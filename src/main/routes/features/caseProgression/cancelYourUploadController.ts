@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Router} from 'express';
-import {CP_EVIDENCE_UPLOAD_CANCEL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CP_EVIDENCE_UPLOAD_CANCEL,  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -33,15 +33,15 @@ cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res,
     const url = req.session.previousUrl;
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
+    const claim: Claim = await getCaseDataFromStore(req.params.id);
     if (form.hasErrors()) {
-      const claim: Claim = await getCaseDataFromStore(req.params.id);
-      await res.render(cancelYourUploadViewPath,{form, cancelYourUploadContents:getCancelYourUpload(req.params.id, claim)});
+      res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents: getCancelYourUpload(req.params.id, claim)});
     } else if(form.model.option === YesNo.NO) {
       res.redirect(url);
     } else {
       const claimId = req.params.id;
       await cancelDocumentUpload(claimId);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL));
     }
   } catch (error) {
     next(error);
