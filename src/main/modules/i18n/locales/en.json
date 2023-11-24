@@ -1973,6 +1973,10 @@
       "TITLE": "Who should the mediation service call?",
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
+    "MEDIATION_EMAIL_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation email confirmation",
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+    },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
       "CAN_BE_USED_IN_COURT": "it's confidential and nothing said or done during mediation can be used in court",
