@@ -12,23 +12,27 @@ import {
   UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getWitnessContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[0]?.selected){
+  const uploadDocuments: UploadDocuments = claim.isClaimant()
+    ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
+
+  if (uploadDocuments?.witness[0]?.selected){
     sectionContent.push(getWitnessStatement(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[1]?.selected){
+  if (uploadDocuments?.witness[1]?.selected){
     sectionContent.push(getWitnessSummary(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[2]?.selected){
+  if (uploadDocuments?.witness[2]?.selected){
     sectionContent.push(getNoticeOfIntention(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[3]?.selected){
+  if (uploadDocuments?.witness[3]?.selected){
     sectionContent.push(getDocumentsReferred(form));
   }
 

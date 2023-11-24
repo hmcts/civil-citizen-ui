@@ -3,7 +3,10 @@ import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT} from '../../../../../main/routes/urls';
+import {
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION
+} from '../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
@@ -19,6 +22,7 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CIVIL_SERVICE_SUBMIT_EVENT} from 'client/civilServiceUrls';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -35,6 +39,11 @@ describe('Respond To Settlement Agreement', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
+    nock('http://localhost:4000')
+      .post(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId','undefined')
+        .replace(':caseId',':id'))
+      .reply(200, {});
   });
 
   function getMockClaim() {
@@ -101,6 +110,7 @@ describe('Respond To Settlement Agreement', () => {
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
         });
     });
 
