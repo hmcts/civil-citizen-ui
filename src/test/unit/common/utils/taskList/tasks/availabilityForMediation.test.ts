@@ -1,5 +1,5 @@
-import {Claim} from '../../../../../../main/common/models/claim';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
+import {Claim} from 'models/claim';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 jest.mock('../../../../../../main/modules/i18n');
@@ -21,8 +21,11 @@ describe('Availability for mediation', () => {
 
   describe('getAvailabilityForMediationTask', () => {
 
-    //ToDo Update to test INCOMPLETE changing to COMPLETE
     it('should return complete', () => {
+      const freeTelephoneMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
+      expect(freeTelephoneMediationTask).toEqual(resultComplete);
+    });
+    it('should return incomplete', () => {
       const freeTelephoneMediationTask = getAvailabilityForMediationTask(claim, claimId, lang);
       expect(freeTelephoneMediationTask).toEqual(resultComplete);
     });
