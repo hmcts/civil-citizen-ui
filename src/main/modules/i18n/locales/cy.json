@@ -633,7 +633,8 @@
       "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
       "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "Gallant dderbyn y swm rydych wedi'i dalu a setlo'r hawliad, neu ofyn i'r llys drosglwyddo'r hawliad i ganolfan wrandawiadau Llys Sirol.",
@@ -3045,6 +3046,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "Dim ond newid eich rhif ffôn y gallwch ei newid, nid ei ddileu",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
+    "ENTER_TELEPHONE_NUMBER": "Rhowch rif ffôn",
     "ONE_ROW_REQUIRED": "Rhowch o leiaf un llinell",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Dewiswch ymateb os gwelwch yn dda",

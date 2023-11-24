@@ -633,7 +633,8 @@
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "They can accept the amount you've paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.",
@@ -3045,6 +3046,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
     "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
