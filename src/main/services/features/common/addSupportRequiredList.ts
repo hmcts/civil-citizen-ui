@@ -13,7 +13,7 @@ export const addSupportRequiredListCommon = (claim: Claim, hearingRequirementsSe
   const supportRequiredHref = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   if (directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES &&  directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0) {
     hearingRequirementsSection.summaryList.rows.push(
-      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.${YesNoUpperCase.YES}`, {lng}), supportRequiredHref, changeLabel(lng)),
+      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.VARIATION_3.${YesNoUpperCase.YES}`, {lng}), supportRequiredHref, changeLabel(lng)),
     );
 
     claim.isSupportRequiredDetailsAvailable && directionQuestionnaire?.hearing?.supportRequiredList.items.forEach((item, index) => {
@@ -24,7 +24,7 @@ export const addSupportRequiredListCommon = (claim: Claim, hearingRequirementsSe
     });
   } else {
     hearingRequirementsSection.summaryList.rows.push(
-      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.${YesNoUpperCase.NO}`, {lng}), supportRequiredHref, changeLabel(lng)),
+      summaryRow(t('PAGES.SUPPORT_REQUIRED.TITLE', {lng}), t(`COMMON.VARIATION_3.${YesNoUpperCase.NO}`, {lng}), supportRequiredHref, changeLabel(lng)),
     );
   }
 };

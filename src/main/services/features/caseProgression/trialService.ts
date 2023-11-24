@@ -6,31 +6,40 @@ import {
 } from 'services/features/caseProgression/trialContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[][] => {
   const sectionContent: any[] = [];
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[0]?.selected) {
+  let uploadDocuments: UploadDocuments;
+
+  if (claim.isClaimant()) {
+    uploadDocuments = claim.caseProgression?.claimantUploadDocuments;
+  } else {
+    uploadDocuments = claim.caseProgression?.defendantUploadDocuments;
+  }
+
+  if(uploadDocuments?.trial[0]?.selected) {
     sectionContent.push(trialCaseSummary(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[1]?.selected) {
+  if(uploadDocuments?.trial[1]?.selected) {
     sectionContent.push(trialSkeletonArgument(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && !isSmallClaims) {
+  if(uploadDocuments?.trial[2]?.selected && !isSmallClaims) {
     sectionContent.push(trialAuthorities(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[3]?.selected) {
+  if(uploadDocuments?.trial[3]?.selected) {
     sectionContent.push(trialCosts(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[4]?.selected) {
+  if(uploadDocuments?.trial[4]?.selected) {
     sectionContent.push(trialDocumentary(form, isSmallClaims));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && isSmallClaims) {
+  if(uploadDocuments?.trial[2]?.selected && isSmallClaims) {
     sectionContent.push(trialAuthorities(form));
   }
 

@@ -7,9 +7,10 @@ import {
 import {
   getSummarySections,
   saveStatementOfTruth,
+  saveSubmitDate,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {generateRedisKey, getCaseDataFromStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -55,9 +56,10 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       const claim = await getCaseDataFromStore(req.params.id);
       await renderView(<AppRequest>req, res, form, claim);
     } else {
-      await saveStatementOfTruth(generateRedisKey(<AppRequest>req), form.model);
-      await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+      const redisKey = generateRedisKey(req as unknown as AppRequest);
+      await saveStatementOfTruth(redisKey, form.model);
+      const claim = await submitClaimantResponse(<AppRequest>req);
+      await saveSubmitDate(redisKey, claim.claimantResponse);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {

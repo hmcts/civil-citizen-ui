@@ -10,6 +10,7 @@ import {getClaimantResponseConfirmationContent} from 'services/features/claimant
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {Mediation} from 'common/models/mediation/mediation';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
@@ -68,6 +69,27 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[5]).toBeUndefined();
   });
 
+  it('Claimant accepted defendant`s response as part admit pay immediately', () => {
+    // Given
+    claim.claimantResponse.signSettlementAgreement.signed = 'true';
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.WE_EMAILED');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.THEY_MUST_RESPOND_BEFORE');
+    expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.IF_THEY_SIGN');
+    expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.IF_DONT_SIGN');
+    expect(claimantResponseConfirmationContent[6].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.IF_CANT_AFFORD');
+    expect(claimantResponseConfirmationContent[7].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.IF_NOT_PAID');
+    expect(claimantResponseConfirmationContent[8].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.IF_SIGNS');
+    expect(claimantResponseConfirmationContent[9].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.AFTER_REQUESTED');
+    expect(claimantResponseConfirmationContent[10]).toBeUndefined();
+  });
   it.each([
     [PaymentOptionType.IMMEDIATELY],
     [PaymentOptionType.BY_SET_DATE],
@@ -215,6 +237,7 @@ function getClaim (){
   claim.respondent1.partyDetails = new PartyDetails({partyName: 'Version 1'});
   claim.respondent1ResponseDeadline = new Date();
   claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
   return claim;
 }
 
