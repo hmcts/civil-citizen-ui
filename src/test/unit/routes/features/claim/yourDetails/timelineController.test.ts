@@ -2,12 +2,17 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('Claimant Timeline Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -57,7 +62,9 @@ describe('Claimant Timeline Controller', () => {
     it('should update data and redirect to evidence page if all required details are provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const mockData = [{
-        date: '18 July',
+        day: 1,
+        month: 3,
+        year: 2023,
         description: 'Raised an issue with Mr. Smith',
       }];
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
@@ -69,7 +76,9 @@ describe('Claimant Timeline Controller', () => {
     it('should save data if applicant doesn\'t exist and redirect to evidence page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       const mockData = [{
-        date: '18 July',
+        day: 1,
+        month: 3,
+        year: 2023,
         description: 'Raised an issue with Mr. Smith',
       }];
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {

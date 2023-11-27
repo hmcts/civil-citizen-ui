@@ -63,6 +63,7 @@ const validDataForPost = {
 describe('Claimant Organisation Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeEach(() => {
     nock(idamUrl)
