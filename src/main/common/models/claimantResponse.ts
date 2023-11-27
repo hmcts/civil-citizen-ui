@@ -12,6 +12,7 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -32,6 +33,7 @@ export class ClaimantResponse {
   suggestedPaymentIntention?: PaymentIntention;
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
+  submittedDate?: Date;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
@@ -55,5 +57,17 @@ export class ClaimantResponse {
 
   get isClaimantNotAcceptedPartAdmittedAmount(): boolean {
     return this.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  get isSignSettlementAgreement(): boolean {
+    return this.signSettlementAgreement?.signed !== undefined;
+  }
+
+  get isCCJRequested() : boolean {
+    return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+  }
+
+  get isClaimantAcceptedPaymentPlan() : boolean {
+    return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
 }

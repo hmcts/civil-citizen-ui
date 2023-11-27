@@ -2,14 +2,14 @@ import {Request, Response} from 'express';
 import {Claim} from 'common/models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_URL} from 'routes/urls';
+import {BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, DASHBOARD_URL} from 'routes/urls';
 
 describe('breathingSpaceGuard', () => {
   let req: Partial<Request>;
   let res: Partial<Response> & {redirect: jest.Mock};
   let next: jest.Mock;
   beforeEach(() => {
-    req = {params: {id: '123'}, url: BREATHING_SPACE_CHECK_ANSWERS_URL};
+    req = {params: {id: '123'}, url: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL};
     res = {redirect: jest.fn()};
     next = jest.fn();
   });
