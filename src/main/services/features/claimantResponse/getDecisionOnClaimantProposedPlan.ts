@@ -8,9 +8,11 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
-  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -33,7 +35,8 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
     return CLAIMANT_RESPONSE_TASK_LIST_URL;
   }
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
-  const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, <AppRequest>req, claimantProposedPlan);
-  return getRedirectionUrl(claim, courtDecision);
+  claim.courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, <AppRequest>req, claimantProposedPlan);
+  await saveDraftClaim(generateRedisKey(req), claim);
+  return getRedirectionUrl(claim, claim.courtDecision);
 };
 

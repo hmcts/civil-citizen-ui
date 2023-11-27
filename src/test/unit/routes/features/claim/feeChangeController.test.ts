@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {CLAIM_FEE_CHANGE_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getDraftClaimData} from '../../../../../main/services/dashboard/draftClaimService';
+import {getDraftClaimData} from 'services/dashboard/draftClaimService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/dashboard/draftClaimService.ts');
@@ -13,9 +13,10 @@ jest.mock('../../../../../main/services/dashboard/draftClaimService.ts');
 const getData = getDraftClaimData as jest.Mock;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 
-describe('Claimant Date of Birth Controller', () => {
+describe('Claim Fee Change Controller Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
