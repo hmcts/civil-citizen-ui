@@ -19,6 +19,12 @@ jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswers
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/taskListService');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockOutstandingTasksFromCase = outstandingTasksFromCase as jest.Mock;
 
