@@ -8,18 +8,23 @@ import {
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../../main/common/models/party';
-import {PartyType} from '../../../../../../main/common/models/partyType';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from '../../../../../../main/services/features/common/defendantDetailsService';
+} from 'services/features/common/defendantDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockDefendantInformation = getDefendantInformation as jest.Mock;
 const mockSaveDefendant = saveDefendantProperty as jest.Mock;
@@ -41,6 +46,7 @@ const mockSaveData = {
 describe('Defendant details controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
@@ -186,7 +192,19 @@ describe('Defendant details controller', () => {
         return party;
       });
 
-      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
+      const res = await request(app)
+        .post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL)
+        .send({
+          addressLine1: ['',''],
+          addressLine2: ['',''],
+          addressLine3: ['',''],
+          city: ['',''],
+          postCode: ['',''],
+          provideCorrespondenceAddress: '',
+          partyName: '',
+          contactPerson: '',
+
+        });
       expect(res.status).toBe(200);
       expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
@@ -224,10 +242,20 @@ describe('Defendant details controller', () => {
           return party;
         });
 
-        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send({
-          individualFirstName: '',
-          individualLastName: '',
-        });
+        const res = await request(app)
+          .post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL)
+          .send({
+            addressLine1: ['',''],
+            addressLine2: ['',''],
+            addressLine3: ['',''],
+            city: ['',''],
+            postCode: ['',''],
+            provideCorrespondenceAddress: '',
+            individualFirstName: '',
+            individualLastName: '',
+            contactPerson: '',
+
+          });
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
         expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
