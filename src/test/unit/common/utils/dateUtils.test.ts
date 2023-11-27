@@ -1,10 +1,10 @@
 import {
-  addFiveDaysBefore4pm,
+  addDaysBefore4pm,
   addMonths, checkEvidenceUploadTime, formatStringDateDMY, formatStringTimeHMS,
-  getDOBforAgeFromCurrentTime,
+  getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
-describe('addFiveDaysBefore4pm', () => {
+describe('addDaysBefore4pm', () => {
   it('should add 5 days to date if hour is before 4pm', () => {
     //Given
     const date = new Date('2023-01-05');
@@ -12,7 +12,7 @@ describe('addFiveDaysBefore4pm', () => {
     const resultDate = new Date('2023-01-10');
     resultDate.setHours(10, 0, 0, 0);
     //When
-    const result = addFiveDaysBefore4pm(date);
+    const result = addDaysBefore4pm(date, 5);
     //Then
     expect(result.getDate()).toBe(resultDate.getDate());
   });
@@ -23,7 +23,7 @@ describe('addFiveDaysBefore4pm', () => {
     const resultDate = new Date('2023-01-11');
     resultDate.setHours(22, 0, 0, 0);
     //When
-    const result = addFiveDaysBefore4pm(date);
+    const result = addDaysBefore4pm(date, 5);
     //Then
     expect(result.getDate()).toBe(resultDate.getDate());
   });
@@ -142,5 +142,28 @@ describe('formatStringTimeHMS', () => {
     const mockDate = new Date('2023-01-01T12:00:00');
     const result = formatStringTimeHMS(mockDate);
     expect(result).toStrictEqual('12:00:00 PM');
+  });
+});
+
+describe('isDateOnOrAfterSpecificDate', () => {
+  it('should return false when date is before specified date', () => {
+    const date = new Date('2023-01-01T17:59');
+    const specifiedDate = new Date('2024-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(false);
+  });
+
+  it('should return true when date is on specified date', () => {
+    const date = new Date('2023-01-01T17:59');
+    const specifiedDate = new Date('2023-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(true);
+  });
+
+  it('should return true when date is after specified date', () => {
+    const date = new Date('2023-02-01T17:59');
+    const specifiedDate = new Date('2023-01-01T17:59');
+    const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
+    expect(result).toBe(true);
   });
 });
