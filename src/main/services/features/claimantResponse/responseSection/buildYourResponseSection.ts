@@ -17,7 +17,7 @@ import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
 import {
   RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
-  RESPONSEFORREPAYMENTPLAN, RESPONSEFREQUENCY,
+  RESPONSEFREQUENCY,
   RESPONSFORCYAFORCHOOSEHOWTOPROCEED,
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
@@ -120,17 +120,6 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   return summaryRows;
 };
 
-export const buildRejectPlan = (claim: Claim, claimId: string, lang: string): SummaryRow => {
-  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
-  const selectedOption = claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option;
-  return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN', {lang}),
-    t(RESPONSEFORREPAYMENTPLAN[selectedOption], {lang}),
-    partAdmitAcceptedHref,
-    changeLabel(lang));
-
-};
-
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
     ? YesNoUpperCase.YES
@@ -220,7 +209,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     }
     if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
-    }    yourResponse.summaryList.rows.push(buildRejectPlan(claim, claimId, lang));
+    }
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
       yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lang));
     }

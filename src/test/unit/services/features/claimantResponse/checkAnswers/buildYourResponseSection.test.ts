@@ -40,7 +40,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(1);
+    expect(yourResponseSection.summaryList.rows.length).toBe(0);
   });
 
   it('should return Your response sections when PA and paid', async () => {
@@ -57,7 +57,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(3);
+    expect(yourResponseSection.summaryList.rows.length).toBe(2);
   });
 
   it('should return 3 sections wen payment accepted', async () => {
@@ -74,7 +74,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
+    expect(yourResponseSection.summaryList.rows.length).toBe(3);
   });
 
   it('should return Your response sections when rejection set by date', async () => {
@@ -86,7 +86,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(3);
+    expect(yourResponseSection.summaryList.rows.length).toBe(2);
   });
 
   it('should return Your response sections when accepted and settled', async () => {
@@ -98,7 +98,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
+    expect(yourResponseSection.summaryList.rows.length).toBe(3);
     expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT', {lng}));
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
   });
@@ -112,7 +112,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
+    expect(yourResponseSection.summaryList.rows.length).toBe(3);
     expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
   });
@@ -132,7 +132,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
-    expect(yourResponseSection.summaryList.rows.length).toBe(7);
+    expect(yourResponseSection.summaryList.rows.length).toBe(6);
   });
 
 });
