@@ -41,7 +41,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(claimId);
     const form = new GenericForm(new documentUploadSubmissionForm());
-    renderView(res, form, claim, claimId, false, lang);
+    renderView(res, form, claim, claimId, claim.isClaimant(), lang);
   } catch (error) {
     next(error);
   }
@@ -59,7 +59,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       const isSmallClaims = claim.isSmallClaimsTrackDQ;
       renderView(res, form, claim, claimId, isSmallClaims, lang);
     } else {
-      await saveUploadedDocuments(claim, <AppRequest>req, false);
+      await saveUploadedDocuments(claim, <AppRequest>req);
       await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
