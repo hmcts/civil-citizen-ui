@@ -15,12 +15,13 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseDocument} from 'models/document/caseDocument';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
+const dqPropertyNameClaimant = 'claimantDocuments';
 
 const multer = require('multer');
 const fileSize = Infinity;
@@ -55,26 +56,28 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
     form.validateSync();
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
-      && !form?.errorFor(`${errorFieldNamePrefix}`)) {
+        && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
+        && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
       const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = document;
     }
   }
-  await renderView(res, claimId, form);
+  const claim: Claim = await getCaseDataFromStore(claimId);
+
+  await renderView(res, claim, claimId, form);
 }
 
-async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
-  const claim: Claim = await getCaseDataFromStore(claimId);
+async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   const currentUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
-  //TODO: This will need to distinguish between claimant and defendant once claimant is implemented.
-  if(!form && claim.caseProgression?.defendantDocuments)
+  if(!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments)
   {
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
+  } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
+    form = new GenericForm(claim.caseProgression?.claimantDocuments);
   }
 
   if (claim && !claim.isEmpty()) {
@@ -101,27 +104,29 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   try {
     const claimId = req.params.id;
     req.session.previousUrl = req.originalUrl;
-    await renderView(res, claimId, null);
+    const claim: Claim = await getCaseDataFromStore(claimId);
+    await renderView(res, claim, claimId, null);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {// nosonar
-
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const claim: Claim = await getCaseDataFromStore(claimId);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
+    const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
     const submitAction: string = req.body.buttonPressed;
     form.validateSync();
     if (submitAction?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, submitAction, form);
     } else {
       if (form.hasErrors()) {
-        await renderView(res, claimId, form);
+        await renderView(res, claim, claimId, form);
       } else {
-        await saveCaseProgression(claimId, form.model, dqPropertyName);
+        await saveCaseProgression(claimId, form.model, isClaimant);
         res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
       }
     }
