@@ -720,11 +720,15 @@ export class Claim {
   hasClaimInMediation(): boolean {
     return this.ccdState === CaseState.IN_MEDIATION;
   }
-
+  
   hasClaimantNotAgreedToMediation(): boolean {
     return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
 
+  hasClaimantAgreedToMediation(): boolean {
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'Yes';
+  }
+  
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
     const now = new Date();
