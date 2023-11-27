@@ -1,6 +1,7 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
-  MEDIATION_EMAIL_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_URL, TELEPHONE_MEDIATION_URL,
+  MEDIATION_ALTERNATIVE_PHONE_URL,
+  MEDIATION_EMAIL_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -50,7 +51,7 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
       renderView(form, res, req, defendantPhone);
     } else {
       await saveMediation(redisKey, form.model, 'isMediationPhoneCorrect');
-      (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, TELEPHONE_MEDIATION_URL))
+      (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL))
         : res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     }
   } catch (error) {
