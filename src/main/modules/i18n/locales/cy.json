@@ -36,6 +36,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
+    "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
@@ -3233,6 +3234,7 @@
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
+    "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_OR_VIDEO_HEARING": {
