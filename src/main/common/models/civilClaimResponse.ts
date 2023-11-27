@@ -264,7 +264,6 @@ export interface CCDClaim extends ClaimUpdate {
   liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
-  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
 }
 
 export interface ClaimFeeData {

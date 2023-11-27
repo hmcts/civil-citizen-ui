@@ -99,7 +99,6 @@ civil-service:
       STITCHING_API_ENABLED: false
       SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
-      CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
