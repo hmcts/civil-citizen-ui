@@ -3,7 +3,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPRespo
 import {CCDApplicantLiPResponse} from 'models/ccdResponse/ccdApplicant1LiPResponse';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {CCDClaimantPayBySetDate} from "models/ccdResponse/ccdPayBySetDate";
+import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 
 export interface EventDto {
   event: CaseEvent,

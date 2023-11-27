@@ -12,7 +12,6 @@ import {
   buildYourResponseSection,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder';
 
-
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder');
 
 const howTheyRespondedTask = {

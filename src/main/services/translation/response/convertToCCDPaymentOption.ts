@@ -10,5 +10,3 @@ export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPa
     default: return CCDPaymentOption.IMMEDIATELY;
   }
 };
-
-

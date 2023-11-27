@@ -10,7 +10,7 @@ import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/conv
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import { RepaymentDecisionType } from './RepaymentDecisionType';
-import {CCDClaimantPayBySetDate} from "models/ccdResponse/ccdPayBySetDate";
+import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;

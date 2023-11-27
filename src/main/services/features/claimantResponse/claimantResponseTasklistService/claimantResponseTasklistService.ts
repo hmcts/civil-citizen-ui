@@ -27,7 +27,6 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   return taskGroups.filter(item => item.tasks.length !== 0);
 }
 
-
 export const outstandingClaimantResponseTasks = (caseData: Claim, claimId: string, lang: string): Task[] => {
   return outstandingTasksFromTaskLists(getClaimantResponseTaskLists(caseData, claimId, lang));
 };
