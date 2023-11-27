@@ -5,9 +5,7 @@ import {Claim} from 'common/models/claim';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {
-  translateClaimantResponseRequestDefaultJudgementToCCD
-} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {translateClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitClaimantResponse');
@@ -25,7 +23,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFeeAmount);
       ccdResponse = {...ccdResponseForRequestDefaultJudgement, ...ccdResponse};
     }
-    logger.info('Sumbmitting claimant intention...', ccdResponse);
+    logger.info('Submitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
