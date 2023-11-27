@@ -67,7 +67,8 @@
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
-      "START_NOW": "Dechrau nawr"
+      "START_NOW": "Dechrau nawr",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad"
@@ -2893,6 +2894,13 @@
         "TITLE": "Pay hearing fee",
         "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
         "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+      },
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
     }
   },

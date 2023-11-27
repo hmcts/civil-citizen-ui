@@ -11,7 +11,6 @@ const cancelHearingFeeJourneyController: Router = Router();
 
 cancelHearingFeeJourneyController.get(HEARING_FEE_CANCEL_JOURNEY, (async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
-
   const redisClaimId = generateRedisKey(<AppRequest>req);
   await deleteDraftClaimFromStore(redisClaimId);
   res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
