@@ -64,7 +64,6 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
     claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
-  const hasMediationDisagreement = claim.hasClaimantNotAgreedToMediation() || claim.hasRespondent1NotAgreedMediation();
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
