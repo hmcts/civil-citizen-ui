@@ -1,5 +1,7 @@
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
 
 describe('ClaimantResponse model', () => {
   describe('isClaimantSuggestedPayImmediately', () => {
@@ -135,6 +137,15 @@ describe('ClaimantResponse model', () => {
       claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       //When
       const result = claimantResponse.isClaimantSuggestedPayByInstalments;
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return REQUEST_BY_CCJ when claimant asked for it', () => {
+      //Given
+      claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+      //When
+      const result = claimantResponse.isCCJRequested;
       //Then
       expect(result).toBe(true);
     });
