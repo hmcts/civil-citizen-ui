@@ -239,6 +239,7 @@ function getClaim (){
   claim.respondent1ResponseDeadline = new Date();
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
+  claim.claimantResponse.submittedDate = new Date();
   return claim;
 }
 
