@@ -25,6 +25,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
 
   const civilClaimResponse = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
+  const civilClaimResponseClaimant = require('../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = civilClaimResponse .id;
 
   beforeAll((done) => {
@@ -59,6 +60,25 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
 
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
+        });
+    });
+
+    it('should render page successfully with all sections and summary rows when is claimant request', async () => {
+      //Given
+      const claimantClaim: Claim = new Claim();
+      Object.assign(claimantClaim, civilClaimResponseClaimant.case_data);
+
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
+      mockDraftStore.mockReturnValueOnce(claimantClaim);
       //When
       await testSession
         .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
