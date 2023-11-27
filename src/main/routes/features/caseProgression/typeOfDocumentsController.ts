@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  CP_EVIDENCE_UPLOAD_CANCEL,
   CP_UPLOAD_DOCUMENTS_URL,
+  CP_EVIDENCE_UPLOAD_CANCEL,
   TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
@@ -12,13 +12,13 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   deleteUntickedDocumentsFromStore, getDocuments, getTypeDocumentForm, saveCaseProgression,
 } from 'services/features/caseProgression/caseProgressionService';
-import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
+const dqPropertyNameClaimant = 'claimantUploadDocuments';
 
 async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>) {
   const latestUploadUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
@@ -38,7 +38,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const documentsList = await getDocuments(claimId,ClaimantOrDefendant.DEFENDANT);
+      const documentsList = await getDocuments(claimId);
       const form = new GenericForm(documentsList);
       req.session.previousUrl = req.originalUrl;
       await renderView(res, claimId,form);
@@ -50,15 +50,17 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const claim = await getCaseDataFromStore(claimId);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
+    const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claimId,form);
     } else {
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
-      await deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
+      await saveCaseProgression(claimId, form.model, isClaimant);
+      await deleteUntickedDocumentsFromStore(claimId, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
