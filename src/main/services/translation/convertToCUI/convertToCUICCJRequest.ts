@@ -8,6 +8,8 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {CCDChoosesHowToProceed} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 
 export const toCUICCJRequest = (ccdClaim: CCDClaim): CCJRequest => {
   const ccjRequest: CCJRequest = new CCJRequest();
@@ -43,4 +45,9 @@ export const toCUIClaimantPaymentOption = (paymentOptionType: CCDClaimantPayment
       return PaymentOptionType.IMMEDIATELY;
     default: return undefined;
   }
+};
+
+export const toCUIChoosesHowToProceed =  {
+  [CCDChoosesHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT]: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,
+  [CCDChoosesHowToProceed.REQUEST_A_CCJ]: ChooseHowProceed.REQUEST_A_CCJ,
 };
