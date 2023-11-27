@@ -13,9 +13,15 @@ import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import config from 'config';
+import { AppRequest } from 'common/models/AppRequest';
+import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
 
 const respondSettlementAgreementViewPath = 'features/settlementAgreement/respond-settlement-agreement';
 const respondSettlementAgreementController = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response, data?: object): void {
   res.render(respondSettlementAgreementViewPath, {form, data});
@@ -52,14 +58,17 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (a
 respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (async (req: Request, res: Response, next) => {
   try {
     const claimId = req.params.id;
-    const respondSettlementAgreement = new GenericForm(new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'));
+    const respondSettlementAgreementOption = new GenericYesNo(req.body.option, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION');
+    const respondSettlementAgreement = new GenericForm(respondSettlementAgreementOption);
+    const claim = await getClaimById(claimId, req);
     respondSettlementAgreement.validateSync();
 
     if (respondSettlementAgreement.hasErrors()) {
-      const claim = await getClaimById(claimId, req);
       renderView(respondSettlementAgreement, res, getSettlementAgreementData(claim, req));
     } else {
-      // TODO : Save respondSettlementAgreement.model.option value and redirect to next page
+      // TODO : redirect to next page
+      claim.respondentSignSettlementAgreement = respondSettlementAgreementOption;
+      await civilServiceClient.submitDefendantSignSettlementAgreementEvent(claimId,{'respondentSignSettlementAgreement' : toCCDYesNo(claim.respondentSignSettlementAgreement.option)}, <AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(claimId, '<Next page>>'));
     }
   } catch (error) {
