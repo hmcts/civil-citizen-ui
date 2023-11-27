@@ -232,6 +232,8 @@ import telephoneMediationController from 'routes/features/mediation/telephoneMed
 import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
 import telephoneMediationConfirmationController
   from 'routes/features/mediation/telephoneMediationConfirmationController';
+import alternativeEmailAddressMediationController
+  from 'routes/features/mediation/alternativeEmailAddressMediationController';
 export default [
   homeController,
   dashboardController,
@@ -445,4 +447,5 @@ export default [
   telephoneMediationController,
   emailMediationConfirmationController,
   telephoneMediationConfirmationController,
+  alternativeEmailAddressMediationController,
 ];

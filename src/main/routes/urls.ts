@@ -87,6 +87,7 @@ export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
 export const TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/telephone-mediation`;
 export const AVAILABILITY_FOR_MEDIATION = `${BASE_CASE_RESPONSE_URL}/availability-for-mediation`;
+export const MEDIATION_DATES_CONFIRMATION_URL = `${MEDIATION_URL}/dates-confirmation`;
 export const MEDIATION_EMAIL_CONFIRMATION_URL = `${MEDIATION_URL}/email-confirmation`;
 export const MEDIATION_PHONE_CONFIRMATION_URL = `${MEDIATION_URL}/phone-confirmation`;
 export const CITIZEN_REJECT_ALL_CLAIM_URL = `${BASE_CASE_RESPONSE_URL}/reject-all-of-claim`;

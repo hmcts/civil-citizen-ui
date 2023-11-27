@@ -350,6 +350,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_EMAIL": {
+      "PAGE_TITLE": "Alternative email address",
+      "PAGE_TEXT": "Please provide an alternative email address"
+    },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
       "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
