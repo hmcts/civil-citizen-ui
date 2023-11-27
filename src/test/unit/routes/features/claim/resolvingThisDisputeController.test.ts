@@ -12,11 +12,13 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('Resolving Dispute', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   describe('on GET', () => {
@@ -32,7 +34,6 @@ describe('Resolving Dispute', () => {
 
   describe('on POST', () => {
     it('should redirect to TaskList page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CLAIM_RESOLVING_DISPUTE_URL)
         .expect((res) => {
