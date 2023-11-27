@@ -9,6 +9,8 @@ import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
+import { RepaymentDecisionType } from './RepaymentDecisionType';
+import {CCDClaimantPayBySetDate} from "models/ccdResponse/ccdPayBySetDate";
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -31,4 +33,6 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
+  courtDecision?:RepaymentDecisionType;
+  applicant1RequestedPaymentDateForDefendantSpec: CCDClaimantPayBySetDate;
 }
