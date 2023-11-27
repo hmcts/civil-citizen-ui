@@ -16,6 +16,7 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 describe('Claim Fee Change Controller Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
