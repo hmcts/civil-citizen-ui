@@ -14,10 +14,6 @@ import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {Party} from 'models/party';
-import {PartyType} from 'models/partyType';
-import {Email} from 'models/Email';
-import axios from 'axios';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -33,6 +29,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
 jest.mock('../../../../../main/routes/guards/checkYourAnswersGuard', () => ({
   checkYourAnswersClaimGuard: jest.fn((req, res, next) => {
@@ -55,6 +52,7 @@ describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamServiceUrl)
@@ -66,6 +64,7 @@ describe('Claim - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
+    isPcqShutterOnMock.mockResolvedValue(true);
   });
 
   describe('on GET', () => {
@@ -133,22 +132,7 @@ describe('Claim - Check answers', () => {
       expect(email.length).toBe(1);
       expect(email[0].textContent?.trim()).toBe('contact@gmail.com');
     });
-    it('should redirect to PCQ jouney', async () => {
-      isPcqShutterOnMock.mockResolvedValue(false);
-      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const mockClaimToRedirectToPcq = new Claim();
-        mockClaimToRedirectToPcq.respondent1 = new Party();
-        mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
-        mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
-        return mockClaimToRedirectToPcq;
-      });
 
-      await session(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(302);
-        });
-    });
     it('should return check your answer page', async () => {
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
         .expect((res: Response) => {

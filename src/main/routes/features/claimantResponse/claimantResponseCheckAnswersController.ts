@@ -1,4 +1,3 @@
-import config from 'config';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
@@ -7,9 +6,10 @@ import {
 import {
   getSummarySections,
   saveStatementOfTruth,
+  saveSubmitDate,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import { generateRedisKey, getCaseDataFromStore, deleteDraftClaimFromStore } from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -17,16 +17,15 @@ import {AppRequest} from 'models/AppRequest';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
 import {YesNo} from 'common/form/models/yesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import { claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
+import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+  const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
   const summarySections = getSummarySections(req.params.id, claim, lang, claimFee);
 
   res.render(checkAnswersViewPath, {
@@ -56,9 +55,10 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       const claim = await getCaseDataFromStore(req.params.id);
       await renderView(<AppRequest>req, res, form, claim);
     } else {
-      await saveStatementOfTruth(generateRedisKey(req as unknown as AppRequest), form.model);
-      await submitClaimantResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+      const redisKey = generateRedisKey(req as unknown as AppRequest);
+      await saveStatementOfTruth(redisKey, form.model);
+      const claim = await submitClaimantResponse(<AppRequest>req);
+      await saveSubmitDate(redisKey, claim.claimantResponse);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
