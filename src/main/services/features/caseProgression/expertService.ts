@@ -8,32 +8,34 @@ import {
 } from 'services/features/caseProgression/expertContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {ExpertSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
-import {CaseRole} from 'form/models/caseRoles';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getExpertContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
   const selectItems= [];
-
+  let uploadDocuments: UploadDocuments;
   selectItems.push({'value': '', 'text': ''});
-  if(claim.caseRole == CaseRole.CLAIMANT){
+  if(claim.isClaimant()){
     selectItems.push({'value': claim.getDefendantFullName(), 'text': claim.getDefendantFullName()});
+    uploadDocuments = claim.caseProgression?.claimantUploadDocuments;
   } else {
     selectItems.push({'value': claim.getClaimantFullName(), 'text': claim.getClaimantFullName()});
+    uploadDocuments = claim.caseProgression?.defendantUploadDocuments;
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[0]?.selected){
+  if(uploadDocuments?.expert[0]?.selected){
     sectionContent.push(getExpertReport(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[1]?.selected){
+  if(uploadDocuments?.expert[1]?.selected){
     sectionContent.push(getExpertStatement(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[2]?.selected){
+  if(uploadDocuments?.expert[2]?.selected){
     sectionContent.push(getQuestionsForExperts(form, selectItems));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.expert[3]?.selected){
+  if(uploadDocuments?.expert[3]?.selected){
     sectionContent.push(getAnswersForExperts(form, selectItems));
   }
 

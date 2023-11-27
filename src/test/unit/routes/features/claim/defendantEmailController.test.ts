@@ -2,12 +2,12 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from '../../../../../main/routes/urls';
+import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Claim} from '../../../../../main/common/models/claim';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -19,6 +19,8 @@ const EMAIL_ADDRESS = 'test@gmail.com';
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
