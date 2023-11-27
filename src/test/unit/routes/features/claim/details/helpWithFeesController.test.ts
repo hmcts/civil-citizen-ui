@@ -5,12 +5,13 @@ import request from 'supertest';
 import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {
   getClaimDetails,
   saveClaimDetails,
-} from '../../../../../../main/services/features/claim/details/claimDetailsService';
-import {Claim} from '../../../../../../main/common/models/claim';
+} from 'services/features/claim/details/claimDetailsService';
+import {Claim} from 'models/claim';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -22,10 +23,13 @@ const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 describe('Claim Details - Help With Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   describe('on GET', () => {
