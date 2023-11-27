@@ -36,13 +36,14 @@ alternativeEmailAddressMediationController.get(MEDIATION_ALTERNATIVE_EMAIL_URL, 
 
 alternativeEmailAddressMediationController.post(MEDIATION_ALTERNATIVE_EMAIL_URL, (async (req, res, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claimId = req.params.id;
+
     const form = new GenericForm(new AlternativeEmailAddress(req.body.alternativeEmailAddress));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
     } else {
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claimId = req.params.id;
       await saveMediation(redisKey, form.model, MEDIATION_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_DATES_CONFIRMATION_URL));
     }
