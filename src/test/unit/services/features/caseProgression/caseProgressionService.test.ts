@@ -1,14 +1,14 @@
 import {Claim} from 'models/claim';
 import * as caseProgressionService from 'services/features/caseProgression/caseProgressionService';
-import {ClaimantOrDefendant} from 'models/partyType';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {EvidenceUploadExpert, EvidenceUploadTrial} from 'models/document/documentType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
-  getMockEmptyUploadDocumentsUserForm, getMockFullUploadDocumentsUserForm, getMockUploadDocumentsSelected,
+  getMockEmptyUploadDocumentsUserForm,
+  getMockFullUploadDocumentsUserForm,
+  getMockUploadDocumentsSelected,
 } from '../../../../utils/caseProgression/mockEvidenceUploadSections';
-
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -18,8 +18,15 @@ describe('case Progression service', () => {
   describe('getBreathingSpace', () => {
 
     const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
     mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-      return mockClaim.case_data;
+      return testClaim.case_data;
     });
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
@@ -32,9 +39,10 @@ describe('case Progression service', () => {
     caseData.caseProgression.claimantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.SKELETON_ARGUMENT));
     caseData.caseProgression.defendantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.CASE_SUMMARY));
     caseData.caseProgression.defendantUploadDocuments.trial.push(new UploadDocumentTypes(true, undefined, EvidenceUploadTrial.SKELETON_ARGUMENT));
+
     it('should return claimantDocuments content', async () => {
       //when
-      const claimantDocuments = await caseProgressionService.getDocuments(mockClaimId, ClaimantOrDefendant.CLAIMANT);
+      const claimantDocuments = await caseProgressionService.getDocuments(mockClaimId);
       //Then
       expect(claimantDocuments.trial[0].selected).toEqual(caseData.caseProgression.claimantUploadDocuments.trial[0].selected);
       expect(claimantDocuments.trial[0].documentType).toEqual(caseData.caseProgression.claimantUploadDocuments.trial[0].documentType);
@@ -43,7 +51,7 @@ describe('case Progression service', () => {
     });
     it('should return defendantDocuments content', async () => {
       //when
-      const claimantDocuments = await caseProgressionService.getDocuments(mockClaimId, ClaimantOrDefendant.DEFENDANT);
+      const claimantDocuments = await caseProgressionService.getDocuments(mockClaimId);
       //Then
       expect(claimantDocuments.trial[0].selected).toEqual(caseData.caseProgression.defendantUploadDocuments.trial[0].selected);
       expect(claimantDocuments.trial[0].documentType).toEqual(caseData.caseProgression.defendantUploadDocuments.trial[0].documentType);
@@ -55,7 +63,7 @@ describe('case Progression service', () => {
         throw new Error(REDIS_FAILURE);
       });
 
-      await expect(caseProgressionService.getDocuments('claimId', ClaimantOrDefendant.DEFENDANT)).rejects.toThrow(REDIS_FAILURE);
+      await expect(caseProgressionService.getDocuments('claimId')).rejects.toThrow(REDIS_FAILURE);
     });
   });
   describe('deleteUntickedDocumentsFromStore', () => {
@@ -74,7 +82,7 @@ describe('case Progression service', () => {
 
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockFullUploadDocumentsUserForm(), 'defendantDocuments');
@@ -95,7 +103,7 @@ describe('case Progression service', () => {
 
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockEmptyUploadDocumentsUserForm(), 'defendantDocuments');
@@ -116,7 +124,7 @@ describe('case Progression service', () => {
 
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, ClaimantOrDefendant.DEFENDANT);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockEmptyUploadDocumentsUserForm(), 'defendantDocuments');
