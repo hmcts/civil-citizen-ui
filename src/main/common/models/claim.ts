@@ -66,6 +66,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 
@@ -130,6 +131,7 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
