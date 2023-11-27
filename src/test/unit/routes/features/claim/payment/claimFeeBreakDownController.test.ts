@@ -1,17 +1,13 @@
 import request from 'supertest';
 import express from 'express';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
 import { CLAIM_FEE_BREAKUP } from 'routes/urls';
 import { mockRedisFailure } from '../../../../../utils/mockDraftStore';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
-jest.mock('modules/draft-store/draftStoreService', () => {
-  return { getCaseDataFromStore: jest.fn((claimId: string) => Promise.resolve()) };
-});
-jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
-
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const app = express();
 app.use(express.json());
 app.use((req, res, next) => {
@@ -22,13 +18,24 @@ app.use(claimFeeBreakDownController);
 
 describe('on GET', () => {
   it('should handle the get call of fee summary details', async () => {
-    const mockClaimData = { totalClaimAmount: 1000, interest: { interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST, totalInterest: { amount: 100 } }, claimInterest: 'yes' };
-    const mockClaimFee = 50;
-    const mockTotalAmount = 1150;
-    (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(mockClaimData);
-    (CivilServiceClient.prototype.getClaimAmountFee as jest.Mock).mockResolvedValueOnce(mockClaimFee);
+    //given
+    const claimId = '111111';
+    const mockClaimData = {
+      totalClaimAmount: 1000,
+      interest: {
+        interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
+        totalInterest: { amount: 100 },
+      },
+      claimInterest: 'yes' ,
+      claimFee: {
+        calculatedAmountInPence: 10000,
+      }};
+    const mockClaimFee = 100;
+    const mockTotalAmount = 1200;
+    mockGetCaseDataFromDraftStore.mockResolvedValueOnce(mockClaimData);
+    //when-then
     await request(app)
-      .get(CLAIM_FEE_BREAKUP).expect((res) => {
+      .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
           totalClaimAmount: mockClaimData.totalClaimAmount,
@@ -36,12 +43,15 @@ describe('on GET', () => {
           claimFee: mockClaimFee,
           hasInterest: true,
           totalAmount: mockTotalAmount,
+          redirectUrl: '/claim/'+claimId+'/pay-fees',
         });
       });
   });
 
   it('should return 500 status code when error occurs', async () => {
+    //given
     app.locals.draftStoreClient = mockRedisFailure;
+    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP)
       .expect((res) => {
