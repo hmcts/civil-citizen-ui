@@ -235,7 +235,6 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
 
