@@ -74,6 +74,7 @@ import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreath
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
+import {RepaymentDecisionType} from "models/claimantResponse/RepaymentDecisionType";
 
 export class CivilClaimResponse {
   id: string;
@@ -264,6 +265,7 @@ export interface CCDClaim extends ClaimUpdate {
   liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
+  claimantCourtDecision?: RepaymentDecisionType;
 }
 
 export interface ClaimFeeData {
