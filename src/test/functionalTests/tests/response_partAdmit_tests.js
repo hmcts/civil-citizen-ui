@@ -21,7 +21,7 @@ Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, '', true);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
