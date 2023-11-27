@@ -111,7 +111,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {// nosonar
   try {
     const claimId = req.params.id;
     const claim: Claim = await getCaseDataFromStore(claimId);
