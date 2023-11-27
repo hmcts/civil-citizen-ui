@@ -72,9 +72,6 @@
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee"
     },
-    "MICRO_TEXT": {
-      "HEARING_FEE": "Hearing fee"
-    },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
       "COUNCIL_TAX": "Council Tax",
@@ -954,6 +951,11 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      },
+      "CCJ": {
+        "CCJ_REQUESTED": "County Court Judgment requested",
+        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {

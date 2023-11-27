@@ -7,7 +7,8 @@ import * as claimAmountbreakdownService
 import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
 import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -18,11 +19,13 @@ const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm a
 describe('claimAmountBreakdownController test', ()=>{
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    app.locals.draftStoreClient = mockCivilClaim;
   });
   describe('On Get', () => {
     it('should return page successfully', async () => {
