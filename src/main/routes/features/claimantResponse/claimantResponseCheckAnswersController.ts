@@ -16,7 +16,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
 import {YesNo} from 'common/form/models/yesNo';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
