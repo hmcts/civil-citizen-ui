@@ -3,10 +3,10 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {getInterest, saveInterest} from '../../../../../../main/services/features/claim/interest/interestService';
-import {Claim} from '../../../../../../main/common/models/claim';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -17,6 +17,7 @@ const saveInterestMock = saveInterest as jest.Mock;
 describe('Claim Total Interest Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
