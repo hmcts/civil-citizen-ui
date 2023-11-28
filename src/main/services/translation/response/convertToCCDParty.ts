@@ -28,4 +28,4 @@ const getStringDate=(party: Party): string=> {
     return DateTime.fromJSDate(new Date(party.dateOfBirth as unknown as string)).toFormat('yyyy-MM-dd');
   }
   return null;
-}
+};
