@@ -2,10 +2,10 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {CLAIM_INTEREST_DATE_URL, CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_DATE_URL, CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {InterestClaimFromType} from '../../../../../../main/common/form/models/claimDetails';
+import {InterestClaimFromType} from 'form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -13,7 +13,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Claimant Interest From Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
+  app.request.cookies = {eligibilityCompleted: true};
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -48,6 +48,7 @@ describe('Claimant Interest From Controller', () => {
 
   describe('on POST', () => {
     it('should render claimant interest from page if there are form errors', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).post(CLAIM_INTEREST_DATE_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
