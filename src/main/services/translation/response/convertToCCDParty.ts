@@ -15,7 +15,7 @@ export const toCCDParty = (party: Party): CCDParty => {
     partyEmail: party?.emailAddress?.emailAddress,
     partyPhone: party?.partyPhone?.phone,
     primaryAddress: toCCDAddress(party?.partyDetails?.primaryAddress),
-    soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ?  getStringDate(party) : null,
+    soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ? getStringDate(party) : null,
     soleTraderFirstName: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualFirstName : undefined,
     soleTraderLastName: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualLastName : undefined,
     soleTraderTitle: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.individualTitle : undefined,
@@ -23,9 +23,13 @@ export const toCCDParty = (party: Party): CCDParty => {
     type: party?.type,
   };
 };
-const getStringDate=(party: Party): string=> {
+const getStringDate = (party: Party): string => {
   if (party?.dateOfBirth) {
-    return DateTime.fromJSDate(new Date(party.dateOfBirth as unknown as string)).toFormat('yyyy-MM-dd');
+    const date = DateTime.fromJSDate(party.dateOfBirth.date).toFormat('yyyy-MM-dd');
+    if (date == 'Invalid DateTime') {
+      return DateTime.fromJSDate(new Date(party.dateOfBirth as unknown as string)).toFormat('yyyy-MM-dd');
+    }
+    return date;
   }
   return null;
 };
