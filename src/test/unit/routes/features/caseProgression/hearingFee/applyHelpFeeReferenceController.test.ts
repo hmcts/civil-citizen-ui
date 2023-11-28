@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE,
-  HEARING_FEE_CONFIRMATION_URL,
+  HEARING_FEE_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CREATION,
 } from 'routes/urls';
 import {
   mockCivilClaim, mockCivilClaimDocumentUploaded,
@@ -32,7 +32,9 @@ describe('Apply for help with fees', () => {
 
   describe('on GET', () => {
     it('should return resolving apply help fees reference page', async () => {
+      //Given
       app.locals.draftStoreClient = mockCivilClaim;
+      //When //Then
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {
@@ -42,7 +44,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return resolving apply help fees page with no case progression data', async () => {
+      //Given
       app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
+      //When //Then
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {
@@ -101,7 +105,7 @@ describe('Apply for help with fees', () => {
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(HEARING_FEE_CONFIRMATION_URL);
+          expect(res.header.location).toEqual(HEARING_FEE_PAYMENT_CREATION);
         });
     });
 
