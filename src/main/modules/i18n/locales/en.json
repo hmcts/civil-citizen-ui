@@ -350,6 +350,11 @@
     }
   },
   "PAGES": {
+    "UNAVAILABILITY_DATES_MEDIATION": {
+      "PAGE_TITLE": "Unavailability dates for mediation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_HINT_TEXT": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange."
+    },
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
       "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
