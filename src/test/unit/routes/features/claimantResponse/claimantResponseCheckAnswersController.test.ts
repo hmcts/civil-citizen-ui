@@ -11,6 +11,7 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import noRespondentTelephoneClaimantIntentionMock from '../../../../../test/utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
 import {Claim} from 'common/models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -23,12 +24,14 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
 
 describe('Claimant Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
   const checkYourAnswerCy = 'Gwiriwch eich ateb';
+  const mockClaimFee = 50;
 
   beforeEach(() => {
     nock(idamServiceUrl)
@@ -38,6 +41,7 @@ describe('Claimant Response - Check answers', () => {
       client: new Redis(),
     }));
     (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
+    (CivilServiceClient.prototype.getClaimAmountFee as jest.Mock).mockResolvedValueOnce(mockClaimFee);
   });
 
   describe('Get', () => {
@@ -76,32 +80,34 @@ describe('Claimant Response - Check answers', () => {
         });
     });
   });
+
+  describe('on Post', () => {
+    it('should return errors when form is incomplete', async () => {
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
+      const data = {isClaimantRejectedDefendantOffer: 'true'};
+      await request(app)
+        .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Tell us if you believe the hearing requirement details on this page are true');
+        });
+    });
+
+    it('should return 500 when error in service', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
+      const data = {isClaimantRejectedDefendantOffer: 'true'};
+      await request(app)
+        .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+  });
 });
 
-describe('on Post', () => {
-  it('should return errors when form is incomplete', async () => {
-    app.locals.draftStoreClient = mockCivilClaimantIntention;
-    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
-    const data = {isClaimantRejectedDefendantOffer: 'true'};
-    await request(app)
-      .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
-      .send(data)
-      .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Tell us if you believe the hearing requirement details on this page are true');
-      });
-  });
 
-  it('should return 500 when error in service', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
-    const data = {isClaimantRejectedDefendantOffer: 'true'};
-    await request(app)
-      .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
-      .send(data)
-      .expect((res: Response) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
