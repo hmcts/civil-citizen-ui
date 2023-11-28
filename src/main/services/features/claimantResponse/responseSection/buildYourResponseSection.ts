@@ -21,9 +21,9 @@ import {
   RESPONSFORCYAFORCHOOSEHOWTOPROCEED,
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
-import {formatStringDateSlash} from 'common/utils/dateUtils';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {DateTime} from 'luxon';
+import {PaymentDate} from "form/models/admission/fullAdmission/paymentOption/paymentDate";
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -94,10 +94,10 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS', {lang}),
     t(RESPONSEFREQUENCY[selectedOption], {lang}), partAdmitAcceptedHref,
-    changeLabel(lang)));
+    changeLabel(lang)))
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lang}),
-    getEmptyStringIfUndefined(formatStringDateSlash(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate.toString())),
+    getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).toLocaleString(DateTime.DATE_FULL)),
     partAdmitAcceptedHref,
     changeLabel(lang)));
   return summaryRows;
@@ -108,7 +108,7 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   const summaryRows: SummaryRow [] = [];
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
-  const paymentDate = getEmptyStringIfUndefined(formatStringDateSlash(date.date?.toString()));
+  const paymentDate = getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(date.date)).toLocaleString(DateTime.DATE_FULL));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
     t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lang, paymentDate}),
