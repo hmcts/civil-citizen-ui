@@ -1251,9 +1251,7 @@
         "SETTLEMENT_SIGNED": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
-        "CLAIMANT_ACCEPTED_PARTIAL_ADMISSION": "{{ claimantName }} accepted your admission of £{{ amount }}",
-        "CLAIMANT_REJECTED_PAYMENT_PLAN": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
