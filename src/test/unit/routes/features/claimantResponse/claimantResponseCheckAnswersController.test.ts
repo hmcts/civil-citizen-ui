@@ -6,7 +6,7 @@ import {mockCivilClaimantIntention, mockRedisFailure} from '../../../../utils/mo
 import {
   getClaimById,
   getRedisStoreForSession,
-} from '../../../../../main/modules/utilityService';
+} from 'modules/utilityService';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import noRespondentTelephoneClaimantIntentionMock from '../../../../../test/utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
@@ -109,5 +109,3 @@ describe('Claimant Response - Check answers', () => {
     });
   });
 });
-
-
