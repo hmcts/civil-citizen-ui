@@ -19,6 +19,7 @@ const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
 const dateOfBirth = new CitizenDate('10', '10', '1990');
+const dateOfBirthSole = new CitizenDate();
 const email = new Email(req.session.user.email);
 const emailCCD = req.session.user.email;
 
@@ -86,7 +87,7 @@ const partySoleTrader: Party = {
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },
-  dateOfBirth: dateOfBirth,
+  dateOfBirth: dateOfBirthSole,
   ...commonParty,
 };
 
@@ -136,7 +137,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: '1990-10-10',
+  soleTraderDateOfBirth: 'Invalid DateTime',
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
