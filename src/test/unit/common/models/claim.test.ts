@@ -2022,18 +2022,19 @@ describe('Documents', () => {
   });
 
   describe('Claim isDefendantAgreedForMediation', () => {
-    it('should return false if no mediation object', () => {
+    it('should return undefined if no mediation object', () => {
       //Given
       const claim = new Claim();
+      claim.mediation = undefined;
       //When
       const result = claim.isDefendantAgreedForMediation();
       //Then
-      expect(result).toEqual(false);
+      expect(result).toEqual(undefined);
     });
     it('should return false if mediation is undefined', () => {
       //Given
       const claim = new Claim();
-      claim.mediation = new Mediation(undefined, undefined, undefined, undefined);
+      claim.mediation = new Mediation({}, {}, {}, {});
       //When
       const result = claim.isDefendantAgreedForMediation();
       //Then
@@ -2045,7 +2046,7 @@ describe('Documents', () => {
       const canWeUse = {
         option: YesNo.YES,
       };
-      claim.mediation = new Mediation(canWeUse, undefined, undefined, undefined);
+      claim.mediation = new Mediation(canWeUse, {}, {}, {});
       //When
       const result = claim.isDefendantAgreedForMediation();
       //Then
@@ -2056,7 +2057,7 @@ describe('Documents', () => {
       const claim = new Claim();
       const companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, undefined);
       const canWeUse = {};
-      claim.mediation = new Mediation(canWeUse, undefined, undefined, companyTelephoneNumber);
+      claim.mediation = new Mediation(canWeUse, {}, {}, companyTelephoneNumber);
       //When
       const result = claim.isDefendantAgreedForMediation();
       //Then

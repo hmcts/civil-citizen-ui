@@ -635,6 +635,7 @@ describe('Claimant Response Task List builder', () => {
         canWeUse: {
           option: 'yes',
         },
+        companyTelephoneNumber: {}
       } as Mediation;
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
