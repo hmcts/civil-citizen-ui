@@ -12,11 +12,12 @@ export class Mediation {
   isMediationEmailCorrect?: GenericYesNo;
   isMediationPhoneCorrect?: GenericYesNo;
   hasAvailabilityMediationFinished?: boolean;
+  hasUnavailabilityNextThreeMonths?: GenericYesNo;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
     companyTelephoneNumber?: CompanyTelephoneNumber, hasTelephoneMeditationAccessed = false,
     mediationEmailCorrect?: GenericYesNo, isMediationPhoneCorrect?: GenericYesNo,
-    hasAvailabilityMediationFinished = false) {
+    hasAvailabilityMediationFinished = false, hasUnavailabilityNextThreeMonths?: GenericYesNo) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
@@ -25,5 +26,6 @@ export class Mediation {
     this.isMediationEmailCorrect = mediationEmailCorrect;
     this.isMediationPhoneCorrect = isMediationPhoneCorrect;
     this.hasAvailabilityMediationFinished = hasAvailabilityMediationFinished;
+    this.hasUnavailabilityNextThreeMonths = hasUnavailabilityNextThreeMonths;
   }
 }
