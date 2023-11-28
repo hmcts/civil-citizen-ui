@@ -67,7 +67,8 @@
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
-      "START_NOW": "Start now"
+      "START_NOW": "Start now",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee"
@@ -2904,6 +2905,15 @@
         "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "If there are any changes to the arrangements between now and the trial date you will need to",
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
+      }
+    },
+    "PAY_HEARING_FEE": {
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
     }
   },

@@ -509,6 +509,8 @@ describe('Unavailable dates for hearing Controller', () => {
     });
 
     it('should redirect why unavailable for hearing if unavailable days are more than 30', async () => {
+      const finalDate : Date = new Date();
+      finalDate.setDate(today.getDate() + 31);
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -517,13 +519,13 @@ describe('Unavailable dates for hearing Controller', () => {
             period: {
               start: {
                 day: today.getDate(),
-                month: today.getMonth() + 1,
+                month: today.getMonth()+1,
                 year: today.getFullYear(),
               },
               end: {
-                day: today.getDate(),
-                month: today.getMonth() + 3,
-                year: today.getFullYear(),
+                day: finalDate.getDate(),
+                month: finalDate.getMonth()+1,
+                year: finalDate.getFullYear(),
               },
             },
           }],
