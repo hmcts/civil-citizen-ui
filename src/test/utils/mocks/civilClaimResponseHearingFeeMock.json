@@ -304,7 +304,8 @@
         "option": "NO"
       },
       "helpFeeReferenceNumberForm": {
-        "option": "NO"
+        "option": "YES",
+        "referenceNumber": "12345678910"
       },
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
