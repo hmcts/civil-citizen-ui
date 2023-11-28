@@ -25,6 +25,9 @@ export const toCCDParty = (party: Party): CCDParty => {
 };
 const getStringDate = (party: Party): string => {
   if (party?.dateOfBirth) {
+    if(party?.dateOfBirth.day && party?.dateOfBirth.month && party.dateOfBirth.year){
+      return party.dateOfBirth.year+'-'+party.dateOfBirth.month+'-'+party.dateOfBirth.day;
+    }
     return party.dateOfBirth.date?DateTime.fromJSDate(party.dateOfBirth.date).toFormat('yyyy-MM-dd'):DateTime.fromJSDate(new Date(party.dateOfBirth as unknown as string)).toFormat('yyyy-MM-dd');
   }
   return null;
