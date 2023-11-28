@@ -69,6 +69,9 @@ const hearingDirections = {
   ],
 };
 
+const claimId = '123';
+const lng = 'en';
+
 const mockBuildClaimantResponseSubmitSection = buildClaimantResponseSubmitSection as jest.Mock;
 const mockBuildHowDefendantRespondSection = buildHowDefendantRespondSection as jest.Mock;
 const mockBuildWhatToDoNextSection = buildWhatToDoNextSection as jest.Mock;
@@ -96,8 +99,6 @@ describe('outstanding Claimant Response Tasks', () => {
 
   describe('getClaimantResponseTaskLists', () => {
     let claim: Claim;
-    const claimId = '123';
-    const lng = 'en';
 
     beforeEach(() => {
       claim = new Claim();
@@ -152,8 +153,6 @@ describe('outstanding Claimant Response Tasks', () => {
   });
   describe('outstanding Claimant Response Tasks', () => {
     let claim: Claim;
-    const claimId = '123';
-    const lng = 'en';
 
     beforeEach(() => {
       claim = new Claim();
