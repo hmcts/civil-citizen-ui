@@ -23,7 +23,7 @@ import {
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {DateTime} from 'luxon';
-import {PaymentDate} from "form/models/admission/fullAdmission/paymentOption/paymentDate";
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lang : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -94,7 +94,7 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS', {lang}),
     t(RESPONSEFREQUENCY[selectedOption], {lang}), partAdmitAcceptedHref,
-    changeLabel(lang)))
+    changeLabel(lang)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lang}),
     getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).toLocaleString(DateTime.DATE_FULL)),
