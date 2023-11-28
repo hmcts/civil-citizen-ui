@@ -67,6 +67,7 @@ import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -132,6 +133,7 @@ export class Claim {
   feeTypeHelpRequested: FeeType;
   helpWithFeesRequested: string;
   respondentPaymentDeadline: Date;
+  respondentSignSettlementAgreement? : GenericYesNo;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -214,6 +216,12 @@ export class Claim {
 
   getDefendantFullName(): string {
     return this.getName(this.respondent1);
+  }
+
+  isDefendantResponsePayBySetDate(): boolean {
+    const isFullAdmitBySetDate = this.isFullAdmission() && this.isFAPaymentOptionBySetDate();
+    const isPartAdmitBySetDate = this.isPartialAdmission() && this.isPAPaymentOptionByDate();
+    return isFullAdmitBySetDate || isPartAdmitBySetDate;
   }
 
   formattedResponseDeadline(lng?: string): string {

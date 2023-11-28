@@ -260,9 +260,11 @@ export interface CCDClaim extends ClaimUpdate {
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
+  applicant1ResponseDate?: Date;
   liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
+  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
 }
 
 export interface ClaimFeeData {

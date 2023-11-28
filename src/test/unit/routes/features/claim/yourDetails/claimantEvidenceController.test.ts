@@ -83,6 +83,7 @@ const mockWithMoreThaFourEvidence = {
 describe('Claimant Evidence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)

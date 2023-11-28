@@ -43,9 +43,13 @@ async function renderView(res: Response, req: any, form: any, claimId: string, r
 }
 
 applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
-  const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  await renderView(res, req, null, claimId, redirectUrl);
+  try {
+    const claimId = req.params.id;
+    const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+    await renderView(res, req, null, claimId, redirectUrl);
+  }catch (error) {
+    next(error);
+  }
 }) as RequestHandler);
 
 applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res) => {
