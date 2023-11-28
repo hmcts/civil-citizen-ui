@@ -106,7 +106,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: null,
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -132,7 +132,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: null,
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
