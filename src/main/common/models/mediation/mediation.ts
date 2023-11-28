@@ -18,7 +18,7 @@ export class Mediation {
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
     companyTelephoneNumber?: CompanyTelephoneNumber, hasTelephoneMeditationAccessed = false,
     mediationEmailCorrect?: GenericYesNo, isMediationPhoneCorrect?: GenericYesNo,
-    hasAvailabilityMediationFinished = false,      alternativeMediationEmail?: AlternativeEmailAddress ) {
+    hasAvailabilityMediationFinished = false, alternativeMediationEmail?: AlternativeEmailAddress) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
