@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from '../../../../../../main/routes/urls';
+import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -18,6 +18,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('interest start date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -70,7 +71,7 @@ describe('interest start date', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
           expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
           expect(res.text).toContain(t('ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'));
         });
     });
@@ -93,7 +94,7 @@ describe('interest start date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
     it('should return error on future date', async () => {

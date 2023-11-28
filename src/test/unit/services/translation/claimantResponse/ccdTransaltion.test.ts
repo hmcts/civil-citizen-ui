@@ -13,6 +13,7 @@ import {Party} from 'models/party';
 import {ResponseType} from 'form/models/responseType';
 import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 describe('Translate claimant response to ccd version', () => {
@@ -128,6 +129,17 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingRequired).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1LiPResponse.applicant1DQExtraDetails.determinationWithoutHearingReason).toBe('reasonForHearing');
     expect(ccdClaim.applicant1LiPResponse.applicant1DQHearingSupportLip.supportRequirementLip).toBe(YesNoUpperCamelCase.NO);
+  });
+
+  it('should translate signSettlementAgreement to ccd', () => {
+    //Given
+    claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{
+      signed: 'true',
+    };
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.applicant1SignedSettlementAgreement).toBe(YesNoUpperCamelCase.YES);
   });
 
   it('should translate applicant1ProceedWithClaim to ccd', () => {
