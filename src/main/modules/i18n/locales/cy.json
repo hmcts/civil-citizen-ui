@@ -1219,7 +1219,10 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
+        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
+        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
