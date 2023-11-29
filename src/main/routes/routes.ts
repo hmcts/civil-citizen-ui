@@ -234,6 +234,8 @@ import telephoneMediationConfirmationController
   from 'routes/features/mediation/telephoneMediationConfirmationController';
 import mediationUnavailabilityNextThreeMonthsConfirmationController
   from 'routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController';
+import mediationUnavailabilitySelectDatesController
+  from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 export default [
   homeController,
   dashboardController,
@@ -448,4 +450,5 @@ export default [
   emailMediationConfirmationController,
   telephoneMediationConfirmationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
+  mediationUnavailabilitySelectDatesController,
 ];

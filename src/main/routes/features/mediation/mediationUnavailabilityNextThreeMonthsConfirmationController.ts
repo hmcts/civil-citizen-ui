@@ -1,7 +1,7 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   MEDIATION_NEXT_3_MONTHS_URL,
-  MEDIATION_UNAVAILABLE_DATES_URL, RESPONSE_TASK_LIST_URL,
+  MEDIATION_UNAVAILABLE_SELECT_DATES_URL, RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -51,7 +51,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       } else {
         await saveMediation(redisKey, false, 'hasAvailabilityMediationFinished');
-        res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_DATES_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL));
       }
     }
   } catch (error) {

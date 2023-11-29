@@ -1,6 +1,6 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
-  MEDIATION_UNAVAILABLE_DATES_URL, RESPONSE_TASK_LIST_URL,
+  MEDIATION_UNAVAILABLE_SELECT_DATES_URL, RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -12,18 +12,18 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
-const mediationUnavailabilityDatesController = Router();
-const MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE = 'PAGES.UNAVAILABILITY_DATES_MEDIATION.';
+const mediationUnavailabilitySelectDatesController = Router();
+const MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE = 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.';
 
 const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const pageTitle = `${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TEXT`, {lng: lang});
-  const pageHintText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_HINT_TEXT`, {lng: lang});
+  const pageTitle = `${MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE}PAGE_TITLE`;
+  const pageText = t(`${MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE}PAGE_TEXT`, {lng: lang});
+  const pageHintText = t(`${MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE}PAGE_HINT_TEXT`, {lng: lang});
   res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText});
 };
 
-mediationUnavailabilityDatesController.get(MEDIATION_UNAVAILABLE_DATES_URL, (async (req, res, next: NextFunction) => {
+mediationUnavailabilitySelectDatesController.get(MEDIATION_UNAVAILABLE_SELECT_DATES_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const mediation = await getMediation(redisKey);
@@ -34,7 +34,7 @@ mediationUnavailabilityDatesController.get(MEDIATION_UNAVAILABLE_DATES_URL, (asy
   }
 }) as RequestHandler);
 
-mediationUnavailabilityDatesController.post(MEDIATION_UNAVAILABLE_DATES_URL, (async (req, res, next: NextFunction) => {
+mediationUnavailabilitySelectDatesController.post(MEDIATION_UNAVAILABLE_SELECT_DATES_URL, (async (req, res, next: NextFunction) => {
   try {
     const optionSelected = req.body.option;
     const form = new GenericForm(new GenericYesNo(optionSelected));
@@ -50,7 +50,7 @@ mediationUnavailabilityDatesController.post(MEDIATION_UNAVAILABLE_DATES_URL, (as
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       } else {
         await saveMediation(redisKey, false, 'hasAvailabilityMediationFinished');
-        res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_DATES_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL));
       }
     }
   } catch (error) {
@@ -58,4 +58,4 @@ mediationUnavailabilityDatesController.post(MEDIATION_UNAVAILABLE_DATES_URL, (as
   }
 }) as RequestHandler);
 
-export default mediationUnavailabilityDatesController;
+export default mediationUnavailabilitySelectDatesController;
