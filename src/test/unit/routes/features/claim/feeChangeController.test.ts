@@ -13,7 +13,7 @@ jest.mock('../../../../../main/services/dashboard/draftClaimService.ts');
 const getData = getDraftClaimData as jest.Mock;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 
-describe('Claimant Date of Birth Controller', () => {
+describe('Claim Fee Change Controller Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   app.request.cookies = {eligibilityCompleted: true};
