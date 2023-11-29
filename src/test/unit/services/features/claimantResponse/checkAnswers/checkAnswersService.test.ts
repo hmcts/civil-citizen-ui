@@ -1043,7 +1043,6 @@ describe('Check Answers service', () => {
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
       expect(6).toEqual(result.sections.length);
-
     });
   });
 });
