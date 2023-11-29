@@ -1,0 +1,34 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.TITLE') }}
+{% endblock %}
+
+{% set panelContent %}
+  {{ t('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.REFERENCE_NUMBER')}}
+  <br><strong>{{ referenceNumber }}</strong>
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ csrfProtection(csrf) }}
+          {{ govukPanel({
+            titleText: confirmationTitle,
+            html: panelContent
+          }) }}
+          {% for content in confirmationContent %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

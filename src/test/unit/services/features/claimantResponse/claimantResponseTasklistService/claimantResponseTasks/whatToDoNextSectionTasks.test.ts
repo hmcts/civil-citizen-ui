@@ -47,11 +47,11 @@ describe('What to do next section task', () => {
   });
 
   it('should return incomplete for full defense states paid', () => {
-    //Given 
+    //Given
     const claim = {} as Claim;
     const resultIncomplete = {
       description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
-      url: '/case/5129/claimant-response/settle-admitted',
+      url: '/case/5129/claimant-response/settle-claim',
       status: TaskStatus.INCOMPLETE,
     };
 
@@ -62,11 +62,11 @@ describe('What to do next section task', () => {
   });
 
   it('should return complete for full defense states paid if claimant responded', () => {
-    //Given 
-    const claim = { claimantResponse: { hasFullDefenceStatesPaidClaimSettled: { option: 'yes' } } } as Claim;
+    //Given
+    const claim = { claimantResponse: { hasPartPaymentBeenAccepted: { option: 'yes' } } } as Claim;
     const resultIncomplete = {
       description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
-      url: '/case/5129/claimant-response/settle-admitted',
+      url: '/case/5129/claimant-response/settle-claim',
       status: TaskStatus.COMPLETE,
     };
 
