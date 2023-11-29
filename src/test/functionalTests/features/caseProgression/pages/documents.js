@@ -136,7 +136,7 @@ class Documents {
     I.see('Claimant witness statement');
     I.see('Witness Statement of Witness Nae 01-03-2023.pdf');
     I.see('Claimant witness summary');
-    I.see('Witness Summary of Suary 23.pdf');
+    I.see('Witness Summary of Suary 23 01-01-2020.pdf');
     I.see('Claimant intention to rely on hearsay evidence');
     I.see('Hearsay evidence Witness 01-03-2023.pdf');
     I.see('Claimant documents referred to in statement');
@@ -170,7 +170,7 @@ class Documents {
     I.see('Claimant witness statement');
     I.see('Witness Statement of Witness Nae 01-03-2023.pdf');
     I.see('Claimant witness summary');
-    I.see('Witness Summary of Suary 23.pdf');
+    I.see('Witness Summary of Suary 23 01-01-2020.pdf');
     I.see('Claimant documents referred to in statement');
     I.see('Upper referred to in the statement of john 01-01-2023.pdf');
 
