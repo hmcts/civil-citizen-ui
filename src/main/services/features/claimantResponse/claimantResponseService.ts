@@ -112,7 +112,7 @@ export const repaymentPlanSummary = (claim: Claim, lang: string, repaymentPlan: 
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate),
+        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate, getLng(lng)),
       },
       classes: 'govuk-summary-list__row--no-border',
     },
@@ -121,7 +121,7 @@ export const repaymentPlanSummary = (claim: Claim, lang: string, repaymentPlan: 
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(getFinalPaymentDate(claim)),
+        text: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lng)),
       },
       classes: 'govuk-summary-list__row--no-border',
     },
