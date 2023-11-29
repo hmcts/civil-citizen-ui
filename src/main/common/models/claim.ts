@@ -136,7 +136,6 @@ export class Claim {
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
 
-
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
