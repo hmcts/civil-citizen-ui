@@ -350,10 +350,10 @@
     }
   },
   "PAGES": {
-    "UNAVAILABILITY_DATES_MEDIATION": {
+    "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
       "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
-      "PAGE_HINT_TEXT": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange."
+      "PAGE_HINT_TEXT": "<p>Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.</p><p>The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays.</p>"
     },
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
