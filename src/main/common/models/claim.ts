@@ -68,6 +68,7 @@ import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSp
 import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -720,7 +721,7 @@ export class Claim {
   hasClaimInMediation(): boolean {
     return this.ccdState === CaseState.IN_MEDIATION;
   }
-  
+
   hasClaimantNotAgreedToMediation(): boolean {
     return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
@@ -728,7 +729,7 @@ export class Claim {
   hasClaimantAgreedToMediation(): boolean {
     return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'Yes';
   }
-  
+
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
     const now = new Date();
