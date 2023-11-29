@@ -38,7 +38,7 @@ function getTextForPayByDate(claim: Claim, lang: string){
 function getTextForPayByInstallments(claim: Claim, lang: string){
   return {
     paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.PAYMENT_TEXT', {
-      lang: lang,
+      lng: lang,
       fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
       instalmentAmount: getPaymentAmount(claim),

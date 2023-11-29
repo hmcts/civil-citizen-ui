@@ -589,7 +589,7 @@
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu?",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
-      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+      "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
       "YOUR_RESPONSE": "Eich ymateb"
