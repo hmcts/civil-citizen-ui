@@ -10,7 +10,7 @@ describe('Check claim fee is changed service', () => {
     //Given
     const mockClaimFee = {
       calculatedAmountInPence: 5000,
-      code: "123",
+      code: '123',
       version: 1,
     };
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
@@ -26,7 +26,7 @@ describe('Check claim fee is changed service', () => {
     //Given
     const mockClaimFee = {
       calculatedAmountInPence: 11500,
-      code: "123",
+      code: '123',
       version: 1,
     };
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
