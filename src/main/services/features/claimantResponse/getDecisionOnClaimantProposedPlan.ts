@@ -8,7 +8,8 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
-  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { saveClaimantResponse } from './claimantResponseService';

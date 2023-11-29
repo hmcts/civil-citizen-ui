@@ -8,7 +8,6 @@ import {
 } from 'routes/urls';
 import {
   mockCivilClaimClaimantIntention,
-  mockCivilClaimUndefined,
   mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -16,8 +15,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/common/utils/dateUtils');
-
-const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Judgment Amount Summary', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,9 +29,6 @@ describe('Judgment Amount Summary', () => {
   describe('on GET', () => {
     it('should return judgement summary page - from request CCJ', async () => {
       app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
-      nock(civilServiceUrl)
-        .get('/fees/claim/110')
-        .reply(200, {'calculatedAmountInPence': '50'});
 
       const res = await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL);
@@ -45,10 +39,6 @@ describe('Judgment Amount Summary', () => {
 
     it('should return http 500 when has error in the get method - from request CCJ', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
-      nock(civilServiceUrl)
-        .get('/fees/claim/110')
-        .reply(500, mockCivilClaimUndefined);
-
       await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL)
         .expect((res) => {
