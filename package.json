@@ -21,7 +21,7 @@
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,reportFilename=a11y,inlineAssets=true,reportTitle=civil-citizen-ui",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "MOCHAWESOME_REPORTFILENAME=smokeTests yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
-    "test:functional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @citizenUI --reporter mocha-multi --verbose",
+    "test:functional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @regression --reporter mocha-multi --verbose",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @nightly --reporter mocha-multi --verbose",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",

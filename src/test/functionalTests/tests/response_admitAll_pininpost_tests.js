@@ -16,22 +16,16 @@ let securityCode;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, 'pinInPost');
-    console.log('Claim has been created Successfully    <===>  ', claimRef);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-    console.log('claim number', claimNumber);
-    console.log('Security code', securityCode);
-    await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  } else {
-    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
-    console.log('Claim has been created Successfully    <===>  ', claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
-  }
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, 'pinInPost');
+  console.log('Claim has been created Successfully    <===>  ', claimRef);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
 Scenario('Response with AdmitAll and Immediate payment @admitAll @smoketest @nightly', async ({api}) => {
