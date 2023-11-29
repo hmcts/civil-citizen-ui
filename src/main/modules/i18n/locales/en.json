@@ -25,6 +25,8 @@
     "EMPLOYMENT_DETAILS": "Employment details",
     "EMPLOYMENT_TYPE": "Type of job",
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+    "TELEPHONE_MEDIATION": "Telephone mediation",
+    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -34,6 +36,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
     "REMOVE": "Remove",
@@ -67,7 +70,8 @@
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
-      "START_NOW": "Start now"
+      "START_NOW": "Start now",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee"
@@ -347,6 +351,28 @@
     }
   },
   "PAGES": {
+    "MEDIATION_PHONE_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation telephone confirmation",
+      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+    },
+    "TELEPHONE_FOR_MEDIATION": {
+      "PAGE_TITLE": "Telephone mediation",
+      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
+      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
+      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
+      "WHAT_HAPPENS": "What happens at mediation?",
+      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
+      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
+      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
+      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
+      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
+      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
+      "AFTER_THE_PHONE_CALL":"After the phone call",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
+      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
@@ -631,7 +657,8 @@
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "They can accept the amount you've paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.",
@@ -951,6 +978,11 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      },
+      "CCJ": {
+        "CCJ_REQUESTED": "County Court Judgment requested",
+        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1956,6 +1988,10 @@
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
+    "MEDIATION_EMAIL_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation email confirmation",
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+    },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
       "CAN_BE_USED_IN_COURT": "it's confidential and nothing said or done during mediation can be used in court",
@@ -2885,6 +2921,15 @@
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
       }
+    },
+    "PAY_HEARING_FEE": {
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
+      }
     }
   },
   "FOOTER":{
@@ -3047,6 +3092,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
     "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
@@ -3211,6 +3257,7 @@
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PARTY_NAME": "Enter name",
+    "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {

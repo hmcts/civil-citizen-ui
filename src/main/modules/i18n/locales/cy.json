@@ -25,6 +25,8 @@
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
+    "TELEPHONE_MEDIATION": "Telephone mediation",
+    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
@@ -34,6 +36,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
+    "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
@@ -67,7 +70,8 @@
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
-      "START_NOW": "Dechrau nawr"
+      "START_NOW": "Dechrau nawr",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad"
@@ -347,6 +351,28 @@
     }
   },
   "PAGES": {
+    "MEDIATION_PHONE_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation telephone confirmation",
+      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+    },
+    "TELEPHONE_FOR_MEDIATION": {
+      "PAGE_TITLE": "Telephone mediation",
+      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
+      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
+      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
+      "WHAT_HAPPENS": "What happens at mediation?",
+      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
+      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
+      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
+      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
+      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
+      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
+      "AFTER_THE_PHONE_CALL":"After the phone call",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
+      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Dyddiad talu",
@@ -631,7 +657,8 @@
       "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
       "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "Gallant dderbyn y swm rydych wedi'i dalu a setlo'r hawliad, neu ofyn i'r llys drosglwyddo'r hawliad i ganolfan wrandawiadau Llys Sirol.",
@@ -951,6 +978,11 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      },
+      "CCJ": {
+        "CCJ_REQUESTED": "County Court Judgment requested",
+        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1956,6 +1988,10 @@
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
+    "MEDIATION_EMAIL_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation email confirmation",
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+    },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
       "CAN_BE_USED_IN_COURT": "mae’n gyfrinachol ac ni ellir defnyddio unrhyw beth a ddywedir neu a wneir yn ystod cyfryngu yn y llys",
@@ -2885,6 +2921,15 @@
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
       }
+    },
+    "PAY_HEARING_FEE": {
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
+      }
     }
   },
   "FOOTER":{
@@ -3047,6 +3092,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "Dim ond newid eich rhif ffôn y gallwch ei newid, nid ei ddileu",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
+    "ENTER_TELEPHONE_NUMBER": "Rhowch rif ffôn",
     "ONE_ROW_REQUIRED": "Rhowch o leiaf un llinell",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Dewiswch ymateb os gwelwch yn dda",
@@ -3211,6 +3257,7 @@
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
+    "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_OR_VIDEO_HEARING": {
