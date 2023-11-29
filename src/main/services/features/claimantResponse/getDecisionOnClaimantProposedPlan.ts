@@ -13,7 +13,6 @@ import {
 } from 'routes/urls';
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import { saveClaimantResponse } from './claimantResponseService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
