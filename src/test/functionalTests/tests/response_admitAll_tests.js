@@ -1,7 +1,7 @@
 const config = require('../../config');
 
-const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps =  require('../features/home/steps/login');
+const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 const admitAll = 'full-admission';
@@ -17,9 +17,9 @@ let securityCode;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    console.log('claimRef has been created Successfully    <===>  ', claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
@@ -27,9 +27,9 @@ Before(async ({api}) => {
     console.log('Security code', securityCode);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  }else{
+  } else {
     claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    console.log('claimRef has been created Successfully    <===>  ', claimRef);
     await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
@@ -43,12 +43,10 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @nightly', async ({api}) => {
@@ -60,11 +58,9 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
 });
 
