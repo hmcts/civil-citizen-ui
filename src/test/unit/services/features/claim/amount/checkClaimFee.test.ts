@@ -8,8 +8,12 @@ jest.mock('../../../../../../main/services/features/claim/amount/claimFeesServic
 describe('Check claim fee is changed service', () => {
   it('Should return status true if claim fee is changed ', async () => {
     //Given
-    const mockClaimFee = 50;
-    jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockResolvedValueOnce(mockClaimFee);
+    const mockClaimFee = {
+      calculatedAmountInPence: 5000,
+      code: "123",
+      version: 1,
+    };
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
     const spySave = jest.spyOn(claimFeesService, 'saveClaimFee');
     //When
     const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, undefined);
@@ -20,8 +24,12 @@ describe('Check claim fee is changed service', () => {
 
   it('Should return status false if claim fee is not changed ', async () => {
     //Given
-    const mockClaimFee = 115;
-    jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockResolvedValueOnce(mockClaimFee);
+    const mockClaimFee = {
+      calculatedAmountInPence: 11500,
+      code: "123",
+      version: 1,
+    };
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
     const spySave = jest.spyOn(claimFeesService, 'saveClaimFee');
     //When
     const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, undefined);
