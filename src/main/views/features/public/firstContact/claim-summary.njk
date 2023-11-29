@@ -50,7 +50,7 @@
           </p>
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.VIEW_AMOUNT_BREAKDOWN'),
-            html: amountBreakdownTable(claim, interestData, totalAmount)
+            html: amountBreakdownTable(claim, interestData, totalAmount, t)
           }) }}
           <h2 class="govuk-heading-s">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.REASON_FOR_CLAIM') }}</h2>
           <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
@@ -72,7 +72,7 @@
           }) }}
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION_USAGE'),
-            html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claim.respondent1.partyName})
+            html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claim.getClaimantFullName()})
             + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a href="' + privacyPolicyUrl +'">'
             + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION') + '</a></p>'
           }) }}

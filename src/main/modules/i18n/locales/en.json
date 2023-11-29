@@ -3,6 +3,7 @@
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
+    "AMOUNT": "Amount",
     "BALANCE": "Balance",
     "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
     "BANK_JOINT_ACCOUNT": "Joint account",
@@ -65,7 +66,12 @@
       "SUBMIT_CLAIM": "Submit claim",
       "SUBMIT_RESPONSE": "Submit Response",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
-      "SUBMIT": "Submit"
+      "SUBMIT": "Submit",
+      "START_NOW": "Start now",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+    },
+    "MICRO_TEXT": {
+      "HEARING_FEE": "Hearing fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -279,6 +285,10 @@
     "VARIATION_4": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_5": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -352,11 +362,14 @@
       "PAGE_TITLE": "Severely disabled"
     },
     "BILINGUAL_LANGUAGE_PREFERENCE": {
-      "PAGE_TITLE": "Do you want to respond to this claim in Welsh?",
-      "TITLE": "Do you want to respond to this claim in Welsh?",
-      "DESCRIPTION": "You can respond to this claim in Welsh. After you've submitted your response, anything else you may have to do relating to the claim will be in English. You'll receive emails and letters in English.",
+      "DESCRIPTION_1": "You must choose which language to use to respond to this claim.",
+      "DESCRIPTION_2": " You can switch between reading information in English or Welsh at any point during your response by selecting the Cymraeg or English toggle.",
+      "DESCRIPTION_3": "Only do this directly after selecting 'Save and continue', or you may lose information that you have added to a page.",
       "ENGLISH": "English",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In which language do you want to respond to this claim?",
+      "TITLE": "Language",
+      "WELSH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -411,7 +424,8 @@
       "INSTALMENT_AMOUNT_HELP": "For example £10",
       "PAGE_TITLE": "Suggest instalments for the defendant",
       "TITLE": "Suggest instalments for the defendant",
-      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}."
+      "TOTAL_CLAIM_AMOUNT": "Total claim amount is £{{ totalClaimAmount }}.",
+      "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
@@ -454,6 +468,7 @@
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
       "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
+      "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
       "EMAIL_ADDRESS": "Email address (optional)",
@@ -480,10 +495,17 @@
       "FULL_NAME": "Full name",
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
+      "HAS_THE_DEFENDANT_PAID_SOME_OF_THE_AMOUNT_OWED": "Has the defendant paid some of the amount owed?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
+      "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
+      "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
       "YOUR_HEARING_REQUIREMENTS_TITLE": "Your hearing requirements",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
+      "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
+      "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
+      "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -533,8 +555,11 @@
       "RESPONSE_TITLE": "Your response to the claim",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
       "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
+      "REQUEST_A_CCJ": "Issue a County Court Judgement (CCJ)",
       "SAME_ADDRESS": "Same as address",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
+      "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
+      "SIGN_SETTLEMENT": "Sign a settlement agreement",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_REQUIRED_INTERPRETER": "Interpreter",
       "SUPPORT_REQUIRED_NAME": "Name of the person who requires support:",
@@ -912,10 +937,33 @@
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       },
+      "SIGN_SETTLEMENT_AGREEMENT": {
+        "AFTER_REQUESTED": "After you've requested a CCJ you can ask the court to enforce payment.",
+        "IF_CANT_AFFORD": "If they don't think they can afford the plan, they can ask for a judge to make a different plan.",
+        "IF_DONT_SIGN": "If they don't sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.",
+        "IF_NOT_PAID": "If you don't get paid",
+        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgement (CCJ) by signing in to your account.",
+        "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
+        "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
+        "TITLE": "You've signed a settlement agreement",
+        "WE_EMAILED": "We've emailed {{ defendantName }} the repayment plan and the settlement agreement for them to sign.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
+      },
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
-        "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
-      } 
+        "YES_MEDIATION": {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "NO_MEDIATION": { 
+          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+        }
+      },
+      "CCJ": {
+        "CCJ_REQUESTED": "County Court Judgment requested",
+        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+      }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
       "PAGE_TITLE": "How do you want the defandant to pay?",
@@ -989,8 +1037,7 @@
       "DETAILS": {
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
-          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every  ",
-          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}"
+          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
@@ -1268,6 +1315,34 @@
       "CLAIMING_AGAINST_SOLE_TRADER_OR_SELF_EMPLOYED_HINT": "For example a tradesperson who did work for you",
       "PAGE_TITLE": "Who are you making the claim against?",
       "TITLE": "Who are you making the claim against?"
+    },
+    "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT": {
+      "DETAILS": {
+        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ claimant }} before signing. You won’t be able to change this later.",
+        "CHOOSE_NOT_TO_SIGN": "You can choose not to sign the settlement agreement, for example if you think you can't afford it.",
+        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "COMPLETION_DATE": {
+          "DATE": "{{ finalRepaymentDate }}",
+          "LABEL": "Completion date"
+        },
+        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "NO": "No - I reject the terms of the agreement.",
+        "ON_HOLD": "The claim will be put on hold and the claimant can't request a CCJ against you.",
+        "REQUEST_CCJ": "The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement. You can ask a judge to change the plan based on your financial details. The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
+        "THE_AGREEMENT": {
+          "LABEL": "The agreement",
+          "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+        },
+        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
+        "YES": "Yes - I confirm I've read and accept the terms of the agreement."
+      },
+      "PAGE_TITLE": "Respond to the settlement agreement",
+      "TITLE": "Respond to the settlement agreement"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -1663,6 +1738,15 @@
       "CLAIMANT_CONFIRMED_YOU_PAID": "{{ claimantName }} confirmed you paid £{{amount}} on {{ moneyReceivedOn }}.",
       "CONTACT": "Contact {{ claimantName }}",
       "CASE_PROGRESSION": {
+        "HEARING_FEE": {
+          "APPLY_HELP_FEE_SELECTION": {
+            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
+            "LINK_TEXT": "help with fees (opens in a new tab).",
+            "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
+            "QUESTION_TITLE": "Do you want to apply for help with fees?",
+            "TITLE": "Pay hearing fee"
+          }
+        },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
           "YOUR_HEARING_TITLE": "A hearing has been scheduled for your case",
@@ -1673,6 +1757,17 @@
           "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "View hearing notice",
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+        },
+        "PAY_HEARING_FEE": {
+          "APPLY_HELP_WITH_FEES": {
+            "LINK":"Apply for Help with Fees (open in a new window)",
+            "PAGE_TITLE":"Help with fees",
+            "PARAGRAPH_IF": "If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.",
+            "PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
+            "PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'hearing fee' followed by short explanation, for example 'hearing fee small claims' or 'hearing fee for fast track'.",
+            "PARAGRAPH_ONCE": "Once you have made your application, return to this page and click continue to proceed.",
+            "TITLE": "Apply for help with fees"
+          }
         },
         "VIEW_ORDER": {
           "TITLE": "An order has been made on your claim",
@@ -1985,7 +2080,9 @@
       "REMOVE_WITNESS": "Remove witness",
       "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
       "TITLE": "Do you have other witnesses?",
-      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts have support requirements, add them as a witness.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
@@ -2243,7 +2340,7 @@
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They've offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They’ve offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "How they want to pay?",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
@@ -2432,6 +2529,7 @@
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
       "GO_TO_ACCOUNT": "Go to your account",
+      "IF_CLAIMANT_REJECTS_NO_MEDIATION": "If they reject your response the court will review the case. You might have to go to a hearing.",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
       "IF_CLAIMANT_ACCEPTS_RESPONSE": "If {{ claimantName }} accepts your response",
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
@@ -2451,6 +2549,7 @@
       "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
       "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
       "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
+      "THE_COURT_WILL_REVIEW_CASE_HEARING": "The court will review the case. You might have to go to a hearing.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
@@ -2550,7 +2649,9 @@
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
-      "WHAT_LANGUAGE": "What language needs to be interpreted?"
+      "WHAT_LANGUAGE": "What language needs to be interpreted?",
+      "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
+      "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
     },
     "UNAVAILABLE_DATES_FOR_HEARING": {
       "ADD_ANOTHER_DATE": "Add another date or period of time",
@@ -2792,6 +2893,15 @@
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
       }
+    },
+    "PAY_HEARING_FEE": {
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
+      }
     }
   },
   "FOOTER":{
@@ -2968,7 +3078,7 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
-    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh and English if you want to respond to this claim in Welsh",
+    "SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to respond to this claim in Welsh",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",
@@ -3142,6 +3252,7 @@
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
     "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",

@@ -22,6 +22,7 @@ import {
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
 
 declare const appRequest: requestModels.AppRequest;
