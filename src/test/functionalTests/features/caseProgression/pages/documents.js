@@ -58,8 +58,8 @@ class Documents {
     I.seeElement('//a[.=\'Witness Statement of Witness Statement - Witness Nae 1 03-02-2023.xls\']');
     I.seeElement('//a[.=\'Witness Statement of Witness Statement - Witness Nae 2 04-02-2023.xlsx\']');
     I.see('Defendant witness summary');
-    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 1.ppt\']');
-    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2.png\']');
+    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 1 05-02-2023.ppt\']');
+    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2 06-02-2023.png\']');
     I.see('Defendant intention to rely on hearsay evidence');
     I.seeElement('//a[.=\'Hearsay evidence Notice of intention witness nae 1 07-02-2023.rtf\']');
     I.seeElement('//a[.=\'Hearsay evidence Notice of intention witness nae 2 08-02-2023.tif\']');
@@ -99,8 +99,8 @@ class Documents {
     I.seeElement('//a[.=\'Witness Statement of Witness Statement - Witness Nae 2 02-02-2023.csv\']');
 
     I.see('Defendant witness summary');
-    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 1.doc\']');
-    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2.docx\']');
+    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 1 03-02-2023.doc\']');
+    I.seeElement('//a[.=\'Witness Summary of Witness Summary - Witness Nae 2 04-02-2023.docx\']');
 
     I.see('Defendant documents referred to in statement');
     I.seeElement('//a[.=\'Docuents referred Type of Docuent 1 referred to in the statement of null 05-02-2023.jpeg\']');
