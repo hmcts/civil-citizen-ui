@@ -97,7 +97,7 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
     changeLabel(lang)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lang}),
-    getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).toLocaleString(DateTime.DATE_FULL)),
+    getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL)),
     partAdmitAcceptedHref,
     changeLabel(lang)));
   return summaryRows;
