@@ -14,7 +14,7 @@ import {Claim} from 'common/models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Task} from 'models/taskList/task';
 import {
-  outstandingClaimantResponseTasks
+  outstandingClaimantResponseTasks,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 
 const request = require('supertest');
