@@ -151,7 +151,7 @@
   },
   "resolutions": {
     "minimatch": "^3.0.5",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^3.0.0",
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
     "qs": "^6.9.3",
