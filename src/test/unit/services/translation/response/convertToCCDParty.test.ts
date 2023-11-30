@@ -184,4 +184,10 @@ describe('translate party to ccd model', () => {
 
     expect(partyResponseCCD.soleTraderDateOfBirth).toMatch('2003-01-01');
   });
+  it('should translate SOLE TRADER party to ccd date empty', () => {
+    partySoleTrader.dateOfBirth=null;
+    const partyResponseCCD = toCCDParty(partySoleTrader);
+
+    expect(partyResponseCCD.soleTraderDateOfBirth).toBeNull();
+  });
 });
