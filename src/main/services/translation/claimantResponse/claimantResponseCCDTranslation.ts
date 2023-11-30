@@ -30,7 +30,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1PartAdmitConfirmAmountPaidSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
     applicant1PartAdmitIntentionToSettleClaimSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) : undefined,
     applicant1ProceedWithClaim : toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option),
-    courtDecision : claim.claimantResponse?.courtDecision,
-    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate),
+    claimantCourtDecision : claim.courtDecision,
+    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)
   };
 };

@@ -33,6 +33,6 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
-  courtDecision?:RepaymentDecisionType;
+  claimantCourtDecision?:RepaymentDecisionType;
   applicant1RequestedPaymentDateForDefendantSpec: CCDClaimantPayBySetDate;
 }

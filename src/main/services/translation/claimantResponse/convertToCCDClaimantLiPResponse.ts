@@ -17,6 +17,7 @@ export interface CCDClaimantLiPResponse {
   applicant1DQHearingSupportLip?: CCDHearingSupport,
   applicant1ChoosesHowToProceed?: CCDChoosesHowToProceed,
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
+  applicant1RejectedRepaymentReason: String,
 }
 
 const toChoosesHowToProceed = {
@@ -30,5 +31,6 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     applicant1DQHearingSupportLip: toCCDSHearingSupport(claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList),
     applicant1ChoosesHowToProceed: toChoosesHowToProceed[claimantResponse?.chooseHowToProceed?.option],
     applicant1SignedSettlementAgreement: toCCDYesNoFromBooleanString(claimantResponse?.signSettlementAgreement?.signed),
+    applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
   };
 };

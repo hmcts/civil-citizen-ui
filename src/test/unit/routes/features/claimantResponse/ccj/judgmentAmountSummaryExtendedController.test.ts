@@ -7,11 +7,14 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/common/utils/dateUtils');
+
+jest.spyOn(draftStoreService,'saveDraftClaim');
 
 describe('Judgment Amount Summary Extended', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -48,6 +51,7 @@ describe('Judgment Amount Summary Extended', () => {
     it('should redirect to payment options - fom claimant response task-list', async () => {
       app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
       const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL).send();
+
       expect(res.status).toBe(302);
       expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
     });

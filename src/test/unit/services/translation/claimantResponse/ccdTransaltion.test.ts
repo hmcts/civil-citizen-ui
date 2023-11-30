@@ -14,6 +14,7 @@ import {ResponseType} from 'form/models/responseType';
 import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
+import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();
@@ -175,6 +176,25 @@ describe('Translate claimant response to ccd version', () => {
 
     //Then
     expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate rejectionReason to ccd', () => {
+    //Given
+    claim.claimantResponse.rejectionReason = new RejectionReason('Rejected as less amount');
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.applicant1RejectedRepaymentReason).toBe('Rejected as less amount');
+  });
+
+  it('should translate suggestedPaymentIntention paymentDate to ccd', () => {
+    //Given
+    const currentDate = new Date(Date.now());
+    claim.claimantResponse.suggestedPaymentIntention = {paymentDate : currentDate};
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toEqual({PaymentBySetDate : currentDate});
   });
 });
 
