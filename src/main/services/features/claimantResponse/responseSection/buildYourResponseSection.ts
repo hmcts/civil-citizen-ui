@@ -108,7 +108,7 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   const summaryRows: SummaryRow [] = [];
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
-  const paymentDate = getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(date.date)).toLocaleString(DateTime.DATE_FULL));
+  const paymentDate = getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(date.date)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
     t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lang, paymentDate}),
