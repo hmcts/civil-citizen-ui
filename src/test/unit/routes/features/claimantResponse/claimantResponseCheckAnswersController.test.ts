@@ -12,6 +12,10 @@ import Redis from 'ioredis';
 import noRespondentTelephoneClaimantIntentionMock from '../../../../../test/utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
 import {Claim} from 'common/models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {Task} from 'models/taskList/task';
+import {
+  outstandingClaimantResponseTasks
+} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -20,11 +24,21 @@ const session = require('supertest-session');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/claimantResponse/ccj/ccjCheckAnswersService');
+jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService');
+
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+
 jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
+
+const mockOutstandingClaimantResponseTasks =
+  outstandingClaimantResponseTasks as jest.Mock;
+mockOutstandingClaimantResponseTasks.mockImplementation(() => {
+  const outstandingTaskList: Task[] = [];
+  return outstandingTaskList;
+});
 
 describe('Claimant Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -45,6 +59,7 @@ describe('Claimant Response - Check answers', () => {
   });
 
   describe('Get', () => {
+
     it('should return check answers page', async () => {
       // (getClaimById as jest.Mock).mockResolvedValueOnce(noRespondentTelephoneClaimantIntentionMock.case_data);
       app.locals.draftStoreClient = mockCivilClaimantIntention;
