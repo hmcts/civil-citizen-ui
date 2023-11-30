@@ -255,3 +255,4 @@ export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
 export const APPLY_HELP_WITH_FEES_REFERENCE = `${APPLY_HELP_WITH_FEES}/reference-number`;
 export const HEARING_FEE_CONFIRMATION_URL = `${PAY_HEARING_FEE_URL}/confirmation`;
 export const PAY_HEARING_FEE_UNSUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/payment-unsuccessful`;
+export const GENERIC_HELP_FEES_URL = 'https://www.gov.uk/get-help-with-court-fees';

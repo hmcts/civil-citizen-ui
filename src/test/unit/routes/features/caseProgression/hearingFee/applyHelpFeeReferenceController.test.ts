@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  APPLY_HELP_WITH_FEES_REFERENCE,
-  HEARING_FEE_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CREATION,
+  APPLY_HELP_WITH_FEES_REFERENCE, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
+  HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {
   mockCivilClaim, mockCivilClaimDocumentUploaded,
@@ -105,7 +105,7 @@ describe('Apply for help with fees', () => {
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(HEARING_FEE_PAYMENT_CREATION);
+          expect(res.header.location).toEqual(HEARING_FEE_APPLY_HELP_FEE_SELECTION);
         });
     });
 
