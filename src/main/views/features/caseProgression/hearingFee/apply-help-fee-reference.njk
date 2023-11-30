@@ -35,7 +35,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set yesHtml %}
-            <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
+              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
               {{ govukInput({
                 id: "referenceNumber",
                 name: "referenceNumber",
@@ -45,7 +45,7 @@
                   text: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.HINT_YES')
                 },
                 label: {
-                  text: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.SUBTITLE_YES')
+                  html: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.SUBTITLE_YES')
                 },
                 errorMessage: {
                   html: t(form.errorFor('referenceNumber'))
@@ -53,11 +53,11 @@
               }) }}
             {% endset %}
             {% set noHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
-              <p class="govuk-body">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
-              <ol class="govuk-list govuk-list--number">
+              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
+              <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST')}}
-                  <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="{{ genericHelpFeeUrl }}" class="govuk-link">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST_LINK')}}</a>
+                  <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="{{ genericHelpFeeUrl }}">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST_LINK')}}</a>
                 </li>
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.SECOND')}}</li>
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.THIRD')}}</li>
