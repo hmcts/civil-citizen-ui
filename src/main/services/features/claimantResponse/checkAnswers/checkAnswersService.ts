@@ -11,7 +11,6 @@ import {
 } from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
-import {isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -31,12 +30,14 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     return buildHowYouWishToProceed(claim, claimId, lang);
   };
   const getFreeTelephoneMediationSection = () => {
-    return claim.isFullDefence() || claim.isPartialAdmission()
+    return (directionQuestionnaireFromClaimant(claim)
+    )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
   const getHearingRequirementsSection = () => {
-    return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
+    return (directionQuestionnaireFromClaimant(claim)
+    )
       ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
       : null;
   };
@@ -73,6 +74,15 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
   }
 };
 
+function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
+  return (
+    claim.hasClaimantRejectedDefendantAdmittedAmount()
+    || claim.hasClaimantIntentToProceedResponse()
+    || claim.hasClaimantRejectedDefendantPaid()
+    || claim.hasClaimantRejectedPartAdmitPayment()
+  );
+}
+
 export const saveSubmitDate = async (claimId: string, claimantResponse: ClaimantResponse) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
@@ -86,3 +96,4 @@ export const saveSubmitDate = async (claimId: string, claimantResponse: Claimant
     throw error;
   }
 };
+
