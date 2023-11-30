@@ -10,14 +10,12 @@
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
       {% set otherPartyLabel = 'contact-them' %}
       {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
-      {% set otherPartyName = claim.getClaimantFullName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-      {% set phone = claim.applicant1.partyPhone %}
-      {% set email = claim.applicant1.emailAddress %}
-      {% set contactPerson = claim.applicant1.partyDetails.contactPerson %}
+      {% set phone = party.partyPhone %}
+      {% set email = party.emailAddress %}
+      {% set contactPerson = party.partyDetails.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
       {% set claimAmount = t('COMMON.CLAIM_AMOUNT') + ':' %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
@@ -56,9 +54,12 @@
               </div>
             {% endif %}
           </div>
+          <br/>
           {{ contactUsForHelp(t) }}
         </div>
+           {% if showInR1 %}
         {{ aboutClaimWidget(t,{header:header,lines:[{title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT', href: '', content:totalClaimAmount},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: claimDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'}]}) }}
+           {% endif %}
       </div>
     </main>
   </div>

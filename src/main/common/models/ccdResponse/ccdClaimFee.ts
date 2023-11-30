@@ -8,8 +8,11 @@ export interface CCDClaimFee {
 }
 export const toCCDClaimFee = (claimFee: ClaimFee) => {
   if (!claimFee?.calculatedAmountInPence) return undefined;
-  return {
+  const ccdClaimFee  = {
     calculatedAmountInPence: claimFee.calculatedAmountInPence.toString(),
+    version: claimFee.version !== undefined ? claimFee.version.toString() : undefined,
+    code: claimFee.code,
   };
+  return ccdClaimFee;
 
 };
