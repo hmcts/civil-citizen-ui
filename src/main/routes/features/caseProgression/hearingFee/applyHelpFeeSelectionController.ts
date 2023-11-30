@@ -60,9 +60,8 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
     const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
     await renderView(res, req, form, claimId, redirectUrl);
   } else {
-    const csrfToken = req.csrfToken();
     const redirectUrl = await getRedirectUrl(claimId, form.model, req);
-    res.redirect(redirectUrl + '?_csrf=' + csrfToken);
+    res.redirect(redirectUrl);
   }
 }) as RequestHandler);
 

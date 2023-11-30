@@ -8,6 +8,7 @@ const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
 const inline = '\'unsafe-inline\'';
 const loginUrl: string = config.get('services.idam.authorizationURL');
+const govPayUrl: string = config.get('services.govPay.url');
 
 const scriptSrcElem = [
   self,
@@ -93,7 +94,7 @@ export class Helmet {
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
-          formAction: [self, loginUrl],
+          formAction: [self, loginUrl,govPayUrl],
         },
       }),
     );
