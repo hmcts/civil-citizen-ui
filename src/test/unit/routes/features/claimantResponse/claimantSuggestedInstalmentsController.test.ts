@@ -11,13 +11,19 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {getNextYearValue} from '../../../../utils/dateUtils';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,
+    isBusiness: () => true}),
   getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
+  getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
+  saveClaimantResponse: jest.fn(),
 }));
 
 const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
@@ -34,6 +40,7 @@ describe('Suggest instalments for the defendant', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {

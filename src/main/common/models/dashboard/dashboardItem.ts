@@ -132,6 +132,18 @@ export class DashboardClaimantItem extends DashboardItem {
           'PAGES.DASHBOARD.STATUS_CLAIMANT.DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT',
         parameter: [paramDefendantName],
       },
+      IN_MEDIATION:  {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.IN_MEDIATION',
+      },
+      MEDIATION_SUCCESSFUL:  {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.MEDIATION_SUCCESSFUL',
+      },
+      MEDIATION_UNSUCCESSFUL:  {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.MEDIATION_UNSUCCESSFUL',
+      },
+      CLAIMANT_REJECT_PARTIAL_ADMISSION : {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW',
+      },
     };
   }
 }

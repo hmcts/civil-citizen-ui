@@ -16,6 +16,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             trial: [
@@ -39,6 +40,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [
@@ -70,6 +72,36 @@ describe('Trial service', () => {
     expect(actualTrialContent[2][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
     expect(actualTrialContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
     expect(actualTrialContent[4][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
+  });
+
+  it('should return all sections if all selected on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: true},
+              {documentType: 'SKELETON', selected: true},
+              {documentType: 'LEGAL', selected: true},
+              {documentType: 'COSTS', selected: true},
+              {documentType: 'DOCUMENTARY', selected: true},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(5);
   });
 
   it('should return section 1 if selected', () => {
@@ -263,6 +295,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [],
@@ -286,6 +319,27 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return no section if defendantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
         caseProgression: {},
       },
     };
@@ -305,6 +359,26 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
       },
     };
 
@@ -323,6 +397,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [

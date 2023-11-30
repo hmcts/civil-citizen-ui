@@ -14,22 +14,24 @@ import {ResponseType} from 'form/models/responseType';
 import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
+import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 describe('Translate claimant response to ccd version', () => {
-  let claim: Claim;
+  let claim: Claim = new Claim();
   beforeEach(() => {
     claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     claim.claimantResponse = new ClaimantResponse();
     claim.respondent1 = new Party();
-  });
-  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
-    //Given
     claim.respondent1 = {
       responseType: ResponseType.PART_ADMISSION,
       partyDetails: {primaryAddress: new Address()},
       type: PartyType.COMPANY,
     };
+  });
+  it('should translate fullAdmitSetDateAcceptPayment to ccd - partial admission', () => {
+    //Given
     claim.claimantResponse.fullAdmitSetDateAcceptPayment = <GenericYesNo>{option: YesNo.NO};
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
@@ -152,7 +154,7 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1ProceedWithClaim).toBe(YesNoUpperCamelCase.YES);
   });
-  
+
   it('should translate applicant1PartAdmitConfirmAmountPaidSpec to ccd', () => {
 
     //Given
@@ -168,7 +170,38 @@ describe('Translate claimant response to ccd version', () => {
   it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd', () => {
 
     //Given
+    claim.respondent1 ={
+      responseType: ResponseType.PART_ADMISSION,
+    };
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in less', () => {
+
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in full', () => {
+
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = new GenericYesNo(YesNo.YES);
 
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
