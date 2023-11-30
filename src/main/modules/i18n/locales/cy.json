@@ -1753,7 +1753,10 @@
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
-          }
+          },
+          "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
+          "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
+          "PAID_TASK": "Pay the hearing fee"
         },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "Mae treial wedi'i drefnu ar gyfer eich achos",

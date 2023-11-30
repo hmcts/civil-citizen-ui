@@ -24,8 +24,16 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
       .build())
     .build();
 
+  const hearingFeePaidNotification = new NotificationBuilder()
+    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_TITLE', { lng }))
+    .addContent(new PageSectionBuilder()
+      .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_SUBTITLE', { lng }))
+      .build())
+    .build();
+
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
+  dashboardNotificationsList.push(hearingFeePaidNotification);
 
   return dashboardNotificationsList;
 };
