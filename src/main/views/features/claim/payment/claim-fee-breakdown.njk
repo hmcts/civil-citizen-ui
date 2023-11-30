@@ -58,7 +58,8 @@
                     <form method="post" novalidate autocomplete="off">
                         {{ csrfProtection(csrf) }}
                         {{ govukButton({
-                 text: buttonText
+                 text: buttonText,
+                 href: redirectUrl
               }) }}
                     </form>
                 </div>

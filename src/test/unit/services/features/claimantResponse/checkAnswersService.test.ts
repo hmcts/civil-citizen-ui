@@ -57,21 +57,223 @@ describe('Check Answers service', () => {
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
       claim.claimantResponse = {
-        chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
+        chooseHowToProceed: { option: ChooseHowProceed.REQUEST_A_CCJ },
         ccjRequest: new CCJRequest(),
+        fullAdmitSetDateAcceptPayment: {
+          option: 'yes',
+        },
       } as ClaimantResponse;
     });
 
     it('should check answers for defendant paid some of the money', () => {
+      const expectedResult = generateExpectedResultForDefendantPaidSome();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(5).toEqual(result.sections.length);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
-      claim.claimantResponse.ccjRequest.paidAmount = {option: YesNo.NO};
+      const expectedResult = generateExpectedResultForDefendantPaidNone();
+      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(5).toEqual(result.sections.length);
+      expect(expectedResult.sections).toHaveLength(result.sections.length);
+    });
+    it('should check answers be empty if non of the tasks completed', () => {
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
+      claim.claimantResponse.chooseHowToProceed = undefined;
+      claim.claimantResponse.ccjRequest = undefined;
+      const result = getSummarySections('12345', claim, 'en', 70);
+      expect({ 'sections': [{ 'summaryList': { 'rows': [] }, 'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE' }, undefined, null, undefined, null, null] }).toEqual(result);
     });
   });
 });
+
+function generateExpectedResultForDefendantPaidNone() {
+  return {
+    sections: [
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/accept-payment-method',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/choose-how-to-proceed',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+              },
+              value: {
+                html: 'No',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/county-court-judgement/paid-amount',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
+              },
+              value: {
+                html: '£570.00',
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      null,
+      undefined,
+    ],
+  };
+}
+
+function generateExpectedResultForDefendantPaidSome() {
+  return {
+    sections: [
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/accept-payment-method',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+              },
+              value: {
+                html: 'PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/choose-how-to-proceed',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        title: 'PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+              },
+              value: {
+                html: 'Yes',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/12345/claimant-response/county-court-judgement/paid-amount',
+                    text: 'COMMON.BUTTONS.CHANGE',
+                    visuallyHiddenText: ' PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME',
+                  },
+                ],
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID',
+              },
+              value: {
+                html: '£100.00',
+              },
+            },
+            {
+              key: {
+                text: 'PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID',
+              },
+              value: {
+                html: '£470.00',
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      null,
+      undefined,
+    ],
+  };
+}

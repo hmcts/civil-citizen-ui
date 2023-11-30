@@ -2,14 +2,14 @@ import {Request, Response} from 'express';
 import {Claim} from 'common/models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_URL} from 'routes/urls';
+import { BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, BREATHING_SPACE_RESPITE_LIFTED_URL, DASHBOARD_URL } from 'routes/urls';
 
 describe('breathingSpaceGuard', () => {
   let req: Partial<Request>;
   let res: Partial<Response> & {redirect: jest.Mock};
   let next: jest.Mock;
   beforeEach(() => {
-    req = {params: {id: '123'}, url: BREATHING_SPACE_CHECK_ANSWERS_URL};
+    req = { params: { id: '123' }, url: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, originalUrl: BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL };
     res = {redirect: jest.fn()};
     next = jest.fn();
   });
@@ -28,10 +28,43 @@ describe('breathingSpaceGuard', () => {
     // Then
     expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
   });
+  it('should redirect to dashboard  if breathingSpace is not entered', async () => {
+    // Given
+    const claim = {
+      enterBreathing: undefined,
+    } as Claim;
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+    req.originalUrl = BREATHING_SPACE_RESPITE_LIFTED_URL;
+    req.url = BREATHING_SPACE_RESPITE_LIFTED_URL;
+    // When
+    await breathingSpaceGuard(req as Request, res as Response, next);
+    // Then
+    expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+  });
+  it('should redirect to lifted url if breathingSpace is entered', async () => {
+    // Given
+    const claim = {
+      enterBreathing: {
+        type: 'STANDARD',
+      },
+    } as Claim;
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+    req.originalUrl = BREATHING_SPACE_RESPITE_LIFTED_URL;
+    req.url = BREATHING_SPACE_RESPITE_LIFTED_URL;
+    // When
+    await breathingSpaceGuard(req as Request, res as Response, next);
+    // Then
+    expect(res.redirect).not.toHaveBeenCalledWith(DASHBOARD_URL);
+  });
   it('should call next if breathingSpace type is undefined', async () => {
     // Given
     const claim = {
       enterBreathing: {
+
       },
     } as Claim;
     jest
