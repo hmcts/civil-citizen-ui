@@ -380,7 +380,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
-      return plainToInstance(PaymentInformation, response.data as object);
+      return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);
       throw err;

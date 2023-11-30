@@ -1,8 +1,9 @@
+
 export const CIVIL_SERVICE_CASES_URL = '/cases/';
 export const CIVIL_SERVICE_FEES_URL = '/fees';
 export const CIVIL_SERVICE_ASSIGNMENT_URL = '/assignment';
 export const CIVIL_SERVICE_CLAIM_AMOUNT_URL = `${CIVIL_SERVICE_FEES_URL}/claim`;
-export const CIVIL_SERVICE_HEARING_URL = `${CIVIL_SERVICE_FEES_URL}/HEARING`;
+export const CIVIL_SERVICE_HEARING_URL = `${CIVIL_SERVICE_FEES_URL}/hearing`;
 export const CIVIL_SERVICE_FEES_RANGES = `${CIVIL_SERVICE_FEES_URL}/ranges/`;
 export const CIVIL_SERVICE_VALIDATE_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference`;
 export const CIVIL_SERVICE_DOCUMENT_URL = '/case/document/';
@@ -16,4 +17,4 @@ export const ASSIGN_CLAIM_TO_DEFENDANT =`${CIVIL_SERVICE_ASSIGNMENT_URL}/case/:c
 export const CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE =`${CIVIL_SERVICE_CASES_URL}response/agreeddeadline/:claimId`;
 export const CIVIL_SERVICE_USER_CASE_ROLE = `${CIVIL_SERVICE_CASES_URL}:claimId/userCaseRoles`;
 export const CIVIL_SERVICE_COURT_DECISION =  `${CIVIL_SERVICE_CASES_URL}:claimId/courtDecision`;
-export const CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL= `${CIVIL_SERVICE_HEARING_URL}/case/:claimId/payment`;
+export const CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/HEARING/case/:claimId/payment`;
