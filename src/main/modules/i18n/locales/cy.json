@@ -70,7 +70,8 @@
       "SUBMIT_RESPONSE": "Cyflwyno'r ymateb",
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
-      "START_NOW": "Dechrau nawr"
+      "START_NOW": "Dechrau nawr",
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad"
@@ -360,6 +361,10 @@
       "PAGE_TITLE": "Unavailability for mediation",
       "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
       "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+    },
+    "MEDIATION_ALTERNATIVE_EMAIL": {
+      "PAGE_TITLE": "Alternative email address",
+      "PAGE_TEXT": "Please provide an alternative email address"
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
@@ -988,6 +993,11 @@
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
         "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+      },
+      "CCJ": {
+        "CCJ_REQUESTED": "County Court Judgment requested",
+        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -2921,6 +2931,15 @@
         "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "If there are any changes to the arrangements between now and the trial date you will need to",
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
         "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
+      }
+    },
+    "PAY_HEARING_FEE": {
+      "CONFIRMATION_PAGE": {
+        "TITLE": "Confirmation of your hearing fee payment",
+        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
+        "REFERENCE_NUMBER": "Your reference number",
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
     }
   },

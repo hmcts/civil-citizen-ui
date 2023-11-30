@@ -232,6 +232,10 @@ import telephoneMediationController from 'routes/features/mediation/telephoneMed
 import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
 import telephoneMediationConfirmationController
   from 'routes/features/mediation/telephoneMediationConfirmationController';
+import payHearingFeeConfirmationController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import alternativeEmailAddressMediationController
+  from 'routes/features/mediation/alternativeEmailAddressMediationController';
 import mediationUnavailabilityNextThreeMonthsConfirmationController
   from 'routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController';
 import mediationUnavailabilitySelectDatesController
@@ -449,6 +453,8 @@ export default [
   telephoneMediationController,
   emailMediationConfirmationController,
   telephoneMediationConfirmationController,
+  payHearingFeeConfirmationController,
+  alternativeEmailAddressMediationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
   mediationUnavailabilitySelectDatesController,
 ];
