@@ -12,6 +12,16 @@ import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDPaymentOption} from 'services/translation/response/convertToCCDPaymentOption';
 import { toCCDClaimantPayBySetDate } from '../response/convertToCCDPayBySetDate';
 
+function isClaimantWantToSettleTheClaim(claim: Claim) {
+  if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
+    return toCCDYesNo(claim.claimantResponse?.hasPartPaymentBeenAccepted?.option);
+  } else if (claim.isFullDefence() && claim.hasPaidInFull()) {
+    return toCCDYesNo(claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option);
+  } else {
+    return undefined;
+  }
+}
+
 export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
   return {
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
@@ -28,7 +38,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1AcceptPartAdmitPaymentPlanSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
     applicant1RepaymentOptionForDefendantSpec: toCCDPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
     applicant1PartAdmitConfirmAmountPaidSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
-    applicant1PartAdmitIntentionToSettleClaimSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) : undefined,
+    applicant1PartAdmitIntentionToSettleClaimSpec: isClaimantWantToSettleTheClaim(claim),
     applicant1ProceedWithClaim : toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option),
     claimantCourtDecision : claim.courtDecision,
     applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate)

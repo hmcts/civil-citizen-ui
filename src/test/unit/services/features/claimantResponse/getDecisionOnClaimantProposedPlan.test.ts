@@ -24,6 +24,7 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
@@ -84,7 +85,6 @@ describe('Get Court Decision test', ()=> {
       .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT);
 
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
-
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
@@ -98,7 +98,6 @@ describe('Get Court Decision test', ()=> {
       .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
 
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
-
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then

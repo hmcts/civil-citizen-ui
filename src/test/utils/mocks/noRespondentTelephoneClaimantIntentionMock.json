@@ -20,9 +20,11 @@
       "mediationDisagreement": {
         "messageName": "",
         "option": "no"
-      },
-      "claimantResponse": {
-
+      }
+    },
+    "claimantResponse": {
+      "chooseHowToProceed:": {
+        "option": "SIGN_A_SETTLEMENT_AGREEMENT"
       }
     }
   }
