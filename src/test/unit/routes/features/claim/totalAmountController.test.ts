@@ -4,14 +4,23 @@ const session = require('supertest-session');
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaimUndefined,
 } from '../../../../utils/mockDraftStore';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claim/amount/claimFeesService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+
+const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 
 describe('Total amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,6 +34,7 @@ describe('Total amount', () => {
 
   describe('on GET', () => {
     it('should return total amount page', async () => {
+      isReleaseTwo.mockResolvedValue(true);
       nock('http://localhost:4000')
         .get('/fees/hearing/undefined')
         .reply(200, '100');
