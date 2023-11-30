@@ -31,7 +31,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LiP Defendant Response with Reject all claim @carm', async () => {
+Scenario('LiP Defendant Response with Reject all claim @carm @smoketest', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompDetails(carmEnabled);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
