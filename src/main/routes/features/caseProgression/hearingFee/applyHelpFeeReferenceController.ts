@@ -1,8 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
-  DASHBOARD_CLAIMANT_URL, GENERIC_HELP_FEES_URL,
-  HEARING_FEE_CANCEL_JOURNEY, HEARING_FEE_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CREATION,
+  DASHBOARD_CLAIMANT_URL, GENERIC_HELP_FEES_URL, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
+  HEARING_FEE_CANCEL_JOURNEY, HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -63,7 +63,7 @@ applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req
       const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
       await renderView(res, req, form, claimId, redirectUrl);
     } else {
-      let redirectUrl = HEARING_FEE_PAYMENT_CREATION;
+      let redirectUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
       await saveCaseProgression(redisClaimId, form.model, helpFeeReferenceNumberForm);
       if (form.model.option === YesNo.YES) {
         await triggerNotifyEvent(claimId, req, redisClaimId);
