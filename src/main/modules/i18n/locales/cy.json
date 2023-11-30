@@ -1229,7 +1229,10 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
+        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
+        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1755,6 +1758,23 @@
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
+          },
+          "PAYMENT": {
+            "UNSUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was unsuccessful",
+              "NO_MONEY_TAKEN": "No money has been taken from your account",
+              "WHAT_HAPPENS_NEXT": "What happens next",
+              "PAYMENT_BY_CARD": "Payment by card",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "You can try to",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "make a card payment",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "again.",
+              "PAYMENT_BY_PHONE": "Payment by phone",
+              "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
+              "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+            }
           }
         },
         "TRIAL_HEARING_CONTENT": {
