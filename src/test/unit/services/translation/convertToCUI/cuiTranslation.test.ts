@@ -264,4 +264,19 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.respondentPaymentDeadline).toEqual(undefined);
   });
+  
+  it('should translate paymentDate to CUI model', () => {
+    //Given
+    const currentDate = new Date();
+    const input: CCDClaim = {
+      applicant1RequestedPaymentDateForDefendantSpec : {
+        PaymentBySetDate: currentDate,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(currentDate);
+  });
 });
