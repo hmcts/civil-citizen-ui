@@ -161,7 +161,7 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(claimRef, carmEnabled);
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
   }
 
   async EnterCompDetails(carmEnabled) {
