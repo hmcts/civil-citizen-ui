@@ -5,7 +5,7 @@ import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizen
 import {Claim} from '../../../../common/models/claim';
 import {
   getCaseDataFromStore,
-  saveDraftClaim
+  saveDraftClaim,
 } from '../../../../modules/draft-store/draftStoreService';
 import {AppRequest} from '../../../../common/models/AppRequest';
 
@@ -38,7 +38,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
       const claim = await getCaseDataFromStore(claimId);
-      claim.applicant1.dateOfBirth =new CitizenDate(day, month, year);;
+      claim.applicant1.dateOfBirth =new CitizenDate(day, month, year);
       await saveDraftClaim(claimId, claim);
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }

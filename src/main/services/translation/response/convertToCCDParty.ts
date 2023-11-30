@@ -23,11 +23,10 @@ export const toCCDParty = (party: Party): CCDParty => {
   };
 };
 const getStringDate = (party: Party): string => {
-    if (party?.dateOfBirth && party?.dateOfBirth.day && party?.dateOfBirth.month && party.dateOfBirth.year) {
-      const month = party.dateOfBirth.month.toString().padStart(2, '0');
-      const day = party.dateOfBirth.day.toString().padStart(2, '0');
-      return party.dateOfBirth.year + '-' + month + '-' + day;
-    }
-    return null;
+  if (party?.dateOfBirth && party?.dateOfBirth.day && party?.dateOfBirth.month && party.dateOfBirth.year) {
+    const month = party.dateOfBirth.month.toString().padStart(2, '0');
+    const day = party.dateOfBirth.day.toString().padStart(2, '0');
+    return party.dateOfBirth.year + '-' + month + '-' + day;
   }
-;
+  return null;
+};
