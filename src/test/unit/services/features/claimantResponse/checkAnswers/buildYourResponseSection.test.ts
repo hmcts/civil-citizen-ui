@@ -9,6 +9,8 @@ import { RejectionReason } from 'common/form/models/claimantResponse/rejectionRe
 import { t } from 'i18next';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 import { ChooseHowProceed } from 'common/models/chooseHowProceed';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -102,5 +104,26 @@ describe('Your response Section', () => {
     expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
   });
+  it('should return Your response sections when claimant suggested payment plan option by set date', async () => {
+    //Given
 
+    claim.claimantResponse = { suggestedPaymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: { date: new Date().toISOString() } as unknown as Date } } as ClaimantResponse;
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', { lng }));
+    expect(yourResponseSection.summaryList.rows.length).toBe(1);
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.IN_FULL_BY', { lng }));
+  });
+  it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
+  //Given
+
+    claim.claimantResponse = { suggestedPaymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, repaymentPlan: { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() } } } as ClaimantResponse;
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', { lng }));
+    expect(yourResponseSection.summaryList.rows.length).toBe(4);
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.BY_INSTALMENTS', { lng }));
+  });
 });

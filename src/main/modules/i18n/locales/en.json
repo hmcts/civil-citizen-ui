@@ -429,6 +429,7 @@
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
+      "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
       "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
       "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment?",
@@ -453,10 +454,15 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
       "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
+      "COURT_DECISION_SECTION":"Court Decision",
+      "COURT_DECISION_ROW":"Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN":"Court repayment plan",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Monthly instalment amount",
+      "DATE_FOR_FIRST_INSTALMENT": "Date for first instalment",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "Do you have loans or credit card debts?",
       "DECLARATION": "I declare that the details I have given are true to the best of my knowledge.",
       "DECLARATION_TITLE": "Declaration",
@@ -500,12 +506,15 @@
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
       "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
+      "HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY":"How would you like the defendant to pay?",
       "YOUR_HEARING_REQUIREMENTS_TITLE": "Your hearing requirements",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
+      "IMMEDIATELY":"Immediately",
+      "IN_FULL_BY":"In full by {{ claimantSetDate }}",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -541,6 +550,7 @@
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "REASON_FOR_REJECTING": "Reason for rejecting their response",
+      "REPAYMENT_IN_FULL":"Repayment in full by {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -555,7 +565,7 @@
       "RESPONSE_TITLE": "Your response to the claim",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
       "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
-      "REQUEST_A_CCJ": "Issue a County Court Judgement (CCJ)",
+      "REQUEST_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "SAME_ADDRESS": "Same as address",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
@@ -942,7 +952,7 @@
         "IF_CANT_AFFORD": "If they don't think they can afford the plan, they can ask for a judge to make a different plan.",
         "IF_DONT_SIGN": "If they don't sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.",
         "IF_NOT_PAID": "If you don't get paid",
-        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgement (CCJ) by signing in to your account.",
+        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgment (CCJ) by signing in to your account.",
         "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
@@ -1089,6 +1099,7 @@
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "CLAIMANT": "Claimant",
+      "DEFENDANT": "Defendant",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
@@ -1219,7 +1230,10 @@
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
+        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1335,7 +1349,7 @@
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -1343,6 +1357,22 @@
       },
       "PAGE_TITLE": "Respond to the settlement agreement",
       "TITLE": "Respond to the settlement agreement"
+    },
+    "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
+      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
+      "CAN_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) against you. The CCJ would order you to repay the money in line with the terms of the agreement.",
+      "CANT_REQUEST_CCJ": "The claimant can't request a County Court Judgment against you unless you break the terms.",
+      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+      "COURT_REVIEWED_PLAN": "The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Download settlement agreement (PDF)",
+      "EMAIL_YOU": "We'll email you when the claimant responds.",
+      "GET_RECEIPTS": "Make sure you get receipts for any payments.",
+      "PAGE_TITLE": "Respond to the settlement agreement confirmation",
+      "PAY_BY": "The agreement says you'll repay by {{ paymentDate }}.",
+      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
+      "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
+      "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
+      "WHAT_HAPPENS_NEXT": "What happens next"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -1745,6 +1775,23 @@
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
+          },
+          "PAYMENT": {
+            "UNSUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was unsuccessful",
+              "NO_MONEY_TAKEN": "No money has been taken from your account",
+              "WHAT_HAPPENS_NEXT": "What happens next",
+              "PAYMENT_BY_CARD": "Payment by card",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "You can try to",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "make a card payment",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "again.",
+              "PAYMENT_BY_PHONE": "Payment by phone",
+              "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
+              "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+            }
           }
         },
         "TRIAL_HEARING_CONTENT": {
