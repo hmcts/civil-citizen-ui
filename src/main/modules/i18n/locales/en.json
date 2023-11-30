@@ -1089,6 +1089,7 @@
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "CLAIMANT": "Claimant",
+      "DEFENDANT": "Defendant",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
