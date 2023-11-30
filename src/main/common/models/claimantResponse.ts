@@ -12,9 +12,8 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
+import {RepaymentDecisionType} from './claimantResponse/RepaymentDecisionType';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
