@@ -1,25 +1,24 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  APPLY_HELP_WITH_FEES_START,
   DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_CANCEL_JOURNEY,
-  HEARING_FEE_PAYMENT_CREATION, PAY_HEARING_FEE_URL,
+  PAY_HEARING_FEE_URL,
 } from 'routes/urls';
 import {
   getApplyHelpFeeSelectionContents,
 } from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionContents';
 import {GenericForm} from 'form/models/genericForm';
-import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getButtonsContents} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents';
-import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {Claim} from 'models/claim';
+import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
+
 
 async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
   const redisClaimId = generateRedisKey(<AppRequest>req);
@@ -54,7 +53,6 @@ applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async
 
 applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res) => {
   const claimId = req.params.id;
-  const redisClaimId = generateRedisKey(<AppRequest>req);
   const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
   form.validateSync();
   await form.validate();
@@ -62,11 +60,11 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
     const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
     await renderView(res, req, form, claimId, redirectUrl);
   } else {
-    const redirectUrl = form.model.option === YesNo.NO ? HEARING_FEE_PAYMENT_CREATION : APPLY_HELP_WITH_FEES_START;
-    await saveCaseProgression(redisClaimId, form.model, 'hearingFeeHelpSelection');
-    res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
+    const csrfToken = req.csrfToken();
+    const redirectUrl = await getRedirectUrl(claimId, form.model, req);
+    res.redirect(redirectUrl + '?_csrf=' + csrfToken);
   }
-})as RequestHandler);
+}) as RequestHandler);
 
 export default applyHelpFeeSelectionController;
 

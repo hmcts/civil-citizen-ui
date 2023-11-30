@@ -10,7 +10,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
-  CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL,
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
@@ -34,6 +34,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {PaymentInformation} from 'models/caseProgression/hearingFee/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -273,7 +274,7 @@ export class CivilServiceClient {
   async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
-  
+
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }
@@ -372,6 +373,16 @@ export class CivilServiceClient {
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+  async getHearingFeePaymentRedirectInformation(claimId: string, req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
+      return plainToInstance(PaymentInformation, response.data as object);
+    } catch (err: unknown) {
+      logger.error(err);
       throw err;
     }
   }
