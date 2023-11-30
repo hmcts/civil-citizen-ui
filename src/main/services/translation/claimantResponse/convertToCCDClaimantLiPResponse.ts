@@ -17,7 +17,7 @@ export interface CCDClaimantLiPResponse {
   applicant1DQHearingSupportLip?: CCDHearingSupport,
   applicant1ChoosesHowToProceed?: CCDChoosesHowToProceed,
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
-  applicant1RejectedRepaymentReason: String,
+  applicant1RejectedRepaymentReason: string,
 }
 
 const toChoosesHowToProceed = {
