@@ -9,10 +9,11 @@ import {
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import { NextFunction, Request, Response } from 'express';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
+jest.mock('../../../../../main/routes/guards/breathingSpaceGuard', () => ({ breathingSpaceGuard: (req: Request, res: Response, next: NextFunction) => { next(); } }));
 describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

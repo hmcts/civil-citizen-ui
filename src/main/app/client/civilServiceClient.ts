@@ -155,11 +155,16 @@ export class CivilServiceClient {
   }
 
   async getClaimAmountFee(amount: number, req: AppRequest): Promise<number> {
+    const claimFeeData = await this.getClaimFeeData(amount, req);
+    return convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
+  }
+
+  async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       const claimFeeResponse: ClaimFeeData = response.data;
-      return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
+      return claimFeeResponse;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
@@ -271,6 +276,10 @@ export class CivilServiceClient {
   
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
+  }
+
+  async submitCreateServiceRequestEvent(claimId: string, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_SERVICE_REQUEST_CUI, claimId, {}, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
