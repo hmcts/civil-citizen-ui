@@ -190,6 +190,7 @@ import repaymentPlanAcceptedController from './features/claimantResponse/repayme
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
+import incompleteClaimantResponseSubmissionController from './features/claimantResponse/incompleteClaimantResponseSubmissionController';
 import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
 import judgmentAmountSummaryExtendedController from './features/claimantResponse/ccj/judgmentAmountSummaryExtendedController';
@@ -220,6 +221,8 @@ import trialArrangementsConfirmationController
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
+import respondSettlementAgreementConfirmationController
+  from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import applyHelpFeeSelectionController
@@ -228,6 +231,8 @@ import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import paymentUnsuccessfulController
+  from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
 export default [
@@ -406,6 +411,7 @@ export default [
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  incompleteClaimantResponseSubmissionController,
   assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
@@ -435,10 +441,14 @@ export default [
   claimantResponseCheckAnswersController,
   claimFeeController,
   cancelTrialArrangementsController,
+  breathingSpaceLiftedCheckAnswersController,
+  respondSettlementAgreementController,
+  respondSettlementAgreementConfirmationController,
   respondSettlementAgreementController,
   breathingSpaceLiftedCheckAnswersController,
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
 ];
