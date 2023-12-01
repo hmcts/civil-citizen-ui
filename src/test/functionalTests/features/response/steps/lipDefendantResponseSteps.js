@@ -44,6 +44,7 @@ const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTeleph
 const TelephoneMediation = require('../pages/defendantLipResponse/telephoneMediation/telephoneMediation');
 const EmailConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/emailConfirmation');
 const PhoneConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/phoneConfirmation');
+const AlternativeEmail = require('../pages/defendantLipResponse/availabilityForMediation/alternativeEmail');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -76,6 +77,7 @@ const freeTelephoneMediation = new FreeTelephoneMediation();
 const telephoneMediation = new TelephoneMediation();
 const emailConfirmation = new EmailConfirmation();
 const phoneConfirmation = new PhoneConfirmation();
+const alternativeEmail = new AlternativeEmail();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -462,6 +464,9 @@ class ResponseSteps {
 
   async ConfirmPhoneDetails(claimRef) {
     await phoneConfirmation.confirmPhone(claimRef);
+  }
+  async ConfirmAltEmailDetails(claimRef) {
+    await alternativeEmail.confirmAltEmail(claimRef);
   }
 
   EnterNoMediation(claimRef){
