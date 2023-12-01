@@ -82,10 +82,7 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
         .send({option: 'no'})
