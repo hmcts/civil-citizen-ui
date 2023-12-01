@@ -183,7 +183,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     summaryRows: [],
   });
 
-  if (claimantResponse.hasPartAdmittedBeenAccepted?.option) {
+  if (claim.isPartialAdmission() && claimantResponse.hasPartAdmittedBeenAccepted?.option) {
     yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
   }
 
