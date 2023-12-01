@@ -22,6 +22,7 @@ import civilClaimResponseWithWithExpertAndWitness from './mocks/civilClaimRespon
 import noRespondentTelephoneClaimantIntentionMock from './mocks/noRespondentTelephoneClaimantIntentionMock.json';
 import fullAdmitPayBySetDateMock from './mocks/fullAdmitPayBySetDateMock.json';
 import civilClaimResponseDocumentUploadedMock from './mocks/civilClaimResponseDocumentUploadedMock.json';
+import civilClaimResponseDocumentUploadedClaimantMock from './mocks/civilClaimResponseDocumentUploadedClaimantMock.json';
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
 import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
@@ -31,6 +32,14 @@ import {LoggerInstance} from 'winston';
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const mockCivilClaimDefendantCaseProgression = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDefendantMock))),
   del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
@@ -216,6 +225,12 @@ const mockCivilClaimWithFeeType = {
   expireat: jest.fn(() => Promise.resolve({})),
 };
 
+const mockCivilClaimDocumentClaimantUploaded = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDocumentUploadedClaimantMock))),
+  del: jest.fn(() => Promise.resolve({})),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimClaimantIntention,
@@ -243,6 +258,8 @@ export {
   mockResponseFullAdmitPayBySetDate,
   mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
+  mockCivilClaimDefendantCaseProgression,
+  mockCivilClaimDocumentClaimantUploaded,
   civilClaimResponseMock,
   mockCivilClaimHearingFee,
   mockCivilClaimWithFeeType,

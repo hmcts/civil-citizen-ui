@@ -229,6 +229,8 @@ import cancelHearingFeeJourneyController
 import applyHelpWithFeesController from 'routes/features/helpWithFees/helpWithFeesController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import payHearingFeeConfirmationController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
 export default [
   homeController,
   dashboardController,
@@ -439,5 +441,6 @@ export default [
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  payHearingFeeConfirmationController,
   applyHelpWithFeesController,
 ];
