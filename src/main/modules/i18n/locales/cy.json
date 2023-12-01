@@ -1211,6 +1211,13 @@
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of {{ feeAmount }} by {{ responseDeadline }}. If you do not do this, your claim ma be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        }
+      },
       "ORDERS_NOTICE": {
         "TITLE": "Orders and notices from the court",
         "VIEW": "View orders and notices"

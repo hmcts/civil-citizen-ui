@@ -253,3 +253,6 @@ export const HEARING_FEE_APPLY_HELP_FEE_HEARING_FEE = `${BASE_CASE_PROGRESSION_U
 export const APPLY_HELP_WITH_FEES_START = `${APPLY_HELP_WITH_FEES}/start`;
 export const APPLY_HELP_WITH_FEES_REFERENCE = `${APPLY_HELP_WITH_FEES}/reference-number`;
 export const HEARING_FEE_CONFIRMATION_URL = `${PAY_HEARING_FEE_URL}/confirmation`;
+
+export const NOTIFICATION_URL = '/notification';
+

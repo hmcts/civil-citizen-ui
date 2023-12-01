@@ -7,6 +7,7 @@ import {TaskItem} from 'models/taskList/task';
 import {TaskStatus, TaskStatusColor} from 'models/taskList/TaskStatus';
 import {Dashboard} from 'models/caseProgression/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {DashboardContentType} from 'models/dashboardContentType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
@@ -29,7 +30,7 @@ export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Tas
 export const saveDashboard = async (dashboard:TaskList[], claim:Claim, claimId:string) =>{
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-    await saveDashboardToCache(dashboard,caseRole, claimId);
+    await saveDashboardToCache(dashboard,caseRole, DashboardContentType.DASHBOARD,claimId);
   } catch (error) {
     logger.error(error);
     throw error;

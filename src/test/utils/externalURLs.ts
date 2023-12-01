@@ -8,3 +8,5 @@ export const tenancyServiceUrl = 'https://www.gov.uk/tenancy-deposit-protection/
 export const feesHelpUrl = 'https://www.gov.uk/get-help-with-court-fees';
 export const smartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl=/eligibility';
 export const essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies';
+//TODO remove after use the correct one
+export const testUrl = 'https://formfinder.hmctsformfinder.justice.gov.uk/n1-eng.pdf';

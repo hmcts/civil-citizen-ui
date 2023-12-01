@@ -1211,6 +1211,13 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of {{ feeAmount }} by {{ responseDeadline }}. If you do not do this, your claim ma be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        }
+      },
       "ORDERS_NOTICE": {
         "TITLE": "Orders and notices from the court",
         "VIEW": "View orders and notices"

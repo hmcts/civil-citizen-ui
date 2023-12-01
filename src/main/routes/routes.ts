@@ -231,6 +231,8 @@ import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import dashboardNotificationController from 'routes/features/dashboard/dashboardNotificationController';
+
 export default [
   homeController,
   dashboardController,
@@ -443,4 +445,5 @@ export default [
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
   payHearingFeeConfirmationController,
+  dashboardNotificationController,
 ];

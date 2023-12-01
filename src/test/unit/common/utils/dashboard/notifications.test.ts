@@ -1,4 +1,4 @@
-import {Notifications} from 'common/utils/dashboard/notifications';
+import {Notifications} from 'common/utils/dashboard/notification';
 import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
 
 describe('Notifications constructor', () => {

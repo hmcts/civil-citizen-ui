@@ -1,6 +1,6 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 
-export class Notifications {
+export class Notification {
   title: string;
   content: ClaimSummarySection[];
   constructor(title: string, content: ClaimSummarySection[]) {
