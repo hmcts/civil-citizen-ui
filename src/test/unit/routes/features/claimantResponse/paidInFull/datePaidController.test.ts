@@ -2,14 +2,24 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from '../../../../../../main/routes/urls';
+import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { t } from 'i18next';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
+jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+const mockSubmitEvent = civilServiceClient.submitClaimSettled as jest.Mock;
+
+mockSubmitEvent.mockImplementation((eventName, claimId, updatedCcdClaim, req) => {
+  return {eventName: eventName, claimId: claimId, updatedCcdClaim: updatedCcdClaim, req: req};
+});
 describe('Date Paid Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

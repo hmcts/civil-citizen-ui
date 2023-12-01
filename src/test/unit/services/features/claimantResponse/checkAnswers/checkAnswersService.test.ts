@@ -964,8 +964,8 @@ describe('Check Answers service', () => {
       const expectedResult = generateExpectedResultForPartAdmitPayImmediatelyAccept(YesNo.YES);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(7).toEqual(result.sections.length);
       expect(expectedResult).toEqual(result);
+      expect(7).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
