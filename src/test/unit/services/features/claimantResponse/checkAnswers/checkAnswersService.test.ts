@@ -965,14 +965,14 @@ describe('Check Answers service', () => {
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
       const expectedResult = generateExpectedResultForPartAdmitPayImmediatelyReject(YesNo.NO);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
       expect(expectedResult).toEqual(result);
     });
   });
@@ -1042,7 +1042,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse = {hasPartPaymentBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
     });
   });
 });

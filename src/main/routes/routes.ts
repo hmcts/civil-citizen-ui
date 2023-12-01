@@ -221,6 +221,8 @@ import trialArrangementsConfirmationController
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
 import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
+import respondSettlementAgreementConfirmationController
+  from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import applyHelpFeeSelectionController
@@ -439,6 +441,9 @@ export default [
   claimantResponseCheckAnswersController,
   claimFeeController,
   cancelTrialArrangementsController,
+  breathingSpaceLiftedCheckAnswersController,
+  respondSettlementAgreementController,
+  respondSettlementAgreementConfirmationController,
   respondSettlementAgreementController,
   breathingSpaceLiftedCheckAnswersController,
   applyHelpWithFeeController,
