@@ -19,7 +19,6 @@ import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/apply
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
 
-
 async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
   const redisClaimId = generateRedisKey(<AppRequest>req);
   const claim: Claim = await getCaseDataFromStore(redisClaimId);
