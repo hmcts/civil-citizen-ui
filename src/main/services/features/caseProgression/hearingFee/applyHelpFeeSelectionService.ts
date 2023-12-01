@@ -23,10 +23,9 @@ export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: Gener
     paymentRedirectInformation = await civilServiceClient.getHearingFeePaymentRedirectInformation(claimId, req);
     redirectUrl = paymentRedirectInformation?.nextUrl;
   } else {
-    paymentRedirectInformation = undefined;
     redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START);
   }
-  await saveCaseProgression(redisClaimId, paymentInformation, paymentInformation, hearing);
+  await saveCaseProgression(redisClaimId, paymentRedirectInformation, paymentInformation, hearing);
   await saveCaseProgression(redisClaimId, IsApplyHelpFeeModel, hearingFeeHelpSelection);
   return redirectUrl;
 };

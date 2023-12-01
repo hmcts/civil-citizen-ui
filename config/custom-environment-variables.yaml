@@ -31,6 +31,8 @@ services:
     url: OCMC_URL
   pcq:
     url: PCQ_URL
+  govPay:
+    url: GOVPAY_URL
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

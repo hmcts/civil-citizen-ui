@@ -28,6 +28,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
+import {PaymentInformation} from 'models/caseProgression/hearingFee/paymentInformation';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -602,6 +603,37 @@ describe('Civil Service Client', () => {
 
       //Then
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('getHearingFeePaymentRedirectInformation', () => {
+    const claimId = '1';
+    it('should get payment redirect information', async () => {
+      const mockHearingFeePaymentRedirectInfo = {
+        status: 'initiated',
+        nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data: mockHearingFeePaymentRedirectInfo});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getHearingFeePaymentRedirectInformation(claimId, mockedAppRequest);
+
+      //Then
+      expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
+    });
+
+    it('should throw error on get hearing fee redirect information', async () => {
+      //Given
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //Then
+      await expect(civilServiceClient.getHearingFeePaymentRedirectInformation(claimId, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

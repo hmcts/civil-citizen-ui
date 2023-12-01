@@ -5,7 +5,6 @@ import config from 'config';
 import {
   APPLY_HELP_WITH_FEES_START,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
-  HEARING_FEE_PAYMENT_CREATION,
 } from 'routes/urls';
 import {
   mockCivilClaim,
@@ -16,6 +15,7 @@ import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -86,12 +86,17 @@ describe('Apply for help with fees', () => {
 
     it('should redirect to payments if option is NO', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      const mockHearingFeePaymentRedirectInfo = {
+        status: 'initiated',
+        nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      };
+      jest.spyOn(CivilServiceClient.prototype, 'getHearingFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
       await request(app)
         .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(HEARING_FEE_PAYMENT_CREATION);
+          expect(res.header.location).toEqual(mockHearingFeePaymentRedirectInfo.nextUrl);
         });
     });
 
