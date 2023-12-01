@@ -1,5 +1,5 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
-import {Notification} from './notification';
+import {DashboardNotification} from './dashboardNotification';
 
 export class NotificationBuilder {
   _content: ClaimSummarySection[] = [];
@@ -13,7 +13,7 @@ export class NotificationBuilder {
     this._content.push(...items);
     return this;
   }
-  build(): Notification  {
-    return new Notification(this._title, this._content);
+  build(): DashboardNotification  {
+    return new DashboardNotification(this._title, this._content);
   }
 }

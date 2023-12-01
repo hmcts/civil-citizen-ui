@@ -1,7 +1,9 @@
-export class Notifications {
-  items: Notification[];
+import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
 
-  constructor(items: Notification[]) {
+export class Notifications {
+  items: DashboardNotification[];
+
+  constructor(items: DashboardNotification[]) {
     this.items = items;
   }
 }

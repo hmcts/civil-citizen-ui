@@ -4,10 +4,11 @@ import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 import {PAY_HEARING_FEE_URL, NOTIFICATION_URL} from 'routes/urls';
+import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
 
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
 //TODO refactor to add try/catch and call getNotificationFromCache .... getNotificationFromCache
-  const dashboardNotificationsList = [];
+  const dashboardNotificationsList: DashboardNotification[]  = [];
   const defendantName = claim.getDefendantFullName();
   const responseDeadline = claim.formattedResponseDeadline();
   const feeAmount = claim?.claimFee; //TODO get the correct fee
