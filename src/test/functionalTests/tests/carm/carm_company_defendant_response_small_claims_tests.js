@@ -40,6 +40,5 @@ Scenario('LiP Defendant Response with Reject all claim @carm', async () => {
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterTelephoneMediationDetails(claimRef);
 }).tag('@regression');
