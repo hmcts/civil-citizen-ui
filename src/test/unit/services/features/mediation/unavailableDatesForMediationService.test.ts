@@ -1,8 +1,9 @@
 import {getUnavailableDatesMediationForm} from 'services/features/mediation/unavailableDatesForMediationService';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {UnavailableDatePeriodMediation, UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
+import {CURRENT_DAY, CURRENT_DAY_PLUS_1, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
 
-describe('Unavailable DatesFor Mediation Service', () => {
+describe('Unavailable Dates For Mediation Service', () => {
   const NOW = new Date();
 
   it('should return UnavailableDatesMediation when is a single date', async () => {
@@ -11,7 +12,7 @@ describe('Unavailable DatesFor Mediation Service', () => {
       'items': [{
         'type': UnavailableDateType.SINGLE_DATE,
         'single': {
-          'start': {'day': NOW.getDay(), 'month': NOW.getMonth(), 'year': NOW.getFullYear()},
+          'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
         },
       }],
     };
@@ -30,13 +31,12 @@ describe('Unavailable DatesFor Mediation Service', () => {
 
   it('should return UnavailableDatesMediation when is a long period date', async () => {
     //given
-    const DAY_PLUS_1 = NOW.getDay() + 1;
     const mockRequest: Record<string, any[]> = {
       'items': [{
         'type': UnavailableDateType.LONGER_PERIOD,
         'period': {
-          'start': {'day': NOW.getDay(), 'month': NOW.getMonth(), 'year': NOW.getFullYear()},
-          'end': {'day': DAY_PLUS_1, 'month': NOW.getMonth(), 'year': NOW.getFullYear()},
+          'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+          'end': {'day': CURRENT_DAY_PLUS_1, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
         },
       }],
     };
@@ -57,7 +57,7 @@ describe('Unavailable DatesFor Mediation Service', () => {
     const mockRequest: Record<string, any[]> = {
       'items': [{
         'single': {
-          'start': {'day': NOW.getDay(), 'month': NOW.getMonth(), 'year': NOW.getFullYear()},
+          'start': {'day': NOW.getDate(), 'month': NOW.getMonth(), 'year': NOW.getFullYear()},
         },
       }],
     };
