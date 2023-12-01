@@ -131,7 +131,7 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addButtonWithCancelLink(title: string, href: string, startButton?: false, cancelHref?: string) {
+  addButtonWithCancelLink(title: string, href: string, startButton = false, cancelHref?: string) {
     const startButtonSection = ({
       type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
       data: {
