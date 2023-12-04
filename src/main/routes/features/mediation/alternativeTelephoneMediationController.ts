@@ -1,6 +1,6 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
-  MEDIATION_ALTERNATIVE_TELEPHONE_URL,
+  MEDIATION_ALTERNATIVE_PHONE_URL,
   MEDIATION_EMAIL_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -23,7 +23,7 @@ const renderView = (form: GenericForm<AlternativeTelephone>, res: Response, req:
   res.render(alternativeTelephoneMediationViewPath, {form, pageTitle, pageText});
 };
 
-alternativeTelephoneMediationController.get(MEDIATION_ALTERNATIVE_TELEPHONE_URL, (async (req, res, next: NextFunction) => {
+alternativeTelephoneMediationController.get(MEDIATION_ALTERNATIVE_PHONE_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const mediation = await getMediation(redisKey);
@@ -34,7 +34,7 @@ alternativeTelephoneMediationController.get(MEDIATION_ALTERNATIVE_TELEPHONE_URL,
   }
 }) as RequestHandler);
 
-alternativeTelephoneMediationController.post(MEDIATION_ALTERNATIVE_TELEPHONE_URL, (async (req, res, next: NextFunction) => {
+alternativeTelephoneMediationController.post(MEDIATION_ALTERNATIVE_PHONE_URL, (async (req, res, next: NextFunction) => {
   try {
 
     const form = new GenericForm(new AlternativeTelephone(req.body.alternativeTelephone));

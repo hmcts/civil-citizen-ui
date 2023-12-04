@@ -3,7 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  MEDIATION_ALTERNATIVE_TELEPHONE_URL,
+  MEDIATION_ALTERNATIVE_PHONE_URL,
   MEDIATION_EMAIL_CONFIRMATION_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -15,7 +15,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-const CONTROLLER_URL = MEDIATION_ALTERNATIVE_TELEPHONE_URL;
+const CONTROLLER_URL = MEDIATION_ALTERNATIVE_PHONE_URL;
 const TELEPHONE_NUMBER = '01632960001';
 describe('Mediation Email Mediation Confirmation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
