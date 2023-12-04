@@ -351,6 +351,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
       "PAGE_TEXT": "Please provide an alternative email address"
