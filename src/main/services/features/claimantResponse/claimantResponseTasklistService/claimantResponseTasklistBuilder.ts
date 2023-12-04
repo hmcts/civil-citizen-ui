@@ -39,7 +39,6 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
   }
   if (claim.isFullAdmission()) {
-
     const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
     tasks.push(acceptOrRejectRepaymentPlanTask);
 
@@ -59,6 +58,10 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
         const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
         tasks.push(chooseHowFormaliseTask);
+        if (claim.isRequestACCJ()) {
+          const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+          tasks.push(countyCourtJudgmentTask);
+        }
       } else if (isRequestJudgePaymentPlan(claim)) {
         const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
         tasks.push(countyCourtJudgmentTask);
