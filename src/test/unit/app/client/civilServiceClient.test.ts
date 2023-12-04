@@ -29,6 +29,7 @@ import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/caseProgression/hearingFee/paymentInformation';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -605,7 +606,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
-  describe('getHearingFeePaymentRedirectInformation', () => {
+  describe('getFeePaymentRedirectInformation', () => {
     const claimId = '1';
     it('should get payment redirect information', async () => {
       const mockHearingFeePaymentRedirectInfo = {
@@ -618,7 +619,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getHearingFeePaymentRedirectInformation(claimId, mockedAppRequest);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentRedirectInformation(claimId, FeeType.HEARING, mockedAppRequest);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -633,7 +634,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getHearingFeePaymentRedirectInformation(claimId, mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentRedirectInformation(claimId,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

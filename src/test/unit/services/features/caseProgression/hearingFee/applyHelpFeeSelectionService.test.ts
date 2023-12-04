@@ -27,7 +27,7 @@ describe('applyHelpWithFeeSelection', () => {
       status: 'initiated',
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getHearingFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
 

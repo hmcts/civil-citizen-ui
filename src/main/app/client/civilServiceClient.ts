@@ -10,7 +10,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
-  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_FEES_PAYMENT_URL,
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
@@ -376,10 +376,10 @@ export class CivilServiceClient {
       throw err;
     }
   }
-  async getHearingFeePaymentRedirectInformation(claimId: string, req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_HEARING_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);
