@@ -29,6 +29,7 @@ const respondentCompany = {
   type: 'COMPANY',
   companyName: 'Def Test Company',
   primaryAddress: buildAddress('respondent'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const companyWithPartyName = {
   ...respondentCompany,
@@ -39,6 +40,7 @@ const organisation = {
   type: 'ORGANISATION',
   organisationName: 'Test Inc',
   primaryAddress: buildAddress('applicant'),
+  partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
 const organisationWithPartyName = {
   ...organisation,

@@ -15,11 +15,13 @@ class ContactNumberDetailsPage {
       await I.waitForText('Enter a phone number', config.WaitForText);
       await I.click('Save and continue');
       await I.see('Enter telephone number');
+      await I.fillField(fields.contactNumber, '02088908876');
+      await I.click('Save and continue');
     } else {
       await I.waitForText('Enter a phone number (optional)', config.WaitForText);
+      await I.fillField(fields.contactNumber, '02088908876');
+      await I.click(buttons.saveAndContinue);
     }
-    await I.fillField(fields.contactNumber, '02088908876');
-    await I.click(buttons.saveAndContinue);
   }
 }
 
