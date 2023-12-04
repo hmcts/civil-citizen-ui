@@ -236,6 +236,7 @@ import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
 import alternativeEmailAddressMediationController
   from 'routes/features/mediation/alternativeEmailAddressMediationController';
+import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
 export default [
   homeController,
   dashboardController,
@@ -451,4 +452,5 @@ export default [
   telephoneMediationConfirmationController,
   payHearingFeeConfirmationController,
   alternativeEmailAddressMediationController,
+  alternativeTelephoneMediationController,
 ];

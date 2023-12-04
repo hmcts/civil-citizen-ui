@@ -351,6 +351,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
       "PAGE_TEXT": "Please provide an alternative email address"
@@ -657,7 +661,7 @@
       "TITLE": "Enter your date of birth"
     },
     "CITIZEN_PHONE": {
-      "EXAMPLE": "Use numbers only, for example, 01632960001.",
+      "EXAMPLE": "yes",
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
