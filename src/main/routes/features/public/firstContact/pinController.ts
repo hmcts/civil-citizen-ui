@@ -41,15 +41,19 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
-      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(claim.id, claim, true);
-      cookie.claimId = claim.id;
-
-      const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
-      cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
-
-      res.cookie('firstContact', cookie);
-      res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+      const pin = pinForm.model.pin;
+      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+      if (pin.length === 8) {
+        const ocmcBaseUrl = config.get<string>('services.cmc.url');
+        res.redirect(ocmcBaseUrl  + '/first-contact/claim-summary' + '?_csrf' + req.csrfToken());
+      } else {
+        await saveDraftClaim(claim.id, claim, true);
+        cookie.claimId = claim.id;
+        const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+        cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
+        res.cookie('firstContact', cookie);
+        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+      }
     }
   } catch (error) {
     const status = error.message;
