@@ -42,10 +42,13 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
+      console.log('Calling Verify Pin..');
       const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+      console.log('Pin Verifyed..');
       if (pin.length === 8) {
+        console.log('Its OCMC claim');
         const ocmcBaseUrl = config.get<string>('services.cmc.url');
-        res.redirect(ocmcBaseUrl  + '/first-contact/claim-summary' + '?_csrf' + req.csrfToken());
+        res.redirect(ocmcBaseUrl  + '/receiver' + '?_csrf' + req.csrfToken());
       } else {
         await saveDraftClaim(claim.id, claim, true);
         cookie.claimId = claim.id;
