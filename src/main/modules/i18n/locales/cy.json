@@ -705,18 +705,18 @@
       "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
       "CHECK_AND_SUBMIT": "Check and submit your claim",
-      "CLAIM_AMOUNT": "Claim amount",
-      "CLAIM_DETAILS": "Claim details",
-      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "CLAIM_AMOUNT": "Hawlio swm",
+      "CLAIM_DETAILS": "Manylion yr hawliad",
+      "COMPLETED_SECTIONS": "Rydych wedi  cwblhau {{ completed }} o {{ total }} adran",
       "COMPLETING_CLAIM": "Completing your claim",
       "CONSIDER_OPTIONS": "Consider other options",
       "PAGE_TITLE": "Make a money claim",
       "PAY_FEE": "Pay your claim fee",
       "PREPARE_CLAIM": "Prepare your claim",
       "RESOLVING_DISPUTE": "Resolving this dispute",
-      "SUBMIT": "Submit",
-      "THEIR_DETAILS": "Their details",
-      "YOUR_DETAILS": "Your details"
+      "SUBMIT": "Cyflwyno",
+      "THEIR_DETAILS": "Ei fanylion",
+      "YOUR_DETAILS": "Eich manylion"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -819,14 +819,14 @@
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Dogfennau’r hawliad",
-      "CLAIMANT": "Claimant ",
+      "CLAIMANT": "Hawlydd ",
       "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "CLAIMANT_RESPONSE": "Ymateb y Hawlydd",
       "DATE_DOCUMENT_UPLOADED": "Date uploaded ",
       "DAYS_REMAINING": " diwrnod sy`n weddill",
       "DEADLINE_AT": "{{responseDeadline}} am 4pm",
-      "DEFENDANT": "Defendant ",
+      "DEFENDANT": "Diffynnydd ",
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Dogfennau",
@@ -855,11 +855,11 @@
       "PAGE_TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start?",
+      "WHEN_DID_IT_START": "Pryd ddechreuodd o?",
       "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        "WHAT_TYPE_IS_IT": "Pa fath ydy o?",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Moratoriwm argyfwng iechyd meddwl",
+        "STANDARD_BREATHING_SPACE": "Lle i anadlu safonol"
       },
       "EXPECTED_END_DATE": "Expected end date"
     },
@@ -998,8 +998,8 @@
     },
     "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
       "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
+      "PAGE_TITLE": "Pryd ddechreuodd o?",
+      "TITLE": "Pryd ddechreuodd o?"
     },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
@@ -2941,7 +2941,7 @@
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
-    "CLAIM_DETAILS": "Claim details",
+    "CLAIM_DETAILS": "Manylion yr hawliad",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
