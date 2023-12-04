@@ -11,9 +11,7 @@ makePaymentAgainController.get(HEARING_FEE_MAKE_PAYMENT_AGAIN, (async (req:any, 
   try {
     const claimId = req.params.id;
     const redirectUrl = await getRedirectUrl(claimId, req);
-    console.log(redirectUrl);
-    //res.redirect(redirectUrl);
-
+    res.redirect(redirectUrl);
   }catch (error) {
     next(error);
   }

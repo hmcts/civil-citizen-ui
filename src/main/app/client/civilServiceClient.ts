@@ -34,7 +34,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
-import {PaymentInformation} from 'models/caseProgression/hearingFee/paymentInformation';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');

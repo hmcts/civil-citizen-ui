@@ -28,7 +28,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
-import {PaymentInformation} from 'models/caseProgression/hearingFee/paymentInformation';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
 jest.mock('axios');
