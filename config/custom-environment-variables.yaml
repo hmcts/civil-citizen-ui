@@ -8,6 +8,7 @@ services:
     callbackURL: OAUTH_CLIENT_REDIRECT
     terminateSessionURL: IDAM_END_SESSION_URL
     signOutCallBackURL: IDAM_SIGN_OUT_REDIRECT_URL
+    idamPinUrl: IDAM_API_PIN_URL
   draftStore:
     redis:
       host: REDIS_HOST

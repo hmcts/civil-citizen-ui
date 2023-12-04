@@ -38,17 +38,17 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     const pin = req.body.pin;
     const pinForm = new GenericForm(new PinType(pin));
     await pinForm.validate();
+    const claimReferenceNumber = cookie.claimReference;
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
       console.log('Calling Verify Pin..');
-      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
       console.log('Pin Verifyed..');
       if (pin.length === 8) {
         console.log('Its OCMC claim');
-        const ocmcBaseUrl = config.get<string>('services.cmc.url');
-        res.redirect(ocmcBaseUrl  + '/receiver' + '?_csrf' + req.csrfToken());
+        res.redirect(verifyPin(claimReferenceNumber));
       } else {
         await saveDraftClaim(claim.id, claim, true);
         cookie.claimId = claim.id;
@@ -71,5 +71,14 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     }
   }
 });
+
+function verifyPin(claimReferenceNumber: string): string {
+  const redirectUri =  config.get<string>('services.cmc.url') + '/receiver';
+  const loginPath =  config.get<string>('services.idam.idamPinUrl');
+  const clientId = 'cmc_citizen';
+
+  return `${loginPath}?response_type=code&state=${claimReferenceNumber}&client_id=${clientId}&redirect_uri=${redirectUri}`;
+
+}
 
 export default pinController;
