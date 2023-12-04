@@ -9,8 +9,6 @@ import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as makePaymentAgainService from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
 
-
-
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 describe('Hearing Fees - Make Payment Again', () => {

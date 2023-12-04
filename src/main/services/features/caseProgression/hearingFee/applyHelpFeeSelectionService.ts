@@ -8,7 +8,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
-
 const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 const hearingFeeHelpSelection = 'hearingFeeHelpSelection';
