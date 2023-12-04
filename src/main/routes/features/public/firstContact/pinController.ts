@@ -43,13 +43,11 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
-      console.log('Calling Verify Pin..');
-      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
-      console.log('Pin Verifyed..');
       if (pin.length === 8) {
         console.log('Its OCMC claim');
         res.redirect(verifyPin(claimReferenceNumber));
       } else {
+        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
         await saveDraftClaim(claim.id, claim, true);
         cookie.claimId = claim.id;
         const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
