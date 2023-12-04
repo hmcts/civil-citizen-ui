@@ -661,7 +661,7 @@
       "TITLE": "Enter your date of birth"
     },
     "CITIZEN_PHONE": {
-      "EXAMPLE": "yes",
+      "EXAMPLE": "Use numbers only, for example, 01632960001.",
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
