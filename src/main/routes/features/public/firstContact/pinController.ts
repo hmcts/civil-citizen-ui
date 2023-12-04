@@ -72,7 +72,10 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
 
 function verifyPin(claimReferenceNumber: string): string {
   const redirectUri =  config.get<string>('services.cmc.url') + '/receiver';
-  const loginPath =  config.get<string>('services.idam.idamPinUrl');
+  console.log('RedirectUrl : ', redirectUri);
+  //const loginPath =  config.get<string>('services.idam.idamPinUrl');
+  const loginPath = 'https://idam-api.aat.platform.hmcts.net/pin';
+  console.log('RedirectUrl : ', loginPath);
   const clientId = 'cmc_citizen';
 
   return `${loginPath}?response_type=code&state=${claimReferenceNumber}&client_id=${clientId}&redirect_uri=${redirectUri}`;
