@@ -1,0 +1,67 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/unavailable-date-row.njk" import unavailableDateRow %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+{{ setPageTitle(t(pageTitle)) }}
+{% endblock %}
+
+{% set rowNumberToShowRemoveButton = 2 %}
+{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
+{% set itemsErrors = form.errorFor('items') %}
+
+{% block content %}
+
+{% if form.hasErrors() %}
+{{ errorSummary(form.getAllErrors(), t) }}
+{% endif %}
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+        <div class="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">{{ pageText }}</h1>
+                </legend>
+
+                <div id="hint" class="govuk-hint">
+                    {{pageHint.text1}}
+                </div>
+
+                <div id="hint" class="govuk-hint">
+                    {{pageHint.text2}}
+                </div>
+
+                <form method="post" novalidate>
+                    {{ csrfProtection(csrf) }}
+
+                    {% for unavailableDate in form.model.items %}
+                    {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, pageHintText) }}
+                    {% else %}
+                    {{ unavailableDateRow(unavailableDate, 0, form.errorFor, t, {hidden:true}, today, pageHintText) }}
+                    {% endfor %}
+
+                    <div class="govuk-!-margin-top-6">
+                        {{ govukButton({
+                                           text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.ADD_ANOTHER_DATE'),
+                            classes: "govuk-button--secondary append-row"
+                        }) }}
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                                           text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                        }) }}
+                    </div>
+                </form>
+
+                {{ contactUsForHelp(t) }}
+            </div>
+        </div>
+    </main>
+</div>
+
+{% endblock %}
