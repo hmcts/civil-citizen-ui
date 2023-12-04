@@ -1,7 +1,7 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   MEDIATION_ALTERNATIVE_TELEPHONE_URL,
-  MEDIATION_DATES_CONFIRMATION_URL,
+  MEDIATION_EMAIL_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
@@ -45,7 +45,7 @@ alternativeTelephoneMediationController.post(MEDIATION_ALTERNATIVE_TELEPHONE_URL
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
       await saveMediation(redisKey, form.model, MEDIATION_PROPERTY_NAME);
-      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_DATES_CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
