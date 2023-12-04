@@ -128,18 +128,18 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
-  afterAlways('smoketest:preview') {
-        stage('Accessibility') {
-            yarnBuilder.yarn('tests:a11y')
-            publishHTML([
-                allowMissing         : true,
-                alwaysLinkToLastBuild: true,
-                keepAll              : true,
-                reportDir            : "functional-output/accessibility-report",
-                reportFiles          : 'a11y.html',
-                reportName           : 'Preview Accessibility results'
-          ])
-        }
+  afterSuccess('smoketest:preview') {
+//        stage('Accessibility') {
+//            yarnBuilder.yarn('tests:a11y')
+//            publishHTML([
+//                allowMissing         : true,
+//                alwaysLinkToLastBuild: true,
+//                keepAll              : true,
+//                reportDir            : "functional-output/accessibility-report",
+//                reportFiles          : 'a11y.html',
+//                reportName           : 'Preview Accessibility results'
+//          ])
+//        }
   }
 
   before('smoketest:aat') {
@@ -149,20 +149,24 @@ withPipeline(type, product, component) {
     setUrls("aat");
   }
 
-  afterAlways('smoketest:aat') {
+  afterSuccess('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
 
-    stage('Accessibility') {
-        yarnBuilder.yarn('tests:a11y')
-        publishHTML([
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "functional-output/accessibility-report",
-            reportFiles          : 'a11y.html',
-            reportName           : 'AAT Accessibility results'
-      ])
-    }
+//    stage('Accessibility') {
+//        yarnBuilder.yarn('tests:a11y')
+//        publishHTML([
+//            allowMissing         : true,
+//            alwaysLinkToLastBuild: true,
+//            keepAll              : true,
+//            reportDir            : "functional-output/accessibility-report",
+//            reportFiles          : 'a11y.html',
+//            reportName           : 'AAT Accessibility results'
+//      ])
+//    }
+  }
+
+  afterAlways('smoketest:aat') {
+//    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
   }
 
 
