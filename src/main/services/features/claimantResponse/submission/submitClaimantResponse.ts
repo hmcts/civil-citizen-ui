@@ -6,7 +6,7 @@ import {Claim} from 'models/claim';
 import {translateClaimantResponseDJToCCD} from 'services/translation/claimantResponse/ccdTranslation';
 import {YesNo} from 'form/models/yesNo';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
-import { translateClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import { translateClaimantResponseRequestJudgementByAdmissionToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -21,7 +21,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     setRespondentDateOfBirth(claim);
     const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
     if (claim.isClaimantIntentionPending()) {
-      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFee);
+      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionToCCD(claim, claimFee);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
     const ccdResponse = translateClaimantResponseDJToCCD(claim);

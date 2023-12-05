@@ -17,4 +17,8 @@ export class CcjPaymentOption {
     return this.type === PaymentOptionType.INSTALMENTS;
   }
 
+  isCcjPaymentOptionImmediately() {
+    return this.type === PaymentOptionType.IMMEDIATELY;
+  }
+
 }

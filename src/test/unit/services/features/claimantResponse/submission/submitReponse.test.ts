@@ -83,7 +83,7 @@ describe('Submit claimant to ccd', ()=>{
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       return claim;
     });
-    const spyOnTranslation = jest.spyOn(ccdTranslationForRequestJudement, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+    const spyOnTranslation = jest.spyOn(ccdTranslationForRequestJudement, 'translateClaimantResponseRequestJudgementByAdmissionToCCD');
     //When
     await submitClaimantResponse(mockedAppRequest);
     //Then

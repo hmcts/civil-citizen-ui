@@ -2,7 +2,7 @@ import { CaseState } from 'common/form/models/claimDetails';
 import { YesNo } from 'common/form/models/yesNo';
 import { Claim } from 'common/models/claim';
 import { ClaimantResponse } from 'common/models/claimantResponse';
-import { translateClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import { translateClaimantResponseRequestJudgementByAdmissionToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 describe('Translate claimant ccd request  to ccd version', () => {
   let claim: Claim;
@@ -19,7 +19,7 @@ describe('Translate claimant ccd request  to ccd version', () => {
         amount: 50,
       },
     };
-    const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
+    const ccdResponse = translateClaimantResponseRequestJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
@@ -34,7 +34,7 @@ describe('Translate claimant ccd request  to ccd version', () => {
         amount: 0,
       },
     };
-    const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
+    const ccdResponse = translateClaimantResponseRequestJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
