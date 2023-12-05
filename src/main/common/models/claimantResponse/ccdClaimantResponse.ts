@@ -9,7 +9,6 @@ import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
-import { RepaymentDecisionType } from './RepaymentDecisionType';
 import { CCDClaimantPayBySetDate } from '../ccdResponse/ccdPayBySetDate';
 import { CCDRepaymentPlanFrequency } from '../ccdResponse/ccdRepaymentPlan';
 
