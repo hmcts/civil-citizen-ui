@@ -19,6 +19,8 @@ const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const IdamServiceApiBaseUrl = 'https://idam-api.aat.platform.hmcts.net';
+const idamClient: CivilServiceClient = new CivilServiceClient(IdamServiceApiBaseUrl);
 
 function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response): void {
   const form = Object.assign(pinForm);
@@ -44,10 +46,12 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     } else {
       const pin = pinForm.model.pin;
       if (pin.length === 8) {
+        const redirectUri =  config.get<string>('services.cmc.url') + '/receiver';
         console.log('Its OCMC claim');
-        res.header( 'pin', pin );
-        res.header('accept', 'application/json');
-        res.redirect(verifyPin(claimReferenceNumber));
+        const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
+        console.log('**** Header ********');
+        console.debug('Headres: ', response.headers);
+        res.redirect(response.headers['Location']);
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
         await saveDraftClaim(claim.id, claim, true);
@@ -72,7 +76,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
   }
 });
 
-function verifyPin(claimReferenceNumber: string): string {
+/*function verifyPin(claimReferenceNumber: string): string {
   const redirectUri =  config.get<string>('services.cmc.url') + '/receiver';
   console.log('RedirectUrl : ', redirectUri);
   //const loginPath =  config.get<string>('services.idam.idamPinUrl');
@@ -82,6 +86,6 @@ function verifyPin(claimReferenceNumber: string): string {
 
   return `${loginPath}?response_type=code&state=${claimReferenceNumber}&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
-}
+}*/
 
 export default pinController;

@@ -13,7 +13,7 @@ import {
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
-  CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_VALIDATE_PIN_URL, IDAM_LOGIN_WITH_PIN,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -182,6 +182,23 @@ export class CivilServiceClient {
     }
   }
 
+  async loginWithPin(req: AppRequest, pin: string, caseReference: string, redirectUri: string): Promise<AxiosResponse> {
+    try {
+      const response:AxiosResponse<object> = await this.client.post(IDAM_LOGIN_WITH_PIN //nosonar
+        .replace('state', caseReference)
+        .replace('redirect_uri', redirectUri)
+        .replace('client_id', 'cmc_citizen'), {headers: {'Content-Type': 'application/json', 'pin': pin}});// nosonar
+      if (!response.data) {
+        return null;
+      }
+      return response;
+
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
     try {
       const formData = new FormData();
@@ -268,7 +285,7 @@ export class CivilServiceClient {
   async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
-  
+
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }
