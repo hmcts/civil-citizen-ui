@@ -163,7 +163,6 @@ export class CivilServiceClient {
     } catch (err: unknown) {
       logger.error(err);
       throw err;
-      
     }
   }
 
