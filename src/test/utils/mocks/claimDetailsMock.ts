@@ -7,9 +7,9 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
   CLAIM_INTEREST_RATE_URL,
-} from '../../../main/routes/urls';
-import {SummarySections} from '../../../main/common/models/summaryList/summarySections';
-import {constructResponseUrlWithIdParams} from '../../../main/common/utils/urlFormatter';
+} from 'routes/urls';
+import {SummarySections} from 'models/summaryList/summarySections';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
@@ -372,31 +372,5 @@ export function claimAmountParticularDate(): SummarySections {
         },
       },
     ],
-  };
-}
-
-export function createClaimWithYourDetails(): SummarySections {
-  return {
-    sections: [{
-      title: 'Your details',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'Full name',
-            },
-            value: {
-              text: PARTY_NAME,
-            },
-            actions: {
-              items: [{
-                href: CLAIM_DETAILS_URL,
-                text: 'Change',
-              }],
-            },
-          },
-        ],
-      },
-    }],
   };
 }

@@ -6,7 +6,6 @@ const PropertiesVolume = {
   enableFor: (server) => {
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
-
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.draft-store-access-key', 'services.draftStore.redis.key');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');

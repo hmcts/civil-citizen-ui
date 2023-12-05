@@ -13,6 +13,8 @@ import {
   getOtherWitnessDetailsForm,
   getOtherWitnesses,
 } from '../../../../services/features/directionsQuestionnaire/otherWitnessesService';
+import {generateRedisKey,getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const otherWitnessesController = Router();
 const otherWitnessesViewPath = 'features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses';
@@ -23,10 +25,11 @@ function renderView(form: GenericForm<OtherWitnesses>, res: Response): void {
   res.render(otherWitnessesViewPath, {form});
 }
 
-otherWitnessesController.get(DQ_DEFENDANT_WITNESSES_URL, async (req, res, next: NextFunction) => {
+otherWitnessesController.get(DQ_DEFENDANT_WITNESSES_URL, async (req: AppRequest, res, next: NextFunction) => {
   try {
+    const claim = await getCaseDataFromStore(generateRedisKey(req));
     const form = new GenericForm(await getOtherWitnesses(req));
-    res.render(otherWitnessesViewPath, {form});
+    res.render(otherWitnessesViewPath, {form, isDefendant: claim.isDefendantNotResponded() });
   } catch (error) {
     next(error);
   }
@@ -40,7 +43,7 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveDirectionQuestionnaire(req.params.id, form.model, dqPropertyName, dqParentName);
+        await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
       }
     } catch (error) {

@@ -1,9 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {
-  UploadDocuments,
-  UploadDocumentTypes,
-} from 'models/caseProgression/uploadDocumentsType';
-import {ClaimantOrDefendant} from 'models/partyType';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
 import {
@@ -17,18 +13,24 @@ import {
   FileOnlySection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-  WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+  WitnessSection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {CaseDocument} from 'models/document/caseDocument';
+import {Claim} from 'models/claim';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-export const getDocuments = async (claimId: string,claimantOrDefendant: ClaimantOrDefendant): Promise<UploadDocuments> => {
+export const getDocuments = async (claimId: string): Promise<UploadDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.caseProgression?.defendantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.DEFENDANT) {
+    if (caseData?.caseProgression?.defendantUploadDocuments && !caseData.isClaimant()) {
       return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
-    else if (caseData?.caseProgression?.claimantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.CLAIMANT) {
+    else if (caseData?.caseProgression?.claimantUploadDocuments && caseData.isClaimant()) {
       return caseData?.caseProgression?.claimantUploadDocuments ? caseData?.caseProgression.claimantUploadDocuments : new UploadDocuments();
     }
   } catch (error) {
@@ -43,6 +45,20 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if (!claim.caseProgression) {
       claim.caseProgression = new CaseProgression();
     }
+
+    if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
+    {
+      claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    }
+
+    if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
+    {
+      if (!claim.caseProgression.hearingFeeHelpSelection) {
+        claim.caseProgression.hearingFeeHelpSelection = new GenericYesNo();
+      }
+      claim.feeTypeHelpRequested = FeeType.HEARING;
+    }
+
     if (claim?.caseProgression) {
       if (parentPropertyName && claim.caseProgression[parentPropertyName]) {
         claim.caseProgression[parentPropertyName][caseProgressionPropertyName] = value;
@@ -64,6 +80,48 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
   } catch (error) {
     logger.error(error);
     throw error;
+  }
+};
+
+export const deleteUntickedDocumentsFromStore = async (claimId: string, isClaimant: boolean) => {
+  const claim: Claim = await getCaseDataFromStore(claimId);
+  let documentsTicked: UploadDocuments;
+  let documentsSaved: UploadDocumentsUserForm;
+  let propertyName: string;
+  const documentsToSave: UploadDocumentsUserForm = new UploadDocumentsUserForm();
+
+  if(!isClaimant){
+    documentsTicked = claim.caseProgression.defendantUploadDocuments;
+    documentsSaved = claim.caseProgression.defendantDocuments;
+    propertyName = 'defendantDocuments';
+  } else {
+    documentsTicked = claim.caseProgression.claimantUploadDocuments;
+    documentsSaved = claim.caseProgression.claimantDocuments;
+    propertyName = 'claimantDocuments';
+  }
+
+  if(documentsSaved)
+  {
+    documentsToSave.documentsForDisclosure = documentsTicked.disclosure[0].selected ? documentsSaved.documentsForDisclosure : [];
+    documentsToSave.disclosureList = documentsTicked.disclosure[1].selected ? documentsSaved.disclosureList : [];
+
+    documentsToSave.witnessStatement = documentsTicked.witness[0].selected ? documentsSaved.witnessStatement : [];
+    documentsToSave.witnessSummary = documentsTicked.witness[1].selected ? documentsSaved.witnessSummary : [];
+    documentsToSave.noticeOfIntention = documentsTicked.witness[2].selected ? documentsSaved.noticeOfIntention : [];
+    documentsToSave.documentsReferred = documentsTicked.witness[3].selected ? documentsSaved.documentsReferred : [];
+
+    documentsToSave.expertReport = documentsTicked.expert[0].selected ? documentsSaved.expertReport : [];
+    documentsToSave.expertStatement = documentsTicked.expert[1].selected ? documentsSaved.expertStatement : [];
+    documentsToSave.questionsForExperts = documentsTicked.expert[2].selected ? documentsSaved.questionsForExperts : [];
+    documentsToSave.answersForExperts = documentsTicked.expert[3].selected ? documentsSaved.answersForExperts : [];
+
+    documentsToSave.trialCaseSummary = documentsTicked.trial[0].selected ? documentsSaved.trialCaseSummary : [];
+    documentsToSave.trialSkeletonArgument = documentsTicked.trial[1].selected ? documentsSaved.trialSkeletonArgument : [];
+    documentsToSave.trialAuthorities = documentsTicked.trial[2].selected ? documentsSaved.trialAuthorities : [];
+    documentsToSave.trialCosts = documentsTicked.trial[3].selected ? documentsSaved.trialCosts : [];
+    documentsToSave.trialDocumentary = documentsTicked.trial[4].selected ? documentsSaved.trialDocumentary : [];
+
+    await saveCaseProgression(claim.id, documentsToSave, propertyName);
   }
 };
 
@@ -156,38 +214,43 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
+const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  //TODO we should get the file from dm-store
-  formObj.fileUpload = request['fileUpload'];
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
-  const formObj: WitnessSection = new WitnessSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.witnessName = request['witnessName'].trim();
-  //TODO we should get the file from dm-store
-  formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
 const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
-  const formObj: ExpertSection = new ExpertSection(request['dateDay'], request['dateMonth'], request['dateYear']);
+  const formObj: ExpertSection = new ExpertSection(request['dateInputFields']?.dateDay, request['dateInputFields']?.dateMonth, request['dateInputFields']?.dateYear);
   formObj.expertName = request['expertName'] != null ? request['expertName'].trim() : null;
   formObj.multipleExpertsName = request['multipleExpertsName'] != null ? request['multipleExpertsName'].trim() : null;
   formObj.fieldOfExpertise = request['fieldOfExpertise'] != null ? request['fieldOfExpertise'].trim() : null;
   formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
   formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
   formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-  //TODO we should get the file from dm-store
-  formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  //TODO we should get the file from dm-store
-  formObj.fileUpload = request['fileUpload'];
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
   return formObj;
 };

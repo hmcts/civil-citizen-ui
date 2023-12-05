@@ -3,14 +3,25 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {
+  CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getRedisStoreForSession: jest.fn(),
+}));
+
+const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
+getCalculatedDecision.mockImplementation(() => {
+  return CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL;
+});
 
 describe('Claimant suggested Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -114,7 +125,7 @@ describe('Claimant suggested Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIMANT_RESPONSE_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL}`);
         });
     });
   });

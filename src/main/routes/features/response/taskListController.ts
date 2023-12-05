@@ -19,7 +19,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
   try {
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getClaimById(currentClaimId, req);
+    const caseData: Claim = await getClaimById(currentClaimId, req, true);
     await setResponseDeadline(caseData, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
@@ -29,7 +29,8 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const description = getDescription(taskLists, lang);
     const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);
     const responseDetailsUrl = caseData.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', currentClaimId).replace(':documentType', DocumentUri.DEFENDANT_DEFENCE) : undefined;
-    res.render(taskListViewPath, {taskLists, title, description, claim: caseData, claimDetailsUrl, responseDetailsUrl});
+    const responseDeadline = caseData.formattedResponseDeadline(lang);
+    res.render(taskListViewPath, {taskLists, title, description, claim: caseData, claimDetailsUrl, responseDetailsUrl, responseDeadline});
   } catch (error) {
     next(error);
   }

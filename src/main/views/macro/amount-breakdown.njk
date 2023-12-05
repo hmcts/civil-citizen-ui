@@ -1,7 +1,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "./interest-snippet.njk" import interestSnippet %}
 
-{% macro amountBreakdownTable(claim, interestData, totalAmount) %}
+{% macro amountBreakdownTable(claim, interestData, totalAmount, t) %}
 <table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
@@ -34,7 +34,7 @@
    {% endif %}
     <tr class="govuk-table__row">
       <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FEE') }}</td>
-      {% if claim.claimFee.calculatedAmountInPence !== 0 %}
+      {% if claim.claimFee.calculatedAmountInPence !== undefined %}
         <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
       {% else %}
         <td class="govuk-table__cell govuk-!-text-align-right">£0</td>

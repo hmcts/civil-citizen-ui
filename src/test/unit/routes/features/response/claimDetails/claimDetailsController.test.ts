@@ -16,10 +16,13 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
+import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
@@ -40,6 +43,7 @@ describe('Claim details page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   beforeEach(() => {
@@ -47,7 +51,7 @@ describe('Claim details page', () => {
   });
 
   describe('on Get', () => {
-    it('should return your claim details page with default values', async () => {
+    it('should return 500 if the case is not found in ccd and redis', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(400);
@@ -55,14 +59,17 @@ describe('Claim details page', () => {
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.CLAIM_NUMBER);
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
-      nock('http://localhost:4000')
+      nock(civilServiceUrl)
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + 1111 + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)

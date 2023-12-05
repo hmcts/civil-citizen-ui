@@ -9,6 +9,9 @@ import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
+import {YesNo} from 'common/form/models/yesNo';
+import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
 
 const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
   return {
@@ -143,6 +146,12 @@ describe('translate cui fields to CCD model', () => {
     claim.evidence = {
       comment: 'Evidence commet',
       evidenceItem: [],
+    };
+    claim.claimDetails = <ClaimDetails>{
+      helpWithFees: <HelpWithFees>{
+        option: YesNo.YES,
+        referenceNumber: '12345',
+      },
     };
 
     // When

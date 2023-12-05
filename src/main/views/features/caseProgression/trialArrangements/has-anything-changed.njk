@@ -7,23 +7,26 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% set yesHtml %}
-  <div class="govuk-form-group {%- if form.errorFor('textArea') %} govuk-form-group--error {% endif %}">
-    <h1 class="govuk-label-wrapper">
-      <label class="govuk-heading-m" for="textArea">
-        {{ t('PAGES.HAS_ANYTHING_CHANGED.WHAT_SUPPORT') }}
-      </label>
-    </h1>
-    <div id="textArea-hint" class="govuk-hint">
-      {{ t('PAGES.HAS_ANYTHING_CHANGED.FOR_EXAMPLE') }}
-    </div>
-    <p id="textArea-error" class="govuk-error-message">
-      <span class="govuk-visually-hidden">Error:</span>
-      {{ t(form.errorFor('textArea')) }}
-    </p>
-    <textarea class="govuk-textarea {%- if form.errorFor('textArea') %} govuk-textarea--error {% endif %}" id="textArea" name="textArea" rows="5" aria-describedby="textArea-hint textArea-error"></textarea>
-  </div>
+ {{ govukTextarea({
+                name: "textArea",
+                id: "textArea",
+                label: {
+                  classes: "govuk-label--l",
+                  text: t('PAGES.HAS_ANYTHING_CHANGED.WHAT_SUPPORT')
+                },
+                hint: {
+                  text: t('PAGES.HAS_ANYTHING_CHANGED.FOR_EXAMPLE')
+                },
+                value: form.model.textArea,
+                rows:"5",
+                errorMessage: {
+                  html: t(form.errorFor("textArea"))
+                } if form.hasFieldError("textArea")
+              }) }}
+
 {% endset -%}
 
 {% block pageTitle %}
@@ -33,7 +36,7 @@
 {% block content %}
   {{ govukBackLink({
     text: t('COMMON.BUTTONS.BACK'),
-    href: latestUpdatesUrl,
+    href: isCaseReadyUrl,
     classes: 'govuk-!-margin-top-0'
   }) }}
   <div class="govuk-width-container">
@@ -57,7 +60,7 @@
               {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE')
               }) }}
-              <a href={{ latestUpdatesUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
           {{ contactUsForHelp(t) }}

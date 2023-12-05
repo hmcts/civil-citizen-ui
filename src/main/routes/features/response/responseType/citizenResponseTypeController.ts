@@ -13,6 +13,8 @@ import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreSe
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {saveResponseType} from '../../../../services/features/response/responseType/citizenResponseTypeService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = Router();
@@ -24,11 +26,12 @@ function renderView(form: GenericForm<CitizenResponseType>, res: Response, compo
 citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
-    const claim = await getCaseDataFromStore(req.params.id);
+    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     if (claim.respondent1?.responseType) {
       citizenResponseType.model.responseType = claim.respondent1.responseType;
     }
-    const componentDetailItemsList = getDetailItemsList(claim);
+    const componentDetailItemsList = getDetailItemsList(claim, lang);
     renderView(citizenResponseType, res, componentDetailItemsList);
   } catch (error) {
     next(error);
@@ -43,7 +46,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
       if (formResponseType.hasErrors()) {
         renderView(formResponseType, res);
       } else {
-        await saveResponseType(req.params.id, formResponseType.model.responseType);
+        await saveResponseType(generateRedisKey(<AppRequest>req), formResponseType.model.responseType);
         switch (formResponseType.model.responseType) {
           case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
@@ -63,12 +66,12 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
     }
   });
 
-function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
+function getDetailItemsList(claim: Claim, lng?: string): ComponentDetailItems[] {
   return [
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_ALL',
       content: ['PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_ALL_DEADLINE'],
-      formattedValues: [claim.formattedResponseDeadline()],
+      formattedValues: [claim.formattedResponseDeadline(lng)],
     },
     {
       subtitle: 'PAGES.CITIZEN_RESPONSE_TYPE.PAY_IMMEDIATELY',
@@ -89,7 +92,7 @@ function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_PART',
       content: ['PAGES.CITIZEN_RESPONSE_TYPE.PART_ADMIT_DEADLINE'],
-      formattedValues: [claim.formattedResponseDeadline()],
+      formattedValues: [claim.formattedResponseDeadline(lng)],
     },
     {
       subtitle: 'PAGES.CITIZEN_RESPONSE_TYPE.PAY_IMMEDIATELY',
@@ -113,7 +116,7 @@ function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
         'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_PAID',
         'PAGES.CITIZEN_RESPONSE_TYPE.IF_PROCEED',
       ],
-      formattedValues: [claim.formattedResponseDeadline()],
+      formattedValues: [claim.formattedResponseDeadline(lng)],
     },
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.HEARING_CENTRE',

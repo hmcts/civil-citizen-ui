@@ -3,19 +3,19 @@ import {Response, Router} from 'express';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
-import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
-import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
-import { DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
-  claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
+  claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string | unknown): void {
+
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
     claimDraftSaved,
@@ -24,7 +24,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentClaimant,
     paginationArgumentDefendant,
     lang,
-    newOcmcClaimUrl: `${ocmcBaseUrl}/eligibility`,
+    newOcmcClaimUrl: draftClaimUrl,
   });
 }
 
@@ -35,13 +35,19 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   const appRequest = <AppRequest> req;
   const user: UserDetails = appRequest.session.user;
   try{
-    const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
+    const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
-    const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.page as string, lang);
-    const claimDraftSaved = await getOcmcDraftClaims(user?.accessToken);
+    const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
+    const defendantPage = req.query?.defendantPage ? 'defendantPage=' + req.query?.defendantPage : '';
+    const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
+
     const responseDraftSaved = false;
-    const paginationArgumentClaimant: object = {};
-    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
+    const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
+    const draftClaimUrl = draftClaimData?.claimCreationUrl;
+
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
   }

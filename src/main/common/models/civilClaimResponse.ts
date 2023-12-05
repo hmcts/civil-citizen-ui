@@ -1,17 +1,22 @@
 import {StatementOfTruth} from './claim';
-import {CaseState, ClaimAmountBreakup, ClaimFee, InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetails';
+import {
+  CaseState,
+  CCDHelpWithFees,
+  ClaimAmountBreakup,
+  InterestClaimFromType,
+  InterestEndDateType,
+} from 'form/models/claimDetails';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {PartialAdmission} from 'models/partialAdmission';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Mediation} from 'models/mediation/mediation';
-import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document} from 'models/document/document';
+import {Document, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -53,6 +58,22 @@ import {CaseProgressionHearingDocuments, HearingLocation} from 'models/caseProgr
 import {UploadEvidenceElementCCD} from 'models/caseProgression/uploadDocumentsType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
+import {HearingDuration} from 'models/caseProgression/hearingDuration';
+import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
+import {TrialArrangementsDocument} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CaseRole} from 'form/models/caseRoles';
+import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'models/ccdResponse/ccdPaymentFrequency';
+import {
+  CCDTrialArrangementsHearingRequirements,
+  CCDTrialArrangementsOtherComments,
+} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
+import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
+import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
+import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
+import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 
 export class CivilClaimResponse {
   id: string;
@@ -92,7 +113,6 @@ export interface CCDClaim extends ClaimUpdate {
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: Evidence;
-  timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
@@ -101,8 +121,8 @@ export interface CCDClaim extends ClaimUpdate {
   interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
   submittedDate?: Date;
   issueDate?: Date;
-  claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  servedDocumentFiles?: ServedDocumentFiles;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   respondentSolicitor1AgreedDeadlineExtension?: Date;
   ccdState?: CaseState;
@@ -173,6 +193,9 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDuration?: HearingDuration;
+  trialReadyApplicant?: YesNoUpperCamelCase;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -212,6 +235,36 @@ export interface CCDClaim extends ClaimUpdate {
   ccjJudgmentStatement?:string;
   defaultJudgmentDocuments?: CaseDocument;
   lastModifiedDate?: Date;
+  caseBundles?: CCDBundle[];
+  trialReadyDocuments?: TrialArrangementsDocument[];
+  applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
+  finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
+  caseRole?: CaseRole;
+  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
+  respondent1AdditionalLipPartyDetails?: CCDAdditionalPartyDetails;
+  applicant1AdditionalLipPartyDetails?:CCDAdditionalPartyDetails;
+  partialPayment?: YesNoUpperCamelCase;
+  partialPaymentAmount?: string;
+  paymentTypeSelection?: CCDDJPaymentOption;
+  paymentSetDate?: Date;
+  repaymentDue?: string;
+  repaymentDate?: Date;
+  repaymentFrequency?: CCDPaymentFrequency;
+  repaymentSuggestion?: string;
+  respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
+  enterBreathing?: CCDBreathingSpaceStartInfo;
+  claimFee?:CCDClaimFee;
+  timelineOfEvents?:CCDTimeLineOfEvent[];
+  helpWithFees ?: CCDHelpWithFees;
+  pcqId?: string;
+  applicant1ResponseDate?: Date;
+  liftBreathing?: CCDBreathingSpaceStartInfo;
+  hearingFee?: HearingFee;
+  hearingDueDate?: Date;
+  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
 }
 
 export interface ClaimFeeData {

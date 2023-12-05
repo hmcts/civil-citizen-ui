@@ -1,5 +1,3 @@
-import config from 'config';
-import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
@@ -12,18 +10,7 @@ import {
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
 } from 'routes/urls';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-
 describe('Claim Type Options Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-  });
 
   describe('on GET', () => {
     it('should render the page claim type', async () => {

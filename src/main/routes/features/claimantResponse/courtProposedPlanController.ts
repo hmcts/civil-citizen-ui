@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'common/form/models/genericForm';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -26,6 +26,7 @@ import {
   getPaymentAmount,
   getRepaymentFrequency,
 } from 'common/utils/repaymentUtils';
+import { AppRequest } from 'common/models/AppRequest';
 
 const courtProposedPlanViewPath = 'features/claimantResponse/court-proposed-plan';
 const courtProposedPlanController = Router();
@@ -39,10 +40,10 @@ function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object,
 
 courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimantResponse = await getClaimantResponse(claimId);
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
+    const claimantResponse = await getClaimantResponse(redisKey);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
 
     repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
@@ -66,7 +67,7 @@ courtProposedPlanController.post(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL
     if (courtProposedPlan.hasErrors()) {
       renderView(courtProposedPlan, repaymentPlan, res);
     } else {
-      await saveClaimantResponse(claimId, courtProposedPlan.model.decision, crPropertyName, crParentName);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), courtProposedPlan.model.decision, crPropertyName, crParentName);
       if (courtProposedPlan.model.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
       } else {

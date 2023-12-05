@@ -14,6 +14,8 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const betweenSixteenAndNineteenController = Router();
@@ -30,7 +32,7 @@ function convertToForm(req: Request): GenericForm<BetweenSixteenAndNineteenDepen
 
 betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
   try {
-    renderView(await getForm(req.params.id), res);
+    renderView(await getForm(generateRedisKey(<AppRequest>req)), res);
   } catch (error) {
     next(error);
   }
@@ -43,7 +45,7 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const claim = await saveFormToDraftStore(req.params.id, form);
+      const claim = await saveFormToDraftStore(generateRedisKey(<AppRequest>req), form);
       if (hasDisabledChildren(claim)) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
       } else {

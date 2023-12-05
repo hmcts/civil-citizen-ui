@@ -11,10 +11,10 @@ import {
 } from '../../../../../../../main/routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimUndefined, mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../../utils/mockDraftStore';
-import {mockWithSeverelyDisabledDefendant} from '../otherDependants/otherDependantsController.test';
+import {civilClaimResponseSeverelyDisabledDefendant, mockDraftStore} from '../otherDependants/otherDependantsController.test';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('Partner Age', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,6 +24,7 @@ describe('Partner Age', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
@@ -71,7 +72,7 @@ describe('Partner Age', () => {
         });
     });
     it('should redirect page when "no" and defendant disabled = YES', async () => {
-      app.locals.draftStoreClient = mockWithSeverelyDisabledDefendant;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseSeverelyDisabledDefendant);
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('option=no')

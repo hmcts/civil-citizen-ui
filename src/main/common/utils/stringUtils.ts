@@ -7,3 +7,11 @@ export function documentIdExtractor(documentBinaryUrl: string){
   const match = regex.exec(documentBinaryUrl);
   return match[1];
 }
+
+export function removeWhiteSpacesIfNoText(text:string): string {
+  if(!text.replace(/\s/g, '').length) {
+    return '';
+  } else {
+    return text;
+  }
+}

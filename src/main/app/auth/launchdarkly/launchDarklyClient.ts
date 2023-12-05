@@ -34,3 +34,11 @@ export async function isServiceShuttered(): Promise<boolean> {
 export async function isPcqShutterOn(): Promise<boolean> {
   return await getFlagValue('shutter-pcq') as boolean;
 }
+
+export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+}
+
+export async function isCARMEnabled(): Promise<boolean> {
+  return await getFlagValue('carm') as boolean;
+}

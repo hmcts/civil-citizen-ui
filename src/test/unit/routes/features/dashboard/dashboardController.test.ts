@@ -11,6 +11,7 @@ const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/services/dashboard/draftClaimService');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -39,7 +40,7 @@ describe('Dashboard page', () => {
     .get('/drafts')
     .reply(200, {});
   nock(civilServiceUrl)
-    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined')
+    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
     .reply(200, {});
   beforeAll((done) => {
     testSession

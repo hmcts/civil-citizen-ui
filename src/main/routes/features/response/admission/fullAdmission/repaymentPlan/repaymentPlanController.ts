@@ -8,7 +8,8 @@ import {
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanFullAdmissionController = Router();
@@ -27,7 +28,7 @@ export const getFirstPaymentExampleDate = () => {
 
 repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async (req, res, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(req.params.id);
+    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const form = getRepaymentPlanForm(claim);
     renderView(new GenericForm(form), res);
   } catch (error) {
@@ -38,14 +39,15 @@ repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async 
 repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claim = await getCaseDataFromStore(redisKey);
       const savedValues = getRepaymentPlanForm(claim);
       const form: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveRepaymentPlanData(req.params.id, form.model);
+        await saveRepaymentPlanData(redisKey, form.model);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {

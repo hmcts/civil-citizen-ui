@@ -1,11 +1,10 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {Claim} from 'models/claim';
-import {
-  ExpertSection,
-  UploadDocumentsUserForm,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockExpertSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {EvidenceUploadExpert} from 'models/document/documentType';
 
 describe('Expert service', () => {
   let mockClaim;
@@ -18,6 +17,7 @@ describe('Expert service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             expert: [
@@ -40,6 +40,7 @@ describe('Expert service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             expert: [
@@ -72,6 +73,38 @@ describe('Expert service', () => {
     expect(actualExpertContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.ANSWERS_TO_QUESTIONS');
   });
 
+  it('should return all sections if all selected on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments : {
+            expert: [
+              { documentType: 'EXPERT_REPORT', selected: true },
+              { documentType: 'STATEMENT', selected: true },
+              { documentType: 'QUESTIONS_FOR_EXPERTS', selected: true },
+              { documentType: 'ANSWERS_FOR_EXPERTS', selected: true },
+            ],
+          },
+        },
+      },
+    };
+
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
+    //when
+    const actualExpertContent = getExpertContent(claim, null);
+
+    //Then
+    expect(actualExpertContent.length).toEqual(4);
+
+  });
+
   it('should return multiple section 1 if selected', () => {
     //Given
     expertSection.case_data.caseProgression.defendantUploadDocuments.expert.find(
@@ -79,7 +112,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.expertReport = getMockExpertSectionArray();
+    form.expertReport = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -99,7 +132,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.expertStatement = getMockExpertSectionArray();
+    form.expertStatement = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -119,7 +152,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.questionsForExperts = getMockExpertSectionArray();
+    form.questionsForExperts = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -139,7 +172,7 @@ describe('Expert service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.answersForExperts = getMockExpertSectionArray();
+    form.answersForExperts = getMockExpertSectionArray(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -206,6 +239,28 @@ describe('Expert service', () => {
     expect(actualExpertContent.length).toEqual(0);
   });
 
+  it('should return no section if claimantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        caseProgression: {},
+        isClaimant: jest.fn(() => true),
+      },
+    };
+
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
+    //when
+    const actualExpertContent = getExpertContent(claim, null);
+
+    //Then
+    expect(actualExpertContent.length).toEqual(0);
+  });
+
   it('should return no section if caseProgression not present', () => {
     //Given
     const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
@@ -225,11 +280,25 @@ describe('Expert service', () => {
     //Then
     expect(actualExpertContent.length).toEqual(0);
   });
-});
 
-const getMockExpertSectionArray = () => {
-  const sectionArray: ExpertSection[] = [];
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  sectionArray.push(new ExpertSection('12', '12', '2022'));
-  return sectionArray;
-};
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+      },
+    };
+
+    const claim =  Object.assign(new Claim(), testClaim.case_data);
+
+    //when
+    const actualExpertContent = getExpertContent(claim, null);
+
+    //Then
+    expect(actualExpertContent.length).toEqual(0);
+  });
+});

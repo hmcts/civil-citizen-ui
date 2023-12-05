@@ -11,6 +11,8 @@ import {getDirectionQuestionnaire, saveDirectionQuestionnaire} from 'services/fe
 import {UnavailableDates} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {getUnavailableDatesForm} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesForHearingService';
 import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
 const unavailableDatesForHearingController = Router();
@@ -24,7 +26,7 @@ function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res
 
 unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const unavailableDatesForHearing = directionQuestionnaire.hearing?.unavailableDatesForHearing ?? new UnavailableDates();
     const form = new GenericForm(unavailableDatesForHearing);
     renderView(form, res);
@@ -42,7 +44,7 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
       const numberOfUnavailableDays = getNumberOfUnavailableDays(form.model);
       if(numberOfUnavailableDays <= UNAVAILABLE_DAYS_LIMIT) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));

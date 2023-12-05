@@ -13,7 +13,6 @@
 {% set panelContent %}
   {{ t('PAGES.SUBMIT_CONFIRMATION.CLAIM_NUMBER')}}:
   <br><strong>{{ claimNumber }}</strong><br>
-  <br><strong><a class="white-link" href={{ downloadHref }} >{{ t('PAGES.CLAIM_SUBMITTED.DOWNLOAD_CLAIM') }}</a></strong>
 {% endset %}
 
 {% block content %}
@@ -48,16 +47,11 @@
         {% else %}
           <div class="govuk-body">
             <h2>{{ t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
-            <p>
-            {{ defendantFullName }}
-            {{ t('PAGES.CLAIM_SUBMITTED.HAS_UNTIL') }}
-            {{ defendantResponseLimit }}
-            {{ t('PAGES.CLAIM_SUBMITTED.TO_RESPOND_TO') }}
-            {{ t('PAGES.CLAIM_SUBMITTED.THEY_CAN_REQUEST_EXTRA_DAYS') }}
-            </p>
-            <p>
-            {{ t('PAGES.CLAIM_SUBMITTED.YOU_CAN_REQUEST_COUNTY_COURT') }}
-            </p>
+            <p>{{ t('PAGES.SUBMIT_CONFIRMATION.CLAIM_NOT_BE_ISSUED_UNTIL_PAID') }}</p>
+            {{ govukButton({
+              text: t('PAGES.SUBMIT_CONFIRMATION.PAY_CLAIM_FEE'),
+              href: claimFeeUrl
+            }) }}
           </div>
         {% endif %}
         <h2>{{ t('PAGES.CLAIM_SUBMITTED.IF_DEFENDANT_PAYS_YOU_HEADER') }}</h2>
@@ -65,7 +59,7 @@
           {{ t('PAGES.CLAIM_SUBMITTED.IF_DEFENDANT_PAYS_YOU_CONTENT') }}
         </p>
       <p class="govuk-body">
-        {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
+        {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.claimCreationSmartSurveyUrl.replace('claimId', claimId), true) }}
       </p>
         <div class="form-group">
           {{ govukButton({

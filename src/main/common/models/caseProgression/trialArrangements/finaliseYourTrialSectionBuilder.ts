@@ -55,6 +55,18 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     return this;
   }
 
+  addParagraphWithHTML(text: string, variables?: any) {
+    const paragraphSection = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: '<p class="govuk-body">'+text+'</p>',
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(paragraphSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }

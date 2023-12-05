@@ -34,7 +34,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression', async ({api}) => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -51,7 +51,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   }
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression', async ({api}) => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

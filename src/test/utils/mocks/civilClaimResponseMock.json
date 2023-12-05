@@ -7,6 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "caseRole" : "[APPLICANTSOLICITORONE]",
     "pcqId":"123",
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
@@ -295,9 +296,15 @@
       "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
+    "caseProgressionHearing": {
+      "hearingDuration": "MINUTES_150"
+    },
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
       "defendantLastUploadDate": "2022-06-21T14:15:19",
+      "defendantTrialArrangements": "",
+      "claimantTrialArrangements": "",
+      "defendantDocuments": "",
       "claimantUploadDocuments":{
         "disclosure": [
           {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
@@ -599,6 +606,14 @@
           true,
           true
         ]
+      },
+      "defendantTrialArrangements": {
+        "isCaseReady": "no",
+        "hasAnythingChanged": {
+          "option": "yes",
+          "textArea": "a witness requires a courtroom with step-free access."
+        },
+        "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
       }
     }
   }

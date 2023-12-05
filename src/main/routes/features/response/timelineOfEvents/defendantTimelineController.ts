@@ -11,8 +11,9 @@ import {
   savePartialAdmitTimeline,
 } from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
+import {AppRequest} from 'common/models/AppRequest';
 
 const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
@@ -26,7 +27,7 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   async (req, res, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const theirTimeline = claim.timelineOfEvents;
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
       const form = new GenericForm(getPartialAdmitTimeline(claim));
@@ -39,13 +40,14 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
 defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
+    const redisKey = generateRedisKey(<AppRequest>req);
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(redisKey);
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
       renderView(form, claim.timelineOfEvents, pdfUrl, res);
     } else {
-      await savePartialAdmitTimeline(req.params.id, form.model);
+      await savePartialAdmitTimeline(redisKey, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EVIDENCE_URL));
     }
   } catch (error) {

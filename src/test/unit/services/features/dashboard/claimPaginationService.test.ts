@@ -32,18 +32,33 @@ describe('buildPaginationData Service', () => {
     expect(result).toBeUndefined();
   });
   // claims more than 10
-  it('should return both pagination arguments and pagianted claims when there is more than case per page', async () => {
+  it('should return both pagination arguments and paginated claims when there is more than case per page', async () => {
     // Given
     const totalPages = 2;
     const currentPageAsString = '2';
     // When
-    const result = buildPagination(totalPages, currentPageAsString, lang);
+    const result = buildPagination(totalPages, currentPageAsString, lang, 'claimantPage');
     // Then
     expect(result.items.length).toEqual(2);
-    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&page=1', 'number': 1 });
-    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&page=2', 'number': 2 });
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&claimantPage=1', 'number': 1 });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&claimantPage=2', 'number': 2 });
     expect(result.next).toBeUndefined();
-    expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&page=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
+    expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
+  });
+
+  // claims more than 10
+  it('should return both pagination arguments and paginated claims when there is more than case per page for claimant and defendant', async () => {
+    // Given
+    const totalPages = 2;
+    const currentPageAsString = '2';
+    // When
+    const result = buildPagination(totalPages, currentPageAsString, lang, 'defendantPage', 'claimantPage=1');
+    // Then
+    expect(result.items.length).toEqual(2);
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'number': 1 });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&defendantPage=2&claimantPage=1', 'number': 2 });
+    expect(result.next).toBeUndefined();
+    expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
   });
 });
 

@@ -1,7 +1,5 @@
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
 import {
   ELIGIBILITY_HWF_ELIGIBLE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
@@ -9,18 +7,7 @@ import {
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-
 describe('You can use this service', () => {
-  // TODO: remove this once paths become publicly available as mocking the response token will not be needed
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
 
   describe('on GET', () => {
     it('should return you can use this service page', async () => {

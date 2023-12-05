@@ -87,13 +87,23 @@ const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','e
 const uuid = '1221';
 
 describe('toCCDEvidenceUpload', () => {
-  it('should convert CaseProgression to CCDClaim', () => {
+  it('should convert CaseProgression to Claimant CCDClaim', () => {
 
     const ccdClaim= {} as  CCDClaim;
-    const expectedOutput: CCDClaim = createCCDClaim();
+    const expectedOutput: CCDClaim = createCCDClaim(true);
     const cuiClaim = createCUIClaim();
 
-    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim);
+    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim, true);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  it('should convert CaseProgression to Defendant CCDClaim', () => {
+
+    const ccdClaim= {} as  CCDClaim;
+    const expectedOutput: CCDClaim = createCCDClaim(false);
+    const cuiClaim = createCUIClaim();
+
+    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim, false);
     expect(actualOutput).toEqual(expectedOutput);
   });
 
@@ -101,18 +111,16 @@ describe('toCCDEvidenceUpload', () => {
     const ccdClaim = {} as  CCDClaim;
     const cuiClaim: CaseProgression = undefined;
     const expectedOutput:CCDClaim = undefined;
-    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim);
+    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim, true);
     expect(actualOutput).toEqual(expectedOutput);
   });
 
-  it('should handle null or undefined properties of CaseProgression', () => {
+  it('should handle null or undefined properties of claimant CaseProgression', () => {
     const ccdClaim: CCDClaim = {};
     const cuiClaim: CaseProgression = new CaseProgression();
     cuiClaim.claimantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
-    cuiClaim.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
     const expectedOutput: CCDClaim = {
       caseDocumentUploadDate: new Date(),
-      caseDocumentUploadDateRes: new Date(),
       documentDisclosureList: undefined,
       documentForDisclosure: undefined,
       documentWitnessStatement: undefined,
@@ -128,6 +136,17 @@ describe('toCCDEvidenceUpload', () => {
       documentAuthorities: undefined,
       documentCosts: undefined,
       documentEvidenceForTrial: undefined,
+    };
+    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim, true);
+    expect(actualOutput).toEqual(expectedOutput);
+  });
+
+  it('should handle null or undefined properties of defendant CaseProgression', () => {
+    const ccdClaim: CCDClaim = {};
+    const cuiClaim: CaseProgression = new CaseProgression();
+    cuiClaim.defendantUploadDocuments = new UploadDocuments(undefined, undefined, undefined, undefined);
+    const expectedOutput: CCDClaim = {
+      caseDocumentUploadDateRes: new Date(),
       documentDisclosureListRes: undefined,
       documentForDisclosureRes: undefined,
       documentWitnessStatementRes: undefined,
@@ -144,20 +163,17 @@ describe('toCCDEvidenceUpload', () => {
       documentCostsRes: undefined,
       documentEvidenceForTrialRes: undefined,
     };
-    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim);
+    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim, false);
     expect(actualOutput).toEqual(expectedOutput);
   });
 
-  it('should handle partial & multiple filled properties of CaseProgression', () => {
+  it('should handle partial & multiple filled properties of Claimant CaseProgression', () => {
     const ccdClaim: CCDClaim = {};
     const cuiClaim: CaseProgression = new CaseProgression();
 
     const documentTypeClaimant =  new UploadDocumentTypes(false, typeDocument, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, 'claimant');
-    const documentTypeDefendant =  new UploadDocumentTypes(false, typeDocument, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, 'defendant');
     const witnessClaimant = new UploadDocumentTypes(false, witnessDocument, EvidenceUploadWitness.WITNESS_STATEMENT, 'claimant');
-    const expertDefendant = new UploadDocumentTypes(false, expertDocument, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, 'defendant');
     const trialClaimant = new UploadDocumentTypes(false, typeDocument, EvidenceUploadTrial.COSTS, 'claimant');
-    const trialDefendant = new UploadDocumentTypes(false, typeDocument, EvidenceUploadTrial.COSTS, 'defendant');
 
     cuiClaim.claimantUploadDocuments = new UploadDocuments(
       [
@@ -172,22 +188,8 @@ describe('toCCDEvidenceUpload', () => {
         trialClaimant,
       ],
     );
-    cuiClaim.defendantUploadDocuments = new UploadDocuments(
-      [
-        documentTypeDefendant,
-        documentTypeDefendant,
-      ],
-      undefined,
-      [
-        expertDefendant,
-      ],
-      [
-        trialDefendant,
-      ],
-    );
-    const expectedOutput: CCDClaim = {
+    const expectedOutputClaimant: CCDClaim = {
       caseDocumentUploadDate: new Date(),
-      caseDocumentUploadDateRes: new Date(),
       documentDisclosureList: undefined,
       documentForDisclosure: [{id: 'claimant', value:typeDocument}, {id: 'claimant', value:typeDocument}],
       documentWitnessStatement: [{id: 'claimant', value:witnessDocument}],
@@ -203,25 +205,54 @@ describe('toCCDEvidenceUpload', () => {
       documentAuthorities: undefined,
       documentCosts: [{id: 'claimant', value:typeDocument}],
       documentEvidenceForTrial: undefined,
-      documentDisclosureListRes: undefined,
-      documentForDisclosureRes: [{id: 'defendant', value:typeDocument}, {id: 'defendant', value:typeDocument}],
-      documentWitnessStatementRes: undefined,
-      documentWitnessSummaryRes: undefined,
-      documentHearsayNoticeRes: undefined,
-      documentReferredInStatementRes: undefined,
-      documentExpertReportRes: undefined,
-      documentJointStatementRes: undefined,
-      documentQuestionsRes: [{id: 'defendant', value:expertDocument}],
-      documentAnswersRes: undefined,
-      documentCaseSummaryRes: undefined,
-      documentSkeletonArgumentRes: undefined,
-      documentAuthoritiesRes: undefined,
-      documentCostsRes: [{id: 'defendant', value:typeDocument}],
-      documentEvidenceForTrialRes: undefined,
     };
-    const actualOutput = toCCDEvidenceUpload(cuiClaim, ccdClaim);
-    expect(actualOutput).toEqual(expectedOutput);
+    const actualOutputClaimant = toCCDEvidenceUpload(cuiClaim, ccdClaim, true);
+    expect(actualOutputClaimant).toEqual(expectedOutputClaimant);
   });
+});
+
+it('should handle partial & multiple filled properties of Defendant CaseProgression', () => {
+  const ccdClaim: CCDClaim = {};
+  const cuiClaim: CaseProgression = new CaseProgression();
+
+  const documentTypeDefendant =  new UploadDocumentTypes(false, typeDocument, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, 'defendant');
+  const expertDefendant = new UploadDocumentTypes(false, expertDocument, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, 'defendant');
+  const trialDefendant = new UploadDocumentTypes(false, typeDocument, EvidenceUploadTrial.COSTS, 'defendant');
+
+  cuiClaim.defendantUploadDocuments = new UploadDocuments(
+    [
+      documentTypeDefendant,
+      documentTypeDefendant,
+    ],
+    undefined,
+    [
+      expertDefendant,
+    ],
+    [
+      trialDefendant,
+    ],
+  );
+  const expectedOutputDefendant: CCDClaim = {
+    caseDocumentUploadDateRes: new Date(),
+    documentDisclosureListRes: undefined,
+    documentForDisclosureRes: [{id: 'defendant', value:typeDocument}, {id: 'defendant', value:typeDocument}],
+    documentWitnessStatementRes: undefined,
+    documentWitnessSummaryRes: undefined,
+    documentHearsayNoticeRes: undefined,
+    documentReferredInStatementRes: undefined,
+    documentExpertReportRes: undefined,
+    documentJointStatementRes: undefined,
+    documentQuestionsRes: [{id: 'defendant', value:expertDocument}],
+    documentAnswersRes: undefined,
+    documentCaseSummaryRes: undefined,
+    documentSkeletonArgumentRes: undefined,
+    documentAuthoritiesRes: undefined,
+    documentCostsRes: [{id: 'defendant', value:typeDocument}],
+    documentEvidenceForTrialRes: undefined,
+  };
+
+  const actualOutputDefendant = toCCDEvidenceUpload(cuiClaim, ccdClaim, false);
+  expect(actualOutputDefendant).toEqual(expectedOutputDefendant);
 });
 
 function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)
@@ -258,41 +289,51 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
   return [uploadEvidenceElementCCD];
 }
 
-function createCCDClaim(): CCDClaim {
-  return {
-    documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
-    documentForDisclosure: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
-    documentWitnessStatement: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
-    documentWitnessSummary: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
-    documentHearsayNotice: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
-    documentReferredInStatement: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
-    documentExpertReport: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
-    documentJointStatement: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
-    documentQuestions: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
-    documentAnswers: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
-    documentCaseSummary: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
-    documentSkeletonArgument: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
-    documentAuthorities: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
-    documentCosts: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
-    documentEvidenceForTrial: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
-    caseDocumentUploadDate: new Date(),
-    documentDisclosureListRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
-    documentForDisclosureRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
-    documentWitnessStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
-    documentWitnessSummaryRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
-    documentHearsayNoticeRes: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
-    documentReferredInStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
-    documentExpertReportRes: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
-    documentJointStatementRes: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
-    documentQuestionsRes: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
-    documentAnswersRes: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
-    documentCaseSummaryRes: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
-    documentSkeletonArgumentRes: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
-    documentAuthoritiesRes: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
-    documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
-    documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
-    caseDocumentUploadDateRes: new Date(),
-  };
+function createCCDClaim(isClaimant: boolean): CCDClaim {
+
+  let ccdClaim: CCDClaim;
+
+  if(isClaimant){
+    ccdClaim = {
+      documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
+      documentForDisclosure: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
+      documentWitnessStatement: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
+      documentWitnessSummary: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
+      documentHearsayNotice: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
+      documentReferredInStatement: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
+      documentExpertReport: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
+      documentJointStatement: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
+      documentQuestions: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
+      documentAnswers: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
+      documentCaseSummary: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
+      documentSkeletonArgument: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
+      documentAuthorities: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
+      documentCosts: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
+      documentEvidenceForTrial: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
+      caseDocumentUploadDate: new Date(),
+    };
+  } else {
+    ccdClaim = {
+      documentDisclosureListRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
+      documentForDisclosureRes: getCaseProgressionDocuments(EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE),
+      documentWitnessStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_STATEMENT),
+      documentWitnessSummaryRes: getCaseProgressionDocuments(EvidenceUploadWitness.WITNESS_SUMMARY),
+      documentHearsayNoticeRes: getCaseProgressionDocuments(EvidenceUploadWitness.NOTICE_OF_INTENTION),
+      documentReferredInStatementRes: getCaseProgressionDocuments(EvidenceUploadWitness.DOCUMENTS_REFERRED),
+      documentExpertReportRes: getCaseProgressionDocuments(EvidenceUploadExpert.EXPERT_REPORT),
+      documentJointStatementRes: getCaseProgressionDocuments(EvidenceUploadExpert.STATEMENT),
+      documentQuestionsRes: getCaseProgressionDocuments(EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS),
+      documentAnswersRes: getCaseProgressionDocuments(EvidenceUploadExpert.ANSWERS_FOR_EXPERTS),
+      documentCaseSummaryRes: getCaseProgressionDocuments(EvidenceUploadTrial.CASE_SUMMARY),
+      documentSkeletonArgumentRes: getCaseProgressionDocuments(EvidenceUploadTrial.SKELETON_ARGUMENT),
+      documentAuthoritiesRes: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
+      documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
+      documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
+      caseDocumentUploadDateRes: new Date(),
+    };
+  }
+
+  return ccdClaim;
 }
 
 function createCUIClaim(): CaseProgression {

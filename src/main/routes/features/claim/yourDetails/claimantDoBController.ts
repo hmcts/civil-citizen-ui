@@ -16,7 +16,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Respons
     const claim: Claim = await getCaseDataFromStore(caseId);
     let form = new GenericForm(new CitizenDate());
     if (claim.applicant1?.dateOfBirth) {
-      const dateOfBirth = new Date(claim.applicant1.dateOfBirth.date);
+      const dateOfBirth = new Date(claim.applicant1.dateOfBirth as unknown as string);
       form = new GenericForm(new CitizenDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
     res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});

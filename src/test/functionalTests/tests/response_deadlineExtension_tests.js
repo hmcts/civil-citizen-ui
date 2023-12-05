@@ -31,7 +31,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('No response submitted, date agreed upon request time  @citizenUI @regression', async () => {
+Scenario('No response submitted, date agreed upon request time  @citizenUI @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
   if (['preview', 'demo'  ].includes(config.runningEnv)) {

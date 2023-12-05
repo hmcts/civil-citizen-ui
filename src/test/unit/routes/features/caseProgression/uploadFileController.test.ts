@@ -5,6 +5,7 @@ import {CP_UPLOAD_FILE} from 'routes/urls';
 import Module from 'module';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,6 +26,7 @@ const file = {
   size: 123,
   buffer: Buffer.from('Test file content'),
 };
+const civilServiceUrl = config.get<string>('services.civilService.url');
 describe('"upload File controller test', () => {
   const idamUrl: string = config.get('idamUrl');
 
@@ -52,6 +54,17 @@ describe('"upload File controller test', () => {
         return file;
       });
 
+      const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+        documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date()};
+
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(200, mockCaseDocument);
+
       //When
       const response = await testSession
         .post(CP_UPLOAD_FILE)
@@ -62,7 +75,7 @@ describe('"upload File controller test', () => {
 
       //Then
       expect(response.status).toBe(200);
-      expect(response.body.document).toBeDefined();
+      expect(response.body).toBeDefined();
     });
 
     it('should return exception error http 500 ', async () => {
@@ -83,7 +96,7 @@ describe('"upload File controller test', () => {
 
       //Then
       expect(response.status).toBe(500);
-      expect(response.text).toBe('{"errors":"Test error"}');
+      expect(response.text).toBe('{"errors":["Test error"]}');
     });
   });
 
@@ -101,6 +114,52 @@ describe('"upload File controller test', () => {
     //Then
     expect(response.status).toBe(400);
     expect(response.text).toBe('{"errors":["Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF"]}');
+  });
+
+  it('should return validation http 400 from civil service ', async () => {
+    //given
+    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+      return file;
+    });
+
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(400, 'Error');
+
+    //When
+    const response = await testSession
+      .post(CP_UPLOAD_FILE)
+      .attach('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+    //Then
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('{"errors":["Error"]}');
+  });
+
+  it('should return validation http 401 from civil service ', async () => {
+    //given
+    TypeOfDocumentSectionMapper.mapToSingleFile = jest.fn(() => {
+      return file;
+    });
+
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(401, '');
+
+    //When
+    const response = await testSession
+      .post(CP_UPLOAD_FILE)
+      .attach('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+
+    //Then
+    expect(response.status).toBe(401);
+    expect(response.text).toBe('{"errors":["unknown error"]}');
   });
 
 });

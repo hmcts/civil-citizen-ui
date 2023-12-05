@@ -8,7 +8,7 @@ services:
     url: 'http://localhost:4000'
     microservice: 'civil_service'
   postcodeLookup:
-    ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
+    ordnanceSurveyApiKey:
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
@@ -26,6 +26,7 @@ services:
       port: 6379
       key:
       tls: false
+      expireInDays: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:

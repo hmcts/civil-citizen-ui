@@ -1,5 +1,6 @@
 import {CCDHowWasThisAmountPaid, CCDRespondToClaim} from 'models/ccdResponse/ccdRespondToClaim';
 import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {convertToPound} from 'services/translation/claim/moneyConversation';
 
 export const toCUIRespondToClaim = (ccdRespondToClaim: CCDRespondToClaim): HowMuchHaveYouPaid => {
   const howMuchHaveYouPaid = new HowMuchHaveYouPaid();
@@ -14,7 +15,7 @@ export const toCUIRespondToClaim = (ccdRespondToClaim: CCDRespondToClaim): HowMu
 
   const date = new Date (ccdRespondToClaim?.whenWasThisAmountPaid);
   howMuchHaveYouPaid.date = date;
-  howMuchHaveYouPaid.amount = ccdRespondToClaim?.howMuchWasPaid;
+  howMuchHaveYouPaid.amount = convertToPound(ccdRespondToClaim?.howMuchWasPaid);
   howMuchHaveYouPaid.day = date.getDate();
   howMuchHaveYouPaid.month = date.getMonth() + 1 ;
   howMuchHaveYouPaid.year = date.getFullYear();

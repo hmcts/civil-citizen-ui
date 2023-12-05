@@ -28,10 +28,10 @@ export class UploadDocuments {
     this.expert = expert;
     this.trial = trial;
     this.checkboxGrp = [
-      disclosure?.[0].selected, disclosure?.[1]?.selected,
-      witness?.[0].selected, witness?.[1]?.selected, witness?.[2]?.selected, witness?.[3]?.selected,
-      expert?.[0].selected, expert?.[1]?.selected, expert?.[2]?.selected, expert?.[3]?.selected,
-      trial?.[0].selected, trial?.[1]?.selected, trial?.[2]?.selected, trial?.[3]?.selected, trial?.[4]?.selected,
+      disclosure?.[0]?.selected, disclosure?.[1]?.selected,
+      witness?.[0]?.selected, witness?.[1]?.selected, witness?.[2]?.selected, witness?.[3]?.selected,
+      expert?.[0]?.selected, expert?.[1]?.selected, expert?.[2]?.selected, expert?.[3]?.selected,
+      trial?.[0]?.selected, trial?.[1]?.selected, trial?.[2]?.selected, trial?.[3]?.selected, trial?.[4]?.selected,
     ];
   }
 

@@ -5,7 +5,7 @@ import {Claim} from 'models/claim';
 
 describe('isCaseReady', () => {
   let mockClaim;
-  let claimContent: { case_data: { caseProgression: { isCaseReadyTrialOrHearing: YesNo; }; }; };
+  let claimContent: { case_data: { caseProgression: { isCaseReady: YesNo; }; }; };
 
   beforeEach(() => {
     mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -15,7 +15,7 @@ describe('isCaseReady', () => {
       case_data: {
         ...mockClaim.case_data,
         caseProgression: {
-          isCaseReadyTrialOrHearing: 'yes',
+          isCaseReady: 'yes',
         },
       },
     };
@@ -23,7 +23,7 @@ describe('isCaseReady', () => {
 
   it('should return all the content', () => {
     //Given
-    claimContent.case_data.caseProgression.isCaseReadyTrialOrHearing = YesNo.YES;
+    claimContent.case_data.caseProgression.isCaseReady = YesNo.YES;
     const claim =  Object.assign(new Claim(), claimContent);
 
     //when

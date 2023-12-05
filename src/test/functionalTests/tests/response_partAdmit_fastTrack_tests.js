@@ -32,8 +32,7 @@ Before(async ({api}) => {
   }
 });
 
-// Add a regression tag once the defect https://tools.hmcts.net/jira/browse/CIV-9366 is fixed
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @regression', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -43,7 +42,6 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit', async () =
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterNoMediation(claimRef);
   await ResponseSteps.EnterDQForFastTrack(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
 });

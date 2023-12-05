@@ -14,6 +14,10 @@
     {{ content.data.html | safe }}
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.MICRO_TEXT %}
+    <span class="govuk-caption-l">{{ t(content.data.text) }}</span>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.MAINTITLE %}
     <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}
@@ -36,9 +40,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
     {% else %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text)}}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}
   {% endif %}
 
@@ -74,6 +78,12 @@
         isStartButton: content.data.isStartButton
       }) }}
     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
+    <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href={{ content.data.href }}>
+      {{ t(content.data.text) }}
+    </a>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LINK %}
@@ -159,8 +169,8 @@
     {% endif %}
      <div>
         {{ govukDateInput({
-           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
            fieldset: {
              legend: {
               text: t(content.data.text),
@@ -179,36 +189,36 @@
            } if (isDateError == 'true'),
            items: [
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'Day]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'Day]',
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
                label: "Day",
                value: content.data.dayValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Day]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Day]'
+                 'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]',
+                 'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]'
                }
              },
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'Month]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'Month]',
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
                label: "Month",
                value: content.data.monthValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidMonthError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Month]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Month]'
+                'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]',
+                'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]'
                }
              },
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.field+'Year]',
-               name: content.data.category+'['+content.data.index+']['+content.data.field+'Year]',
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
                label: "Year",
                value: content.data.yearValue,
                classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
                attributes: {
-                 'data-name': content.data.category+'[%index%]['+content.data.field+'Year]',
-                 'data-id': content.data.category+'[%index%]['+content.data.field+'Year]'
+                  'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]',
+                  'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]'
                }
              }
            ]
@@ -224,7 +234,7 @@
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
-             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)
+             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
@@ -233,6 +243,20 @@
            }
         }) }}
     </div>
+    {{ govukInput({
+       id: content.data.category+'['+content.data.index+'][caseDocument]',
+       name: content.data.category+'['+content.data.index+'][caseDocument]',
+       type:'hidden',
+       label: {
+        text: 'Case Document',
+        classes: 'govuk-visually-hidden'
+       },
+       value: content.data.caseDocument,
+       attributes: {
+         'data-name': content.data.category+'[%index%][caseDocument]',
+         'data-id': content.data.category+'[%index%][caseDocument]'
+       }
+    }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD %}

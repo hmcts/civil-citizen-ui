@@ -70,5 +70,20 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentSize: 1,
       },
     },
+    {
+      id: '3',
+      value: {
+        createdBy: 'cui',
+        documentType: DocumentType.HEARING_FORM,
+        documentLink:  {
+          document_url: 'url3',
+          document_filename: 'filename3',
+          document_binary_url: 'documents/123/binary',
+        },
+        documentName: 'documentName',
+        createdDatetime: new Date(Date.now()),
+        documentSize: 1,
+      },
+    },
   ];
 };

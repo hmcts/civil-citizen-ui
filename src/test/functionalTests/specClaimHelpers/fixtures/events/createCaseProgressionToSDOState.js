@@ -59,6 +59,23 @@ module.exports = {
         smallClaimsCreditHire: null,
         smallClaimsRoadTrafficAccident: null,
         smallClaimsAddNewDirections: [],
+        sdoOrderDocument: {
+          documentLink: {
+            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
+            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+            document_filename: 'fast_track_sdo_000MC014.pdf',
+            document_hash: 'a21b91dc459a911bd311af0c130f24b7032e9f358b362efe7ec6380664bd5005',
+            category_id: 'sdo',
+          },
+          documentName: 'fast_track_sdo_000MC014.pdf',
+          documentType: 'SDO_ORDER',
+          documentSize: '68814',
+          createdDatetime: '2023-09-20T10:08:24',
+          createdBy: 'Civil',
+        },
+        smallClaimsMethodInPerson: {
+          value: { code: '192280'},
+        },
       },
     };
     return judgeToSDOData;

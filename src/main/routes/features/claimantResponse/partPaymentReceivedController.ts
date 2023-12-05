@@ -3,20 +3,21 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   saveClaimantResponse,
-} from '../../../services/features/claimantResponse/claimantResponseService';
+} from 'services/features/claimantResponse/claimantResponseService';
 import {
   getGenericOptionForm,
-} from '../../../services/genericForm/genericFormService';
+} from 'services/genericForm/genericFormService';
 
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {ClaimantResponseErrorMessages} from '../../../common/form/models/claimantResponse/claimantResponseErrorMessages';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {ClaimantResponseErrorMessages} from 'form/models/claimantResponse/claimantResponseErrorMessages';
+import { AppRequest } from 'common/models/AppRequest';
 
 const partPaymentReceivedController = Router();
 const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-received';
@@ -29,11 +30,10 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: 
 let paidAmount: number;
 
 partPaymentReceivedController.get(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const claimantResponse = claim?.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
-    paidAmount = claim.isRejectAllOfClaimAlreadyPaid();
+    paidAmount = claim.getPaidAmount();
     renderView(new GenericForm(claimantResponse.hasDefendantPaidYou), res, paidAmount);
   } catch (error) {
     next(error);
@@ -49,7 +49,7 @@ partPaymentReceivedController.post(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, 
     if (genericYesNoForm.hasErrors()) {
       renderView(genericYesNoForm, res, paidAmount);
     } else {
-      await saveClaimantResponse(claimId, genericYesNoForm.model, claimantResponsePropertyName);
+      await saveClaimantResponse(generateRedisKey(<AppRequest>req), genericYesNoForm.model, claimantResponsePropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

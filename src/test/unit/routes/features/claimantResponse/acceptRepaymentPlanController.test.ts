@@ -10,9 +10,14 @@ import {
 import {t} from 'i18next';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'common/form/models/yesNo';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 describe('Accept Repayment Plan Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,6 +26,7 @@ describe('Accept Repayment Plan Page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

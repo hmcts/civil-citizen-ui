@@ -1,5 +1,6 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 describe('PageSectionBuilder tests', ()=> {
   it('should create title', ()=> {
@@ -191,5 +192,65 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
+  });
+
+  it('should add HTML element', () => {
+    //Given
+    const deadline = '11 July 2023';
+    const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS';
+    const htmlElement = `<p class="govuk-body">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`)}
+                                <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: deadline})}</span>.
+                              </p>`;
+    const expectedHtmlElement = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: htmlElement,
+      },
+    });
+    //When
+    const htmlElementBuilt = new PageSectionBuilder()
+      .addRawHtml(htmlElement)
+      .build();
+    //Then
+    expect(htmlElementBuilt).toEqual([expectedHtmlElement]);
+  });
+
+  it('should add micro text', ()=> {
+    //Given
+    const microTextExpected = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const microTextResult = new PageSectionBuilder()
+      .addMicroText('text', microTextExpected.data.variables)
+      .build();
+
+    //Then
+    expect(microTextResult).toEqual([microTextExpected]);
+  });
+
+  it('should add addButtonWithCancelLink', ()=> {
+    //Given
+    const buttonWithCancelLinkExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'title',
+        href: 'href',
+        isStartButton: true,
+        cancelHref: 'cancelHref',
+      },
+    });
+    //When
+    const buttonWithCancelLinkResult = new PageSectionBuilder()
+      .addButtonWithCancelLink('title', 'href', true, 'cancelHref')
+      .build();
+
+    //Then
+    expect(buttonWithCancelLinkResult).toEqual([buttonWithCancelLinkExpected]);
   });
 });

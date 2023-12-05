@@ -6,9 +6,9 @@ import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, RESPONSE_TASK_LIST_URL} from '../../
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../../main/modules/draft-store');
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -19,6 +19,7 @@ describe('Repayment Plan', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {
@@ -127,7 +128,7 @@ describe('Repayment Plan', () => {
         .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
+          expect(res.text).toContain(TestMessages.FIRST_PAYMENT_MESSAGE);
         });
     });
 

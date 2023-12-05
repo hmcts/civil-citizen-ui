@@ -7,8 +7,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
@@ -24,6 +24,7 @@ describe('Claimant details', () => {
     mockSetResponseDeadline.mockImplementation(async () => {
       return new Date();
     });
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {

@@ -3,6 +3,7 @@ import {NextFunction, Request, Response} from 'express';
 import {responseSubmitDateGuard} from 'routes/guards/responseSubmitDateGuard';
 import CivilClaimResponseMock from '../../../utils/mocks/civilClaimResponseMock.json';
 import nock from 'nock';
+import {CaseRole} from 'form/models/caseRoles';
 
 const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
@@ -20,6 +21,10 @@ describe('Response Submit Date Guard', () => {
 
   it('should call next if response submit date is set', async () => {
     nock('http://localhost:4000')
+      .get('/cases/123/userCaseRoles')
+      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+
+    nock('http://localhost:4000')
       .get('/cases/123')
       .reply(200, CivilClaimResponseMock);
 
@@ -29,6 +34,6 @@ describe('Response Submit Date Guard', () => {
 
   it('should catch an error', async () => {
     await responseSubmitDateGuard(null, MOCK_RESPONSE, MOCK_NEXT);
-    expect(MOCK_NEXT).toHaveBeenCalledWith();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
 });

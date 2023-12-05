@@ -5,6 +5,7 @@ import {Mediation} from 'common/models/mediation/mediation';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {
   getAcceptOrRejectDefendantAdmittedTask,
+  getAcceptOrRejectDefendantResponse,
   getFreeTelephoneMediationTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/whatToDoNextSectionTasks';
 
@@ -43,6 +44,36 @@ describe('What to do next section task', () => {
       //Then
       expect(acceptOrRejectDefendantAdmittedTask).toEqual(resultComplete);
     });
+  });
+
+  it('should return incomplete for full defense states paid', () => {
+    //Given
+    const claim = {} as Claim;
+    const resultIncomplete = {
+      description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
+      url: '/case/5129/claimant-response/settle-claim',
+      status: TaskStatus.INCOMPLETE,
+    };
+
+    //When
+    const acceptOrTRejectedTheirResponse = getAcceptOrRejectDefendantResponse(claim, '5129', 'en');
+    //Then
+    expect(acceptOrTRejectedTheirResponse).toEqual(resultIncomplete);
+  });
+
+  it('should return complete for full defense states paid if claimant responded', () => {
+    //Given
+    const claim = { claimantResponse: { hasPartPaymentBeenAccepted: { option: 'yes' } } } as Claim;
+    const resultIncomplete = {
+      description: 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE',
+      url: '/case/5129/claimant-response/settle-claim',
+      status: TaskStatus.COMPLETE,
+    };
+
+    //When
+    const acceptOrTRejectedTheirResponse = getAcceptOrRejectDefendantResponse(claim, '5129', 'en');
+    //Then
+    expect(acceptOrTRejectedTheirResponse).toEqual(resultIncomplete);
   });
 
   describe('getFreeTelephoneMediationTask', () => {
