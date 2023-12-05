@@ -351,6 +351,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
       "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
