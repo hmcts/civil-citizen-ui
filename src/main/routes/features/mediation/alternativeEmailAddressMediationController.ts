@@ -1,7 +1,7 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   MEDIATION_ALTERNATIVE_EMAIL_URL,
-  MEDIATION_DATES_CONFIRMATION_URL,
+  MEDIATION_NEXT_3_MONTHS_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
@@ -45,7 +45,7 @@ alternativeEmailAddressMediationController.post(MEDIATION_ALTERNATIVE_EMAIL_URL,
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
       await saveMediation(redisKey, form.model, MEDIATION_PROPERTY_NAME);
-      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_DATES_CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     }
   } catch (error) {
     next(error);
