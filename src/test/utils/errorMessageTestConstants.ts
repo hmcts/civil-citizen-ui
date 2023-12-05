@@ -66,6 +66,7 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_OVER_18 = 'Is your partner aged 18 or over?',
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
+  MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Mediation contact person confirmation',
   MEDIATION_EMAIL_CONFIRMATION = 'Mediation email confirmation',
   MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
   MEDIATION_UNAVAILABILITY_DATES = 'Unavailability dates for mediation',
