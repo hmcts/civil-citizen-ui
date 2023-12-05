@@ -1999,6 +1999,10 @@
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+    },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
       "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"

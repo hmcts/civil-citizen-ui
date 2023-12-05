@@ -10,6 +10,7 @@ export class Mediation {
   mediationDisagreement?: GenericYesNo;
   noMediationReason?: NoMediationReason;
   companyTelephoneNumber: CompanyTelephoneNumber;
+  isMediationContactNameCorrect?: GenericYesNo;
   hasTelephoneMeditationAccessed?: boolean;
   isMediationEmailCorrect?: GenericYesNo;
   isMediationPhoneCorrect?: GenericYesNo;
@@ -19,7 +20,7 @@ export class Mediation {
   unavailableDatesForMediation?: UnavailableDatesMediation;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
-    companyTelephoneNumber?: CompanyTelephoneNumber, hasTelephoneMeditationAccessed = false,
+    companyTelephoneNumber?: CompanyTelephoneNumber, mediationContactNameCorrect?: GenericYesNo, hasTelephoneMeditationAccessed = false,
     mediationEmailCorrect?: GenericYesNo, isMediationPhoneCorrect?: GenericYesNo,
     hasAvailabilityMediationFinished = false, alternativeMediationEmail?: AlternativeEmailAddress,
     hasUnavailabilityNextThreeMonths?: GenericYesNo,   unavailableDatesForMediation?: UnavailableDatesMediation) {
@@ -27,6 +28,7 @@ export class Mediation {
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
     this.companyTelephoneNumber = companyTelephoneNumber;
+    this.isMediationContactNameCorrect = mediationContactNameCorrect;
     this.hasTelephoneMeditationAccessed = hasTelephoneMeditationAccessed;
     this.isMediationEmailCorrect = mediationEmailCorrect;
     this.isMediationPhoneCorrect = isMediationPhoneCorrect;
