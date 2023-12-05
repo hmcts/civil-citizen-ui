@@ -301,7 +301,7 @@ describe('Translate claimant response to ccd version', () => {
     //Given
     const currentDate = new Date(Date.now());
     claim.claimantResponse.suggestedPaymentIntention = {paymentOption : PaymentOptionType.BY_SET_DATE , 
-      paymentDate : currentDate,};
+      paymentDate : currentDate};
     
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
