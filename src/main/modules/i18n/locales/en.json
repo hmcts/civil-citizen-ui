@@ -293,9 +293,9 @@
   },
   "BANNERS": {
     "PIN_ERROR_NOTIFICATION": {
-      "CONTACT":"Should you need to respond to your claim urgently, please contact us via:",
+      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
       "EMAIL":"Email:",
-      "OUR_TEAM":"Our team is working to restore this service as soon as possible.",
+      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
       "PHONE":"Telephone: 0300 123 7050",
       "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
       "SORRY": "Sorry for the inconvenience caused.",
