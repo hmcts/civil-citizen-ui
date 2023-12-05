@@ -12,6 +12,7 @@ import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {ClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {ClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
