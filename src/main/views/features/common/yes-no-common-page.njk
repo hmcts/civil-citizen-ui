@@ -27,7 +27,7 @@
           <div class="govuk-!-margin-bottom-8">
             <form method="post" novalidate>
              {{ csrfProtection(csrf) }}
-                {{ yesNoRadioButton(t, 'option', 'option', pageText, form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+                {{ yesNoRadioButton(t, 'option', 'option', pageText, form, pageHintText, {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
                 {{ govukButton({
                   text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
                 }) }}
