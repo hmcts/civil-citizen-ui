@@ -228,6 +228,8 @@ import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import contactNameMediationConfirmationController
+  from 'routes/features/mediation/contactNameMediationConfirmationController';
 import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
 import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
 import telephoneMediationConfirmationController
@@ -240,6 +242,7 @@ import mediationUnavailabilityNextThreeMonthsConfirmationController
   from 'routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController';
 import mediationUnavailabilitySelectDatesController
   from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
+import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
 export default [
   homeController,
   dashboardController,
@@ -450,6 +453,7 @@ export default [
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  contactNameMediationConfirmationController,
   telephoneMediationController,
   emailMediationConfirmationController,
   telephoneMediationConfirmationController,
@@ -457,4 +461,5 @@ export default [
   alternativeEmailAddressMediationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
   mediationUnavailabilitySelectDatesController,
+  alternativeTelephoneMediationController,
 ];

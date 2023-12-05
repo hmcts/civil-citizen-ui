@@ -351,6 +351,10 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
       "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
@@ -1997,6 +2001,10 @@
       "PAGE_TITLE": "Cyfryngu - Darparwch rif cyswllt cwmni",
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
+    },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",

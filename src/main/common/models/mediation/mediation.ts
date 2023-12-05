@@ -4,12 +4,14 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {NoMediationReason} from 'form/models/mediation/noMediationReason';
 import {AlternativeEmailAddress} from 'form/models/mediation/AlternativeEmailAddress';
 import {UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
+import {AlternativeTelephone} from 'form/models/mediation/AlternativeTelephone';
 
 export class Mediation {
   canWeUse?: CanWeUse;
   mediationDisagreement?: GenericYesNo;
   noMediationReason?: NoMediationReason;
   companyTelephoneNumber: CompanyTelephoneNumber;
+  isMediationContactNameCorrect?: GenericYesNo;
   hasTelephoneMeditationAccessed?: boolean;
   isMediationEmailCorrect?: GenericYesNo;
   isMediationPhoneCorrect?: GenericYesNo;
@@ -17,16 +19,19 @@ export class Mediation {
   alternativeMediationEmail?: AlternativeEmailAddress;
   hasUnavailabilityNextThreeMonths?: GenericYesNo;
   unavailableDatesForMediation?: UnavailableDatesMediation;
+  alternativeMediationTelephone?: AlternativeTelephone;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
-    companyTelephoneNumber?: CompanyTelephoneNumber, hasTelephoneMeditationAccessed = false,
+    companyTelephoneNumber?: CompanyTelephoneNumber, mediationContactNameCorrect?: GenericYesNo, hasTelephoneMeditationAccessed = false,
     mediationEmailCorrect?: GenericYesNo, isMediationPhoneCorrect?: GenericYesNo,
     hasAvailabilityMediationFinished = false, alternativeMediationEmail?: AlternativeEmailAddress,
-    hasUnavailabilityNextThreeMonths?: GenericYesNo,   unavailableDatesForMediation?: UnavailableDatesMediation) {
+    hasUnavailabilityNextThreeMonths?: GenericYesNo,   unavailableDatesForMediation?: UnavailableDatesMediation,
+    alternativeTelephone?: AlternativeTelephone) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
     this.companyTelephoneNumber = companyTelephoneNumber;
+    this.isMediationContactNameCorrect = mediationContactNameCorrect;
     this.hasTelephoneMeditationAccessed = hasTelephoneMeditationAccessed;
     this.isMediationEmailCorrect = mediationEmailCorrect;
     this.isMediationPhoneCorrect = isMediationPhoneCorrect;
@@ -34,5 +39,6 @@ export class Mediation {
     this.alternativeMediationEmail = alternativeMediationEmail;
     this.hasUnavailabilityNextThreeMonths = hasUnavailabilityNextThreeMonths;
     this.unavailableDatesForMediation = unavailableDatesForMediation;
+    this.alternativeMediationTelephone = alternativeTelephone;
   }
 }
