@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
+
   "scripts": {
     "start": "NODE_ENV=production ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "start:dev": "NODE_ENV=development yarn start:redis && nodemon --config nodemon.json",
