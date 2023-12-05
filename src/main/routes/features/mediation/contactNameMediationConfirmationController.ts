@@ -1,4 +1,4 @@
-import {NextFunction, Router, Response, Request} from 'express';
+import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL,
   MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_URL,
@@ -28,7 +28,7 @@ const getDefendantContactPerson = async (redisKey: string): Promise<string> => {
   return claim.respondent1.partyDetails.contactPerson;
 };
 
-contactNameMediationConfirmationController.get(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+contactNameMediationConfirmationController.get(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const defendantContactPerson = await getDefendantContactPerson(redisKey);
@@ -38,9 +38,9 @@ contactNameMediationConfirmationController.get(MEDIATION_CONTACT_PERSON_CONFIRMA
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-contactNameMediationConfirmationController.post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+contactNameMediationConfirmationController.post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claimId = req.params.id;
@@ -58,6 +58,6 @@ contactNameMediationConfirmationController.post(MEDIATION_CONTACT_PERSON_CONFIRM
     next(error);
   }
 
-});
+}) as RequestHandler);
 
 export default contactNameMediationConfirmationController;
