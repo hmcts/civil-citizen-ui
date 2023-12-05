@@ -79,6 +79,7 @@ export const CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL = `${PARTIAL_ADMISSION
 export const CITIZEN_AMOUNT_YOU_PAID_URL = `${PARTIAL_ADMISSION_URL}/how-much-have-you-paid`;
 export const MEDIATION_DISAGREEMENT_URL = `${MEDIATION_URL}/mediation-disagreement`;
 export const MEDIATION_CONTACT_PERSON_CONFIRMATION_URL = `${MEDIATION_URL}/mediation-contact-person`;
+export const MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL = `${MEDIATION_URL}/mediation-alternative-contact-person`;
 export const MEDIATION_ALTERNATIVE_EMAIL_URL = `${MEDIATION_URL}/alternative-email`;
 export const MEDIATION_ALTERNATIVE_PHONE_URL = `${MEDIATION_URL}/alternative-phone`;
 export const MEDIATION_NEXT_3_MONTHS_URL = `${MEDIATION_URL}/next-three-months`;
