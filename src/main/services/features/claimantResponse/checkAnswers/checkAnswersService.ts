@@ -11,6 +11,7 @@ import {
 } from 'services/features/claimantResponse/responseSection/buildSettlementAgreementSection';
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
+import { buildSummaryForCourtDecisionDetails } from '../responseSection/buildCourtDecisionDetailsSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -49,6 +50,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
       getHearingRequirementsSection(),
+      buildSummaryForCourtDecisionDetails(claim, lang),
     ],
   };
 };
