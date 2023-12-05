@@ -45,6 +45,8 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       const pin = pinForm.model.pin;
       if (pin.length === 8) {
         console.log('Its OCMC claim');
+        res.header( 'pin', pin );
+        res.header('accept', 'application/json');
         res.redirect(verifyPin(claimReferenceNumber));
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
