@@ -26,12 +26,21 @@ import civilClaimResponseDocumentUploadedClaimantMock from './mocks/civilClaimRe
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
 import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
+import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
 
 import {LoggerInstance} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const mockCivilClaimDefendantCaseProgression = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDefendantMock))),
   del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
@@ -250,6 +259,7 @@ export {
   mockResponseFullAdmitPayBySetDate,
   mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
+  mockCivilClaimDefendantCaseProgression,
   mockCivilClaimDocumentClaimantUploaded,
   civilClaimResponseMock,
   mockCivilClaimHearingFee,
