@@ -76,5 +76,4 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
   }
 })as RequestHandler);
 
-
 export default pinController;
