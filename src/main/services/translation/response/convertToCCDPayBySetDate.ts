@@ -16,6 +16,6 @@ export const toCCDPayBySetDate = (paymentDate: Date, paymentOption: PaymentOptio
 
 export const toCCDClaimantPayBySetDate = (paymentDate: Date): CCDClaimantPayBySetDate => {
   return {
-    PaymentBySetDate: paymentDate,
+    paymentSetDate: paymentDate,
   };
 };

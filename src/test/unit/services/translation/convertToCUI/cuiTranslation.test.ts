@@ -270,7 +270,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     const currentDate = new Date();
     const input: CCDClaim = {
       applicant1RequestedPaymentDateForDefendantSpec : {
-        PaymentBySetDate: currentDate,
+        paymentSetDate: currentDate,
       },
     };
 

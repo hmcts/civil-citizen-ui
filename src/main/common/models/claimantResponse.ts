@@ -32,7 +32,7 @@ export class ClaimantResponse {
   mediation?: Mediation;
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
-  suggestedPaymentIntention?: PaymentIntention;
+   suggestedPaymentIntention?: PaymentIntention;
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;

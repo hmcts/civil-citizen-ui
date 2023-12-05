@@ -11,6 +11,7 @@ import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import { RepaymentDecisionType } from './RepaymentDecisionType';
 import { CCDClaimantPayBySetDate } from '../ccdResponse/ccdPayBySetDate';
+import { CCDRepaymentPlanFrequency } from '../ccdResponse/ccdRepaymentPlan';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -33,6 +34,8 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
-  claimantCourtDecision?:RepaymentDecisionType;
-  applicant1RequestedPaymentDateForDefendantSpec: CCDClaimantPayBySetDate;
+  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: string;
+  applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
+  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: Date;
+  applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
 }
