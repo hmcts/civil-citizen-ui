@@ -1988,6 +1988,10 @@
       "TITLE": "Who should the mediation service call?",
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
+    "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
+    },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
       "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
