@@ -90,6 +90,7 @@ export const AVAILABILITY_FOR_MEDIATION = `${BASE_CASE_RESPONSE_URL}/availabilit
 export const MEDIATION_DATES_CONFIRMATION_URL = `${MEDIATION_URL}/dates-confirmation`;
 export const MEDIATION_EMAIL_CONFIRMATION_URL = `${MEDIATION_URL}/email-confirmation`;
 export const MEDIATION_PHONE_CONFIRMATION_URL = `${MEDIATION_URL}/phone-confirmation`;
+export const MEDIATION_UNAVAILABLE_SELECT_DATES_URL = `${MEDIATION_URL}/unavailable-dates`;
 export const CITIZEN_REJECT_ALL_CLAIM_URL = `${BASE_CASE_RESPONSE_URL}/reject-all-of-claim`;
 export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;
 export const RESPONSE_CHECK_ANSWERS_URL = `${BASE_CASE_RESPONSE_URL}/check-and-send`;
