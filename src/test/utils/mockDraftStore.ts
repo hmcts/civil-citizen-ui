@@ -37,14 +37,6 @@ const mockCivilClaim = {
   expireat: jest.fn(() => Promise.resolve({})),
 };
 
-const mockCivilClaimDefendantCaseProgression = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDefendantMock))),
-  del: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
 const mockCivilClaimClaimantIntention = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseClaimantIntentMock))),
