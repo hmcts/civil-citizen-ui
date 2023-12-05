@@ -177,13 +177,7 @@ describe('translate party to ccd model', () => {
     const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
   });
-  it('should translate SOLE TRADER party to ccd date format 2', () => {
-    partySoleTrader.dateOfBirth.day=null;
-    partySoleTrader.dateOfBirth.date=new Date('1-1-2003');
-    const partyResponseCCD = toCCDParty(partySoleTrader);
 
-    expect(partyResponseCCD.soleTraderDateOfBirth).toMatch('2003-01-01');
-  });
   it('should translate SOLE TRADER party to ccd date empty', () => {
     partySoleTrader.dateOfBirth=null;
     const partyResponseCCD = toCCDParty(partySoleTrader);

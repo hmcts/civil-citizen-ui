@@ -2,7 +2,6 @@ import {CCDParty} from 'models/ccdResponse/ccdParty';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {toCCDAddress} from './convertToCCDAddress';
-import {DateTime} from 'luxon';
 
 export const toCCDParty = (party: Party): CCDParty => {
   return {
@@ -24,11 +23,10 @@ export const toCCDParty = (party: Party): CCDParty => {
   };
 };
 const getStringDate = (party: Party): string => {
-  if (party?.dateOfBirth) {
-    if(party?.dateOfBirth.day && party?.dateOfBirth.month && party.dateOfBirth.year){
-      return party.dateOfBirth.year+'-'+party.dateOfBirth.month+'-'+party.dateOfBirth.day;
-    }
-    return party.dateOfBirth.date?DateTime.fromJSDate(party.dateOfBirth.date).toFormat('yyyy-MM-dd'):DateTime.fromJSDate(new Date(party.dateOfBirth as unknown as string)).toFormat('yyyy-MM-dd');
+  if (party?.dateOfBirth && party?.dateOfBirth.day && party?.dateOfBirth.month && party.dateOfBirth.year) {
+    const month = party.dateOfBirth.month.toString().padStart(2, '0');
+    const day = party.dateOfBirth.day.toString().padStart(2, '0');
+    return party.dateOfBirth.year + '-' + month + '-' + day;
   }
   return null;
 };
