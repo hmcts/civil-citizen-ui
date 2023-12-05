@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   MEDIATION_ALTERNATIVE_EMAIL_URL,
-  MEDIATION_DATES_CONFIRMATION_URL,
+  MEDIATION_NEXT_3_MONTHS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -64,13 +64,13 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to the mediation dates confirmation page ', async () => {
+    it('should redirect to the mediation next 3 months confirmation page ', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeEmailAddress: 'test@test.com'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_DATES_CONFIRMATION_URL);
+          expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
         });
     });
     it('should Valid email when is empty', async () => {
