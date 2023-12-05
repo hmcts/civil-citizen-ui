@@ -1,17 +1,17 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {
   FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PinType} from '../../../../common/models/firstContact/pin';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {PinType} from 'models/firstContact/pin';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 const CryptoJS = require('crypto-js');
 
@@ -34,7 +34,7 @@ pinController.get(FIRST_CONTACT_PIN_URL, (req: AppRequest<{pin:string}>, res: Re
   renderView(pinForm, false, res);
 });
 
-pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, next: NextFunction) => {
+pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
     const pin = req.body.pin;
@@ -74,18 +74,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       next(error);
     }
   }
-});
+})as RequestHandler);
 
-/*function verifyPin(claimReferenceNumber: string): string {
-  const redirectUri =  config.get<string>('services.cmc.url') + '/receiver';
-  console.log('RedirectUrl : ', redirectUri);
-  //const loginPath =  config.get<string>('services.idam.idamPinUrl');
-  const loginPath = 'https://idam-api.aat.platform.hmcts.net/pin';
-  console.log('RedirectUrl : ', loginPath);
-  const clientId = 'cmc_citizen';
-
-  return `${loginPath}?response_type=code&state=${claimReferenceNumber}&client_id=${clientId}&redirect_uri=${redirectUri}`;
-
-}*/
 
 export default pinController;
