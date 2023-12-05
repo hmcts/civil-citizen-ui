@@ -297,16 +297,20 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
   });
 
-  it('should translate suggestedPaymentIntention paymentDate to ccd', () => {
+  it('should translate applicant1 suggested repaymentPlan SET BY DATE for defendantSpec to ccd', () => {
     //Given
-    const currentDate = new Date(Date.now());
-    claim.claimantResponse.suggestedPaymentIntention = {paymentOption : PaymentOptionType.BY_SET_DATE , 
-      paymentDate : currentDate};
-    
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
+
     //Then
-    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toEqual({paymentSetDate : currentDate});
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).not.toBeNull();
   });
 });
 
