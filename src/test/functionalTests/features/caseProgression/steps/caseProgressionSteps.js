@@ -56,6 +56,10 @@ class UploadEvidenceSteps {
     latestUpdateTab.nextAction('View the order');
   }
 
+  verifyDocumentsUploadedBySolicitor(claimRef, claimType) {
+    documentsTab.open(claimRef, claimType, true);
+  }
+
 }
 
 module.exports = new UploadEvidenceSteps();

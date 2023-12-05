@@ -7,7 +7,7 @@ import {BreathingSpace} from 'models/breathingSpace';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {submitBreathingSpace} from 'services/features/breathingSpace/submission/submitBreathingSpace';
 import {breathingSpaceGuard} from 'routes/guards/breathingSpaceGuard';
-import {BREATHING_SPACE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
 const breathingSpaceCheckAnswersController = Router();
@@ -18,7 +18,7 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
   res.render(checkAnswersViewPath, {summarySections});
 }
 
-breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
+breathingSpaceCheckAnswersController.get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
   breathingSpaceGuard,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
@@ -30,12 +30,12 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_CHECK_ANSWERS_URL,
     }
   }) as RequestHandler);
 
-breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CHECK_ANSWERS_URL, breathingSpaceGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+breathingSpaceCheckAnswersController.post(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, breathingSpaceGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const claimId = req.params.id;
     await submitBreathingSpace(<AppRequest>req);
     await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
-    res.redirect(constructResponseUrlWithIdParams(userId, DASHBOARD_CLAIMANT_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }

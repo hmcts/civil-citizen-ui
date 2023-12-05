@@ -11,6 +11,7 @@ import {
   CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
+  CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
@@ -39,10 +40,10 @@ export function getAcceptOrRejectDefendantResponse(claim: Claim, claimId: string
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE', {
       lng: lang,
     }),
-    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL),
+    url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option) {
+  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
     acceptOrTRejectedTheirResponse.status = TaskStatus.COMPLETE;
   }
   return acceptOrTRejectedTheirResponse;
