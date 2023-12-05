@@ -250,7 +250,6 @@ export {
   mockResponseFullAdmitPayBySetDate,
   mockCivilClaimDocumentUploaded,
   mockCivilClaimFastTrack,
-  mockCivilClaimDefendantCaseProgression,
   mockCivilClaimDocumentClaimantUploaded,
   civilClaimResponseMock,
   mockCivilClaimHearingFee,
