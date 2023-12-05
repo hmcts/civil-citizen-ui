@@ -69,7 +69,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
 
-    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
+    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO && claim.isDefendantAgreedForMediation()) {
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       tasks.push(freeTelephoneMediationTask);
 
@@ -116,7 +116,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO) {
+  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO && claim.isDefendantAgreedForMediation()) {
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
@@ -134,7 +134,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
   const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
   const isSettleTheClaim = (isPartialPaid && claim.hasClaimantConfirmedDefendantPaid()) || isFullPaid;
-  const isFreePhoneMediation = (isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse();
+  const isFreePhoneMediation = claim.isDefendantAgreedForMediation() && (isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse();
 
   if (!isFullPaid) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
