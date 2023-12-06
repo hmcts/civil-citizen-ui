@@ -184,13 +184,14 @@ export class CivilServiceClient {
 
   async loginWithPin(req: AppRequest, pin: string, caseReference: string, redirectUri: string): Promise<AxiosResponse> {
     try {
-      const response:AxiosResponse<object> = await this.client.post(IDAM_LOGIN_WITH_PIN //nosonar
+      const response:AxiosResponse<object> = await this.client.get(IDAM_LOGIN_WITH_PIN //nosonar
         .replace('state', caseReference)
         .replace('redirect_uri', redirectUri)
         .replace('client_id', 'cmc_citizen'), {headers: {'Content-Type': 'application/json', 'pin': pin}});// nosonar
       if (!response.data) {
         return null;
       }
+      console.log('Response: ', JSON.stringify(response));
       return response;
 
     } catch (err: unknown) {

@@ -50,7 +50,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         console.log('Its OCMC claim');
         const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
         console.log('**** Header ********');
-        console.debug('Headres: ', response.headers);
+        console.debug('Headers: ', response.headers);
         res.redirect(response.headers['Location']);
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
