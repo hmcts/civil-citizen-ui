@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {CP_EVIDENCE_UPLOAD_CANCEL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {DASHBOARD_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
@@ -24,7 +24,7 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
     .addParagraph('PAGES.UPLOAD_DOCUMENTS.FORMAT')
-    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL, false, constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL)
+    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL, false, constructResponseUrlWithIdParams(claimId, DASHBOARD_URL)
       .replace(':id', claim.id))
     .build();
 };
