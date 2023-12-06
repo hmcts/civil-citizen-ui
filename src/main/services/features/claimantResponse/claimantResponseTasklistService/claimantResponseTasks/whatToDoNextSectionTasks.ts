@@ -39,7 +39,8 @@ export function getAcceptOrRejectDefendantResponse(claim: Claim, claimId: string
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option) {
+  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option
+    || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option) {
     acceptOrTRejectedTheirResponse.status = TaskStatus.COMPLETE;
   }
   return acceptOrTRejectedTheirResponse;
