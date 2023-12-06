@@ -19,7 +19,7 @@ const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const IdamServiceApiBaseUrl = 'https://idam-api.aat.platform.hmcts.net';
+const IdamServiceApiBaseUrl = 'https://idam-api.demo.platform.hmcts.net';
 const idamClient: CivilServiceClient = new CivilServiceClient(IdamServiceApiBaseUrl);
 
 function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response): void {
