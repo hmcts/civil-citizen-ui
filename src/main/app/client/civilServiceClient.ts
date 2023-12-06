@@ -195,9 +195,10 @@ export class CivilServiceClient {
     const headers = this.getHeaders(pin);
     try {
       console.log('Pin :', pin);
+      console.log('Redirect Uri : ', redirectUri);
       const response:AxiosResponse<object> = await this.client.get(IDAM_LOGIN_WITH_PIN //nosonar
-        .replace('state', caseReference)
         .replace('redirect_uri', redirectUri)
+        .replace('state', caseReference)
         .replace('client_id', 'cmc_citizen'), headers);// nosonar
       if (!response.data) {
         return null;
