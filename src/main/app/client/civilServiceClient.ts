@@ -72,6 +72,15 @@ export class CivilServiceClient {
     };
   }
 
+  getHeaders(pin: string) {
+    return{
+      headers: {
+        'Content-Type': 'application/json',
+        'pin': pin,
+      },
+    };
+  }
+
   async getClaimsForClaimant(req: AppRequest): Promise<DashboardClaimantResponse> {
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
@@ -183,11 +192,13 @@ export class CivilServiceClient {
   }
 
   async loginWithPin(req: AppRequest, pin: string, caseReference: string, redirectUri: string): Promise<AxiosResponse> {
+    const headers = this.getHeaders(pin);
     try {
+      console.log('Pin :', pin);
       const response:AxiosResponse<object> = await this.client.get(IDAM_LOGIN_WITH_PIN //nosonar
         .replace('state', caseReference)
         .replace('redirect_uri', redirectUri)
-        .replace('client_id', 'cmc_citizen'), {headers: {'Content-Type': 'application/json', 'pin': pin}});// nosonar
+        .replace('client_id', 'cmc_citizen'), headers);// nosonar
       if (!response.data) {
         return null;
       }
