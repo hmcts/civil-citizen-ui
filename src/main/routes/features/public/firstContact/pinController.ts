@@ -51,7 +51,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
         console.log('**** Header ********');
         console.debug('Headers: ', response.headers);
-        res.redirect(response.headers['Location']);
+        res.redirect(response.data);
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
         await saveDraftClaim(claim.id, claim, true);
