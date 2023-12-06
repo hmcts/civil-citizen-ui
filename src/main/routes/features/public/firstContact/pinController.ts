@@ -45,10 +45,10 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
       const pin = pinForm.model.pin;
       if (pin.length === 8) {
         console.log('Its OCMC claim');
-        const response = await civilServiceClient.verifyOcmePin(pin, claimReferenceNumber);
-        console.log('**** Header ********');
-        console.debug('Headers: ', response.data);
-        res.redirect(response.data);
+        const redirectUrl = 'https://idam-api.demo.platform.hmcts.net/pin?response_type=code&state='+claimReferenceNumber+'&client_id=cmc_citizen&redirect_uri=https://moneyclaims1.demo.platform.hmcts.net/receiver';
+        console.log('RedirectUrl : ', redirectUrl);
+        res.header('pin', pin);
+        res.redirect(redirectUrl);
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
         await saveDraftClaim(claim.id, claim, true);

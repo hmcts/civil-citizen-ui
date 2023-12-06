@@ -17,7 +17,6 @@ import {
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_USER_CASE_ROLE,
-  CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -180,21 +179,6 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaim(caseDetails);
-
-    } catch (err: unknown) {
-      logger.error(err);
-      throw err;
-    }
-  }
-
-  async verifyOcmePin(pin: string, caseReference: string): Promise<AxiosResponse> {
-    try {
-      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL //nosonar
-        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// nosonar
-      if (!response.data) {
-        return null;
-      }
-      return response;
 
     } catch (err: unknown) {
       logger.error(err);
