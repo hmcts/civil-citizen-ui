@@ -27,7 +27,7 @@ judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL
     try {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(generateRedisKey(req));
-      const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
+      const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence || 0);
       renderView(req, res, claim, lang, claimFee);
     } catch (error) {
       next(error);
