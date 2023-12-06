@@ -1,4 +1,4 @@
-import {CANCEL_TRIAL_ARRANGEMENTS, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,} from 'routes/urls';
+import {CANCEL_TRIAL_ARRANGEMENTS, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestHandler, Router} from 'express';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';

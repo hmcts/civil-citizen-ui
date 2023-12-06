@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL
+  DEFENDANT_SUMMARY_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {
