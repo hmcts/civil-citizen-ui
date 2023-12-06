@@ -45,6 +45,7 @@ const TelephoneMediation = require('../pages/defendantLipResponse/telephoneMedia
 const EmailConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/emailConfirmation');
 const PhoneConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/phoneConfirmation');
 const AlternativeEmail = require('../pages/defendantLipResponse/availabilityForMediation/alternativeEmail');
+const NextThreeMonthsDate = require('../pages/defendantLipResponse/availabilityForMediation/nextThreeMonthsDate');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -78,6 +79,7 @@ const telephoneMediation = new TelephoneMediation();
 const emailConfirmation = new EmailConfirmation();
 const phoneConfirmation = new PhoneConfirmation();
 const alternativeEmail = new AlternativeEmail();
+const nextThreeMonthsDate = new NextThreeMonthsDate();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -469,6 +471,11 @@ class ResponseSteps {
     await alternativeEmail.confirmAltEmail(claimRef);
   }
 
+  async EnterUnavailableDates(claimRef) {
+    await nextThreeMonthsDate.enterNextThreeMonthsDate(claimRef);
+    await availabilityDates.enterUnavailableDates(true);
+    await taskListPage.verifyResponsePageContent();
+  }
   EnterNoMediation(claimRef){
     freeTelephoneMediation.selectNoMediation(claimRef);
   }

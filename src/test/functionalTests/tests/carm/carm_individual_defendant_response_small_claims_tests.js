@@ -45,4 +45,5 @@ Scenario('LiP Defendant Response with Part Admit @carm', async () => {
   await ResponseSteps.ConfirmEmailDetails(claimRef);
   await ResponseSteps.ConfirmPhoneDetails(claimRef);
   await ResponseSteps.ConfirmAltEmailDetails(claimRef);
+  await ResponseSteps.EnterUnavailableDates(claimRef);
 }).tag('@regression');
