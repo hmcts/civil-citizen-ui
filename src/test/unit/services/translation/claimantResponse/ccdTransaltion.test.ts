@@ -16,10 +16,10 @@ import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
-import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { PaymentIntention } from 'common/form/models/admission/paymentIntention';
-import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymentPlan';
+import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {CCDRepaymentPlanFrequency} from 'common/models/ccdResponse/ccdRepaymentPlan';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();

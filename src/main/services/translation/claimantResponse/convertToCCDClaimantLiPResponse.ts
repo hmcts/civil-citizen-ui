@@ -6,7 +6,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toCCDYesNoFromBooleanString} from 'services/translation/response/convertToCCDYesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
+import {RepaymentDecisionType} from 'common/models/claimantResponse/RepaymentDecisionType';
 
 export enum CCDChoosesHowToProceed {
   SIGN_A_SETTLEMENT_AGREEMENT = 'SIGN_A_SETTLEMENT_AGREEMENT',
