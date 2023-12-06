@@ -201,7 +201,7 @@ export class CivilServiceClient {
       if (!response.data) {
         return null;
       }
-      console.log('Response: ', JSON.stringify(response));
+      console.log('Response: ', response);
       return response;
 
     } catch (err: unknown) {
