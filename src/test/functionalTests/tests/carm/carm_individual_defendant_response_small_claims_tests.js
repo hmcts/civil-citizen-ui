@@ -24,14 +24,10 @@ Before(async ({api}) => {
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  }else{
-    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
   }
 });
 
-Scenario('LiP Defendant Response with Part Admit @carm', async () => {
+Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,4 +41,4 @@ Scenario('LiP Defendant Response with Part Admit @carm', async () => {
   await ResponseSteps.ConfirmEmailDetails(claimRef);
   await ResponseSteps.ConfirmPhoneDetails(claimRef);
   await ResponseSteps.ConfirmAltEmailDetails(claimRef);
-}).tag('@regression');
+}).tag('@carm');
