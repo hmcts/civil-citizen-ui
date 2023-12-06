@@ -193,7 +193,7 @@ export class CivilServiceClient {
 
   async loginWithPin(req: AppRequest, pin: string, caseReference: string, redirectUri: string): Promise<AxiosResponse> {
     const headers = this.getHeaders(pin);
-    const url = '/pin?client_id=cmc_citizen&redirect_uri='+redirectUri+'&state='+caseReference;
+    const url = IDAM_LOGIN_WITH_PIN + '?client_id=cmc_citizen&redirect_uri=' + redirectUri + '&state=' + caseReference;
     try {
       console.log('Pin :', pin);
       console.log('Redirect Uri : ', url);
