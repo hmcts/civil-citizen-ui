@@ -198,10 +198,10 @@ export class CivilServiceClient {
       console.log('Pin :', pin);
       console.log('Redirect Uri : ', url);
       const response:AxiosResponse<object> = await this.client.get(url, headers);// nosonar
-      if (!response.data) {
+      console.log('Response: ', response);
+      if (!response.headers) {
         return null;
       }
-      console.log('Response: ', response);
       return response;
 
     } catch (err: unknown) {
