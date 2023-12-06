@@ -8,7 +8,7 @@ import {
 } from 'routes/urls';
 import {mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
