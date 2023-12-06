@@ -13,7 +13,7 @@ import {
   CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_FEES_PAYMENT_URL,
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
-  CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_VALIDATE_PIN_URL, CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -380,6 +380,17 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
+      return plainToInstance(PaymentInformation, response.data);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);

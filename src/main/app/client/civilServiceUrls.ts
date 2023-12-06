@@ -18,3 +18,4 @@ export const CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE =`${CIVIL_SERVICE_CASES
 export const CIVIL_SERVICE_USER_CASE_ROLE = `${CIVIL_SERVICE_CASES_URL}:claimId/userCaseRoles`;
 export const CIVIL_SERVICE_COURT_DECISION =  `${CIVIL_SERVICE_CASES_URL}:claimId/courtDecision`;
 export const CIVIL_SERVICE_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment`;
+export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/payment/:paymentReference/status`;
