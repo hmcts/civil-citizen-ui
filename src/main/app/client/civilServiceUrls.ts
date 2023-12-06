@@ -5,6 +5,7 @@ export const CIVIL_SERVICE_CLAIM_AMOUNT_URL = `${CIVIL_SERVICE_FEES_URL}/claim`;
 export const CIVIL_SERVICE_HEARING_URL = `${CIVIL_SERVICE_FEES_URL}/hearing`;
 export const CIVIL_SERVICE_FEES_RANGES = `${CIVIL_SERVICE_FEES_URL}/ranges/`;
 export const CIVIL_SERVICE_VALIDATE_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference`;
+export const CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/ocmc/:caseReference`;
 export const CIVIL_SERVICE_DOCUMENT_URL = '/case/document/';
 export const CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL = `${CIVIL_SERVICE_DOCUMENT_URL}downloadDocument/:documentId`;
 export const CIVIL_SERVICE_UPLOAD_DOCUMENT_URL = `${CIVIL_SERVICE_DOCUMENT_URL}generateAnyDoc`;

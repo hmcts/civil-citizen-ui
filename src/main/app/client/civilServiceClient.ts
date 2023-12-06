@@ -8,12 +8,17 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
-  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_COURT_DECISION,
+  CIVIL_SERVICE_COURT_LOCATIONS,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
-  CIVIL_SERVICE_VALIDATE_PIN_URL, IDAM_LOGIN_WITH_PIN,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
+  CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -68,15 +73,6 @@ export class CivilServiceClient {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
-      },
-    };
-  }
-
-  getHeaders(pin: string) {
-    return{
-      headers: {
-        'Content-Type': 'application/json',
-        'pin': pin,
       },
     };
   }
@@ -191,15 +187,11 @@ export class CivilServiceClient {
     }
   }
 
-  async loginWithPin(req: AppRequest, pin: string, caseReference: string, redirectUri: string): Promise<AxiosResponse> {
-    const headers = this.getHeaders(pin);
-    const url = IDAM_LOGIN_WITH_PIN + '?client_id=cmc_citizen&redirect_uri=' + redirectUri + '&state=' + caseReference;
+  async verifyOcmePin(pin: string, caseReference: string): Promise<AxiosResponse> {
     try {
-      console.log('Pin :', pin);
-      console.log('Redirect Uri : ', url);
-      const response:AxiosResponse<object> = await this.client.get(url, headers);// nosonar
-      console.log('Response: ', response);
-      if (!response.headers) {
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL //nosonar
+        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// nosonar
+      if (!response.data) {
         return null;
       }
       return response;
