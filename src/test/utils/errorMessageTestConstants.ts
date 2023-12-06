@@ -174,7 +174,7 @@ export const enum TestMessages {
   VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH = 'Date of document must include a month',
   VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
   VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past',
-  VALID_CONTACT_PERSON = 'Enter contact person',
+  ENTER_CONTACT_PERSON = 'Enter contact person',
   FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters'
 
 }

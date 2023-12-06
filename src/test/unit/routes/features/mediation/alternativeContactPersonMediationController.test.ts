@@ -66,7 +66,7 @@ describe('Mediation Alternative Contact Person Confirmation Controller', () => {
         .send({alternativeContactPerson: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CONTACT_PERSON);
+          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
         });
     });
 
