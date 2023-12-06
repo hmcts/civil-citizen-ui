@@ -351,6 +351,21 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
+    "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
+      "PAGE_TITLE": "Unavailability dates for mediation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
+      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+    },
+    "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
+      "PAGE_TITLE": "Unavailability for mediation",
+      "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
+      "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+    },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
       "PAGE_TEXT": "Please provide an alternative email address"
@@ -1628,8 +1643,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
-      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_1": "To find the deadline date that you need to respond by refer to the letter or email you received explaining the claim. The response deadline will also be shown when you create and or login to your account.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
       "PARAGRAPH_4_PART_1": "The claimant can apply for a",
@@ -1987,6 +2001,10 @@
       "PAGE_TITLE": "Mediation - Provide company contact number",
       "TITLE": "Who should the mediation service call?",
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
+    },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
@@ -3005,6 +3023,9 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Date they are unavailable must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Date they are unavailable from must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Date they are unavailable to must be in the next 12 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date they are unavailable must be in the next 3 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date they are unavailable from must be in the next 3 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",

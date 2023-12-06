@@ -351,6 +351,21 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
+    "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
+      "PAGE_TITLE": "Unavailability dates for mediation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
+      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+    },
+    "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
+      "PAGE_TITLE": "Unavailability for mediation",
+      "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
+      "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+    },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
       "PAGE_TEXT": "Please provide an alternative email address"
@@ -1628,8 +1643,7 @@
       "SUBTITLE": "Os na fyddwch yn ymateb",
       "TITLE": "Ymateb i hawliad ariannol",
       "PAGE_TITLE": "Ymateb i hawliad ariannol",
-      "PARAGRAPH_1": "Mae gennych 28 diwrnod i ymateb i'r hawliad o'r dyddiad y cyhoeddodd y llys yr hawliad.",
-      "PARAGRAPH_2": "Mae'r union ddyddiad terfyn yn y llythyr neu'r e-bost a gawsoch yn egluro'r hawliad.",
+      "PARAGRAPH_1": "To find the deadline date that you need to respond by refer to the letter or email you received explaining the claim. The response deadline will also be shown when you create and or login to your account.",
       "PARAGRAPH_3": "Byddwn yn anfon eich ymateb at yr hawlydd (yr unigolyn neu'r sefydliad sy'n dweud bod arnoch arian iddo).",
       "PARAGRAPH_4_CCJ_URL": "Dyfarniad Llys Sirol (CCJ) ",
       "PARAGRAPH_4_PART_1": "Gall yr hawlydd wneud cais am",
@@ -1987,6 +2001,10 @@
       "PAGE_TITLE": "Cyfryngu - Darparwch rif cyswllt cwmni",
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
+    },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
@@ -3005,6 +3023,9 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Mae'n rhaid i’r dyddiad nad yw ar gael fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Mae'n rhaid i’r dyddiad nad yw ar gael o fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 12 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Mae'n rhaid i’r dyddiad nad yw ar gael fod yn y 3 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Mae'n rhaid i’r dyddiad nad yw ar gael o fod yn y 3 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 3 mis nesaf",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad yw ar gael o fod cyn y dyddiad y mae ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
