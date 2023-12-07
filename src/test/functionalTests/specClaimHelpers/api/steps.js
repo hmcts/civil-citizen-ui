@@ -470,7 +470,9 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 const assignSpecCase = async (caseId, type) => {
   if (type === 'lrvlr') {
     await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantLRCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantLRCitizenUser);
   } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
   }
 };

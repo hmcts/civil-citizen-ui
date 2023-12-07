@@ -1,6 +1,7 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -23,3 +24,7 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
