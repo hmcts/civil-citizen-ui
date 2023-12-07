@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import * as requestModels from 'common/models/AppRequest';
 import {CCDClaim, CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import config from 'config';
@@ -607,10 +607,15 @@ describe('Civil Service Client', () => {
   describe('verifyOcmcPin', () => {
 
     it('should get redirectUrl for OCMC claimSummary', async () => {
+      const mockResponse: AxiosResponse = {
+        config: undefined, headers: undefined, statusText: 'OK',
+        status: 200,
+        data: 'https://redirectUrl',
+      };
       //Given
-      const mockGet = jest.fn().mockResolvedValue({data: 'https://redirectUrl'});
-      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      const mockPost = jest.fn().mockResolvedValue(mockResponse);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
       const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
