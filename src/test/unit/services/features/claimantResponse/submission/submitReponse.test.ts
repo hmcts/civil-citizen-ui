@@ -1,12 +1,12 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import * as ccdTranslationService from '../../../../../../main/services/translation/claimantResponse/ccdTranslation';
-import {Claim} from '../../../../../../main/common/models/claim';
+import {Claim} from 'models/claim';
 import * as requestModels from '../../../../../../main/common/models/AppRequest';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../../main/common/models/party';
+import {Party} from 'models/party';
 import {ClaimantResponse} from 'models/claimantResponse';
 import { CaseState } from 'common/form/models/claimDetails';
 import * as ccdTranslationForRequestJudement from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
@@ -31,11 +31,6 @@ describe('Submit claimant to ccd', ()=>{
     nock(citizenBaseUrl)
       .get('/cases/1')
       .reply(200, claimFromService);
-    nock('http://localhost:4000')
-      .get('/fees/claim/500')
-      .reply(200, {
-        calculatedAmountInPence: 100,
-      });
   });
   afterAll(() => {
     nock.cleanAll();
