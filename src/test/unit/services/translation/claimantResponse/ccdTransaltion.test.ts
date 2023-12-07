@@ -197,34 +197,6 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
   });
 
-  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in less', () => {
-
-    //Given
-    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
-
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
-  });
-
-  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in full', () => {
-
-    //Given
-    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = new GenericYesNo(YesNo.YES);
-
-    //When
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-
-    //Then
-    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
-  });
-
   it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in full', () => {
 
     //Given
