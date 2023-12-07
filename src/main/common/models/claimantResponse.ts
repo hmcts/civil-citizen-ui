@@ -14,7 +14,6 @@ import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -69,16 +68,12 @@ export class ClaimantResponse {
   get isCourtDecisionInFavourOfDefendant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }
-  
+
   get isCCJRequested() : boolean {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
   get isClaimantAcceptedPaymentPlan() : boolean {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
-  }
-
-  get isCourtDecisionInFavourOfDefendant(): boolean {
-    return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }
 }
