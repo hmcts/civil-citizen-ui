@@ -8,11 +8,16 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
-  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_COURT_DECISION,
+  CIVIL_SERVICE_COURT_LOCATIONS,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
@@ -187,6 +192,22 @@ export class CivilServiceClient {
     }
   }
 
+  async verifyOcmcPin(pin: string, caseReference: string): Promise<string> {
+    try {
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL //nosonar
+        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return null;
+      }
+      console.log('Response: ', response);
+      return  response.data as string;
+
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
     try {
       const formData = new FormData();
@@ -273,7 +294,7 @@ export class CivilServiceClient {
   async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
-  
+
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }

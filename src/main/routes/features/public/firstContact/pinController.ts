@@ -42,11 +42,13 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
-      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+
       if (pin.length === 8) {
-        const ocmcBaseUrl = config.get<string>('services.cmc.url');
-        res.redirect(ocmcBaseUrl  + '/first-contact/claim-summary' + '?_csrf' + req.csrfToken());
+        const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, cookie.claimReference);
+        console.log('RedirectUrl : ', redirectUrl);
+        res.redirect(redirectUrl);
       } else {
+        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
         await saveDraftClaim(claim.id, claim, true);
         cookie.claimId = claim.id;
         const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
