@@ -50,17 +50,21 @@ applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async
   }
 }) as RequestHandler);
 
-applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res) => {
-  const claimId = req.params.id;
-  const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
-  form.validateSync();
-  await form.validate();
-  if (form.hasErrors()) {
-    const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
-    await renderView(res, req, form, claimId, redirectUrl);
-  } else {
-    const redirectUrl = await getRedirectUrl(claimId, form.model, req);
-    res.redirect(redirectUrl);
+applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res,next: NextFunction) => {
+  try {
+    const claimId = req.params.id;
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    form.validateSync();
+    await form.validate();
+    if (form.hasErrors()) {
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
+      await renderView(res, req, form, claimId, redirectUrl);
+    } else {
+      const redirectUrl = await getRedirectUrl(claimId, form.model, req);
+      res.redirect(redirectUrl);
+    }
+  }catch (error) {
+    next(error);
   }
 }) as RequestHandler);
 
