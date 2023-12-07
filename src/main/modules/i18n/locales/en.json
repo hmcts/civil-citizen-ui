@@ -291,6 +291,17 @@
       "NO": "No"
     }
   },
+  "BANNERS": {
+    "PIN_ERROR_NOTIFICATION": {
+      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
+      "EMAIL":"Email:",
+      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
+      "PHONE":"Telephone: 0300 123 7050",
+      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
+      "SORRY": "Sorry for the inconvenience caused.",
+      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
+    }
+  },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
@@ -429,6 +440,7 @@
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Balance",
+      "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
       "CCJ_AMOUNT_ALREADY_PAID": "Amount already paid",
       "CCJ_FIRST_PAYMENT_DATE": "When you want them to make the first payment?",
@@ -453,10 +465,15 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
       "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
+      "COURT_DECISION_SECTION":"Court Decision",
+      "COURT_DECISION_ROW":"Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN":"Court repayment plan",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Monthly instalment amount",
+      "DATE_FOR_FIRST_INSTALMENT": "Date for first instalment",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "Do you have loans or credit card debts?",
       "DECLARATION": "I declare that the details I have given are true to the best of my knowledge.",
       "DECLARATION_TITLE": "Declaration",
@@ -500,12 +517,15 @@
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
       "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
+      "HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY":"How would you like the defendant to pay?",
       "YOUR_HEARING_REQUIREMENTS_TITLE": "Your hearing requirements",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
+      "IMMEDIATELY":"Immediately",
+      "IN_FULL_BY":"In full by {{ claimantSetDate }}",
       "INCOME_REGULAR": "Regular income",
       "INCOME_JOB": "Income from your job",
       "INCOME_UNIVERSAL_CREDIT": "Universal Credit",
@@ -541,6 +561,7 @@
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "REASON_FOR_REJECTING": "Reason for rejecting their response",
+      "REPAYMENT_IN_FULL":"Repayment in full by {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
       "RESPONSE_DETAILS_TITLE": "Response details",
@@ -2931,6 +2952,12 @@
       }
     },
     "PAY_HEARING_FEE": {
+      "START_PAGE": {
+        "PAGE_TITLE": "Pay the hearing Fee",
+        "TITLE": "Pay hearing fee",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingDueDate }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+      },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",

@@ -604,4 +604,49 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
+  describe('getClaimFeeData', () => {
+    const mockData = {
+      calculatedAmountInPence: 123,
+      code: 'code',
+      version: 1,
+    };
+
+    it('should get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, mockedAppRequest);
+
+      //Then
+      expect(feeResponse).toEqual(mockData);
+    });
+
+    it('should get claim fee amount', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, mockedAppRequest);
+
+      //Then
+      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+    });
+
+    it('should throw error on get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //Then
+      await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
 });
