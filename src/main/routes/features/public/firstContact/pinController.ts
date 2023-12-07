@@ -49,11 +49,16 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         const redirectUri =  'https://moneyclaims1.demo.platform.hmcts.net/receiver';
         console.log('Its OCMC claim');
         const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
-        console.log('**** Header ********');
+        console.log('**** Reponse Header ********');
         console.debug('Response : ', response);
         for (const [key, value] of Object.entries(response.headers)) {
+          console.log('Key: ', key);
+          console.log('Value:', value);
           res.header(key, value);
         }
+        console.log('**** Reponse Header after /pin ********');
+        console.log('Response Headers : ', res.getHeaders());
+
         const ocmcBaseUrl = config.get<string>('services.cmc.url');
         res.redirect(ocmcBaseUrl  + '/first-contact/claim-summary');
       } else {
