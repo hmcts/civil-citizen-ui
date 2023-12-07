@@ -1,8 +1,9 @@
 import {Claim} from 'models/claim';
-import {DASHBOARD_URL, TYPES_OF_DOCUMENTS_URL, MAKE_APPLICATION_TO_COURT} from 'routes/urls';
+import {TYPES_OF_DOCUMENTS_URL, MAKE_APPLICATION_TO_COURT, DEFENDANT_SUMMARY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
 
 const UPLOAD_YOUR_DOCUMENTS = 'PAGES.UPLOAD_YOUR_DOCUMENTS';
 
@@ -29,7 +30,7 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
     .addParagraph('PAGES.UPLOAD_DOCUMENTS.FORMAT')
-    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL, false, constructResponseUrlWithIdParams(claimId, DASHBOARD_URL)
+    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', TYPES_OF_DOCUMENTS_URL, false, constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DEFENDANT_SUMMARY_URL : DASHBOARD_CLAIMANT_URL)
       .replace(':id', claim.id))
     .build();
 };
