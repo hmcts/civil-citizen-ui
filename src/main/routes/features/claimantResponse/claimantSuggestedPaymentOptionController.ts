@@ -8,14 +8,14 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {
-  getClaimantResponse,
   saveClaimantResponse,
 } from 'services/features/claimantResponse/claimantResponseService';
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {AppRequest} from 'models/AppRequest';
+import {clearClaimantSuggestion} from 'routes/features/claimantResponse/clearClaimantSuggestionService';
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
 const claimantSuggestedPaymentOptionController = Router();
@@ -23,17 +23,19 @@ const crParentName = 'suggestedPaymentIntention';
 const crPropertyName = 'paymentOption';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response): void {
-  res.render(claimantSuggestedPaymentOptionViewPath, {form: form, isClaimantResponse : true});
+  res.render(claimantSuggestedPaymentOptionViewPath, {form: form, isClaimantResponse: true});
 }
 
 claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
-    renderView(new GenericForm(new PaymentOption(claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
+    const claimId = generateRedisKey(req as unknown as AppRequest);
+    const claim = await getCaseDataFromStore(claimId, true);
+    const updatedClaim = await clearClaimantSuggestion(claimId, claim);
+    renderView(new GenericForm(new PaymentOption(updatedClaim.claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+}) as RequestHandler);
 
 claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next) => {
   try {
@@ -48,7 +50,7 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
       let redirectUrl: string;
       switch (form.model.paymentType) {
         case PaymentOptionType.IMMEDIATELY:
-          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest> req, claimId);
+          redirectUrl = await getDecisionOnClaimantProposedPlan(<AppRequest>req, claimId);
           break;
         case PaymentOptionType.INSTALMENTS:
           redirectUrl = CLAIMANT_RESPONSE_PAYMENT_PLAN_URL;
@@ -65,6 +67,6 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+}) as RequestHandler);
 
 export default claimantSuggestedPaymentOptionController;
