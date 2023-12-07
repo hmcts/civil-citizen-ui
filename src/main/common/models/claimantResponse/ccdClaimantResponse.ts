@@ -9,8 +9,8 @@ import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
-import {CCDClaimantPayBySetDate} from '../ccdResponse/ccdPayBySetDate';
 import {CCDRepaymentPlanFrequency} from '../ccdResponse/ccdRepaymentPlan';
+import {CCDClaimantPayBySetDate} from '../ccdResponse/ccdPayBySetDate';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;

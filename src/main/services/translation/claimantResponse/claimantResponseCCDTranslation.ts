@@ -10,9 +10,9 @@ import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDClaimantPaymentOption, toCCDClaimantSuggestedPayByDate, toCCDClaimantSuggestedPayByInstalments} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
-import {toCCDRepaymentPlanFrequency} from '../response/convertToCCDRepaymentPlan';
-import {PaymentDate} from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import { toCCDRepaymentPlanFrequency } from '../response/convertToCCDRepaymentPlan';
+import { toCCDClaimantPayBySetDate } from '../response/convertToCCDPayBySetDate';
+import { PaymentDate } from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
