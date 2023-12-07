@@ -1,10 +1,17 @@
 import {Claim} from 'models/claim';
-import {DASHBOARD_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {DASHBOARD_URL, TYPES_OF_DOCUMENTS_URL, MAKE_APPLICATION_TO_COURT} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 
+const UPLOAD_YOUR_DOCUMENTS = 'PAGES.UPLOAD_YOUR_DOCUMENTS';
+
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(`${UPLOAD_YOUR_DOCUMENTS}.AFTER_THE_DEADLINE`)}
+        <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${t(MAKE_APPLICATION_TO_COURT)}>${t(`${UPLOAD_YOUR_DOCUMENTS}.APPLY_TO_THE_COURT`)}</a>
+        ${t(`${UPLOAD_YOUR_DOCUMENTS}.IF_YOU_WANT_ANY`)}
+    </p><br>`;
+
   return new UploadYourDocumentsSectionBuilder()
     .addMainTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
     .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
@@ -17,9 +24,7 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.THE_OTHER_PARTIES')
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.DEADLINES_FOR_UPLOADING')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CHECK_THE_ORDER_DEADLINES')
-    .addLink('PAGES.UPLOAD_YOUR_DOCUMENTS.APPLY_TO_THE_COURT', 'TODO: apply to the court URL',
-      'PAGES.UPLOAD_YOUR_DOCUMENTS.AFTER_THE_DEADLINE',
-      'PAGES.UPLOAD_YOUR_DOCUMENTS.IF_YOU_WANT_ANY')
+    .addRawHtml(linkParagraph)
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.YOU_DO_NOT_HAVE')
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
