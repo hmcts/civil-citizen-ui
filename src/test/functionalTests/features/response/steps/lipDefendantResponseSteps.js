@@ -41,6 +41,10 @@ const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/wh
 const WhyDoYouDisagree = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagree');
 const ListYourEvidence = require('../pages/defendantLipResponse/whyDoYouDisagree/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/freeTelephoneMediation');
+const TelephoneMediation = require('../pages/defendantLipResponse/telephoneMediation/telephoneMediation');
+const EmailConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/emailConfirmation');
+const PhoneConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/phoneConfirmation');
+const AlternativeEmail = require('../pages/defendantLipResponse/availabilityForMediation/alternativeEmail');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -70,6 +74,10 @@ const requestMoreTime = new RequestMoreTime();
 const mediationCanWeUse = new MediationCanWeUse();
 const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
+const telephoneMediation = new TelephoneMediation();
+const emailConfirmation = new EmailConfirmation();
+const phoneConfirmation = new PhoneConfirmation();
+const alternativeEmail = new AlternativeEmail();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -151,11 +159,17 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef) {
+  async EnterPersonalDetails(claimRef, carmEnabled) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(claimRef);
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+  }
+
+  async EnterCompDetails(carmEnabled) {
+    await taskListPage.verifyResponsePageContent();
+    await nameAndAddressDetailsPage.enterCompanyContactDetails();
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -438,6 +452,21 @@ class ResponseSteps {
   async EnterFreeTelephoneMediationDetails(claimRef) {
     await freeTelephoneMediation.selectMediation(claimRef);
     await mediationCanWeUse.selectOptionForMediation(claimRef);
+  }
+
+  async EnterTelephoneMediationDetails(claimRef) {
+    await telephoneMediation.selectMediation(claimRef);
+  }
+
+  async ConfirmEmailDetails(claimRef) {
+    await emailConfirmation.confirmEmail(claimRef);
+  }
+
+  async ConfirmPhoneDetails(claimRef) {
+    await phoneConfirmation.confirmPhone(claimRef);
+  }
+  async ConfirmAltEmailDetails(claimRef) {
+    await alternativeEmail.confirmAltEmail(claimRef);
   }
 
   EnterNoMediation(claimRef){

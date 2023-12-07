@@ -21,6 +21,7 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
+const smallClaimSpecData = require('../fixtures/events/createSmallTrackClaimSpec');
 const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
 const claimSpecDataLRvLR = require('../fixtures/events/createClaimSpecLRvLR.js');
 const claimSpecDataFastTrackLRvLR = require('../fixtures/events/createClaimSpecFastTrackLrvLR');
@@ -32,6 +33,7 @@ const {submitEvent} = require('./apiRequest');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+  CREATE_SPEC_CLAIM_SMALLTRACK: (defType) => smallClaimSpecData.createClaim(defType),
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
@@ -116,7 +118,7 @@ module.exports = {
     console.log('End of performCitizenResponse()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, defendantType) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -125,6 +127,9 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
+    } else if (claimType === 'SmallClaims' && defendantType){
+      console.log('Creating small claims with defendant type...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_SMALLTRACK(defendantType);
     } else {
       console.log('Creating small claims...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
