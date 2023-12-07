@@ -83,7 +83,6 @@ withPipeline(type, product, component) {
   syncBranchesWithMaster(branchesToSync)
 
   onPR {
-    env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.ENVIRONMENT = "preview"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     loadVaultSecrets(secrets)
