@@ -46,6 +46,8 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
     } else {
       const pin = pinForm.model.pin;
       if (pin.length === 8) {
+        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
+        console.log('Claim:', claim);
         const redirectUri =  'https://moneyclaims1.demo.platform.hmcts.net/receiver';
         console.log('Its OCMC claim');
         const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
