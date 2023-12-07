@@ -75,6 +75,10 @@
   border-left-width: 5px;
 }
 
+.panel-error {
+  background: $govuk-error-colour;
+}
+
 .govuk-description-block {
   background-color: $govuk-description-block-colour;
   margin-right: 30px;

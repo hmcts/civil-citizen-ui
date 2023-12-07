@@ -2,6 +2,7 @@ const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -27,3 +28,7 @@ Scenario('Case progression journey - Fast Track - Verify uploaded documents by L
     UploadEvidenceSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
