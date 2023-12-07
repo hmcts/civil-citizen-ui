@@ -28,7 +28,7 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1AcceptPartAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
-  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
-  applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
+  applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
+  applicant1ProceedWithClaim?: YesNoUpperCamelCase;
 }

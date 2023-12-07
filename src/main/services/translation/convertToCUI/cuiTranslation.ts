@@ -15,7 +15,7 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {toCUICCJRequest, toCUIClaimantPaymentOption, toCUIChoosesHowToProceed} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {toCUICCJRequest, toCUIChoosesHowToProceed, toCUIClaimantPaymentOption} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import { InterestEndDateType, SameRateInterestType } from 'common/form/models/claimDetails';
@@ -45,7 +45,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.specClaimTemplateDocumentFiles = ccdClaim.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
   claim.specClaimTemplateDocumentFiles = ccdClaim.servedDocumentFiles?.timelineEventUpload ? ccdClaim.servedDocumentFiles.timelineEventUpload[0].value : undefined;
   claim.caseRole = ccdClaim.caseRole;
-  claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
+  claim.interest = claim.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.respondentPaymentDeadline = ccdClaim.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid ? ccdClaim.respondToClaimAdmitPartLRspec.whenWillThisAmountBePaid : undefined;
 
   if (claim.isFullAdmission()) {
@@ -62,10 +62,10 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claimantResponse.submittedDate = ccdClaim?.applicant1ResponseDate;
   claimantResponse.hasDefendantPaidYou = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitConfirmAmountPaidSpec);
   claim.claimantResponse = claimantResponse;
+  claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed[ccdClaim.applicant1LiPResponse?.applicant1ChoosesHowToProceed];
   claim.caseRole = ccdClaim.caseRole;
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
-  claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed[ccdClaim.applicant1LiPResponse?.applicant1ChoosesHowToProceed];
   return claim;
 };
 
