@@ -291,6 +291,17 @@
       "NO": "Naddo"
     }
   },
+  "BANNERS": {
+    "PIN_ERROR_NOTIFICATION": {
+      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
+      "EMAIL":"Email:",
+      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
+      "PHONE":"Telephone: 0300 123 7050",
+      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
+      "SORRY": "Sorry for the inconvenience caused.",
+      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
+    }
+  },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Derbyn neu wrthod y £{{ admittedAmount }}",
@@ -1633,8 +1644,7 @@
       "SUBTITLE": "Os na fyddwch yn ymateb",
       "TITLE": "Ymateb i hawliad ariannol",
       "PAGE_TITLE": "Ymateb i hawliad ariannol",
-      "PARAGRAPH_1": "Mae gennych 28 diwrnod i ymateb i'r hawliad o'r dyddiad y cyhoeddodd y llys yr hawliad.",
-      "PARAGRAPH_2": "Mae'r union ddyddiad terfyn yn y llythyr neu'r e-bost a gawsoch yn egluro'r hawliad.",
+      "PARAGRAPH_1": "To find the deadline date that you need to respond by refer to the letter or email you received explaining the claim. The response deadline will also be shown when you create and or login to your account.",
       "PARAGRAPH_3": "Byddwn yn anfon eich ymateb at yr hawlydd (yr unigolyn neu'r sefydliad sy'n dweud bod arnoch arian iddo).",
       "PARAGRAPH_4_CCJ_URL": "Dyfarniad Llys Sirol (CCJ) ",
       "PARAGRAPH_4_PART_1": "Gall yr hawlydd wneud cais am",
