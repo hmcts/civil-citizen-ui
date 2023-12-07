@@ -199,7 +199,6 @@ export class CivilServiceClient {
       if (!response.data) {
         return null;
       }
-      console.log('Response: ', response);
       return  response.data as string;
 
     } catch (err: unknown) {

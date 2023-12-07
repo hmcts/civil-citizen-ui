@@ -5,13 +5,13 @@ import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PinType} from '../../../../common/models/firstContact/pin';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {PinType} from 'models/firstContact/pin';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 const CryptoJS = require('crypto-js');
 
@@ -42,7 +42,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
-
       if (pin.length === 8) {
         const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, cookie.claimReference);
         console.log('RedirectUrl : ', redirectUrl);

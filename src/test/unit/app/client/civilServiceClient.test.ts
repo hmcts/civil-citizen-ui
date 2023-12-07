@@ -604,4 +604,19 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
+  describe('verifyOcmcPin', () => {
+
+    it('should get redirectUrl for OCMC claimSummary', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: 'https://redirectUrl'});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+
+      //Then
+      expect(redirectUrl).toEqual('https://redirectUrl');
+    });
+  });
 });
