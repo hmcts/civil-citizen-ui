@@ -638,4 +638,37 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getFeePaymentRedirectInformation(claimId,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
+
+  describe('getFeePaymentStatus', () => {
+    const mockHearingFeePaymentRedirectInfo = {
+      status: 'Success',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
+      paymentReference: 'RC-1701-0909-0602-0418',
+    };
+    it('should get payment status info', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockHearingFeePaymentRedirectInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, mockedAppRequest);
+
+      //Then
+      expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
+    });
+
+    it('should throw error on get hearing fee redirect information', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //Then
+      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
 });
