@@ -8,7 +8,6 @@ export class PaymentInformation {
   errorCode?: string;
   errorDescription?: string;
 
-
   constructor(externalReference?: string, paymentReference?: string, status?: string, nextUrl?: string, dateCreated?: string, errorCode?: string, errorDescription?: string) {
     this.externalReference = externalReference;
     this.paymentReference = paymentReference;

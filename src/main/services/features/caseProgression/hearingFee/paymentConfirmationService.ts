@@ -11,7 +11,6 @@ const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 const success = 'Success';
 
-
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
 
   const redisClaimId = generateRedisKey(<AppRequest>req);
