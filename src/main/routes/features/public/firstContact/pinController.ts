@@ -19,6 +19,8 @@ const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const IdamServiceApiBaseUrl = 'https://idam-api.demo.platform.hmcts.net';
+const idamClient: CivilServiceClient = new CivilServiceClient(IdamServiceApiBaseUrl);
 
 function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response): void {
   const form = Object.assign(pinForm);
@@ -44,11 +46,16 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
     } else {
       const pin = pinForm.model.pin;
       if (pin.length === 8) {
+        const redirectUri =  'https://moneyclaims1.demo.platform.hmcts.net/receiver';
         console.log('Its OCMC claim');
-        const redirectUrl = 'https://idam-api.demo.platform.hmcts.net/pin?response_type=code&state='+claimReferenceNumber+'&client_id=cmc_citizen&redirect_uri=https://moneyclaims1.demo.platform.hmcts.net/receiver';
-        console.log('RedirectUrl : ', redirectUrl);
-        res.header('pin', pin);
-        res.redirect(redirectUrl);
+        const response = await idamClient.loginWithPin(<AppRequest>req, pin, claimReferenceNumber, redirectUri);
+        console.log('**** Header ********');
+        console.debug('Response : ', response);
+        for (const [key, value] of Object.entries(response.headers)) {
+          res.header(key, value);
+        }
+        const ocmcBaseUrl = config.get<string>('services.cmc.url');
+        res.redirect(ocmcBaseUrl  + '/first-contact/claim-summary');
       } else {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, claimReferenceNumber);
         await saveDraftClaim(claim.id, claim, true);
