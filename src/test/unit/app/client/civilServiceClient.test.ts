@@ -606,6 +606,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
+
   describe('getFeePaymentRedirectInformation', () => {
     const claimId = '1';
     it('should get payment redirect information', async () => {
