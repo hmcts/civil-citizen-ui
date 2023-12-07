@@ -50,6 +50,9 @@ services:
   pcq:
     url: 'https://pcq.aat.platform.hmcts.net'
     tokenKey: 'test'
+  govPay:
+    url: 'https://card.payments.service.gov.uk'
+
 health:
   timeout: 5000
   deadline: 15000
