@@ -13,8 +13,8 @@ import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convert
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
 import {toCCDClaimantSuggestedPayByDate, toCCDClaimantSuggestedPayByInstalments}
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {

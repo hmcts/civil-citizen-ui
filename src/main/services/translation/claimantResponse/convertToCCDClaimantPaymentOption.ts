@@ -1,5 +1,5 @@
-import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponse} from 'models/claimantResponse';
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
@@ -8,8 +8,7 @@ export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType)
       return CCDClaimantPaymentOption.REPAYMENT_PLAN;
     case PaymentOptionType.BY_SET_DATE:
       return CCDClaimantPaymentOption.SET_DATE;
-    default:
-      return CCDClaimantPaymentOption.IMMEDIATELY;
+    default: return CCDClaimantPaymentOption.IMMEDIATELY;
   }
 };
 
