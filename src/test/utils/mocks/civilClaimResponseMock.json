@@ -187,6 +187,13 @@
         "phone": "111"
       },
       "partyDetails": {
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 18",
+          "addressLine3": "Church Road"
+        },
         "contactPerson": "Felipe",
         "partyName": "Version 1"
       }

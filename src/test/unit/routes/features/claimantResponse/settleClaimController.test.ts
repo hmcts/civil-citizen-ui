@@ -12,6 +12,11 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as utilService from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
+import {CaseState} from 'form/models/claimDetails';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -22,8 +27,10 @@ describe('Claimant Response - Settle Claim Controller', () => {
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const claim = new Claim();
+  claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   beforeEach(() => {
-    jest.spyOn(utilService, 'getClaimById').mockResolvedValue({ isClaimantIntentionPending: () => true } as Claim);
+    jest.clearAllMocks();
+    jest.spyOn(utilService, 'getClaimById').mockResolvedValue(claim);
   });
   beforeAll(() => {
     nock(idamUrl)
@@ -34,6 +41,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
   describe('on GET', () => {
     it('should return settle claim page', async () => {
       jest.spyOn(claim, 'isPartialAdmissionPaid').mockReturnValue(true);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(false);
       jest.spyOn(claim, 'partialAdmissionPaidAmount').mockReturnValue(20);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -45,15 +53,18 @@ describe('Claimant Response - Settle Claim Controller', () => {
     });
 
     it('should return settle claim page when defendant paid full amount', async () => {
-      jest.spyOn(claim, 'isFullDefence').mockReturnValueOnce(true);
-      jest.spyOn(claim, 'hasPaidInFull').mockReturnValueOnce(true);
-      jest.spyOn(claim, 'isRejectAllOfClaimAlreadyPaid').mockReturnValueOnce(110);
       mockGetCaseData.mockImplementation(async () => {
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
+        claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 10;
+        claim.totalClaimAmount = 10;
         return claim;
       });
       await request(app).get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you agree the defendant has paid the £110 in full?');
+        expect(res.text).toContain('Do you agree the defendant has paid the £10 in full?');
       });
     });
 

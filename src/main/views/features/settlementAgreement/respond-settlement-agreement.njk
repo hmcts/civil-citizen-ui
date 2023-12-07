@@ -16,23 +16,6 @@
 {% set noHtml %}
   <p class="govuk-body">{{ t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.REQUEST_CCJ') }}</p>
 {% endset %}
-{% if data.repaymentFrequency === TransactionSchedule.WEEK %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.WEEK_LOWER_CASE') %}
-{% endif %}
-{% if data.repaymentFrequency === TransactionSchedule.TWO_WEEKS %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.TWO_WEEKS_LOWER_CASE') %}
-{% endif %}
-{% if data.repaymentFrequency === TransactionSchedule.MONTH %}
-  {% set theAgreementRepaymentFrequency = t('COMMON.SCHEDULE.MONTH') %}
-{% endif %}
-{% if data.paymentOption === PaymentOptionType.BY_SET_DATE %}
-  {% set theAgreement = t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_BY_SET_DATE', { defendant: data.defendant, amount: data.amount, paymentDate: data.paymentDate }) %}
-  {% set completionDate = data.paymentDate %}
-{% else %}
-  {% set theAgreement = t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
-    { defendant: data.defendant, amount: data.amount, paymentAmount: data.paymentAmount, theAgreementRepaymentFrequency: theAgreementRepaymentFrequency, firstRepaymentDate: data.firstRepaymentDate }) %}
-  {% set completionDate = data.finalRepaymentDate %}
-{% endif %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -51,7 +34,7 @@
                   text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.LABEL')
                 },
                 value: {
-                  text: theAgreement
+                  text: data.agreementText
                 }
               },
               {
@@ -59,7 +42,7 @@
                   text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.COMPLETION_DATE.LABEL')
                 },
                 value: {
-                  text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate : completionDate })
+                  text: data.completionDateText
                 }
               }
             ]
