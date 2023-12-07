@@ -30,5 +30,6 @@ export interface CCDClaimantResponse extends ClaimUpdate{
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
+  applicant1FullDefenceConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
 }
