@@ -28,3 +28,7 @@ Scenario('Case progression journey - Small Claims - Verify uploaded documents by
     UploadEvidenceSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
