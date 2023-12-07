@@ -14,8 +14,8 @@ export interface ClaimUpdate {
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   issueDate?: Date;
   respondent1ResponseDeadline?: Date;
-  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1LiPResponse?: CCDApplicantLiPResponse;
+  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   respondentSignSettlementAgreement? : YesNoUpperCamelCase;

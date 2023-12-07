@@ -7,9 +7,9 @@ import {convertToPound} from 'services/translation/claim/moneyConversation';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CCDDJPaymentOption} from 'models/ccdResponse/ccdDJPaymentOption';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
-import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {CCDChoosesHowToProceed} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export const toCUICCJRequest = (ccdClaim: CCDClaim): CCJRequest => {
   const ccjRequest: CCJRequest = new CCJRequest();

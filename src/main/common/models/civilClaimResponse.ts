@@ -74,7 +74,7 @@ import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreath
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
-import {CCDClaimantPaymentOption} from './ccdResponse/ccdClaimantPaymentOption';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export class CivilClaimResponse {
   id: string;
