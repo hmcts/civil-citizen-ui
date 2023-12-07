@@ -3,6 +3,7 @@ const config = require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 let claimRef;
 let claimType = 'FastTrack';
@@ -33,4 +34,8 @@ Before(async ({api}) => {
 Scenario('Company personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetailError(claimRef);
+});
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
 });

@@ -1,6 +1,7 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -23,3 +24,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page Fo
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
