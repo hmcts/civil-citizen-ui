@@ -32,7 +32,6 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res, next: NextF
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    console.log('Cookies Set : ', res.get('SESSION_ID'));
     if (claim && !claim.isEmpty()) {
       await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
       const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
