@@ -136,6 +136,6 @@ export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
   return date >= specificDate;
 }
 
-export function convertDateToStringFormat(date: Date | string, format? :'yyyy-MM-dd') : string {
+export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
   return DateTime.fromJSDate(new Date(date)).toFormat(format);
 }
