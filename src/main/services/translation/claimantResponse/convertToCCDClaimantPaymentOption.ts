@@ -1,6 +1,6 @@
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {DateTime} from 'luxon';
+import {convertDateToStringFormat} from 'common/utils/dateUtils';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
@@ -25,7 +25,7 @@ export const toCCDClaimantSuggestedFirstRepaymentDate = (claimantResponse?: Clai
   const firstRepaymentDate = claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.firstRepaymentDate;
   
   if(toCCDClaimantSuggestedPayByInstalments(claimantResponse) && (firstRepaymentDate)) {
-    return DateTime.fromJSDate(new Date((firstRepaymentDate))).toFormat('yyyy-MM-dd');
+    return convertDateToStringFormat(firstRepaymentDate);
   } 
 
   return undefined;
