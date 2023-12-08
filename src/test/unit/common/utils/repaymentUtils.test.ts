@@ -16,7 +16,6 @@ import {
   getPaymentDate,
   getRepaymentFrequency,
   getRepaymentLength,
-  getPaymentOptionType,
 } from 'common/utils/repaymentUtils';
 import {createClaimWithBasicRespondentDetails} from '../../../utils/mockClaimForCheckAnswers';
 import {t} from 'i18next';
@@ -466,25 +465,6 @@ describe('repaymentUtils', () => {
       const repaymentLength = getRepaymentLength(claim, 'en');
       //Then
       expect(repaymentLength).toContain('20');
-    });
-  });
-
-  describe('getPaymentOption', () => {
-    it('should return payment option when response type is part admission', () => {
-      //Given
-      const claim = getClaimForPA(TransactionSchedule.WEEK);
-      //When
-      const paymentOption = getPaymentOptionType(claim);
-      //Then
-      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
-    });
-    it('should return payment option when response type is full admission', () => {
-      //Given
-      const claim = getClaimForFA(TransactionSchedule.WEEK);
-      //When
-      const paymentOption = getPaymentOptionType(claim);
-      //Then
-      expect(paymentOption).toEqual(PaymentOptionType.INSTALMENTS);
     });
   });
 });

@@ -2,6 +2,7 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -31,3 +32,7 @@ Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});

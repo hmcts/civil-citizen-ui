@@ -291,6 +291,17 @@
       "NO": "No"
     }
   },
+  "BANNERS": {
+    "PIN_ERROR_NOTIFICATION": {
+      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
+      "EMAIL":"Email:",
+      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
+      "PHONE":"Telephone: 0300 123 7050",
+      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
+      "SORRY": "Sorry for the inconvenience caused.",
+      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
+    }
+  },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
@@ -1641,8 +1652,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
-      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_1": "To find the deadline date that you need to respond by refer to the letter or email you received explaining the claim. The response deadline will also be shown when you create and or login to your account.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
       "PARAGRAPH_4_PART_1": "The claimant can apply for a",
@@ -2949,6 +2959,12 @@
       }
     },
     "PAY_HEARING_FEE": {
+      "START_PAGE": {
+        "PAGE_TITLE": "Pay the hearing Fee",
+        "TITLE": "Pay hearing fee",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingDueDate }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+      },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",

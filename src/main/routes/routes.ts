@@ -223,8 +223,10 @@ import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import respondSettlementAgreementConfirmationController
   from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
-import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
+import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
+import payHearingFeeStartScreenController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
@@ -446,6 +448,7 @@ export default [
   respondSettlementAgreementConfirmationController,
   respondSettlementAgreementController,
   breathingSpaceLiftedCheckAnswersController,
+  payHearingFeeStartScreenController,
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
