@@ -267,16 +267,16 @@ describe('translateCCDCaseDataToCUIModel', () => {
   
   it('should translate paymentDate to CUI model', () => {
     //Given
-    const currentDate = new Date();
+    const paymentDate = new Date("2023-12-07");
     const input: CCDClaim = {
       applicant1RequestedPaymentDateForDefendantSpec : {
-        paymentSetDate: currentDate,
+        paymentSetDate: paymentDate.toString(),
       },
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
-    expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(currentDate);
+    expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
   });
 });
