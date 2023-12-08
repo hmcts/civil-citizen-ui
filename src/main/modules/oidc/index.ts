@@ -53,8 +53,6 @@ export class OidcMiddleware {
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
-      res.cookie('SESSION_ID',_req.session?.user?.accessToken, {domain: 'moneyclaims.aat.platform.hmcts.net'});
-      console.log('Cookies Set : ', res.get('SESSION_ID'));
       res.redirect(idamUrlLogin);
     });
 
@@ -92,8 +90,6 @@ export class OidcMiddleware {
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
-      res.cookie('SESSION_ID',_req.session?.user?.accessToken, {domain: 'moneyclaims.aat.platform.hmcts.net'});
-      console.log('Cookies Set : ', res.get('SESSION_ID'));
       res.redirect(DASHBOARD_URL);
     });
 
