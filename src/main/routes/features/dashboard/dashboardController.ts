@@ -47,6 +47,7 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
     res.cookie('SESSION_ID',appRequest.session?.user?.accessToken, {domain: 'moneyclaims.aat.platform.hmcts.net'});
+    console.log('Cookies Set : ', res.get('SESSION_ID'));
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
