@@ -392,6 +392,8 @@ describe('translate response to ccd version', () => {
 
   it('should translate to respondResponseLip', ()=>{
     //Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.evidence = <DefendantEvidence>{};
     claim.evidence.comment = 'evidence comment';
     claim.partialAdmission = new PartialAdmission();
