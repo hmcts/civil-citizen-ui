@@ -1,6 +1,7 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -24,3 +25,7 @@ Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progr
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
