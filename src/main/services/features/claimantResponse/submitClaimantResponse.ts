@@ -15,7 +15,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const ccdResponse = translateClaimantResponseToCCD(claim);
-    logger.info('Sumbmitting claimant intention...',ccdResponse);
+    logger.info('Submitting claimant intention...',ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
