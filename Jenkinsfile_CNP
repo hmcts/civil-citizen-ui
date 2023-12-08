@@ -84,7 +84,6 @@ withPipeline(type, product, component) {
 
   onPR {
     env.ENVIRONMENT = "preview"
-    env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     loadVaultSecrets(secrets)
   }

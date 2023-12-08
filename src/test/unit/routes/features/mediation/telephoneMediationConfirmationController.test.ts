@@ -105,3 +105,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
     });
   });
 });
+
+afterAll(() => {
+  global.gc && global.gc()
+})

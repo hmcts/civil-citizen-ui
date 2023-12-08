@@ -138,3 +138,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     });
   });
 });
+
+afterAll(() => {
+  global.gc && global.gc()
+})

@@ -93,3 +93,7 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     });
   });
 });
+
+afterAll(() => {
+  global.gc && global.gc()
+})

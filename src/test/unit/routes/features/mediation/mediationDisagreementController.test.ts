@@ -209,3 +209,8 @@ describe('Mediation Disagreement', () => {
     });
   });
 });
+
+afterAll(() => {
+  global.gc && global.gc()
+})
+
