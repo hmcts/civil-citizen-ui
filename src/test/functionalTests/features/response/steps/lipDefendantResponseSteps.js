@@ -484,7 +484,7 @@ class ResponseSteps {
   }
 
   async ConfirmContactPerson(claimRef) {
-    await contactPerson.confirmContactPerson(claimRef)
+    await contactPerson.confirmContactPerson(claimRef);
   }
   EnterNoMediation(claimRef){
     freeTelephoneMediation.selectNoMediation(claimRef);

@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
-const ContactUs = require("../../../../common/contactUs");
+const ContactUs = require('../../../../common/contactUs');
+
 const contactUs = new ContactUs();
 
 const fields = {
