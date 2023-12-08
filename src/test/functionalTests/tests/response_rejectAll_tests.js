@@ -2,6 +2,7 @@ const config =  require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const LoginSteps =  require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -73,4 +74,8 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
     await api.mediationUnsuccessful(config.caseWorker);
     await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
   }
+});
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
 });

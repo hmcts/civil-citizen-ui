@@ -1,19 +1,26 @@
 import {Claim} from 'models/claim';
-import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {
+  CASE_DOCUMENT_DOWNLOAD_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  IS_CASE_READY_URL,
+} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
-import {CaseRole} from 'form/models/caseRoles';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
   let defendantOrClaimant;
+  let cancelUrl;
 
-  if (claim?.caseRole === CaseRole.CLAIMANT) {
+  if (claim?.isClaimant()) {
     defendantOrClaimant = DirectionQuestionnaireType.CLAIMANT;
+    cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
   } else {
     defendantOrClaimant = DirectionQuestionnaireType.DEFENDANT;
+    cancelUrl = DEFENDANT_SUMMARY_URL.replace(':id', claim.id);
   }
 
   return new FinaliseYourTrialSectionBuilder()
@@ -40,6 +47,6 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_ONLY_MAKE_APPLICATION')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE')
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TEXT')
-    .addStartButtonWithLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.START_NOW', IS_CASE_READY_URL.replace(':id', claim.id),DEFENDANT_SUMMARY_URL.replace(':id', claim.id) )
+    .addStartButtonWithLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.START_NOW', IS_CASE_READY_URL.replace(':id', claim.id), cancelUrl)
     .build();
 };
