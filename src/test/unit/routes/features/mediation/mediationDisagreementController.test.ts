@@ -211,6 +211,6 @@ describe('Mediation Disagreement', () => {
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});
 

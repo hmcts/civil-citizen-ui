@@ -183,5 +183,5 @@ describe('Repayment Plan', () => {
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});

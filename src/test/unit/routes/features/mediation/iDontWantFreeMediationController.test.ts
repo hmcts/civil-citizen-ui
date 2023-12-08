@@ -163,5 +163,5 @@ describe('I dont want free meditation', () => {
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});

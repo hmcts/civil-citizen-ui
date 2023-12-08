@@ -131,5 +131,5 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});

@@ -102,5 +102,5 @@ describe('Mediation Unavailability Next Three Months Confirmation Controller', (
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});

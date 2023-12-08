@@ -75,5 +75,5 @@ describe('Unavailable Dates For Mediation Service', () => {
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});

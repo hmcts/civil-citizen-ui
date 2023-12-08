@@ -51,5 +51,5 @@ describe('Free Telephone Mediation Controller', () => {
 });
 
 afterAll(() => {
-  global.gc && global.gc()
-})
+  global.gc && global.gc();
+});
