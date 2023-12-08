@@ -267,7 +267,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
   
   it('should translate paymentDate to CUI model', () => {
     //Given
-    const paymentDate = new Date("2023-12-07");
+    const paymentDate = new Date('2023-12-07');
     const input: CCDClaim = {
       applicant1RequestedPaymentDateForDefendantSpec : {
         paymentSetDate: paymentDate.toString(),
