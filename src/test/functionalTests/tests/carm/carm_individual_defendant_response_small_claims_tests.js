@@ -38,7 +38,9 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterTelephoneMediationDetails(claimRef);
-  await ResponseSteps.ConfirmEmailDetails(claimRef);
-  await ResponseSteps.ConfirmPhoneDetails(claimRef);
-  await ResponseSteps.ConfirmAltEmailDetails(claimRef);
+  await ResponseSteps.ConfirmContactPerson(claimRef);
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  // Not yet implemented
+  //await ResponseSteps.EnterUnavailableDates(claimRef);
 }).tag('@carm');

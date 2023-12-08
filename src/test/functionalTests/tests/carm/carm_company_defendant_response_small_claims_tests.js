@@ -37,7 +37,8 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterTelephoneMediationDetails(claimRef);
-  await ResponseSteps.ConfirmEmailDetails(claimRef);
-  await ResponseSteps.ConfirmPhoneDetails(claimRef);
-  await ResponseSteps.ConfirmAltEmailDetails(claimRef);
+  await ResponseSteps.ConfirmContactPerson(claimRef);
+  await ResponseSteps.ConfirmPhoneDetails();
+  await ResponseSteps.ConfirmEmailDetails();
+  await ResponseSteps.EnterUnavailableDates();
 }).tag('@carm');

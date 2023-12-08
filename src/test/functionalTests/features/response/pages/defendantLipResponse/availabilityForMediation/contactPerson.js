@@ -8,17 +8,17 @@ const fields = {
   yesButton: 'input[value="yes"]',
 };
 
-class EmailConfirmation {
+class ContactPerson {
 
-  async confirmEmail() {
-    await I.waitForText('Can the mediation team use civilmoneyclaimsdemo@gmail.com to contact you ' +
-        'about your mediation appointment?', config.WaitForText);
+  async confirmContactPerson(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/mediation/mediation-contact-person');
+    await I.waitForText('who will be attending the mediation appointment?', config.WaitForText);
+    contactUs.verifyContactUs();
     await I.click('Save and continue');
     await I.see('Choose option: Yes or No');
     await I.click(fields.yesButton);
-    contactUs.verifyContactUs();
     await I.click('Save and continue');
   }
 }
 
-module.exports = EmailConfirmation;
+module.exports = ContactPerson;
