@@ -138,4 +138,4 @@ export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
 
 export function convertDateToStringFormat(date: Date | string, format? :'yyyy-MM-dd') : string {
   return DateTime.fromJSDate(new Date(date)).toFormat(format);
-};
+}
