@@ -44,7 +44,9 @@ const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTeleph
 const TelephoneMediation = require('../pages/defendantLipResponse/telephoneMediation/telephoneMediation');
 const EmailConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/emailConfirmation');
 const PhoneConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/phoneConfirmation');
+const ContactPerson = require('../pages/defendantLipResponse/availabilityForMediation/contactPerson');
 const AlternativeEmail = require('../pages/defendantLipResponse/availabilityForMediation/alternativeEmail');
+const NextThreeMonthsDate = require('../pages/defendantLipResponse/availabilityForMediation/nextThreeMonthsDate');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -77,7 +79,9 @@ const freeTelephoneMediation = new FreeTelephoneMediation();
 const telephoneMediation = new TelephoneMediation();
 const emailConfirmation = new EmailConfirmation();
 const phoneConfirmation = new PhoneConfirmation();
+const contactPerson = new ContactPerson();
 const alternativeEmail = new AlternativeEmail();
+const nextThreeMonthsDate = new NextThreeMonthsDate();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -458,17 +462,30 @@ class ResponseSteps {
     await telephoneMediation.selectMediation(claimRef);
   }
 
-  async ConfirmEmailDetails(claimRef) {
-    await emailConfirmation.confirmEmail(claimRef);
+  async ConfirmEmailDetails() {
+    await emailConfirmation.confirmEmail();
   }
 
-  async ConfirmPhoneDetails(claimRef) {
-    await phoneConfirmation.confirmPhone(claimRef);
-  }
-  async ConfirmAltEmailDetails(claimRef) {
-    await alternativeEmail.confirmAltEmail(claimRef);
+  async ConfirmPhoneDetails() {
+    await phoneConfirmation.enterPhoneDetails();
   }
 
+  async ConfirmAltPhoneDetails() {
+    await phoneConfirmation.enterAltPhoneDetails();
+  }
+  async ConfirmAltEmailDetails() {
+    await alternativeEmail.confirmAltEmail();
+  }
+
+  async EnterUnavailableDates() {
+    await nextThreeMonthsDate.enterNextThreeMonthsDate();
+    await availabilityDates.enterUnavailableDates(true);
+    await taskListPage.verifyResponsePageContent();
+  }
+
+  async ConfirmContactPerson(claimRef) {
+    await contactPerson.confirmContactPerson(claimRef);
+  }
   EnterNoMediation(claimRef){
     freeTelephoneMediation.selectNoMediation(claimRef);
   }

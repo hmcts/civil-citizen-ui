@@ -8,11 +8,10 @@ const fields = {
   yesButton: 'input[value="yes"]',
 };
 
-class EmailConfirmation {
+class NextThreeMonthsDate {
 
-  async confirmEmail() {
-    await I.waitForText('Can the mediation team use civilmoneyclaimsdemo@gmail.com to contact you ' +
-        'about your mediation appointment?', config.WaitForText);
+  async enterNextThreeMonthsDate() {
+    await I.waitForText('Are there any dates in the next 3 months', config.WaitForText);
     await I.click('Save and continue');
     await I.see('Choose option: Yes or No');
     await I.click(fields.yesButton);
@@ -21,4 +20,4 @@ class EmailConfirmation {
   }
 }
 
-module.exports = EmailConfirmation;
+module.exports = NextThreeMonthsDate;
