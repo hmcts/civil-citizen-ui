@@ -16,7 +16,7 @@
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "echo -c jest.config.js",
-    "test:coverage": "jest --coverage --logHeapUsage --silent --maxWorkers=50%",
+    "test:coverage": "jest --coverage --logHeapUsage --runInBand --silent",
     "test:a11y": "echo 'a11y tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline and unable to mock at the moment.'",
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,reportFilename=a11y,inlineAssets=true,reportTitle=civil-citizen-ui",
     "sonar-scan": "sonar-scanner",
