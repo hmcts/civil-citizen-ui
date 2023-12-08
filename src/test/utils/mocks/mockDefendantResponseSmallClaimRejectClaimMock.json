@@ -1,0 +1,231 @@
+{
+  "id": "1645882162449409",
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "specApplicantCorrespondenceAddressRequired": "No",
+    "claimInterest": "No",
+    "totalClaimAmount": 110,
+    "addRespondent2": "No",
+    "legacyCaseReference": "000MC009",
+    "submittedDate": "2023-11-17T09:11:26",
+    "applicantSolicitor1ClaimStatementOfTruth": {
+      "name": "someone",
+      "role": "role"
+    },
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2025-05-15T02:59:59",
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "id": "9c3f1896-e6fa-4892-814d-99f8c20eb42f",
+      "email": "jane.smith@gmail.com"
+    },
+    "applicantSolicitor1UserDetails": {
+      "id": "003816ad-3639-48ba-a77d-c4bde3c66b51",
+      "email": "email@hmcts.net"
+    },
+    "respondent1": {
+      "partyDetails": {
+        "individualTitle": "Miss",
+        "individualLastName": "Elms",
+        "individualFirstName": "Sarah",
+        "postToThisAddress": "no",
+        "primaryAddress": {
+          "addressLine1": "12 street",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "York",
+          "postCode": "yo94rb"
+        },
+        "correspondenceAddress": {
+          "addressLine1": "",
+          "addressLine2": "",
+          "addressLine3": "",
+          "city": "",
+          "postCode": ""
+        }
+      },
+      "emailAddress": {
+        "emailAddress": "email@hmcts.net"
+      },
+      "type": "INDIVIDUAL",
+      "dateOfBirth": {
+        "date": "1990-01-01T00:00:00.000Z",
+        "year": 1990,
+        "month": 1,
+        "day": 1
+      },
+      "partyPhone": {},
+      "responseType": "FULL_DEFENCE"
+    },
+    "applicant1": {
+      "partyDetails": {
+        "individualTitle": "Mr",
+        "individualLastName": "Wells",
+        "individualFirstName": "Jason",
+        "primaryAddress": {
+          "addressLine1": "1 street",
+          "postCode": "hu9 5bx"
+        }
+      },
+      "dateOfBirth": {
+        "date": "1990-01-01T00:00:00.000Z",
+        "year": 1990,
+        "month": 1,
+        "day": 1
+      },
+      "type": "INDIVIDUAL"
+    },
+    "addApplicant2": "No",
+    "timelineOfEvents": [
+      {
+        "id": "41f9a10b-f007-4cdb-883d-9d731ae4c9f8",
+        "value": {
+          "timelineDate": "2023-10-01",
+          "timelineDescription": "something bad"
+        }
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "Organisation": {
+        "OrganisationID": "Q1KOKP2"
+      },
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "issueDate": "2023-11-17",
+    "claimIssuedPaymentDetails": {
+      "status": "SUCCESS",
+      "reference": "13213223"
+    },
+    "totalInterest": 0,
+    "detailsOfClaim": "Something happened",
+    "claimFee": {
+      "code": "FEE0206",
+      "version": "4",
+      "calculatedAmountInPence": "11500"
+    },
+    "claimAmountBreakup": [
+      {
+        "id": "a4b2608f-b1ba-4d94-bc34-e204e43d5911",
+        "value": {
+          "claimAmount": "300000",
+          "claimReason": "money"
+        }
+      }
+    ],
+    "caseRole": "[DEFENDANT]",
+    "claimDetails": {
+      "reason": {
+        "text": "Something happened"
+      },
+      "helpWithFees": {}
+    },
+    "statementOfMeans": {},
+    "rejectAllOfClaim": {
+      "option": "dispute",
+      "howMuchHaveYouPaid": {},
+      "whyDoYouDisagree": {},
+      "defence": {
+        "text": "information"
+      }
+    },
+    "directionQuestionnaire": {
+      "hearing": {},
+      "experts": {}
+    },
+    "caseProgressionHearing": {
+      "hearingLocation": {}
+    },
+    "caseProgression": {
+      "claimantUploadDocuments": {
+        "disclosure": [],
+        "witness": [],
+        "expert": [],
+        "trial": [],
+        "checkboxGrp": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "defendantUploadDocuments": {
+        "disclosure": [],
+        "witness": [],
+        "expert": [],
+        "trial": [],
+        "checkboxGrp": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "caseBundles": []
+    },
+    "claimantResponse": {
+      "suggestedPaymentIntention": {}
+    },
+    "interest": {
+      "sameRateInterestSelection": {}
+    },
+    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+    "id": "17002122860557389c3f1896-e6fa-4892-814d-99f8c20eb42f",
+    "lastModifiedDate": "2023-11-17T09:52:16",
+    "claimBilingualLanguagePreference": "ENGLISH",
+    "responseDeadline": {
+      "option": "no"
+    },
+    "partialAdmission": {
+      "timeline": {
+        "rows": [
+          {
+            "date": "2023-01-01T00:00:00.000Z",
+            "description": "something",
+            "year": "2023",
+            "month": "1",
+            "day": "1"
+          }
+        ],
+        "comment": ""
+      }
+    },
+    "fullAdmission": {},
+    "evidence": {
+      "comment": "",
+      "evidenceItem": []
+    },
+    "mediation": {
+      "canWeUse": {
+        "option": "no",
+        "mediationPhoneNumber": "0102345678"
+      }
+    }
+  }
+}
