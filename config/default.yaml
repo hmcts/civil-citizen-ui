@@ -52,7 +52,7 @@ services:
     tokenKey: 'test'
   govPay:
     url: 'https://card.payments.service.gov.uk'
-
+  carmDate: '01 May 2024'
 health:
   timeout: 5000
   deadline: 15000
