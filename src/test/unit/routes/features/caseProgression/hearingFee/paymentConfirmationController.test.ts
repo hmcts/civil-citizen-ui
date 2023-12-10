@@ -1,5 +1,5 @@
 import {
-  HEARING_FEE_PAYMENT_CONFIRMATION_URL,
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
 } from 'routes/urls';
 
 import nock from 'nock';
@@ -26,6 +26,15 @@ describe('Hearing Fees - Payment Status', () => {
       jest.spyOn(paymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
       await request(app)
         .get(HEARING_FEE_PAYMENT_CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
+    it('should redirect user to success/failure page', async () => {
+      jest.spyOn(paymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
+      await request(app)
+        .get(HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID)
         .expect((res) => {
           expect(res.status).toBe(302);
         });
