@@ -33,6 +33,7 @@ services:
     url: PCQ_URL
   govPay:
     url: GOVPAY_URL
+  carmDate: CARM_DATE
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
