@@ -50,6 +50,7 @@ services:
   pcq:
     url: 'https://pcq.aat.platform.hmcts.net'
     tokenKey: 'test'
+  carmDate: '01 May 2024'
 health:
   timeout: 5000
   deadline: 15000
