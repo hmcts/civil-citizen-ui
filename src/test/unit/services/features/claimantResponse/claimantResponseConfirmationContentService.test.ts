@@ -18,6 +18,9 @@ import {Defence} from 'common/form/models/defence';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
+import { CourtProposedDate, CourtProposedDateOptions } from 'common/form/models/claimantResponse/courtProposedDate';
+import { CourtProposedPlan, CourtProposedPlanOptions } from 'common/form/models/claimantResponse/courtProposedPlan';
+import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -343,6 +346,67 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
     expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG1');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
+    expect(claimantResponseConfirmationContent[5]).toBeUndefined();
+  });
+
+  it('Claimant rejected defendant`s repayment plan and proposed repayment plan by set date, accepts the court decision and ask for CCJ', () => {
+    // Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.courtProposedDate = new CourtProposedDate(CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE);
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG3');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
+    expect(claimantResponseConfirmationContent[5]).toBeUndefined();
+  });
+  it('Claimant rejected defendant`s repayment plan and proposed repayment plan by installments, accepts the court decision and ask for CCJ', () => {
+    // Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.courtProposedPlan = new CourtProposedPlan(CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN);
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG3');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
+    expect(claimantResponseConfirmationContent[5]).toBeUndefined();
+  });
+  it('Claimant rejected defendant`s repayment plan and proposed repayment plan by installments, court accepts claimant decision and ask for CCJ', () => {
+    // Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG3');
     expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
     expect(claimantResponseConfirmationContent[5]).toBeUndefined();
   });
