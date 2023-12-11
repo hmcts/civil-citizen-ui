@@ -2,6 +2,7 @@
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
+const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
@@ -93,6 +94,11 @@ module.exports = {
     email: 'ga_ctsc_team_leader_national@justice.gov.uk',
     password: defaultPassword,
     type: 'caseworker',
+  },
+  systemUpdate: {
+    password: defaultPasswordSystemUser,
+    email: 'civil-system-update@mailnesia.com',
+    type: 'systemupdate',
   },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
