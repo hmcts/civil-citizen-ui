@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {
   FIRST_CONTACT_PIN_URL,
@@ -32,7 +32,7 @@ pinController.get(FIRST_CONTACT_PIN_URL, (req: AppRequest<{pin:string}>, res: Re
   renderView(pinForm, false, res);
 });
 
-pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, next: NextFunction) => {
+pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
     const pin = req.body.pin;
@@ -68,6 +68,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
       next(error);
     }
   }
-});
+}) as RequestHandler);
 
 export default pinController;

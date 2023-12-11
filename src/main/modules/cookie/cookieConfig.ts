@@ -37,6 +37,7 @@ const config = {
         'firstContact',
         'lang',
         'newDeadlineDate',
+        'SESSION_ID',
       ],
     },
     {
