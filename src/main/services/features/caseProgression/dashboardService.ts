@@ -7,6 +7,7 @@ import {TaskItem} from 'models/taskList/task';
 import {TaskStatus, TaskStatusColor} from 'models/taskList/TaskStatus';
 import {Dashboard} from 'models/caseProgression/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {PaymentStatus} from 'models/PaymentDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
@@ -47,7 +48,7 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
       hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
     }
     if (!claim.isLRClaimant() && claim.isClaimant()) {
-      hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+      hearings.tasks.push((checkHearingPaymentStatus(claim)));
     }
     hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
 
@@ -60,3 +61,11 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
   }
   return newDashboard;
 };
+
+const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
+  if (claim.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), undefined, TaskStatus.DONE, false, TaskStatusColor[TaskStatus.DONE]);
+  }
+  return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]);
+};
+

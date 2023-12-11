@@ -3,6 +3,7 @@ import {Claim} from 'common/models/claim';
 import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
+import {PaymentStatus} from 'models/PaymentDetails';
 
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
@@ -33,7 +34,9 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
-  dashboardNotificationsList.push(hearingFeePaidNotification);
+  if (checkHearingPaymentStatus) {
+    dashboardNotificationsList.push(hearingFeePaidNotification);
+  }
 
   return dashboardNotificationsList;
 };
@@ -56,4 +59,8 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
   }
 
   return dashboardNotificationsList;
+};
+
+const checkHearingPaymentStatus = (claim: Claim): boolean => {
+  return claim.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS;
 };
