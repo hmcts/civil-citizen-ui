@@ -56,7 +56,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
       const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       tasks.push(proposeAlternativeRepaymentTask);
-      if (isAcceptCourtProposedPayment(claim) || claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+      if (isClaimantFavourAndCanShowChooseHowFormaliseTask(claim)) {
         const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
         tasks.push(chooseHowFormaliseTask);
       } else if (isRequestJudgePaymentPlan(claim)) {
@@ -83,7 +83,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
-        if (isAcceptCourtProposedPayment(claim) || claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+        if (isClaimantFavourAndCanShowChooseHowFormaliseTask(claim)) {
           const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
           tasks.push(chooseHowFormaliseTask);
         } else if (isRequestJudgePaymentPlan(claim)) {
@@ -192,9 +192,10 @@ function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
   (claim.isPAPaymentOptionInstallments() && !!claim.partialAdmission?.paymentIntention?.repaymentPlan));
 }
 
-function isAcceptCourtProposedPayment(claim: Claim) : boolean {
+function isClaimantFavourAndCanShowChooseHowFormaliseTask(claim: Claim) : boolean {
   return claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE ||
-    claim.claimantResponse?.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+  claim.claimantResponse?.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN ||
+  claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
 }
 
 function isRequestJudgePaymentPlan(claim: Claim) : boolean {
