@@ -8,12 +8,14 @@ const fields = {
   altPhoneTextField: 'input[id="alternativeTelephone"]',
   yesButton: 'input[value="yes"]',
   noButton: 'input[value="no"]',
+  availabilityForMediationLink: 'a[href*="phone-confirmation"]',
 };
 
 class PhoneConfirmation {
 
   async enterPhoneDetails() {
-    await I.waitForText('Can the mediator use 02088908876 to call you for your mediation appointment?', config.WaitForText);
+    await I.waitForText('Can the mediator use 02088908876 to call you ' +
+        'for your mediation appointment?', config.WaitForText);
     await I.click('Save and continue');
     await I.see('Choose option: Yes or No');
     await I.click(fields.yesButton);
@@ -22,7 +24,9 @@ class PhoneConfirmation {
   }
 
   async enterAltPhoneDetails() {
-    await I.waitForText('Can the mediator use', config.WaitForText);
+    await I.forceClick(fields.availabilityForMediationLink);
+    await I.waitForText('Can the mediator use 02088908876 to call you ' +
+        'for your mediation appointment?', config.WaitForText);
     await I.click('Save and continue');
     await I.see('Choose option: Yes or No');
     await I.click(fields.noButton);
