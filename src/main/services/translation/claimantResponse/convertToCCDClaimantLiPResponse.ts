@@ -7,6 +7,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toCCDYesNoFromBooleanString} from 'services/translation/response/convertToCCDYesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
+import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 
 export enum CCDChoosesHowToProceed {
   SIGN_A_SETTLEMENT_AGREEMENT = 'SIGN_A_SETTLEMENT_AGREEMENT',
@@ -19,6 +20,7 @@ export interface CCDClaimantLiPResponse {
   applicant1ChoosesHowToProceed?: CCDChoosesHowToProceed,
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
   claimantResponseOnCourtDecision?: CourtProposedDateOptions,
+  claimantCourtDecision?: RepaymentDecisionType,
 }
 
 const toChoosesHowToProceed = {
@@ -33,5 +35,6 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     applicant1ChoosesHowToProceed: toChoosesHowToProceed[claimantResponse?.chooseHowToProceed?.option],
     applicant1SignedSettlementAgreement: toCCDYesNoFromBooleanString(claimantResponse?.signSettlementAgreement?.signed),
     claimantResponseOnCourtDecision: claimantResponse?.courtProposedDate?.decision,
+    claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
   };
 };

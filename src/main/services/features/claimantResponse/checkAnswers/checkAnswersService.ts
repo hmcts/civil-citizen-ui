@@ -98,4 +98,3 @@ export const saveSubmitDate = async (claimId: string, claimantResponse: Claimant
     throw error;
   }
 };
-
