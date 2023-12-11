@@ -21,6 +21,8 @@ const fields = {
   correspondenceCity_error: 'a[href="#correspondenceAddress[city]"]',
   correspondencePostCode: 'input[id="correspondenceAddress[postCode]"]',
   correspondencePostCode_error: 'a[href="#correspondenceAddress[postCode]"]',
+  personError: 'a[href="#contactPerson"]',
+  contactPerson: 'input[id="contactPerson"]',
 };
 
 class NameAndAddressDetailsPage {
@@ -32,6 +34,15 @@ class NameAndAddressDetailsPage {
     await I.fillField(fields.addressLine3, 'Test AddressLine3');
     await I.fillField(fields.city, 'Test City');
     await I.fillField(fields.postcode, 'IG6 1JD');
+    await I.click('Save and continue');
+  }
+
+  async enterCompanyContactDetails () {
+    await I.click('Confirm your details');
+    await I.waitForText('Confirm your details', config.WaitForText);
+    await I.click('Save and continue');
+    await I.seeElement(fields.personError);
+    await I.fillField(fields.contactPerson, 'Test Company');
     await I.click('Save and continue');
   }
 
@@ -52,7 +63,7 @@ class NameAndAddressDetailsPage {
     await I.seeElement(fields.correspondenceCity_error);
     await I.seeElement(fields.correspondencePostCode_error);
   }
-  
+
   async enterWrongPostcode() {
     await I.fillField(fields.postcode, 'test');
     await I.fillField(fields.correspondencePostCode, 'test');
