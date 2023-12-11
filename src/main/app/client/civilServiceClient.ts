@@ -33,7 +33,7 @@ import {
 import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
-import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -254,7 +254,7 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitClaimantResponseForRequestJudgementAdmission(claimId: string, updatedClaim: ClaimantResponseRequestDefaultJudgementToCCD, req: AppRequest): Promise<Claim> {
+  async submitClaimantResponseForRequestJudgementAdmission(claimId: string, updatedClaim: ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
@@ -273,7 +273,7 @@ export class CivilServiceClient {
   async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
-  
+
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }

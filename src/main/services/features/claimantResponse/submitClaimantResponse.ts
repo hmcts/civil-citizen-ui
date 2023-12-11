@@ -5,7 +5,7 @@ import {Claim} from 'common/models/claim';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {translateClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitClaimantResponse');
@@ -19,10 +19,11 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     let ccdResponse = translateClaimantResponseToCCD(claim);
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     if (claimantResponse.isCCJRequested && hasRespondTypeWithCCJRequest(claim)) {
-      const claimFeeAmount = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
-      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFeeAmount);
-      ccdResponse = {...ccdResponseForRequestDefaultJudgement, ...ccdResponse};
+      const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
+      ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
+    console.log('first repayment date is ' + ccdResponse.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec);
     logger.info('Submitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
