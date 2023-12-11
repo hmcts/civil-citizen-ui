@@ -227,12 +227,25 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
   });
 
-  it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when Full Defence', () => {
+  it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when not Full Defence', () => {
 
     //Given
     const claim = createClaimWithFreeTelephoneMediationSection();
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
+  });
+
+  it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when not exist', () => {
+
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSection();
+    claim.claimantResponse = new ClaimantResponse();
 
     //When
     const ccdClaim = translateClaimantResponseToCCD(claim);
