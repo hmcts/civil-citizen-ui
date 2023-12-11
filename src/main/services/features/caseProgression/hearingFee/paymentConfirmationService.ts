@@ -20,6 +20,8 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
   const redisClaimId = generateRedisKey(<AppRequest>req);
   const claim: Claim = await getCaseDataFromStore(redisClaimId);
   const paymentReference = claim.caseProgression.hearing.paymentInformation?.paymentReference;
+  console.log('Payment Info :'+claim.caseProgression.hearing.paymentInformation);
+  console.log('Payment Reference :'+paymentReference);
 
   const paymentStatus = await getFeePaymentStatus(paymentReference, FeeType.HEARING, req);
   console.log('paymentStatus:::'+paymentStatus.status);
