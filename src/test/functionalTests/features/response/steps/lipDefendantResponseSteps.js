@@ -458,8 +458,9 @@ class ResponseSteps {
     await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
-  async EnterTelephoneMediationDetails(claimRef) {
-    await telephoneMediation.selectMediation(claimRef);
+  async EnterTelephoneMediationDetails() {
+    await telephoneMediation.selectMediation();
+    await taskListPage.verifyResponsePageContent();
   }
 
   async ConfirmEmailDetails() {
@@ -483,8 +484,8 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
   }
 
-  async ConfirmContactPerson(claimRef) {
-    await contactPerson.confirmContactPerson(claimRef);
+  async ConfirmContactPerson() {
+    await contactPerson.confirmContactPerson();
   }
   EnterNoMediation(claimRef){
     freeTelephoneMediation.selectNoMediation(claimRef);
