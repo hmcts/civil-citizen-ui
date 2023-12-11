@@ -16,7 +16,7 @@ import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {
   createClaimWithFreeTelephoneMediationSection,
-  createClaimWithFullRejection
+  createClaimWithFullRejection,
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
