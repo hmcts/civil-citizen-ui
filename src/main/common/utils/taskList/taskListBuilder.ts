@@ -25,6 +25,8 @@ import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
+import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
+import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
@@ -110,7 +112,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   return {title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
+const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
 
   let whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.PART_ADMISSION, lang);
@@ -120,9 +122,14 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
   }
 
   if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
-    tasks.push(freeTelephoneMediationTask);
+    if(carmApplicable) {
+      tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
+      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
+    } else {
+      tasks.push(getFreeTelephoneMediationTask(caseData, claimId, lang));
+    }
   }
+
   return {title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 

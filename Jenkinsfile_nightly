@@ -4,19 +4,19 @@ properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
     pipelineTriggers([cron('H 8 * * 1-5')]),
     parameters([
-        string(name: 'ENVIRONMENT', defaultValue: 'demo', description: 'Environment to test'),
-        string(name: 'TEST_URL', defaultValue: 'https://civil-citizen-ui.demo.platform.hmcts.net', description: 'The URL you want to run tests against'),
-        string(name: 'EXUI_URL', defaultValue: 'https://manage-case.demo.platform.hmcts.net',
+        string(name: 'ENVIRONMENT', defaultValue: 'aat', description: 'Environment to test'),
+        string(name: 'TEST_URL', defaultValue: 'https://civil-citizen-ui.aat.platform.hmcts.net', description: 'The URL you want to run tests against'),
+        string(name: 'EXUI_URL', defaultValue: 'https://manage-case.aat.platform.hmcts.net',
           description: 'The URL you want to run the full functional tests against'),
-        string(name: 'IDAM_API_URL', defaultValue: 'https://idam-api.demo.platform.hmcts.net',
+        string(name: 'IDAM_API_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net',
           description: 'The URL of idam api'),
-        string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-demo.service.core-compute-demo.internal',
+        string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-aat.service.core-compute-aat.internal',
           description: 'The URL of dm store'),
-        string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
+        string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
           description: 'The URL of service auth provider'),
-        string(name: 'CCD_DATA_STORE_URL', defaultValue: 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
+        string(name: 'CCD_DATA_STORE_URL', defaultValue: 'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
           description: 'The URL of ccd data store'),
-        string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-demo.service.core-compute-demo.internal',
+        string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
           description: 'The URL of civil service'),
     ])
 ])
@@ -45,7 +45,8 @@ def secrets = [
     secret('microservicekey-civil-service', 'S2S_SECRET'),
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
     secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
-    secret('civil-judge-password', 'JUDGE_PASSWORD')
+    secret('civil-judge-password', 'JUDGE_PASSWORD'),
+    secret('system-update-user-password', 'SYSTEM_USER_PASSWORD')
   ]
 ]
 
