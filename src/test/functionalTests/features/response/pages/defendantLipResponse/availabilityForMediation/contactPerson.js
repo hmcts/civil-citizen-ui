@@ -6,12 +6,13 @@ const contactUs = new ContactUs();
 
 const fields = {
   yesButton: 'input[value="yes"]',
+  availabilityForMediationLink: 'a[href*="mediation-contact-person"]',
 };
 
 class ContactPerson {
 
-  async confirmContactPerson(claimRef) {
-    await I.amOnPage('/case/' + claimRef + '/mediation/mediation-contact-person');
+  async confirmContactPerson() {
+    await I.forceClick(fields.availabilityForMediationLink);
     await I.waitForText('who will be attending the mediation appointment?', config.WaitForText);
     contactUs.verifyContactUs();
     await I.click('Save and continue');
