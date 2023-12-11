@@ -1021,7 +1021,7 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         },
-        "NO_MEDIATION": { 
+        "NO_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
@@ -1056,7 +1056,8 @@
       "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",

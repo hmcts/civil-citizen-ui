@@ -1021,7 +1021,7 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         },
-        "NO_MEDIATION": { 
+        "NO_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
@@ -1056,7 +1056,8 @@
       "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
       "NUMBER_INFORMATION": "Byddwn hefyd yn rhoi eich rhif i'r unigolyn, y busnes, neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn "
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
