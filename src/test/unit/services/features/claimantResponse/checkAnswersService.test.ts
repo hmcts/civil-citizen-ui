@@ -174,6 +174,7 @@ function generateExpectedResultForDefendantPaidNone() {
       undefined,
       null,
       null,
+      undefined,
     ],
   };
 }
@@ -272,6 +273,7 @@ function generateExpectedResultForDefendantPaidSome() {
       undefined,
       null,
       null,
+      undefined,
     ],
   };
 }
