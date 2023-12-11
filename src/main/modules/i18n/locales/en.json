@@ -976,7 +976,7 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         },
-        "NO_MEDIATION": { 
+        "NO_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
@@ -1230,6 +1230,7 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
@@ -1241,7 +1242,7 @@
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
         "HEARINGS": {
-          "PAY_FEE": "of {{ feeAmount }} by {{ responseDeadline }}. If you do not do this, your claim ma be struck out.",
+          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
           "TEXT": "pay the hearing fee "
         }
@@ -2647,7 +2648,8 @@
       "INCOMPLETE": "Incomplete",
       "IN_PROGRESS": "In progress",
       "READY_TO_VIEW": "Ready to view",
-      "NOT_AVAILABLE_YET": "Not available yet"
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"

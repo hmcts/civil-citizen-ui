@@ -7,7 +7,7 @@ describe('Notifications constructor', () => {
     const title = 'test';
     const content: ClaimSummarySection[] = [];
     //When
-    const howMuchContinueClaiming = new DashboardNotification(title, content);
+    const howMuchContinueClaiming = {title:title, content: content} as DashboardNotification;
     //Then
     expect(howMuchContinueClaiming).toBeDefined();
     expect(howMuchContinueClaiming.title).toEqual(title);

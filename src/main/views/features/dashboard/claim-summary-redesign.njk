@@ -31,8 +31,42 @@
           {# Notifications #}
           {{ notifications(dashboardNotifications, t) }}
           {# TaskList #}
-          {{ taskListComponent(dashboardTaskList, t) }}
-        </div>
+          {# taskListComponent(dashboardTaskList, t) #}
+
+            {% for taskList in dashboardTaskList %}
+              <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+                <h2 class="app-task-list__section">
+                  {{ t(taskList.title) }}
+                </h2>
+                <ol class="app-task-list app-task-list__items">
+                  {% for task in taskList.tasks %}
+                    <li class="app-task-list__item">
+                      <div class="row">
+                        <div class="column">
+                            <span class="app-task-list__task-name">
+                              {% if task.url != '#' %}
+                                <a href={{ task.url }}>{{ t(task.description) }}</a>
+                              {% else %}
+                                <a>{{ t(task.description) }}</a>
+                              {% endif %}
+                            </span>
+                        </div>
+                        <div class="column">
+                          <strong class="govuk-tag app-task-list__tag {{ task.statusColor}}">
+                            {{ t('PAGES.TASK_LIST.' + task.status) }}
+                          </strong>
+                        </div>
+                        {% if task.helpText %}
+                          <br/>
+                          <span class="govuk-body-s"> {{ task.helpText }} </span>
+                        {% endif %}
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ol>
+              </div>
+            {% endfor %}
+          </div>
 
         {# TODO: Right side #}
         <div class="govuk-grid-column-one-third">
