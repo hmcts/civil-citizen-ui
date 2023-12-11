@@ -1,6 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
+const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -36,9 +37,14 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterTelephoneMediationDetails(claimRef);
-  await ResponseSteps.ConfirmContactPerson(claimRef);
+  await ResponseSteps.EnterYourEvidenceDetails();
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmContactPerson();
   await ResponseSteps.ConfirmPhoneDetails();
   await ResponseSteps.ConfirmEmailDetails();
   await ResponseSteps.EnterUnavailableDates();
 }).tag('@carm');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
