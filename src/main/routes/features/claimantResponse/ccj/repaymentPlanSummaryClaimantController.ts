@@ -26,7 +26,7 @@ repaymentPlanSummaryClaimantController.get(CCJ_REPAYMENT_PLAN_CLAIMANT_URL, asyn
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(generateRedisKey(<AppRequest>req), req);
-    const title = t('PAGES.REPAYMENT_PLAN_SUMMARY.CLAIMANTS_REPAYMENT_PLAN');
+    const title = t('PAGES.REPAYMENT_PLAN_SUMMARY.REPAYMENT_PLAN');
     const paymentIntention = claim.getPaymentIntention();
     const paymentOption = paymentIntention.paymentOption;
     const paymentDate = formatDateToFullDate(getPaymentDate(claim));
