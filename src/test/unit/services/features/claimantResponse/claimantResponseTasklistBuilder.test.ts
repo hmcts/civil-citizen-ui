@@ -390,7 +390,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
         claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-        claim.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+        claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
 
         //When
         const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -594,7 +594,7 @@ describe('Claimant Response Task List builder', () => {
       claim.partialAdmission.paymentIntention.paymentDate = new Date();
       claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
       claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-      claim.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
 
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);

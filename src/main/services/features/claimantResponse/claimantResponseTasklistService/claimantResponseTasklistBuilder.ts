@@ -56,7 +56,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
       const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       tasks.push(proposeAlternativeRepaymentTask);
-      if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+      if (isAcceptCourtProposedPayment(claim) || claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
         const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
         tasks.push(chooseHowFormaliseTask);
       } else if (isRequestJudgePaymentPlan(claim)) {
@@ -83,7 +83,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
         tasks.push(proposeAlternativeRepayment);
-        if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+        if (isAcceptCourtProposedPayment(claim) || claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
           const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
           tasks.push(chooseHowFormaliseTask);
         } else if (isRequestJudgePaymentPlan(claim)) {
