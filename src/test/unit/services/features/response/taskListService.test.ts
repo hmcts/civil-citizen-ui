@@ -2,6 +2,7 @@ import {Claim} from 'common/models/claim';
 import {getDescription, getTaskLists, getTitle} from 'services/features/common/taskListService';
 import {
   buildPrepareYourResponseSection,
+  buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildSubmitSection,
 } from 'common/utils/taskList/taskListBuilder';
@@ -38,8 +39,9 @@ describe('Response Task List service', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
+      const taskListResolvingTheClaim = buildResolvingTheClaimSection(caseData, mockClaimId, lang, true);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
-      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
+      const taskGroups = [taskListPrepareYourResponse, taskListResolvingTheClaim, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
       expect(actualTaskLists).toMatchObject(filteredTaskGroups);
