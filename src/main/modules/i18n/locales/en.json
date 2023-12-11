@@ -25,6 +25,8 @@
     "EMPLOYMENT_DETAILS": "Employment details",
     "EMPLOYMENT_TYPE": "Type of job",
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+    "TELEPHONE_MEDIATION": "Telephone mediation",
+    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -34,6 +36,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
     "REMOVE": "Remove",
@@ -291,6 +294,17 @@
       "NO": "No"
     }
   },
+  "BANNERS": {
+    "PIN_ERROR_NOTIFICATION": {
+      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
+      "EMAIL":"Email:",
+      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
+      "PHONE":"Telephone: 0300 123 7050",
+      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
+      "SORRY": "Sorry for the inconvenience caused.",
+      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
+    }
+  },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
@@ -348,6 +362,47 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
+    "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
+      "PAGE_TITLE": "Unavailability dates for mediation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
+      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+    },
+    "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
+      "PAGE_TITLE": "Unavailability for mediation",
+      "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
+      "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+    },
+    "MEDIATION_ALTERNATIVE_EMAIL": {
+      "PAGE_TITLE": "Alternative email address",
+      "PAGE_TEXT": "Please provide an alternative email address"
+    },
+    "MEDIATION_PHONE_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation telephone confirmation",
+      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+    },
+    "TELEPHONE_FOR_MEDIATION": {
+      "PAGE_TITLE": "Telephone mediation",
+      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
+      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
+      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
+      "WHAT_HAPPENS": "What happens at mediation?",
+      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
+      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
+      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
+      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
+      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
+      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
+      "AFTER_THE_PHONE_CALL":"After the phone call",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
+      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
@@ -642,7 +697,8 @@
       "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
       "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "They can accept the amount you've paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.",
@@ -1634,8 +1690,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
-      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_1": "To find the deadline date that you need to respond by refer to the letter or email you received explaining the claim. The response deadline will also be shown when you create and or login to your account.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
       "PARAGRAPH_4_PART_1": "The claimant can apply for a",
@@ -2010,6 +2065,14 @@
       "PAGE_TITLE": "Mediation - Provide company contact number",
       "TITLE": "Who should the mediation service call?",
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
+    },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+    },
+    "MEDIATION_EMAIL_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation email confirmation",
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
@@ -3026,6 +3089,9 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Date they are unavailable must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Date they are unavailable from must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Date they are unavailable to must be in the next 12 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date they are unavailable must be in the next 3 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date they are unavailable from must be in the next 3 months",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
@@ -3117,6 +3183,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "You can only change your phone number, not remove it",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
+    "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
     "ONE_ROW_REQUIRED": "Enter at least one row",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
@@ -3281,6 +3348,7 @@
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PARTY_NAME": "Enter name",
+    "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_OR_VIDEO_HEARING": {
