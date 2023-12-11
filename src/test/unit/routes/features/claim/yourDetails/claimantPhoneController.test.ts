@@ -8,7 +8,7 @@ import {
   civilClaimResponseMock,
   mockCivilClaim,
   mockDraftClaim,
-  mockRedisFailure
+  mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
