@@ -14,7 +14,10 @@ import {ResponseType} from 'form/models/responseType';
 import {Address} from 'form/models/address';
 import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
-import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
+import {
+  createClaimWithFreeTelephoneMediationSection,
+  createClaimWithFullRejection
+} from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 describe('Translate claimant response to ccd version', () => {
@@ -208,6 +211,34 @@ describe('Translate claimant response to ccd version', () => {
 
     //Then
     expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when Full Defence', () => {
+
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when Full Defence', () => {
+
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSection();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
   });
 });
 
