@@ -1,10 +1,14 @@
 const I = actor();
 const config = require('../../../../../../config');
 
+const fields = {
+  telephoneMediationLink: 'a[href*="telephone-mediation"]',
+};
+
 class TelephoneMediation {
 
-  async selectMediation(claimRef) {
-    await I.amOnPage('/case/' + claimRef + '/mediation/telephone-mediation');
+  async selectMediation() {
+    await I.click(fields.telephoneMediationLink);
     await I.waitForText('Telephone mediation', config.WaitForText);
     await I.see('What happens at mediation?');
     await I.see('What happens if you do not attend your mediation appointment?');
