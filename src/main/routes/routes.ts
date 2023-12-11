@@ -225,16 +225,31 @@ import respondSettlementAgreementConfirmationController
   from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
+import payHearingFeeStartScreenController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import contactNameMediationConfirmationController
+  from 'routes/features/mediation/contactNameMediationConfirmationController';
+import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
+import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
+import telephoneMediationConfirmationController
+  from 'routes/features/mediation/telephoneMediationConfirmationController';
 import paymentUnsuccessfulController
   from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import alternativeEmailAddressMediationController
+  from 'routes/features/mediation/alternativeEmailAddressMediationController';
+import mediationUnavailabilityNextThreeMonthsConfirmationController
+  from 'routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController';
+import mediationUnavailabilitySelectDatesController
+  from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
+import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
 export default [
   homeController,
   dashboardController,
@@ -446,9 +461,18 @@ export default [
   respondSettlementAgreementConfirmationController,
   respondSettlementAgreementController,
   breathingSpaceLiftedCheckAnswersController,
+  payHearingFeeStartScreenController,
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
   cancelHearingFeeJourneyController,
+  contactNameMediationConfirmationController,
+  telephoneMediationController,
+  emailMediationConfirmationController,
+  telephoneMediationConfirmationController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
+  alternativeEmailAddressMediationController,
+  mediationUnavailabilityNextThreeMonthsConfirmationController,
+  mediationUnavailabilitySelectDatesController,
+  alternativeTelephoneMediationController,
 ];
