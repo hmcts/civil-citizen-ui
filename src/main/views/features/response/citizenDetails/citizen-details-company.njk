@@ -44,6 +44,16 @@
             {% endif %}
             <p class="govuk-label govuk-!-margin-bottom-5">{{ party.model.partyName }}</p>
             <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
+            {% if carmEnabled == true %}
+            {{ govukInput({
+              label: { text: t('COMMON.MANDATORY_CONTACT_PERSON') },
+              classes: "govuk-input--width-20",
+              id: "contactPerson",
+              name: "contactPerson",
+              type: "text",
+              value: party.model.contactPerson
+            }) }}
+            {% else %}
             {{ govukInput({
               label: { text: t('COMMON.OPTIONAL_CONTACT_PERSON') },
               classes: "govuk-input--width-20",
@@ -52,6 +62,7 @@
               type: "text",
               value: party.model.contactPerson
             }) }}
+            {% endif %}
             {{ addressForm(
               t,
               party = party,

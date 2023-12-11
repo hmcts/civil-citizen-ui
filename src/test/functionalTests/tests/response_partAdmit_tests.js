@@ -2,6 +2,7 @@ const config =  require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
@@ -128,4 +129,8 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
     // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-10659
     // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   }
+});
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
 });

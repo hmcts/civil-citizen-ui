@@ -2,6 +2,7 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -26,3 +27,7 @@ Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});
