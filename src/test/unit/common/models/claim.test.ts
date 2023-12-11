@@ -42,7 +42,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import { Mediation } from 'common/models/mediation/mediation';
-import {CompanyTelephoneNumber} from "form/models/mediation/companyTelephoneNumber";
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
