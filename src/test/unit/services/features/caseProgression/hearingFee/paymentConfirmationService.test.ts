@@ -8,7 +8,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   PAY_HEARING_FEE_UNSUCCESSFUL_URL,
   PAY_HEARING_FEE_SUCCESSFUL_URL,
-  HEARING_FEE_APPLY_HELP_FEE_SELECTION
+  HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
 
 jest.mock('modules/draft-store');

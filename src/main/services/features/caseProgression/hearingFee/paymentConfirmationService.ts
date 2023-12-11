@@ -3,7 +3,7 @@ import {AppRequest} from 'models/AppRequest';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {
   HEARING_FEE_APPLY_HELP_FEE_SELECTION, PAY_HEARING_FEE_SUCCESSFUL_URL,
-  PAY_HEARING_FEE_UNSUCCESSFUL_URL
+  PAY_HEARING_FEE_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
@@ -15,7 +15,6 @@ const hearing = 'hearing';
 const success = 'Success';
 const failed = 'Failed';
 
-
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
 
   const redisClaimId = generateRedisKey(<AppRequest>req);
@@ -23,8 +22,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
   const paymentReference = claim.caseProgression.hearing.paymentInformation?.paymentReference;
 
   const paymentStatus = await getFeePaymentStatus(paymentReference, FeeType.HEARING, req);
-  console.log('paymentStatus:::'+paymentStatus.status);
-
   await saveCaseProgression(redisClaimId, paymentStatus, paymentInformation, hearing);
 
   const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed ? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
