@@ -49,7 +49,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const cookiePreferences = req.cookies['SESSION_ID'] ? req.cookies['SESSION_ID'] : appRequest.session.user.accessToken;
     console.log('Cookie Data:', cookiePreferences);
     res.cookie('session_id', cookiePreferences, {httpOnly: true});
-    res.cookie('SESSION_ID', cookiePreferences, {httpOnly: true, domain: 'moneyclaims.aat.platform.hmcts.net'});
+    res.cookie('SESSION_ID', cookiePreferences, {httpOnly: false, domain: 'moneyclaims.aat.platform.hmcts.net', secure: true, sameSite: 'none'});
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
