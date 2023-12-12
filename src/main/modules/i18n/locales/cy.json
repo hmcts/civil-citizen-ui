@@ -1045,7 +1045,8 @@
       "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
       "NUMBER_INFORMATION": "Byddwn hefyd yn rhoi eich rhif i'r unigolyn, y busnes, neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn "
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
