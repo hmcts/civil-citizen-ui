@@ -457,5 +457,4 @@ export default [
   cancelHearingFeeJourneyController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
-  dashboardNotificationController,
 ];
