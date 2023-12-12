@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import * as requestModels from 'common/models/AppRequest';
 import {CCDClaim, CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import config from 'config';
@@ -412,8 +412,8 @@ describe('Civil Service Client', () => {
       const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
       const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
       mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {
-        baseURL: baseUrl,
-      }} as unknown as AxiosInstance);
+          baseURL: baseUrl,
+        }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
       const caseRoleResult = await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
@@ -426,8 +426,8 @@ describe('Civil Service Client', () => {
         throw new Error('error');
       });
       mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {
-        baseURL: baseUrl,
-      }} as unknown as AxiosInstance);
+          baseURL: baseUrl,
+        }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', mockedAppRequest)).rejects.toThrow('error');
@@ -604,6 +604,26 @@ describe('Civil Service Client', () => {
 
       //Then
       await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('verifyOcmcPin', () => {
+
+    it('should get redirectUrl for OCMC claimSummary', async () => {
+      const mockResponse: AxiosResponse = {
+        config: undefined, headers: undefined, statusText: 'OK',
+        status: 200,
+        data: 'https://redirectUrl',
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue(mockResponse);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+
+      //Then
+      expect(redirectUrl).toEqual('https://redirectUrl');
     });
   });
 
