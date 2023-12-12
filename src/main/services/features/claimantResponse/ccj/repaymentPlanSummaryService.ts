@@ -3,11 +3,13 @@ import {
   convertFrequencyToText,
   getFinalPaymentDate,
   getFirstRepaymentDate,
-  getPaymentAmount, getRepaymentFrequency, getRepaymentLength,
+  getPaymentAmount, getPaymentDate, getRepaymentFrequency, getRepaymentLength,
 } from 'common/utils/repaymentUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
+import {RepaymentInformation} from 'form/models/admission/repaymentInformation';
+
 
 export const getRepaymentPlan = (claim: Claim, lang: string): RepaymentPlanSummary => {
   const frequency = getRepaymentFrequency(claim);
@@ -20,3 +22,17 @@ export const getRepaymentPlan = (claim: Claim, lang: string): RepaymentPlanSumma
   };
   return repaymentPlan;
 };
+
+export const getRepaymentInfo=(  claim:Claim,lang:string):RepaymentInformation=>{
+  const paymentIntention= claim.getPaymentIntention();
+  const repaymentPlanInfo: RepaymentInformation = {
+    paymentIntention: paymentIntention,
+    paymentOption: paymentIntention.paymentOption,
+    paymentDate: formatDateToFullDate(getPaymentDate(claim)),
+    repaymentPlan: getRepaymentPlan(claim, lang)
+  };
+  return repaymentPlanInfo;
+
+}
+
+

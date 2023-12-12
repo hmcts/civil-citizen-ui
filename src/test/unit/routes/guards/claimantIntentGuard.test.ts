@@ -33,7 +33,7 @@ describe('claimantIntentGuard', () => {
     req.originalUrl = CLAIMANT_RESPONSE_CONFIRMATION_URL;
     await claimantIntentGuard(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
-    expect(res.redirect).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();``
   });
   it('should redirect if isClaimantIntentionPending returns false', async () => {
     const claim = {
