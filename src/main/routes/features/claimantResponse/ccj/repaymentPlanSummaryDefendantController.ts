@@ -1,4 +1,4 @@
-import { NextFunction, Response, Router } from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import { CCJ_REPAYMENT_PLAN_DEFENDANT_URL } from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { RepaymentPlanSummary } from 'common/form/models/admission/repaymentPlanSummary';
@@ -20,7 +20,7 @@ function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentO
   });
 }
 
-repaymentPlanSummaryDefendantController.get(CCJ_REPAYMENT_PLAN_DEFENDANT_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+repaymentPlanSummaryDefendantController.get(CCJ_REPAYMENT_PLAN_DEFENDANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(generateRedisKey(<AppRequest>req), req);
@@ -30,6 +30,6 @@ repaymentPlanSummaryDefendantController.get(CCJ_REPAYMENT_PLAN_DEFENDANT_URL, as
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default repaymentPlanSummaryDefendantController;
