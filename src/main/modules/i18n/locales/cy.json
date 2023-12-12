@@ -1230,6 +1230,7 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
