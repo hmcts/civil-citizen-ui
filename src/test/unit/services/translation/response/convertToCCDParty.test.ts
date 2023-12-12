@@ -6,10 +6,10 @@ import {YesNo} from 'common/form/models/yesNo';
 import {Address} from 'common/form/models/address';
 import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
-import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'common/models/PartyPhone';
 import {req} from '../../../../utils/UserDetails';
 import {Email} from 'models/Email';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 
 const companyName = 'Version 1';
 const phone = new PartyPhone('123456789');
@@ -92,7 +92,7 @@ const partySoleTrader: Party = {
 
 const partyCompanyCCD: CCDParty = {
   companyName: companyName,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: null,
   individualFirstName: undefined,
   individualLastName: undefined,
   individualTitle: undefined,
@@ -100,7 +100,7 @@ const partyCompanyCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: null,
   soleTraderFirstName: undefined,
   soleTraderLastName: undefined,
   soleTraderTitle: undefined,
@@ -110,7 +110,7 @@ const partyCompanyCCD: CCDParty = {
 
 const partyIndividualCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
+  individualDateOfBirth: '1990-10-10',
   individualTitle: title,
   individualFirstName: firstName,
   individualLastName: lastName,
@@ -118,7 +118,7 @@ const partyIndividualCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: undefined,
+  soleTraderDateOfBirth: null,
   soleTraderTitle: undefined,
   soleTraderFirstName: undefined,
   soleTraderLastName: undefined,
@@ -128,7 +128,7 @@ const partyIndividualCCD: CCDParty = {
 
 const partySoleTraderCCD: CCDParty = {
   companyName: undefined,
-  individualDateOfBirth: undefined,
+  individualDateOfBirth: null,
   individualFirstName: undefined,
   individualLastName: undefined,
   individualTitle: undefined,
@@ -136,7 +136,7 @@ const partySoleTraderCCD: CCDParty = {
   partyEmail: emailCCD,
   partyPhone: phoneCCD,
   primaryAddress: addressCCD,
-  soleTraderDateOfBirth: new Date('1990-10-10T00:00:00.000Z'),
+  soleTraderDateOfBirth:  '1990-10-10',
   soleTraderTitle: title,
   soleTraderFirstName: firstName,
   soleTraderLastName: lastName,
@@ -176,5 +176,12 @@ describe('translate party to ccd model', () => {
   it('should translate SOLE TRADER party to ccd', () => {
     const partyResponseCCD = toCCDParty(partySoleTrader);
     expect(partyResponseCCD).toMatchObject(partySoleTraderCCD);
+  });
+
+  it('should translate SOLE TRADER party to ccd date empty', () => {
+    partySoleTrader.dateOfBirth=null;
+    const partyResponseCCD = toCCDParty(partySoleTrader);
+
+    expect(partyResponseCCD.soleTraderDateOfBirth).toBeNull();
   });
 });
