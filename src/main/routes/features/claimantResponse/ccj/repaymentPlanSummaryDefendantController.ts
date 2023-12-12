@@ -2,7 +2,7 @@ import { NextFunction, Response, Router } from 'express';
 import { CCJ_REPAYMENT_PLAN_DEFENDANT_URL } from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { RepaymentPlanSummary } from 'common/form/models/admission/repaymentPlanSummary';
-import { getPaymentDate, } from 'common/utils/repaymentUtils';
+import { getPaymentDate } from 'common/utils/repaymentUtils';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { getClaimById } from 'modules/utilityService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';

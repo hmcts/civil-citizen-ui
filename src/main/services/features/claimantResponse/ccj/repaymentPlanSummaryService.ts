@@ -3,7 +3,7 @@ import {
   convertFrequencyToText,
   getFinalPaymentDate,
   getFirstRepaymentDate,
-  getPaymentAmount, getRepaymentFrequency, getRepaymentLength
+  getPaymentAmount, getRepaymentFrequency, getRepaymentLength,
 } from 'common/utils/repaymentUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
