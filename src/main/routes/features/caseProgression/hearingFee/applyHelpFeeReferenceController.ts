@@ -66,7 +66,8 @@ applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req
       let redirectUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
       await saveCaseProgression(redisClaimId, form.model, helpFeeReferenceNumberForm);
       if (form.model.option === YesNo.YES) {
-        await triggerNotifyEvent(claimId, req, redisClaimId);
+        const claim: Claim = await getCaseDataFromStore(redisClaimId);
+        await triggerNotifyEvent(claimId, req, claim);
         redirectUrl = HEARING_FEE_CONFIRMATION_URL;
       }
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));

@@ -11,8 +11,34 @@ describe('hearing Fee service', () => {
   it('should trigger notify event', async () => {
     //Given
     const spyTriggerEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+    const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
     //when
-    await triggerNotifyEvent(mockClaimId, null, 'abc');
+    await triggerNotifyEvent(mockClaimId, null, testClaim.case_data);
+    //Then
+    expect(spyTriggerEvent).toHaveBeenCalled();
+    expect(spyTriggerEvent).toHaveBeenCalledWith('NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES', mockClaimId, undefined, null);
+  });
+
+  it('should trigger notify event with no respondent data', async () => {
+    //Given
+    const spyTriggerEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+    const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
+    //when
+    await triggerNotifyEvent(mockClaimId, null, testClaim);
     //Then
     expect(spyTriggerEvent).toHaveBeenCalled();
     expect(spyTriggerEvent).toHaveBeenCalledWith('NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES', mockClaimId, undefined, null);
