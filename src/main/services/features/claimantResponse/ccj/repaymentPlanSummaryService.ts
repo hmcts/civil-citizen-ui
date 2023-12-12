@@ -10,7 +10,6 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
 import {RepaymentInformation} from 'form/models/admission/repaymentInformation';
 
-
 export const getRepaymentPlan = (claim: Claim, lang: string): RepaymentPlanSummary => {
   const frequency = getRepaymentFrequency(claim);
   const repaymentPlan: RepaymentPlanSummary = {
@@ -29,10 +28,8 @@ export const getRepaymentInfo=(  claim:Claim,lang:string):RepaymentInformation=>
     paymentIntention: paymentIntention,
     paymentOption: paymentIntention.paymentOption,
     paymentDate: formatDateToFullDate(getPaymentDate(claim)),
-    repaymentPlan: getRepaymentPlan(claim, lang)
+    repaymentPlan: getRepaymentPlan(claim, lang),
   };
   return repaymentPlanInfo;
 
-}
-
-
+};

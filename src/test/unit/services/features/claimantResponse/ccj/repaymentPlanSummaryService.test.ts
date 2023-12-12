@@ -7,7 +7,6 @@ import {
 } from 'services/features/claimantResponse/ccj/repaymentPlanSummaryService';
 import {RepaymentPlan} from 'models/repaymentPlan';
 
-
 describe('Get getRepaymentPlan ', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
 

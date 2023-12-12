@@ -3,8 +3,8 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {RepaymentPlanSummary} from 'form/models/admission/repaymentPlanSummary';
 
 export class RepaymentInformation {
-    paymentIntention?: PaymentIntention;
-    paymentOption?: PaymentOptionType;
-    paymentDate?: string;
-    repaymentPlan?: RepaymentPlanSummary;
+  paymentIntention?: PaymentIntention;
+  paymentOption?: PaymentOptionType;
+  paymentDate?: string;
+  repaymentPlan?: RepaymentPlanSummary;
 }
