@@ -68,7 +68,7 @@ export class ClaimantResponse {
   get isCourtDecisionInFavourOfDefendant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }
-  
+
   get isCCJRequested() : boolean {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
