@@ -11,7 +11,8 @@ const fields = {
 class AlternativeEmail {
 
   async confirmAltEmail() {
-    await I.waitForText('Can the mediation team use', config.WaitForText);
+    await I.waitForText('Can the mediation team use civilmoneyclaimsdemo@gmail.com to contact you ' +
+        'about your mediation appointment?', config.WaitForText);
     await I.click(fields.noButton);
     contactUs.verifyContactUs();
     await I.click('Save and continue');

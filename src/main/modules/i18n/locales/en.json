@@ -294,17 +294,6 @@
       "NO": "No"
     }
   },
-  "BANNERS": {
-    "PIN_ERROR_NOTIFICATION": {
-      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
-      "EMAIL":"Email:",
-      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
-      "PHONE":"Telephone: 0300 123 7050",
-      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
-      "SORRY": "Sorry for the inconvenience caused.",
-      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
-    }
-  },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Accept or reject the £{{ admittedAmount }}",
@@ -1021,7 +1010,7 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         },
-        "NO_MEDIATION": { 
+        "NO_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
