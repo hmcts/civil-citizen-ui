@@ -1,13 +1,12 @@
-import {Claim} from '../../../../common/models/claim';
-import {Address} from '../../../../common/form/models/address';
+import {Claim} from 'models/claim';
+import {Address} from 'form/models/address';
+import {Party} from 'models/party';
 
-const getAddress = (claim: Claim): Address => {
-  if (claim.applicant1.partyDetails?.correspondenceAddress?.addressLine1) {
-    return claim.applicant1.partyDetails.correspondenceAddress;
-  } else if (claim.applicant1.partyDetails?.primaryAddress?.addressLine1) {
-    return claim.applicant1.partyDetails.primaryAddress;
+const getAddress = (party: Party): Address => {
+  if (party.partyDetails?.correspondenceAddress?.addressLine1) {
+    return party.partyDetails.correspondenceAddress;
   }
-  return claim.applicant1?.partyDetails.primaryAddress;
+  return party?.partyDetails.primaryAddress;
 };
 
 const getSolicitorName = (claim: Claim): string => {

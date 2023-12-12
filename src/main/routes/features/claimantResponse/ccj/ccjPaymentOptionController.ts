@@ -3,11 +3,11 @@ import {
   CCJ_PAYMENT_OPTIONS_URL,
   CCJ_DEFENDANT_PAYMENT_DATE_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CCJ_CHECK_AND_SEND_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
@@ -44,7 +44,7 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_REPAYMENT_PLAN_INSTALMENTS_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
       }
     }
   } catch (error) {

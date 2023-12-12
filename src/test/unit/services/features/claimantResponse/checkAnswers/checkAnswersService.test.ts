@@ -22,6 +22,852 @@ jest.mock('i18next', () => ({
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
+function generateExpectedResultForPartAdmitPayImmediatelyAccept(option: string) {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
+              },
+              'value': {
+                'html': 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/settle-admitted',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      null,
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForPartAdmitPayImmediatelyReject(option: string) {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
+              },
+              'value': {
+                'html': option === YesNo.NO
+                  ? 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_AMOUNT' : undefined,
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/settle-admitted',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      {
+        'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/mediation/free-telephone-mediation',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_HEARING_REQUIREMENTS_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/determination-without-hearing',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-report-details',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/permission-for-expert',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/other-witnesses',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
+function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      {
+        'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/mediation/free-telephone-mediation',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_HEARING_REQUIREMENTS_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/determination-without-hearing',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-report-details',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/permission-for-expert',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/other-witnesses',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
+function generateExpectedResultForFullDefenceIntentionToProceedReject() {
+  const rows: [] = [];
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': rows,
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      null,
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForPartAdmitAndPaidAccept() {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+              },
+              'value': {
+                'html': 'COMMON.YES',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/part-payment-received',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      null,
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForPartAdmitAndPaidReject() {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/part-payment-received',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      {
+        'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/mediation/free-telephone-mediation',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_HEARING_REQUIREMENTS_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/determination-without-hearing',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-report-details',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/permission-for-expert',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/other-witnesses',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
+function generateExpectedResultForPartAdmitAndPaymentAccept() {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+              },
+              'value': {
+                'html': 'COMMON.YES',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/settle-claim',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      null,
+      null,
+    ],
+  };
+}
+
+function generateExpectedResultForPartAdmitAndPaymentReject() {
+  return {
+    'sections': [
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/claimant-response/settle-claim',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      null,
+      undefined,
+      {
+        'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/mediation/free-telephone-mediation',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        'title': 'PAGES.CHECK_YOUR_ANSWER.YOUR_HEARING_REQUIREMENTS_TITLE',
+        'summaryList': {
+          'rows': [
+            {
+              'key': {
+                'text': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/determination-without-hearing',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-report-details',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION_2.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/permission-for-expert',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+              },
+              'value': {
+                'html': 'COMMON.VARIATION.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+              },
+              'value': {
+                'html': 'COMMON.NO',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/other-witnesses',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+              },
+              'value': {
+                'html': '',
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  };
+}
+
 describe('Check Answers service', () => {
   describe('Get Data from Draft', () => {
 
@@ -115,15 +961,89 @@ describe('Check Answers service', () => {
     });
 
     it('should check answers for part admit pay immediately for yes option', () => {
+      const expectedResult = generateExpectedResultForPartAdmitPayImmediatelyAccept(YesNo.YES);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(6).toEqual(result.sections.length);
+      expect(expectedResult).toEqual(result);
+      expect(7).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
+      const expectedResult = generateExpectedResultForPartAdmitPayImmediatelyReject(YesNo.NO);
       claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
       const result = getSummarySections('12345', claim, 'en');
-      expect(6).toEqual(result.sections.length);
+      expect(7).toEqual(result.sections.length);
+      expect(expectedResult).toEqual(result);
+    });
+  });
+
+  describe('Build check answers for full defence intention to proceed', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+    });
+
+    it('should check answers for full defence intention to proceed', () => {
+      const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedAccept();
+      claim.claimantResponse = {intentionToProceed: {option: YesNo.YES}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+
+    it('should check answers for full defence reject intention to proceed', () => {
+      const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedReject();
+      claim.claimantResponse = {intentionToProceed: {option: YesNo.NO}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+  });
+
+  describe('Build check answers for part admit and paid', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.partialAdmission = {alreadyPaid : { option : YesNo.YES}};
+    });
+
+    it('should check answers for part admit and paid accept', () => {
+      const expectedResult = generateExpectedResultForPartAdmitAndPaidAccept();
+      claim.claimantResponse = {hasDefendantPaidYou: {option: YesNo.YES}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+
+    it('should check answers for part admit and paid reject', () => {
+      const expectedResult = generateExpectedResultForPartAdmitAndPaidReject();
+      claim.claimantResponse = {hasDefendantPaidYou: {option: YesNo.NO}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+  });
+
+  describe('Build check answers for part admit and paid', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.partialAdmission = {alreadyPaid : { option : YesNo.YES}};
+    });
+
+    it('should check answers for part admit and payment accept', () => {
+      const expectedResult = generateExpectedResultForPartAdmitAndPaymentAccept();
+      claim.claimantResponse = {hasPartPaymentBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+    });
+
+    it('should check answers for part admit and payment reject', () => {
+      const expectedResult = generateExpectedResultForPartAdmitAndPaymentReject();
+      claim.claimantResponse = {hasPartPaymentBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
+      const result = getSummarySections('12345', claim, 'en');
+      expect(expectedResult).toEqual(result);
+      expect(7).toEqual(result.sections.length);
+
     });
   });
 });
