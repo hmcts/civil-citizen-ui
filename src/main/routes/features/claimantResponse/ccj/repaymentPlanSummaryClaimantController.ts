@@ -1,14 +1,14 @@
-import { NextFunction, Response, Router } from 'express';
-import { AppRequest } from '../../../../common/models/AppRequest';
-import { RepaymentPlanSummary } from 'common/form/models/admission/repaymentPlanSummary';
-import { convertFrequencyToText, getFinalPaymentDate, getFirstRepaymentDate, getPaymentAmount, getPaymentDate, getRepaymentFrequency, getRepaymentLength } from 'common/utils/repaymentUtils';
-import { CCJ_REPAYMENT_PLAN_CLAIMANT_URL } from 'routes/urls';
-import { getLng } from 'common/utils/languageToggleUtils';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { getClaimById } from 'modules/utilityService';
-import { generateRedisKey } from '../../../../modules/draft-store/draftStoreService';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { t } from 'i18next';
+import {NextFunction, Response, Router} from 'express';
+import {AppRequest} from 'models/AppRequest';
+import {RepaymentPlanSummary} from 'common/form/models/admission/repaymentPlanSummary';
+import {getPaymentDate} from 'common/utils/repaymentUtils';
+import {CCJ_REPAYMENT_PLAN_CLAIMANT_URL} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {getClaimById} from 'modules/utilityService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {t} from 'i18next';
+import {getRepaymentPlan} from 'services/features/claimantResponse/ccj/repaymentPlanSummaryService';
 
 const repaymentPlanSummaryClaimantController = Router();
 const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-summary';
@@ -30,14 +30,7 @@ repaymentPlanSummaryClaimantController.get(CCJ_REPAYMENT_PLAN_CLAIMANT_URL, asyn
     const paymentIntention = claim.getPaymentIntention();
     const paymentOption = paymentIntention.paymentOption;
     const paymentDate = formatDateToFullDate(getPaymentDate(claim));
-    const frequency = getRepaymentFrequency(claim);
-    const repaymentPlan: RepaymentPlanSummary = {
-      paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim)),
-      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim)),
-      lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
-    };
+    const repaymentPlan = getRepaymentPlan(claim, lang);
     renderView(repaymentPlan, paymentOption, paymentDate, title, res);
   } catch (error) {
     next(error);
