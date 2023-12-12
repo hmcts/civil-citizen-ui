@@ -1816,7 +1816,6 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
             }
-          }
           },
           "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
           "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
@@ -2988,7 +2987,8 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
-    },
+    }
+  },
   "FOOTER":{
     "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
