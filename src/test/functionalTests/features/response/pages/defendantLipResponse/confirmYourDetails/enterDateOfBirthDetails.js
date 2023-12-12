@@ -14,7 +14,7 @@ const buttons = {
 class DateOfBirthDetailsPage {
   async enterDateOfBirth ()  {
     await I.waitForText('Enter your date of birth', config.WaitForText);
-    await I.fillField(fields.day, '1');
+    await I.fillField(fields.day, '11');
     await I.fillField(fields.month, '11');
     await I.fillField(fields.year, '1987');
     await I.click(buttons.saveAndContinue);
