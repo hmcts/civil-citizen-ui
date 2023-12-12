@@ -378,6 +378,8 @@ describe('translate response to ccd version', () => {
   it('should translate details of why does you dispute the claim', ()=>{
     //Given
     const reason = 'here is the reason';
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.explanation = undefined;
     claim.partialAdmission = new PartialAdmission();
@@ -392,6 +394,8 @@ describe('translate response to ccd version', () => {
 
   it('should translate to respondResponseLip', ()=>{
     //Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.evidence = <DefendantEvidence>{};
     claim.evidence.comment = 'evidence comment';
     claim.partialAdmission = new PartialAdmission();
