@@ -10,5 +10,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const triggerNotifyEvent = async (claimId: string, req:any, redisClaimId: string): Promise<void> => {
   const claim: Claim = await getCaseDataFromStore(redisClaimId);
   const ccdClaim = translateDraftClaimToCCD(claim, req);
+  ccdClaim.respondent1.individualDateOfBirth = undefined;
+  ccdClaim.claimAmountBreakup [0].value.claimAmount = undefined;
   await civilServiceClient.submitEvent(CaseEvent.NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES, claimId, ccdClaim, req);
 };
