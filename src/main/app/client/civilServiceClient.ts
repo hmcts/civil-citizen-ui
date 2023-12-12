@@ -8,12 +8,19 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIM_AMOUNT_URL, CIVIL_SERVICE_COURT_DECISION,
-  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
-  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_FEES_PAYMENT_URL,
+  CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_COURT_DECISION,
+  CIVIL_SERVICE_COURT_LOCATIONS,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
-  CIVIL_SERVICE_VALIDATE_PIN_URL, CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
+  CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -181,6 +188,21 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaim(caseDetails);
+
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async verifyOcmcPin(pin: string, caseReference: string): Promise<string> {
+    try {
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL //nosonar
+        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return null;
+      }
+      return  response.data as string;
 
     } catch (err: unknown) {
       logger.error(err);
