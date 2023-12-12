@@ -51,7 +51,10 @@
               id: "contactPerson",
               name: "contactPerson",
               type: "text",
-              value: party.model.contactPerson
+              value: party.model.contactPerson,
+              errorMessage: {
+                html: t(party.errorFor("contactPerson"))
+              } if party.hasErrors()
             }) }}
             {% else %}
             {{ govukInput({

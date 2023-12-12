@@ -10,14 +10,19 @@ import {
 } from './taskListHelpers';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {Party} from 'models/party';
+
+function hasCorrespondenceAndPrimaryAddressAndDob(respondent1: Party) {
+  return hasCorrespondenceAndPrimaryAddress(respondent1) && hasDateOfBirthIfIndividual(respondent1);
+}
 
 function checkStatus(caseData: Claim, carmApplicable = false ) {
   if(carmApplicable){
-    if (hasAllCarmRequiredFields(caseData?.respondent1)) {
+    if (hasAllCarmRequiredFields(caseData?.respondent1) && hasCorrespondenceAndPrimaryAddressAndDob(caseData?.respondent1)) {
       return TaskStatus.COMPLETE;
     }
     return TaskStatus.INCOMPLETE;
-  } else if (hasCorrespondenceAndPrimaryAddress(caseData?.respondent1) && hasDateOfBirthIfIndividual(caseData?.respondent1)) {
+  } else if (hasCorrespondenceAndPrimaryAddressAndDob(caseData?.respondent1)) {
     return TaskStatus.COMPLETE;
   }
 }
