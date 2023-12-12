@@ -7,7 +7,6 @@ import {PartyType} from 'models/partyType';
 import {Address} from 'form/models/address';
 import {CCDParty} from 'models/ccdResponse/ccdParty';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
-import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {PartyPhone} from 'models/PartyPhone';
 import {Email} from 'models/Email';
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
@@ -20,7 +19,6 @@ const title = 'Mr';
 const firstName = 'Jon';
 const lastName = 'Doe';
 const soleTraderTradingAs = 'test';
-const dateOfBirth = new CitizenDate('10', '10', '1990');
 const email = new Email('test@test.com');
 const emailCCD = 'test@test.com';
 
@@ -72,7 +70,6 @@ const partyIndividual: Party = {
     individualLastName: lastName,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
 };
 
 const partySoleTrader: Party = {
@@ -86,7 +83,6 @@ const partySoleTrader: Party = {
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },
-  dateOfBirth: {date: dateOfBirth.date, year: 1990, month: 10, day: 10},
 };
 
 const getPartyCompanyCCD = () : CCDParty => {
@@ -113,7 +109,7 @@ const getPartyCompanyCCD = () : CCDParty => {
 const getPartyIndividualCCD = (): CCDParty => {
   return {
     companyName: undefined,
-    individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    individualDateOfBirth: undefined,
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
@@ -141,7 +137,7 @@ const getPartySoleTraderCCD = () : CCDParty => {
     partyEmail: emailCCD,
     partyPhone: phoneCCD,
     primaryAddress: addressCCD,
-    soleTraderDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    soleTraderDateOfBirth: undefined,
     soleTraderTitle: title,
     soleTraderFirstName: firstName,
     soleTraderLastName: lastName,

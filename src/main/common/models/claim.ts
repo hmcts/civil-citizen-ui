@@ -676,9 +676,9 @@ export class Claim {
   }
 
   detailsOfWhyYouDisputeTheClaim(): string {
-    if (this.rejectAllOfClaim) {
+    if (this.isFullDefence()) {
       return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
-    } else if (this.partialAdmission) {
+    } else if (this.isPartialAdmission()) {
       return this.partialAdmission?.whyDoYouDisagree?.text;
     }
   }
