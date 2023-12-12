@@ -2060,6 +2060,10 @@
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
+    "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
+    },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
       "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
