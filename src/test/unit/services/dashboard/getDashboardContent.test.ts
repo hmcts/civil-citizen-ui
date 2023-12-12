@@ -5,6 +5,8 @@ import {FIXED_DATE} from '../../../utils/dateUtils';
 import {getClaimantNotifications, getDefendantNotifications} from 'services/dashboard/getDashboardContent';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {CaseState} from 'form/models/claimDetails';
+import * as dashboardCache from 'modules/draft-store/getDashboardCache';
+import {Notifications} from 'models/caseProgression/notifications';
 
 const defendantResponseNotificationContent = [{data: {externalLink: true, href: '/notification', text: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM', textAfter: '', textBefore: 'PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND', variables: ''}, type: 'link'}] as ClaimSummarySection;
 const hearingFeeNotificationContent = [{data: {externalLink: false, href: '/case/1234567890/case-progression/pay-hearing-fee', text: 'PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.TEXT', textAfter: 'PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.PAY_FEE', textBefore: 'PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.TEXT_BEFORE', variables: undefined}, type: 'link'}] as ClaimSummarySection;
@@ -16,8 +18,11 @@ describe('getDashboardContent', () => {
       const claim = new Claim();
       claim.id = '1234567890';
       claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, FIXED_DATE));
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(() => {return null;});
+
       //When
-      const claimantNotifications = await getClaimantNotifications(claim, 'en');
+      const claimantNotifications = await getClaimantNotifications(claim.id, claim, 'en');
 
       //Then
       expect(claimantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
@@ -33,13 +38,30 @@ describe('getDashboardContent', () => {
       const claim = new Claim();
       claim.id = '1234567890';
       claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null);
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(() => {return null;});
       //When
-      const claimantNotifications = await getClaimantNotifications(claim, 'en');
+      const claimantNotifications = await getClaimantNotifications(claim.id, claim, 'en');
 
       //Then
       expect(claimantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
       expect(claimantNotifications[0].content).toEqual(defendantResponseNotificationContent);
       expect(claimantNotifications[1]).toBeUndefined();
+
+    });
+
+    it('return cached notifications if present', async () => {
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null);
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(async () => {return {items: [{title: 'Received from Cache', content: null}]} as Notifications;});
+      //When
+      const claimantNotifications = await getClaimantNotifications(claim.id, claim, 'en');
+
+      //Then
+      expect(claimantNotifications[0].title).toEqual('Received from Cache');
 
     });
   });
@@ -50,13 +72,16 @@ describe('getDashboardContent', () => {
       claim.id = '1234567890';
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, FIXED_DATE));
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(() => {return null;});
+
       //When
-      const claimantNotifications = await getDefendantNotifications(claim, 'en');
+      const defendantNotifications = await getDefendantNotifications(claim.id, claim, 'en');
 
       //Then
-      expect(claimantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
-      expect(claimantNotifications[0].content).toEqual(youHaventRespondedNotificationContent);
-      expect(claimantNotifications[1]).toBeUndefined();
+      expect(defendantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM');
+      expect(defendantNotifications[0].content).toEqual(youHaventRespondedNotificationContent);
+      expect(defendantNotifications[1]).toBeUndefined();
     });
 
     it('without hearing fee if fee not present', async () => {
@@ -64,11 +89,29 @@ describe('getDashboardContent', () => {
       const claim = new Claim();
       claim.id = '1234567890';
       claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null);
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(() => {return null;});
+
       //When
-      const claimantNotifications = await getDefendantNotifications(claim, 'en');
+      const defendantNotifications = await getDefendantNotifications(claim.id, claim, 'en');
 
       //Then
-      expect(claimantNotifications[0]).toBeUndefined();
+      expect(defendantNotifications[0]).toBeUndefined();
+    });
+
+    it('return cached notifications if present', async () => {
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null);
+      const spyOn = jest.spyOn(dashboardCache, 'getNotificationFromCache');
+      spyOn.mockImplementationOnce(async () => {return {items: [{title: 'Received from Cache', content: null}]} as Notifications;});
+      //When
+      const defendantNotifications = await getDefendantNotifications(claim.id, claim, 'en');
+
+      //Then
+      expect(defendantNotifications[0].title).toEqual('Received from Cache');
+
     });
   });
 });

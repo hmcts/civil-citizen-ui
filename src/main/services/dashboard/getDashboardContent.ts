@@ -12,9 +12,9 @@ import {Notifications} from 'models/caseProgression/notifications';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
 
-export const getClaimantNotifications = async (claim: Claim, lng: string) => {
+export const getClaimantNotifications = async (claimId: string, claim: Claim, lng: string) => {
   try {
-    const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.CLAIMANT, claim.id.toString());
+    const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.CLAIMANT, claimId);
     if(cachedDashboardNotifications?.items?.length) {
       return cachedDashboardNotifications.items;
     }
@@ -41,7 +41,7 @@ export const getClaimantNotifications = async (claim: Claim, lng: string) => {
     if (claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
       dashboardNotificationsList.push(payTheHearingFee);
     }
-    await saveNotificationToCache(dashboardNotificationsList, ClaimantOrDefendant.CLAIMANT, claim.id.toString());
+    await saveNotificationToCache(dashboardNotificationsList, ClaimantOrDefendant.CLAIMANT, claimId);
     return dashboardNotificationsList;
   } catch (error) {
     logger.error(error);
@@ -49,9 +49,9 @@ export const getClaimantNotifications = async (claim: Claim, lng: string) => {
   }
 };
 
-export const getDefendantNotifications = async (claim: Claim, lng: string) => {
+export const getDefendantNotifications = async (claimId: string, claim: Claim, lng: string) => {
   try {
-    const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.DEFENDANT, claim.id.toString());
+    const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.DEFENDANT, claimId);
     if(cachedDashboardNotifications?.items?.length) {
       return cachedDashboardNotifications.items;
     }
@@ -69,7 +69,7 @@ export const getDefendantNotifications = async (claim: Claim, lng: string) => {
       dashboardNotificationsList.push(youHaventRespondedNotification);
     }
 
-    await saveNotificationToCache(dashboardNotificationsList, ClaimantOrDefendant.DEFENDANT, claim.id);
+    await saveNotificationToCache(dashboardNotificationsList, ClaimantOrDefendant.DEFENDANT, claimId);
     return dashboardNotificationsList;
   } catch (error) {
     logger.error(error);
