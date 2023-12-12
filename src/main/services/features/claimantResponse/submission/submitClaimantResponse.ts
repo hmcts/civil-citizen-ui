@@ -7,6 +7,7 @@ import {translateClaimantResponseDJToCCD} from 'services/translation/claimantRes
 import {YesNo} from 'form/models/yesNo';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import { translateClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -19,7 +20,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     setRespondentDateOfBirth(claim);
-    const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+    const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending()) {
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFee);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);

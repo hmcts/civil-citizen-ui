@@ -1,0 +1,42 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PAY_HEARING_FEE.START_PAGE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  {{ govukBreadcrumbs({
+          items: [
+            {
+              text: "Home",
+              href: homeUrl
+            },
+            {
+              text: t('PAGES.PAY_HEARING_FEE.START_PAGE.PAGE_TITLE')
+            }
+          ],
+          classes: "govuk-!-margin-top-0"
+        }) }}
+  <div class="govuk-width-container govuk-!-padding-top-7"></div>
+  <div class="govuk-width-container govuk-!-padding-top-9">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ csrfProtection(csrf) }}
+          {% for content in payHearingFeeStartScreenContent %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

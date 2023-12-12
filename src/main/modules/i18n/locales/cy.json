@@ -25,6 +25,8 @@
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
+    "TELEPHONE_MEDIATION": "Telephone mediation",
+    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
@@ -34,6 +36,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
+    "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
@@ -349,6 +352,47 @@
     }
   },
   "PAGES": {
+    "MEDIATION_ALTERNATIVE_TELEPHONE": {
+      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TEXT": "Please provide an alternative number"
+    },
+    "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
+      "PAGE_TITLE": "Unavailability dates for mediation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
+      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+    },
+    "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
+      "PAGE_TITLE": "Unavailability for mediation",
+      "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
+      "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+    },
+    "MEDIATION_ALTERNATIVE_EMAIL": {
+      "PAGE_TITLE": "Alternative email address",
+      "PAGE_TEXT": "Please provide an alternative email address"
+    },
+    "MEDIATION_PHONE_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation telephone confirmation",
+      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+    },
+    "TELEPHONE_FOR_MEDIATION": {
+      "PAGE_TITLE": "Telephone mediation",
+      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
+      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
+      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
+      "WHAT_HAPPENS": "What happens at mediation?",
+      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
+      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
+      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
+      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
+      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
+      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
+      "AFTER_THE_PHONE_CALL":"After the phone call",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
+      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Dyddiad talu",
@@ -430,6 +474,7 @@
     },
     "CHECK_YOUR_ANSWER": {
       "BANK_BALANCE": "Cydbwysedd",
+      "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
       "CCJ_AMOUNT_ALREADY_PAID": "Swm a dalwyd eisoes",
       "CCJ_FIRST_PAYMENT_DATE": "Pa bryd ydych chi eisiau i’r diffynnydd wneud y taliad cynt?",
@@ -454,6 +499,10 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
       "CONSIDER_CLAIMANT_DOCUMENT": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer anfon gohebiaeth",
+      "COURT_DECISION_SECTION":"Court Decision",
+      "COURT_DECISION_ROW":"Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN":"Court repayment plan",
       "COURT_ORDERS_TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?",
       "COURT_ORDERS_CLAIM_NUMBER": "Rhif hawlio",
       "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
@@ -505,6 +554,7 @@
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
       "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
+      "HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY":"How would you like the defendant to pay?",
       "YOUR_HEARING_REQUIREMENTS_TITLE": "Eich gofynion ar gyfer gwrandawiad",
       "I_REJECT_THIS_AMOUNT": "I reject this amount",
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
@@ -512,6 +562,8 @@
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
       "IN_FULL": "In full by {{paymentDate}}",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
+      "IMMEDIATELY":"Immediately",
+      "IN_FULL_BY":"In full by {{ claimantSetDate }}",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -547,6 +599,7 @@
       "CLAIM_CHECKBOX": "Rwy'n credu bod y ffeithiau a nodir yn yr honiadau hyn yn wir.",
       "CLAIM_CHECKBOX_PROCEEDINGS": "Rwy'n deall y gellir cyflwyno gweithredoedd am anffyddineb y llys yn erbyn unrhyw un sy'n gwneud, neu'n achosi i'w wneud, datganiad ffug mewn dogfen a gadarnhawyd gan ddatganiad o wirionedd heb gred onest yn ei wirionedd.",
       "REASON_FOR_REJECTING": "Reason for rejecting their response",
+      "REPAYMENT_IN_FULL":"Repayment in full by {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu’n onest ei fod yn wir.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
@@ -561,7 +614,7 @@
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
       "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Pam ydych chi'n gwrthod yr holl honiad hwn?",
       "REQUEST_EXTRA_4WEEKS": "Ydych chi eisiau 4 wythnos ychwanegol i geisio setlo'r hawliad?",
-      "REQUEST_A_CCJ": "Issue a County Court Judgement (CCJ)",
+      "REQUEST_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
@@ -638,7 +691,8 @@
       "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
       "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "ACCEPT_OR_TRANSFER": "Gallant dderbyn y swm rydych wedi'i dalu a setlo'r hawliad, neu ofyn i'r llys drosglwyddo'r hawliad i ganolfan wrandawiadau Llys Sirol.",
@@ -948,7 +1002,7 @@
         "IF_CANT_AFFORD": "If they don't think they can afford the plan, they can ask for a judge to make a different plan.",
         "IF_DONT_SIGN": "If they don't sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.",
         "IF_NOT_PAID": "If you don't get paid",
-        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgement (CCJ) by signing in to your account.",
+        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgment (CCJ) by signing in to your account.",
         "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
@@ -957,7 +1011,13 @@
       },
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
-        "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+        "YES_MEDIATION": {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "NO_MEDIATION": {
+          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+        }
       },
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
@@ -1089,6 +1149,7 @@
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
       "CLAIMANT": "Hawlydd",
+      "DEFENDANT": "Diffynnydd",
       "CONTACT": "Cyswllt ",
       "PAGE_TITLE": "Cysylltu â’r hawlydd",
       "PHONE": "Rhif ffôn"
@@ -1219,7 +1280,10 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos"
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
+        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
+        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1335,7 +1399,7 @@
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -1343,6 +1407,22 @@
       },
       "PAGE_TITLE": "Respond to the settlement agreement",
       "TITLE": "Respond to the settlement agreement"
+    },
+    "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
+      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
+      "CAN_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) against you. The CCJ would order you to repay the money in line with the terms of the agreement.",
+      "CANT_REQUEST_CCJ": "The claimant can't request a County Court Judgment against you unless you break the terms.",
+      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+      "COURT_REVIEWED_PLAN": "The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Download settlement agreement (PDF)",
+      "EMAIL_YOU": "We'll email you when the claimant responds.",
+      "GET_RECEIPTS": "Make sure you get receipts for any payments.",
+      "PAGE_TITLE": "Respond to the settlement agreement confirmation",
+      "PAY_BY": "The agreement says you'll repay by {{ paymentDate }}.",
+      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
+      "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
+      "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
+      "WHAT_HAPPENS_NEXT": "What happens next"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
@@ -1604,8 +1684,7 @@
       "SUBTITLE": "Os na fyddwch yn ymateb",
       "TITLE": "Ymateb i hawliad ariannol",
       "PAGE_TITLE": "Ymateb i hawliad ariannol",
-      "PARAGRAPH_1": "Mae gennych 28 diwrnod i ymateb i'r hawliad o'r dyddiad y cyhoeddodd y llys yr hawliad.",
-      "PARAGRAPH_2": "Mae'r union ddyddiad terfyn yn y llythyr neu'r e-bost a gawsoch yn egluro'r hawliad.",
+      "PARAGRAPH_1": "Edrychwch ar y llythyr neu’r neges e-bost a gawsoch yn egluro’r hawliad i ddod o hyd i’r union ddyddiad terfyn.  Hefyd, fe welwch y dyddiad terfyn ar gyfer ymateb pan fyddwch yn creu ac/neu’n mewngofnodi i’ch cyfrif.",
       "PARAGRAPH_3": "Byddwn yn anfon eich ymateb at yr hawlydd (yr unigolyn neu'r sefydliad sy'n dweud bod arnoch arian iddo).",
       "PARAGRAPH_4_CCJ_URL": "Dyfarniad Llys Sirol (CCJ) ",
       "PARAGRAPH_4_PART_1": "Gall yr hawlydd wneud cais am",
@@ -1745,6 +1824,23 @@
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
+          },
+          "PAYMENT": {
+            "UNSUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was unsuccessful",
+              "NO_MONEY_TAKEN": "No money has been taken from your account",
+              "WHAT_HAPPENS_NEXT": "What happens next",
+              "PAYMENT_BY_CARD": "Payment by card",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "You can try to",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "make a card payment",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "again.",
+              "PAYMENT_BY_PHONE": "Payment by phone",
+              "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
+              "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+            }
           }
         },
         "TRIAL_HEARING_CONTENT": {
@@ -1963,6 +2059,14 @@
       "PAGE_TITLE": "Cyfryngu - Darparwch rif cyswllt cwmni",
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
+    },
+    "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+    },
+    "MEDIATION_EMAIL_CONFIRMATION": {
+      "PAGE_TITLE": "Mediation email confirmation",
+      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
@@ -2895,6 +2999,12 @@
       }
     },
     "PAY_HEARING_FEE": {
+      "START_PAGE": {
+        "PAGE_TITLE": "Pay the hearing fee",
+        "TITLE": "Pay hearing fee",
+        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
+        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+      },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
@@ -2973,6 +3083,9 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Mae'n rhaid i’r dyddiad nad yw ar gael fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Mae'n rhaid i’r dyddiad nad yw ar gael o fod yn y 12 mis nesaf",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 12 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Mae'n rhaid i’r dyddiad nad yw ar gael fod yn y 3 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Mae'n rhaid i’r dyddiad nad yw ar gael o fod yn y 3 mis nesaf",
+    "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 3 mis nesaf",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad yw ar gael o fod cyn y dyddiad y mae ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
@@ -3064,6 +3177,7 @@
     "NOT_TO_REMOVE_PHONE_NUMBER": "Dim ond newid eich rhif ffôn y gallwch ei newid, nid ei ddileu",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
+    "ENTER_TELEPHONE_NUMBER": "Rhowch rif ffôn",
     "ONE_ROW_REQUIRED": "Rhowch o leiaf un llinell",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Dewiswch ymateb os gwelwch yn dda",
@@ -3228,6 +3342,7 @@
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
+    "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_OR_VIDEO_HEARING": {
