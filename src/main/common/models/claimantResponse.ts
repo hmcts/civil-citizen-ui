@@ -76,11 +76,17 @@ export class ClaimantResponse {
   get isCourtDecisionInFavourOfDefendant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }
+
   get isCourtDecisionInFavourOfClaimant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
   }
+
   get isClaimantAcceptsCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
-      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN
   }
+
+  isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
+    return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
+  };
 }
