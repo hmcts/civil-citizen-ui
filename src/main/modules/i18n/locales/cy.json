@@ -2988,8 +2988,7 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
-    }
-  },
+    },
   "FOOTER":{
     "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",

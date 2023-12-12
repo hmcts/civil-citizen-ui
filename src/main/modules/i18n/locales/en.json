@@ -2988,8 +2988,8 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
-    }
-  },
+    },
+
   "FOOTER":{
     "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
     "ALL_CONTENT": "All content is available under the <a href='{{ link }}' rel='license'>Open Government Licence v3.0</a>, except where otherwise stated",
