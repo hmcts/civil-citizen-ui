@@ -2,7 +2,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
@@ -23,7 +23,6 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
-    console.log('first repayment date is ' + ccdResponse.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec);
     logger.info('Submitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
