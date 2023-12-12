@@ -238,7 +238,6 @@ import paymentUnsuccessfulController
   from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
-import dashboardNotificationController from 'routes/features/dashboard/dashboardNotificationController';
 
 export default [
   homeController,
