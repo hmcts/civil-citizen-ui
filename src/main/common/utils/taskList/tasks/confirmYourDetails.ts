@@ -21,10 +21,10 @@ function checkStatus(caseData: Claim, carmApplicable = false ) {
     if (hasAllCarmRequiredFields(caseData?.respondent1) && hasCorrespondenceAndPrimaryAddressAndDob(caseData?.respondent1)) {
       return TaskStatus.COMPLETE;
     }
-    return TaskStatus.INCOMPLETE;
   } else if (hasCorrespondenceAndPrimaryAddressAndDob(caseData?.respondent1)) {
     return TaskStatus.COMPLETE;
   }
+  return TaskStatus.INCOMPLETE;
 }
 
 export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string, lang: string, carmApplicable = false ): Task => {
