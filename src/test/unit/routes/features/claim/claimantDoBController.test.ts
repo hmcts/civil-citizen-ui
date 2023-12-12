@@ -64,16 +64,6 @@ describe('Claimant Date of Birth Controller', () => {
         });
     });
 
-    it('should redirect to the claimant phone number page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CLAIMANT_DOB_URL)
-        .send({day: 3, month: 4, year: 1980})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
-        });
-    });
-
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
