@@ -208,7 +208,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     summaryRows: [],
   });
 
-
   if (claimantResponse.hasPartAdmittedBeenAccepted?.option) {
     yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lng));
   }
