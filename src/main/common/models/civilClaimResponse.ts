@@ -195,8 +195,6 @@ export interface CCDClaim extends ClaimUpdate {
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
-  trialReadyApplicant?: YesNoUpperCamelCase;
-  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -254,6 +252,10 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyApplicant?: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments?: CCDTrialArrangementsOtherComments;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
