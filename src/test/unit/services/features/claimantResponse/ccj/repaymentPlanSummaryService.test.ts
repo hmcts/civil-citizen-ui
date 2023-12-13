@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {deepCopy} from '../../../../../utils/deepCopy';
 import {mockClaim} from '../../../../../utils/mockClaim';
-import {getRepaymentInfo, getRepaymentPlan,} from 'services/features/claimantResponse/ccj/repaymentPlanSummaryService';
+import {getRepaymentInfo, getRepaymentPlan} from 'services/features/claimantResponse/ccj/repaymentPlanSummaryService';
 import {RepaymentPlan} from 'models/repaymentPlan';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
