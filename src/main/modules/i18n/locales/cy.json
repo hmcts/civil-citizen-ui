@@ -411,7 +411,7 @@
         "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
         "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
         "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
-        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
         "HEARING_FEE": "Hearing fee",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",

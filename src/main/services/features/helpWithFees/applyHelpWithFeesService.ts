@@ -2,6 +2,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {Claim} from 'models/claim';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
+import {HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
 
 function getHearingFee(claim: Claim) {
   const hearingFeeInformation = new HearingFeeInformation(claim.caseProgressionHearing.hearingFeeInformation.hearingFee);
@@ -20,7 +21,7 @@ export const getApplyHelpWithFeesContent = (claim: Claim) => {
     .addMainTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE')
     .addInsetText('PAGES.APPLY_HELP_WITH_FEES.START.'+feeType+'_FEE_INSET',
       {feeAmount: feeAmount})
-    .addLink('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK', 'https://www.gov.uk/get-help-with-court-fees#eligibility', 'PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY', '.')
+    .addLink('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK', HELP_WITH_FEES_ELIGIBILITY, 'PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY', null, null, true)
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.RECEIVE_DECISION')
     .addSpan('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY_TITLE', '', 'govuk-!-font-weight-bold')
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY')
