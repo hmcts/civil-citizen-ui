@@ -7,7 +7,7 @@ import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   getSummarySections,
-  saveStatementOfTruth
+  saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -689,8 +689,8 @@ describe('Check Answers service', () => {
       claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.BY_SET_DATE,
-          paymentDate: new Date()
-        }
+          paymentDate: new Date(),
+        },
       };
       claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
       claim.respondent1 = new Party();
@@ -704,15 +704,15 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'
-          }]
+            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+          }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
-        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}
+        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
       expect(result.sections[3].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
-        'value': {'html': expectedPaymentDate}
+        'value': {'html': expectedPaymentDate},
       });
     });
 
@@ -729,15 +729,15 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'
-          }]
+            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+          }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
-        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'}
+        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
       expect(result.sections[3].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
-        'value': {'html': expectedPaymentDate}
+        'value': {'html': expectedPaymentDate},
       });
     });
 
@@ -745,8 +745,8 @@ describe('Check Answers service', () => {
       claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.INSTALMENTS,
-          paymentDate: new Date()
-        }
+          paymentDate: new Date(),
+        },
       };
       claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
       const expectedPaymentDate = formatDateToFullDate(new Date());
@@ -758,15 +758,15 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'
-          }]
+            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+          }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
-        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}
+        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
       expect(result.sections[3].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
-        'value': {'html': expectedPaymentDate}
+        'value': {'html': expectedPaymentDate},
       });
     });
 
@@ -783,15 +783,15 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'
-          }]
+            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+          }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
-        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'}
+        'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
       expect(result.sections[3].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
-        'value': {'html': expectedPaymentDate}
+        'value': {'html': expectedPaymentDate},
       });
     });
   });
