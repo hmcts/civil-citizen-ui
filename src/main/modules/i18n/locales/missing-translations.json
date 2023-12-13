@@ -163,6 +163,9 @@
       "PAGE_TITLE": "Annual rate interest you want to claim",
       "REASON": "Why you're claiming this rate?"
     },
+
+
+    
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
         "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
@@ -243,6 +246,8 @@
       "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
       "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
     },
+
+
     "CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID": {
       "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
       "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
