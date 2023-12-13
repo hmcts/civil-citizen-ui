@@ -71,6 +71,7 @@ export const PageUrls = {
   CAN_WE_USE_URL : '/case/:cuiCaseId/mediation/can-we-use',
   CAN_WE_USE_COMPANY_URL : '/case/:cuiCaseId/mediation/can-we-use-company',
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL : '/case/:cuiCaseId/mediation/free-telephone-mediation',
+  MEDIATION_CONTACT_PERSON_CONFIRMATION_URL : '/case/:cuiCaseId/mediation/mediation-contact-person',
   CITIZEN_REJECT_ALL_CLAIM_URL : '/case/:cuiCaseId/response/reject-all-of-claim',
   CITIZEN_CONTACT_THEM_URL : '/dashboard/:cuiCaseId/contact-them',
   RESPONSE_CHECK_ANSWERS_URL : '/case/:cuiCaseId/response/check-and-send',

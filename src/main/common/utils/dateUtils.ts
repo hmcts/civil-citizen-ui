@@ -133,5 +133,5 @@ export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
 }
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
-  return date >= specificDate;
+  return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);
 }
