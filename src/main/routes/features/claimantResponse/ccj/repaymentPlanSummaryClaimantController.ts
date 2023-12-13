@@ -23,8 +23,8 @@ function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentO
 repaymentPlanSummaryClaimantController.get(CCJ_REPAYMENT_PLAN_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(generateRedisKey(<AppRequest>req), req);
-    const title = t('PAGES.REPAYMENT_PLAN_SUMMARY.REPAYMENT_PLAN');
+    const claim = await getClaimById(generateRedisKey(req), req);
+    const title = t('PAGES.REPAYMENT_PLAN_SUMMARY.REPAYMENT_PLAN', {lng: lang});
     const paymentInfo=getRepaymentInfo(claim,lang);
     renderView(paymentInfo?.repaymentPlan, paymentInfo?.paymentOption, paymentInfo?.paymentDate, title, res);
 
