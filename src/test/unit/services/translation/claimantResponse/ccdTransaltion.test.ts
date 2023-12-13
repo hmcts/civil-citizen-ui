@@ -16,6 +16,7 @@ import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
@@ -213,6 +214,24 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
   });
 
+  it('should translate court decision to ccd if exist', () => {
+    //Given
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
+  });
+
+  it('should not translate court decision to ccd if not exist', () => {
+    //Given
+    claim.claimantResponse.courtDecision = undefined;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(undefined);
+  });
+
   it('should translate applicant1 suggested repaymentPlan INSTALMENTS with MONTH frequency for defendantSpec to ccd', () => {
     //Given
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
@@ -287,7 +306,7 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).toBeUndefined();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).not.toBeNull();
   });
-  
+
   it('should translate applicant1 suggested repaymentPlan IMMEDIATELY for defendantSpec to ccd', () => {
     //Given
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();

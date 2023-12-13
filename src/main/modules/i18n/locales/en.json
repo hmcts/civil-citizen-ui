@@ -191,6 +191,7 @@
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
+      "EVERY_WEEK": "Every week",
       "TWO_WEEKS": "Every two weeks",
       "MONTH": "Every month"
     },
@@ -292,17 +293,6 @@
     "VARIATION_5": {
       "YES": "Yes",
       "NO": "No"
-    }
-  },
-  "BANNERS": {
-    "PIN_ERROR_NOTIFICATION": {
-      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
-      "EMAIL":"Email:",
-      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
-      "PHONE":"Telephone: 0300 123 7050",
-      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
-      "SORRY": "Sorry for the inconvenience caused.",
-      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -529,6 +519,7 @@
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
       "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -552,12 +543,14 @@
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
+      "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HAS_THE_DEFENDANT_PAID_SOME_OF_THE_AMOUNT_OWED": "Has the defendant paid some of the amount owed?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "HOW_DO_WANT_TO_DEFENDANT_TO_PAY": "How you want the defendant to pay?",
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
       "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
@@ -567,6 +560,7 @@
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
+      "IN_FULL": "In full by {{ paymentDate }}",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "IMMEDIATELY":"Immediately",
       "IN_FULL_BY":"In full by {{ claimantSetDate }}",
@@ -1017,12 +1011,12 @@
       },
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
+        "NO_MEDIATION": {
+          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+        },
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
-        },
-        "NO_MEDIATION": { 
-          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
       "CCJ": {
