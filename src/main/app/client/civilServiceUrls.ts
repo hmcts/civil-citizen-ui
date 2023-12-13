@@ -19,3 +19,4 @@ export const CIVIL_SERVICE_USER_CASE_ROLE = `${CIVIL_SERVICE_CASES_URL}:claimId/
 export const CIVIL_SERVICE_COURT_DECISION =  `${CIVIL_SERVICE_CASES_URL}:claimId/courtDecision`;
 export const CIVIL_SERVICE_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment`;
 export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/payment/:paymentReference/status`;
+export const CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/ocmc/:caseReference`;
