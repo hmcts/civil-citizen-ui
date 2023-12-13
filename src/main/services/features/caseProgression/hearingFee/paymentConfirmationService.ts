@@ -14,6 +14,7 @@ const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 const success = 'Success';
 const failed = 'Failed';
+const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
 
@@ -28,6 +29,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
 
   await saveCaseProgression(redisClaimId, paymentStatus, paymentInformation, hearing);
 
-  const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed ? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
+  const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
   return redirectUrl;
 };
