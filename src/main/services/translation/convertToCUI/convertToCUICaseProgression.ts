@@ -172,7 +172,7 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
     documentType = documentType as UploadEvidenceDocumentType;
-    documentType = new UploadEvidenceDocumentType(documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+    documentType = new UploadEvidenceDocumentType(documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime, documentType.witnessOptionName);
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
