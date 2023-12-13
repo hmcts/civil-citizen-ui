@@ -671,7 +671,6 @@ describe('Civil Service Client', () => {
       expect(redirectUrl).toEqual('https://redirectUrl');
     });
   });
-<<<<<<< HEAD
 
   describe('getFeePaymentRedirectInformation', () => {
     const claimId = '1';
@@ -737,6 +736,4 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
-=======
->>>>>>> master
 });
