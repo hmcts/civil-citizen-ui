@@ -19,7 +19,7 @@ export interface CCDClaimantLiPResponse {
   applicant1ChoosesHowToProceed?: CCDChoosesHowToProceed,
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
   claimantCourtDecision?: RepaymentDecisionType,
-  applicant1RejectedRepaymentReason: string,
+  applicant1RejectedRepaymentReason?: string,
 }
 
 const toChoosesHowToProceed = {
