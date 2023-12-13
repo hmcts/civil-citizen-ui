@@ -32,7 +32,7 @@ const addressCCD: CCDAddress = {
 const getPartyIndividualCCD = (): CCDParty => {
   return {
     companyName: undefined,
-    individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    individualDateOfBirth: undefined,
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
