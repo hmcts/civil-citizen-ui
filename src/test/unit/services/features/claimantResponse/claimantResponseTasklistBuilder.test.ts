@@ -89,6 +89,7 @@ describe('Full Defence', () => {
       hasClaimantRejectedDefendantResponse: jest.fn(),
       hasClaimantRejectedDefendantPaid: jest.fn(),
       hasClaimantRejectedPartAdmitPayment: jest.fn(),
+      isDefendantAgreedForMediation: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
@@ -98,6 +99,7 @@ describe('Full Defence', () => {
     claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
     claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
     claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+    claim.isDefendantAgreedForMediation.mockReturnValue(true);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -231,6 +233,7 @@ describe('Claimant Response Task List builder', () => {
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.claimantResponse = new ClaimantResponse();
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
     });
     describe('Choose what to do next section Full Admission', () => {
       it('should display Accept or reject Repayment Plan task as incomplete', () => {
@@ -872,6 +875,7 @@ describe('Claimant Response Task List builder', () => {
         canWeUse: {
           option: 'yes',
         },
+        companyTelephoneNumber: {},
       } as Mediation;
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = {
@@ -944,6 +948,7 @@ describe('Claimant Response Task List builder', () => {
       };
       claim.totalClaimAmount = 9000;
       claim.claimantResponse = new ClaimantResponse();
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
     });
     it('should display Your Response section and haveYouBeenPaidTask for full defense states paid (amount was LESS THAN full amount)', () => {
       //Given
@@ -1028,6 +1033,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
       claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
       //When
       const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
       //Then
