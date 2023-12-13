@@ -894,6 +894,17 @@ describe('Check Answers service', () => {
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
     });
+
+    it('should retrieve data from draft store if claimantResponse doesnt exist', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return new Claim();
+      });
+
+      //Then
+      await expect(
+        saveStatementOfTruth(CLAIM_ID, null)).toBeTruthy();
+    });
   });
 
   describe('Build check answers for pay by set date either for part admit or full admit ', () => {
