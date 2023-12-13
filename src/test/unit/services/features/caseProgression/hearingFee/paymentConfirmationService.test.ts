@@ -43,6 +43,7 @@ describe('PaymentConfirmation Service', () => {
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
       paymentReference: 'RC-1701-0909-0602-0418',
+      errorDescription: 'Payment Failed',
     };
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockHearingFeePaymentInfo);
     //when
@@ -54,10 +55,11 @@ describe('PaymentConfirmation Service', () => {
 
   it('should return to Apply help fee selection page if payment has failed', async () => {
     const mockHearingFeePaymentInfo = {
-      status: 'Cancelled',
+      status: 'Failed',
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
       paymentReference: 'RC-1701-0909-0602-0418',
+      errorDescription: 'Payment was cancelled by the user'
     };
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockHearingFeePaymentInfo);
     //when
