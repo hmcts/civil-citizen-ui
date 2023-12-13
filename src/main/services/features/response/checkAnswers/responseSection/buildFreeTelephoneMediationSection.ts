@@ -74,3 +74,24 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   }
   return freeTelephoneMediationSection;
 };
+
+export const buildMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+  const mediationSection = summarySection({
+    title: t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)}),
+    summaryRows: [],
+  });
+  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {lng: getLng(lang), defendantContactPerson: claim.respondent1.partyDetails.contactPerson}),
+    t(`COMMON.VARIATION_2.${claim.mediation.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
+    'freeMediationHref', changeLabel(lang)));
+  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang), defendantPhone: claim.respondent1.partyPhone.phone}),
+    t(`COMMON.VARIATION_2.${claim.mediation.isMediationPhoneCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
+    'freeMediationHref', changeLabel(lang)));
+  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang), defendantEmail: claim.respondent1.emailAddress.emailAddress}),
+    t(`COMMON.VARIATION_2.${claim.mediation.isMediationEmailCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
+    'freeMediationHref', changeLabel(lang)));
+  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
+    t(`COMMON.VARIATION_2.${claim.mediation.hasUnavailabilityNextThreeMonths.option.toUpperCase()}`, {lng: getLng(lang)}),
+    'freeMediationHref', changeLabel(lang)));
+  return mediationSection;
+};
+
