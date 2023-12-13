@@ -677,9 +677,9 @@ export class Claim {
   }
 
   detailsOfWhyYouDisputeTheClaim(): string {
-    if (this.rejectAllOfClaim) {
+    if (this.isFullDefence()) {
       return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
-    } else if (this.partialAdmission) {
+    } else if (this.isPartialAdmission()) {
       return this.partialAdmission?.whyDoYouDisagree?.text;
     }
   }
@@ -810,7 +810,9 @@ export class Claim {
   }
 
   isDefendantAgreedForMediation() {
-    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+    return this.mediation?.canWeUse
+      && this.mediation?.companyTelephoneNumber
+      && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
   }
 
   isClaimantRejectedPaymentPlan() {
@@ -869,6 +871,10 @@ export class Claim {
 
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
+  }
+
+  hasClaimantAcceptedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.YES;
   }
 
   hasDefendantCompletedPaymentIntention() {
