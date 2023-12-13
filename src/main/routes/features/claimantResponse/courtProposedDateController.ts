@@ -46,10 +46,13 @@ courtProposedDateController.get(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL, as
 courtProposedDateController.post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL, async (req: Request, res: Response, next) => {
   try {
     const claimId = req.params.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const claim: Claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const courtProposedDate = new GenericForm(new CourtProposedDate(req.body.decision));
     courtProposedDate.validateSync();
     if (courtProposedDate.hasErrors()) {
-      renderView(courtProposedDate, {}, res);
+      const paymentDate = formatDateToFullDate(new Date(getPaymentDate(claim)), getLng(lang));
+      renderView(courtProposedDate, paymentDate, res);
     } else {
       await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), courtProposedDate.model.decision, crPropertyName, crParentName);
       if (courtProposedDate.model.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE) {
