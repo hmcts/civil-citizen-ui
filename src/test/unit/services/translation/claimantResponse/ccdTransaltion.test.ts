@@ -16,6 +16,7 @@ import {PartyType} from 'models/partyType';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {createClaimWithFullRejection} from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();
@@ -208,6 +209,24 @@ describe('Translate claimant response to ccd version', () => {
 
     //Then
     expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate court decision to ccd if exist', () => {
+    //Given
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
+  });
+
+  it('should not translate court decision to ccd if not exist', () => {
+    //Given
+    claim.claimantResponse.courtDecision = undefined;
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(undefined);
   });
 });
 
