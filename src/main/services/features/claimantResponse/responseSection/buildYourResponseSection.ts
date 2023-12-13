@@ -16,8 +16,16 @@ import {
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
-import { RESPONSEFORDEFENDANTREPAYMENTPLAN, RESPONSEFORNOTPAIDPAYIMMEDIATELY, RESPONSFORCYAFORCHOOSEHOWTOPROCEED, SUGGESTEDPLANPAYMENTOPTION } from 'models/claimantResponse/checkAnswers';
-import { PaymentDate } from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {
+  RESPONSEFORDEFENDANTREPAYMENTPLAN,
+  RESPONSEFORNOTPAIDPAYIMMEDIATELY,
+  RESPONSEFREQUENCY,
+  RESPONSFORCYAFORCHOOSEHOWTOPROCEED, SUGGESTEDPLANPAYMENTOPTION,
+} from 'models/claimantResponse/checkAnswers';
+import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {DateTime} from 'luxon';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { currencyFormatWithNoTrailingZeros } from 'common/utils/currencyFormat';
 
@@ -84,6 +92,59 @@ export const buildSummaryForInstalmentDetails = (claim: Claim, claimId: string, 
   ];
 };
 
+export const buildFullAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow => {
+  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
+    t('COMMON.PAYMENT_OPTION.IMMEDIATELY', {lang}),
+    partAdmitAcceptedHref,
+    changeLabel(lang));
+
+};
+
+export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
+  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const summaryRows: SummaryRow [] = [];
+  const selectedOption = claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.repaymentFrequency;
+  summaryRows.push(summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
+    t('COMMON.PAYMENT_OPTION.INSTALMENTS', {lang}),
+    partAdmitAcceptedHref,
+    changeLabel(lang)));
+  summaryRows.push(summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lang}),
+    '£' + getEmptyStringIfUndefinedForNumber(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount),
+    partAdmitAcceptedHref,
+    changeLabel(lang)));
+  summaryRows.push(summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS', {lang}),
+    t(RESPONSEFREQUENCY[selectedOption], {lang}), partAdmitAcceptedHref,
+    changeLabel(lang)));
+  summaryRows.push(summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lang}),
+    getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL)),
+    partAdmitAcceptedHref,
+    changeLabel(lang)));
+  return summaryRows;
+};
+
+export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
+  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const summaryRows: SummaryRow [] = [];
+  const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
+
+  const paymentDate = getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(date.date)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL));
+  summaryRows.push(summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lang}),
+    t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lang, paymentDate}),
+    partAdmitAcceptedHref,
+    changeLabel(lang),
+  ))
+  ;
+
+  return summaryRows;
+};
+
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
   const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
     ? YesNoUpperCase.YES
@@ -147,7 +208,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     summaryRows: [],
   });
 
-  if (claimantResponse.hasPartAdmittedBeenAccepted?.option) {
+  if (claim.isPartialAdmission() && claimantResponse.hasPartAdmittedBeenAccepted?.option) {
     yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
   }
 
@@ -167,11 +228,23 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lang: st
     yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lang));
   }
 
-  if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
-    yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
-  }
-  if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-    yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+  if (claim.isClaimantRejectedPaymentPlan) {
+    if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
+      yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
+    }
+    if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+      yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+    }
+    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
+      yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lang));
+    }
+    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+      yourResponse.summaryList.rows.push(...buildPartAdmitPayInstallmentsSummaryRows(claim, claimId, lang));
+    }
+
+    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE) {
+      yourResponse.summaryList.rows.push(...buildPartAdmitPaySetDateSummaryRows(claim, claimId, lang));
+    }
   }
 
   if (claimantResponse.suggestedPaymentIntention?.paymentOption) {
