@@ -1,6 +1,6 @@
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { YesNo } from 'common/form/models/yesNo';
-import { ChooseHowProceed } from 'common/models/chooseHowProceed';
+import {YesNo} from 'common/form/models/yesNo';
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 export const RESPONSEFORNOTPAIDPAYIMMEDIATELY = {
   [YesNo.YES]: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_AMOUNT',
@@ -10,6 +10,12 @@ export const RESPONSEFORNOTPAIDPAYIMMEDIATELY = {
 export const RESPONSEFORDEFENDANTREPAYMENTPLAN = {
   [YesNo.YES]: 'PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN',
   [YesNo.NO]: 'PAGES.CHECK_YOUR_ANSWER.I_REJECT_THIS_REPAYMENT_PLAN',
+};
+
+export const RESPONSEFREQUENCY: { [key: string]: string } = {
+  'WEEK': 'COMMON.PAYMENT_FREQUENCY.EVERY_WEEK',
+  'TWO_WEEKS': 'COMMON.PAYMENT_FREQUENCY.TWO_WEEKS',
+  'MONTH': 'COMMON.PAYMENT_FREQUENCY.MONTH',
 };
 
 export const RESPONSFORCYAFORCHOOSEHOWTOPROCEED = {
