@@ -191,6 +191,7 @@
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Pob wythnos",
+      "EVERY_WEEK": "Pob wythnos",
       "TWO_WEEKS": "Pob pythefnos",
       "MONTH": "Pob mis"
     },
@@ -519,6 +520,7 @@
       "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Ydych chi'n derbyn neu'n gwrthod addefiad y diffynnydd?",
       "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Ydych chi'n derbyn cynllun ad-dalu'r diffynnydd?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
       "EMAIL_ADDRESS": "Cyfeiriad e-bost (dewisol)",
@@ -541,6 +543,7 @@
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "Ydych chi’n fodlon rhoi cynnig ar gyfryngu am ddim?",
+      "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
       "FIRST_PAYMENT": "Gwneud y taliad cyntaf ar",
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
@@ -556,6 +559,8 @@
       "I_ACCEPT_THIS_AMOUNT": "Rwy'n derbyn y swm hwn",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "Rwy'n derbyn y cynllun ad-dalu hwn",
       "I_REJECT_THIS_REPAYMENT_PLAN": "Rwy'n gwrthod y cynllun ad-dalu hwn",
+      "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
+      "IN_FULL": "In full by {{paymentDate}}",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "IMMEDIATELY":"Immediately",
       "IN_FULL_BY":"In full by {{ claimantSetDate }}",
