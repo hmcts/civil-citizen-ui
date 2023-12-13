@@ -213,7 +213,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
   }
 
   if (claim.isPartialAdmission() && claimantResponse.hasPartAdmittedBeenAccepted?.option) {
-    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lang));
+    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lng));
   }
 
   if (claimantResponse.hasDefendantPaidYou?.option) {
@@ -231,31 +231,31 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
   if (claim.isRejectAllOfClaimDispute()) {
     yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lng));
   }
-  
+
   if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
     yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lng));
   }
-  
+
   if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
     yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lng));
   }
-  
+
   if (claim.isClaimantRejectedPaymentPlan) {
     if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
-      yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lang));
+      yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lng));
     }
     if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-      yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lang));
+      yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lng));
     }
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
-      yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lang));
+      yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lng));
     }
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
-      yourResponse.summaryList.rows.push(...buildPartAdmitPayInstallmentsSummaryRows(claim, claimId, lang));
+      yourResponse.summaryList.rows.push(...buildPartAdmitPayInstallmentsSummaryRows(claim, claimId, lng));
     }
 
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE) {
-      yourResponse.summaryList.rows.push(...buildPartAdmitPaySetDateSummaryRows(claim, claimId, lang));
+      yourResponse.summaryList.rows.push(...buildPartAdmitPaySetDateSummaryRows(claim, claimId, lng));
     }
   }
 

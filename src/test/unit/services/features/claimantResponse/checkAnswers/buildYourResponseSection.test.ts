@@ -40,7 +40,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(0);
   });
 
@@ -57,7 +57,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(2);
   });
 
@@ -74,7 +74,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(3);
   });
 
@@ -86,7 +86,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(3);
   });
 
@@ -98,7 +98,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(4);
     expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT', {lng}));
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
@@ -112,7 +112,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(4);
     expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
@@ -132,7 +132,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(10);
   });
   it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
@@ -142,7 +142,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', { lng }));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(8);
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
   });
