@@ -777,7 +777,7 @@
       "TIMELINE": "Amserlen",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
-    "CLAIM_TASK_LIST":{
+    "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
@@ -1061,7 +1061,8 @@
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1317,7 +1318,7 @@
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
         "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
-        "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
+        "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
@@ -2385,6 +2386,14 @@
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
+    "REPAYMENT_PLAN_SUMMARY": {
+      "CLAIMANTS_REPAYMENT_PLAN": "The repayment plan",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you can't afford the repayment plan, you can ask a judge to make a new repayment plan by emailing contactocmc@justice.gov.uk",
+      "REPAYMENT_PLAN": "The repayment plan",
+      "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
+    },
     "REQUEST_EXTRA_4WEEKS": {
       "HINT": "Gallwch ddefnyddio’r amser hwn i geisio setlo’r hawliad heb fynd i wrandawiad. Gall setlo heb fynd i wrandawiad osgoi costau gan gynnwys ffioedd llys.",
       "PAGE_TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
@@ -2448,7 +2457,7 @@
       "EMPLOYED": "Oes ganddo swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
-      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
         "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
         "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
@@ -2993,7 +3002,6 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalise your trial arrangements",
@@ -3055,7 +3063,7 @@
       }
     }
   },
-  "FOOTER":{
+  "FOOTER": {
     "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
     "CONTACT_US_URL": "Cysylltu â ni",
