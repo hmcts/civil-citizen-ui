@@ -240,6 +240,7 @@ describe('outstanding Claimant Response Tasks', () => {
       isRejectAllOfClaimAlreadyPaid: jest.fn(),
       hasClaimantConfirmedDefendantPaid: jest.fn(),
       hasClaimantSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
+      isDefendantAgreedForMediation: jest.fn(),
       responseStatus: ClaimResponseStatus.RC_PAID_LESS,
     } as any;
     claim.isFullDefence.mockReturnValue(true);
@@ -255,6 +256,7 @@ describe('outstanding Claimant Response Tasks', () => {
     claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(true);
     claim.hasClaimantConfirmedDefendantPaid.mockReturnValue(false);
     claim.isFullAdmission.mockReturnValue(false);
+    claim.isDefendantAgreedForMediation.mockReturnValue(true);
 
     // when
     const taskLists: TaskList[] = getClaimantResponseTaskLists(
