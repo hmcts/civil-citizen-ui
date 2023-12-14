@@ -10,7 +10,7 @@ import {
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {t} from 'i18next';
 
-const getResponseStatement = (claim: Claim, lang: string, lng: string) => {
+const getResponseStatement = (claim: Claim, lng: string) => {
   switch(claim.responseStatus) {
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
       return getResponseStatementPayInstallments(claim, lng);
@@ -19,7 +19,7 @@ const getResponseStatement = (claim: Claim, lang: string, lng: string) => {
       return getResponseStatementPayImmediately(claim);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-      return getResponseStatementPayByDate(claim, lang);
+      return getResponseStatementPayByDate(claim, lng);
   }
 };
 
@@ -105,7 +105,7 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): Cl
 
 export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim, lng, lng),
+    ...getResponseStatement(claim, lng),
     ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text, lng),
     ...getTheirTOEs(claim, lng),
     ...getDisagreementStatementWithTimeline(claim),
