@@ -132,8 +132,8 @@ function isClaimantRejectPaymentPlan(claim: Claim): boolean {
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
   return (
-      (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) ||
-      claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() ||
-      claimantResponse.isClaimantRejectedCourtDecision
+    (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) ||
+    claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() ||
+    claimantResponse.isClaimantRejectedCourtDecision
   );
 }
