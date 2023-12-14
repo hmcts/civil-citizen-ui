@@ -9,7 +9,7 @@ import {t} from 'i18next';
 import {getRepaymentInfo} from 'services/features/claimantResponse/ccj/repaymentPlanSummaryService';
 
 const repaymentPlanSummaryClaimantController = Router();
-const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-summary';
+const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-summary-claimant';
 
 function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentOptionType, paymentDate: string, title: string, res: Response): void {
   res.render(repaymentPlanInstalmentsPath, {
