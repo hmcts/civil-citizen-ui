@@ -272,6 +272,18 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
   });
+
+  it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when claim not exist', () => {
+
+    //Given
+    const claim = new Claim();
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
+  });
 });
 
 function getClaimantResponseDQ(claim: Claim): Claim {
