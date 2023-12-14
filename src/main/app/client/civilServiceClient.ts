@@ -199,7 +199,7 @@ export class CivilServiceClient {
       if (!response.data) {
         return null;
       }
-      return  response.data as string;
+      return response.data as string;
 
     } catch (err: unknown) {
       logger.error(err);
