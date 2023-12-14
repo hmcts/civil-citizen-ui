@@ -301,7 +301,7 @@
       "ACCEPT_OR_REJECT_REPAYMENT": "Derbyn neu wrthod eu cynllun ad-dalu",
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
-      "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
+      "DECIDE_WHETHER_TO_PROCEED": "Penderfynu a fyddwch chi'n symud ymlaen",
       "HOW_FORMALISE": "Dewiswch sut i ffurfioli ad-daliad",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Cynnig cynllun ad-dalu amgen",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Gwneud cais am Ddyfarniad Llys Sirol",
@@ -609,7 +609,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
-      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
+      "PROCEED_WITH_CLAIM": "Ydych chi eisiau bwrw ymlaen â'r hawliad?",
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -1002,7 +1002,7 @@
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
-      "CLAIM_NUMBER": "Your claim number:",
+      "CLAIM_NUMBER": "Rhif eich hawliad:",
       "COURT_BELIEVES_CAN_AFFORD": {
         "TITLE": "If the court believes the defendant can afford your plan",
         "CCJ_WILL_BE_ISSUED": "A County Court Judgment (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
@@ -1019,8 +1019,8 @@
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
-        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+        "NOT_PROCEED_WITH_CLAIM": "Wnaethoch chi ddim bwrw ymlaen â'r hawliad",
+        "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrtho."
       },
       "SEND_FINANCIAL_DETAILS": {
         "MAKE_SURE": "Make sure you include your claim number: {{ caseNumber }}.",
@@ -2478,7 +2478,7 @@
       "PAY_EXPENSES": "A yw'n talu unrhyw dreuliau?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "A yw'n cael unrhyw incwm?",
-      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
+      "REJECT_CLAIM_STATEMENT": "Mae {{ defendant }} wedi gwrthod yr hawliad.",
       "SEE_FINANCIAL_DETAILS": "Gweler ei fanylion ariannol",
       "SELF_EMPLOYMENT_DETAILS": "Manylion hunangyflogaeth",
       "SUPPORT_ANYONE_ELSE": "A yw'n cefnogi unrhyw un arall yn ariannol?",
@@ -2491,7 +2491,7 @@
       "WHERE_THEY_LIVE": "Lle mae'n byw?",
       "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
       "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
-      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
+      "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â'r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu £{{ amount }} i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
