@@ -23,6 +23,26 @@ describe('PageSectionBuilder tests', ()=> {
     expect(titleBuilt).toEqual([titleExpected]);
   });
 
+  it('should add span', ()=> {
+    //Given
+    const spanExpected = ({
+      type: ClaimSummaryType.SPAN,
+      data: {
+        text: 'text',
+        variables: 'variable',
+        classes: 'class',
+      },
+    });
+
+    //When
+    const spanResult = new PageSectionBuilder()
+      .addSpan('text', 'variable', 'class')
+      .build();
+
+    //Then
+    expect(spanResult).toEqual([spanExpected]);
+  });
+
   it('should add Paragraph', ()=> {
     //Given
     const paragraphExpected = ({
