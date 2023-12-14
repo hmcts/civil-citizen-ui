@@ -10,6 +10,9 @@ import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentServic
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('PaymentConfirmationService');
+
 const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 const success = 'Success';
@@ -17,18 +20,18 @@ const failed = 'Failed';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
+  try {
+    const redisClaimId = generateRedisKey(<AppRequest>req);
+    const claim: Claim = await getCaseDataFromStore(redisClaimId);
+    const paymentReference = claim.caseProgression.hearing.paymentInformation?.paymentReference;
+    const paymentStatus = await getFeePaymentStatus(paymentReference, FeeType.HEARING, req);
+    await saveCaseProgression(redisClaimId, paymentStatus, paymentInformation, hearing);
 
-  const redisClaimId = generateRedisKey(<AppRequest>req);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
-  const paymentReference = claim.caseProgression.hearing.paymentInformation?.paymentReference;
-  console.log('Payment Info :'+claim.caseProgression.hearing.paymentInformation);
-  console.log('Payment Reference :'+paymentReference);
-
-  const paymentStatus = await getFeePaymentStatus(paymentReference, FeeType.HEARING, req);
-  console.log('paymentStatus:::'+paymentStatus.status);
-
-  await saveCaseProgression(redisClaimId, paymentStatus, paymentInformation, hearing);
-
-  const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
-  return redirectUrl;
+    const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
+    return redirectUrl;
+  }
+  catch (error) {
+    logger.error(error);
+    throw error;
+  }
 };
