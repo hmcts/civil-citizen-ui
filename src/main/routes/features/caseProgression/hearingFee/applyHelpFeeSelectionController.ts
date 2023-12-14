@@ -10,18 +10,22 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getButtonsContents} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents';
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
+import {getClaimById} from 'modules/utilityService';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
 
 async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
-  const redisClaimId = generateRedisKey(<AppRequest>req);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
+  let claim: Claim = await getClaimById(claimId, req, true);
+  if (!claim.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
+    const redisKey = generateRedisKey(req);
+    await deleteDraftClaimFromStore(redisKey);
+    claim = await getClaimById(claimId, req, true);
+  }
   if (!form) {
     form = new GenericForm(new GenericYesNo(null, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
     if(claim.caseProgression?.hearingFeeHelpSelection)
