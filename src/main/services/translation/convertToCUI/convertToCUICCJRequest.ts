@@ -23,7 +23,7 @@ export const toCUICCJRequest = (ccdClaim: CCDClaim): CCJRequest => {
 
 };
 
-const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOptionType => {
+export const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOptionType => {
   switch(paymentOptionType) {
     case CCDDJPaymentOption.REPAYMENT_PLAN:
       return PaymentOptionType.INSTALMENTS;
@@ -33,11 +33,6 @@ const toCUIPaymentOption = (paymentOptionType: CCDDJPaymentOption) : PaymentOpti
       return PaymentOptionType.IMMEDIATELY;
     default: return undefined;
   }
-};
-
-export const toCUIChoosesHowToProceed =  {
-  [CCDChoosesHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT]: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,
-  [CCDChoosesHowToProceed.REQUEST_A_CCJ]: ChooseHowProceed.REQUEST_A_CCJ,
 };
 
 export const toCUIClaimantPaymentOption = (paymentOptionType: CCDClaimantPaymentOption) : PaymentOptionType => {
@@ -50,4 +45,9 @@ export const toCUIClaimantPaymentOption = (paymentOptionType: CCDClaimantPayment
       return PaymentOptionType.IMMEDIATELY;
     default: return undefined;
   }
+};
+
+export const toCUIChoosesHowToProceed =  {
+  [CCDChoosesHowToProceed.SIGN_A_SETTLEMENT_AGREEMENT]: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,
+  [CCDChoosesHowToProceed.REQUEST_A_CCJ]: ChooseHowProceed.REQUEST_A_CCJ,
 };

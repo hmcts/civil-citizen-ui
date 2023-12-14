@@ -8,12 +8,16 @@ import {
   getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {getSendFinancialDetails} from './financialDetailsBuilder';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (claimantResponse.isSignSettlementAgreement) {
+  if (isClaimantRejectPaymentPlan(claim)) {
+    claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
+  } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
@@ -37,7 +41,18 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
   const rejectedRepaymentPlaneNextSteps = getCCJNextStepsForRejectedRepaymentPlan(claim, lang);
-  if (claimantResponse.isSignSettlementAgreement) {
+  const sendFinancialDetails = getSendFinancialDetails(claim, lang);
+
+  if (claim.isBusiness() &&
+    (claim.isFAPaymentOptionInstallments() ||
+    claim.isFAPaymentOptionBySetDate() ||
+    claim.isPAPaymentOptionInstallments() ||
+    claim.isPAPaymentOptionByDate()) &&
+    claim.isClaimantRejectedPaymentPlan()) {
+    return sendFinancialDetails;
+  }
+  
+  if (claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
@@ -97,4 +112,10 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
     claim.isFullDefence() &&
     claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
   );
+}
+
+function isClaimantRejectPaymentPlan(claim: Claim): boolean {
+  return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
 }
