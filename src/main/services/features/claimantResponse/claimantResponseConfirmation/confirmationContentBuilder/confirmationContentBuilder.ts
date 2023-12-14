@@ -15,7 +15,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (isClaimantRejectPaymentPlan(claim)) {
+  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
