@@ -11,7 +11,6 @@ jest.mock('i18next', () => ({
 }));
 
 describe('Your response section task', () => {
-  // const claim = new Claim();
   const claimId = '5129';
   const lang = 'en';
 
@@ -50,6 +49,44 @@ describe('Your response section task', () => {
       claim.hasPaidInFull.mockReturnValue(true);
       claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
       claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+      //When
+      const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
+      //Then
+      expect(settleTheClaimForTask).toEqual(resultIncomplete);
+    });
+
+    it('should return incomplete for Full Defence and Paid and hasFullDefenceStatesPaidClaimSettled undefined', () => {
+      //Given
+      const claim = {
+        isFullDefence: jest.fn(),
+        hasPaidInFull: jest.fn(),
+        isRejectAllOfClaimAlreadyPaid: jest.fn(),
+        hasClaimantRejectedPartAdmitPayment: jest.fn(),
+      } as any;
+      claim.isFullDefence.mockReturnValue(true);
+      claim.hasPaidInFull.mockReturnValue(true);
+      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
+      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(true);
+      claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: undefined };
+      //When
+      const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
+      //Then
+      expect(settleTheClaimForTask).toEqual(resultIncomplete);
+    });
+
+    it('should return incomplete for Full Defence and Paid and claimantResponse undefined', () => {
+      //Given
+      const claim = {
+        isFullDefence: jest.fn(),
+        hasPaidInFull: jest.fn(),
+        isRejectAllOfClaimAlreadyPaid: jest.fn(),
+        hasClaimantRejectedPartAdmitPayment: jest.fn(),
+      } as any;
+      claim.isFullDefence.mockReturnValue(true);
+      claim.hasPaidInFull.mockReturnValue(true);
+      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
+      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(true);
+      claim.claimantResponse = undefined;
       //When
       const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
       //Then
