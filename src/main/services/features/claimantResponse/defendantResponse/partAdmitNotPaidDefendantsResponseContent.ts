@@ -10,16 +10,16 @@ import {
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {t} from 'i18next';
 
-const getResponseStatement = (claim: Claim, lang: string) => {
+const getResponseStatement = (claim: Claim, lng: string) => {
   switch(claim.responseStatus) {
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
-      return getResponseStatementPayInstallments(claim, lang);
+      return getResponseStatementPayInstallments(claim, lng);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
-      return getResponseStatementPayImmediately(claim, lang);
+      return getResponseStatementPayImmediately(claim, lng);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-      return getResponseStatementPayByDate(claim, lang);
+      return getResponseStatementPayByDate(claim, lng);
   }
 };
 

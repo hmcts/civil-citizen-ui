@@ -1,0 +1,620 @@
+{
+  "id": 1645882162449489,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "JUDICIAL_REFERRAL",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "caseRole" : "[DEFENDANT]",
+    "pcqId":"123",
+    "ccdState": "JUDICIAL_REFERRAL",
+    "claimFee": {
+      "code": "FEE0204",
+      "version": "4",
+      "calculatedAmountInPence": "7000"
+    },
+    "claimantResponse": {
+      "hasPartPaymentBeenAccepted": "Yes",
+      "intentionToProceed" : {
+        "option": "no"
+      }
+    },
+    "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
+    "supportRequired": {
+      "languageSelected": true,
+      "languageInterpreted": "Croatian",
+      "signLanguageSelected": true,
+      "signLanguageInterpreted": "Sign",
+      "hearingLoopSelected": false,
+      "disabledAccessSelected": false,
+      "otherSupportSelected": false,
+      "otherSupport": ""
+    },
+    "applicant1": {
+      "type": "ORGANISATION",
+      "partyPhone": {
+        "phone": "(0)207 127 0000"
+      },
+      "emailAddress": "hmcts@hmcts.com",
+      "partyDetails": {
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 15-17",
+          "addressLine3": "Church Road"
+        },
+        "partyName": "Mr. Jan Clark"
+      },
+      "partyTypeDisplayValue": "Organisation"
+    },
+    "directionQuestionnaire": {
+      "hearing": {},
+      "vulnerabilityQuestions": {},
+      "welshLanguageRequirements": {
+        "speakLanguage": "en",
+        "documentsLanguage": "en"
+      },
+      "experts": {
+        "expertReportDetails": {
+          "option": "yes",
+          "reportDetails": [
+            {
+              "expertName": "John Doe",
+              "reportDate": "2022-03-01T11:57:10.592492"
+            }
+          ]
+        }
+      },
+      "witnessItems": [
+        {}
+      ]
+    },
+    "applicantSolicitor1UserDetails": {
+      "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+    },
+    "partialAdmission": {
+      "paymentIntention": {
+        "paymentDate": "2025-06-01T00:00:00.000Z"
+      },
+      "howMuchDoYouOwe": {
+        "amount": 500
+      },
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
+    "fullAdmission": {
+      "paymentIntention": {
+        "paymentDate": "2025-06-01T00:00:00.000Z"
+      }
+    },
+    "rejectAllOfClaim": {
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
+    "statementOfMeans": {
+      "disability": {
+        "option": "yes"
+      },
+      "severeDisability": {
+        "option": "yes"
+      },
+      "cohabiting": {
+        "option": "yes"
+      },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": "1",
+        "details": "Test details"
+      },
+      "partnerAge": {
+        "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerPension": {
+        "option": "yes"
+      },
+      "childrenDisability": {
+        "option": "yes"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
+      },
+      "dependants": {
+        "declared": true,
+        "numberOfChildren": {
+          "under11": 2
+        }
+      },
+      "employers": {
+        "rows": [
+          {
+            "employerName": "Felipe",
+            "jobTitle": "Developer"
+          },
+          {
+            "employerName": "Tim",
+            "jobTitle": "Manager"
+          }
+        ]
+      },
+      "priorityDebts": {
+        "mortgage": {
+          "amount": 100.0,
+          "schedule": "week"
+        }
+      },
+      "unemployment": {
+        "option": "Unemployed",
+        "unemploymentDetails": {
+          "years": "10",
+          "months": "1"
+        },
+        "otherDetails": {
+          "details": ""
+        }
+      }
+    },
+    "respondent1": {
+      "type": "ORGANISATION",
+      "dateOfBirth": "2022-03-01T13:29:24.971",
+      "partyPhone": {
+        "phone": "111"
+      },
+      "partyDetails": {
+        "contactPerson": "Felipe",
+        "partyName": "Version 1"
+      }
+    },
+    "respondent1ResponseDeadline": "2025-05-15T02:59:59",
+    "legacyCaseReference": "000MC009",
+    "totalClaimAmount": 110,
+    "claimInterest": "Yes",
+    "continueClaimingInterest": "Yes",
+    "submittedDate": "2022-05-23T17:02:02.38407",
+    "totalInterest": 15,
+    "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+    "interest": {
+      "sameRateInterestSelection": {
+        "sameRateInterestType": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+        "differentRate": "10",
+        "reason": ""
+      },
+      "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+      "interestStartDate": {
+        "date": "2022-08-21T00:00:00.000Z",
+        "year": "2022",
+        "month": "8",
+        "day": "21",
+        "reason": "test 1"
+      },
+      "interestEndDate": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "interestClaimOptions": "SAME_RATE_INTEREST",
+      "totalInterest": {
+        "amount": "90",
+        "reason": "test"
+      },
+      "continueClaimingInterest": "yes",
+      "howMuchContinueClaiming": {
+        "option": "SAME_RATE_INTEREST_DIFFERENT_RATE",
+        "dailyInterestAmount": "50"
+      }
+    },
+    "interestClaimOptions": "SAME_RATE_INTEREST",
+    "sameRateInterestSelection": {
+      "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+    },
+    "claimDetails": {
+      "reason": {
+        "text": "Test details of claim"
+      },
+      "helpWithFees": {
+        "option": "yes"
+      }
+    },
+    "claimAmountBreakup": [
+      {
+        "id": "acbefa73-f24b-4c64-a00f-38f90c31d7e3",
+        "value": {
+          "claimAmount": "2000",
+          "claimReason": "House repair"
+        }
+      }
+    ],
+    "timelineOfEvents": [
+      {
+        "id": "a08e42f4-6d7a-4f5c-b33d-85e4ef42ad9e",
+        "value": {
+          "timelineDate": "2022-01-01",
+          "timelineDescription": "I noticed a leak on the landing and told Mr Smith about this."
+        }
+      }
+    ],
+    "paymentOption": "BY_SET_DATE",
+    "paymentDate": "2025-06-01T00:00:00.000Z",
+    "defence": {
+      "text": "reasons for making the claim"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+            "document_filename": "sealed_claim_form_000MC001.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+          },
+          "documentName": "sealed_claim_form_000MC001.pdf",
+          "documentSize": 45794,
+          "documentType": "SEALED_CLAIM",
+          "createdDatetime": "2022-06-21T14:15:19"
+        }
+      },
+      {
+        "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+            "document_filename": "sealed_claim_form_000MC001.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+          },
+          "documentName": "sealed_claim_form_000MC001.pdf",
+          "documentSize": 45794,
+          "documentType": "SDO_ORDER",
+          "createdDatetime": "2022-06-21T14:15:19"
+        }
+      }
+    ],
+    "responseDeadline": {
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z",
+      "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
+    },
+    "caseProgressionHearing": {
+      "hearingDuration": "MINUTES_150"
+    },
+    "caseProgression": {
+      "claimantLastUploadDate": "2022-06-21T14:15:19",
+      "defendantLastUploadDate": "2022-06-21T14:15:19",
+      "defendantTrialArrangements": "",
+      "claimantTrialArrangements": "",
+      "defendantDocuments": "",
+      "claimantUploadDocuments":{
+        "disclosure": [
+          {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DISCLOSURE_LIST",
+          "caseDocument": {
+            "documentUpload": {
+              "document_url": "1234",
+              "document_filename": "testfile.txt",
+              "document_binary_url":"1244-binary"
+            },
+            "createdDatetime": "2022-02-20T13:20"
+          },
+          "selected": true}],
+        "witness": [
+          {"documentType": "WITNESS_STATEMENT",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "WITNESS_SUMMARY",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "NOTICE_OF_INTENTION",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTS_REFERRED",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "expert": [
+          {"documentType": "EXPERT_REPORT",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "QUESTIONS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "ANSWERS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+          "trial": [
+            {"documentType": "CASE_SUMMARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "SKELETON_ARGUMENT",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "AUTHORITIES",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "COSTS",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true},
+            {"documentType": "DOCUMENTARY",
+              "caseDocument": {
+                "documentUpload": {
+                  "document_url": "1234",
+                  "document_filename": "testfile.txt",
+                  "document_binary_url":"1244-binary"
+                },
+                "createdDatetime": "2022-02-20T13:20"
+              },
+              "selected": true}
+          ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
+      },
+      "defendantUploadDocuments":{
+        "disclosure": [
+          {"documentType": "DOCUMENTS_FOR_DISCLOSURE",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DISCLOSURE_LIST",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "witness": [
+          {"documentType": "WITNESS_STATEMENT",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "WITNESS_SUMMARY",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "NOTICE_OF_INTENTION",
+            "caseDocument": {
+              "witnessOptionDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTS_REFERRED",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "expert": [
+          {"documentType": "EXPERT_REPORT",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "QUESTIONS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "ANSWERS_FOR_EXPERTS",
+            "caseDocument": {
+              "expertDocument": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}],
+        "trial": [
+          {"documentType": "CASE_SUMMARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "SKELETON_ARGUMENT",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "AUTHORITIES",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "COSTS",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true},
+          {"documentType": "DOCUMENTARY",
+            "caseDocument": {
+              "documentUpload": {
+                "document_url": "1234",
+                "document_filename": "testfile.txt",
+                "document_binary_url":"1244-binary"
+              },
+              "createdDatetime": "2022-02-20T13:20"
+            },
+            "selected": true}
+        ],
+        "checkboxGrp": [
+          true,
+          true
+        ]
+      },
+      "defendantTrialArrangements": {
+        "isCaseReady": "no",
+        "hasAnythingChanged": {
+          "option": "yes",
+          "textArea": "a witness requires a courtroom with step-free access."
+        },
+        "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -24,3 +25,7 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
     UploadEvidenceSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});

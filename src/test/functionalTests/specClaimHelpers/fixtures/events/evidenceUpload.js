@@ -75,6 +75,7 @@ module.exports = {
           {
             value: {
               witnessOptionName: 'Suary 23',
+              witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
@@ -103,6 +104,7 @@ module.exports = {
         documentReferredInStatement: [
           {
             value: {
+              witnessOptionName:'john',
               typeOfDocument: 'Upper',
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
@@ -307,6 +309,7 @@ module.exports = {
           {
             value: {
               witnessOptionName: 'Suary 23',
+              witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
@@ -320,6 +323,7 @@ module.exports = {
         documentReferredInStatement: [
           {
             value: {
+              witnessOptionName:'john',
               typeOfDocument: 'Upper',
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
