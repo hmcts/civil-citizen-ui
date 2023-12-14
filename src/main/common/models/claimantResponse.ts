@@ -37,7 +37,7 @@ export class ClaimantResponse {
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;
 
-  get isClaimantSuggestedPayImmediately(): boolean{
+  get isClaimantSuggestedPayImmediately(): boolean {
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
@@ -65,11 +65,11 @@ export class ClaimantResponse {
     return this.signSettlementAgreement?.signed !== undefined;
   }
 
-  get isCCJRequested() : boolean {
+  get isCCJRequested(): boolean {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
-  get isClaimantAcceptedPaymentPlan() : boolean {
+  get isClaimantAcceptedPaymentPlan(): boolean {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
 

@@ -5,15 +5,19 @@ import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './dis
 import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps, getRejectedResponseYesMediationNextSteps} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
-  getCCJNextSteps, getCCJNextStepsForJudgeDecideRepaymentPlan, getCCJNextStepsForRejectedRepaymentPlan,
+  getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan, getCCJNextStepsForJudgeDecideRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {getSendFinancialDetails} from './financialDetailsBuilder';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (claimantResponse.isSignSettlementAgreement) {
+  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
+    claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
+  } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
@@ -39,7 +43,18 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
   const rejectedRepaymentPlaneNextSteps = getCCJNextStepsForRejectedRepaymentPlan(claim, lang);
   const rejectedAndJudgeDecideRepaymentPlan = getCCJNextStepsForJudgeDecideRepaymentPlan(claim, lang);
-  if (claimantResponse.isSignSettlementAgreement) {
+  const sendFinancialDetails = getSendFinancialDetails(claim, lang);
+
+  if (claim.isBusiness() &&
+      (claim.isFAPaymentOptionInstallments() ||
+          claim.isFAPaymentOptionBySetDate() ||
+          claim.isPAPaymentOptionInstallments() ||
+          claim.isPAPaymentOptionByDate()) &&
+      claim.isClaimantRejectedPaymentPlan()) {
+    return sendFinancialDetails;
+  }
+
+  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
@@ -51,6 +66,10 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   }
   if (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) {
     return ccjNextSteps;
+  }
+
+  if (claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
+    return rejectedRepaymentPlaneNextSteps;
   }
 
   if (claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
@@ -73,7 +92,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
-    claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
+      claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
@@ -85,30 +104,36 @@ function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   ];
 
   return (
-    isFullDefenceWithClaimantRejected ||
-    isFullDefenceWithIntentionToProceed(claim) ||
-    claimantResponseStatus.includes(claim.responseStatus)
+      isFullDefenceWithClaimantRejected ||
+      isFullDefenceWithIntentionToProceed(claim) ||
+      claimantResponseStatus.includes(claim.responseStatus)
   );
 }
 
 function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
   return (
-    claim.hasClaimantNotAgreedToMediation() ||
-    claim.hasRespondent1NotAgreedMediation()
+      claim.hasClaimantNotAgreedToMediation() ||
+      claim.hasRespondent1NotAgreedMediation()
   );
 }
 
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
   return (
-    claim.isFullDefence() &&
-    claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
+      claim.isFullDefence() &&
+      claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
   );
+}
+
+function isClaimantRejectPaymentPlan(claim: Claim): boolean {
+  return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
+      || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
+      || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
   return (
-    (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) ||
-    claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() ||
-    claimantResponse.isClaimantRejectedCourtDecision
+      (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) ||
+      claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() ||
+      claimantResponse.isClaimantRejectedCourtDecision
   );
 }
