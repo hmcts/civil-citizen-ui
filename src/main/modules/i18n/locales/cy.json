@@ -1,5 +1,8 @@
 {
   "COMMON": {
+    "CONTACT_NAME": "Enw cyswllt",
+    "CONTACT_NUMBER": "Rhif cyswllt",
+    "CONTACT_EMAIL": "Contact email",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",

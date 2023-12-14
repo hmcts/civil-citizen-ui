@@ -1,5 +1,8 @@
 {
   "COMMON": {
+    "CONTACT_NAME": "Contact name",
+    "CONTACT_NUMBER": "Contact number",
+    "CONTACT_EMAIL": "Contact email",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
