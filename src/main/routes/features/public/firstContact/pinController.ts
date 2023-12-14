@@ -5,13 +5,13 @@ import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PinType} from '../../../../common/models/firstContact/pin';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {PinType} from 'models/firstContact/pin';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 const CryptoJS = require('crypto-js');
 
@@ -41,15 +41,20 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
     if (pinForm.hasErrors()) {
       renderView(pinForm, !!req.body.pin, res);
     } else {
-      const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pinForm.model.pin, cookie.claimReference);
-      await saveDraftClaim(claim.id, claim, true);
-      cookie.claimId = claim.id;
-
-      const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
-      cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
-
-      res.cookie('firstContact', cookie);
-      res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+      const pin = pinForm.model.pin;
+      if (pin.length === 8) {
+        const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, cookie.claimReference);
+        console.log('RedirectUrl : ', redirectUrl);
+        res.redirect(redirectUrl);
+      } else {
+        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+        await saveDraftClaim(claim.id, claim, true);
+        cookie.claimId = claim.id;
+        const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+        cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
+        res.cookie('firstContact', cookie);
+        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+      }
     }
   } catch (error) {
     const status = error.message;

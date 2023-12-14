@@ -6,7 +6,7 @@ import {app} from '../../../../../../main/app';
 import {
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -55,6 +55,18 @@ describe('CCJ - Defendant`s date of birth', () => {
         .send({
           option: 'yes',
           dob: {day: '', month: '', year: ''},
+        });
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+      expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+      expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
+    });
+
+    it('should return error on current year - 150 years ', async () => {
+      const res = await request(app).post(CCJ_DEFENDANT_DOB_URL)
+        .send({
+          option: 'yes',
+          dob: {day: '', month: '', year: '1800'},
         });
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('ERRORS.VALID_DAY'));

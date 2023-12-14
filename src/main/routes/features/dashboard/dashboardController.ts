@@ -42,11 +42,9 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
     const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
     const defendantPage = req.query?.defendantPage ? 'defendantPage=' + req.query?.defendantPage : '';
     const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
-
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
-
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);

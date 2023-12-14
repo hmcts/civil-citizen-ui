@@ -66,7 +66,9 @@ import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
 import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -129,8 +131,11 @@ export class Claim {
   helpWithFees ?: CCDHelpWithFees;
   enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
+  defendantSignedSettlementAgreement?: YesNo;
+  courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
   respondentPaymentDeadline: Date;
+  respondentSignSettlementAgreement?: GenericYesNo;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -373,10 +378,10 @@ export class Claim {
   }
 
   getPaidAmount(): number {
-    if(this.hasConfirmedAlreadyPaid()){
+    if (this.hasConfirmedAlreadyPaid()) {
       return this.isRejectAllOfClaimAlreadyPaid();
     }
-    if(this.isPartialAdmissionPaid()){
+    if (this.isPartialAdmissionPaid()) {
       return this.partialAdmissionPaidAmount();
     }
   }
@@ -602,7 +607,7 @@ export class Claim {
   }
 
   hasPermissionForExperts(): boolean {
-    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES  : this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
+    return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES : this.directionQuestionnaire?.experts?.permissionForExpert?.option === YesNo.YES;
   }
 
   hasEvidenceExpertCanStillExamine(): boolean {
@@ -661,7 +666,7 @@ export class Claim {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
   }
 
-  isCCJComplete(){
+  isCCJComplete() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
   }
 
@@ -670,9 +675,9 @@ export class Claim {
   }
 
   detailsOfWhyYouDisputeTheClaim(): string {
-    if (this.rejectAllOfClaim) {
+    if (this.isFullDefence()) {
       return this.rejectAllOfClaim?.defence?.text ?? this.rejectAllOfClaim?.whyDoYouDisagree?.text;
-    } else if (this.partialAdmission) {
+    } else if (this.isPartialAdmission()) {
       return this.partialAdmission?.whyDoYouDisagree?.text;
     }
   }
@@ -721,6 +726,10 @@ export class Claim {
     return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
 
+  hasClaimantAgreedToMediation(): boolean {
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'Yes';
+  }
+
   hasApplicant1DeadlinePassed(): boolean {
     const applicant1ResponseDeadline = this.applicant1ResponseDeadline && new Date(this.applicant1ResponseDeadline).getTime();
     const now = new Date();
@@ -740,7 +749,7 @@ export class Claim {
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
-    const nowDate = new Date(new Date().setHours(0,0,0,0));
+    const nowDate = new Date(new Date().setHours(0, 0, 0, 0));
     const sixWeeksBeforeHearingDate = this.sixWeeksBeforeHearingDate();
     const threeWeeksBeforeHearingDate = this.threeWeeksBeforeHearingDate();
     return nowDate >= sixWeeksBeforeHearingDate && nowDate <= threeWeeksBeforeHearingDate;
@@ -749,7 +758,7 @@ export class Claim {
   isBundleStitched(): boolean {
     const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
 
-    if(!caseBundles || caseBundles.length < 1) {
+    if (!caseBundles || caseBundles.length < 1) {
       return false;
     }
 
@@ -759,16 +768,14 @@ export class Claim {
   lastBundleCreatedDate(): Date {
     const caseBundles: Bundle[] = this.caseProgression?.caseBundles;
 
-    if(!caseBundles || caseBundles.length < 1) {
+    if (!caseBundles || caseBundles.length < 1) {
       return undefined;
     }
 
     BundlesFormatter.orderBundlesNewToOld(caseBundles);
 
-    for(const bundle of caseBundles)
-    {
-      if(bundle.createdOn)
-      {
+    for (const bundle of caseBundles) {
+      if (bundle.createdOn) {
         return bundle.createdOn;
       }
     }
@@ -801,7 +808,9 @@ export class Claim {
   }
 
   isDefendantAgreedForMediation() {
-    return Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0;
+    return this.mediation?.canWeUse
+      && this.mediation?.companyTelephoneNumber
+      && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
   }
 
   isClaimantRejectedPaymentPlan() {
@@ -810,21 +819,21 @@ export class Claim {
 
   threeWeeksBeforeHearingDateString() {
     const threeWeeksBefore = this.threeWeeksBeforeHearingDate();
-    const options: DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    const options: DateTimeFormatOptions = {day: 'numeric', month: 'long', year: 'numeric'};
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
   private threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
-    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0,0,0,0);
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
     return new Date(dateAtStartOfDay);
   }
 
   private sixWeeksBeforeHearingDate(): Date {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
-    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0,0,0,0);
+    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0, 0, 0, 0);
     return new Date(dateAtStartOfDay);
   }
 
@@ -862,15 +871,27 @@ export class Claim {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
 
+  hasClaimantAcceptedDefendantResponse() {
+    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.YES;
+  }
+
   hasDefendantCompletedPaymentIntention() {
     return this.partialAdmission?.paymentIntention?.repaymentPlan || this.fullAdmission?.paymentIntention?.repaymentPlan ||
       this.partialAdmission?.paymentIntention?.paymentDate || this.fullAdmission?.paymentIntention?.paymentDate;
   }
 
+  hasClaimantIntentToProceedResponse() {
+    return this?.claimantResponse?.intentionToProceed?.option === YesNo.YES;
+  }
+
+  hasClaimantRejectIntentToProceedResponse() {
+    return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+  }
+
   getPaymentDate() {
-    if(this.isPAPaymentOptionByDate()) {
+    if (this.isPAPaymentOptionByDate()) {
       return this.partialAdmission.paymentIntention.paymentDate;
-    } else if (this.isFAPaymentOptionBySetDate()){
+    } else if (this.isFAPaymentOptionBySetDate()) {
       return this.fullAdmission.paymentIntention.paymentDate;
     }
   }
