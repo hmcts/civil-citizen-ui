@@ -52,7 +52,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return sendFinancialDetails;
   }
   
-  if (claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) {
+  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
