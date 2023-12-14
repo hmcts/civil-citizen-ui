@@ -57,5 +57,6 @@ export enum ClaimSummaryType {
   SELECT = 'select',
   BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink',
   NEW_TAB_BUTTON = 'newTabButton',
-  MICRO_TEXT = 'microText'
+  MICRO_TEXT = 'microText',
+  SPAN = 'span',
 }
