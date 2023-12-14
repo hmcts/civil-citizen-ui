@@ -2,23 +2,19 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  APPLY_HELP_WITH_FEES_START,
-  HEARING_FEE_APPLY_HELP_FEE_SELECTION,
+import {APPLY_HELP_WITH_FEES, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockRedisFailure,
-  mockRedisWithoutAdmittedPaymentAmount,
-} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure, mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+const spyDel = jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
 
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,7 +28,7 @@ describe('Apply for help with fees', () => {
 
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimHearingFee;
       await request(app)
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
@@ -42,7 +38,10 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return resolving apply help fees page with no case progression data', async () => {
-      app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
+      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
+
+      spyDel.mockImplementation(() => {return null;});
+
       await request(app)
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
@@ -107,7 +106,7 @@ describe('Apply for help with fees', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES_START);
+          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES);
         });
     });
   });
