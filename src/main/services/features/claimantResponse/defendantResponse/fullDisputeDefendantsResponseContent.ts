@@ -161,7 +161,7 @@ export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySect
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT', {lng})
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT', {lng}),
       },
     },
     {
