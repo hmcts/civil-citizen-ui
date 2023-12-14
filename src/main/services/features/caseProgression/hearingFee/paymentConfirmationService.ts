@@ -23,10 +23,13 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
   try {
     const redisClaimId = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
-    const paymentReference = claim.caseProgression.hearing.paymentInformation?.paymentReference;
+    const paymentInfo = claim.caseProgression.hearing.paymentInformation;
 
-    const paymentStatus = await getFeePaymentStatus(paymentReference, FeeType.HEARING, req);
-    await saveCaseProgression(redisClaimId, paymentStatus, paymentInformation, hearing);
+    const paymentStatus = await getFeePaymentStatus(paymentInfo.paymentReference, FeeType.HEARING, req);
+    paymentInfo.status = paymentStatus.status;
+    paymentInfo.errorCode = paymentStatus.errorCode;
+    paymentInfo.errorDescription = paymentStatus.errorDescription;
+    await saveCaseProgression(redisClaimId, paymentInfo, paymentInformation, hearing);
 
     const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
     return redirectUrl;
