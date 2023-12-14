@@ -1,16 +1,18 @@
 import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummaryRow, summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {
   CAN_WE_USE_COMPANY_URL,
   CAN_WE_USE_URL,
-  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL, DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
 } from '../../../../../routes/urls';
 import {YesNo, YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -80,18 +82,46 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     title: t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)}),
     summaryRows: [],
   });
+  //yes part
+  //Todo added the hrefs
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {lng: getLng(lang), defendantContactPerson: claim.respondent1.partyDetails.contactPerson}),
     t(`COMMON.VARIATION_2.${claim.mediation.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
     'freeMediationHref', changeLabel(lang)));
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang), defendantPhone: claim.respondent1.partyPhone.phone}),
     t(`COMMON.VARIATION_2.${claim.mediation.isMediationPhoneCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
     'freeMediationHref', changeLabel(lang)));
+
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang), defendantEmail: claim.respondent1.emailAddress.emailAddress}),
     t(`COMMON.VARIATION_2.${claim.mediation.isMediationEmailCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
     'freeMediationHref', changeLabel(lang)));
+  if(claim.mediation.isMediationEmailCorrect.option === YesNo.NO){
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang), defendantEmail: claim.respondent1.emailAddress.emailAddress}),
+      t(`COMMON.VARIATION_2.${claim.mediation.alternativeMediationEmail}`, {lng: getLng(lang)}),
+      'freeMediationHref', changeLabel(lang)));
+  }
+
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
     t(`COMMON.VARIATION_2.${claim.mediation.hasUnavailabilityNextThreeMonths.option.toUpperCase()}`, {lng: getLng(lang)}),
     'freeMediationHref', changeLabel(lang)));
+  if(claim.mediation.hasUnavailabilityNextThreeMonths.option === YesNo.YES){
+    const hasUnavailableDatesMediation = getListOfUnavailableDate(claim.mediation.unavailableDatesForMediation, getLng(lang));
+    mediationSection.summaryList.rows.push(summaryRow(
+      t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lang}),
+      ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
+      constructResponseUrlWithIdParams(claimId, DQ_AVAILABILITY_DATES_FOR_HEARING_URL),
+      changeLabel(lang),
+    ));
+  }
+
   return mediationSection;
 };
 
+export const getUnavailableDatesList = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+  const hasUnavailableDatesForHearing = getListOfUnavailableDate(directionQuestionnaire?.hearing?.unavailableDatesForHearing, lng);
+  return summaryRow(
+    t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
+    ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
+    constructResponseUrlWithIdParams(claimId, DQ_AVAILABILITY_DATES_FOR_HEARING_URL),
+    changeLabel(lng),
+  );
+};
