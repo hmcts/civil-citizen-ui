@@ -32,14 +32,14 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-    const details = await getSetDatePaymentDetails(claim);
+    const details = await getSetDatePaymentDetails(claim, lang);
     const isPayBySetDate = claim.isDefendantResponsePayBySetDate();
     const frequency = getRepaymentFrequency(claim);
     repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
       repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim)),
-      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim)),
+      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), getLng(lang)),
+      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lang)),
       lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
     };
     const displayHintTextForNoOption = claim.isBusiness();
@@ -51,12 +51,13 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
 
 acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const propertyName = 'fullAdmitSetDateAcceptPayment';
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    const details = await getSetDatePaymentDetails(claim);
+    const details = await getSetDatePaymentDetails(claim, lang);
     const displayHintTextForNoOption = claim.isBusiness();
     const isPayBySetDate = claim.isDefendantResponsePayBySetDate();
     form.validateSync();
