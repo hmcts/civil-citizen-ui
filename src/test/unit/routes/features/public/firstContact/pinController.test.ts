@@ -60,7 +60,7 @@ describe('Respond to Claim - Pin Controller', () => {
 
     it('should redirect to claim summary when pin and reference match for OCMC', async () => {
       nock(civilServiceUrl)
-        .post('/assignment/reference/ocmc/000MC000')
+        .post('/assignment/reference/000MC000/ocmc')
         .reply(200, 'redirectUrl');
 
       app.request.cookies = { firstContact: { claimReference: '000MC000' } };
