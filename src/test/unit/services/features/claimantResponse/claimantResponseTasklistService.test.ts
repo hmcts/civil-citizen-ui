@@ -242,7 +242,6 @@ describe('outstanding Claimant Response Tasks', () => {
       hasClaimantSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
       isDefendantAgreedForMediation: jest.fn(),
       responseStatus: ClaimResponseStatus.RC_PAID_LESS,
-      isDefendantAgreedForMediation: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.isClaimantIntentionPending.mockReturnValue(true);
