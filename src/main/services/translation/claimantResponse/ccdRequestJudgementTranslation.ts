@@ -12,6 +12,7 @@ import { CourtProposedPlanOptions } from 'form/models/claimantResponse/courtProp
 import { RepaymentDecisionType } from 'models/claimantResponse/RepaymentDecisionType';
 import { ChooseHowProceed } from 'models/chooseHowProceed';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 export interface PaymentDate {
   paymentSetDate: Date,
@@ -35,15 +36,16 @@ export interface ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD
 
 export const translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD = (claim: Claim, claimFee: number): ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD => {
   let paymentPlanDetails: ClaimantResponsePaymentPlanDetails;
-  if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  if (claimantResponse.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
     let paymentIntention: PaymentIntention;
-    if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+    if (claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       paymentIntention = claim.getPaymentIntention();
-    } else if (claim.claimantResponse.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
-      if (claim.claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
+    } else if (claimantResponse.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
+      if (claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
         paymentIntention = claim.getPaymentIntention();
-      } else if (claim.claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
-        paymentIntention = claim.claimantResponse.suggestedPaymentIntention;
+      } else if (claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+        paymentIntention = claimantResponse.suggestedPaymentIntention;
       }
     }
     if (paymentIntention) {
@@ -58,7 +60,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
       };
     }
   }
-  const claimantAcceptedPaidAmount = claim.claimantResponse?.ccjRequest?.paidAmount;
+  const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
   const ccjJudgmentLipInterest = calculateInterestToDate(claim) || 0;
   return {
