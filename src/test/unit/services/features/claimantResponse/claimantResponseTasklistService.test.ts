@@ -240,6 +240,7 @@ describe('outstanding Claimant Response Tasks', () => {
       isRejectAllOfClaimAlreadyPaid: jest.fn(),
       hasClaimantConfirmedDefendantPaid: jest.fn(),
       hasClaimantSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
+      isDefendantAgreedForMediation: jest.fn(),
       responseStatus: ClaimResponseStatus.RC_PAID_LESS,
       isDefendantAgreedForMediation: jest.fn(),
     } as any;
