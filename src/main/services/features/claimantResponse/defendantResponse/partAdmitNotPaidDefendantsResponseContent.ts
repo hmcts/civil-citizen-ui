@@ -10,46 +10,46 @@ import {
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {t} from 'i18next';
 
-const getResponseStatement = (claim: Claim, lang: string) => {
+const getResponseStatement = (claim: Claim, lng: string) => {
   switch(claim.responseStatus) {
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
-      return getResponseStatementPayInstallments(claim);
+      return getResponseStatementPayInstallments(claim, lng);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
-      return getResponseStatementPayImmediately(claim);
+      return getResponseStatementPayImmediately(claim, lng);
 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-      return getResponseStatementPayByDate(claim, lang);
+      return getResponseStatementPayByDate(claim, lng);
   }
 };
 
-const getResponseStatementPayInstallments = (claim: Claim): ClaimSummarySection[] => {
+const getResponseStatementPayInstallments = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
       variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU', {lng}),
       variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     },
   }];
 };
 
-const getResponseStatementPayImmediately = (claim: Claim): ClaimSummarySection[] => {
+const getResponseStatementPayImmediately = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
       variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY', {lng}),
       variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
     },
   }];
