@@ -40,7 +40,7 @@ export function getAcceptOrRejectDefendantResponse(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
   if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option
-      || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option) {
+    || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option) {
     acceptOrTRejectedTheirResponse.status = TaskStatus.COMPLETE;
   }
   return acceptOrTRejectedTheirResponse;
@@ -137,8 +137,8 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
   };
 
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
-      || (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)
-      || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+    || (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)
+    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;

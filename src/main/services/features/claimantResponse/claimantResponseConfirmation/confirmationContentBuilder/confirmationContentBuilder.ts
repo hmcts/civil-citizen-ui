@@ -21,8 +21,8 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
-  } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-      !claimantResponse.isClaimantRejectedCourtDecision) {
+  } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() && 
+    !claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   } else if (hasCCJRequested(claimantResponse)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED';
@@ -46,14 +46,14 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
 
   if (claim.isBusiness() &&
-      (claim.isFAPaymentOptionInstallments() ||
-          claim.isFAPaymentOptionBySetDate() ||
-          claim.isPAPaymentOptionInstallments() ||
-          claim.isPAPaymentOptionByDate()) &&
-      claim.isClaimantRejectedPaymentPlan()) {
+    (claim.isFAPaymentOptionInstallments() ||
+    claim.isFAPaymentOptionBySetDate() ||
+    claim.isPAPaymentOptionInstallments() ||
+    claim.isPAPaymentOptionByDate()) &&
+    claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-
+  
   if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
     return SignSettlementAgreementNextSteps;
   }
@@ -92,7 +92,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
-      claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
+    claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
@@ -104,30 +104,30 @@ function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   ];
 
   return (
-      isFullDefenceWithClaimantRejected ||
-      isFullDefenceWithIntentionToProceed(claim) ||
-      claimantResponseStatus.includes(claim.responseStatus)
+    isFullDefenceWithClaimantRejected ||
+    isFullDefenceWithIntentionToProceed(claim) ||
+    claimantResponseStatus.includes(claim.responseStatus)
   );
 }
 
 function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
   return (
-      claim.hasClaimantNotAgreedToMediation() ||
-      claim.hasRespondent1NotAgreedMediation()
+    claim.hasClaimantNotAgreedToMediation() ||
+    claim.hasRespondent1NotAgreedMediation()
   );
 }
 
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
   return (
-      claim.isFullDefence() &&
-      claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
+    claim.isFullDefence() &&
+    claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
   );
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
   return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
-      || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
-      || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
+    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {

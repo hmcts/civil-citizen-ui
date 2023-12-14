@@ -37,7 +37,7 @@ export class ClaimantResponse {
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;
 
-  get isClaimantSuggestedPayImmediately(): boolean {
+  get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
@@ -65,11 +65,11 @@ export class ClaimantResponse {
     return this.signSettlementAgreement?.signed !== undefined;
   }
 
-  get isCCJRequested(): boolean {
+  get isCCJRequested() : boolean {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
-  get isClaimantAcceptedPaymentPlan(): boolean {
+  get isClaimantAcceptedPaymentPlan() : boolean {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
 
@@ -83,15 +83,15 @@ export class ClaimantResponse {
 
   get isClaimantAcceptsCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
-        || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+  }
+
+  isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
+    return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
 
   get isClaimantRejectedCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
         || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
-  }
-
-  isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
-    return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
 }
