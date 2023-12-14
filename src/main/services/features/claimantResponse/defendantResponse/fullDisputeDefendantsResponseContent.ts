@@ -46,7 +46,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE', { lng }),
       },
     },
     {
