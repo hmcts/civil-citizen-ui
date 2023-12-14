@@ -22,7 +22,7 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
     const redisClaimId = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisClaimId);``
+    const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.caseProgression.hearing.paymentInformation;
     logger.info('Payment info from cache: '+paymentInfo);
     const paymentStatus = await getFeePaymentStatus(paymentInfo.paymentReference, FeeType.HEARING, req);
