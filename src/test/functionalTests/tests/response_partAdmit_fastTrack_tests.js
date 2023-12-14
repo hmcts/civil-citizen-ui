@@ -2,6 +2,7 @@ const config =  require('../../config');
 const  ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const  LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -44,4 +45,8 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @re
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForFastTrack(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
+});
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
 });

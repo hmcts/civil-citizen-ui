@@ -32,7 +32,7 @@ const addressCCD: CCDAddress = {
 const getPartyIndividualCCD = (): CCDParty => {
   return {
     companyName: undefined,
-    individualDateOfBirth: new Date('Wed Oct 10 1990 01:00:00 GMT+0100'),
+    individualDateOfBirth: undefined,
     individualTitle: title,
     individualFirstName: firstName,
     individualLastName: lastName,
@@ -222,5 +222,46 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(claim.claimantResponse.ccjRequest.ccjPaymentOption.type).toEqual(
       PaymentOptionType.IMMEDIATELY,
     );
+  });
+
+  it('should translate payment date to CUI model', () => {
+    const deadlineDate: Date = new Date(2023, 2, 20);
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : {
+        whenWillThisAmountBePaid: deadlineDate,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(deadlineDate);
+  });
+
+  it('should return undefined for undefined payment date', () => {
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : {
+        whenWillThisAmountBePaid: undefined,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(undefined);
+  });
+
+  it('should return undefined for undefined claim admit object', () => {
+    //Given
+    const input: CCDClaim = {
+      respondToClaimAdmitPartLRspec : undefined,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.respondentPaymentDeadline).toEqual(undefined);
   });
 });

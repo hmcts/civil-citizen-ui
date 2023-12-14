@@ -9,6 +9,7 @@ const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantR
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
+const evidenceUpload = require('../fixtures/events/evidenceUpload');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -20,6 +21,7 @@ const {
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
 const claimSpecData = require('../fixtures/events/createClaimSpec.js');
+const smallClaimSpecData = require('../fixtures/events/createSmallTrackClaimSpec');
 const claimSpecDataFastTrack = require('../fixtures/events/createClaimSpecFastTrack');
 const claimSpecDataLRvLR = require('../fixtures/events/createClaimSpecLRvLR.js');
 const claimSpecDataFastTrackLRvLR = require('../fixtures/events/createClaimSpecFastTrackLrvLR');
@@ -27,9 +29,11 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
+const {submitEvent} = require('./apiRequest');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
+  CREATE_SPEC_CLAIM_SMALLTRACK: (defType) => smallClaimSpecData.createClaim(defType),
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
@@ -40,6 +44,21 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performEvidenceUpload: async (user, caseId, claimType) => {
+    console.log('This is inside performEvidenceUpload() : ' + caseId);
+    eventName = 'EVIDENCE_UPLOAD_APPLICANT';
+    let payload;
+    if (claimType === 'FastTrack') {
+      payload = evidenceUpload.evidenceUploadFastTrack();
+    } else if (claimType === 'SmallClaims') {
+      payload = evidenceUpload.evidenceUploadSmallClaims();
+    }
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    console.log('End of performEvidenceUpload()');
+  },
 
   performTrialArrangements: async (user, caseId) => {
     console.log('This is inside performTrialArrangements() : ' + caseId);
@@ -99,7 +118,7 @@ module.exports = {
     console.log('End of performCitizenResponse()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, defendantType) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -108,6 +127,9 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
+    } else if (claimType === 'SmallClaims' && defendantType){
+      console.log('Creating small claims with defendant type...');
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_SMALLTRACK(defendantType);
     } else {
       console.log('Creating small claims...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
@@ -136,6 +158,15 @@ module.exports = {
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
+
+    if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
+      await addData(caseId, config.systemUpdate, (caseData) => {
+        const submittedDate = new Date(2024, 4, 3);
+        return {...caseData, submittedDate: submittedDate};
+      });
+      console.log('submitted date update to after carm date');
+    }
     return caseId;
   },
 
@@ -385,6 +416,14 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
   }
 }
 
+const addData = async (caseId, user, cb) => {
+  const event = 'UPDATE_CASE_DATA';
+  await apiRequest.setupTokens(user);
+  const startEventData = await apiRequest.startEvent(event, caseId);
+  const caseData = cb(startEventData);
+  return await submitEvent(event, caseData, caseId);
+};
+
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
 
@@ -431,7 +470,9 @@ function removeUuidsFromDynamicList(data, dynamicListField) {
 const assignSpecCase = async (caseId, type) => {
   if (type === 'lrvlr') {
     await assignCaseRoleToUser(caseId, 'RESPONDENTSOLICITORONE', config.defendantLRCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantLRCitizenUser);
   } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
   }
 };

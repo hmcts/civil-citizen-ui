@@ -5,9 +5,9 @@ import {
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getClaimantResponse, saveClaimantResponse} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';

@@ -41,6 +41,8 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {Mediation} from 'models/mediation/mediation';
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1920,6 +1922,146 @@ describe('Documents', () => {
       const result = claim.hasDefendantCompletedPaymentIntention();
       //Then
       expect(result).not.toBeNull();
+    });
+  });
+
+  describe('isDefendantResponsePayBySetDate', () => {
+    const claim = new Claim();
+    it('should return undefined with empty claim', () => {
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return undefined with Full Admissions pay in installments', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()},
+      };
+
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with Full Admissions pay by set date', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return undefined with Part Admissions pay in installments', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with Part Admissions pay by set date', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()},
+      };
+      //When
+      const result = claim.isDefendantResponsePayBySetDate();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Claim getPaymentDate', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+    });
+    it('should return partialAdmission payment Date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('02-01-2023');
+      claim.partialAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toBe(date);
+    });
+    it('should return full admission payment date', () => {
+      //Given
+      const claim = new Claim();
+      const date = new Date('04-01-2023');
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: date},
+      };
+      //When
+      const result = claim.getPaymentDate();
+      //Then
+      expect(result).toEqual(date);
+    });
+  });
+
+  describe('Claim isDefendantAgreedForMediation', () => {
+    it('should return undefined if no mediation object', () => {
+      //Given
+      const claim = new Claim();
+      claim.mediation = undefined;
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(undefined);
+    });
+    it('should return false if mediation is undefined', () => {
+      //Given
+      const claim = new Claim();
+      claim.mediation = new Mediation({}, {}, {}, {});
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(false);
+    });
+    it('should return true if can we use is set', () => {
+      //Given
+      const claim = new Claim();
+      const canWeUse = {
+        option: YesNo.YES,
+      };
+      claim.mediation = new Mediation(canWeUse, {}, {}, {});
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(true);
+    });
+    it('should return true if company phone number is set', () => {
+      //Given
+      const claim = new Claim();
+      const companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, undefined);
+      const canWeUse = {};
+      claim.mediation = new Mediation(canWeUse, {}, {}, companyTelephoneNumber);
+      //When
+      const result = claim.isDefendantAgreedForMediation();
+      //Then
+      expect(result).toEqual(true);
     });
   });
 });

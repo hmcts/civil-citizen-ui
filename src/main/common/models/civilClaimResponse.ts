@@ -73,6 +73,8 @@ import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDe
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
+import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export class CivilClaimResponse {
   id: string;
@@ -193,8 +195,6 @@ export interface CCDClaim extends ClaimUpdate {
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
-  trialReadyApplicant?: YesNoUpperCamelCase;
-  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -252,6 +252,10 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyApplicant?: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments?: CCDTrialArrangementsOtherComments;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
@@ -259,7 +263,11 @@ export interface CCDClaim extends ClaimUpdate {
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
+  applicant1ResponseDate?: Date;
   liftBreathing?: CCDBreathingSpaceStartInfo;
+  hearingFee?: HearingFee;
+  hearingDueDate?: Date;
+  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
 }
 
 export interface ClaimFeeData {
