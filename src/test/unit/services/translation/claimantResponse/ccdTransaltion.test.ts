@@ -231,7 +231,9 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(undefined);
   });
+});
 
+describe('Translate claimant response to ccd version', () => {
   it('should translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when Full Defence', () => {
 
     //Given
@@ -244,6 +246,20 @@ describe('Translate claimant response to ccd version', () => {
 
     //Then
     expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1FullDefenceConfirmAmountPaidSpec to undefined when undefined', () => {
+
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou = undefined;
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
   });
 
   it('should not translate applicant1FullDefenceConfirmAmountPaidSpec to ccd when not Full Defence', () => {
