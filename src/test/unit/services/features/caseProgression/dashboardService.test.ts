@@ -18,8 +18,10 @@ describe('Dashboard Service', () => {
         isClaimant: jest.fn().mockReturnValue(true),
         isLRClaimant: jest.fn(),
         isLRDefendant: jest.fn(),
-        hearingFeePaymentDetails: {
-          status: PaymentStatus.SUCCESS,
+        caseProgressionHearing: {
+          hearingFeePaymentDetails: {
+            status: PaymentStatus.SUCCESS,
+          },
         },
       },
     };

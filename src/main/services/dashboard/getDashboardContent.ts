@@ -26,9 +26,9 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
     .build();
 
   const hearingFeePaidNotification = new NotificationBuilder()
-    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_TITLE', { lng }))
+    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_TITLE', lng))
     .addContent(new PageSectionBuilder()
-      .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_SUBTITLE', { lng }))
+      .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_SUBTITLE', lng))
       .build())
     .build();
 
@@ -62,5 +62,5 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
 };
 
 const checkHearingPaymentStatus = (claim: Claim): boolean => {
-  return claim.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS;
+  return claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS;
 };

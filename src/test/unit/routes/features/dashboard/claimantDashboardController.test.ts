@@ -13,6 +13,7 @@ import {Claim} from 'common/models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -41,7 +42,7 @@ describe('claimant Dashboard Controller', () => {
       claim.totalClaimAmount=12000;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.applicant1Represented = YesNoUpperCamelCase.NO;
-      claim.hearingFeePaymentDetails = new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS);
+      claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
 
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')

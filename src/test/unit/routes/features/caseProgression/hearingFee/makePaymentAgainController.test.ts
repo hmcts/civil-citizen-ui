@@ -1,5 +1,5 @@
 import {
-  HEARING_FEE_MAKE_PAYMENT_AGAIN,
+  HEARING_FEE_MAKE_PAYMENT_AGAIN_URL,
 } from 'routes/urls';
 
 import nock from 'nock';
@@ -25,7 +25,7 @@ describe('Hearing Fees - Make Payment Again', () => {
     it('should redirect user to govPay Payment Page', async () => {
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354');
       await request(app)
-        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN)
+        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -34,7 +34,7 @@ describe('Hearing Fees - Make Payment Again', () => {
     it('should return 500 error page for any service error', async () => {
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
       await request(app)
-        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN)
+        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
