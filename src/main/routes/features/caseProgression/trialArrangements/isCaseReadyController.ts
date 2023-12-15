@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  CANCEL_TRIAL_ARRANGEMENTS,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
-  DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL,
 } from 'routes/urls';
@@ -12,18 +12,20 @@ import {getIsCaseReady} from 'services/features/caseProgression/trialArrangement
 import {IsCaseReadyForm} from 'models/caseProgression/trialArrangements/isCaseReadyForm';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {getClaimById} from 'modules/utilityService';
+import {
+  getIsCaseReadyForm,
+  getNameTrialArrangements,
+} from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
 const dqPropertyName = 'isCaseReady';
-const parentPropertyName = 'defendantTrialArrangements';
 
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    const isCaseReady = claim.caseProgression?.defendantTrialArrangements?.isCaseReady;
-    const form = new GenericForm(new IsCaseReadyForm(isCaseReady));
+    const form = new GenericForm(getIsCaseReadyForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
     next(error);
@@ -36,10 +38,11 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     const form = new GenericForm(new IsCaseReadyForm(option));
     await form.validate();
     const claimId = req.params.id;
+    const claim: Claim = await getClaimById(claimId, req);
     if (form.hasErrors()) {
-      const claim: Claim = await getClaimById(claimId, req);
       await renderView(res, claimId, claim, form);
     } else {
+      const parentPropertyName = getNameTrialArrangements(claim);
       await saveCaseProgression(claimId, form.model.option, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
     }
@@ -49,7 +52,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
 })as RequestHandler);
 
 async function renderView(res: Response, claimId: string, claim: Claim, form: GenericForm<IsCaseReadyForm>) {
-  const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
   const eventStartUrl = constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_URL);
   res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), latestUpdatesUrl, eventStartUrl});
 }

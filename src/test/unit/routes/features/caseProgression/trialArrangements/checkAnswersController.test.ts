@@ -87,7 +87,7 @@ describe('Trial Arrangements check answers - on POST', () => {
 
   it('should call ccd when submitted and redirected to the confirmation page', async () => {
     const CivilServiceClientServiceMock = jest
-      .spyOn(CivilServiceClient.prototype, 'submitDefendantTrialArrangement')
+      .spyOn(CivilServiceClient.prototype, 'submitTrialArrangement')
       .mockReturnValue(
         new Promise((resolve, reject) => resolve(claim),
         ),

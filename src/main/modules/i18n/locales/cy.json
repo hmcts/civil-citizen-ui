@@ -196,9 +196,9 @@
       "MONTH": "Pob mis"
     },
     "FREQUENCY_OF_PAYMENTS": {
-      "TWO_WEEKS": "Every 2 Weeks",
-      "MONTHLY": "Monthly",
-      "WEEKLY": "Weekly"
+      "TWO_WEEKS": "Pob pythefnos",
+      "MONTHLY": "Pob mis",
+      "WEEKLY": "Pob wythnos"
     },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad penodol",
@@ -298,10 +298,10 @@
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
       "ACCEPT_OR_REJECT_ADMITTED": "Derbyn neu wrthod y £{{ admittedAmount }}",
-      "ACCEPT_OR_REJECT_REPAYMENT": " Derbyn neu wrthod eu cynllun ad-dalu",
+      "ACCEPT_OR_REJECT_REPAYMENT": "Derbyn neu wrthod eu cynllun ad-dalu",
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Accept or reject their response",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
-      "DECIDE_WHETHER_TO_PROCEED": "Decide whether to proceed",
+      "DECIDE_WHETHER_TO_PROCEED": "Penderfynu a fyddwch chi'n symud ymlaen",
       "HOW_FORMALISE": "Dewiswch sut i ffurfioli ad-daliad",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Cynnig cynllun ad-dalu amgen",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Gwneud cais am Ddyfarniad Llys Sirol",
@@ -403,6 +403,23 @@
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
+    "APPLY_HELP_WITH_FEES": {
+      "START": {
+        "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
+        "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
+        "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
+        "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
+        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
+        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
+        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
+        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
+        "TITLE" : "Help with fees"
+      }
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Anabledd difrifol"
     },
@@ -493,7 +510,7 @@
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
       "CLAIM_INTEREST": "Hawlio llog",
       "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
-      "COMPLETION_DATE_CYA": "Completion date",
+      "COMPLETION_DATE_CYA": "Dyddiad cwblhau",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
@@ -518,9 +535,9 @@
       "DO_YOU_HAVE_OTHER_WITNESSES": "A oes gennych chi dystion eraill?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
       "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
-      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Ydych chi'n derbyn neu'n gwrthod addefiad y diffynnydd?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
-      "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
+      "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Ydych chi'n derbyn cynllun ad-dalu'r diffynnydd?",
       "DOB": "Dyddiad Geni",
       "EMAIL": "E-bost",
       "EMAIL_ADDRESS": "Cyfeiriad e-bost (dewisol)",
@@ -551,15 +568,15 @@
       "HAS_THE_DEFENDANT_PAID_SOME_OF_THE_AMOUNT_OWED": "Has the defendant paid some of the amount owed?",
       "HEARING_REQUIREMENTS_TITLE": "Gofynion ar gyfer gwrandawiad",
       "HOW_DO_WANT_TO_DEFENDANT_TO_PAY": "How you want the defendant to pay?",
-      "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
-      "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
-      "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
+      "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "Sut ydych chi eisiau ffurfioli'r cynllun ad-dalu",
+      "HOW_DO_YOU_WISH_TO_PROCEED": "Sut ydych chi eisiau symud ymlaen?",
+      "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "Sut ydych chi eisiau ffurfioli'r cynllun ad-dalu?",
       "HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY":"How would you like the defendant to pay?",
       "YOUR_HEARING_REQUIREMENTS_TITLE": "Eich gofynion ar gyfer gwrandawiad",
-      "I_REJECT_THIS_AMOUNT": "I reject this amount",
-      "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
-      "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
-      "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
+      "I_REJECT_THIS_AMOUNT": "Rwy'n gwrthod y swm hwn",
+      "I_ACCEPT_THIS_AMOUNT": "Rwy'n derbyn y swm hwn",
+      "I_ACCEPT_THIS_REPAYMENT_PLAN": "Rwy'n derbyn y cynllun ad-dalu hwn",
+      "I_REJECT_THIS_REPAYMENT_PLAN": "Rwy'n gwrthod y cynllun ad-dalu hwn",
       "IN_FULL": "In full by {{paymentDate}}",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "IMMEDIATELY":"Immediately",
@@ -575,7 +592,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "JUDGMENT_REQUEST": "Judgment request",
+      "JUDGMENT_REQUEST": "Swm y dyfarniad",
       "NEED_HEARING_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
@@ -592,7 +609,7 @@
       "PRIORITY_DEBT_COUNCIL_TAX": "Treth y Cyngor",
       "PRIORITY_DEBT_WATER": "Dwfr",
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
-      "PROCEED_WITH_CLAIM": "Do you want to proceed with the claim?",
+      "PROCEED_WITH_CLAIM": "Ydych chi eisiau bwrw ymlaen â'r hawliad?",
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
@@ -616,9 +633,9 @@
       "REQUEST_EXTRA_4WEEKS": "Ydych chi eisiau 4 wythnos ychwanegol i geisio setlo'r hawliad?",
       "REQUEST_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
-      "SETTLEMENT_AGREEMENT": "Settlement agreement",
-      "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
-      "SIGN_SETTLEMENT": "Sign a settlement agreement",
+      "SETTLEMENT_AGREEMENT": "cytundeb setlo",
+      "SIGN_A_SETTLEMENT_AGREEMENT": "Arwyddo cytundeb setlo",
+      "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_REQUIRED_INTERPRETER": "Dehonglydd",
       "SUPPORT_REQUIRED_NAME": "Enw'r sawl sydd angen cymorth:",
@@ -630,7 +647,7 @@
       "TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING": "Dywedwch wrthym pam eich bod eisiau gwrandawiad ffôn neu fideo",
       "THEIR_DETAILS_TITLE": "Ei fanylion",
       "THEIR_DETAILS_TITLE_DEFENDANT": "Ei fanylion (diffynnydd)",
-      "THE_AGREEMENT_CYA": "The agreement",
+      "THE_AGREEMENT_CYA": "Y cytundeb",
       "TITLE": "Gwiriwch eich atebion",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
       "TIMELINE_CLAIM_TITLE": "Timeline of what happened",
@@ -646,8 +663,8 @@
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu?",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
-      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
-      "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
+      "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
+      "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
       "YOUR_RESPONSE": "Eich ymateb"
     },
@@ -760,7 +777,7 @@
       "TIMELINE": "Amserlen",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
     },
-    "CLAIM_TASK_LIST":{
+    "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
@@ -985,7 +1002,15 @@
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
-      "CLAIM_NUMBER": "Your claim number:",
+      "CLAIM_NUMBER": "Rhif eich hawliad:",
+      "COURT_BELIEVES_CAN_AFFORD": {
+        "TITLE": "If the court believes the defendant can afford your plan",
+        "CCJ_WILL_BE_ISSUED": "A County Court Judgment (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
+      },
+      "COURT_BELIEVES_CANT_AFFORD": {
+        "TITLE": "If the court believes the defendant can not afford your plan",
+        "COURT_WILL_SET": "The court will set its own repayment terms and issue a CCJ."
+      },
       "PAGE_TITLE": "Claimant Intention Confirmation",
       "PA_PAY_IMMEDIATELY": {
         "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
@@ -994,8 +1019,14 @@
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
-        "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
+        "NOT_PROCEED_WITH_CLAIM": "Wnaethoch chi ddim bwrw ymlaen â'r hawliad",
+        "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrtho."
+      },
+      "SEND_FINANCIAL_DETAILS": {
+        "MAKE_SURE": "Make sure you include your claim number: {{ caseNumber }}.",
+        "THE_COURT_WILL_REVIEW": "The court will review the details to see if the defendant can afford your repayment plan.",
+        "TITLE": "Send financial details",
+        "YOU_NEED_TO_SEND": "You need to send the defendant's financial details to the court."
       },
       "SIGN_SETTLEMENT_AGREEMENT": {
         "AFTER_REQUESTED": "After you've requested a CCJ you can ask the court to enforce payment.",
@@ -1006,7 +1037,7 @@
         "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
-        "WE_EMAILED": "We've emailed {{ defendantName }} the repayment plan and the settlement agreement for them to sign.",
+        "WE_EMAILED": "We've emailed {{ defendantName }} your proposed repayment plan and settlement agreement for them to sign.",
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "REJECTED_DEFENDANT_RESPONSE": {
@@ -1019,10 +1050,19 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         }
       },
+      "REJECTED_PAYMENT_PLAN": {
+        "MESSAGE": "You've proposed a different repayment plan"
+      },
+      "USE_THIS_ADDRESS": {
+        "TITLE": "Use this address",
+        "THE_DENFENDANT_SHOULD": "The defendant should have sent you the details - send them to:",
+        "OR_EMAIL": "Or email them to:"
+      },
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1093,24 +1133,26 @@
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
       "PAGE_TITLE": "Terms of the agreement",
-      "TITLE": "Terms of the agreement",
+      "TITLE": "Telerau'r cytundeb",
       "DETAILS": {
         "THE_AGREEMENT": {
           "LABEL": "Y cytundeb",
+          "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
+          "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}",
           "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
-          "LABEL": "Completion date",
+          "LABEL": "Dyddiad cwblhau",
           "DATE": "{{ finalRepaymentDate }}"
         },
-        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
-        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
-        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
-        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
-        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
-        "SIGN_THE_AGREEMENT": "Sign the agreement",
-        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
-        "CONFIRMATION": "I confirm I’ve read and accept the terms of the agreement."
+        "FIRST_PARAGRAPH": "Mae'r cytundeb hwn yn setlo'r hawliad a wnaed gan {{ claimant }}  yn erbyn {{ defendant }}. Mae hyn yn cynnwys yr holl arian sy'n ddyledus yn yr hawliad, er enghraifft ffioedd llys, treuliau neu log.",
+        "SECOND_PARAGRAPH": "Ni all yr un o'r ddau barti wneud unrhyw hawliadau pellach yn ymwneud â'r achos hwn, heblaw ei orfodi.",
+        "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a llwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
+        "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd ofyn am Ddyfarniad Llys Sirol (CCJ) am unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
+        "SIGN_THE_AGREEMENT": "Arwyddo'r cytundeb",
+        "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych chi wedi ei gytuno â {{ defendant }} cyn arwyddo. Ni fyddwch yn gallu ei newid yn nes ymlaen.",
+        "CONFIRMATION": "Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."
       }
     },
     "COMPANY_DETAILS": {
@@ -1289,7 +1331,7 @@
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
         "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
-        "NO_RESPONSE_ELIGIBLE_CCJ":  "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
+        "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
@@ -1411,8 +1453,8 @@
         "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
-          "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "PAY_BY_SET_DATE": "Bydd {{fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}.",
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -1752,7 +1794,7 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
@@ -2359,6 +2401,14 @@
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
+    "REPAYMENT_PLAN_SUMMARY": {
+      "CLAIMANTS_REPAYMENT_PLAN": "The repayment plan",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you can't afford the repayment plan, you can ask a judge to make a new repayment plan by emailing contactocmc@justice.gov.uk",
+      "REPAYMENT_PLAN": "The repayment plan",
+      "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
+    },
     "REQUEST_EXTRA_4WEEKS": {
       "HINT": "Gallwch ddefnyddio’r amser hwn i geisio setlo’r hawliad heb fynd i wrandawiad. Gall setlo heb fynd i wrandawiad osgoi costau gan gynnwys ffioedd llys.",
       "PAGE_TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
@@ -2422,9 +2472,9 @@
       "EMPLOYED": "Oes ganddo swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
-      "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
+      "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
-        "HOW_THEY_WANT_PAY": "How they want to pay?",
+        "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
         "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
       },
       "FULL_RESPONSE": "Ymateb llawn",
@@ -2443,26 +2493,26 @@
       "PAY_EXPENSES": "A yw'n talu unrhyw dreuliau?",
       "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
       "RECEIVE_INCOME": "A yw'n cael unrhyw incwm?",
-      "REJECT_CLAIM_STATEMENT": "{{ defendant }} has rejected the claim.",
+      "REJECT_CLAIM_STATEMENT": "Mae {{ defendant }} wedi gwrthod yr hawliad.",
       "SEE_FINANCIAL_DETAILS": "Gweler ei fanylion ariannol",
       "SELF_EMPLOYMENT_DETAILS": "Manylion hunangyflogaeth",
       "SUPPORT_ANYONE_ELSE": "A yw'n cefnogi unrhyw un arall yn ariannol?",
       "THEIR_DEFENCE": "Ei amddiffyniad",
       "THEIR_EVIDENCE": "Their evidence",
-      "THEIR_TOE": "Their timeline of events",
+      "THEIR_TOE": "Ei linell amser o ddigwyddiadau",
       "TITLE": "Ymateb y diffynnydd",
       "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Pam na all dalu'r swm llawn nawr?",
       "WHERE_THEY_LIVE": "Lle mae'n byw?",
       "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
       "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
-      "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
+      "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â'r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
       "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu £{{ amount }} i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "Sut mae am dalu?",
-        "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
+        "SUGGESTED_REPAYMENT": "Awgrymodd y diffynnydd y cynllun ad-dalu hwn",
         "REPAYMENT_PLAN": {
           "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
           "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
@@ -2971,7 +3021,6 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalise your trial arrangements",
@@ -3033,7 +3082,7 @@
       }
     }
   },
-  "FOOTER":{
+  "FOOTER": {
     "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
     "CONTACT_US_URL": "Cysylltu â ni",
@@ -3054,7 +3103,7 @@
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
