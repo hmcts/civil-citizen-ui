@@ -404,6 +404,21 @@
       "TITLE": "You have already agreed to more time to respond"
     },
     "APPLY_HELP_WITH_FEES": {
+      "START": {
+        "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
+        "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
+        "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
+        "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
+        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
+        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
+        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
+        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
+        "TITLE" : "Help with fees"
+      },
       "REFERENCE_NUMBER": {
         "TITLE_YES": "Enter your help with fees reference number",
         "SUBTITLE_YES": "You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.",
@@ -418,7 +433,6 @@
           "FOURTH": "Return here to your online money claims account.",
           "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
         }
-      }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
@@ -1061,7 +1075,8 @@
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1866,9 +1881,6 @@
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
           },
-          "APPLY_HELP_REFERENCE_NUMBER": {
-            "QUESTION_TITLE": "Do you have a help with fees reference number?"
-          },
           "PAYMENT": {
             "UNSUCCESSFUL": {
               "PAGE_TITLE": "Your payment was unsuccessful",
@@ -2387,6 +2399,14 @@
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
+    },
+    "REPAYMENT_PLAN_SUMMARY": {
+      "CLAIMANTS_REPAYMENT_PLAN": "The claimant’s repayment plan",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days",
+      "REPAYMENT_PLAN": "The repayment plan",
+      "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
     },
     "REQUEST_EXTRA_4WEEKS": {
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
@@ -3412,7 +3432,6 @@
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
-    "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees number",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
     "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",
