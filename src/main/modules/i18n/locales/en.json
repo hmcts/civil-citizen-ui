@@ -422,7 +422,7 @@
       "REFERENCE_NUMBER": {
         "TITLE_YES": "Enter your help with fees reference number",
         "SUBTITLE_YES": "You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.",
-        "HINT_YES" : "For example, HWF-A1B-23C",
+        "HINT_YES": "For example, HWF-A1B-23C",
         "TITLE_NO": "Next steps",
         "PARAGRAPH_NO": "You must apply for help with fees before submitting your application.",
         "LIST_ITEMS": {
@@ -433,6 +433,7 @@
           "FOURTH": "Return here to your online money claims account.",
           "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
         }
+      }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
