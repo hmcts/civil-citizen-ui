@@ -270,5 +270,4 @@ export const APPLY_HELP_WITH_FEES_REFERENCE = `${APPLY_HELP_WITH_FEES}/reference
 export const HEARING_FEE_CONFIRMATION_URL = `${PAY_HEARING_FEE_URL}/confirmation`;
 export const NOTIFICATION_URL = '/notification';
 export const PAY_HEARING_FEE_UNSUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/payment-unsuccessful`;
-export const HEARING_FEE_CONFIRMATION_URL = `${PAY_HEARING_FEE_URL}/confirmation`;
 export const HELP_WITH_FEES_ELIGIBILITY = 'https://www.gov.uk/get-help-with-court-fees#eligibility';
