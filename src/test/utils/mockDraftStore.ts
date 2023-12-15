@@ -1,6 +1,5 @@
 import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
-import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
 import civilClaimResponseClaimantIntentMock from './mocks/civilClaimResponseClaimantIntentionMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
@@ -27,6 +26,8 @@ import civilClaimResponseDocumentUploadedClaimantMock from './mocks/civilClaimRe
 import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrackMock.json';
 import mockDefendantResponseSmallClaimRejectClaimMock from './mocks/mockDefendantResponseSmallClaimRejectClaimMock.json';
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
+import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
+import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
 
 import {LoggerInstance} from 'winston';
 import {Claim} from 'models/claim';
@@ -235,6 +236,14 @@ const mockCivilClaimHearingFee = {
   expireat: jest.fn(() => Promise.resolve({})),
 };
 
+const mockCivilClaimWithFeeType = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithFeeType))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
 const mockCivilClaimDocumentClaimantUploaded = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDocumentUploadedClaimantMock))),
@@ -273,5 +282,6 @@ export {
   civilClaimResponseMock,
   mockDefendantResponseSmallClaimFullReject,
   mockCivilClaimHearingFee,
+  mockCivilClaimWithFeeType,
   mockDraftClaim,
 };

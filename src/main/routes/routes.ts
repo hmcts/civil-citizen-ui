@@ -184,6 +184,7 @@ import settleAdmittedController from './features/claimantResponse/settleAdmitted
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import repaymentPlanSummaryDefendantController from './features/claimantResponse/ccj/repaymentPlanSummaryDefendantController';
 import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
@@ -225,12 +226,15 @@ import respondSettlementAgreementConfirmationController
   from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
+import repaymentPlanSummaryClaimantController from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
+
 import payHearingFeeStartScreenController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
   from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
+import applyHelpWithFeesController from 'routes/features/helpWithFees/helpWithFeesController';
 import applyHelpWithFeeController
   from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
 import contactNameMediationConfirmationController
@@ -421,6 +425,8 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  repaymentPlanSummaryDefendantController,
+  repaymentPlanSummaryClaimantController,
   courtProposedDateController,
   signSettlementAgreementController,
   repaymentPlanAcceptedController,
@@ -471,6 +477,7 @@ export default [
   telephoneMediationConfirmationController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
+  applyHelpWithFeesController,
   alternativeEmailAddressMediationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
   mediationUnavailabilitySelectDatesController,

@@ -2,7 +2,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
-import {CourtProposedDate} from 'form/models/claimantResponse/courtProposedDate';
+import { CourtProposedDate, CourtProposedDateOptions } from 'form/models/claimantResponse/courtProposedDate';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from 'models/mediation/mediation';
@@ -12,8 +12,8 @@ import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
+import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -85,4 +85,12 @@ export class ClaimantResponse {
     return this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
   }
 
+  get isClaimantAcceptsCourtDecision(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
+      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+  }
+
+  isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
+    return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
+  }
 }
