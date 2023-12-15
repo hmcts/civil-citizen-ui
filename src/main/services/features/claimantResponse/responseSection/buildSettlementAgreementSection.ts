@@ -16,8 +16,8 @@ import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 
-export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string, lang: string): SummarySection => {
-  const paymentDate = t(formatDateToFullDate(getPaymentDate(claim), lang));
+export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string): SummarySection => {
+  const paymentDate = t(formatDateToFullDate(getPaymentDate(claim), lng));
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   return summarySection({
@@ -34,12 +34,12 @@ export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, 
   const amount = getAmount(claim);
   const instalmentAmount = getPaymentAmount(claim);
   const frequency = t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, { lng })?.toLowerCase();
-  const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim));
+  const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim), lng);
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lng, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng as string)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${formatDateToFullDate(getFinalPaymentDate(claim))}`),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${formatDateToFullDate(getFinalPaymentDate(claim), lng)}`),
     ],
   });
 };
@@ -50,7 +50,7 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
 
   if (isSignSettlementForPayBySetDate)
-    return buildSummaryForPayBySetDate(claim, claimId, lng, lng);
+    return buildSummaryForPayBySetDate(claim, claimId, lng);
 
   if (isSignSettlementForPayByInstallments)
     return buildSummaryForPayByInstallments(claim, claimId, lng);
