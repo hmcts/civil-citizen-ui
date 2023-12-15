@@ -125,7 +125,7 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
     const insetTextExpected = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: t('text'),
+        html: 'text',
         variables: 'variables',
       },
     });
