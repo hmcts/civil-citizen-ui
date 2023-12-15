@@ -5,10 +5,10 @@ import { calculateInterestToDate } from 'common/utils/interestUtils';
 import { CCDClaim } from 'common/models/civilClaimResponse';
 
 export interface ClaimantResponseRequestDefaultJudgementToCCD extends CCDClaim {
-  ccjPaymentPaidSomeOption: string,
-  ccjPaymentPaidSomeAmount: string,
-  ccjJudgmentAmountClaimFee: string,
-  ccjJudgmentLipInterest: string,
+  ccjPaymentPaidSomeOption?: string,
+  ccjPaymentPaidSomeAmount?: string,
+  ccjJudgmentAmountClaimFee?: string,
+  ccjJudgmentLipInterest?: string,
 }
 
 export const translateClaimantResponseRequestDefaultJudgementToCCD = (claim: Claim, claimFee: number): ClaimantResponseRequestDefaultJudgementToCCD => {
