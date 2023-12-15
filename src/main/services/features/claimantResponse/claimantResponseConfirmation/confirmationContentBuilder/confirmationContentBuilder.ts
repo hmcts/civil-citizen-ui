@@ -15,13 +15,14 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
+  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
+    !claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
-  } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() && 
+  } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
     !claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   } else if (hasCCJRequested(claimantResponse)) {
@@ -54,7 +55,8 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return sendFinancialDetails;
   }
   
-  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()) {
+  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
+    !claimantResponse.isClaimantRejectedCourtDecision) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
