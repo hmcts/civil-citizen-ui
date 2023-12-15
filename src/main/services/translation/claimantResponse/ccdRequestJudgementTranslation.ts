@@ -8,9 +8,6 @@ import { CCDRepaymentPlanFrequency } from 'models/ccdResponse/ccdRepaymentPlan';
 import { toCCDRepaymentPlanFrequency } from 'services/translation/response/convertToCCDRepaymentPlan';
 import { CCDClaimantPaymentOption } from 'models/ccdResponse/ccdClaimantPaymentOption';
 import { toCCDClaimantPaymentOption } from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import { CourtProposedPlanOptions } from 'form/models/claimantResponse/courtProposedPlan';
-import { RepaymentDecisionType } from 'models/claimantResponse/RepaymentDecisionType';
-import { ChooseHowProceed } from 'models/chooseHowProceed';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ClaimantResponse} from 'models/claimantResponse';
 
@@ -37,14 +34,14 @@ export interface ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD
 export const translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD = (claim: Claim, claimFee: number): ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD => {
   let paymentPlanDetails: ClaimantResponsePaymentPlanDetails;
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-  if (claimantResponse.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
+  if (claimantResponse.isCCJRequested) {
     let paymentIntention: PaymentIntention;
-    if (claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+    if (claimantResponse.isClaimantAcceptedPaymentPlan) {
       paymentIntention = claim.getPaymentIntention();
-    } else if (claimantResponse.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {
-      if (claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
+    } else if (claimantResponse.isClaimantAcceptCourtProposedPlanDecision) {
+      if (claimantResponse.isCourtDecisionInFavourOfDefendant) {
         paymentIntention = claim.getPaymentIntention();
-      } else if (claimantResponse.courtDecision == RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+      } else if (claimantResponse.isCourtDecisionInFavourOfClaimant) {
         paymentIntention = claimantResponse.suggestedPaymentIntention;
       }
     }
