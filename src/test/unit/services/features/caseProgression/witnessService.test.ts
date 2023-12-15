@@ -4,7 +4,6 @@ import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUse
 import {GenericForm} from 'form/models/genericForm';
 import {
   getMockDocumentsReferredSectionArray,
-  getMockSectionArray,
   getMockWitnessSectionArray,
 } from '../../../../utils/caseProgression/mockEvidenceUploadSections';
 import {EvidenceUploadWitness} from 'models/document/documentType';
