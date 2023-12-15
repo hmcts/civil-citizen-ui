@@ -55,7 +55,8 @@ const documentForFinalOrder = {
   },
 };
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), getMockDocument(), new Date(0));
+const documentTypeAsParameter = new UploadEvidenceDocumentType(undefined,'type', new Date(0), getMockDocument(), new Date(0));
+const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), getMockDocument(), new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
 
@@ -271,7 +272,7 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
         new UploadDocumentTypes(false,witnessAsParameter,  EvidenceUploadWitness.NOTICE_OF_INTENTION, mockUUID),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, mockUUID),
+        new UploadDocumentTypes(false, documentReferredAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, mockUUID),
       );
       break;
     case 'expert':

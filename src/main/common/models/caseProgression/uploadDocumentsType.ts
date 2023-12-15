@@ -103,12 +103,12 @@ export class UploadEvidenceDocumentType{
   documentUpload: Document;
   createdDatetime: Date;
 
-  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date, witnessOptionName: string) {
+  constructor(witnessOptionName: string, typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
+    this.witnessOptionName = witnessOptionName;
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;
     this.createdDatetime = new Date(createdDatetime);
-    this.witnessOptionName = witnessOptionName;
   }
 }
 
