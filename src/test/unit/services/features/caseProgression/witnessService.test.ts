@@ -3,6 +3,7 @@ import {getWitnessContent} from 'services/features/caseProgression/witnessServic
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
 import {
+  getMockDocumentsReferredSectionArray,
   getMockSectionArray,
   getMockWitnessSectionArray,
 } from '../../../../utils/caseProgression/mockEvidenceUploadSections';
@@ -240,7 +241,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.documentsReferred = getMockSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
+    form.documentsReferred = getMockDocumentsReferredSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
