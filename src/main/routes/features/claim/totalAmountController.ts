@@ -22,7 +22,8 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
   try {
     const userId = req.session?.user?.id;
     const claim = await getCaseDataFromStore(userId);
-    const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
+    const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req);
+    const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
     let interestToDate = 0;
@@ -42,7 +43,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
     };
     const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
     if(isReleaseTwoEnabled) {
-      await saveClaimFee(userId, claimFee);
+      await saveClaimFee(userId, claimFeeData);
     }
     renderView(form, res);
   } catch (error) {
