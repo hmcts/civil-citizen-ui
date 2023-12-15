@@ -66,7 +66,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
   ];
 };
 
-export const getDisagreementStatementWithTimeline = (claim: Claim): ClaimSummarySection[] => {
+export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string): ClaimSummarySection[] => {
   if (!claim.partialAdmission?.timeline?.comment) {
     return [];
   }
@@ -74,7 +74,7 @@ export const getDisagreementStatementWithTimeline = (claim: Claim): ClaimSummary
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_TIMELINE', {lng}),
       },
     },
     {
@@ -115,7 +115,7 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
   ];
 };
 
-export const getDisagreementStatementWithEvidence = (claim: Claim): ClaimSummarySection[] => {
+export const getDisagreementStatementWithEvidence = (claim: Claim, lng: string): ClaimSummarySection[] => {
   if (!claim.evidence?.comment) {
     return [];
   }
@@ -123,7 +123,7 @@ export const getDisagreementStatementWithEvidence = (claim: Claim): ClaimSummary
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE', {lng}),
       },
     },
     {
@@ -135,17 +135,17 @@ export const getDisagreementStatementWithEvidence = (claim: Claim): ClaimSummary
   ];
 };
 
-export const getTheirDefence = (text: string): ClaimSummarySection[] => {
+export const getTheirDefence = (text: string, lng: string): ClaimSummarySection[] => {
   return [{
     type: ClaimSummaryType.TITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_DEFENCE', {lng}),
     },
   },
   {
     type: ClaimSummaryType.SUBTITLE,
     data: {
-      text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_CLAIM',
+      text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_CLAIM', {lng}),
     },
   },
   {
@@ -161,7 +161,7 @@ export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySect
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT', {lng}),
       },
     },
     {
@@ -173,12 +173,12 @@ export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySect
   ];
 };
 
-export const getHowTheyPaid = (text: string): ClaimSummarySection[] => {
+export const getHowTheyPaid = (text: string, lng: string): ClaimSummarySection[] => {
   return [
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID', {lng}),
       },
     },
     {
@@ -190,12 +190,12 @@ export const getHowTheyPaid = (text: string): ClaimSummarySection[] => {
   ];
 };
 
-export const getWhyTheyDisagreeWithClaim = (text: string): ClaimSummarySection[] => {
+export const getWhyTheyDisagreeWithClaim = (text: string, lng: string): ClaimSummarySection[] => {
   return [
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEY_DONT_OWE_CLAIM_AMOUNT',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEY_DONT_OWE_CLAIM_AMOUNT', {lng}),
       },
     },
     {
@@ -209,24 +209,24 @@ export const getWhyTheyDisagreeWithClaim = (text: string): ClaimSummarySection[]
 
 export const buildFullDisputeResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT'),
-    ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text),
+    ...getResponseStatement(claim.getDefendantFullName(), t('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_STATEMENT', {lng})),
+    ...getTheirDefence(claim.rejectAllOfClaim?.defence?.text, lng),
     ...getTheirTOEs(claim, lng),
-    ...getDisagreementStatementWithTimeline(claim),
+    ...getDisagreementStatementWithTimeline(claim, lng),
     ...getTheirEvidence(claim, lng),
-    ...getDisagreementStatementWithEvidence(claim),
+    ...getDisagreementStatementWithEvidence(claim, lng),
   ];
 };
 export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
-    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
-    ...getWhyTheyDisagreeWithClaim(claim.getRejectAllOfClaimDisagreementReason()),
+    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode(), lng),
+    ...getWhyTheyDisagreeWithClaim(claim.getRejectAllOfClaimDisagreementReason(), lng),
     ...getTheirTOEs(claim, lng),
-    ...getDisagreementStatementWithTimeline(claim),
+    ...getDisagreementStatementWithTimeline(claim, lng),
     ...getTheirEvidence(claim, lng),
-    ...getDisagreementStatementWithEvidence(claim),
+    ...getDisagreementStatementWithEvidence(claim, lng),
   ];
 };
 
@@ -234,7 +234,7 @@ export const buildFullDisputePaidFullResponseContent = (claim: Claim, lng: strin
   return [
     ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
-    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode()),
+    ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode(), lng),
   ];
 };
 
