@@ -34,7 +34,7 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
-  if (checkHearingPaymentStatus) {
+  if (claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
     dashboardNotificationsList.push(hearingFeePaidNotification);
   }
 
@@ -59,8 +59,4 @@ export const getDefendantNotifications = (claim: Claim, lng: string) => {
   }
 
   return dashboardNotificationsList;
-};
-
-const checkHearingPaymentStatus = (claim: Claim): boolean => {
-  return claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS;
 };
