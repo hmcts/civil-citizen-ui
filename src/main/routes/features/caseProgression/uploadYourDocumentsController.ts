@@ -6,7 +6,7 @@ import {getClaimById} from 'modules/utilityService';
 const uploadYourDocumentsViewPath = 'features/caseProgression/upload-your-documents';
 const uploadYourDocumentsController = Router();
 
-uploadYourDocumentsController.get([UPLOAD_YOUR_DOCUMENTS_URL], (async (req, res, next: NextFunction) => {
+uploadYourDocumentsController.get(UPLOAD_YOUR_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
