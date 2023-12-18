@@ -108,9 +108,9 @@ export const buildPartAdmitNotPaidResponseContent = (claim: Claim, lng: string):
     ...getResponseStatement(claim, lng),
     ...getTheirDefence(claim.partialAdmission.whyDoYouDisagree.text, lng),
     ...getTheirTOEs(claim, lng),
-    ...getDisagreementStatementWithTimeline(claim),
+    ...getDisagreementStatementWithTimeline(claim, lng),
     ...getTheirEvidence(claim, lng),
-    ...getDisagreementStatementWithEvidence(claim),
+    ...getDisagreementStatementWithEvidence(claim, lng),
   ];
 };
 
