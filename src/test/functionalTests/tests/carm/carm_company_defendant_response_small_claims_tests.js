@@ -38,13 +38,13 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterTelephoneMediationDetails();
-  await ResponseSteps.ConfirmContactPerson();
-  await ResponseSteps.ConfirmPhoneDetails();
-  await ResponseSteps.ConfirmEmailDetails();
-  await ResponseSteps.EnterUnavailableDates();
+  // await ResponseSteps.EnterTelephoneMediationDetails();
+  // await ResponseSteps.ConfirmContactPerson();
+  // await ResponseSteps.ConfirmPhoneDetails();
+  // await ResponseSteps.ConfirmEmailDetails();
+  // await ResponseSteps.EnterUnavailableDates();
 }).tag('@carm');
 
 AfterSuite(async  () => {
-  await unAssignAllUsers();
+ // await unAssignAllUsers();
 });

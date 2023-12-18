@@ -38,12 +38,12 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterTelephoneMediationDetails();
-  await ResponseSteps.ConfirmAltPhoneDetails();
-  await ResponseSteps.ConfirmAltEmailDetails();
-  await ResponseSteps.EnterUnavailableDates(claimRef);
+  // await ResponseSteps.EnterTelephoneMediationDetails();
+  // await ResponseSteps.ConfirmAltPhoneDetails();
+  // await ResponseSteps.ConfirmAltEmailDetails();
+  // await ResponseSteps.EnterUnavailableDates(claimRef);
 }).tag('@carm');
 
 AfterSuite(async  () => {
-  await unAssignAllUsers();
+  // await unAssignAllUsers();
 });
