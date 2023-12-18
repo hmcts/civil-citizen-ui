@@ -6,7 +6,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
-import {APPLY_HELP_WITH_FEES_START} from 'routes/urls';
+import {APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 jest.mock('modules/draft-store');
@@ -38,6 +38,6 @@ describe('applyHelpWithFeeSelection', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START));
+    expect(actualPaymentRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES));
   });
 });

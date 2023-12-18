@@ -50,7 +50,7 @@ describe('hearingDurationAndOtherInformation', () => {
     expect(actualHearingDurationContent[3].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_TITLE');
     expect(actualHearingDurationContent[4].data.html).toEqual('<p class="govuk-body">'+t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', '1 and a half hours')+'</p>');
     expect(actualHearingDurationContent[5].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_LESS_TIME');
-    expect(actualHearingDurationContent[6].data.html).toEqual(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_MORE_TIME'));
+    expect(actualHearingDurationContent[6].data.html).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_MORE_TIME');
     expect(actualHearingDurationContent[7].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE');
   });
 });
