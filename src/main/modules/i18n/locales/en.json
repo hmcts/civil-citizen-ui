@@ -191,6 +191,7 @@
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
+      "EVERY_WEEK": "Every week",
       "TWO_WEEKS": "Every two weeks",
       "MONTH": "Every month"
     },
@@ -292,17 +293,6 @@
     "VARIATION_5": {
       "YES": "Yes",
       "NO": "No"
-    }
-  },
-  "BANNERS": {
-    "PIN_ERROR_NOTIFICATION": {
-      "CONTACT":"Should you need to speak us about your claim urgently, please contact us via:",
-      "EMAIL":"Email:",
-      "OUR_TEAM":"Our team is working to restore this service as soon as possible. In the meantime, please enter your claim number and security code twice if asked.",
-      "PHONE":"Telephone: 0300 123 7050",
-      "SCHEDULE":"8:30 am - 5 pm Monday to Friday",
-      "SORRY": "Sorry for the inconvenience caused.",
-      "WE_ARE_AWARE": "We're aware of an issue impacting defendants responding to their claims online for the first time (4 December 2023)."
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -412,6 +402,23 @@
       "PAGE_TITLE": "Agree more time to respond",
       "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
       "TITLE": "You have already agreed to more time to respond"
+    },
+    "APPLY_HELP_WITH_FEES": {
+      "START": {
+        "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
+        "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
+        "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
+        "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
+        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
+        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
+        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
+        "REJECTED_TITLE": "If your application for help with fees is rejected",
+        "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
+        "TITLE" : "Help with fees"
+      }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
@@ -529,6 +536,7 @@
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Do you want to ask for a telephone or video hearing?",
       "DO_YOU_WANT_TO_SETTLE_PAID": "Do you want to settle the claim for the £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Do you accept or reject the defendant's admission?",
+      "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DOB": "Date of birth",
       "EMAIL": "Email",
@@ -552,12 +560,14 @@
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
+      "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "GIVE_DOC_DETAILS": "Give details of the documents",
       "GIVE_EVIDENCE": "Do you want to give evidence?",
       "HAS_THE_DEFENDANT_PAID_SOME_OF_THE_AMOUNT_OWED": "Has the defendant paid some of the amount owed?",
       "HEARING_REQUIREMENTS_TITLE": "Hearing requirements",
+      "HOW_DO_WANT_TO_DEFENDANT_TO_PAY": "How you want the defendant to pay?",
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan",
       "HOW_DO_YOU_WISH_TO_PROCEED": "How do you wish to proceed?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "How do you want to formalise the repayment plan?",
@@ -567,6 +577,7 @@
       "I_ACCEPT_THIS_AMOUNT": "I accept this amount",
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "I accept this repayment plan",
       "I_REJECT_THIS_REPAYMENT_PLAN": "I reject this repayment plan",
+      "IN_FULL": "In full by {{ paymentDate }}",
       "ISSUE_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "IMMEDIATELY":"Immediately",
       "IN_FULL_BY":"In full by {{ claimantSetDate }}",
@@ -992,6 +1003,14 @@
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
       "CLAIM_NUMBER": "Your claim number:",
+      "COURT_BELIEVES_CAN_AFFORD": {
+        "TITLE": "If the court believes the defendant can afford your plan",
+        "CCJ_WILL_BE_ISSUED": "A County Court Judgment (CCJ) will be issued. This requires the defendant to pay according to the terms of the plan."
+      },
+      "COURT_BELIEVES_CANT_AFFORD": {
+        "TITLE": "If the court believes the defendant can not afford your plan",
+        "COURT_WILL_SET": "The court will set its own repayment terms and issue a CCJ."
+      },
       "PAGE_TITLE": "Claimant Intention Confirmation",
       "PA_PAY_IMMEDIATELY": {
         "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
@@ -1003,6 +1022,12 @@
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       },
+      "SEND_FINANCIAL_DETAILS": {
+        "MAKE_SURE": "Make sure you include your claim number: {{ caseNumber }}.",
+        "THE_COURT_WILL_REVIEW": "The court will review the details to see if the defendant can afford your repayment plan.",
+        "TITLE": "Send financial details",
+        "YOU_NEED_TO_SEND": "You need to send the defendant's financial details to the court."
+      },
       "SIGN_SETTLEMENT_AGREEMENT": {
         "AFTER_REQUESTED": "After you've requested a CCJ you can ask the court to enforce payment.",
         "IF_CANT_AFFORD": "If they don't think they can afford the plan, they can ask for a judge to make a different plan.",
@@ -1012,23 +1037,32 @@
         "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
-        "WE_EMAILED": "We've emailed {{ defendantName }} the repayment plan and the settlement agreement for them to sign.",
+        "WE_EMAILED": "We've emailed {{ defendantName }} your proposed repayment plan and settlement agreement for them to sign.",
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
+        "NO_MEDIATION": {
+          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+        },
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
-        },
-        "NO_MEDIATION": { 
-          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
         }
+      },
+      "REJECTED_PAYMENT_PLAN": {
+        "MESSAGE": "You've proposed a different repayment plan"
+      },
+      "USE_THIS_ADDRESS": {
+        "TITLE": "Use this address",
+        "THE_DENFENDANT_SHOULD": "The defendant should have sent you the details - send them to:",
+        "OR_EMAIL": "Or email them to:"
       },
       "CCJ": {
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}."
+        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1103,6 +1137,8 @@
       "DETAILS": {
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
+          "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every ",
+          "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}",
           "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}"
         },
         "COMPLETION_DATE": {
@@ -1289,6 +1325,10 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
@@ -1328,7 +1368,10 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
@@ -2351,6 +2394,14 @@
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
+    },
+    "REPAYMENT_PLAN_SUMMARY": {
+      "CLAIMANTS_REPAYMENT_PLAN": "The claimant’s repayment plan",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days",
+      "REPAYMENT_PLAN": "The repayment plan",
+      "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
     },
     "REQUEST_EXTRA_4WEEKS": {
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",

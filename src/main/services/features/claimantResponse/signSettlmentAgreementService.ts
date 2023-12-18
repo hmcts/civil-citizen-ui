@@ -26,10 +26,10 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
 function getTextForPayByDate(claim: Claim, lang: string){
   return {
     paymentText: t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', {
-      lang: lang,
+      lng: lang,
       fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
-      paymentDate: formatDateToFullDate(claim.getPaymentDate()),
+      paymentDate: formatDateToFullDate(claim.getPaymentDate(), lang),
     }),
     completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(claim.getPaymentDate(), lang) }),
   };
@@ -38,7 +38,7 @@ function getTextForPayByDate(claim: Claim, lang: string){
 function getTextForPayByInstallments(claim: Claim, lang: string){
   return {
     paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.PAYMENT_TEXT', {
-      lang: lang,
+      lng: lang,
       fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
       instalmentAmount: getPaymentAmount(claim),
