@@ -70,8 +70,8 @@ export const buildPartAdmitAlreadyPaidResponseContent = (claim: Claim, lng: stri
     ...getTheirPaidMethod(claim.partialAdmission.howMuchHaveYouPaid.text),
     ...getWhyTheyDisagree(claim.partialAdmission.whyDoYouDisagree.text),
     ...getTheirTOEs(claim, lng),
-    ...getDisagreementStatementWithTimeline(claim),
+    ...getDisagreementStatementWithTimeline(claim, lng),
     ...getTheirEvidence(claim, lng),
-    ...getDisagreementStatementWithEvidence(claim),
+    ...getDisagreementStatementWithEvidence(claim, lng),
   ];
 };

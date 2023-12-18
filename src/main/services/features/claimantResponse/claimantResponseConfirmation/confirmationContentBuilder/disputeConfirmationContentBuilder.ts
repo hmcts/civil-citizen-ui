@@ -32,7 +32,7 @@ export const getRCDisputeNotContinueNextSteps = (claim: Claim, lang: string) => 
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.CLAIM_ENDED', {defendantName, lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.CLAIM_ENDED', {defendantName, lng: lang}),
       },
     },
   ];
