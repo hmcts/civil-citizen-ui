@@ -15,6 +15,7 @@ import {
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -107,7 +108,7 @@ export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: s
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.chooseHowToProceed) {
+  if (claim.claimantResponse?.chooseHowToProceed.option) {
     chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
   return chooseHowFormaliseTask;
@@ -136,9 +137,16 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
 
-  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
-    || (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)
-    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+  // TODO: WIP
+  if ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY 
+      && claim.claimantResponse?.courtProposedDate?.decision)
+    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE 
+      && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate 
+      && claim.claimantResponse?.courtProposedDate?.decision)
+    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS 
+      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.firstRepaymentDate
+      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.paymentAmount
+      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.repaymentFrequency)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;

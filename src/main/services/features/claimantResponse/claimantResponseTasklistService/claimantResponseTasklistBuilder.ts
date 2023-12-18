@@ -16,7 +16,6 @@ import {
   getSignSettlementAgreementTask,
 } from './claimantResponseTasks/whatToDoNextSectionTasks';
 import {YesNo} from 'common/form/models/yesNo';
-import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {
   getHaveYouBeenPaidTask,
@@ -35,69 +34,71 @@ export function buildHowDefendantRespondSection(claim: Claim, claimId: string, l
 
 export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
+  const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
+  const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+  const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
+  const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
+  const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
+  const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+  const signSettlementAgreement = getSignSettlementAgreementTask(claim, claimId, lang);
+
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
   }
-  if (claim.isFullAdmission()) {
 
-    const acceptOrRejectRepaymentPlanTask = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
+  if (claim.isFullAdmission()) {
     tasks.push(acceptOrRejectRepaymentPlanTask);
 
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-      const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
       if (claim.isSignASettlementAgreement()) {
-        const getSsignSettlementAgreementTask = getSignSettlementAgreementTask(claim, claimId, lang);
-        tasks.push(getSsignSettlementAgreementTask);
+        tasks.push(signSettlementAgreement);
       } else if (claim.isRequestACCJ()) {
-        const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
         tasks.push(countyCourtJudgmentTask);
       }
     } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
-      const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
       tasks.push(proposeAlternativeRepaymentTask);
       if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
-        const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
-        tasks.push(chooseHowFormaliseTask);
+        tasks.push(chooseHowToFormaliseRepaymentPlanTask);
       } else if (isRequestJudgePaymentPlan(claim)) {
-        const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
         tasks.push(countyCourtJudgmentTask);
       }
     }
 
   } else if (claim.isPartialAdmission()) {
-    const acceptOrRejectDefendantAdmittedTask = getAcceptOrRejectDefendantAdmittedTask(claim, claimId, lang);
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-
-    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO && claim.isDefendantAgreedForMediation()) {
-      const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+    if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO) {
       tasks.push(freeTelephoneMediationTask);
-
-    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option ===  YesNo.YES && (claim.isPAPaymentOptionByDate() || claim.isPAPaymentOptionInstallments())) {
-      const acceptOrRejectRepayment = getAcceptOrRejectRepaymentTask(claim, claimId, lang);
-      tasks.push(acceptOrRejectRepayment);
-
-      if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES && canShowChooseHowFormaliseTask(claim)) {
-        const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
-        tasks.push(chooseHowFormaliseTask);
-      } else if (claim?.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
-        const proposeAlternativeRepayment = getProposeAlternativeRepaymentTask(claim, claimId, lang);
-        tasks.push(proposeAlternativeRepayment);
-        if (isAcceptCourtProposedPayment(claim) || claim.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
-          const chooseHowFormaliseTask = getChooseHowFormaliseTask(claim, claimId, lang);
-          tasks.push(chooseHowFormaliseTask);
-        } else if (isRequestJudgePaymentPlan(claim)) {
-          const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
+    } else if (claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES) {
+      tasks.push(acceptOrRejectRepaymentPlanTask);
+      if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
+        tasks.push(chooseHowToFormaliseRepaymentPlanTask);
+        if (claim.isSignASettlementAgreement()) {
+          tasks.push(signSettlementAgreement);
+        } else if (claim.isRequestACCJ()) {
           tasks.push(countyCourtJudgmentTask);
         }
-      }
-
-      if (claim?.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ) {
-        const countyCourtJudgment = getCountyCourtJudgmentTask(claim, claimId, lang);
-        tasks.push(countyCourtJudgment);
-      } else if (claim.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT) {
-        const signSettlementAgreement = getSignSettlementAgreementTask(claim, claimId, lang);
-        tasks.push(signSettlementAgreement);
+      } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
+        tasks.push(proposeAlternativeRepaymentTask);
+        if (claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
+          tasks.push(chooseHowToFormaliseRepaymentPlanTask);
+          if (claim.isSignASettlementAgreement()) {
+            tasks.push(signSettlementAgreement);
+          } else if (claim.isRequestACCJ()) {
+            tasks.push(countyCourtJudgmentTask);
+          }
+        } else if (claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
+          if (isAcceptCourtProposedPayment(claim)) {
+            tasks.push(chooseHowToFormaliseRepaymentPlanTask);
+            if (claim.isSignASettlementAgreement()) {
+              tasks.push(signSettlementAgreement);
+            } else if (claim.isRequestACCJ()) {
+              tasks.push(countyCourtJudgmentTask);
+            }
+          } else if (isRequestJudgePaymentPlan(claim)) {
+            tasks.push(countyCourtJudgmentTask);
+          }
+        }
       }
     }
   }
@@ -112,17 +113,14 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   }
 
   if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.isDefendantAgreedForMediation()) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
 
   if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO && claim.isDefendantAgreedForMediation())  {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
 
   if (isFullDefenceAndPaidNotAcceptPayment(claim)) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
 
@@ -186,11 +184,11 @@ function isFullDefenceClaimantNotSettleTheClaim(claim: Claim) : boolean {
   return claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
 }
 
-function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
-  return ((claim.isPAPaymentOptionPayImmediately() && !!claim.claimantResponse?.courtProposedDate?.decision) ||
-  (claim.isPAPaymentOptionByDate() && !!claim.partialAdmission?.paymentIntention?.paymentDate) ||
-  (claim.isPAPaymentOptionInstallments() && !!claim.partialAdmission?.paymentIntention?.repaymentPlan));
-}
+// function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
+//   return ((claim.isPAPaymentOptionPayImmediately() && !!claim.claimantResponse?.courtProposedDate?.decision) ||
+//   (claim.isPAPaymentOptionByDate() && !!claim.partialAdmission?.paymentIntention?.paymentDate) ||
+//   (claim.isPAPaymentOptionInstallments() && !!claim.partialAdmission?.paymentIntention?.repaymentPlan));
+// }
 
 function isAcceptCourtProposedPayment(claim: Claim) : boolean {
   return claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE ||
