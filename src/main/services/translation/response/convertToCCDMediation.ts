@@ -17,13 +17,13 @@ export const toCCDMediation = (mediation: Mediation): CCDMediation => {
     companyTelephoneContactPersonMediationLiP: mediation?.companyTelephoneNumber?.mediationContactPerson,
     companyTelephonePhoneNumberMediationLiP: mediation?.companyTelephoneNumber?.mediationPhoneNumber,
     //new mediation
-    isMediationContactNameCorrect: toCCDYesNo(mediation.isMediationContactNameCorrect.option),
-    alternativeMediationContactPerson: mediation.isMediationContactNameCorrect.option === YesNo.NO ? mediation.alternativeMediationContactPerson.alternativeContactPerson : undefined,
-    isMediationEmailCorrect: toCCDYesNo(mediation.isMediationEmailCorrect?.option),
-    alternativeMediationEmail: mediation.isMediationEmailCorrect.option === YesNo.NO ? mediation.alternativeMediationEmail.alternativeEmailAddress : undefined,
-    isMediationPhoneCorrect: toCCDYesNo(mediation.isMediationPhoneCorrect.option),
-    alternativeMediationTelephone: mediation.isMediationPhoneCorrect.option === YesNo.NO ? mediation.alternativeMediationTelephone.alternativeTelephone : undefined,
-    hasUnavailabilityNextThreeMonths: toCCDYesNo(mediation.hasUnavailabilityNextThreeMonths.option),
-    unavailableDatesForMediation: mediation.hasUnavailabilityNextThreeMonths.option === YesNo.YES ? toCCDUnavailableDates(mediation.unavailableDatesForMediation.items) : undefined,
+    isMediationContactNameCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationContactNameCorrect),
+    alternativeMediationContactPerson: mediation?.isMediationContactNameCorrect?.option === YesNo.NO ? mediation?.alternativeMediationContactPerson.alternativeContactPerson : undefined,
+    isMediationEmailCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationEmailCorrect),
+    alternativeMediationEmail: mediation?.isMediationEmailCorrect?.option === YesNo.NO ? mediation?.alternativeMediationEmail.alternativeEmailAddress : undefined,
+    isMediationPhoneCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationPhoneCorrect),
+    alternativeMediationTelephone: mediation?.isMediationPhoneCorrect?.option === YesNo.NO ? mediation?.alternativeMediationTelephone.alternativeTelephone : undefined,
+    hasUnavailabilityNextThreeMonths: toCCDYesNoFromGenericYesNo(mediation.hasUnavailabilityNextThreeMonths),
+    unavailableDatesForMediation: mediation?.hasUnavailabilityNextThreeMonths?.option === YesNo.YES ? toCCDUnavailableDates(mediation?.unavailableDatesForMediation.items) : undefined,
   };
 };
