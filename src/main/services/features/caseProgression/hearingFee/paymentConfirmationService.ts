@@ -32,6 +32,8 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     paymentInfo.errorDescription = paymentStatus.errorDescription;
     logger.info('Payment Status before updating: '+paymentInfo);
     await saveCaseProgression(redisClaimId, paymentInfo, paymentInformation, hearing);
+    const claimFromReddis: Claim = await getCaseDataFromStore(redisClaimId);
+    logger.info(claimFromReddis.caseProgression.hearing.paymentInformation);
 
     const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
     return redirectUrl;
