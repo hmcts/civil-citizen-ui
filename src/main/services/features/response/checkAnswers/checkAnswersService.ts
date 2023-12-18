@@ -13,8 +13,8 @@ import {buildYourResponsePaymentSection} from './responseSection/buildYourRespon
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 import {
-    buildFreeTelephoneMediationSection,
-    buildMediationSection
+  buildFreeTelephoneMediationSection,
+  buildMediationSection,
 } from './responseSection/buildFreeTelephoneMediationSection';
 import {YesNo} from 'common/form/models/yesNo';
 import {buildHearingRequirementsSection} from 'services/features/common/buildHearingRequirementsSection';

@@ -7,7 +7,7 @@ import {Claim} from 'models/claim';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {isCarmEnabledForCase} from "common/utils/carmToggleUtils";
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
