@@ -19,7 +19,7 @@ export interface StatusTranslation {
 
 type DashboardStatus = {
   [propKey: string]: StatusTranslation
-}
+};
 export abstract class DashboardItem {
   status: string;
   claimId: string;
@@ -46,7 +46,7 @@ export abstract class DashboardItem {
     const currentStatus = dashboardStatus[this.status];
     return currentStatus? translate(currentStatus?.translationKey, currentStatus?.parameter, lang): '';
   }
-  abstract getDashboardStatus(lang: string | unknown) : DashboardStatus
+  abstract getDashboardStatus(lang: string | unknown): DashboardStatus;
 }
 
 export class DashboardClaimantItem extends DashboardItem {
@@ -78,6 +78,14 @@ export class DashboardClaimantItem extends DashboardItem {
       WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
       DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT'},
+      CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED'},
+      CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT'},
+      DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT: {
+        translationKey:
+          'PAGES.DASHBOARD.STATUS_CLAIMANT.DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT',
+        parameter: [paramDefendantName],
+      },
       IN_MEDIATION:  {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.IN_MEDIATION'},
       MEDIATION_SUCCESSFUL:  {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.MEDIATION_SUCCESSFUL'},
       MEDIATION_UNSUCCESSFUL:  {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.MEDIATION_UNSUCCESSFUL'},
@@ -180,6 +188,9 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
       SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.SDO_ORDER_STATUS' },
+      CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT' },
+      CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT', parameter: [paramClaimantName] },
+      DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT' },
     };
   }
 }
