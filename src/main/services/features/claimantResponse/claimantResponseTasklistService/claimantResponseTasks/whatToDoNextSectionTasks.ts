@@ -137,7 +137,6 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
 
-  // TODO: WIP
   if ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY 
       && claim.claimantResponse?.courtProposedDate?.decision)
     || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE 
