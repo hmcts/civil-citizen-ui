@@ -83,10 +83,11 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
     claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
-
+  
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
+    ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY,
     ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED,
     ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED,
     ClaimResponseStatus.RC_PAID_FULL,
