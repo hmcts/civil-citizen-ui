@@ -3,10 +3,11 @@ import {getHasAnythingChanged} from 'services/features/caseProgression/trialArra
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {DocumentType} from 'models/document/documentType';
+import {CaseRole} from 'form/models/caseRoles';
 
 describe('hasAnythingChanged', () => {
   let mockClaim;
-  let claimContent: { case_data: { caseProgression: { hasAnythingChanged: [YesNo, string]; }; }; };
+  let claimContent: { case_data: { caseProgression: { hasAnythingChanged: [YesNo, string]; }, caseRole: CaseRole.DEFENDANT }; };
 
   beforeEach(() => {
     mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -41,7 +42,7 @@ describe('hasAnythingChanged', () => {
     expect(actualIsCaseReadyContent[4].data.textBefore).toEqual('PAGES.HAS_ANYTHING_CHANGED.YOU_CAN');
   });
 
-  it('should create the correct link to "directions questionnaire" if document exists', () => {
+  it('should create the correct link to "directions questionnaire" if defendant document exists', () => {
     //Given
     const claim =  Object.assign(new Claim(), claimContent);
     claim.systemGeneratedCaseDocuments = [
@@ -54,9 +55,37 @@ describe('hasAnythingChanged', () => {
             'document_filename': 'sealed_claim_form_000MC001.pdf',
             'document_binary_url': 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary',
           },
-          'documentName': 'sealed_claim_form_000MC001.pdf',
+          'documentName': 'defendant_claim_form_000MC001.pdf',
           'documentSize': 45794,
-          'documentType': DocumentType.DEFENDANT_DEFENCE,
+          'documentType': DocumentType.DIRECTIONS_QUESTIONNAIRE,
+          'createdDatetime': new Date('2022-06-21T14:15:19'),
+        },
+      }];
+
+    //when
+    const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
+
+    //Then
+    expect(actualIsCaseReadyContent[4].data.href).toEqual('/case/1645882162449409/documents/6b55692f-107a-480e-86b7-917bc0dae8ac');
+  });
+
+  it('should create the correct link to "directions questionnaire" if claimant document exists', () => {
+    //Given
+    const claim =  Object.assign(new Claim(), claimContent);
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.systemGeneratedCaseDocuments = [
+      {
+        'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'document_url': 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac',
+            'document_filename': 'sealed_claim_form_000MC001.pdf',
+            'document_binary_url': 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary',
+          },
+          'documentName': 'claimant_claim_form_000MC001.pdf',
+          'documentSize': 45794,
+          'documentType': DocumentType.DIRECTIONS_QUESTIONNAIRE,
           'createdDatetime': new Date('2022-06-21T14:15:19'),
         },
       }];
