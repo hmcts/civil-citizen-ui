@@ -74,7 +74,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     if(hasEitherPartyNotAgreedToMediation(claim)) {
       return RejectedResponseNoMediationNextSteps;
     }
-    else if(claim.hasClaimantAgreedToMediation()) {
+    else if(claimantResponse.hasClaimantAgreedToMediation()) {
       return RejectedResponseYesMediationNextSteps;
     }
   }
@@ -83,7 +83,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
     claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
-  
+
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
     ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED,
@@ -102,8 +102,9 @@ function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
 }
 
 function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   return (
-    claim.hasClaimantNotAgreedToMediation() ||
+    claimantResponse.hasClaimantNotAgreedToMediation() ||
     claim.hasRespondent1NotAgreedMediation()
   );
 }

@@ -724,11 +724,11 @@ export class Claim {
   }
 
   hasClaimantNotAgreedToMediation(): boolean {
-    return this.claimantResponse?.mediation?.mediationDisagreement?.option === YesNo.NO;
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'No';
   }
 
   hasClaimantAgreedToMediation(): boolean {
-    return this.claimantResponse?.mediation?.canWeUse?.option === YesNo.YES;
+    return this?.applicant1ClaimMediationSpecRequiredLip?.hasAgreedFreeMediation === 'Yes';
   }
 
   hasApplicant1DeadlinePassed(): boolean {

@@ -89,4 +89,12 @@ export class ClaimantResponse {
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
+
+  hasClaimantNotAgreedToMediation(): boolean {
+    return this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasClaimantAgreedToMediation(): boolean {
+    return this.mediation?.canWeUse?.option === YesNo.YES;
+  }
 }
