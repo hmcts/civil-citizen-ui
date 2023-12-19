@@ -107,7 +107,11 @@ describe('Claimant Response Confirmation service', () => {
 
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'}; //new ClaimantMediationLip('No');
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: paymentOptionType},
@@ -154,7 +158,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'};
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       alreadyPaid: {option: 'yes'},
@@ -178,7 +186,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
@@ -199,7 +211,11 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and says not settle with no mediation', () => {
 
     // Given
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
     // When
@@ -220,7 +236,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.mediation = new Mediation(undefined, {option: YesNo.YES}, undefined, undefined);
     claim.partialAdmission = {
@@ -249,7 +269,11 @@ describe('Claimant Response Confirmation service', () => {
 
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'Yes'};
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: paymentOptionType},
@@ -275,7 +299,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'Yes'};
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       alreadyPaid: {option: 'yes'},
@@ -300,7 +328,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
@@ -322,7 +354,11 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and says not settle with yes mediation', () => {
 
     // Given
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
     const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
