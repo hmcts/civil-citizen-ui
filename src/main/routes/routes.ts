@@ -230,6 +230,7 @@ import repaymentPlanSummaryClaimantController from './features/claimantResponse/
 
 import payHearingFeeStartScreenController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
+import claimantDashboardController from './features/dashboard/claimantDashboardController';
 import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
@@ -320,6 +321,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantDashboardController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,

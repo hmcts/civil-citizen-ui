@@ -134,6 +134,8 @@ export class Claim {
   defendantSignedSettlementAgreement?: YesNo;
   courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
+  applicant1Represented?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
   helpWithFeesRequested: string;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
@@ -887,6 +889,13 @@ export class Claim {
 
   hasClaimantRejectIntentToProceedResponse() {
     return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+  }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   getPaymentDate() {
