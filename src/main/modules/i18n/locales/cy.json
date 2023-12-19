@@ -3018,6 +3018,7 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
+
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalise your trial arrangements",
@@ -3258,6 +3259,7 @@
     "SECURITY_CODE_WRONG_OR_EXPIRED": "Nid oedd y cod diogelwch yn iawn neu mae wedi dod i ben",
     "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg os ydych am ymateb i'r hawliad hwn yn Gymraeg",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
