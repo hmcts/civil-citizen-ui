@@ -114,22 +114,19 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
 
 const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
+  if(carmApplicable && caseData.isSmallClaimsTrackDQ) {
+    tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
+    tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
+  } else {
+    let whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.PART_ADMISSION, lang);
 
-  let whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.PART_ADMISSION, lang);
-
-  if (caseData.isFullDefence()) {
-    whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
-  }
-
-  if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
-    if(carmApplicable) {
-      tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
-      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
-    } else {
+    if (caseData.isFullDefence()) {
+      whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
+    }
+    if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
       tasks.push(getFreeTelephoneMediationTask(caseData, claimId, lang));
     }
   }
-
   return {title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
