@@ -74,7 +74,7 @@
             <a href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
           </p>
 
-          <form method="post" novalidate>
+          <form method="post" action="{{originalUrl}}" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
               {{ govukButton({
