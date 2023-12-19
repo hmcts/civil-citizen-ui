@@ -25,6 +25,7 @@ import {
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -193,9 +194,8 @@ function canShowChooseHowFormaliseTask(claim: Claim) : boolean {
 }
 
 function isClaimantFavourAndCanShowChooseHowFormaliseTask(claim: Claim) : boolean {
-  return claim.claimantResponse?.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE ||
-  claim.claimantResponse?.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN ||
-  claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  return claimantResponse.isClaimantAcceptsCourtDecision || claimantResponse.isCourtDecisionInFavourOfClaimant;
 }
 
 function isRequestJudgePaymentPlan(claim: Claim) : boolean {
