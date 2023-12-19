@@ -24,7 +24,6 @@ import {
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
-import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {ClaimantResponse} from 'models/claimantResponse';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
