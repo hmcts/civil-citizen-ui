@@ -25,7 +25,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-3785'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     keyVaults:
@@ -266,7 +266,6 @@ ccd:
     java:
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
-      image: 'hmctspublic.azurecr.io/civil/service:pr-3427'
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
