@@ -167,7 +167,7 @@ const addSignOrRequestTask = (claim: Claim, signSettlementAgreement: Task, count
     tasks.push(countyCourtJudgmentTask);
   }
   return tasks;
-}
+};
 
 function isPartialAdmissionNotAccepted(claim: Claim) : boolean {
   return (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO);
