@@ -12,7 +12,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {
   createDraftClaimInStoreWithExpiryTime,
-  getCaseDataFromStore
+  getCaseDataFromStore,
 } from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {claimLanguagePreferenceGuard} from 'routes/guards/claimLanguagePreferenceGuard';

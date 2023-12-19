@@ -3,7 +3,7 @@ import * as utilityService from 'modules/utilityService';
 import {
   getBilingualLangPreference,
   saveBilingualLangPreference,
-  saveClaimantBilingualLangPreference
+  saveClaimantBilingualLangPreference,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {Claim} from 'common/models/claim';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
