@@ -40,7 +40,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   const chooseHowToFormaliseRepaymentPlanTask = getChooseHowFormaliseTask(claim, claimId, lang);
   const proposeAlternativeRepaymentTask = getProposeAlternativeRepaymentTask(claim, claimId, lang);
   const countyCourtJudgmentTask = getCountyCourtJudgmentTask(claim, claimId, lang);
-  const signSettlementAgreement = getSignSettlementAgreementTask(claim, claimId, lang);
+  const signSettlementAgreementTask = getSignSettlementAgreementTask(claim, claimId, lang);
 
   if (claim.isFullDefence() && claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS) {
     return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
@@ -52,7 +52,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
       tasks.push(chooseHowToFormaliseRepaymentPlanTask);
       if (claim.isSignASettlementAgreement()) {
-        tasks.push(signSettlementAgreement);
+        tasks.push(signSettlementAgreementTask);
       } else if (claim.isRequestACCJ()) {
         tasks.push(countyCourtJudgmentTask);
       }
@@ -73,28 +73,16 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
       tasks.push(acceptOrRejectRepaymentPlanTask);
       if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
         tasks.push(chooseHowToFormaliseRepaymentPlanTask);
-        if (claim.isSignASettlementAgreement()) {
-          tasks.push(signSettlementAgreement);
-        } else if (claim.isRequestACCJ()) {
-          tasks.push(countyCourtJudgmentTask);
-        }
+        addSignOrRequestTask(claim, signSettlementAgreementTask, countyCourtJudgmentTask, tasks);
       } else if (claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO) {
         tasks.push(proposeAlternativeRepaymentTask);
         if (claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
           tasks.push(chooseHowToFormaliseRepaymentPlanTask);
-          if (claim.isSignASettlementAgreement()) {
-            tasks.push(signSettlementAgreement);
-          } else if (claim.isRequestACCJ()) {
-            tasks.push(countyCourtJudgmentTask);
-          }
+          addSignOrRequestTask(claim, signSettlementAgreementTask, countyCourtJudgmentTask, tasks);
         } else if (claim.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
           if (isAcceptCourtProposedPayment(claim)) {
             tasks.push(chooseHowToFormaliseRepaymentPlanTask);
-            if (claim.isSignASettlementAgreement()) {
-              tasks.push(signSettlementAgreement);
-            } else if (claim.isRequestACCJ()) {
-              tasks.push(countyCourtJudgmentTask);
-            }
+            addSignOrRequestTask(claim, signSettlementAgreementTask, countyCourtJudgmentTask, tasks);
           } else if (isRequestJudgePaymentPlan(claim)) {
             tasks.push(countyCourtJudgmentTask);
           }
@@ -170,6 +158,15 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: lang}), tasks};
+}
+
+const addSignOrRequestTask = (claim: Claim, signSettlementAgreement: Task, countyCourtJudgmentTask: Task, tasks: Task[]) => {
+  if (claim.isSignASettlementAgreement()) {
+    tasks.push(signSettlementAgreement);
+  } else if (claim.isRequestACCJ()) {
+    tasks.push(countyCourtJudgmentTask);
+  }
+  return tasks;
 }
 
 function isPartialAdmissionNotAccepted(claim: Claim) : boolean {
