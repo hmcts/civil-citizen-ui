@@ -12,7 +12,6 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {
   createDraftClaimInStoreWithExpiryTime,
-  generateRedisKey,
   getCaseDataFromStore
 } from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
@@ -38,9 +37,7 @@ claimBilingualLangPreferenceController.get(
           await createDraftClaimInStoreWithExpiryTime(userId);
         }
         const form: GenericYesNo = new GenericYesNo();
-        console.log('dgknsfgnmfsg');
         renderView(new GenericForm<GenericYesNo>(form), res);
-        console.log('dgknsfgnmfsg');
       } catch (error) {
         next(error);
       }
@@ -50,18 +47,14 @@ claimBilingualLangPreferenceController.get(
 
 claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('post 1');
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION'));
-    console.log('post 2');
     form.validateSync();
-    console.log('post 3');
+    const userId = (<AppRequest>req).session?.user?.id;
     if (form.hasErrors()) {
       renderView(form, res);
-      console.log('post 4');
     } else {
-      console.log('post 5');
       res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
-      await saveClaimantBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
+      await saveClaimantBilingualLangPreference(userId, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_TASK_LIST_URL));
     }
   } catch (error) {

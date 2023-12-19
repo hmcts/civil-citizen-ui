@@ -32,11 +32,11 @@ const saveBilingualLangPreference = async (claimId: string, form: GenericYesNo) 
   }
 };
 
-const saveClaimantBilingualLangPreference = async (claimId: string, form: GenericYesNo) => {
+const saveClaimantBilingualLangPreference = async (userId: string, form: GenericYesNo) => {
   try {
-    const claim = await getClaim(claimId);
+    const claim = await getCaseDataFromStore(userId);
     claim.claimantBilingualLanguagePreference = form.option === ClaimBilingualLanguagePreference.ENGLISH ? ClaimBilingualLanguagePreference.ENGLISH : ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(userId, claim);
   } catch (error) {
     logger.error(error);
     throw error;

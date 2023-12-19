@@ -51,12 +51,12 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
-    claimantBilingualLanguagePreference:toCCDLanguage(claim.claimantBilingualLanguagePreference),
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
   const ccdClaim = translateDraftClaimToCCD(claim, req);
   ccdClaim.timelineOfEvents = toCCDTimelineEvent(claim.claimDetails?.timeline);
   ccdClaim.claimFee = toCCDClaimFee(claim.claimFee);
+  ccdClaim.claimantBilingualLanguagePreference = toCCDLanguage(claim.claimantBilingualLanguagePreference);
   return ccdClaim;
 };

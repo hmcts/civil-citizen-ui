@@ -1,4 +1,4 @@
-import {ClaimBilingualLanguagePreference} from "models/claimBilingualLanguagePreference";
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 export interface CCDWelshLanguageRequirements {
   evidence?: CCDLanguage ,

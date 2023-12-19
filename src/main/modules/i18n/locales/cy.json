@@ -433,6 +433,15 @@
       "TITLE": "Iaith",
       "WELSH": "Cymraeg"
     },
+    "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
+      "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
+      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "ENGLISH": "English",
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In what language do you want to make your claim?",
+      "TITLE": "Language",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen (dewisol):",
       "PAGE_TITLE": "Dyddiad codi cynllun seibiant dyledion (lle i anadlu)",

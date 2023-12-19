@@ -10,6 +10,7 @@ export const claimLanguagePreferenceGuard = (req: Request, res: Response, next: 
       const id = req.params.id;
       if (id == undefined) {
         next();
+        return;
       }
       const caseData = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       if (caseData.claimantBilingualLanguagePreference) {
