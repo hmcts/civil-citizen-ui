@@ -22,6 +22,21 @@ import {ClaimResponseStatus} from 'models/claimResponseStatus';
 const reviewDefendantsResponseController = Router();
 const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
 const crPropertyName = 'defendantResponseViewed';
+const pageParam = 'how-they-want-to-pay-response';
+
+const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
+  const claimId = req.params.id;
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, getLng(lang));
+  const financialDetails = getFinancialDetails(claim, lang);
+  const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
+  res.render('features/claimantResponse/how-they-want-to-pay-response', {
+    claim,
+    defendantsResponseContent,
+    continueLink,
+    financialDetails,
+  });
+};
 
 reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -32,6 +47,11 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
     const financialDetails = getFinancialDetails(claim, lang);
     const defendantsResponseContent = getDefendantsResponseContent(claim, getLng(lang));
     const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
+    const originalUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL) + '?page=' + pageParam;
+    if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE && req.query?.page === pageParam) {
+      return renderHowTheyWantPay(req, res, claim);
+    }
+
     res.render(revieDefendantResponseViewPath, {
       claim,
       downloadResponseLink,
@@ -40,6 +60,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       defendantsResponseContent,
       repaymentPlan,
       claimId,
+      originalUrl,
     });
   } catch (error) {
     next(error);
@@ -52,16 +73,7 @@ reviewDefendantsResponseController.post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESP
     await saveClaimantResponse(generateRedisKey(<AppRequest>req), true, crPropertyName);
     const claim: Claim = await getClaimById(claimId, req, true);
     if (claim?.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE) {
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const defendantsResponseContent = getResponseContentForHowTheyWantToPay(claim, getLng(lang));
-      const financialDetails = getFinancialDetails(claim, lang);
-      const continueLink = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
-      res.render('features/claimantResponse/how-they-want-to-pay-response', {
-        claim,
-        defendantsResponseContent,
-        continueLink,
-        financialDetails,
-      });
+      renderHowTheyWantPay(req, res, claim);
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     }
