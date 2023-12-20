@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveClaimantBilingualLangPreference,
@@ -45,7 +45,7 @@ claimBilingualLangPreferenceController.get(
   },
 );
 
-claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION'));
     form.validateSync();
@@ -60,6 +60,6 @@ claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimBilingualLangPreferenceController;
