@@ -15,7 +15,7 @@ const logger = Logger.getLogger('dashboardCache');
 export const getClaimantNotifications = async (claimId: string, claim: Claim, lng: string) => {
   try {
     const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.CLAIMANT, claimId);
-    if(cachedDashboardNotifications?.items?.length) {
+    if(cachedDashboardNotifications?.items?.length && !claim.hasCaseProgressionHearingDocuments()) {
       return cachedDashboardNotifications.items;
     }
 
@@ -52,7 +52,7 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
 export const getDefendantNotifications = async (claimId: string, claim: Claim, lng: string) => {
   try {
     const cachedDashboardNotifications: Notifications = await getNotificationFromCache(ClaimantOrDefendant.DEFENDANT, claimId);
-    if(cachedDashboardNotifications?.items?.length) {
+    if(cachedDashboardNotifications?.items?.length  && !claim.hasCaseProgressionHearingDocuments()) {
       return cachedDashboardNotifications.items;
     }
     const dashboardNotificationsList = [];
