@@ -47,7 +47,8 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
       hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
     }
     if (!claim.isLRClaimant() && claim.isClaimant()) {
-      hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
+      const taskStatus = claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber ? TaskStatus.IN_PROGRESS : TaskStatus.NOT_AVAILABLE_YET;
+      hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', taskStatus, false, TaskStatusColor[taskStatus])));
     }
     hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
 

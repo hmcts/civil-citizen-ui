@@ -3,6 +3,7 @@ import {Claim} from 'common/models/claim';
 import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
@@ -23,6 +24,20 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
       .addLink('View Claim', '#', t('PAGES.LATEST_UPDATE_CONTENT.DEFENDANT_HAS_UNTIL_TO_RESPOND', { lng, defendantName, responseDeadline }))
       .build())
     .build();
+
+  if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
+
+    const feeType = claim.caseProgression?.helpFeeReferenceNumberForm ? FeeType.HEARING : null;
+
+    const helpWithFeesNotification = new NotificationBuilder()
+      .addTitle(t('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE', { lng }))
+      .addContent(new PageSectionBuilder()
+        .addParagraph(t(`PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.${feeType}_CONTENT`, { lng, feeType: feeType }))
+        .build())
+      .build();
+
+    dashboardNotificationsList.push(helpWithFeesNotification);
+  }
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);

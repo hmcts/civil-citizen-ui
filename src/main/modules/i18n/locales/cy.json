@@ -1337,6 +1337,12 @@
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
+      "NOTIFICATIONS": {
+        "HELP_WITH_FEES": {
+          "TITLE": "We're reviewing your help with fees application",
+          "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
+        }
+      },
       "ORDERS_NOTICE": {
         "TITLE": "Orders and notices from the court",
         "VIEW": "View orders and notices"

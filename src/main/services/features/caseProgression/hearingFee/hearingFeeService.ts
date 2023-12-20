@@ -1,16 +1,14 @@
 import {Claim} from 'models/claim';
-import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 import {CaseEvent} from 'models/events/caseEvent';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  convertHearingFeeHelpWithFeesToCCD,
+} from 'services/translation/caseProgression/hearingFee/convertHearingFeeHelpWithFeesToCCD';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const triggerNotifyEvent = async (claimId: string, req:any, claim: Claim): Promise<void> => {
-  if (claim.respondent1) {
-    claim.respondent1.dateOfBirth = undefined;
-  }
-  claim.claimAmountBreakup = undefined;
-  const ccdClaim = translateDraftClaimToCCD(claim, req);
+  const ccdClaim = convertHearingFeeHelpWithFeesToCCD(claim);
   await civilServiceClient.submitEvent(CaseEvent.NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES, claimId, ccdClaim, req);
 };

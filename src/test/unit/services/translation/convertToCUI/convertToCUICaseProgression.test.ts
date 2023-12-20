@@ -34,6 +34,7 @@ import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/h
 import {TrialArrangements, TrialArrangementsDocument} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CaseRole} from 'form/models/caseRoles';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 
 jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   getLanguage: jest.fn().mockReturnValue('en'),
@@ -79,6 +80,7 @@ describe('toCUICaseProgression', () => {
     ccdClaim.respondent1RevisedHearingRequirements = {revisedHearingRequirements: YesNoUpperCamelCase.YES, revisedHearingComments: 'textArea'};
     ccdClaim.applicantHearingOtherComments = {hearingOtherComments: 'other trial info'};
     ccdClaim.respondent1HearingOtherComments = {hearingOtherComments: 'other trial info'};
+    ccdClaim.hearingFeeHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: '12341234123'};
 
     const expectedOutput = createCUIClaim();
     expectedOutput.defendantTrialArrangements = getTrialArrangementFilled();
@@ -265,6 +267,7 @@ function createCUIClaim(): CaseProgression {
     finalOrderDocumentCollection: getFinalOrderDocumentCollection(),
     defendantTrialArrangements: defendantTrialArrangements,
     claimantTrialArrangements: claimantTrialArrangements,
+    helpFeeReferenceNumberForm: new ApplyHelpFeesReferenceForm(YesNo.YES, '12341234123'),
   } as CaseProgression;
 }
 
