@@ -4,6 +4,10 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {
   isDefendantRejectedMediationOrFastTrackClaim,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {
+  getMediationCarmParagraph,
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/mediationCarmContent';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 
 export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
@@ -17,10 +21,10 @@ export const getRCDisputeStatus = (claim: Claim, lng: string): ClaimSummarySecti
   ];
 };
 
-export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string): ClaimSummarySection[] => {
+export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string, carmApplicable = false): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
-  return [
+  const content: ClaimSummarySection[] = [
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
@@ -33,9 +37,14 @@ export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string
         text: t('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS', {claimantName, lng}),
       },
     },
-    {...getParagraphAskMediation(lng, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediation(lng, isDefendantRejectedMediationOrIsFastTrackClaim)},
   ];
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)){
+    getMediationCarmParagraph(lng, true).map((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediation(lng, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediation(lng, isDefendantRejectedMediationOrIsFastTrackClaim));
+  }
+  return content;
 };
 
 const getParagraphAskMediation = (lang: string, claimantName: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {

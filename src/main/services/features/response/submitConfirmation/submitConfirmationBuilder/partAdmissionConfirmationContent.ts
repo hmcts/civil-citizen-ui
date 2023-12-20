@@ -4,8 +4,13 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {isDecimal} from 'common/utils/numberConverter';
-import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
-import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {
+  isDefendantRejectedMediationOrFastTrackClaim,
+} from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {
+  getMediationCarmParagraph,
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/mediationCarmContent';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -22,10 +27,10 @@ export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummar
   ];
 }
 
-export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string): ClaimSummarySection[] {
+export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
-  return [
+  const content: ClaimSummarySection[] = [
     {
       type: ClaimSummaryType.HTML,
       data: {
@@ -40,15 +45,20 @@ export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string): ClaimSum
   })}</h3>`,
       },
     },
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediationForPAPaid(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {
+  ];
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
+    getMediationCarmParagraph(lang).map((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediationForPAPaid(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push({
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', {lng: lang}),
       },
-    },
-  ];
+    });
+  }
+  return content;
 }
 
 const getSubtitleIfClaimantRejectOwe = (claimantName: string, partialAmount: string, lang: string) => {
@@ -70,21 +80,6 @@ const getParagraphAskMediation = (lang: string, isDefendantRejectedMediationOrIs
       text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', {lng: lang}),
     },
   };
-};
-
-const getMediationParagraph = (lang: string, isSmallClaim : boolean, isDefendantRejectedMediationOrIsFastTrackClaim: boolean, claimAmount: number, partialAmount: string, carmApplicable?: boolean): ClaimSummarySection[] => {
-  if (isSmallClaim && carmApplicable) {
-    return new PageSectionBuilder()
-      .addParagraph(t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION1', {lng: lang}))
-      .addParagraph(t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2', {lng: lang}))
-      .build();
-  }
-  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE' : 'PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION';
-  return new PageSectionBuilder()
-    .addParagraph(t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', {lng: lang}))
-    .addParagraph(t(textContent, {claimAmount, partialAmount, lng: lang}))
-    .build();
-
 };
 
 const getParagraphDontWantMediation = (claimAmount: number, partialAmount: string, lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
@@ -192,13 +187,13 @@ export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSum
   ];
 };
 
-export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const claimAmount = claim.totalClaimAmount;
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
-  return [
+  const content: ClaimSummarySection[] = [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
     {
       type: ClaimSummaryType.HTML,
@@ -224,26 +219,32 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {
+  ];
+
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
+    getMediationCarmParagraph(lang).map((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push({
       type: ClaimSummaryType.SUBTITLE,
       data: {
         text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', {claimantName, lng: lang}),
       },
-    },
-    {...getParagraphCourtDecideHowToPay(lang)},
-  ];
+    });
+    content.push(getParagraphCourtDecideHowToPay(lang));
+  }
+  return content;
 };
 
-export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantFullName();
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const paymentDate = formatDateToFullDate(claim.partialAdmission?.paymentIntention?.paymentDate, lang);
   const claimAmount = claim.totalClaimAmount;
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
-  return [
+  const content: ClaimSummarySection[] = [
     {...getSubtitleIfClaimantAccepstOffer(claimantName, lang)},
     {
       type: ClaimSummaryType.HTML,
@@ -270,23 +271,29 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
       },
     },
     {...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang)},
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', {
-          claimantName,
-          paymentDate,
-          lng: lang,
-        }),
-      },
-    },
-    {...getParagraphCourtDecideHowToPay(lang)},
+
   ];
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
+    getMediationCarmParagraph(lang).map((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+  }
+  content.push({
+    type: ClaimSummaryType.SUBTITLE,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', {
+        claimantName,
+        paymentDate,
+        lng: lang,
+      }),
+    },
+  });
+  content.push(getParagraphCourtDecideHowToPay(lang));
+  return content;
 };
 
-export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, carmApplicable= false): ClaimSummarySection[] => {
+export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[] => {
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
@@ -294,7 +301,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
-  const content:ClaimSummarySection[] = [
+  const content: ClaimSummarySection[] = [
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
@@ -346,10 +353,12 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
         text: `${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER', {claimantName, lng: lang})}`,
       },
     },
-
-    {...getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
-    {...getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim)},
   ];
-  content.concat(getMediationParagraph(lang, claim.isSmallClaimsTrackDQ, isDefendantRejectedMediationOrIsFastTrackClaim, claimAmount, partialAmount, carmApplicable));
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
+    getMediationCarmParagraph(lang).map((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+  }
   return content;
 };

@@ -260,7 +260,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
-      expect(nextStepsSection[3].data?.text).toBeUndefined();
+      expect(nextStepsSection[3]).toBeUndefined();
       expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE');
       expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY');
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
@@ -342,7 +342,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
-      expect(nextStepsSection[3].data?.text).toBeUndefined();
+      expect(nextStepsSection[3]).toBeUndefined();
       expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE');
       expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY');
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
