@@ -1323,7 +1323,7 @@
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
         "HEARINGS": {
-          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "PAY_FEE": "of £{{ feeAmount }} by 12am on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
           "TEXT": "pay the hearing fee "
         }
