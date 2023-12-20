@@ -39,7 +39,7 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
-    const claimedAmount = claim.totalClaimAmount;
+    const claimedAmount: number = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
     if (req.url.includes(urlFromTaskList)) {

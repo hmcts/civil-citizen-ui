@@ -15,8 +15,9 @@ const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-
 
 function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
+  const totalClaimAmount: number = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
-    claimAmount: claim.totalClaimAmount,
+    claimAmount: totalClaimAmount,
     claimFee,
     judgmentSummaryDetails,
   });
