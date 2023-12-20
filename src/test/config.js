@@ -4,7 +4,7 @@ const PropertiesVolume = require('./secretsConfig');
 const defaultPassword = process.env.CITIZEN_PASSWORD;
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-2812.preview.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -34,18 +34,12 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
-    // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
-    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
-    // dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
-    // idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
-    // civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-    manageCase: 'https://xui-civil-citizen-ui-pr-2812.preview.platform.hmcts.net',
-    authProviderApi:'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-2812.preview.platform.hmcts.net',
-    dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
-    idamApi: 'https://idam-api.aat.platform.hmcts.net',
-    civilService: 'https://civil-citizen-ui-pr-2812-civil-service.preview.platform.hmcts.net',
+    manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
+    dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
+    idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
+    civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
   },
   s2s: {
     microservice: 'civil_service',
