@@ -58,3 +58,4 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
 }) as RequestHandler);
 
 export default respondSettlementAgreementController;
+
