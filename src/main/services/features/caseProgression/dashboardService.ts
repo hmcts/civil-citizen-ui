@@ -64,7 +64,7 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
 
 const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
   if (claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
-    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), undefined, TaskStatus.DONE, false, TaskStatusColor[TaskStatus.DONE]);
+    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), undefined, TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
   }
   return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]);
 };
