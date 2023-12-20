@@ -258,6 +258,7 @@ import mediationUnavailabilityNextThreeMonthsConfirmationController
 import mediationUnavailabilitySelectDatesController
   from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import paymentSuccessfulController from 'routes/features/claim/paymentSuccessfulController';
 export default [
   homeController,
   dashboardController,
@@ -488,4 +489,5 @@ export default [
   mediationUnavailabilityNextThreeMonthsConfirmationController,
   mediationUnavailabilitySelectDatesController,
   alternativeTelephoneMediationController,
+  paymentSuccessfulController,
 ];
