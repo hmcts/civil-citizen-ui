@@ -28,9 +28,9 @@ import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
-const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
+const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
-  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang);
+  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang, carmApplicable);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, lang);
 
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
