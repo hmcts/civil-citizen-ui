@@ -2461,7 +2461,7 @@
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
       "EMPLOYED": "Oes ganddo swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
-      "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
+      "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wsdi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
         "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
@@ -2481,7 +2481,7 @@
         "WHY_THEY_DONT_OWE": "Pam nad oes arno'r swm sy'n cael ei hawlio?"
       },
       "PAY_EXPENSES": "A yw'n talu unrhyw dreuliau?",
-      "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
+      "PAYMENT_DATE": "Mae wedi cynnig talu hyn i chi erbyn {{ paymentDate }}",
       "RECEIVE_INCOME": "A yw'n cael unrhyw incwm?",
       "REJECT_CLAIM_STATEMENT": "Mae {{ defendant }} wedi gwrthod yr hawliad.",
       "SEE_FINANCIAL_DETAILS": "Gweler ei fanylion ariannol",
@@ -2491,7 +2491,7 @@
       "THEIR_EVIDENCE": "Their evidence",
       "THEIR_TOE": "Ei linell amser o ddigwyddiadau",
       "TITLE": "Ymateb y diffynnydd",
-      "TOTAL_PAID_AMOUNT": "This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+      "TOTAL_PAID_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Pam na all dalu'r swm llawn nawr?",
       "WHERE_THEY_LIVE": "Lle mae'n byw?",
       "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
