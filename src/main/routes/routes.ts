@@ -247,6 +247,10 @@ import paymentUnsuccessfulController
   from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import makePaymentAgainController
+  from 'routes/features/caseProgression/hearingFee/makePaymentAgainController';
+import paymentConfirmationController
+  from 'routes/features/caseProgression/hearingFee/paymentConfirmationController';
 import alternativeEmailAddressMediationController
   from 'routes/features/mediation/alternativeEmailAddressMediationController';
 import mediationUnavailabilityNextThreeMonthsConfirmationController
@@ -479,6 +483,8 @@ export default [
   telephoneMediationConfirmationController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
+  makePaymentAgainController,
+  paymentConfirmationController,
   applyHelpWithFeesController,
   alternativeEmailAddressMediationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
