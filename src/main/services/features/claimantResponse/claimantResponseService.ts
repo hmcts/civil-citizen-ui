@@ -69,12 +69,61 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
     }
-    await saveDraftClaim(claimId, claim, true);
+    const resetClaim = resetClaimantResponseTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
+    await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
+
+function resetClaimantResponseTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
+  if (isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName)) {
+    delete claim.claimantResponse.hasPartPaymentBeenAccepted;
+    delete claim.claimantResponse.mediation?.mediationDisagreement;
+    delete claim.claimantResponse.mediation?.canWeUse;
+    delete claim.claimantResponse.directionQuestionnaire;
+    delete claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option;
+    delete claim.claimantResponse.suggestedPaymentIntention;
+    delete claim.claimantResponse.courtProposedDate?.decision;
+    delete claim.claimantResponse.chooseHowToProceed;
+    delete claim.claimantResponse.signSettlementAgreement;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
+  } else if (isAcceptORejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
+    delete claim.claimantResponse.suggestedPaymentIntention;
+    delete claim.claimantResponse.courtProposedDate?.decision;
+    delete claim.claimantResponse.chooseHowToProceed;
+    delete claim.claimantResponse.signSettlementAgreement;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
+  } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName,parentPropertyName )) {
+    delete claim.claimantResponse.chooseHowToProceed;
+    delete claim.claimantResponse.signSettlementAgreement;
+    delete claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+  } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName , parentPropertyName)) {
+    delete claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.signSettlementAgreement;
+  }
+  return claim;
+}
+
+function isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName: string): boolean {
+  return claimantResponsePropertyName === 'hasPartAdmittedBeenAccepted';
+}
+
+function isAcceptORejectRepaymentPlanSubmitted(claimantResponsePropertyName: string): boolean {
+  return claimantResponsePropertyName === 'fullAdmitSetDateAcceptPayment';
+}
+
+function isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
+  return (parentPropertyName === 'suggestedPaymentIntention' && (claimantResponsePropertyName === 'paymentOption' ||
+    claimantResponsePropertyName === 'paymentDate' || claimantResponsePropertyName === 'repaymentPlan')) ||
+    (parentPropertyName === 'courtProposedDate' && claimantResponsePropertyName === 'decision') ||
+    (claimantResponsePropertyName === 'courtDecision');
+}
+
+function isChooseHowToProceedSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
+  return claimantResponsePropertyName === 'option' && parentPropertyName === 'chooseHowToProceed';
+}
 
 const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object> => {
   if(claim.isPartialAdmission()) {
