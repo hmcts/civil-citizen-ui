@@ -7,7 +7,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {responseSubmitDateGuard} from 'routes/guards/responseSubmitDateGuard';
-import {isCarmEnabledForCase} from "common/utils/carmToggleUtils";
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const submitConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
