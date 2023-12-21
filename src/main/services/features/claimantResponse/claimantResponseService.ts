@@ -69,7 +69,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
     }
-    const resetClaim = resetClaimantResponseTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
+    const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);
@@ -77,7 +77,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
   }
 };
 
-function resetClaimantResponseTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
+function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
   if (isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName)) {
     delete claim.claimantResponse.hasPartPaymentBeenAccepted;
     delete claim.claimantResponse.mediation?.mediationDisagreement;
