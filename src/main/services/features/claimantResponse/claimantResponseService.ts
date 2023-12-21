@@ -80,34 +80,34 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
   if (isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName)) {
     delete claim.claimantResponse.hasPartPaymentBeenAccepted;
-    delete claim.claimantResponse.mediation?.mediationDisagreement;
-    delete claim.claimantResponse.mediation?.canWeUse;
+    delete claim.claimantResponse.mediation;
     delete claim.claimantResponse.directionQuestionnaire;
-    delete claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option;
-    delete claim.claimantResponse.suggestedPaymentIntention;
-    delete claim.claimantResponse.courtProposedDate?.decision;
-    delete claim.claimantResponse.chooseHowToProceed;
-    delete claim.claimantResponse.signSettlementAgreement;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
+    delete claim.claimantResponse.fullAdmitSetDateAcceptPayment;
+    deleteTaskListData(claim);
   } else if (isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
-    delete claim.claimantResponse.suggestedPaymentIntention;
-    delete claim.claimantResponse.courtProposedDate?.decision;
-    delete claim.claimantResponse.chooseHowToProceed;
-    delete claim.claimantResponse.signSettlementAgreement;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
+    deleteTaskListData(claim);
   } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName,parentPropertyName )) {
     delete claim.claimantResponse.chooseHowToProceed;
-    delete claim.claimantResponse.signSettlementAgreement;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
+    deleteTaskListFormaliseRepaymentData(claim);
   } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName , parentPropertyName)) {
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
-    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
-    delete claim.claimantResponse.signSettlementAgreement;
+    deleteTaskListFormaliseRepaymentData(claim);
   }
   return claim;
+}
+
+function deleteTaskListFormaliseRepaymentData(claim: Claim) {
+  delete claim.claimantResponse.ccjRequest;
+  delete claim.claimantResponse.signSettlementAgreement;
+}
+
+function deleteTaskListData(claim: Claim) {
+  delete claim.claimantResponse.suggestedPaymentIntention;
+  delete claim.claimantResponse.courtProposedDate;
+  delete claim.claimantResponse.rejectionReason;
+  delete claim.claimantResponse.chooseHowToProceed;
+  delete claim.claimantResponse.signSettlementAgreement;
+  delete claim.claimantResponse.ccjRequest;
+  delete claim.claimantResponse.courtDecision;
 }
 
 function isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName: string): boolean {

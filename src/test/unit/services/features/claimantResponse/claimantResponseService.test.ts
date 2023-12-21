@@ -501,7 +501,7 @@ describe('Claimant Response Service', () => {
         await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'hasPartAdmittedBeenAccepted');
         //Then
         expect(claim.claimantResponse.hasPartPaymentBeenAccepted).toBeUndefined();
-        expect(claim.claimantResponse.mediation.mediationDisagreement).toBeUndefined();
+        expect(claim.claimantResponse.mediation).toBeUndefined();
         expect(claim.claimantResponse.directionQuestionnaire).toBeUndefined();
       });
       it('should delete data from redis when fullAdmitSetDateAcceptPayment property submitted', async () => {
@@ -517,16 +517,18 @@ describe('Claimant Response Service', () => {
         claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{signed: 'true'};
         claim.claimantResponse.ccjRequest = new CCJRequest();
         claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
+        claim.claimantResponse.rejectionReason = new RejectionReason('response rejected');
         mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
         jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
         await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'fullAdmitSetDateAcceptPayment');
         //Then
         expect(claim.claimantResponse.suggestedPaymentIntention).toBeUndefined();
-        expect(claim.claimantResponse.courtProposedDate.decision).toBeUndefined();
+        expect(claim.claimantResponse.courtProposedDate).toBeUndefined();
         expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
         expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-        expect(claim.claimantResponse.ccjRequest.paidAmount.option).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
+        expect(claim.claimantResponse.rejectionReason).toBeUndefined();
       });
       it('should delete data from redis when propose alternative repayment plan submitted', async () => {
         //Given
@@ -537,7 +539,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
         expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-        expect(claim.claimantResponse.ccjRequest.paidAmount.option).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
       });
       it('should delete data from redis when courtProposedDate with decision submitted', async () => {
         //Given
@@ -548,19 +550,19 @@ describe('Claimant Response Service', () => {
         //Then
         expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
         expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-        expect(claim.claimantResponse.ccjRequest.paidAmount.option).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
       });
       it('should delete data from redis when chooseHowToProceed option submitted', async () => {
         //Given
-        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 111);
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 111, 1000);
         mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
         jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
         await saveClaimantResponse('validClaimId', 'REQUEST_A_CCJ', 'option', 'chooseHowToProceed');
         //Then
         expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-        expect(claim.claimantResponse.ccjRequest.paidAmount.option).toBeUndefined();
-        expect(claim.claimantResponse.ccjRequest.paidAmount.amount).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
       });
     });
     describe('intentionToProceed', () => {
