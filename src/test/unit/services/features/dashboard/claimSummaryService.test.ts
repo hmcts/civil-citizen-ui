@@ -143,7 +143,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(4);
+    expect(result[0].contentSections).toHaveLength(5);
 
     const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
@@ -167,7 +167,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(5);
+    expect(result[0].contentSections).toHaveLength(6);
 
     const downloadFinalOrderSectionTitle = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[0];
     const downloadFinalOrderSectionLink = buildDownloadFinalOrderSection(claimContainingFinalOrder, claimId, lang)[1];
@@ -187,7 +187,7 @@ describe('getDocumentsContent', () => {
 
     // Then
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(3);
+    expect(result[0].contentSections).toHaveLength(4);
 
     const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
     const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
