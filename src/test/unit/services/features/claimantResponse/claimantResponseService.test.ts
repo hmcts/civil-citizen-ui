@@ -552,6 +552,7 @@ describe('Claimant Response Service', () => {
       });
       it('should delete data from redis when chooseHowToProceed option submitted', async () => {
         //Given
+        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 111);
         mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
         jest.spyOn(draftStoreService, 'saveDraftClaim');
         //When
@@ -559,6 +560,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
         expect(claim.claimantResponse.ccjRequest.paidAmount.option).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest.paidAmount.amount).toBeUndefined();
       });
     });
     describe('intentionToProceed', () => {

@@ -89,18 +89,22 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     delete claim.claimantResponse.chooseHowToProceed;
     delete claim.claimantResponse.signSettlementAgreement;
     delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
-  } else if (isAcceptORejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
+  } else if (isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
     delete claim.claimantResponse.suggestedPaymentIntention;
     delete claim.claimantResponse.courtProposedDate?.decision;
     delete claim.claimantResponse.chooseHowToProceed;
     delete claim.claimantResponse.signSettlementAgreement;
     delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
   } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName,parentPropertyName )) {
     delete claim.claimantResponse.chooseHowToProceed;
     delete claim.claimantResponse.signSettlementAgreement;
-    delete claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
   } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName , parentPropertyName)) {
-    delete claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.option;
+    delete claim.claimantResponse.ccjRequest?.paidAmount?.amount;
     delete claim.claimantResponse.signSettlementAgreement;
   }
   return claim;
@@ -110,15 +114,14 @@ function isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName: string
   return claimantResponsePropertyName === 'hasPartAdmittedBeenAccepted';
 }
 
-function isAcceptORejectRepaymentPlanSubmitted(claimantResponsePropertyName: string): boolean {
+function isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName: string): boolean {
   return claimantResponsePropertyName === 'fullAdmitSetDateAcceptPayment';
 }
 
 function isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
-  return (parentPropertyName === 'suggestedPaymentIntention' && (claimantResponsePropertyName === 'paymentOption' ||
-    claimantResponsePropertyName === 'paymentDate' || claimantResponsePropertyName === 'repaymentPlan')) ||
-    (parentPropertyName === 'courtProposedDate' && claimantResponsePropertyName === 'decision') ||
-    (claimantResponsePropertyName === 'courtDecision');
+  const suggestedPaymentIntentionChildProperties = ['paymentOption', 'paymentDate', 'repaymentPlan'];
+  return (parentPropertyName === 'suggestedPaymentIntention' && suggestedPaymentIntentionChildProperties.includes(claimantResponsePropertyName)) ||
+    (parentPropertyName === 'courtProposedDate' && claimantResponsePropertyName === 'decision') || claimantResponsePropertyName === 'courtDecision';
 }
 
 function isChooseHowToProceedSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
