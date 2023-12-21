@@ -11,6 +11,7 @@ import {PaymentStatus} from 'models/PaymentDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
+const success = 'Success';
 export const getDashboardForm = async (claim: Claim,claimId: string):Promise<TaskList[]> => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
@@ -63,7 +64,7 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
 };
 
 const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
-  if (claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+  if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
     return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), undefined, TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
   }
   return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]);

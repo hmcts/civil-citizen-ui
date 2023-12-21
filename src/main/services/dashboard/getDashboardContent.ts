@@ -5,6 +5,8 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 import {PaymentStatus} from 'models/PaymentDetails';
 
+const success = 'Success';
+
 export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   const dashboardNotificationsList = [];
@@ -34,7 +36,7 @@ export const getClaimantNotifications = (claim: Claim, lng: string) => {
 
   dashboardNotificationsList.push(waitForDefendantResponseNotification);
   dashboardNotificationsList.push(waitForDefendantResponseNotification2);
-  if (claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+  if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
     dashboardNotificationsList.push(hearingFeePaidNotification);
   }
 

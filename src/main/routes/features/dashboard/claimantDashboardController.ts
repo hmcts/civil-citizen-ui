@@ -6,8 +6,11 @@ import {getClaimantNotifications} from 'services/dashboard/getDashboardContent';
 import {AppRequest} from 'common/models/AppRequest';
 import {getDashboardForm} from 'services/features/caseProgression/dashboardService';
 import {Claim} from 'models/claim';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
+const paymentInformation = 'paymentInformation';
+const hearing = 'hearing';
 
 const claimantDashboardController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -18,7 +21,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: Request, re
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = new Claim();
+    const redisClaim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const caseData = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    caseData.caseProgression[hearing]= {[paymentInformation]: redisClaim.caseProgression?.hearing?.paymentInformation};
     Object.assign(claim, caseData);
     const dashboardNotifications = getClaimantNotifications(claim, lang);
     const dashboardTaskList = await getDashboardForm(claim,claimId);
