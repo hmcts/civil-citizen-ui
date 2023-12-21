@@ -1,7 +1,7 @@
 import {Claim} from 'common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 const getResponseStatement = (claim: Claim, lang: string) => {
   const defendantName = claim.getDefendantFullName();

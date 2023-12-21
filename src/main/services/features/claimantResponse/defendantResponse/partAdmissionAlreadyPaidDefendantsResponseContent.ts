@@ -4,7 +4,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {
   getDisagreementStatementWithEvidence, getDisagreementStatementWithTimeline, getTheirEvidence, getTheirTOEs,
 } from './fullDisputeDefendantsResponseContent';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 const getResponseStatement = (name: string, paidAmount: number, lang: string) => {
   return [{

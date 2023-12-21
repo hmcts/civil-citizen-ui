@@ -4,7 +4,7 @@ import {
 } from 'common/form/models/claimSummarySection';
 import {constructRepaymentPlanSection} from '../claimantResponseService';
 import {Claim} from 'common/models/claim';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 const getResponseSummaryText = (claim: Claim, lang: string) => {
   const defendantName = claim.getDefendantFullName();
