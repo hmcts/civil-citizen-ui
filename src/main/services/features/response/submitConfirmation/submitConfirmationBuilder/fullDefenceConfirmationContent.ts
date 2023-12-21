@@ -39,7 +39,7 @@ export const getRCDisputeNextSteps = (claimId: string, claim: Claim, lng: string
     },
   ];
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)){
-    getMediationCarmParagraph(lng, true).map((element) => content.push(element));
+    getMediationCarmParagraph(lng, true).forEach((element) => content.push(element));
   } else {
     content.push(getParagraphAskMediation(lng, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediation(lng, isDefendantRejectedMediationOrIsFastTrackClaim));
