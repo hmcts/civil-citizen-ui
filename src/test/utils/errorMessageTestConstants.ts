@@ -73,6 +73,7 @@ export const enum TestMessages {
   MEDIATION_ALTERNATIVE_EMAIL_ADDRESS = 'Alternative email address',
   MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_CONFIRMATION = 'Unavailability for mediation',
   MEDIATION_ALTERNATIVE_TELEPHONE = 'Alternative Telephone',
+  MEDIATION_ALTERNATIVE_CONTACT_PERSON = 'Mediation contact person confirmation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   MORTGAGE_AMOUNT_ERROR = 'Enter how much you pay for mortgage',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid mortgage amount, maximum two decimal places',
@@ -173,6 +174,7 @@ export const enum TestMessages {
   VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH = 'Date of document must include a month',
   VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
   VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past',
-  ENTER_CONTACT_PERSON = 'Enter contact person'
+  ENTER_CONTACT_PERSON = 'Enter contact person',
+  FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters'
 
 }
