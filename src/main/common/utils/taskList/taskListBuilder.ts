@@ -27,6 +27,7 @@ import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithCl
 import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
@@ -114,7 +115,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
 
 const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
-  if(carmApplicable && caseData.isSmallClaimsTrackDQ) {
+  if(isCarmApplicableAndSmallClaim(carmApplicable, caseData)) {
     tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
     tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
   } else {
