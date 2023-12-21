@@ -29,18 +29,19 @@ judgmentAmountSummaryExtendedController.get(
       try {
         const lang = req.query.lang ? req.query.lang : req.cookies.lang;
         const claim = await getCaseDataFromStore(generateRedisKey(req));
-        const claimFee = convertToPoundsFilter(
-          claim.claimFee?.calculatedAmountInPence,
-        );
 
         if (!claim.claimFee?.calculatedAmountInPence) {
           throw new Error();
-        } else renderView(req, res, claim, lang, claimFee);
+        }
+        const claimFee = convertToPoundsFilter(
+          claim.claimFee?.calculatedAmountInPence
+        );
+        renderView(req, res, claim, lang, claimFee);
       } catch (error) {
         next(error);
       }
     })();
-  },
+  }
 );
 
 judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {
