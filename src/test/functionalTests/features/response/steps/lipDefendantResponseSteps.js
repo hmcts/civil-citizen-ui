@@ -238,6 +238,22 @@ class ResponseSteps {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
 
+  async verifyMediationDetailsInCYA(claimRef) {
+    await checkYourAnswersPage.verifyMediationDetailsInCYA(claimRef);
+  }
+
+  async clickEmailChangeLink() {
+    await checkYourAnswersPage.clickEmailChangeLink();
+  }
+
+  async verifyEditedEmailDetails() {
+    await checkYourAnswersPage.verifyEditedEmailDetails();
+  }
+
+  async fillStatementOfTruthAndSubmit() {
+    await checkYourAnswersPage.fillStatementOfTruthAndSubmit();
+  }
+
   async EnterDateToPayOn() {
     await dateToPayOn.enterDateToPayOn();
   }
@@ -476,6 +492,10 @@ class ResponseSteps {
   }
   async ConfirmAltEmailDetails() {
     await alternativeEmail.confirmAltEmail();
+  }
+
+  async clickSaveButton() {
+    I.click('Save and continue');
   }
 
   async EnterUnavailableDates() {

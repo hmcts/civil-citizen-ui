@@ -43,6 +43,14 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.ConfirmPhoneDetails();
   await ResponseSteps.ConfirmEmailDetails();
   await ResponseSteps.EnterUnavailableDates();
+  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.verifyMediationDetailsInCYA(claimRef);
+  await ResponseSteps.clickEmailChangeLink();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.clickSaveButton();
+  await ResponseSteps.clickSaveButton();
+  await ResponseSteps.verifyEditedEmailDetails();
+  //await ResponseSteps.fillStatementOfTruthAndSubmit(claimRef);
 }).tag('@carm');
 
 AfterSuite(async  () => {
