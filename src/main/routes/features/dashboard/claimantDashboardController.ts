@@ -21,7 +21,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: Request, re
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = new Claim();
-    const redisClaim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const redisClaim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req),true);
     const caseData = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     caseData.caseProgression[hearing]= {[paymentInformation]: redisClaim.caseProgression?.hearing?.paymentInformation};
     Object.assign(claim, caseData);
