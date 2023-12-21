@@ -12,13 +12,13 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {Claim} from '../../../common/models/claim';
 
-const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string) => {
+const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, carmApplicable = false) => {
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
-  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(caseData, currentClaimId, lang);
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(caseData, currentClaimId, lang, carmApplicable);
   const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId, lang);
-  const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId, lang);
+  const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId, lang, carmApplicable);
   const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId, lang);
 
   const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListResolvingTheClaim, taskListYourHearingRequirements];
