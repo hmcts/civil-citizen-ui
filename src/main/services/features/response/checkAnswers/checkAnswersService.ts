@@ -14,10 +14,10 @@ import {buildYourFinancialSection} from './financialSection/buildYourFinancialSe
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 import {
   buildFreeTelephoneMediationSection,
-  buildMediationSection,
 } from './responseSection/buildFreeTelephoneMediationSection';
 import {YesNo} from 'common/form/models/yesNo';
 import {buildHearingRequirementsSection} from 'services/features/common/buildHearingRequirementsSection';
+import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
