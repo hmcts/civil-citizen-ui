@@ -34,14 +34,14 @@ judgmentAmountSummaryExtendedController.get(
           throw new Error();
         }
         const claimFee = convertToPoundsFilter(
-          claim.claimFee?.calculatedAmountInPence
+          claim.claimFee?.calculatedAmountInPence,
         );
         renderView(req, res, claim, lang, claimFee);
       } catch (error) {
         next(error);
       }
     })();
-  }
+  },
 );
 
 judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {
