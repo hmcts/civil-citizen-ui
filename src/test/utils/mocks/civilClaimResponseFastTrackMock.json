@@ -1,3 +1,5 @@
+
+
 {
   "id": 1645882162449409,
   "jurisdiction": "CIVIL",
@@ -7,6 +9,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "caseRole": ["Claimant"],
     "pcqId":"123",
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {

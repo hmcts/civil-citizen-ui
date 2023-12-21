@@ -6,6 +6,9 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {toCCDYesNoFromBooleanString} from 'services/translation/response/convertToCCDYesNo';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
+import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
+import { CourtProposedPlanOptions } from 'common/form/models/claimantResponse/courtProposedPlan';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 export enum CCDChoosesHowToProceed {
   SIGN_A_SETTLEMENT_AGREEMENT = 'SIGN_A_SETTLEMENT_AGREEMENT',
@@ -17,6 +20,8 @@ export interface CCDClaimantLiPResponse {
   applicant1DQHearingSupportLip?: CCDHearingSupport,
   applicant1ChoosesHowToProceed?: CCDChoosesHowToProceed,
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
+  claimantResponseOnCourtDecision?: CourtProposedDateOptions | CourtProposedPlanOptions,
+  claimantCourtDecision?: RepaymentDecisionType,
 }
 
 const toChoosesHowToProceed = {
@@ -30,5 +35,7 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     applicant1DQHearingSupportLip: toCCDSHearingSupport(claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList),
     applicant1ChoosesHowToProceed: toChoosesHowToProceed[claimantResponse?.chooseHowToProceed?.option],
     applicant1SignedSettlementAgreement: toCCDYesNoFromBooleanString(claimantResponse?.signSettlementAgreement?.signed),
+    claimantResponseOnCourtDecision: claimantResponse?.courtProposedDate?.decision ? claimantResponse?.courtProposedDate?.decision : claimantResponse?.courtProposedPlan?.decision,
+    claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
   };
 };

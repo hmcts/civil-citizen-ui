@@ -36,6 +36,7 @@ export const enum TestMessages {
   ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO = 'Date they are unavailable to must be in the next 12 months',
   ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE = 'Date they are unavailable from must be before the date they are unavailable to',
   ENTER_PHONE_NUMBER_OPTIONAL = 'Enter a phone number (optional)',
+  ENTER_PHONE_NUMBER = 'Enter a phone number',
   ENTER_DATE_OF_BIRTH = 'Enter your date of birth',
   ENTER_FIRST_ADDRESS = 'Enter first address line',
   ENTER_FIRST_NAME = 'Enter first name',
@@ -65,6 +66,14 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_OVER_18 = 'Is your partner aged 18 or over?',
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
+  MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Mediation contact person confirmation',
+  MEDIATION_EMAIL_CONFIRMATION = 'Mediation email confirmation',
+  MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
+  MEDIATION_UNAVAILABILITY_DATES = 'Unavailability dates for mediation',
+  MEDIATION_ALTERNATIVE_EMAIL_ADDRESS = 'Alternative email address',
+  MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_CONFIRMATION = 'Unavailability for mediation',
+  MEDIATION_ALTERNATIVE_TELEPHONE = 'Alternative Telephone',
+  MEDIATION_ALTERNATIVE_CONTACT_PERSON = 'Mediation contact person confirmation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   MORTGAGE_AMOUNT_ERROR = 'Enter how much you pay for mortgage',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid mortgage amount, maximum two decimal places',
@@ -133,6 +142,7 @@ export const enum TestMessages {
   VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed',
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
+  VALID_PHONE_NUMBER_UK = 'Phone number must be a UK number',
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REQUEST_EXTRA_4_WEEKS = 'Select yes if you want an extra 4 weeks to try to settle the claim',
   VALID_REASON_REQUIRED = 'Enter a reason',
@@ -163,6 +173,8 @@ export const enum TestMessages {
   VALID_DATE_OF_DOC_MUST_INCLUDE_DAY = 'Date of document must include a day',
   VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH = 'Date of document must include a month',
   VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
-  VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past'
+  VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past',
+  ENTER_CONTACT_PERSON = 'Enter contact person',
+  FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters'
 
 }

@@ -1,0 +1,56 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+{{ setPageTitle(t(pageTitle)) }}
+{% endblock %}
+
+{% block content %}
+{% set yesHtml %}
+<p class="govuk-body">
+  {{ t(pageTitle) }}
+</p>
+{% endset -%}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" role="main">
+    {% if form.hasErrors() %}
+    {{ errorSummary(form.getErrors(), t) }}
+    {% endif %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-!-margin-bottom-8">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{
+              govukInput({
+                id: "alternativeEmailAddress",
+                name: "alternativeEmailAddress",
+                classes: "govuk-!-width-two-thirds",
+                spellcheck: false,
+                value: form.model.alternativeEmailAddress,
+                label: {
+                  classes: "govuk-label--l",
+                  isPageHeading: true,
+                    text: t(pageText)
+                },
+                errorMessage: {
+                  text:t(form.errorFor('alternativeEmailAddress'))
+                } if form.hasErrors()
+              })
+            }}
+            {{ govukButton({
+              text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+            }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
