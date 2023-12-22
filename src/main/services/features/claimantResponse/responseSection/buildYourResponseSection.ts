@@ -208,10 +208,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     summaryRows: [],
   });
 
-  if (claimantResponse.hasPartAdmittedBeenAccepted?.option) {
-    yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lng));
-  }
-
   if (claim.isPartialAdmission() && claimantResponse.hasPartAdmittedBeenAccepted?.option) {
     yourResponse.summaryList.rows.push(buildPartAdmitPayImmediatelySummaryRows(claim, claimId, lng));
   }
@@ -241,12 +237,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
   }
 
   if (claim.isClaimantRejectedPaymentPlan) {
-    if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
-      yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lng));
-    }
-    if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-      yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lng));
-    }
+
     if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
       yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lng));
     }
