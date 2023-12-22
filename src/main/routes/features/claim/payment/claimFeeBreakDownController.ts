@@ -1,10 +1,12 @@
 import { AppRequest } from 'common/models/AppRequest';
-import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {CLAIM_FEE_BREAKUP, CLAIM_FEE_URL} from 'routes/urls';
+import {NextFunction,RequestHandler, Response, Router} from 'express';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import { CLAIM_FEE_BREAKUP, CLAIM_FEE_URL} from 'routes/urls';
 import { YesNo } from 'common/form/models/yesNo';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
@@ -23,5 +25,20 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res:
     next(error);
   }
 })as RequestHandler);
+
+claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req:   AppRequest, res: Response, next: NextFunction) => {
+  try {
+    const claimId = req.params.id;
+    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIM, req);
+
+    const claim = await getCaseDataFromStore(claimId);
+    claim.claimFeePayment=paymentRedirectInformation;
+    await saveDraftClaim(claim.id, claim, true);
+    return paymentRedirectInformation?.nextUrl;
+
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default claimFeeBreakDownController;
