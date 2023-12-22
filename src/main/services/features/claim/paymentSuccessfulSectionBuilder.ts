@@ -1,11 +1,11 @@
-import {PageSectionBuilder} from "common/utils/pageSectionBuilder";
-import {ClaimSummarySection, ClaimSummaryType} from "form/models/claimSummarySection";
-import {t} from "i18next";
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addPanel(paymentReferenceNumber: String) {
+  addPanel(paymentReferenceNumber: string) {
     const section = ({
       type: ClaimSummaryType.PANEL,
       data: {
@@ -18,14 +18,17 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addSummary(paymentFor: String, totalAmount: String) {
+  addSummary(totalAmount: string) {
     const section = ({
       type: ClaimSummaryType.HTML,
       data: {
-        title: ``,
         html: `<dl class="govuk-summary-list">
-                 <div class="govuk-summary-list__row"><dt class="govuk-summary-list__key"><strong>Payment for</strong></dt><dd class="govuk-summary-list__value">${paymentFor}</dd></div>
-                 <div class="govuk-summary-list__row"><dt class="govuk-summary-list__key"><strong>Total amount</strong></dt><dd class="govuk-summary-list__value">${totalAmount}</dd></div>
+                 <div class="govuk-summary-list__row">
+                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_FOR')}</strong></dt>
+                 <dd class="govuk-summary-list__value">${t('COMMON.MICRO_TEXT.HEARING_FEE')}</dd></div>
+                 <div class="govuk-summary-list__row">
+                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.TOTAL_AMOUNT')}</strong></dt>
+                 <dd class="govuk-summary-list__value">${totalAmount}</dd></div>
                </dl>`,
       },
     });

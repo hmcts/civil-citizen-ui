@@ -1889,6 +1889,14 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+            },
+            "SUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was successful",
+              "PAYMENT_IS": "Your payment reference number is",
+              "PAYMENT_SUMMARY": "Payment summary",
+              "CONFIRMATION": "You'll receive a confirmation email in the next hour",
+              "PAYMENT_FOR": "Payment for",
+              "TOTAL_AMOUNT": "Total amount"
             }
           }
         },

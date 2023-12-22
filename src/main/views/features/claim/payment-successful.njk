@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container govuk-!-padding-top-0">
+  <div class="govuk-width-container govuk-!-padding-top-9">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
@@ -20,9 +20,11 @@
           {% for content in paymentSuccessfulBody %}
             {{ itemContent(content,t) }}
           {% endfor %}
+          <div class="govuk-width-container govuk-!-padding-top-5">
           {% for content in paymentSuccessfulButton %}
             {{ itemContent(content,t) }}
           {% endfor %}
+          </div>
         </div>
       </div>
     </main>
