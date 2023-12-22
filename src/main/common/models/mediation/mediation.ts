@@ -5,6 +5,7 @@ import {NoMediationReason} from 'form/models/mediation/noMediationReason';
 import {AlternativeEmailAddress} from 'form/models/mediation/AlternativeEmailAddress';
 import {UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
 import {AlternativeTelephone} from 'form/models/mediation/AlternativeTelephone';
+import {AlternativeContactPerson} from 'form/models/mediation/alternativeContactPerson';
 
 export class Mediation {
   canWeUse?: CanWeUse;
@@ -20,13 +21,14 @@ export class Mediation {
   hasUnavailabilityNextThreeMonths?: GenericYesNo;
   unavailableDatesForMediation?: UnavailableDatesMediation;
   alternativeMediationTelephone?: AlternativeTelephone;
+  alternativeMediationContactPerson?: AlternativeContactPerson;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
     companyTelephoneNumber?: CompanyTelephoneNumber, mediationContactNameCorrect?: GenericYesNo, hasTelephoneMeditationAccessed = false,
     mediationEmailCorrect?: GenericYesNo, isMediationPhoneCorrect?: GenericYesNo,
     hasAvailabilityMediationFinished = false, alternativeMediationEmail?: AlternativeEmailAddress,
     hasUnavailabilityNextThreeMonths?: GenericYesNo,   unavailableDatesForMediation?: UnavailableDatesMediation,
-    alternativeTelephone?: AlternativeTelephone) {
+    alternativeTelephone?: AlternativeTelephone, alternativeMediationContactPerson?: AlternativeContactPerson) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;
@@ -40,5 +42,6 @@ export class Mediation {
     this.hasUnavailabilityNextThreeMonths = hasUnavailabilityNextThreeMonths;
     this.unavailableDatesForMediation = unavailableDatesForMediation;
     this.alternativeMediationTelephone = alternativeTelephone;
+    this.alternativeMediationContactPerson =  alternativeMediationContactPerson;
   }
 }
