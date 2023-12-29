@@ -1093,7 +1093,8 @@
       "INFORMATION": "Efallai y bydd angen i ni siarad â chi am yr hawliad hwn. Byddwn ond yn ffonio ar ddydd Llun i ddydd Gwener rhwng 9am a 5pm.",
       "NUMBER_INFORMATION": "Byddwn hefyd yn rhoi eich rhif i'r unigolyn, y busnes, neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn.",
       "PAGE_TITLE": "Eich rhif ffôn",
-      "TITLE": "Rhowch rif ffôn (dewisol)"
+      "TITLE": "Rhowch rif ffôn (dewisol)",
+      "TITLE_MANDATORY": "Rhowch rif ffôn "
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
@@ -2108,6 +2109,10 @@
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+    },
+    "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
