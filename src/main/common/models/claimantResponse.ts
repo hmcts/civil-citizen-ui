@@ -69,6 +69,10 @@ export class ClaimantResponse {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
+  get isSignASettlementAgreement(): boolean {
+    return this.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+  }
+
   get isClaimantAcceptedPaymentPlan() : boolean {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
