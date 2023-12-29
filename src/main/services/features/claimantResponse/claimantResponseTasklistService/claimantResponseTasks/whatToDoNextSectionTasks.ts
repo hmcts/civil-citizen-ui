@@ -15,7 +15,6 @@ import {
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -137,15 +136,9 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
     status: TaskStatus.INCOMPLETE,
   };
 
-  if ((claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY 
-      && claim.claimantResponse?.courtProposedDate?.decision)
-    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE 
-      && claim.claimantResponse?.suggestedPaymentIntention?.paymentDate 
-      && claim.claimantResponse?.courtProposedDate?.decision)
-    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS 
-      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.firstRepaymentDate
-      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.paymentAmount
-      && claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan.repaymentFrequency)) {
+  if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
+    || (claim.isPAPaymentOptionByDate() && claim.claimantResponse?.suggestedPaymentIntention)
+    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
