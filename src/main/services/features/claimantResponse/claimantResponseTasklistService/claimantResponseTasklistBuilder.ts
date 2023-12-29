@@ -149,7 +149,7 @@ const handleAcceptOrRejectRepaymentPlanTask = (claim: Claim, claimId: string, la
       tasks.push(countyCourtJudgmentTask);
     }
   }
-}
+};
 
 function isPartialAdmissionNotAccepted(claim: Claim) : boolean {
   return (claim.isClaimantIntentionPending() && claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO);
