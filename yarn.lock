@@ -2756,11 +2756,11 @@ __metadata:
   linkType: hard
 
 "@types/serve-favicon@npm:^2.5.1":
-  version: 2.5.4
-  resolution: "@types/serve-favicon@npm:2.5.4"
+  version: 2.5.7
+  resolution: "@types/serve-favicon@npm:2.5.7"
   dependencies:
     "@types/express": "*"
-  checksum: 601173dfd5ad56aed79cbec8f6f898edde38f0472e2f755c33de99eae2f3e3f4d13039fb59f980e5f7b8223e216ec62b45b26c19919b60abbd2a5b4a3e0c4a9f
+  checksum: 1ae98ff01c977307ab989d2c31ea7ffa51977ad2aa2e5877e4e6829a647b0c01301483a8c53585b3655dda394867e83852ea13e02728b6d65ba7121a66141d62
   languageName: node
   linkType: hard
 
