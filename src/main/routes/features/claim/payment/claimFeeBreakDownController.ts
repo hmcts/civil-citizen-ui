@@ -34,7 +34,6 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req:   AppRequest, re
     claim.claimDetails.claimFeePayment=paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     res.redirect(paymentRedirectInformation?.nextUrl);
-
   } catch (error) {
     next(error);
   }
