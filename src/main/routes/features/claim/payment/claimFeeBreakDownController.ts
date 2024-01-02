@@ -7,6 +7,7 @@ import { calculateInterestToDate } from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {Claim} from "models/claim";
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
@@ -31,7 +32,8 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req:   AppRequest, re
     const claimId = req.params.id;
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIM, req);
 
-    const claim = await getCaseDataFromStore(claimId);
+    const userId = (<AppRequest>req).session?.user?.id;
+    const claim: Claim = await getCaseDataFromStore(userId);
     claim.claimFeePayment=paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     return paymentRedirectInformation?.nextUrl;
