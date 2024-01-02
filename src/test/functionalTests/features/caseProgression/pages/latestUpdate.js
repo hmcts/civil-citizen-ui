@@ -5,21 +5,20 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangementFlag = false) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangementFlag = false, caseStruckOutFlag = false ) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
     }
-    this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
     if (trialArrageentFlag === true) {
       this.verifyTrialArrangeentTileContent();
     }
@@ -28,6 +27,11 @@ class LatestUpdate {
     }
     if (otherPartyTrialArrangementFlag === true) {
       this.verifyOtherPartyTrialArrangementTileContent();
+    }
+    if (caseStruckOutFlag === true) {
+      this.verifyCaseStruckOutTile()
+    } else {
+      this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
     }
     contactUs.verifyContactUs();
   }
@@ -42,6 +46,12 @@ class LatestUpdate {
   verifyTrialArrangementsFinalisedTile() {
     I.see('You have finalised your trial arrangements','h3');
     I.see('You can view your trial arrangements under \'Notices and orders\'.');
+  }
+
+  verifyCaseStruckOutTile() {
+    I.see('Claim has been struck out','h3');
+    I.see('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for 10 November 2023 at 09:30 will no longer take place.');
+    I.see('If the claimant wants to reinstate this claim, they will need to make an application to the court.');
   }
 
   verifyTrialArrangeentsTile(claimType) {
