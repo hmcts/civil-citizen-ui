@@ -7,7 +7,7 @@ import { calculateInterestToDate } from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
