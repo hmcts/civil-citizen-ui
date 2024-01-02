@@ -30,7 +30,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res:
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req:   AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIM, req);
+    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED , req);
 
     const userId = (<AppRequest>req).session?.user?.id;
     const claim: Claim = await getCaseDataFromStore(userId);

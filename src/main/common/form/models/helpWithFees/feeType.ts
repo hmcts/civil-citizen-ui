@@ -1,4 +1,4 @@
 export enum FeeType {
   HEARING = 'HEARING',
-  CLAIM = 'CLAIMISSUED',
+  CLAIMISSUED  = 'CLAIMISSUED',
 }
