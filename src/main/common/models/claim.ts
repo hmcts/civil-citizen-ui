@@ -69,7 +69,6 @@ import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -138,7 +137,6 @@ export class Claim {
   helpWithFeesRequested: string;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
-  claimFeePayment?: PaymentInformation;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
