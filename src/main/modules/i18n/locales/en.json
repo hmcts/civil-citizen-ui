@@ -1312,7 +1312,7 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "PAY_FEE": "Pay the hearing fee",
-        "PAY_FEE_DEADLINE": "Deadline is {{ hearingDueDate }}",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
@@ -1324,7 +1324,7 @@
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
         "HEARINGS": {
-          "PAY_FEE": "of £{{ feeAmount }} by 12am on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "PAY_FEE": "of £{{ feeAmount }} on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
           "TEXT": "pay the hearing fee "
         }

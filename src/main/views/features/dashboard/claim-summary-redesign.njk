@@ -45,7 +45,7 @@
                         <div class="column">
                             <span class="app-task-list__task-name">
                               {% if task.url != '#' %}
-                                <a href={{ task.url }}>{{ t(task.description) }}</a>
+                                <a class="govuk-link" rel="noopener noreferrer" href={{ task.url }}>{{ t(task.description) }}</a>
                               {% else %}
                                 <a>{{ t(task.description) }}</a>
                               {% endif %}
