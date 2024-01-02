@@ -22,7 +22,7 @@ describe('Claim Fees - Payment Status', () => {
   describe('on GET', () => {
     it.each([
       CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
-      CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID
+      CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
     ])('should redirect user to success/failure page when url is %s', async (url) => {
       jest.spyOn(claimFeePaymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
       await request(app)

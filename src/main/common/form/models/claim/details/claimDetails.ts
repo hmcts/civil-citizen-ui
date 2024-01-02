@@ -5,7 +5,7 @@ import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {BreathingSpace} from 'models/breathingSpace';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
-import {PaymentInformation} from "models/feePayment/paymentInformation";
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 export class ClaimDetails {
   reason?: Reason;
