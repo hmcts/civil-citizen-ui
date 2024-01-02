@@ -97,19 +97,19 @@ module.exports = {
 
   hearingFeeUnpaid: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
-    let response = await restHelper.request(
+    await restHelper.request(
       `${config.url.civilService}/testing-support/${caseId}/trigger-hearing-fee-unpaid`,
       {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`,
       }, null, 'GET')
       .then(async response => {
-          if (response.status === 200) {
-            console.log(`Hearing Fee unpaid for ${caseId} successfull`);
-          } else {
-            throw new Error(`Error occurred with status : ${response.status}`);
-          }
-        },
+        if (response.status === 200) {
+          console.log(`Hearing Fee unpaid for ${caseId} successfull`);
+        } else {
+          throw new Error(`Error occurred with status : ${response.status}`);
+        }
+      },
       );
   },
 

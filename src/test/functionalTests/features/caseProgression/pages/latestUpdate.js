@@ -29,7 +29,7 @@ class LatestUpdate {
       this.verifyOtherPartyTrialArrangementTileContent();
     }
     if (caseStruckOutFlag === true) {
-      this.verifyCaseStruckOutTile()
+      this.verifyCaseStruckOutTile();
     } else {
       this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
     }

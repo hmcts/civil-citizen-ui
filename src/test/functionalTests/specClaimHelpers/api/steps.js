@@ -16,7 +16,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
