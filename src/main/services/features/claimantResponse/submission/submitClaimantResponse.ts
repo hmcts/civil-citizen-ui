@@ -7,7 +7,7 @@ import {translateClaimantResponseDJToCCD} from 'services/translation/claimantRes
 import {YesNo} from 'form/models/yesNo';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {
-  translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD
+  translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD,
 } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
