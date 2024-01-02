@@ -94,4 +94,4 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
       paymentSetDate: claimantResponse.ccjRequest?.defendantPaymentDate?.date,
     },
   };
-}
+};
