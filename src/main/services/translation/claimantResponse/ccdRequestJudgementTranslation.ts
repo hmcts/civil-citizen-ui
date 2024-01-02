@@ -71,3 +71,27 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
     ...paymentPlanDetails,
   };
 };
+
+export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = (claim: Claim, claimFee: number): ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD => {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
+  const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
+  const ccjJudgmentLipInterest = calculateInterestToDate(claim) || 0;
+  const paymentOption = claimantResponse.ccjRequest?.ccjPaymentOption?.type;
+  return {
+    ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
+    ccjPaymentPaidSomeAmount,
+    ccjJudgmentAmountClaimFee: claimFee.toString(),
+    ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
+    applicant1: toCCDParty(claim.applicant1),
+    respondent1: toCCDParty(claim.respondent1),
+    totalClaimAmount: claim.totalClaimAmount,
+    applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentOption),
+    applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency),
+    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount,
+    applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date,
+    applicant1RequestedPaymentDateForDefendantSpec: {
+      paymentSetDate: claimantResponse.ccjRequest?.defendantPaymentDate?.date,
+    },
+  };
+}
