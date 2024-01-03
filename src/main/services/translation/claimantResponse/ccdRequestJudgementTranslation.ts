@@ -38,7 +38,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
     let paymentIntention: PaymentIntention;
     if (claimantResponse.isClaimantAcceptedPaymentPlan) {
       paymentIntention = claim.getPaymentIntention();
-    } else if (claimantResponse.isClaimantAcceptCourtProposedPlanDecision) {
+    } else if (claimantResponse.isClaimantAcceptsCourtDecision) {
       if (claimantResponse.isCourtDecisionInFavourOfDefendant) {
         paymentIntention = claim.getPaymentIntention();
       } else if (claimantResponse.isCourtDecisionInFavourOfClaimant) {
