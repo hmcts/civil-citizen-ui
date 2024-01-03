@@ -139,6 +139,23 @@ describe('Review Defendant\'s Response Controller', () => {
       });
   });
 
+  it('should redirect How they want to pay page on toggle of language button', async () => {
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.partialAdmission.paymentIntention.paymentDate = new Date();
+    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(700, 1200);
+    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
+    mockGetCaseData.mockImplementation(() => claim);
+    await request(app)
+      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL + '?page=how-they-want-to-pay-response')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('How they want to pay');
+      });
+  });
   it('should redirect to claimant response task list.', async () => {
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
