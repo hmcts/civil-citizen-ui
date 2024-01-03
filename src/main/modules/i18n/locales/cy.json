@@ -2463,9 +2463,9 @@
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wsdi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
-        "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+        "DEFENDANT_ADMITS": "Mae {{ defendant } } yn cyfaddef fod arno'r holl arian rydych chi wedi'i hawlio. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol.",
         "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
-        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
+        "THEY_OFFERED_PAY": "Mae wedi cynnig talu hyn i chi mewn rhandaliadau."
       },
       "FULL_RESPONSE": "Ymateb llawn",
       "HOW_PAID": "Sut dywedodd ei fod wedi talu?",
@@ -2514,7 +2514,7 @@
       "WHEN_THEY_PAID_THIS_AMOUNT": "Pan mae'n dweud ei fod wedi talu'r swm hwn",
       "HOW_THEY_PAID": "Sut dywedodd ei fod wedi talu?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Pam mae'n dweud nad oes arno’r swm yr oeddech chi'n ei hawlio?",
-      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}}.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}}. Dywedodd mai dyma'r cyfan sydd arno, nid y swm rydych chi'n ei hawlio."
     },
     "SELF_EMPLOYED": {
