@@ -1107,7 +1107,8 @@
       "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
@@ -1340,10 +1341,6 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
@@ -1383,10 +1380,7 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
@@ -2129,6 +2123,10 @@
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+    },
+    "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
