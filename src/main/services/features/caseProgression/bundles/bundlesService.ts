@@ -47,10 +47,12 @@ function getUploadedAfterBundle(claim: Claim, lang: string, isClaimant: boolean)
     return undefined;
   }
 
-  const documentUploadedBy = isClaimant ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
+  const documentUploadedBy = isClaimant
+    ? t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT', {lng: lang})
+    : t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT', {lng: lang});
 
   const uploadedAfterBundlesSection = new TabSectionBuilder()
-    .addTitle(documentUploadedBy+t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS', {lng: lang}))
+    .addTitle(documentUploadedBy)
     .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW')
     .addTable(getUploadedAfterTableHeaders(lang), getUploadedAfterTableRows(claim, isClaimant, lang), 'tableWrap')
     .build();

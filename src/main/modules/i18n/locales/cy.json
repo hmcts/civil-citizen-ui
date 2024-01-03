@@ -891,7 +891,8 @@
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "Mae'r dogfennau a restrir isod wedi'u llwytho ers i'r bwndel treial gael ei greu.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Enw’r ddogfen",
         "UPLOADED_AFTER_DOCUMENT": "Dogfen",
-        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "Dogfennau {{ claimantName }} sydd wedi’u llwytho"
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Dogfennau'r hawlydd a uwchlwythwyd",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Dogfennau'r diffynnydd a uwchlwythwyd"
       },
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",

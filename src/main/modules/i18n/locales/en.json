@@ -891,7 +891,8 @@
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
         "UPLOADED_AFTER_DOCUMENT": "Document",
-        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Claimant's uploaded documents",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Defendant's uploaded documents"
       },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
