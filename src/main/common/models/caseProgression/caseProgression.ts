@@ -5,6 +5,7 @@ import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDoc
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {Hearing} from 'models/caseProgression/hearing';
 
 export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
@@ -19,4 +20,5 @@ export class CaseProgression{
   claimantDocuments?: UploadDocumentsUserForm;
   hearingFeeHelpSelection?: GenericYesNo;
   helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
+  hearing?: Hearing;
 }
