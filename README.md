@@ -32,7 +32,7 @@ $ yarn webpack
 Run:
 
 ```bash
-$ yarn start
+$ yarn test
 ```
 
 The application's home page will be available at https://localhost:3001
