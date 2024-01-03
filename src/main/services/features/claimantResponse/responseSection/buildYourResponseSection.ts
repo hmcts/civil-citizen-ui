@@ -60,7 +60,6 @@ export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, clai
     changeLabel(lng));
 };
 
-
 export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
   const selectedOption = claim.claimantResponse?.suggestedPaymentIntention.paymentOption;
