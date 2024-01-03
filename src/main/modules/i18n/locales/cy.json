@@ -2463,7 +2463,7 @@
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wsdi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
-        "DEFENDANT_ADMITS": "Mae {{ defendant } } yn cyfaddef fod arno'r holl arian rydych chi wedi'i hawlio. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol.",
+        "DEFENDANT_ADMITS": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wedi'i hawlio. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol.",
         "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
         "THEY_OFFERED_PAY": "Mae wedi cynnig talu hyn i chi mewn rhandaliadau."
       },
