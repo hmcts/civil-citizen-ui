@@ -1,6 +1,6 @@
-const config =  require('../../config');
-const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps =  require('../features/home/steps/login');
+const config = require('../../config');
+const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
@@ -20,21 +20,15 @@ let securityCode;
 Feature('Response with PartAdmit');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-    console.log('claim number', claimNumber);
-    console.log('Security code', securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  }else{
-    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
-  }
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  console.log('claimRef has been created Successfully    <===>  ', claimRef);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
@@ -50,13 +44,11 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression 
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
+  await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @nightly', async ({api}) => {
@@ -73,13 +65,11 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
-    await api.mediationSuccessful(config.caseWorker);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
+  await api.mediationSuccessful(config.caseWorker);
 });
 
 Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression @nightly', async ({api}) => {
@@ -98,12 +88,10 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
 });
 
 Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @regression', async () => {
@@ -122,15 +110,13 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-10659
-    // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-  }
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-10659
+  // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
 });
 
-AfterSuite(async  () => {
+AfterSuite(async () => {
   await unAssignAllUsers();
 });

@@ -35,15 +35,10 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
 
-    //Added the below IF statement to exclude these steps in AAT as we are ignoring cui non prod files in AAT
-    //Once the CUI Release is done, we can remove this IF statement.
-
-    if (['preview', 'demo'  ].includes(config.runningEnv)) {
-      await I.click(buttons.submit);
-      await I.amOnPage('/case/'+claimRef+'/response/confirmation');
-      await I.waitForText('You\'ve submitted your response',config.WaitForText);
-      await I.see('What happens next');
-    }
+    await I.click(buttons.submit);
+    await I.amOnPage('/case/'+claimRef+'/response/confirmation');
+    await I.waitForText('You\'ve submitted your response',config.WaitForText);
+    await I.see('What happens next');
   }
 
   async navigateToCheckYourAnswersPage(claimRef) {
