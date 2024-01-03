@@ -8,7 +8,6 @@ import {Party} from 'common/models/party';
 import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
 import {t} from 'i18next';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
-import { ChooseHowProceed } from 'common/models/chooseHowProceed';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -90,34 +89,6 @@ describe('Your response Section', () => {
     expect(yourResponseSection.summaryList.rows.length).toBe(3);
   });
 
-  it('should return Your response sections when accepted and settled', async () => {
-    //Given
-
-    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
-    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT};
-    //When
-    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
-    //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
-    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT', {lng}));
-    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
-  });
-
-  it('should return Your response sections when accepted and issue a CCJ', async () => {
-    //Given
-
-    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
-    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.REQUEST_A_CCJ};
-    //When
-    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
-    //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
-    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
-    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
-  });
-
   it('should return Your response sections when rejection installments', async () => {
     //Given
 
@@ -133,7 +104,7 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
-    expect(yourResponseSection.summaryList.rows.length).toBe(10);
+    expect(yourResponseSection.summaryList.rows.length).toBe(9);
   });
   it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
   //Given

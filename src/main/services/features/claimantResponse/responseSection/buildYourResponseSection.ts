@@ -60,15 +60,6 @@ export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, clai
     changeLabel(lng));
 };
 
-export const buildHowDoYourWantToProceed = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
-  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
-  return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN', {lng}),
-    t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], {lng}),
-    partAdmitAcceptedHref,
-    changeLabel(lng));
-};
 
 export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
@@ -230,10 +221,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
 
   if (claimantResponse.fullAdmitSetDateAcceptPayment?.option) {
     yourResponse.summaryList.rows.push(buildSummaryQuestionForDefendantRepaymentPlan(claim, claimId, lng));
-  }
-
-  if (claim.claimantResponse.fullAdmitSetDateAcceptPayment?.option === YesNo.YES) {
-    yourResponse.summaryList.rows.push(buildHowDoYourWantToProceed(claim, claimId, lng));
   }
 
   if (claim.isClaimantRejectedPaymentPlan) {
