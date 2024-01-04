@@ -8,8 +8,6 @@ import {
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
-  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
-  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
@@ -20,14 +18,12 @@ import {
   RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
   RESPONSEFREQUENCY,
-  RESPONSFORCYAFORCHOOSEHOWTOPROCEED, SUGGESTEDPLANPAYMENTOPTION,
+  RESPONSFORCYAFORCHOOSEHOWTOPROCEED,
 } from 'models/claimantResponse/checkAnswers';
 import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {DateTime} from 'luxon';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { currencyFormatWithNoTrailingZeros } from 'common/utils/currencyFormat';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -60,28 +56,6 @@ export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, clai
     changeLabel(lng));
 };
 
-export const buildSummaryForSuggestedPlanDefendantToPay = (claim: Claim, claimId: string, lang: string): SummaryRow => {
-  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
-  const selectedOption = claim.claimantResponse?.suggestedPaymentIntention.paymentOption;
-  const claimantSetDate = formatDateToFullDate((claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate)?.date);
-
-  return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.HOW_WOULD_YOU_LIKE_THE_DEFENDANT_TO_PAY', { lang }),
-    t(SUGGESTEDPLANPAYMENTOPTION[selectedOption], { lang, claimantSetDate }),
-    pageRef,
-    changeLabel(lang));
-};
-
-export const buildSummaryForInstalmentDetails = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
-  const pageRef = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL);
-  const repaymentPlan = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
-  return [
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', { lang }), `${currencyFormatWithNoTrailingZeros(repaymentPlan.paymentAmount)}`, pageRef, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', { lang }), t(`COMMON.PAYMENT_FREQUENCY.${repaymentPlan.repaymentFrequency}`, { lang }), pageRef, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', { lang }), formatDateToFullDate(repaymentPlan.firstRepaymentDate), pageRef, changeLabel(lang)),
-  ];
-};
-
 export const buildFullAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow => {
   const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
   return summaryRow(
@@ -89,7 +63,6 @@ export const buildFullAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: s
     t('COMMON.PAYMENT_OPTION.IMMEDIATELY', {lang}),
     partAdmitAcceptedHref,
     changeLabel(lang));
-
 };
 
 export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: string, lang: string): SummaryRow[] => {
@@ -236,13 +209,6 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     }
   }
 
-  if (claimantResponse.suggestedPaymentIntention?.paymentOption) {
-    yourResponse.summaryList.rows.push(buildSummaryForSuggestedPlanDefendantToPay(claim, claimId, lng));
-  }
-
-  if (claimantResponse.suggestedPaymentIntention?.repaymentPlan) {
-    yourResponse.summaryList.rows.push(...buildSummaryForInstalmentDetails(claim, claimId, lng));
-  }
   return yourResponse;
 };
 
