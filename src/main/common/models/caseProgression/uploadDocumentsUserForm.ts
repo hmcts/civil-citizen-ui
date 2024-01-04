@@ -28,7 +28,7 @@ export class UploadDocumentsUserForm {
   @ValidateNested()
     noticeOfIntention?: WitnessSection[];
   @ValidateNested()
-    documentsReferred?: TypeOfDocumentSection[];
+    documentsReferred?: ReferredToInTheStatementSection[];
   @ValidateNested()
     expertReport?: ExpertSection[];
   @ValidateNested()
@@ -49,7 +49,7 @@ export class UploadDocumentsUserForm {
     trialDocumentary?: TypeOfDocumentSection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
-    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSection[], noticeOfIntention?: WitnessSection[], documentsReferred?: TypeOfDocumentSection[],
+    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
     expertReport?: ExpertSection[], expertStatement?: ExpertSection[], questionsForExperts?: ExpertSection[], answersForExperts?: ExpertSection[],
     trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
@@ -139,6 +139,11 @@ export class TypeOfDocumentSection {
     this.dateInputFields = new DateInputFields(day, month, year);
   }
 
+}
+
+export class ReferredToInTheStatementSection extends TypeOfDocumentSection{
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
+    witnessName: string;
 }
 
 export class WitnessSection {
