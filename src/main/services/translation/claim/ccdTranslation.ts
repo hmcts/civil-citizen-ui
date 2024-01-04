@@ -50,7 +50,6 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
-    hearingHelpFeesReferenceNumber : claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber,
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
