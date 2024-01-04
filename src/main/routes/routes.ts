@@ -261,6 +261,8 @@ import alternativeContactPersonMediationController
   from 'routes/features/mediation/alternativeContactPersonMediationController';
 import claimFeePaymentConfirmationController
   from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
+import claimIssuePaymentSuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
 export default [
   homeController,
   dashboardController,
@@ -492,4 +494,5 @@ export default [
   alternativeTelephoneMediationController,
   alternativeContactPersonMediationController,
   claimFeePaymentConfirmationController,
+  claimIssuePaymentSuccessfulController,
 ];
