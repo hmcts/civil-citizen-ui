@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {CaseEvent} from 'models/events/caseEvent';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {CCDClaim} from "models/civilClaimResponse";
+import {CCDClaim} from 'models/civilClaimResponse';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
