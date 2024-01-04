@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -352,6 +353,22 @@
     }
   },
   "PAGES": {
+    "MEDIATION": {
+      "START_PAGE": {
+        "PAGE_TITLE": "Upload your documents",
+        "CHECK_THE_ORDER_P1" : "Check the order the court sent you for what documents you need to upload for your case.",
+        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. you should add a version number to the name, for example 'version 2.'",
+        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+        "DEADLINES_FOR_UPLOADING_REPRESENTATION": "Deadlines for uploading representation",
+        "CHECK_THE_ORDER_P2": "Check the order the court sent you for the deadlines for uploading your documents.",
+        "AFTER_THE_DEADLINE": "After the deadline, you will have to apply to the court if you want any new document to be used at the trial or hearing.",
+        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
+        "BEFORE_YOU_UPLOAD": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith.'",
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100mb. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+
+      }
+    },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
       "PAGE_TEXT": "Please provide an alternative number"
