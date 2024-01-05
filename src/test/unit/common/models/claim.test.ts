@@ -9,7 +9,7 @@ import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {YesNo} from 'common/form/models/yesNo';
 import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
-import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
+import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicantIndividualMock.json';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartyType} from 'common/models/partyType';
 import {PartialAdmission} from 'common/models/partialAdmission';
