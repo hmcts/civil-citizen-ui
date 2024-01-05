@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import { getRedirectUrl } from 'services/features/claim/payment/claimFeePaymentConfirmationService';
+import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 
 const claimFeePaymentConfirmationController: Router = Router();
 

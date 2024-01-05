@@ -6,6 +6,7 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
+import {Claim} from 'common/models/claim';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
@@ -15,9 +16,10 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
-describe('PaymentConfirmation Service', () => {
+describe('Claim Fee PaymentConfirmation Service', () => {
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+
  
   it('should return to payment successful screen if payment is successful', async () => {
     const mockclaimFeePaymentInfo = {
@@ -27,11 +29,15 @@ describe('PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
     };
 
+    jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    const submitClaimAfterPaymentEvent = jest.spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment').mockResolvedValueOnce({} as Claim);
+  
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
     //Then
+    expect(submitClaimAfterPaymentEvent).toBeCalledTimes(1);
     expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_SUCCESSFUL_URL);
   });
 
