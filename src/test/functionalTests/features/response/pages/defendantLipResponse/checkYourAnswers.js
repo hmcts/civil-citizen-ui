@@ -73,17 +73,16 @@ class CheckYourAnswersPage {
     I.see('test@gmail.com');
   }
 
-  async fillStatementOfTruthAndSubmit(claimRef) {
+  async fillStatementOfTruthAndSubmit() {
     I.waitForText('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.fillField(fields.signedName, 'TestTest');
     I.fillField(fields.signedRole, 'Test');
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
-    I.checkOption(fields.cyaSigned);
+    I.checkOption(fields.directionsQuestionnaireSigned);
     if (['preview', 'demo'  ].includes(config.runningEnv)) {
       I.click(buttons.submit);
-      I.amOnPage('/case/'+claimRef+'/response/confirmation');
       I.waitForText('You\'ve submitted your response',config.WaitForText);
       I.see('What happens next');
     }

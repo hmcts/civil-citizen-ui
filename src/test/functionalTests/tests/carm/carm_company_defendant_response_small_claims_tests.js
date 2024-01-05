@@ -35,6 +35,7 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
+  await ResponseSteps.VerifyPaidLessPage();
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
@@ -50,7 +51,8 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.clickSaveButton();
   await ResponseSteps.clickSaveButton();
   await ResponseSteps.verifyEditedEmailDetails();
-  //await ResponseSteps.fillStatementOfTruthAndSubmit(claimRef);
+  await ResponseSteps.fillStatementOfTruthAndSubmit();
+  await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
 }).tag('@carm');
 
 AfterSuite(async  () => {
