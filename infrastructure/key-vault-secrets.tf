@@ -1,11 +1,11 @@
 resource "azurerm_key_vault_secret" "app_insights_instrumentation_key" {
   name         = "appinsights-instrumentation-key"
-  value        = azurerm_application_insights.web.instrumentation_key
+  value        = module.application_insights.instrumentation_key
   key_vault_id = module.key-vault.key_vault_id
 
   content_type = "secret"
   tags = merge(var.common_tags, {
-    "source" : "appinsights ${azurerm_application_insights.web.name}"
+    "source" : "appinsights ${module.application_insights.name}"
   })
 
   depends_on = [
@@ -14,12 +14,12 @@ resource "azurerm_key_vault_secret" "app_insights_instrumentation_key" {
 }
 resource "azurerm_key_vault_secret" "app_insights_connection_string" {
   name         = "appinsights-connection-string"
-  value        = azurerm_application_insights.web.connection_string
+  value        = module.application_insights.connection_string
   key_vault_id = module.key-vault.key_vault_id
 
   content_type = "secret"
   tags = merge(var.common_tags, {
-    "source" : "appinsights ${azurerm_application_insights.web.name}"
+    "source" : "appinsights ${module.application_insights.name}"
   })
 
   depends_on = [
