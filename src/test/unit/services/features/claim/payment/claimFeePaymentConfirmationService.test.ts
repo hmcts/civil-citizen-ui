@@ -20,7 +20,6 @@ describe('Claim Fee PaymentConfirmation Service', () => {
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
- 
   it('should return to payment successful screen if payment is successful', async () => {
     const mockclaimFeePaymentInfo = {
       status: 'Success',
