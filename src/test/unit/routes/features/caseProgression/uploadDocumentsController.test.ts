@@ -468,6 +468,7 @@ describe('on POST', () => {
     };
     const documentsReferred = {
       'documentsReferred': [{
+        'witnessName': 'witness Name 3',
         'typeOfDocument': 'Word',
         'dateInputFields': {
           'dateDay': '13',

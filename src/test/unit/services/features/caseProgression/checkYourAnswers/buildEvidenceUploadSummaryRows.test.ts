@@ -10,6 +10,7 @@ import {
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {SummaryList, SummaryRow} from 'models/summaryList/summaryList';
 import {
+  getDocumentReferredToSummaryRow,
   getDocumentTypeSummaryRow, getExpertEvidenceSummaryRow, getExpertOtherPartySummaryRow, getFileOnlySummaryRow,
   getWitnessEvidenceSummaryRow,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
@@ -37,12 +38,13 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       witnessSummarySection.summaryList = {} as SummaryList;
       witnessSummarySection.summaryList.rows = [
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
-        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
-        getDocumentTypeSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT'+' '+1,  '1234'),
-        getDocumentTypeSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT'+' '+2,  '1234'),
+        getDocumentReferredToSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT'+' '+1,  '1234'),
+        getDocumentReferredToSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT'+' '+2,  '1234'),
       ] as SummaryRow[];
       expectedWitnessEvidenceSection.sections.push(witnessSummarySection);
 
