@@ -8,8 +8,8 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
     const section = ({
       type: ClaimSummaryType.PANEL,
       data: {
-        title: `<span class='govuk-!-font-size-36'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE')}</span>`,
-        html: `<span class='govuk-!-font-size-27'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS')}</span>
+        title: `<span class='govuk-!-font-size-50'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE')}<br>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE2')}</span>`,
+        html: `<span class='govuk-!-font-size-41'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS')}</span>
               <br><strong>${paymentReferenceNumber}</strong><br>`,
       },
     });
