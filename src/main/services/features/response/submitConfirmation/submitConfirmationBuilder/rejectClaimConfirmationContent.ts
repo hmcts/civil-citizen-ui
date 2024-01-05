@@ -101,10 +101,10 @@ export function getRC_PaidFullNextSteps(claim: Claim,lang: string, carmApplicabl
       },
     },
   ];
-  content.push(getParagraphAskMediationPaidFull(lang, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim));
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)){
-    getMediationCarmParagraph(lang, true).forEach((element) => content.push(element));
+    getMediationCarmParagraph(lang, claimantName,true).forEach((element) => content.push(element));
   } else {
+    content.push(getParagraphAskMediationPaidFull(lang, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediationPaidFull(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push({
       type: ClaimSummaryType.PARAGRAPH,
