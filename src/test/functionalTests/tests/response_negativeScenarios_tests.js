@@ -44,8 +44,8 @@ Scenario('Testing error messages @nightly', async () => {
   //await ResponseSteps.EnterPersonalDetailsError(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   //View your options before response deadline error screen
-  // await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
-  // await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
+  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
+  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   //Choose a response error screens
   await ResponseSteps.EnterResponseToClaimError(claimRef, partAdmit);

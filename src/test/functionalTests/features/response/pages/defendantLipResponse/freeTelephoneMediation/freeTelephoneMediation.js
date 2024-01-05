@@ -40,7 +40,6 @@ class FreeTelephoneMediation {
     await I.see('Advantages of free mediation');
     await I.see('There are many advantages to free mediation, including:');
     await I.see('You chose not to try free mediation');
-    // await I.click(fields.noButton);
     await I.click('Save and continue');
     await I.see('There was a problem');
     await I.see('Choose option: Yes or No');
