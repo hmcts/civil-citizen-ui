@@ -13,17 +13,12 @@ const buttons = {
   saveAndContinue: 'Save and continue',
 };
 
-const newDate = new Date();
-const extendedDay = newDate.getDate();
-const extendedMonth = newDate.getMonth() + 1;
-const extendedYear = newDate.getFullYear();
-
 class AddYourTimeLine {
   async addTimeLineOfEvents() {
     await I.waitForText('Add your timeline of events', config.WaitForText);
-    await I.fillField(fields.date1Day, extendedDay);
-    await I.fillField(fields.date1Month, extendedMonth - 3);
-    await I.fillField(fields.date1Year, extendedYear);
+    await I.fillField(fields.date1Day, 12);
+    await I.fillField(fields.date1Month, 12);
+    await I.fillField(fields.date1Year, 2023);
     await I.fillField(fields.whathappened1, 'TestTimeLine');
     this.clickContinue();
   }
