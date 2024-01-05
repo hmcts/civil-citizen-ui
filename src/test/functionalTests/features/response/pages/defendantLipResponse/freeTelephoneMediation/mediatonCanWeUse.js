@@ -18,6 +18,13 @@ class MediationCanWeUse {
     await I.fillField(fields.phoneNumberID, '02088008800');
     await I.click('Save and continue');
   }
+
+  async selectOptionForMediationError() {
+    await I.waitForText('Enter a phone number', config.WaitForText);
+    await I.click('Save and continue');
+    await I.see('There was a problem');
+    await I.see('Please enter a phone number');
+  }
 }
 
 module.exports = MediationCanWeUse;

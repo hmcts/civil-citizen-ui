@@ -458,6 +458,12 @@ class ResponseSteps {
     await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  async EnterFreeTelephoneMediationDetailsError(claimRef) {
+    await freeTelephoneMediation.selectMediation(claimRef);
+    await mediationCanWeUse.selectOptionForMediationError(claimRef);
+    await freeTelephoneMediation.selectNoMediationError(claimRef);
+  }
+
   async EnterTelephoneMediationDetails() {
     await telephoneMediation.selectMediation();
     await taskListPage.verifyResponsePageContent();

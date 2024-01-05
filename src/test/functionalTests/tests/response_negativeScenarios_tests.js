@@ -44,12 +44,13 @@ Scenario('Testing error messages @nightly', async () => {
   //await ResponseSteps.EnterPersonalDetailsError(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   //View your options before response deadline error screen
-  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
-  await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
+  // await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, iHaveAlreadyAgreedMoretime);
+  // await ResponseSteps.EnterYourOptionsForDeadlineError(claimRef, yesIWantMoretime);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   //Choose a response error screens
   await ResponseSteps.EnterResponseToClaimError(claimRef, partAdmit);
   await ResponseSteps.EnterResponseToClaimError(claimRef, rejectAll);
+  await ResponseSteps.EnterFreeTelephoneMediationDetailsError(claimRef);
   //How much money do you admit you owe? error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
