@@ -42,7 +42,7 @@ describe('on GET', () => {
           interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
           hasInterest: true,
-          totalAmount: mockTotalAmount
+          totalAmount: mockTotalAmount,
         });
       });
   });
