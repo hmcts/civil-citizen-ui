@@ -9,8 +9,8 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
     const section = ({
       type: ClaimSummaryType.PANEL,
       data: {
-        title: `<span class='govuk-!-font-size-36'>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAGE_TITLE')}</span>`,
-        html: `<span class='govuk-!-font-size-27'>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_IS')}</span>
+        title: `<span class='govuk-!-font-size-50'>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAGE_TITLE')}<br>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAGE_TITLE2')}</span>`,
+        html: `<span class='govuk-!-font-size-41'>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_IS')}</span>
               <br><strong>${paymentReferenceNumber}</strong><br>`,
       },
     });
