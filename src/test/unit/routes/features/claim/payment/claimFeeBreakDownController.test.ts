@@ -42,8 +42,7 @@ describe('on GET', () => {
           interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
           hasInterest: true,
-          totalAmount: mockTotalAmount,
-          redirectUrl: '/claim/'+claimId+'/pay-fees',
+          totalAmount: mockTotalAmount
         });
       });
   });
