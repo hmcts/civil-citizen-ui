@@ -5,7 +5,7 @@ import config from 'config';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL} from 'routes/urls';
 import {
   mockCivilClaim,
-  mockCivilClaimApplicantIndividualType
+  mockCivilClaimApplicantIndividualType,
 } from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
