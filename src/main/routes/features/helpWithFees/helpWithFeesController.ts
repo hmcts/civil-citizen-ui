@@ -18,6 +18,8 @@ import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreSe
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
 const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
+const hearing = 'hearing';
+const helpWithFeesRequested = 'helpWithFeesRequested';
 
 applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -53,7 +55,7 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Re
           redirectUrl = constructResponseUrlWithIdParams(claimId, hearingFeeBackUrl);
         }
       }
-      claim.caseProgression.hearing.helpWithFeesRequested = req.body.option;
+      claim.caseProgression[hearing] = {[helpWithFeesRequested]: req.body.option};
       const redisKey = generateRedisKey(req);
       await saveDraftClaim(redisKey, claim);
       res.redirect(redirectUrl);
