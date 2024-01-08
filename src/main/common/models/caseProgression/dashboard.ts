@@ -7,11 +7,3 @@ export class Dashboard {
     this.items = items;
   }
 }
-
-export class NotificationItem {
-  type: string;
-
-  constructor(type: string) {
-    this.type = type;
-  }
-}

@@ -14,8 +14,9 @@ export class TaskItem implements Task {
   status: TaskStatus;
   isCheckTask?: boolean;
   statusColor?: string;
+  helpText?: string;
 
-  constructor(description: string, url: string, status: TaskStatus, isCheckTask?: boolean, statusColor?: string) {
+  constructor(description: string, url: string, status: TaskStatus, isCheckTask?: boolean, statusColor?: string, helpText?: string) {
     this.description = description;
     this.url = url;
     this.status = status;
@@ -24,6 +25,9 @@ export class TaskItem implements Task {
     }
     if (statusColor) {
       this.statusColor = statusColor;
+    }
+    if (helpText) {
+      this.helpText = helpText;
     }
   }
 }

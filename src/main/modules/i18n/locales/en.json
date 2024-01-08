@@ -1312,6 +1312,7 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
@@ -1321,6 +1322,13 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of £{{ feeAmount }} on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        }
+      },
       "ORDERS_NOTICE": {
         "TITLE": "Orders and notices from the court",
         "VIEW": "View orders and notices"
@@ -2742,7 +2750,8 @@
       "INCOMPLETE": "Incomplete",
       "IN_PROGRESS": "In progress",
       "READY_TO_VIEW": "Ready to view",
-      "NOT_AVAILABLE_YET": "Not available yet"
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
