@@ -35,6 +35,30 @@ class PaymentOptionPage {
     }
     await I.click(buttons.saveAndContinue);
   }
+
+  async enterPaymentOptionWelsh(claimRef, responseType, paymentType) {
+    await I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
+    await I.waitForText('Pryd ydych chi eisiau talu?', config.WaitForText);
+    switch (paymentType){
+      case 'immediate':{
+        await I.click(fields.responseAdmitAllImmediate);
+        break;
+      }
+      case 'bySetDate':{
+        await I.click(fields.responseAdmitAllBySetDate);
+        break;
+      }
+      case 'repaymentPlan':{
+        await I.click(fields.responseAdmitAllRepayment);
+        break;
+      }
+      default:{
+        await I.click(fields.responseAdmitAllImmediate);
+        break;
+      }
+    }
+    await I.click(buttons.saveAndContinue);
+  }
 }
 
 module.exports = PaymentOptionPage;

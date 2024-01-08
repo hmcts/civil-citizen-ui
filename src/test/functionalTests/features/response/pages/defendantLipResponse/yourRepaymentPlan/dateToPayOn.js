@@ -26,6 +26,14 @@ class DateToPayOn {
     await I.click(buttons.saveAndContinue);
   }
 
+  async enterDateToPayOnWelsh () {
+    await I.waitForText('Ar ba ddyddiad byddwch yn talu', config.WaitForText);
+    await I.fillField(fields.day, day.toString());
+    await I.fillField(fields.month, month.toString());
+    await I.fillField(fields.year, year.toString());
+    await I.click(buttons.saveAndContinue);
+  }
+
   async enterDateToPayOnError () {
     await I.waitForText('What date will you pay on?', config.WaitForText);
     await I.click(buttons.saveAndContinue);

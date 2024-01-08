@@ -238,12 +238,21 @@ class ResponseSteps {
   async EnterResponseToClaim(claimRef, responseType) {
     await respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
+
+  async EnterResponseToClaimWelsh(claimRef, responseType) {
+    await respondTypePage.enterResponseToClaimWelsh(claimRef, responseType);
+  }
+
   async EnterResponseToClaimError(claimRef, responseType) {
     await respondTypePage.enterResponseToClaimError(claimRef, responseType);
   }
 
   async EnterPaymentOption(claimRef, responseType, paymentOption) {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
+  }
+
+  async EnterPaymentOptionWelsh(claimRef, responseType, paymentOption) {
+    await paymentOptionPage.enterPaymentOptionWelsh(claimRef, responseType, paymentOption);
   }
 
   async EnterRepaymentPlan(claimRef) {
@@ -254,8 +263,8 @@ class ResponseSteps {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
 
-  async EnterDateToPayOn() {
-    await dateToPayOn.enterDateToPayOn();
+  async EnterDateToPayOnWelsh() {
+    await dateToPayOn.enterDateToPayOnWelsh();
   }
 
   async EnterDateToPayOnError() {

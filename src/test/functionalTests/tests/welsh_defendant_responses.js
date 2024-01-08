@@ -39,9 +39,9 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @test @n
   await ResponseSteps.RespondToClaimWelsh(claimRef);
   await ResponseSteps.EnterPersonalDetailsWelsh(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineWelsh(claimRef, dontWantMoreTime);
-  // await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  // await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
-  // await ResponseSteps.EnterDateToPayOn();
+  await ResponseSteps.EnterResponseToClaimWelsh(claimRef, admitAll);
+  await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
+  await ResponseSteps.EnterDateToPayOnWelsh();
   // await ResponseSteps.EnterFinancialDetails(claimRef);
   // await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
   // if (['preview', 'demo'  ].includes(config.runningEnv)) {

@@ -37,6 +37,30 @@ class RespondTypePage {
     await I.click(buttons.saveAndContinue);
   }
 
+  async enterResponseToClaimWelsh(claimRef, responseType){
+    await I.amOnPage('/case/'+claimRef+'/response/response-type');
+    await I.waitForText('Sut ydych chi\'n ymateb i\'r hawliad?', config.WaitForText);
+    switch (responseType){
+      case 'full-admission':{
+        await I.click(fields.responseAdmitAll);
+        break;
+      }
+      case 'partial-admission':{
+        await I.click(fields.responsePartAdmit);
+        break;
+      }
+      case 'rejectAll':{
+        await I.click(fields.responseRejectAll);
+        break;
+      }
+      default:{
+        await I.click(fields.responseAdmitAll);
+        break;
+      }
+    }
+    await I.click(buttons.saveAndContinue);
+  }
+
   async enterResponseToClaimError(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
     await I.waitForText('How do you respond to the claim?', config.WaitForText);
