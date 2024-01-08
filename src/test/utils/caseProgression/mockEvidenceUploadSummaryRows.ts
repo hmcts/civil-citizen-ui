@@ -74,6 +74,21 @@ export const getDocumentTypeSummaryRow = (title: string, claimId: string) => {
   return summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel('en'));
 };
 
+export const getDocumentReferredToSummaryRow = (title: string, claimId: string) => {
+  const sectionTitle = title;
+  const witnessName = {title: 'PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', value: mockNameValue};
+  const documentType = {title: 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', value: mockDocumentNameValue};
+  const documentDate = {title: 'PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', value: mockDateValue};
+  const document = {title: documentTitle, value: mockDocumentValue};
+
+  const sectionValueList = [witnessName, documentType, documentDate, document];
+  const sectionValue = buildTitledSummaryRowValue(sectionValueList);
+
+  const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+
+  return summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel('en'));
+};
+
 export const getFileOnlySummaryRow = (title: string, claimId: string) => {
   const sectionTitle = title;
   const document = {title: documentTitle, value: mockDocumentValue};
