@@ -19,9 +19,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const redisClaimId = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-
-    const paymentStatus = await getFeePaymentStatus(paymentInfo.paymentReference, FeeType.CLAIMISSUED, req);
-
+    const paymentStatus = await getFeePaymentStatus(paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
     if(paymentStatus.status === success) {
       claim.issueDate = new Date();
       await deleteDraftClaimFromStore(redisClaimId);
@@ -30,7 +28,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     }
     
     return PAY_CLAIM_FEE_UNSUCCESSFUL_URL;
-
   }
   catch (error) {
     logger.error(error);
