@@ -258,6 +258,7 @@ import mediationUnavailabilityNextThreeMonthsConfirmationController
 import mediationUnavailabilitySelectDatesController
   from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import claimBilingualLangPreferenceController from 'routes/features/claim/bilingualLangPreferenceController';
 import alternativeContactPersonMediationController
   from 'routes/features/mediation/alternativeContactPersonMediationController';
 export default [
@@ -268,6 +269,7 @@ export default [
   phoneDetailsController,
   responseDobController,
   claimDetailsController,
+  claimBilingualLangPreferenceController,
   ageEligibilityController,
   responsePostcodeLookupController,
   citizenResponseTypeController,

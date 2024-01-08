@@ -433,6 +433,15 @@
       "TITLE": "Language",
       "WELSH": "Welsh"
     },
+    "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
+      "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
+      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "ENGLISH": "English",
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In what language do you want to make your claim?",
+      "TITLE": "Language",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
       "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
@@ -3088,6 +3097,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",
