@@ -70,6 +70,7 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  secure: false,
   cookie : {
     secure: productionMode,
     maxAge: cookieMaxAge,
