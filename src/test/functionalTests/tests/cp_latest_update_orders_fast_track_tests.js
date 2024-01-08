@@ -6,7 +6,7 @@ const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignment
 const claimType = 'FastTrack';
 let claimRef;
 
-xFeature('Case progression journey - Verify latest Update page For an Order being Created');
+Feature.skip('Case progression journey - Verify latest Update page For an Order being Created');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
