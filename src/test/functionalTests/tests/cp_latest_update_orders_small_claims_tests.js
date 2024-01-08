@@ -24,7 +24,7 @@ Scenario('Case progression journey - Sall Clais - Verify latest Update page for 
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

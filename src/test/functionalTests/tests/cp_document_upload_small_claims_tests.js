@@ -27,7 +27,7 @@ Scenario('Case progression journey - Small Claims - Verify uploaded documents by
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

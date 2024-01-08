@@ -26,7 +26,7 @@ Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

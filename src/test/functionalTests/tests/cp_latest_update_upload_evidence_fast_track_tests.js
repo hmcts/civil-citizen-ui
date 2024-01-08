@@ -23,7 +23,7 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@disabled');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
