@@ -29,3 +29,4 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
 AfterSuite(async  () => {
   await unAssignAllUsers();
 });
+
