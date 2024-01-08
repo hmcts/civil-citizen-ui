@@ -23,7 +23,7 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res:
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
-    const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    const form = new GenericForm(new GenericYesNo(claim?.caseProgression?.hearing?.helpWithFeesRequested, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
     let backUrl;
     if(claim.feeTypeHelpRequested === FeeType.HEARING){
       backUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
@@ -53,7 +53,7 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Re
           redirectUrl = constructResponseUrlWithIdParams(claimId, hearingFeeBackUrl);
         }
       }
-      claim.helpWithFeesRequested = req.body.option;
+      claim.caseProgression.hearing.helpWithFeesRequested = req.body.option;
       const redisKey = generateRedisKey(req);
       await saveDraftClaim(redisKey, claim);
       res.redirect(redirectUrl);

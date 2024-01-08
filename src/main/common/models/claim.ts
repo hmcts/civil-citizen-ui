@@ -134,7 +134,6 @@ export class Claim {
   defendantSignedSettlementAgreement?: YesNo;
   courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
-  helpWithFeesRequested: string;
   applicant1Represented?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
