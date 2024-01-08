@@ -131,5 +131,5 @@ module.exports = {
     const document = JSON.stringify(response);
 
     return document;
-  }
+  },
 };
