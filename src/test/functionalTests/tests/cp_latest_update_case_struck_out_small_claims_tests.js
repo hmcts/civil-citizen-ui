@@ -24,7 +24,7 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', ()
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-}).tag('@disabled');
+}).tag('@regression');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

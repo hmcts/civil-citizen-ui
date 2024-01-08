@@ -24,7 +24,7 @@ Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progr
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
-}).tag('@disabled');
+}).tag('@regression');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

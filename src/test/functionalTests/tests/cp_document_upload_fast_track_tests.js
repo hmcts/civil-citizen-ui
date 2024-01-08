@@ -27,7 +27,7 @@ Scenario('Case progression journey - Fast Track - Verify uploaded documents by L
   if (['preview', 'demo'].includes(config.runningEnv)) {
     UploadEvidenceSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
-}).tag('@disabled');
+}).tag('@regression');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

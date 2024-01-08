@@ -25,13 +25,13 @@ Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
   }
-}).tag('@disabled');
+}).tag('@regression');
 
 Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
   }
-}).tag('@disabled');
+}).tag('@regression');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
