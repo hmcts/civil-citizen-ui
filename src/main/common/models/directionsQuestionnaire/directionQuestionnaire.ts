@@ -6,6 +6,7 @@ import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
 import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
 
@@ -16,6 +17,7 @@ export class DirectionQuestionnaire {
   experts?: Experts;
   welshLanguageRequirements?: WelshLanguageRequirements;
   witnesses?: Witnesses;
+  confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence
 
   constructor(
     defendantYourselfEvidence?: GenericYesNo,
@@ -24,6 +26,7 @@ export class DirectionQuestionnaire {
     experts?: Experts,
     welshLanguageRequirements?: WelshLanguageRequirements,
     witnesses?: Witnesses,
+    confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence
   ) {
     this.defendantYourselfEvidence = defendantYourselfEvidence;
     this.hearing = hearing;
@@ -31,6 +34,7 @@ export class DirectionQuestionnaire {
     this.experts = experts;
     this.welshLanguageRequirements = welshLanguageRequirements;
     this.witnesses = witnesses;
+    this.confirmYourDetailsEvidence = confirmYourDetailsEvidence;
   }
 
   get expertReportDetailsAvailable(): boolean {

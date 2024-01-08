@@ -3,6 +3,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestionnaireErrorMessages';
 import {ClaimantResponse} from 'common/models/claimantResponse';
+import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
@@ -44,6 +45,14 @@ const getGenericOptionForm = (option: string, propertyName: string): GenericYesN
   return new GenericYesNo(option, getDirectionQuestionnaireErrorMessage(propertyName));
 };
 
+const getConfirmYourDetailsEvidenceForm = (body: any): ConfirmYourDetailsEvidence => {
+  return new ConfirmYourDetailsEvidence(body.firstName,
+    body.lastName,
+    body.emailAddress,
+    body.phoneNumber,
+    body.jobTitle);
+};
+
 const saveDirectionQuestionnaire = async (claimId: string, value: any, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
     const claim: any = await getCaseDataFromStore(claimId);
@@ -83,9 +92,28 @@ const getDirectionQuestionnaireErrorMessage = (propertyName: string): string => 
     undefined;
 };
 
+const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId);
+    let directionQuestionnaire: any = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
+    if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
+      return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
+    } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
+      return directionQuestionnaire[directionQuestionnairePropertyName];
+    } else {
+      return new ConfirmYourDetailsEvidence();
+    }
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+}
+
 export {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
   getGenericOption,
   getGenericOptionForm,
+  getConfirmYourDetailsEvidence,
+  getConfirmYourDetailsEvidenceForm
 };
