@@ -38,7 +38,7 @@ Before(async ({api}) => {
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @test @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaimWelsh(claimRef);
   await ResponseSteps.EnterPersonalDetailsWelsh(claimRef);
-  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterYourOptionsForDeadlineWelsh(claimRef, dontWantMoreTime);
   // await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
   // await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
   // await ResponseSteps.EnterDateToPayOn();

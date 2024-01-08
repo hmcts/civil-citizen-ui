@@ -198,6 +198,10 @@ class ResponseSteps {
     await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
 
+  async EnterYourOptionsForDeadlineWelsh(claimRef, deadlineOption) {
+    await viewYourOptionsBeforeDeadline.selectYouOptionsWelsh(claimRef, deadlineOption);
+  }
+
   async EnterYourOptionsForDeadlineError(claimRef, deadlineOption) {
     await viewYourOptionsBeforeDeadline.selectYouOptionsError(claimRef, deadlineOption);
   }

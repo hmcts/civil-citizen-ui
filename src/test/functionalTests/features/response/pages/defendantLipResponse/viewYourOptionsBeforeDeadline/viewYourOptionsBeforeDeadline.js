@@ -65,6 +65,46 @@ class ViewYourOptionsBeforeDeadline {
     await I.click(buttons.saveAndContinue);
   }
 
+  async selectYouOptionsWelsh(claimRef, deadlineOption) {
+    await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
+    await I.waitForText('Gwneud cais am ragor o amser\n',config.WaitForText);
+    await I.see('Faint o amser ychwanegol y gallwch wneud cais amdano?','h3');
+    await I.click(buttons.continue);
+    await I.see('Terfyn amser ar gyfer ymateb');
+    await I.see('Terfyn amser cyfredol ar gyfer ymateb:');
+    await I.see('Ydych chi eisiau gwneud cais am ragor o amser i ymateb?');
+    switch(deadlineOption){
+      case 'yesIWantMoretime':{
+        await I.click(fields.yesIWantMoretime);
+        break;
+      }
+      case 'iHaveAlreadyAgreedMoretime':{
+        await I.click(fields.iHaveAlreadyAgreedMoretime);
+        await I.click('Cadw a Pharhau');
+        await I.see('Rydych eisoes wedi cytuno i ragor o amser i ymateb','h1');
+        await I.see('Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol Test Inc');
+        await I.fillField(fields.day, extendedDay );
+        await I.fillField(fields.month, extendedMonth);
+        await I.fillField(fields.year, extendedYear);
+        await I.click('Cadw a Pharhau');
+        await I.see('Terfyn amser newydd ar gyfer ymateb','h1');
+        await I.click('Parhau');
+        break;
+      }
+      case 'requestRefused':{
+        await I.click(fields.requestRefused);
+        break;
+      }
+      case 'dontWantMoreTime':{
+        await I.click(fields.dontWantMoreTime);
+        break;
+      }
+      default:
+        await I.click(fields.dontWantMoreTime);
+    }
+    await I.click(buttons.saveAndContinue);
+  }
+
   async selectYouOptionsError(claimRef, deadlineOption) {
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
     await I.waitForText('Requesting extra time',config.WaitForText);
