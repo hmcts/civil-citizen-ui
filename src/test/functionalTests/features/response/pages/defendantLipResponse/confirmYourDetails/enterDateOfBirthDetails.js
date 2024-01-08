@@ -19,6 +19,14 @@ class DateOfBirthDetailsPage {
     await I.fillField(fields.year, '1987');
     await I.click(buttons.saveAndContinue);
   }
+
+  async enterDateOfBirthWelsh ()  {
+    await I.waitForText('Rhowch eich dyddiad geni', config.WaitForText);
+    await I.fillField(fields.day, '11');
+    await I.fillField(fields.month, '11');
+    await I.fillField(fields.year, '1987');
+    await I.click(buttons.saveAndContinue);
+  }
 }
 
 module.exports = DateOfBirthDetailsPage;

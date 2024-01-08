@@ -154,6 +154,11 @@ class ResponseSteps {
     await bilingualLanguagePreference.verifyContent();
   }
 
+  async RespondToClaimWelsh(claimRef){
+    await defendantLatestUpdate.open(claimRef);
+    await bilingualLanguagePreference.verifyContentWelsh();
+  }
+
   async RespondToClaimError(claimRef){
     await defendantLatestUpdate.open(claimRef);
     await bilingualLanguagePreference.verifyContentError();
@@ -168,6 +173,13 @@ class ResponseSteps {
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
     await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+  }
+
+  async EnterPersonalDetailsWelsh(claimRef, carmEnabled) {
+    await taskListPage.verifyResponsePageContentWelsh();
+    await nameAndAddressDetailsPage.enterNameAndAddressDetailsWelsh(claimRef);
+    await dateOfBirthDetailsPage.enterDateOfBirthWelsh(claimRef);
+    await contactNumberDetailsPage.enterContactNumberWelsh(carmEnabled);
   }
 
   async EnterCompDetails(carmEnabled) {

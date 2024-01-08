@@ -15,6 +15,13 @@ class BilingualLanguagePreference {
     await I.click('Save and continue');
   }
 
+  async verifyContentWelsh() {
+    await I.waitForText('Language', config.WaitForText);
+    await I.see('You must choose which language to use to respond to this claim');
+    await I.click(fields.welshAndEnglish);
+    await I.click('Save and continue');
+  }
+
   async verifyContentError() {
     await I.waitForText('Language', config.WaitForText);
     await I.see('You must choose which language to use to respond to this claim');
