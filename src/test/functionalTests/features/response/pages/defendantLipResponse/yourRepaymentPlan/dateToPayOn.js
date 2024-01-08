@@ -12,7 +12,7 @@ const buttons = {
 };
 const currentDate = new Date();
 const day = currentDate.getDate();
-const month = currentDate.getMonth();
+const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() + 1;
 const dayError = currentDate.getDay() + 1000;
 const monthError = currentDate.getMonth() - 1000;

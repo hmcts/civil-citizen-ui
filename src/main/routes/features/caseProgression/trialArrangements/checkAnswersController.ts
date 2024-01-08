@@ -16,7 +16,6 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {CCDTrialArrangementDefendent} from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {
   translateDraftTrialArrangementsToCCD,
 } from 'services/translation/caseProgression/trialArrangements/convertToCCDTrialArrangements';
@@ -51,10 +50,10 @@ trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
-    const trialReadyCCD: CCDTrialArrangementDefendent = translateDraftTrialArrangementsToCCD(claim);
-    await civilServiceClient.submitDefendantTrialArrangement(req.params.id, trialReadyCCD, req);
-    await deleteDraftClaimFromStore(req.params.id);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL));
+    const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
+    await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);
+    await deleteDraftClaimFromStore(claimId);
+    res.redirect(constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL));
   } catch (error) {
     next(error);
   }
