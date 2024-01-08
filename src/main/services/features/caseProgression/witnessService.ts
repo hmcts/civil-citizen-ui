@@ -8,7 +8,7 @@ import {
 } from 'services/features/caseProgression/witnessContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  TypeOfDocumentSection,
+  ReferredToInTheStatementSection,
   UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -94,7 +94,7 @@ const getDocumentsReferred = (form: GenericForm<UploadDocumentsUserForm>): Claim
   const sectionContent = [];
 
   if (form && form.model.documentsReferred.length != 0) {
-    form.model.documentsReferred.forEach(function (documentsReferred: TypeOfDocumentSection, index: number) {
+    form.model.documentsReferred.forEach(function (documentsReferred: ReferredToInTheStatementSection, index: number) {
       sectionContent.push([buildDocumentsReferred(documentsReferred, index, form)]);
     });
   } else {
