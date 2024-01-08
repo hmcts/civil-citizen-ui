@@ -128,8 +128,6 @@ module.exports = {
     let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
       {}, 'POST');
 
-    const document = JSON.stringify(response);
-
-    return document;
+    return await response.json();
   },
 };
