@@ -35,7 +35,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @test @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaimWelsh(claimRef);
   await ResponseSteps.EnterPersonalDetailsWelsh(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadlineWelsh(claimRef, dontWantMoreTime);
@@ -51,7 +51,6 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @test @n
   //   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
   // }
 });
-
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

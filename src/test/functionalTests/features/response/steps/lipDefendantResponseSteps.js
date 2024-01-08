@@ -263,6 +263,10 @@ class ResponseSteps {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
 
+  async EnterDateToPayOn() {
+    await dateToPayOn.enterDateToPayOn();
+  }
+
   async EnterDateToPayOnWelsh() {
     await dateToPayOn.enterDateToPayOnWelsh();
   }
