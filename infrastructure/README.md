@@ -21,12 +21,12 @@ These are the Terraform resources specifically for the Civil Citizen UI Applicat
 |------|--------|---------|
 | <a name="module_citizen-ui-draft-store"></a> [citizen-ui-draft-store](#module\_citizen-ui-draft-store) | git@github.com:hmcts/cnp-module-redis | master |
 | <a name="module_key-vault"></a> [key-vault](#module\_key-vault) | git@github.com:hmcts/cnp-module-key-vault | master |
+| <a name="module_application-insights"></a> [application-insights](#module\_application-insights) | git@github.com:hmcts/terraform-module-application-insights | main |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_application_insights.web](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_key_vault_secret.app_insights_instrumentation_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.draft_store_access_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |

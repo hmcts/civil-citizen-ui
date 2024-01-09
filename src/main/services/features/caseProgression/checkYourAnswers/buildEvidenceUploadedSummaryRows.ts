@@ -13,7 +13,7 @@ import {
 } from 'routes/urls';
 import {
   ExpertSection,
-  FileOnlySection,
+  FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection, UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -53,7 +53,7 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
 
   const documentsReferred = uploadedDocuments.documentsReferred;
   if(documentsReferred){
-    getDocumentTypeSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT', documentsReferred, witnessSummarySection.summaryList, claimId, lang);
+    getDocumentReferredToSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT', documentsReferred, witnessSummarySection.summaryList, claimId, lang);
   }
 
   if(witnessSummarySection.summaryList.rows.length > 0)
@@ -245,6 +245,30 @@ const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSect
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
     index++;
     const sectionValueList = [typeOfDocumentElement, dateElement, documentElement];
+    const sectionValue = buildTitledSummaryRowValue(sectionValueList);
+
+    documentTypeSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
+
+    summaryList.rows.push(documentTypeSummaryRow);
+  }
+};
+
+const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToInTheStatementSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+
+  let index = 1;
+  for(const document of documents) {
+    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+    let documentTypeSummaryRow = {} as SummaryRow;
+
+    const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
+    const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
+    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
+    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+
+    let sectionTitle = t(title, { lng: getLng(lang) });
+    sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
+    index++;
+    const sectionValueList = [witnessNameElement, typeOfDocumentElement, dateElement, documentElement];
     const sectionValue = buildTitledSummaryRowValue(sectionValueList);
 
     documentTypeSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
