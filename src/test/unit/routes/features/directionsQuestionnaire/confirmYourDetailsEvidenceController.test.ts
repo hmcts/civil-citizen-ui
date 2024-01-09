@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   DQ_CONFIRM_YOUR_DETAILS_URL,
-  DQ_DEFENDANT_WITNESSES_URL
+  DQ_DEFENDANT_WITNESSES_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -18,7 +18,7 @@ const mockSaveData = {
   emailAddress: 'test@test.com',
   phoneNumber: '600000000',
   jobTitle: 'Doctor',
-}
+};
 
 describe('Confirm your details evidence Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -71,8 +71,7 @@ describe('Confirm your details evidence Controller', () => {
         });
     });
 
-    it('should return error when some of the fields contains validation errors',
-      async () => {
+    it('should return error when some of the fields contains validation errors', async () => {
       const _mockSaveData = mockSaveData;
       _mockSaveData.firstName = '';
       _mockSaveData.lastName = '';
