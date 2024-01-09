@@ -1,25 +1,31 @@
 import {
   getSignatureType,
-  getStatementOfTruth,
+  getStatementOfTruth, getSummarySections,
   resetCheckboxFields,
   saveStatementOfTruth,
-} from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+} from 'services/features/response/checkAnswers/checkAnswersService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
-import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
-import {SignatureType} from '../../../../../../main/common/models/signatureType';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
+import {SignatureType} from 'models/signatureType';
 import {
-  createClaimWithBasicRespondentDetails,
+  createClaimWithBasicRespondentDetails, createClaimWithFreeTelephoneMediationSection,
+  createClaimWithMediationSectionWithOption,
   getClaimWithFewDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import {Party} from '../../../../../../main/common/models/party';
+import {Party} from 'models/party';
 import {
   QualifiedStatementOfTruth,
-} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {Claim} from '../../../../../../main/common/models/claim';
+} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {PartyType} from 'models/partyType';
+import {Claim} from 'models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
-import {getSummarySections} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
+import {getSummarySections as breathingSpace} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
+import {YesNo} from 'form/models/yesNo';
+import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
+import {
+  buildFreeTelephoneMediationSection,
+} from 'services/features/response/checkAnswers/responseSection/buildFreeTelephoneMediationSection';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -134,13 +140,36 @@ describe('Check Answers service', () => {
     it('should provide the data summary', async () => {
       //Given
       const claim = await getClaimWithFewDetails();
-      const summarySections = getSummarySections(CLAIM_ID, claim.claimDetails.breathingSpace, 'en');
+      const summarySections = breathingSpace(CLAIM_ID, claim.claimDetails.breathingSpace, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
       expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('R225B1230');
       expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('10 January 2022');
       expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD');
       expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe('10 December 2022');
+    });
+  });
+
+  describe('Obtain Mediation ', () => {
+    it('should get meditation when carm is available ', async () => {
+      //Given
+
+      const claim = createClaimWithMediationSectionWithOption(YesNo.YES);
+      const mediationSectionExpected = buildMediationSection(claim, CLAIM_ID, 'en');
+      const summarySections = getSummarySections(CLAIM_ID, claim, 'en', true);
+      //Then
+      expect(summarySections.sections[0].summaryList.rows.length).toBe(6);
+      expect(summarySections.sections[7]).toStrictEqual(mediationSectionExpected);
+    });
+
+    it('should get free telefone meditation when carm is not available ', async () => {
+      //Given
+      const claim = createClaimWithFreeTelephoneMediationSection();
+      const mediationSectionExpected = buildFreeTelephoneMediationSection(claim, CLAIM_ID, 'en');
+      const summarySections = getSummarySections(CLAIM_ID, claim, 'en', false);
+      //Then
+      expect(summarySections.sections[0].summaryList.rows.length).toBe(6);
+      expect(summarySections.sections[7]).toStrictEqual(mediationSectionExpected);
     });
   });
 });
