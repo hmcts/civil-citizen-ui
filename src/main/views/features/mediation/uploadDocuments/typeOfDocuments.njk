@@ -11,6 +11,15 @@
 {% endblock %}
 
 {% block content %}
+{% set checkboxItems = [] %}
+{% for item in form.model.items %}
+{% set checkboxItems = (checkboxItems.push(
+    {
+      text: t(item.text),
+      value: item.value,
+      selected: item.selected
+    }), checkboxItems) %}
+{% endfor %}
 
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" role="main">
@@ -25,7 +34,7 @@
             <p class="govuk-body-l">{{
               t(
               'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId})}}</p>
-            <p class="govuk-body-l">{{claimantFullName}} v {{defendantFullName}}</p>
+            <p class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</p>
             <p class="govuk-body">{{t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT')}}</p>
             <div class='multiple-row'>
               {{
@@ -36,32 +45,20 @@
                                   fieldset: {
                                     legend: {
                                       text: t(form.model.title),
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--l"
-              }
-              },
-
-                items:[
-              {% for item in form.model.items %}
-              {
-                  id: 'documents',
-                  name: 'documents',
-                  value: 'documents',
-                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE'),
-                  hint: {
-                    text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DOCUMENTS_FOR_DISCLOSURE_HINT')
-                  },
-                  checked: true
-              },
-              {% endfor %}
-                ]
-              })}}
+                                      isPageHeading: false,
+                                      classes: "govuk-fieldset__legend--l"
+                                    }
+                                },
+                items: checkboxItems
+              })
+              }}
             </div>
             <div class="govuk-button-group">
               {{
                 govukButton({
                               text: t('COMMON.BUTTONS.CONTINUE')
               })}}
+            </div>
             {{ contactUsForHelp(t) }}
           </form>
         </div>

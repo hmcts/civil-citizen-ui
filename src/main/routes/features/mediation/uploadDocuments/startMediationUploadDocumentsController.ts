@@ -44,7 +44,7 @@ startMediationUploadDocumentsController.get(START_MEDIATION_UPLOAD_FILES, (async
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents:getContents(claimId, claim)});
+    res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents: getContents(claimId, claim)});
   } catch (error) {
     next(error);
   }

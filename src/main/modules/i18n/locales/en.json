@@ -354,6 +354,10 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "TYPE_OF_DOCUMENTS": {
+        "CHECKBOX_TITLE": "Mediation non-attendance",
+        "CHECKBOX_HINT": "Select all that apply",
+      },
       "START_PAGE": {
         "PAGE_TITLE": "Upload your documents",
         "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
