@@ -1,22 +1,22 @@
-import {TaskStatus} from '../../../common/models/taskList/TaskStatus';
-import {TaskList} from '../../../common/models/taskList/taskList';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {TaskList} from 'models/taskList/taskList';
 import {
   buildPrepareYourResponseSection,
   buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildSubmitSection,
   buildYourHearingRequirementsSection,
-} from '../../../common/utils/taskList/taskListBuilder';
-import {Task} from '../../../common/models/taskList/task';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+} from 'common/utils/taskList/taskListBuilder';
+import {Task} from 'models/taskList/task';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
-import {Claim} from '../../../common/models/claim';
+import {Claim} from 'models/claim';
 
 const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, carmApplicable = false) => {
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
-  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(caseData, currentClaimId, lang);
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(caseData, currentClaimId, lang, carmApplicable);
   const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId, lang);
   const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId, lang, carmApplicable);
   const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId, lang);

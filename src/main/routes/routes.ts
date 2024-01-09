@@ -247,6 +247,10 @@ import paymentUnsuccessfulController
   from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import makePaymentAgainController
+  from 'routes/features/caseProgression/hearingFee/makePaymentAgainController';
+import paymentConfirmationController
+  from 'routes/features/caseProgression/hearingFee/paymentConfirmationController';
 import alternativeEmailAddressMediationController
   from 'routes/features/mediation/alternativeEmailAddressMediationController';
 import mediationUnavailabilityNextThreeMonthsConfirmationController
@@ -254,6 +258,8 @@ import mediationUnavailabilityNextThreeMonthsConfirmationController
 import mediationUnavailabilitySelectDatesController
   from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import alternativeContactPersonMediationController
+  from 'routes/features/mediation/alternativeContactPersonMediationController';
 export default [
   homeController,
   dashboardController,
@@ -477,9 +483,12 @@ export default [
   telephoneMediationConfirmationController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
+  makePaymentAgainController,
+  paymentConfirmationController,
   applyHelpWithFeesController,
   alternativeEmailAddressMediationController,
   mediationUnavailabilityNextThreeMonthsConfirmationController,
   mediationUnavailabilitySelectDatesController,
   alternativeTelephoneMediationController,
+  alternativeContactPersonMediationController,
 ];
