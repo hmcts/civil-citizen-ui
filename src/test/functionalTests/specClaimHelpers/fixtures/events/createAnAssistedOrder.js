@@ -168,9 +168,9 @@ module.exports = {
         finalOrderDocumentCollection: null,
         finalOrderDocument: {
           documentLink: {
-            document_url: document.documentLink.document_url,
-            document_binary_url: document.documentLink.document_binary_url,
-            document_filename: document.documentLink.document_filename,
+            document_url: document.document_url,
+            document_binary_url: document.document_binary_url,
+            document_filename: document.document_filename,
           },
           documentName: 'test document',
           documentSize: 1234,
