@@ -1,5 +1,5 @@
 import {
-  ExpertSection,
+  ExpertSection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection,
@@ -23,6 +23,18 @@ export const getMockSectionArray = (documentType: EvidenceUploadWitness|Evidence
   const sectionArray: TypeOfDocumentSection[] = [];
 
   const typeOfDocument = new TypeOfDocumentSection('12', '12', '2022');
+  typeOfDocument.typeOfDocument = 'document type';
+  typeOfDocument.caseDocument = caseDoc(documentType);
+  sectionArray.push(typeOfDocument);
+  sectionArray.push(typeOfDocument);
+  return sectionArray;
+};
+
+export const getMockDocumentsReferredSectionArray = (documentType: EvidenceUploadWitness|EvidenceUploadDisclosure|EvidenceUploadTrial) => {
+  const sectionArray: ReferredToInTheStatementSection[] = [];
+
+  const typeOfDocument = new ReferredToInTheStatementSection('12', '12', '2022');
+  typeOfDocument.witnessName = 'John Smith';
   typeOfDocument.typeOfDocument = 'document type';
   typeOfDocument.caseDocument = caseDoc(documentType);
   sectionArray.push(typeOfDocument);
@@ -66,7 +78,7 @@ export const getMockFullUploadDocumentsUserForm = () => {
   uploadedDocuments.witnessStatement = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_STATEMENT);
   uploadedDocuments.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_SUMMARY);
   uploadedDocuments.noticeOfIntention = getMockWitnessSectionArray(EvidenceUploadWitness.NOTICE_OF_INTENTION);
-  uploadedDocuments.documentsReferred = getMockSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
+  uploadedDocuments.documentsReferred = getMockDocumentsReferredSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
 
   uploadedDocuments.expertStatement = getMockExpertSectionArray(EvidenceUploadExpert.STATEMENT);
   uploadedDocuments.expertReport = getMockExpertSectionArray(EvidenceUploadExpert.EXPERT_REPORT);
