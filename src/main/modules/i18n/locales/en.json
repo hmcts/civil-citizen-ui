@@ -1,5 +1,9 @@
 {
   "COMMON": {
+    "CONTACT_NAME": "Contact name",
+    "CONTACT_NUMBER": "Contact number",
+    "CONTACT_EMAIL": "Contact email",
+    "UNAVAILABLE_DATES": "Dates unavailable",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -1090,7 +1094,8 @@
       "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
       "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Enter a phone number (optional)",
+      "TITLE_MANDATORY": "Enter a phone number"
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "When did you settle with the defendant?",
@@ -1323,10 +1328,6 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
@@ -1366,10 +1367,7 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
-        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
@@ -2113,6 +2111,10 @@
       "PAGE_TITLE": "Mediation contact person confirmation",
       "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
     },
+    "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
+      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
+    },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
       "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
@@ -2712,6 +2714,9 @@
       "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "THE_COURT_WILL_REVIEW_CASE_HEARING": "The court will review the case. You might have to go to a hearing.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
+      "CLAIMANT_REJECTS_MEDIATION": "If {{ claimantName }} rejects your response the next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION1": "The next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION2": "If you cannot reach an agreement at mediation, the court will review the case.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SETTLED_CLAIM": "This claim is now settled",
