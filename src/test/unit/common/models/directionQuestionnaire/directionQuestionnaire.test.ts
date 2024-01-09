@@ -10,6 +10,7 @@ import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vuln
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
+import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
 
 describe('DirectionQuestionnaire', () => {
   const moreThan30DaysPeriodMockDates = {
@@ -134,7 +135,7 @@ describe('DirectionQuestionnaire', () => {
       expect(result).toBe(false);
     });
 
-    it('should return true with with reason when unavailability is more than 30 days', () => {
+    it('should return true with reason when unavailability is more than 30 days', () => {
       //Given
       dq.hearing.cantAttendHearingInNext12Months = {option: YesNo.YES};
       dq.hearing.unavailableDatesForHearing = {
@@ -212,6 +213,8 @@ describe('DirectionQuestionnaire', () => {
         items: [moreThan30DaysPeriodMockDates],
       };
       dq.hearing.whyUnavailableForHearing = new WhyUnavailableForHearing('test');
+      dq.confirmYourDetailsEvidence = new ConfirmYourDetailsEvidence('John', 'Doe',
+        'test@test.com', 600000000, 'Doctor');
       //When
       const result = dq.isCommonDQJourneyCompleted;
       //Then
