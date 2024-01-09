@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 import {DQ_CONFIRM_YOUR_DETAILS_URL, DQ_DEFENDANT_WITNESSES_URL} from 'routes/urls';
@@ -18,16 +18,16 @@ function renderView(form: GenericForm<ConfirmYourDetailsEvidence>, res: Response
   res.render(confirmYourDetailsEvidenceViewPath, {form});
 }
 
-confirmYourDetailsEvidenceController.get(DQ_CONFIRM_YOUR_DETAILS_URL, async (req, res, next: NextFunction) => {
+confirmYourDetailsEvidenceController.get(DQ_CONFIRM_YOUR_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
     const confirmYourDetailsEvidence = await getConfirmYourDetailsEvidence(generateRedisKey(<AppRequest>req), dqPropertyName);
     renderView(new GenericForm<ConfirmYourDetailsEvidence>(confirmYourDetailsEvidence), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-confirmYourDetailsEvidenceController.post(DQ_CONFIRM_YOUR_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+confirmYourDetailsEvidenceController.post(DQ_CONFIRM_YOUR_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const confirmYourDetailsEvidence = new GenericForm(getConfirmYourDetailsEvidenceForm(req.body));
@@ -43,6 +43,6 @@ confirmYourDetailsEvidenceController.post(DQ_CONFIRM_YOUR_DETAILS_URL, async (re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default confirmYourDetailsEvidenceController;
