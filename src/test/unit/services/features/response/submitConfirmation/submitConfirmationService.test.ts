@@ -28,6 +28,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
+const SMALL_CLAIM_AMOUNT = 1000;
 describe('Submit Confirmation service', () => {
   const mockClaimId = '5129';
   const lang = 'en';
@@ -247,6 +248,20 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
     });
 
+    it('should display next steps section when carm is applicable and small claim', () => {
+      claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, true);
+      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
+      expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
+      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION1');
+      expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
+    });
+
     it('should display next steps section with no mediation', () => {
       // Given
       claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}};
@@ -260,7 +275,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
-      expect(nextStepsSection[3].data?.text).toBeUndefined();
+      expect(nextStepsSection[3]).toBeUndefined();
       expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE');
       expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY');
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
@@ -326,6 +341,27 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
     });
 
+    it('should display next steps section when carm is applicable and small claim', () => {
+      // When
+      claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, true);
+      // Then
+      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.PAY_BY');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CHEQUES_OR_BANK_TRANSFERS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.CONTACT_THEM');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.MAKE_SURE_GET_RECEIPT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
+      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
+      expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
+      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION1');
+      expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
+      expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY');
+      expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
+    });
+
     it('should display next steps section with no mediation', () => {
       // Given
       claim.mediation = <Mediation>{mediationDisagreement: {option: YesNo.NO}};
@@ -342,7 +378,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT');
       expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU');
       expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE');
-      expect(nextStepsSection[3].data?.text).toBeUndefined();
+      expect(nextStepsSection[3]).toBeUndefined();
       expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE');
       expect(nextStepsSection[5].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY');
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
@@ -401,6 +437,16 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION');
         expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
       });
+
+      it('should display next steps section when carm is applicable and small claim', () => {
+        claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+        const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, true);
+        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_RESPONSE');
+        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.THE_CLAIM_WILL_BE_SETTLED');
+        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE');
+        expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION1');
+        expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
+      });
     });
 
     describe('Paid Equal Scenario', () => {
@@ -438,6 +484,14 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION');
         expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE');
         expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
+      });
+
+      it('should display next steps section when carm is applicable and small claim', () => {
+        claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+        const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, true);
+        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END');
+        expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.CLAIMANT_REJECTS_MEDIATION');
+        expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
       });
     });
 
@@ -489,6 +543,15 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS');
         expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS');
         expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT');
+      });
+
+      it('should display next steps section when isCarmApplicableAndSmallClaim(carmApplicable, claim)', () => {
+        claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+        const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang, true);
+        expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_WILL_CONTACT');
+        expect(nextStepsSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS');
+        expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.CLAIMANT_REJECTS_MEDIATION');
+        expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
       });
     });
   });
