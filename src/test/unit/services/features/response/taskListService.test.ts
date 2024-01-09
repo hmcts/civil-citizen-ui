@@ -33,18 +33,33 @@ describe('Response Task List service', () => {
 
   describe('none of the tasks completed', () => {
     const caseData = Object.assign(new Claim(), deepCopy(mockClaim.case_data));
-    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang, false);
 
-    it('should return response task list', () => {
+    it('should return response task list with carm', () => {
+
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
+      const actualTaskListsCarm = getTaskLists(caseData, mockClaimId, lang, true);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang, true);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListResolvingTheClaim = buildResolvingTheClaimSection(caseData, mockClaimId, lang, true);
+      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
+      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListResolvingTheClaim, taskListSubmitYourResponse];
+      const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
+      //Then
+      expect(actualTaskListsCarm).toMatchObject(filteredTaskGroups);
+    });
+
+    it('should return response task list without carm', () => {
+      //when
+      const actualTaskListswithoutCarm = getTaskLists(caseData, mockClaimId, lang, false);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
+      const taskListResolvingTheClaim = buildResolvingTheClaimSection(caseData, mockClaimId, lang, false);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListResolvingTheClaim, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
-      expect(actualTaskLists).toMatchObject(filteredTaskGroups);
+      expect(actualTaskListswithoutCarm).toMatchObject(filteredTaskGroups);
     });
 
     it('should return title', () => {
