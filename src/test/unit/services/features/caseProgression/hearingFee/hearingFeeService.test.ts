@@ -31,7 +31,7 @@ describe('hearing Fee service', () => {
     //Then
     const expectedHelpFeeReferenceNumberForm = {hearingFeeHelpWithFees: {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: '12341234123'} as CCDHelpWithFees};
     expect(spyTriggerEvent).toHaveBeenCalled();
-    expect(spyTriggerEvent).toHaveBeenCalledWith('NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES', mockClaimId, expectedHelpFeeReferenceNumberForm, null);
+    expect(spyTriggerEvent).toHaveBeenCalledWith('APPLY_HELP_WITH_HEARING_FEE', mockClaimId, {'hearingHelpFeesReferenceNumber': '12345678901'}, null);
   });
 
   it('should trigger notify event even if undefined', async () => {
@@ -52,6 +52,6 @@ describe('hearing Fee service', () => {
     await triggerNotifyEvent(mockClaimId, null, testClaim);
     //Then
     expect(spyTriggerEvent).toHaveBeenCalled();
-    expect(spyTriggerEvent).toHaveBeenCalledWith('NOTIFY_CLAIMANT_LIP_HELP_WITH_FEES', mockClaimId, {hearingFeeHelpWithFees: undefined}, null);
+    expect(spyTriggerEvent).toHaveBeenCalledWith('APPLY_HELP_WITH_HEARING_FEE', mockClaimId, {'hearingHelpFeesReferenceNumber': undefined}, null);
   });
 });
