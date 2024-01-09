@@ -1,8 +1,7 @@
 import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/hearingFeeService';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import {CCDHelpWithFees} from 'form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('services/translation/claim/ccdTranslation');
@@ -29,7 +28,6 @@ describe('hearing Fee service', () => {
     //when
     await triggerNotifyEvent(mockClaimId, null, testClaim.case_data);
     //Then
-    const expectedHelpFeeReferenceNumberForm = {hearingFeeHelpWithFees: {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: '12341234123'} as CCDHelpWithFees};
     expect(spyTriggerEvent).toHaveBeenCalled();
     expect(spyTriggerEvent).toHaveBeenCalledWith('APPLY_HELP_WITH_HEARING_FEE', mockClaimId, {'hearingHelpFeesReferenceNumber': '12345678901'}, null);
   });
