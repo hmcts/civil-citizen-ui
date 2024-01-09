@@ -127,7 +127,9 @@ module.exports = {
     let endpointURL = getCivilServiceUrl() + '/testing-support/upload/test-document';
     let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
       {}, 'POST');
-
+    console.log(response);
+    let jsonResponse = await response.json();
+    console.log(jsonResponse);
     return await response.json();
   },
 };
