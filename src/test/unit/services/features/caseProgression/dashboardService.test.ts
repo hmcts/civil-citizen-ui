@@ -65,6 +65,9 @@ describe('Dashboard Service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        caseProgression: {
+          helpFeeReferenceNumberForm: null,
+        },
         isClaimant: jest.fn().mockReturnValue(true),
         isLRClaimant: jest.fn(),
         isLRDefendant: jest.fn(),
