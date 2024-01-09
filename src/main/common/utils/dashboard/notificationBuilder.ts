@@ -1,19 +1,17 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
-import {Notifications} from './notifications';
+import {DashboardNotification} from './dashboardNotification';
 
 export class NotificationBuilder {
-  _content: ClaimSummarySection[] = [];
-  _title: string;
-  addTitle(title: string): this {
-    this._title = title;
-    return this;
+  private dashboardNotification: DashboardNotification;
+  constructor(title: string) {
+    this.dashboardNotification = { title, content: [] };
   }
 
   addContent(items: ClaimSummarySection[]) {
-    this._content.push(...items);
+    this.dashboardNotification.content.push(...items);
     return this;
   }
-  build(): Notifications  {
-    return new Notifications(this._title, this._content);
+  build(): DashboardNotification  {
+    return this.dashboardNotification;
   }
 }

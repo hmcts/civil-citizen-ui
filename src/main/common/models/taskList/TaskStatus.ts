@@ -1,4 +1,5 @@
 export enum TaskStatus {
+  ACTION_NEEDED = 'ACTION_NEEDED',
   COMPLETE = 'COMPLETE',
   INCOMPLETE = 'INCOMPLETE',
   DONE = 'DONE',
@@ -9,6 +10,7 @@ export enum TaskStatus {
 }
 
 export const TaskStatusColor: Record<TaskStatus, string> = {
+  [TaskStatus.ACTION_NEEDED]:'govuk-tag--red',
   [TaskStatus.COMPLETE]: '',
   [TaskStatus.INCOMPLETE]:'govuk-tag--grey',
   [TaskStatus.DONE]:'govuk-tag--green',
