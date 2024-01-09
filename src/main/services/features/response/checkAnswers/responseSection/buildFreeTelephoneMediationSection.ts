@@ -1,15 +1,15 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CAN_WE_USE_COMPANY_URL,
   CAN_WE_USE_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-} from '../../../../../routes/urls';
-import {YesNo, YesNoUpperCase} from '../../../../../common/form/models/yesNo';
+} from 'routes/urls';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
@@ -74,3 +74,4 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   }
   return freeTelephoneMediationSection;
 };
+
