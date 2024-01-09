@@ -10,9 +10,9 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {Claim} from "models/claim";
-import {PartyType} from "models/partyType";
-import {YesNo} from "form/models/yesNo";
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {YesNo} from 'form/models/yesNo';
 
 const defendantYourselfEvidenceController = Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';

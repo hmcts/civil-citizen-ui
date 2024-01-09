@@ -6,7 +6,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {
   DQ_CONFIRM_YOUR_DETAILS_URL,
   DQ_DEFENDANT_WITNESSES_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 

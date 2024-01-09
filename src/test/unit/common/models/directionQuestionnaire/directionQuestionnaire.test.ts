@@ -10,7 +10,7 @@ import {VulnerabilityQuestions} from 'common/models/directionsQuestionnaire/vuln
 import {Witnesses} from 'common/models/directionsQuestionnaire/witnesses/witnesses';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {WelshLanguageRequirements} from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
-import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
+import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 
 describe('DirectionQuestionnaire', () => {
   const moreThan30DaysPeriodMockDates = {

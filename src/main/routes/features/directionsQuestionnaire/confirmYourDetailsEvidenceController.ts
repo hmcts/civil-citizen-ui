@@ -1,14 +1,14 @@
-import {NextFunction, Request, Response, Router} from "express";
-import {GenericForm} from "form/models/genericForm";
-import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
-import {DQ_CONFIRM_YOUR_DETAILS_URL, DQ_DEFENDANT_WITNESSES_URL} from "routes/urls";
+import {NextFunction, Request, Response, Router} from 'express';
+import {GenericForm} from 'form/models/genericForm';
+import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
+import {DQ_CONFIRM_YOUR_DETAILS_URL, DQ_DEFENDANT_WITNESSES_URL} from 'routes/urls';
 import {
   getConfirmYourDetailsEvidence,
-  getConfirmYourDetailsEvidenceForm, saveDirectionQuestionnaire
-} from "services/features/directionsQuestionnaire/directionQuestionnaireService";
-import {generateRedisKey} from "modules/draft-store/draftStoreService";
-import {AppRequest} from "models/AppRequest";
-import {constructResponseUrlWithIdParams} from "../../../common/utils/urlFormatter";
+  getConfirmYourDetailsEvidenceForm, saveDirectionQuestionnaire,
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const confirmYourDetailsEvidenceController = Router();
 const confirmYourDetailsEvidenceViewPath = 'features/directionsQuestionnaire/confirm-your-details-evidence';

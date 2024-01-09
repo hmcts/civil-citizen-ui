@@ -3,7 +3,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestionnaireErrorMessages';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {ConfirmYourDetailsEvidence} from "form/models/confirmYourDetailsEvidence";
+import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
@@ -95,7 +95,7 @@ const getDirectionQuestionnaireErrorMessage = (propertyName: string): string => 
 const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    let directionQuestionnaire: any = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
+    const directionQuestionnaire: any = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
     if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
       return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
@@ -107,7 +107,7 @@ const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionn
     logger.error(error);
     throw error;
   }
-}
+};
 
 export {
   getDirectionQuestionnaire,
@@ -115,5 +115,5 @@ export {
   getGenericOption,
   getGenericOptionForm,
   getConfirmYourDetailsEvidence,
-  getConfirmYourDetailsEvidenceForm
+  getConfirmYourDetailsEvidenceForm,
 };
