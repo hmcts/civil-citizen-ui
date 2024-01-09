@@ -11,12 +11,16 @@ class ConfirmationPage {
         I.see('If Test Inc accepts your response');
         I.see('The claim will be settled');
         I.see('If Test Inc rejects your response');
-        I.see('The next step will be mediation. ' +
-          'The mediation service will contact you to give you a date for your appointment.');
-        I.see('If you cannot reach an agreement at mediation, the court will review the case.');
+        break;
+      }
+      case 'PartAdmitAndPayImmediately': {
+        I.see('If Test Inc rejects your offer');
         break;
       }
     }
+    I.see('The next step will be mediation. ' +
+      'The mediation service will contact you to give you a date for your appointment.');
+    I.see('If you cannot reach an agreement at mediation, the court will review the case.');
   }
 }
 
