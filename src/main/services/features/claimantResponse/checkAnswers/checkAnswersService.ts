@@ -12,7 +12,7 @@ import {
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
 import { buildSummaryForCourtDecisionDetails } from '../responseSection/buildCourtDecisionDetailsSection';
-import {isDefendantRejectedMediationOrFastTrackClaim} from "services/features/response/submitConfirmation/submitConfirmationService";
+import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
