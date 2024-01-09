@@ -18,7 +18,11 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+        {% if carmEnabled %}
+        <h1 class="govuk-heading-l">{{ t("PAGES.CLAIMANT_PHONE.TITLE_MANDATORY") }}</h1>
+        {% else %}
           <h1 class="govuk-heading-l">{{ t("PAGES.CLAIMANT_PHONE.TITLE") }}</h1>
+        {% endif %}
           <p class="govuk-body">
             {{ t("PAGES.CLAIMANT_PHONE.INFORMATION") }}
           </p>
@@ -26,11 +30,19 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {%- if form.errorFor('telephoneNumber') %} govuk-form-group--error{% endif %}">
+            {% if carmEnabled %}
+              {{ citizenTelephone(form, t, {
+                id: "telephoneNumber",
+                name: "telephoneNumber",
+                label: "PAGES.CLAIMANT_PHONE.TITLE_MANDATORY"
+              }) }}
+            {% else %}
               {{ citizenTelephone(form, t, {
                 id: "telephoneNumber",
                 name: "telephoneNumber",
                 label: "PAGES.CLAIMANT_PHONE.TITLE"
               }) }}
+            {% endif %}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
