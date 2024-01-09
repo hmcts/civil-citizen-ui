@@ -78,7 +78,7 @@ describe('UploadedEvidenceFormatter', () => {
 
     it('should find filename & binary from UploadEvidenceDocumentType files', () => {
       //given
-      const caseDocument = new UploadEvidenceDocumentType('type', date, document, date);
+      const caseDocument = new UploadEvidenceDocumentType(null,'type', date, document, date);
       const uploadedDocument = new UploadDocumentTypes(false, caseDocument, EvidenceUploadDisclosure.DISCLOSURE_LIST, null);
 
       //when
