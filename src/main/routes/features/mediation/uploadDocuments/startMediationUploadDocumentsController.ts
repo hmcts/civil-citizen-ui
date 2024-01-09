@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  IS_CASE_READY_URL, START_MEDIATION_UPLOAD_FILES,
+  MEDIATION_TYPE_OF_DOCUMENTS, START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -35,7 +35,7 @@ const getContents = (claimId: string, claim: Claim) => {
     .addTitle(`${MEDIATION_START_PAGE}BEFORE_YOU_UPLOAD_TITLE`)
     .addParagraph(`${MEDIATION_START_PAGE}BEFORE YOU UPLOAD`)
     .addParagraph(`${MEDIATION_START_PAGE}EACH_DOCUMENT_MUST`)
-    .addStartButton('PAGES.FINALISE_TRIAL_ARRANGEMENTS.START_NOW', IS_CASE_READY_URL.replace(':id', claim.id))
+    .addStartButton('COMMON.BUTTONS.START_NOW', MEDIATION_TYPE_OF_DOCUMENTS.replace(':id', claimId))
     .build();
 };
 
@@ -45,14 +45,6 @@ startMediationUploadDocumentsController.get(START_MEDIATION_UPLOAD_FILES, (async
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
     res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents:getContents(claimId, claim)});
-  } catch (error) {
-    next(error);
-  }
-}) as RequestHandler);
-
-startMediationUploadDocumentsController.post(START_MEDIATION_UPLOAD_FILES, (async (req, res, next: NextFunction) => {
-  try {
-    //todo create a new mediation object and save it to the store
   } catch (error) {
     next(error);
   }
