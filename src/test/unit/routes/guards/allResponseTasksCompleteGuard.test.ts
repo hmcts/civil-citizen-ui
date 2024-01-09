@@ -7,9 +7,14 @@ import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/com
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {configureSpy} from '../../../utils/spyConfiguration';
+import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
@@ -24,6 +29,10 @@ jest.mock('i18next', () => ({
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
+const getClaimByIdMock = getClaimById as jest.Mock;
+
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+  .mockReturnValue(Promise.resolve(calmEnabled));
 
 const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
@@ -47,6 +56,11 @@ describe('Response - Incomplete Submission', () => {
     jest.clearAllMocks();
     mockSetResponseDeadline.mockImplementation(async () => {
       return new Date();
+    });
+    getClaimByIdMock.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.submittedDate = new Date();
+      return claim;
     });
   });
 
@@ -72,6 +86,7 @@ describe('Response - Incomplete Submission', () => {
         const outstandingTaskList: Task[] = [];
         return outstandingTaskList;
       });
+      isCarmEnabledSpy(true);
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
