@@ -1,12 +1,9 @@
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection} from '../../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  getContactYouStatement,
-  getFAPayByDateNextSteps,
-  getFAPayByDateStatus,
-  getFAPayByInstallmentsNextSteps,
-  getFAPayByInstallmentsStatus,
-  getFAPayImmediatelyNextSteps,
+  getContactYouStatement, getFAPayByDateNextSteps,
+  getFAPayByDateStatus, getFAPayByInstallmentsNextSteps,
+  getFAPayByInstallmentsStatus, getFAPayImmediatelyNextSteps,
   getFAPAyImmediatelyStatus,
   getfinancialDetails,
 } from './admissionSubmitConfirmationContent';
@@ -18,7 +15,7 @@ import {
   getRC_PaidFullNextSteps,
 } from './rejectClaimConfirmationContent';
 
-import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {getRCDisputeNextSteps, getRCDisputeStatus} from './fullDefenceConfirmationContent';
 import {
   getPA_AlreadyPaidStatus,
@@ -69,17 +66,17 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   }
 }
 
-export function buildNextStepsSection(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
+export function buildNextStepsSection(claimId: string, claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[] {
   const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
-  const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang);
-  const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
-  const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
-  const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
-  const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);
-  const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang);
-  const RCDisputeNextSteps = getRCDisputeNextSteps(claimId, claim, lang);
+  const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang, carmApplicable);
+  const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang, carmApplicable);
+  const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang, carmApplicable);
+  const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang, carmApplicable);
+  const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang, carmApplicable);
+  const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang, carmApplicable);
+  const RCDisputeNextSteps = getRCDisputeNextSteps(claimId, claim, lang, carmApplicable);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
