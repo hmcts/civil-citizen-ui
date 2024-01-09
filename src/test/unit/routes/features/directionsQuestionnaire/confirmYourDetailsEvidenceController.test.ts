@@ -72,12 +72,13 @@ describe('Confirm your details evidence Controller', () => {
     });
 
     it('should return error when some of the fields contains validation errors', async () => {
-      const _mockSaveData = mockSaveData;
-      _mockSaveData.firstName = '';
-      _mockSaveData.lastName = '';
-      _mockSaveData.emailAddress = 'test';
-      _mockSaveData.phoneNumber = 'test';
-      _mockSaveData.jobTitle = '';
+      const _mockSaveData = {
+        firstName: '',
+        lastName: '',
+        emailAddress: 'test',
+        phoneNumber: 'test',
+        jobTitle: '',
+      };
       await request(app).post(DQ_CONFIRM_YOUR_DETAILS_URL)
         .send(_mockSaveData)
         .expect((res) => {
@@ -88,9 +89,16 @@ describe('Confirm your details evidence Controller', () => {
 
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
+      const _mockSaveData = {
+        firstName: 'John',
+        lastName: 'Doe',
+        emailAddress: 'test@test.com',
+        phoneNumber: '600000000',
+        jobTitle: 'Doctor',
+      };
       await request(app)
         .post(DQ_CONFIRM_YOUR_DETAILS_URL)
-        .send(mockSaveData)
+        .send(_mockSaveData)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
