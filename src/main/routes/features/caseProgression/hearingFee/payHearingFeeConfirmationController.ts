@@ -10,20 +10,21 @@ import {t} from 'i18next';
 const payHearingFeeStartScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-confirmation';
 const payHearingFeeConfirmationController = Router();
 
-const getHearingFeeConfirmationContent = (claimId: string) => {
+const getHearingFeeConfirmationContent = (claimId: string, lng: string) => {
   return new PageSectionBuilder()
     .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
     .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
-    .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW',constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
+    .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
 };
 
 //TODO: we need to revisit this controller once we have all pay hearing fee journey in place
 payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   const claimId = req.params.id;
+  const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(payHearingFeeStartScreenViewPath, {
-    confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`),
+    confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`, {lng}),
     referenceNumber: claimId,
-    confirmationContent: getHearingFeeConfirmationContent(claimId),
+    confirmationContent: getHearingFeeConfirmationContent(claimId, lng),
   });
 }) as RequestHandler);
 

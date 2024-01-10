@@ -534,7 +534,7 @@
       "DO_YOU_AGREE_PAID": "Ydych chi'n cytuno bod y diffynnydd wedi talu £{{ paidAmount }}?",
       "DO_YOU_HAVE_OTHER_WITNESSES": "A oes gennych chi dystion eraill?",
       "DO_YOU_WANT_PHONE_OR_VIDEO_HEARING": "Ydych chi eisiau gofyn am wrandawiad ffôn neu fideo?",
-      "DO_YOU_WANT_TO_SETTLE_PAID": "Ydych chi eisiau setlo'r hawliad am £{ paidAmount }}?",
+      "DO_YOU_WANT_TO_SETTLE_PAID": "Ydych chi eisiau setlo'r hawliad am £{{ paidAmount }}?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION": "Ydych chi'n derbyn neu'n gwrthod addefiad y diffynnydd?",
       "DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_REPAYMENT_PLAN": "Do you accept the defendant repayment plan?",
       "DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN": "Ydych chi'n derbyn cynllun ad-dalu'r diffynnydd?",
@@ -1882,7 +1882,7 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
-              "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
             }
           }
         },
