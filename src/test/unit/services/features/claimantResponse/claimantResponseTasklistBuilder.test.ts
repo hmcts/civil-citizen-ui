@@ -312,7 +312,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         claim.claimantResponse.courtProposedDate = new CourtProposedDate();
         claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE;
 
@@ -332,7 +332,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         claim.claimantResponse.courtProposedDate = new CourtProposedDate();
         claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.JUDGE_REPAYMENT_DATE;
 
@@ -352,7 +352,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
         claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
 
@@ -372,7 +372,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
         claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
 
@@ -392,7 +392,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
         claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
 
         //When
@@ -488,7 +488,7 @@ describe('Claimant Response Task List builder', () => {
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       claim.partialAdmission.paymentIntention.paymentDate = new Date();
       claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-      claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
       claim.claimantResponse.courtProposedDate = new CourtProposedDate();
       claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE;
 
