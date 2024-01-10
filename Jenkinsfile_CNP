@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "CIV-11523Revoking-access-to-claim-for-claimant-LiP-after-NoC-and-representative-assigned"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "testPRApiFix"
+def ccdBranch = "Sprint_PI32S5_t4"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
