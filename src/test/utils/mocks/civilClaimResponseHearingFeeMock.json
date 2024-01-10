@@ -297,9 +297,19 @@
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
     "caseProgressionHearing": {
-      "hearingDuration": "MINUTES_150"
+      "hearingDuration": "MINUTES_150",
+      "hearingFeeInformation": {
+        "hearingFee": {
+          "calculatedAmountInPence": "1200"
+        }
+      }
     },
     "caseProgression": {
+      "hearing": {
+        "paymentInformation": {
+          "paymentReference": "ABC1234"
+        }
+      },
       "hearingFeeHelpSelection": {
         "option": "NO"
       },

@@ -16,7 +16,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled,
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -44,6 +44,12 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performCaseHearingFeeUnpaid: async (user, caseId) => {
+    console.log('This is inside performCaseHearingFeeUnpaid() : ' + caseId);
+    await hearingFeeUnpaid(caseId);
+    console.log('End of performCaseHearingFeeUnpaid()');
+  },
 
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
@@ -150,11 +156,11 @@ module.exports = {
         claimSpecData.serviceUpdateDto(caseId, 'paid'));
       console.log('Service request update sent to callback URL');
     }
-
+    await waitForFinishedBusinessProcess(caseId);    
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
-    await waitForFinishedBusinessProcess(caseId);
+    //await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
