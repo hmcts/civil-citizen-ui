@@ -21,7 +21,9 @@ export interface SameRateInterestSelection {
 }
 
 export interface ClaimFee {
-  calculatedAmountInPence: string;
+  calculatedAmountInPence: number;
+  code: string;
+  version: number;
 }
 
 export interface ClaimAmountBreakup {

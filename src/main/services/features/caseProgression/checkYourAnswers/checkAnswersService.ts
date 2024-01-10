@@ -64,14 +64,14 @@ export const getBottomElements = (): ClaimSummarySection[] => {
     .build();
 };
 
-export const saveUploadedDocuments = async (claim: Claim, req: AppRequest, isClaimant: boolean): Promise<Claim> => {
+export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Promise<Claim> => {
   let newUploadDocuments: UploadDocumentsUserForm;
   let existingUploadDocuments: UploadDocuments;
   const caseProgression = new CaseProgression();
   let updatedCcdClaim = {} as CCDClaim;
   const oldClaim = await civilServiceClient.retrieveClaimDetails(claim.id, req);
 
-  if(isClaimant)
+  if(claim.isClaimant())
   {
     newUploadDocuments = claim.caseProgression.claimantDocuments;
     existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
@@ -92,14 +92,14 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.documentsForDisclosure){
     for(const document of newUploadedDocuments.documentsForDisclosure) {
       const documentType = EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE;
-      const documentToUpload = new UploadEvidenceDocumentType(document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
   if(newUploadedDocuments.disclosureList){
     for(const document of newUploadedDocuments.disclosureList) {
       const documentType = EvidenceUploadDisclosure.DISCLOSURE_LIST;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -131,7 +131,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.documentsReferred) {
     for(const document of newUploadedDocuments.documentsReferred){
       const documentType = EvidenceUploadWitness.DOCUMENTS_REFERRED;
-      const documentToUpload = new UploadEvidenceDocumentType(document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(document.witnessName, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -171,7 +171,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.trialCaseSummary){
     for(const document of newUploadedDocuments.trialCaseSummary){
       const documentType = EvidenceUploadTrial.CASE_SUMMARY;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -179,7 +179,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.trialSkeletonArgument){
     for(const document of newUploadedDocuments.trialSkeletonArgument){
       const documentType = EvidenceUploadTrial.SKELETON_ARGUMENT;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -187,7 +187,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.trialAuthorities){
     for(const document of newUploadedDocuments.trialAuthorities){
       const documentType = EvidenceUploadTrial.AUTHORITIES;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -195,7 +195,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.trialCosts){
     for(const document of newUploadedDocuments.trialCosts){
       const documentType = EvidenceUploadTrial.COSTS;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
@@ -203,7 +203,7 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
   if(newUploadedDocuments.trialDocumentary){
     for(const document of newUploadedDocuments.trialDocumentary){
       const documentType = EvidenceUploadTrial.DOCUMENTARY;
-      const documentToUpload = new UploadEvidenceDocumentType(document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }

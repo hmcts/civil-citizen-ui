@@ -13,6 +13,7 @@ import {
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const mockUUID = '1221';
 
@@ -33,11 +34,11 @@ export const mockCCDWitnessArray = (length: number) => {
   return sectionArray;
 };
 
-export const mockCCDDocumentTypeArray = (length: number) => {
+export const mockCCDDocumentTypeArray = (name: string, length: number) => {
   if (length == 0) return undefined;
   const sectionArray: UploadEvidenceElementCCD[] = [];
 
-  const typeOfDocument = new UploadEvidenceDocumentType('document type' ,new Date('12-12-2022'), document, new Date('12-12-2022'));
+  const typeOfDocument = new UploadEvidenceDocumentType(name,'document type' ,new Date('12-12-2022'), document, new Date('12-12-2022'));
   const ccdElement = {id: mockUUID, value: typeOfDocument};
 
   for(let i = 0; i < length; i++)
@@ -97,7 +98,7 @@ export const mockCCDFileUploadArray = (length: number) => {
   if (length == 0) return undefined;
   const sectionArray: UploadEvidenceElementCCD[] = [];
 
-  const typeOfDocument = new UploadEvidenceDocumentType(null ,null, document, new Date('12-12-2022'));
+  const typeOfDocument = new UploadEvidenceDocumentType(null, null ,null, document, new Date('12-12-2022'));
   const ccdElement = {id: mockUUID, value: typeOfDocument};
 
   for(let i = 0; i < length; i++)
@@ -129,6 +130,15 @@ export const mockExpertDocument = {
 };
 
 export const mockTypeDocument = {
+  witnessOptionName: undefined,
+  typeOfDocument: 'type',
+  documentIssuedDate: new Date(0),
+  documentUpload: getMockDocument(),
+  createdDatetime: new Date(0),
+} as UploadEvidenceDocumentType;
+
+export const mockReferredDocument = {
+  witnessOptionName: 'witness name',
   typeOfDocument: 'type',
   documentIssuedDate: new Date(0),
   documentUpload: getMockDocument(),
@@ -169,6 +179,8 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
     caseDocumentUploadDate: new Date('1970-01-01T00:00:00.000Z'),
     caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
+    trialReadyApplicant: YesNoUpperCamelCase.NO,
+    trialReadyRespondent1: YesNoUpperCamelCase.YES,
   };
 }
 
@@ -179,11 +191,11 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
   if(isClaimant){
     ccdClaim = {
       documentDisclosureList: mockCCDFileUploadArray(length),
-      documentForDisclosure: mockCCDDocumentTypeArray(length),
+      documentForDisclosure: mockCCDDocumentTypeArray(null, length),
       documentWitnessStatement: mockCCDWitnessArray(length),
       documentWitnessSummary: mockCCDWitnessArray(length),
       documentHearsayNotice: mockCCDWitnessArray(length),
-      documentReferredInStatement: mockCCDDocumentTypeArray(length),
+      documentReferredInStatement: mockCCDDocumentTypeArray('John Smith',length),
       documentExpertReport: mockCCDExpertArray(length),
       documentJointStatement: mockCCDJointExpertsStatementArray(length),
       documentQuestions: mockCCDExpertQuestionsAnswersArray(length,true),
@@ -192,18 +204,18 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
       documentSkeletonArgument: mockCCDFileUploadArray(length),
       documentAuthorities: mockCCDFileUploadArray(length),
       documentCosts: mockCCDFileUploadArray(length),
-      documentEvidenceForTrial: mockCCDDocumentTypeArray(length),
+      documentEvidenceForTrial: mockCCDDocumentTypeArray(null,length),
       caseDocumentUploadDate: new Date('12-12-2022'),
     };
 
   } else {
     ccdClaim = {
       documentDisclosureListRes: mockCCDFileUploadArray(length),
-      documentForDisclosureRes: mockCCDDocumentTypeArray(length),
+      documentForDisclosureRes: mockCCDDocumentTypeArray(null, length),
       documentWitnessStatementRes: mockCCDWitnessArray(length),
       documentWitnessSummaryRes: mockCCDWitnessArray(length),
       documentHearsayNoticeRes: mockCCDWitnessArray(length),
-      documentReferredInStatementRes: mockCCDDocumentTypeArray(length),
+      documentReferredInStatementRes: mockCCDDocumentTypeArray('John Smith', length),
       documentExpertReportRes: mockCCDExpertArray(length),
       documentJointStatementRes: mockCCDJointExpertsStatementArray(length),
       documentQuestionsRes: mockCCDExpertQuestionsAnswersArray(length, true),
@@ -212,7 +224,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
       documentSkeletonArgumentRes: mockCCDFileUploadArray(length),
       documentAuthoritiesRes: mockCCDFileUploadArray(length),
       documentCostsRes: mockCCDFileUploadArray(length),
-      documentEvidenceForTrialRes: mockCCDDocumentTypeArray(length),
+      documentEvidenceForTrialRes: mockCCDDocumentTypeArray(null, length),
       caseDocumentUploadDateRes: new Date('12-12-2022'),
     };
   }
@@ -240,6 +252,8 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
       uploadEvidenceElementCCD.value = mockExpertDocument;
       break;
     case EvidenceUploadWitness.DOCUMENTS_REFERRED:
+      uploadEvidenceElementCCD.value = mockReferredDocument;
+      break;
     case EvidenceUploadDisclosure.DISCLOSURE_LIST:
     case EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE:
     case EvidenceUploadTrial.CASE_SUMMARY:
@@ -253,4 +267,3 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
 
   return [uploadEvidenceElementCCD];
 }
-

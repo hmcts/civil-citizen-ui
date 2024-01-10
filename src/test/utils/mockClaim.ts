@@ -143,7 +143,9 @@ function buildMockClaim(): Claim {
     },
   ];
   _mockClaim.claimFee = {
-    calculatedAmountInPence: '11500',
+    calculatedAmountInPence: 11500,
+    code: 'code',
+    version: 1,
   };
   _mockClaim.claimInterest = YesNo.YES;
   _mockClaim.claimAmountBreakup = [

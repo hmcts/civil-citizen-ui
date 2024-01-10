@@ -51,9 +51,17 @@ class UploadEvidenceSteps {
     latestUpdateTab.open(claimRef, claimType,false);
   }
 
+  verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType)  {
+    latestUpdateTab.open(claimRef, claimType, false, false, false, false, true);
+  }
+
   verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType)  {
     latestUpdateTab.open(claimRef, claimType,false, true);
     latestUpdateTab.nextAction('View the order');
+  }
+
+  verifyDocumentsUploadedBySolicitor(claimRef, claimType) {
+    documentsTab.open(claimRef, claimType, true);
   }
 
 }

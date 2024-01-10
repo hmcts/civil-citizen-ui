@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
-import {ClaimantOrDefendant} from 'models/partyType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
 import {
@@ -11,7 +10,7 @@ import {
 } from 'models/document/documentType';
 import {
   ExpertSection,
-  FileOnlySection,
+  FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection,
@@ -19,17 +18,19 @@ import {
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
 import {Claim} from 'models/claim';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-export const getDocuments = async (claimId: string,claimantOrDefendant: ClaimantOrDefendant): Promise<UploadDocuments> => {
+export const getDocuments = async (claimId: string): Promise<UploadDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.caseProgression?.defendantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.DEFENDANT) {
+    if (caseData?.caseProgression?.defendantUploadDocuments && !caseData.isClaimant()) {
       return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
-    else if (caseData?.caseProgression?.claimantUploadDocuments && claimantOrDefendant===ClaimantOrDefendant.CLAIMANT) {
+    else if (caseData?.caseProgression?.claimantUploadDocuments && caseData.isClaimant()) {
       return caseData?.caseProgression?.claimantUploadDocuments ? caseData?.caseProgression.claimantUploadDocuments : new UploadDocuments();
     }
   } catch (error) {
@@ -48,6 +49,16 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
     {
       claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    } else if (parentPropertyName == 'claimantTrialArrangements' && !claim?.caseProgression.claimantTrialArrangements) {
+      claim.caseProgression.claimantTrialArrangements = new TrialArrangements();
+    }
+
+    if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
+    {
+      if (!claim.caseProgression.hearingFeeHelpSelection) {
+        claim.caseProgression.hearingFeeHelpSelection = new GenericYesNo();
+      }
+      claim.feeTypeHelpRequested = FeeType.HEARING;
     }
 
     if (claim?.caseProgression) {
@@ -74,17 +85,21 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
   }
 };
 
-export const deleteUntickedDocumentsFromStore = async (claimId: string, claimantOrDefendant: ClaimantOrDefendant) => {
+export const deleteUntickedDocumentsFromStore = async (claimId: string, isClaimant: boolean) => {
   const claim: Claim = await getCaseDataFromStore(claimId);
   let documentsTicked: UploadDocuments;
   let documentsSaved: UploadDocumentsUserForm;
   let propertyName: string;
   const documentsToSave: UploadDocumentsUserForm = new UploadDocumentsUserForm();
 
-  if(claimantOrDefendant === ClaimantOrDefendant.DEFENDANT){
+  if(!isClaimant){
     documentsTicked = claim.caseProgression.defendantUploadDocuments;
     documentsSaved = claim.caseProgression.defendantDocuments;
     propertyName = 'defendantDocuments';
+  } else {
+    documentsTicked = claim.caseProgression.claimantUploadDocuments;
+    documentsSaved = claim.caseProgression.claimantDocuments;
+    propertyName = 'claimantDocuments';
   }
 
   if(documentsSaved)
@@ -161,7 +176,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   const witnessStatement = getFormSection<WitnessSection>(req.body.witnessStatement, bindRequestToWitnessSectionObj);
   const witnessSummary = getFormSection<WitnessSection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
   const noticeOfIntention = getFormSection<WitnessSection>(req.body.noticeOfIntention, bindRequestToWitnessSectionObj);
-  const documentsReferred = getFormSection<TypeOfDocumentSection>(req.body.documentsReferred, bindRequestToTypeOfDocumentSectionObj);
+  const documentsReferred = getFormSection<ReferredToInTheStatementSection>(req.body.documentsReferred, bindRequestToReferredToInTheStatementSectionObj);
 
   const expertReport = getFormSection<ExpertSection>(req.body.expertReport, bindRequestToExpertSectionObj);
   const expertStatement = getFormSection<ExpertSection>(req.body.expertStatement, bindRequestToExpertSectionObj);
@@ -205,6 +220,16 @@ const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
+  return formObj;
+};
+
+const bindRequestToReferredToInTheStatementSectionObj = (request: any): ReferredToInTheStatementSection => {
+  const formObj: ReferredToInTheStatementSection = new ReferredToInTheStatementSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.witnessName = request['witnessName'] != null ? request['witnessName'].trim() : null;
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }

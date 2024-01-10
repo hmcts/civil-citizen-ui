@@ -7,7 +7,7 @@ import {getClaimById} from 'modules/utilityService';
 export const ccjConfirmationGuard = (req: Request, res: Response, next: NextFunction) => {
   (async () => {
     try {
-      const claim = await getClaimById(req.params?.id, <AppRequest>req);
+      const claim = await getClaimById(req.params.id, <AppRequest>req, true);
       if (claim.isCCJComplete()) {
         next();
       } else {

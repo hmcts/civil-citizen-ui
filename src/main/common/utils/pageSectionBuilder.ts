@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -55,11 +54,24 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addSpan(text: string, variables?: any, classes?: string) {
+    const spanSection = ({
+      type: ClaimSummaryType.SPAN,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(spanSection);
+    return this;
+  }
+
   addInsetText(text: string, variables?: unknown) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: t(text),
+        html: text,
         variables: variables,
       },
     });
@@ -104,6 +116,32 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(titleSection);
+    return this;
+  }
+
+  addMicroText(microText: string, variables?: unknown) {
+    const microTextSection = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: microText,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(microTextSection);
+    return this;
+  }
+
+  addButtonWithCancelLink(title: string, href: string, startButton = false, cancelHref?: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: startButton,
+        cancelHref: cancelHref,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
     return this;
   }
 

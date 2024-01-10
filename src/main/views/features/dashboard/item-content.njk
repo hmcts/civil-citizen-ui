@@ -14,6 +14,10 @@
     {{ content.data.html | safe }}
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.MICRO_TEXT %}
+    <span class="govuk-caption-l">{{ t(content.data.text) }}</span>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.MAINTITLE %}
     <h1 class="govuk-heading-l">{{ t(content.data.text) }}</h1>
   {% endif %}
@@ -52,11 +56,27 @@
     {% endif %}
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.SPAN %}
+    {% set object = '' %}
+    {% if content.data.variables %}
+      {% set object = content.data.variables %}
+      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</span>
+    {% else %}
+      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</span>
+    {% endif %}
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.INSET_TEXT %}
-    {{ govukInsetText({
-      text: t(content.data.text),
-      html: content.data.html
-    }) }}
+    {% if content.data.variables %}
+      {% set object = content.data.variables %}
+      {{ govukInsetText({
+        html: t(content.data.html,object)
+      }) }}
+    {% else %}
+      {{ govukInsetText({
+        html: t(content.data.html)
+      }) }}
+    {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SUMMARY %}

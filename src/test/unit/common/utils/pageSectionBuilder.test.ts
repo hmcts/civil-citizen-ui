@@ -23,6 +23,26 @@ describe('PageSectionBuilder tests', ()=> {
     expect(titleBuilt).toEqual([titleExpected]);
   });
 
+  it('should add span', ()=> {
+    //Given
+    const spanExpected = ({
+      type: ClaimSummaryType.SPAN,
+      data: {
+        text: 'text',
+        variables: 'variable',
+        classes: 'class',
+      },
+    });
+
+    //When
+    const spanResult = new PageSectionBuilder()
+      .addSpan('text', 'variable', 'class')
+      .build();
+
+    //Then
+    expect(spanResult).toEqual([spanExpected]);
+  });
+
   it('should add Paragraph', ()=> {
     //Given
     const paragraphExpected = ({
@@ -213,5 +233,44 @@ describe('PageSectionBuilder tests', ()=> {
       .build();
     //Then
     expect(htmlElementBuilt).toEqual([expectedHtmlElement]);
+  });
+
+  it('should add micro text', ()=> {
+    //Given
+    const microTextExpected = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const microTextResult = new PageSectionBuilder()
+      .addMicroText('text', microTextExpected.data.variables)
+      .build();
+
+    //Then
+    expect(microTextResult).toEqual([microTextExpected]);
+  });
+
+  it('should add addButtonWithCancelLink', ()=> {
+    //Given
+    const buttonWithCancelLinkExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'title',
+        href: 'href',
+        isStartButton: true,
+        cancelHref: 'cancelHref',
+      },
+    });
+    //When
+    const buttonWithCancelLinkResult = new PageSectionBuilder()
+      .addButtonWithCancelLink('title', 'href', true, 'cancelHref')
+      .build();
+
+    //Then
+    expect(buttonWithCancelLinkResult).toEqual([buttonWithCancelLinkExpected]);
   });
 });

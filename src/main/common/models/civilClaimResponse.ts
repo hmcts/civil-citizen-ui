@@ -3,7 +3,6 @@ import {
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
-  ClaimFee,
   InterestClaimFromType,
   InterestEndDateType,
 } from 'form/models/claimDetails';
@@ -13,7 +12,6 @@ import {StatementOfMeans} from 'models/statementOfMeans';
 import {PartialAdmission} from 'models/partialAdmission';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Mediation} from 'models/mediation/mediation';
-import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -73,6 +71,10 @@ import {
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
+import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
+import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
+import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export class CivilClaimResponse {
   id: string;
@@ -112,7 +114,6 @@ export interface CCDClaim extends ClaimUpdate {
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: Evidence;
-  timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
@@ -121,7 +122,6 @@ export interface CCDClaim extends ClaimUpdate {
   interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
   submittedDate?: Date;
   issueDate?: Date;
-  claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   servedDocumentFiles?: ServedDocumentFiles;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
@@ -252,12 +252,22 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyApplicant?: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments?: CCDTrialArrangementsOtherComments;
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
+  claimFee?:CCDClaimFee;
+  timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
+  applicant1ResponseDate?: Date;
+  liftBreathing?: CCDBreathingSpaceStartInfo;
+  hearingFee?: HearingFee;
+  hearingDueDate?: Date;
+  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
 }
 
 export interface ClaimFeeData {

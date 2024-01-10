@@ -2419,9 +2419,9 @@ __metadata:
   linkType: hard
 
 "@types/config@npm:^3.3.0":
-  version: 3.3.1
-  resolution: "@types/config@npm:3.3.1"
-  checksum: dc6604a6bb90179ea7fbe5a3de23301999dd5b115f9999f9e48db412b7c86224919bd9af8915e7ed8734bd5f729fcbcc0eb5adf37fe2422bccd98deae1063530
+  version: 3.3.3
+  resolution: "@types/config@npm:3.3.3"
+  checksum: 738c616fc385fa93e61b2236b43fbcfd93b1b53fc222fa14f2ebaef17ec7eaf03bf3d768fa8cb00df1b5173574893c020dc73eab11ddd6ea769dbf9ea113e8da
   languageName: node
   linkType: hard
 
@@ -2435,21 +2435,21 @@ __metadata:
   linkType: hard
 
 "@types/cookie-parser@npm:^1.4.3":
-  version: 1.4.4
-  resolution: "@types/cookie-parser@npm:1.4.4"
+  version: 1.4.6
+  resolution: "@types/cookie-parser@npm:1.4.6"
   dependencies:
     "@types/express": "*"
-  checksum: 5c81ac4b7d90a567e0c7a904ecbc09c82c43e30c6b5b507aee5147bc06bc8c6418e6719d63fcf68e6a83c71870485ab3fc579a30891b56a0be05d64753e3f74a
+  checksum: b1bbb17bc4189c0e953d4996b3b58bfa20161c27db21f98353e237032e7559aec733735d8902c283300e0a4cded20e62b1a5086af608608ef30a45387e080360
   languageName: node
   linkType: hard
 
 "@types/cookie-session@npm:^2.0.44":
-  version: 2.0.45
-  resolution: "@types/cookie-session@npm:2.0.45"
+  version: 2.0.47
+  resolution: "@types/cookie-session@npm:2.0.47"
   dependencies:
     "@types/express": "*"
     "@types/keygrip": "*"
-  checksum: 43a086555fc2fd7100a6a22da47fa860fe97f66ed4f2bd14363fcc93009a5f8b4e28e698053dd9b720ac4d0982d39c101118d37231c07bd478436d9c2e6456b0
+  checksum: edaf88c19c03281036ed66f3c2cf4fff970ff14566f832d519416091ee0e3a461cc003198b0ff8a5123b1b68c9a1f5f4c48fa80c23b8dec436109f840b27a616
   languageName: node
   linkType: hard
 
@@ -2470,11 +2470,11 @@ __metadata:
   linkType: hard
 
 "@types/csurf@npm:^1.9.36":
-  version: 1.11.3
-  resolution: "@types/csurf@npm:1.11.3"
+  version: 1.11.5
+  resolution: "@types/csurf@npm:1.11.5"
   dependencies:
     "@types/express-serve-static-core": "*"
-  checksum: 5db4b4f4adabc592846d2efe7c1c95de541adf6b536a7d6f523f1583e480a381418d3841ae2f159d81a863cc1c047559c311a0853e915e301cc717c7d0ff08f7
+  checksum: a51b0f3276a8c88eb986709790c227c5cc4b7d663136ee360edd17ac88df1dab5d8ccf9feed737ee46530243bff11f66ead725c585e417c1ca710d0b0245ded3
   languageName: node
   linkType: hard
 
@@ -2534,14 +2534,14 @@ __metadata:
   linkType: hard
 
 "@types/express@npm:*, @types/express@npm:^4.17.16":
-  version: 4.17.18
-  resolution: "@types/express@npm:4.17.18"
+  version: 4.17.21
+  resolution: "@types/express@npm:4.17.21"
   dependencies:
     "@types/body-parser": "*"
     "@types/express-serve-static-core": ^4.17.33
     "@types/qs": "*"
     "@types/serve-static": "*"
-  checksum: 8c178da4f0edff1f006d871fbdc3f849620986ff10bad252f3dfd45b57554e26aaa28c602285df028930d5216e257a06fbaf795070f8bb42f7d87e3b689cba50
+  checksum: fb238298630370a7392c7abdc80f495ae6c716723e114705d7e3fb67e3850b3859bbfd29391463a3fb8c0b32051847935933d99e719c0478710f8098ee7091c5
   languageName: node
   linkType: hard
 
@@ -3850,13 +3850,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.3.0, axios@npm:^1.3.3":
-  version: 1.4.0
-  resolution: "axios@npm:1.4.0"
+  version: 1.6.1
+  resolution: "axios@npm:1.6.1"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: 7fb6a4313bae7f45e89d62c70a800913c303df653f19eafec88e56cea2e3821066b8409bc68be1930ecca80e861c52aa787659df0ffec6ad4d451c7816b9386b
+  checksum: 573f03f59b7487d54551b16f5e155d1d130ad4864ed32d1da93d522b78a57123b34e3bde37f822a65ee297e79f1db840f9ad6514addff50d3cbf5caeed39e8dc
   languageName: node
   linkType: hard
 
@@ -4584,7 +4584,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cookie-session: ^2.0.0
     copy-webpack-plugin: ^11.0.0
-    crypto-js: ^4.1.1
+    crypto-js: ^4.2.0
     css-loader: ^6.7.2
     csurf: ^1.11.0
     dayjs: ^1.11.7
@@ -5258,10 +5258,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-js@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "crypto-js@npm:4.1.1"
-  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: f051666dbc077c8324777f44fbd3aaea2986f198fe85092535130d17026c7c2ccf2d23ee5b29b36f7a4a07312db2fae23c9094b644cc35f7858b1b4fcaf27774
   languageName: node
   linkType: hard
 

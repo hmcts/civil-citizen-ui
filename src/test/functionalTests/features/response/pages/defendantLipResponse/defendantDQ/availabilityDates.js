@@ -15,14 +15,18 @@ const fields ={
   longerPeriodEndYear: 'input[id="items[1][endYear]"]',
 };
 
-const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
 const month = newDate.getMonth();
 const year = newDate.getFullYear();
-
 class AvailabilityDates {
 
-  async enterUnavailableDates() {
-    await I.waitForText('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', config.WaitForText);
+  async enterUnavailableDates(meditation = false) {
+
+    if (meditation){
+      await I.waitForText('Add a single date or longer period of time that you cannot attend meditation', config.WaitForText);
+    } else {
+      await I.waitForText('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', config.WaitForText);
+    }
 
     await I.click(fields.singleDate);
     await I.waitForElement(fields.singleDateDay, config.WaitForText);

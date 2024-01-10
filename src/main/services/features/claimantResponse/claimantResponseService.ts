@@ -22,7 +22,7 @@ const logger = Logger.getLogger('claimantResponseService');
 
 const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(claimId, true);
     return claim.claimantResponse ?? new ClaimantResponse();
   } catch (error) {
     logger.error(error);
@@ -32,7 +32,7 @@ const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> =
 
 const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: any = await getCaseDataFromStore(claimId, true);
     if (claim.claimantResponse) {
       if (parentPropertyName && claim.claimantResponse[parentPropertyName]) {
         claim.claimantResponse[parentPropertyName][claimantResponsePropertyName] = value;
@@ -65,11 +65,11 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
       delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
       delete claim.claimantResponse?.rejectionReason;
     }
-    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount()) {
+    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || claim.hasClaimantAcceptedDefendantResponse()) {
       logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
       delete claim.claimantResponse?.rejectionReason;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -86,7 +86,8 @@ const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object>
   }
 };
 
-export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: RepaymentPlan): Array<object> => {
+export const repaymentPlanSummary = (claim: Claim, lang: string, repaymentPlan: RepaymentPlan): Array<object> => {
+  const lng = getLng(lang);
   return [
     {
       key: {
@@ -111,7 +112,7 @@ export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: R
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FIRST_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate, lng),
+        text: formatDateToFullDate(repaymentPlan?.firstRepaymentDate, getLng(lng)),
       },
       classes: 'govuk-summary-list__row--no-border',
     },
@@ -120,7 +121,7 @@ export const repaymentPlanSummary = (claim: Claim, lng: string, repaymentPlan: R
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.FINAL_PAYMENT_DATE', {lng}),
       },
       value: {
-        text: formatDateToFullDate(getFinalPaymentDate(claim), lng),
+        text: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lng)),
       },
       classes: 'govuk-summary-list__row--no-border',
     },

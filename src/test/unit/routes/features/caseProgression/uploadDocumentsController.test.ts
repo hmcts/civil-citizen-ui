@@ -1,6 +1,8 @@
 import request from 'supertest';
 import {
-  mockCivilClaim, mockCivilClaimDocumentUploaded,
+  mockCivilClaim, mockCivilClaimDefendantCaseProgression,
+  mockCivilClaimDocumentClaimantUploaded,
+  mockCivilClaimDocumentUploaded,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
@@ -118,6 +120,20 @@ describe('Upload document- upload document controller', () => {
       expect(res.text).toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
       expect(spyDisclosure).toHaveBeenCalledWith(claim, formWithDisclosure);
+    });
+  });
+
+  it('should render page successfully with uploaded document section if document available in redis on claimant request', async () => {
+    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
+
+    const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
+    civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).toContain('Disclosure');
+      expect(res.text).not.toContain('Witness');
     });
   });
 
@@ -376,6 +392,17 @@ describe('on POST', () => {
       });
   });
 
+  it('should display all questions for other party\'s expert validation errors on defendant request', async () => {
+    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
+    app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+      });
+  });
+
   it('should display all answers to questions asked by other party validation errors', async () => {
     const model = {'answersForExperts':[{'expertName':'', 'otherPartyName':'', 'otherPartyQuestionsDocumentName':'', 'fileUpload':''}]};
 
@@ -441,6 +468,7 @@ describe('on POST', () => {
     };
     const documentsReferred = {
       'documentsReferred': [{
+        'witnessName': 'witness Name 3',
         'typeOfDocument': 'Word',
         'dateInputFields': {
           'dateDay': '13',

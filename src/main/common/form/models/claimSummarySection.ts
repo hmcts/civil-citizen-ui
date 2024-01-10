@@ -56,5 +56,7 @@ export enum ClaimSummaryType {
   UPLOAD_ARRAY = 'uploadArray',
   SELECT = 'select',
   BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink',
-  NEW_TAB_BUTTON = 'newTabButton'
+  NEW_TAB_BUTTON = 'newTabButton',
+  MICRO_TEXT = 'microText',
+  SPAN = 'span',
 }

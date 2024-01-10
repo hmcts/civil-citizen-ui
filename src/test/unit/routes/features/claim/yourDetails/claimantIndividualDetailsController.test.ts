@@ -9,6 +9,8 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyDetails} from 'form/models/partyDetails';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -17,9 +19,8 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
-const claim = new Claim();
-
-const buildClaimOfApplicant = (): Party => {
+const buildClaimOfApplicant = (): Claim => {
+  const claim = new Claim();
   claim.applicant1 = new Party();
   claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.partyDetails.individualTitle = 'individualTitle';
@@ -29,16 +30,17 @@ const buildClaimOfApplicant = (): Party => {
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
   claim.applicant1.partyDetails.partyName = 'partyName';
   claim.applicant1.partyDetails.contactPerson = 'contactPerson';
-  return claim.applicant1;
+  return claim;
 };
 
-const buildClaimOfApplicantType = (type: PartyType): Party => {
+const buildClaimOfApplicantType = (type: PartyType): Claim => {
+  const claim = new Claim();
   claim.applicant1 = new Party();
   claim.applicant1.partyDetails = new PartyDetails({});
   claim.applicant1.type = type;
   claim.applicant1.partyDetails.primaryAddress = buildAddress();
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
-  return claim.applicant1;
+  return claim;
 };
 
 const nock = require('nock');
@@ -54,9 +56,16 @@ const validDataForPost = {
   contactPerson: 'contactPerson',
 };
 
+const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
+const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
+  .mockReturnValue(Promise.resolve(claim));
+const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
+  .mockReturnValue(Promise.resolve(calmEnabled));
+
 describe('Claimant Individual Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamUrl)
@@ -66,6 +75,9 @@ describe('Claimant Individual Details page', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
+    getCaseDataFromStoreSpy(mockClaim);
+    carmToggleSpy(true);
   });
 
   describe('on Exception', () => {
@@ -97,7 +109,7 @@ describe('Claimant Individual Details page', () => {
 
   it('should return your details page with empty information', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return new Party();
+      return new Claim();
     });
     await request(app)
       .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -120,7 +132,8 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('should return your details page with information without correspondent address', async () => {
-    const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
+    const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
+      const claim = new Claim();
       claim.applicant1 = new Party();
       claim.applicant1.partyDetails = new PartyDetails({});
       claim.applicant1.type = PartyType.INDIVIDUAL;
@@ -128,7 +141,7 @@ describe('Claimant Individual Details page', () => {
       claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
       claim.applicant1.partyDetails.individualLastName = 'individualLastName';
       claim.applicant1.partyDetails.primaryAddress = buildAddress();
-      return claim.applicant1;
+      return claim;
     };
     mockGetCaseData.mockImplementation(async () => {
       return buildClaimOfApplicantWithoutCorrespondent();
@@ -142,11 +155,12 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('should return your details page with no primary, correspondence address or claimant details', async () => {
-    const buildClaimOfApplicantWithoutInformation = (): Party => {
+    const buildClaimOfApplicantWithoutInformation = (): Claim => {
+      const claim = new Claim();
       claim.applicant1 = new Party();
       claim.applicant1.partyDetails = new PartyDetails({});
       claim.applicant1.partyDetails.primaryAddress = undefined;
-      return claim.applicant1;
+      return claim;
     };
     mockGetCaseData.mockImplementation(async () => {
       return buildClaimOfApplicantWithoutInformation();
@@ -161,7 +175,7 @@ describe('Claimant Individual Details page', () => {
 
   it('get/Claimant individual details - should return test variable when there is no data on redis and civil-service', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return new Party();
+      return new Claim();
     });
     await request(app)
       .get('/claim/claimant-individual-details')
@@ -236,6 +250,9 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant individual details - should return error on empty primary city', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -255,6 +272,9 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant Individual details - should return error on empty primary postcode', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -368,6 +388,9 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant individual details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({

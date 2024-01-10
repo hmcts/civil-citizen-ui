@@ -1,6 +1,13 @@
 import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
+import {Claim} from 'models/claim';
+import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {
+  isDefendantRejectedMediationOrFastTrackClaim,
+} from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {
+  getMediationCarmParagraph,
+} from 'services/features/response/submitConfirmation/submitConfirmationBuilder/mediationCarmContent';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 
 export function getRC_PaidLessStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -30,37 +37,103 @@ export function getRC_PaidFullStatus(claim: Claim, lang: string): ClaimSummarySe
   ];
 }
 
-export function getRC_PaidLessNextSteps(claim: Claim, lang: string): ClaimSummarySection[]{
+export function getRC_PaidLessNextSteps(claim: Claim, lang: string, carmApplicable = false): ClaimSummarySection[]{
   const claimantName = claim.getClaimantFullName();
-  return [
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
+  const content: ClaimSummarySection[] = [
     {
       type: ClaimSummaryType.HTML,
       data: {
         html: `
         <h3 class="govuk-heading-s govuk-!-margin-bottom-1">${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_RESPONSE', { claimantName, lng: lang })}</h3>
         <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.THE_CLAIM_WILL_BE_SETTLED', { lng: lang })}</p>
-        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE', { claimantName, lng: lang })}</h3>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.WE_ASK_CLAIMANT_FOR_MEDIATION', { lng: lang })}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION', { lng: lang })}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', { lng: lang })}</p>`,
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-1">${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE', { claimantName, lng: lang })}</h3>`,
         variables: {claimantName: claimantName},
       },
     },
   ];
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)){
+    getMediationCarmParagraph(lang).forEach((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediationPaidLess(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediationPaidLess(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', {lng: lang}),
+      },
+    });
+  }
+  return content;
 }
 
-export function getRC_PaidFullNextSteps(claim: Claim,lang: string): ClaimSummarySection[]{
+const getParagraphAskMediationPaidLess = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  if (isDefendantRejectedMediationOrIsFastTrackClaim) {
+    return undefined;
+  }
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.WE_ASK_CLAIMANT_FOR_MEDIATION', {lng: lang}),
+    },
+  };
+};
+
+const getParagraphDontWantMediationPaidLess = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.THE_COURT_WILL_REVIEW_CASE_HEARING' : 'PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION';
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t(textContent, {lng: lang}),
+    },
+  };
+};
+
+export function getRC_PaidFullNextSteps(claim: Claim,lang: string, carmApplicable = false): ClaimSummarySection[]{
   const claimantName = claim.getClaimantFullName();
-  return [
+  const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
+  const content: ClaimSummarySection[] = [
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END', {claimantName,lng:lang})}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION', {claimantName,lng:lang})}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE', { lng: lang })}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', { lng: lang })}</p>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END', {claimantName,lng:lang})}</p>`,
         variables: {claimantName: claimantName},
       },
     },
   ];
+  if (isCarmApplicableAndSmallClaim(carmApplicable, claim)){
+    getMediationCarmParagraph(lang, claimantName,true).forEach((element) => content.push(element));
+  } else {
+    content.push(getParagraphAskMediationPaidFull(lang, claimantName, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push(getParagraphDontWantMediationPaidFull(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
+    content.push({
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', {lng: lang}),
+      },
+    });
+  }
+  return content;
 }
+
+const getParagraphAskMediationPaidFull = (lang: string, claimantName: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  if (isDefendantRejectedMediationOrIsFastTrackClaim) {
+    return undefined;
+  }
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION', {claimantName, lng: lang}),
+    },
+  };
+};
+
+const getParagraphDontWantMediationPaidFull = (lang: string, isDefendantRejectedMediationOrIsFastTrackClaim?: boolean) => {
+  const textContent = isDefendantRejectedMediationOrIsFastTrackClaim ? 'PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_NO_MEDIATION' : 'PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE';
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t(textContent, {lng: lang}),
+    },
+  };
+};

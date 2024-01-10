@@ -18,8 +18,8 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
   const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
   const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
   const downloadHearingNoticeSection = await isCaseProgressionV1Enable() ? buildDownloadHearingNoticeSection(claim, claimId, lang) : undefined;
-  const isClaimant = false; // TODO - provide the actual value once the claimant part is developed in R2
-  const downloadTrialReadySection = hasTrialArrangementsDocuments(claim) ? buildTrialReadyDocumentSection(claim, claimId, lang, isClaimant) : undefined;
+  const downloadTrialReadyClaimantSection = await isCaseProgressionV1Enable() ? buildTrialReadyDocumentSection(claim, claimId, lang, true) : undefined;
+  const downloadTrialReadyDefendantSection = await isCaseProgressionV1Enable() ? buildTrialReadyDocumentSection(claim, claimId, lang, false) : undefined;
 
   return [{
     contentSections: [
@@ -27,7 +27,8 @@ async function getDocumentsContent(claim: Claim, claimId: string, lang?: string)
       downloadClaimTitle,
       ...downloadClaimSection,
       downloadHearingNoticeSection,
-      downloadTrialReadySection,
+      downloadTrialReadyClaimantSection,
+      downloadTrialReadyDefendantSection,
     ],
     hasDivider: false,
   }];

@@ -9,11 +9,18 @@ import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
-  CIVIL_SERVICE_COURT_LOCATIONS, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_COURT_DECISION,
+  CIVIL_SERVICE_COURT_LOCATIONS,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_USER_CASE_ROLE,
+  CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -31,6 +38,10 @@ import {
   DashboardDefendantResponse,
 } from 'common/models/dashboard/dashboarddefendantresponse';
 import {CaseRole} from 'form/models/caseRoles';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
+import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -152,11 +163,16 @@ export class CivilServiceClient {
   }
 
   async getClaimAmountFee(amount: number, req: AppRequest): Promise<number> {
+    const claimFeeData = await this.getClaimFeeData(amount, req);
+    return convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
+  }
+
+  async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       const claimFeeResponse: ClaimFeeData = response.data;
-      return convertToPoundsFilter(claimFeeResponse?.calculatedAmountInPence.toString());
+      return claimFeeResponse;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
@@ -172,6 +188,21 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaim(caseDetails);
+
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async verifyOcmcPin(pin: string, caseReference: string): Promise<string> {
+    try {
+      const response = await this.client.post(CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL //nosonar
+        .replace(':caseReference', caseReference), {pin:pin}, {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return null;
+      }
+      return response.data as string;
 
     } catch (err: unknown) {
       logger.error(err);
@@ -246,8 +277,12 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitDefendantTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.DEFENDANT_TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
+  async submitTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
+  }
+
+  async submitClaimantResponseForRequestJudgementAdmission(claimId: string, updatedClaim: ClaimantResponseRequestDefaultJudgementToCCD, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
   async submitClaimSettled(claimId: string, req: AppRequest):  Promise<Claim> {
@@ -256,6 +291,18 @@ export class CivilServiceClient {
 
   async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
+  }
+
+  async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
+  }
+
+  async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
+  }
+
+  async submitCreateServiceRequestEvent(claimId: string, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_SERVICE_REQUEST_CUI, claimId, {}, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
@@ -278,10 +325,13 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {
+  async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
+        responseDate: extendedDeadline,
+        plusDays: plusDays,
+      }, config);
       return response.data as Date;
     } catch (err: unknown) {
       logger.error(err);
@@ -334,6 +384,38 @@ export class CivilServiceClient {
 
     } catch (err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+
+  async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
+      return response.data as unknown as RepaymentDecisionType;
+    } catch(err) {
+      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+  async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
+      return plainToInstance(PaymentInformation, response.data);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      return plainToInstance(PaymentInformation, response.data);
+    } catch (err: unknown) {
+      logger.error(err);
       throw err;
     }
   }

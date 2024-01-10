@@ -71,6 +71,7 @@ import {InstalmentFirstPaymentDate} from 'models/claimantResponse/ccj/instalment
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
+import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1042,6 +1043,52 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
+export const createClaimWithMediationSectionWithOption = (option: YesNo ): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  }
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+  claim.mediation = new Mediation();
+  claim.mediation.hasAvailabilityMediationFinished = true;
+  claim.mediation.hasTelephoneMeditationAccessed = true;
+  claim.mediation.isMediationEmailCorrect = new GenericYesNo(option);
+  claim.mediation.isMediationPhoneCorrect = new GenericYesNo(option);
+  claim.mediation.isMediationContactNameCorrect = new GenericYesNo(option);
+  claim.mediation.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
+
+  if (claim.mediation.isMediationEmailCorrect.option === option) {
+    claim.mediation.alternativeMediationEmail =  {
+      alternativeEmailAddress: 'test@test.com',
+    };
+  }
+  if (claim.mediation.isMediationPhoneCorrect.option === option) {
+    claim.mediation.alternativeMediationTelephone= {
+      alternativeTelephone: '123',
+    };
+  }
+  if (claim.mediation.isMediationContactNameCorrect.option === option) {
+    claim.mediation.alternativeMediationContactPerson =  {
+      alternativeContactPerson: 'test',
+    };
+  }
+  if (claim.mediation.hasUnavailabilityNextThreeMonths.option === option) {
+    claim.mediation.unavailableDatesForMediation = {
+      items: [
+        {
+          date: new Date('2024-01-01T00:00:00.000Z'),
+          from: new Date('2024-01-01T00:00:00.000Z'),
+          until: new Date('2024-01-02T00:00:00.000Z'),
+          unavailableDateType: UnavailableDateType.SINGLE_DATE,
+        },
+      ],
+    };
+  }
+  return claim as Claim;
+};
 export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
@@ -1272,6 +1319,21 @@ export const getClaimWithDefendantTrialArrangements = (): Claim => {
   hasAnythingChanged.option = YesNo.YES;
   defendantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
   caseProgression.defendantTrialArrangements = defendantTrialArrangements;
+  claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const getClaimWithClaimantTrialArrangements = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const claimantTrialArrangements = new TrialArrangements();
+  claimantTrialArrangements.otherTrialInformation = 'Other Information';
+  claimantTrialArrangements.isCaseReady = YesNo.YES;
+  const hasAnythingChanged = new HasAnythingChangedForm();
+  hasAnythingChanged.textArea = 'Changed';
+  hasAnythingChanged.option = YesNo.YES;
+  claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
+  caseProgression.claimantTrialArrangements = claimantTrialArrangements;
   claim.caseProgression = caseProgression;
   return claim;
 };

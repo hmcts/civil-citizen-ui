@@ -1,13 +1,17 @@
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ResponseType } from 'common/form/models/responseType';
-import { YesNo } from 'common/form/models/yesNo';
-import { Claim } from 'common/models/claim';
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import { PartialAdmission } from 'common/models/partialAdmission';
-import { Party } from 'common/models/party';
-import { RejectionReason } from 'common/form/models/claimantResponse/rejectionReason';
-import { t } from 'i18next';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ResponseType} from 'common/form/models/responseType';
+import {YesNo} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {PartialAdmission} from 'common/models/partialAdmission';
+import {Party} from 'common/models/party';
+import {RejectionReason} from 'common/form/models/claimantResponse/rejectionReason';
+import {t} from 'i18next';
 import {buildYourResponseSection} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
+import { ChooseHowProceed } from 'common/models/chooseHowProceed';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -21,16 +25,22 @@ describe('Your response Section', () => {
 
   const claimId = '123';
   const lng = 'en';
-
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo();
+  claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.NO;
   it('should return Your response sections when FA', async () => {
     //Given
     const claim = new Claim();
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(0);
   });
 
@@ -47,7 +57,7 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(2);
   });
 
@@ -64,7 +74,76 @@ describe('Your response Section', () => {
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
-    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', {lng}));
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(3);
+  });
+
+  it('should return Your response sections when rejection set by date', async () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date('2022-06-01T00:00:00Z');
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
+    expect(yourResponseSection.summaryList.rows.length).toBe(4);
+  });
+
+  it('should return Your response sections when accepted and settled', async () => {
+    //Given
+
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT};
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
+    expect(yourResponseSection.summaryList.rows.length).toBe(6);
+    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.SIGN_A_SETTLEMENT_AGREEMENT', {lng}));
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
+  });
+
+  it('should return Your response sections when accepted and issue a CCJ', async () => {
+    //Given
+
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment.option = YesNo.YES;
+    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.REQUEST_A_CCJ};
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
+    expect(yourResponseSection.summaryList.rows.length).toBe(6);
+    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.ISSUE_A_CCJ', {lng}));
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('PAGES.CHECK_YOUR_ANSWER.I_ACCEPT_THIS_REPAYMENT_PLAN', {lng}));
+  });
+
+  it('should return Your response sections when rejection installments', async () => {
+    //Given
+
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
+      paymentAmount: 1,
+      repaymentFrequency: '',
+      firstRepaymentDate: new Date(),
+    };
+
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
+    expect(yourResponseSection.summaryList.rows.length).toBe(12);
+  });
+  it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
+  //Given
+
+    claim.claimantResponse = { suggestedPaymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, repaymentPlan: { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() } } } as ClaimantResponse;
+    //When
+    const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
+    //Then
+    expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
+    expect(yourResponseSection.summaryList.rows.length).toBe(8);
+    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
   });
 });

@@ -7,6 +7,7 @@ import {
 } from 'services/features/caseProgression/hearingDurationFormatter';
 import {DocumentType} from 'models/document/documentType';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 
 export class HearingLocation {
   value: {
@@ -42,13 +43,19 @@ export class CaseProgressionHearing {
   hearingDate?: Date;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
-
-  constructor(hearingDocuments?: CaseProgressionHearingDocuments[], hearingLocation?: HearingLocation, hearingDate?: Date, hearingTimeHourMinute?: string, hearingDuration?: HearingDuration) {
+  hearingFeeInformation?: HearingFeeInformation;
+  constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
+    hearingLocation?: HearingLocation,
+    hearingDate?: Date,
+    hearingTimeHourMinute?: string,
+    hearingDuration?: HearingDuration,
+    hearingFeeInformation?: HearingFeeInformation ) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;
     this.hearingTimeHourMinute = hearingTimeHourMinute;
     this.hearingDuration = hearingDuration;
+    this.hearingFeeInformation = hearingFeeInformation;
   }
 
   getHearingTimeHourMinuteFormatted(): string {

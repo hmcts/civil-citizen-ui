@@ -2,8 +2,10 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {translateClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitClaimantResponse');
@@ -13,13 +15,23 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
-    const ccdResponse = translateClaimantResponseToCCD(claim);
-    logger.info('Sumbmitting claimant intention...',ccdResponse);
+    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+    let ccdResponse = translateClaimantResponseToCCD(claim);
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    if (claimantResponse.isCCJRequested && hasRespondTypeWithCCJRequest(claim)) {
+      const claimFeeAmount = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFeeAmount);
+      ccdResponse = {...ccdResponseForRequestDefaultJudgement, ...ccdResponse};
+    }
+    logger.info('Submitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
     throw err;
   }
 };
+
+function hasRespondTypeWithCCJRequest(claim: Claim): boolean {
+  return ((claim.isFullAdmission() && (claim.isFAPaymentOptionInstallments() || claim.isFAPaymentOptionBySetDate())) ||
+    (claim.isPartialAdmission() && (claim.isPAPaymentOptionInstallments() || claim.isPAPaymentOptionByDate())));
+}

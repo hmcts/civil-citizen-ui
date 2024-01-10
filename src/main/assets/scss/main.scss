@@ -75,6 +75,10 @@
   border-left-width: 5px;
 }
 
+.panel-error {
+  background: $govuk-error-colour;
+}
+
 .govuk-description-block {
   background-color: $govuk-description-block-colour;
   margin-right: 30px;
@@ -160,10 +164,6 @@
 
 .border-top {
   @include top-bordered('blue', 10px, 0, 5px 0 0 0);
-}
-
-.border-small-top {
-  @include top-bordered('blue', 5px, 0 0 25px 0, 0);
 }
 
 .warning-text-container {
