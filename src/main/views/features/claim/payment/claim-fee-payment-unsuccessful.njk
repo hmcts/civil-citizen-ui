@@ -1,0 +1,31 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/contact-us.njk" import contactUs %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container govuk-!-padding-top-9">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ csrfProtection(csrf) }}
+          {% for content in paymentSuccessfulPanel %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          {% for content in paymentSuccessfulBody %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          <div class="govuk-width-container govuk-!-padding-top-5">
+          {% for content in paymentSuccessfulButton %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

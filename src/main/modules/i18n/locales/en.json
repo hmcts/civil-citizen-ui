@@ -2297,6 +2297,15 @@
         "CONFIRMATION": "You will receive a confirmation email in the next hour.",
         "PAYMENT_FOR": "Payment for",
         "TOTAL_AMOUNT": "Total amount"
+      },
+      "UNSUCCESSFUL": {
+        "PAGE_TITLE": "Your payment was unsuccessful",
+        "CLAIM_NUMBER": "Claim Number: {{ claimNumber }}",
+        "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
+        "NO_MONEY_TAKEN": "No money has been taken from your account",
+        "CALL_US_ON": "Or, call us on {{ telephone }} to make your payment manually, quoting the case reference above.",
+        "OPEN_TIMES": "Opening times:",
+        "FIND_OUT_CHARGES": "Find out about call charges"
       }
     },
     "PAYMENT_OPTION": {
