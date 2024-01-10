@@ -2,7 +2,8 @@ import {AppRequest} from 'models/AppRequest';
 
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {
-  HEARING_FEE_APPLY_HELP_FEE_SELECTION, PAY_HEARING_FEE_SUCCESSFUL_URL,
+  HEARING_FEE_APPLY_HELP_FEE_SELECTION,
+  PAY_HEARING_FEE_SUCCESSFUL_URL,
   PAY_HEARING_FEE_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -31,8 +32,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     paymentInfo.errorDescription = paymentStatus.errorDescription;
     await saveCaseProgression(redisClaimId, paymentInfo, paymentInformation, hearing);
 
-    const redirectUrl = paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
-    return redirectUrl;
+    return paymentStatus.status === success ? PAY_HEARING_FEE_SUCCESSFUL_URL : paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser ? PAY_HEARING_FEE_UNSUCCESSFUL_URL : HEARING_FEE_APPLY_HELP_FEE_SELECTION;
   }
   catch (error) {
     logger.error(error);
