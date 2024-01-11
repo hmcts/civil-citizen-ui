@@ -1075,7 +1075,10 @@
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
         "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
-        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
+        "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
+        "CCJ_NEXT_STEP_MSG6": "We'll contact both you and {{ defendantName }} to tell you what to do next."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
