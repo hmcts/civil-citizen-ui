@@ -14,6 +14,11 @@ const PropertiesVolume = {
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
+      if (server.locals.ENV === 'aat') {
+        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key-non-prod', 'services.cmc.url');
+      } else {
+        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key', 'services.cmc.url');
+      }
     }
   },
   setSecret: (fromPath, toPath) => {
