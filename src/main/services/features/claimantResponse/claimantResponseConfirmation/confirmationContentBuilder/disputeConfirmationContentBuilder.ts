@@ -19,7 +19,7 @@ export const getClaimantResponseStatus = (claim: Claim, statement: string, lang:
   if (claim.ccdState == CaseState.IN_MEDIATION) {
     const documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
     const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
-    htmlContent = htmlContent + `<br><span class='govuk-!-font-size-27'> <a class="white-link" href = "${documentLinkUrl}" > ${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.DOWNLOAD_YOUR_HEARING_REQUIREMENTS', { lng: lang })}</a></span >`
+    htmlContent = htmlContent + `<br><span class='govuk-!-font-size-27'> <a class="white-link" href = "${documentLinkUrl}" > ${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.DOWNLOAD_YOUR_HEARING_REQUIREMENTS', { lng: lang })}</a></span >`;
   }
   return [
     {

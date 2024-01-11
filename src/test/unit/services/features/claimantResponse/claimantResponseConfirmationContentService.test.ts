@@ -82,7 +82,7 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
     claim.claimantResponse.signSettlementAgreement.signed = 'true';
-    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT)
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
     // Then
@@ -521,7 +521,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       alreadyPaid: { option: 'yes' },
-      howMuchHaveYouPaid: { amount: 5000 } as HowMuchHaveYouPaid
+      howMuchHaveYouPaid: { amount: 5000 } as HowMuchHaveYouPaid,
     };
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
     claim.systemGeneratedCaseDocuments = [{
@@ -530,16 +530,16 @@ describe('Claimant Response Confirmation service', () => {
         documentLink: {
           document_url: 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac',
           document_filename: 'claimant_directions_questionnaire_form_000MC094.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary'
+          document_binary_url: 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary',
         },
         documentName: 'claimant_directions_questionnaire_form_000MC094.pdf',
         documentSize: 45258,
         documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
-        createdDatetime: new Date('2022-06-28T14:37:13')
-      }
+        createdDatetime: new Date('2022-06-28T14:37:13'),
+      },
     }];
     claim.claimantResponse = new ClaimantResponse();
-    const mediation = new Mediation({ option: YesNo.YES, mediationPhoneNumber: "01234" });
+    const mediation = new Mediation({ option: YesNo.YES, mediationPhoneNumber: '01234' });
     claim.claimantResponse.mediation = mediation;
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);

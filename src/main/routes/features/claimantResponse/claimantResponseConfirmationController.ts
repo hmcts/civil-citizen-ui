@@ -12,7 +12,7 @@ const claimantResponseConfirmationController = Router();
 claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, claimantResponseConfirmationGuard, (async (req: AppRequest, res: Response, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    await deleteDraftClaimFromStore(generateRedisKey(req))
+    await deleteDraftClaimFromStore(generateRedisKey(req));
     const claim = await getClaimById(req.params.id, req, true);
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang));
     res.render('features/claimantResponse/claimant-response-confirmation', {
