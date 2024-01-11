@@ -98,4 +98,9 @@ export class ClaimantResponse {
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
+
+  get isClaimantRejectedCourtDecision(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
 }
