@@ -437,6 +437,15 @@
       "TITLE": "Language",
       "WELSH": "Welsh"
     },
+    "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
+      "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
+      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "ENGLISH": "English",
+      "PAGE_TITLE": "Language",
+      "QUESTION": "In what language do you want to make your claim?",
+      "TITLE": "Language",
+      "WELSH_AND_ENGLISH": "Welsh and English"
+    },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
       "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
@@ -1066,7 +1075,10 @@
         "CCJ_REQUESTED": "County Court Judgment requested",
         "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
         "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
-        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
+        "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
+        "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
+        "CCJ_NEXT_STEP_MSG6": "We'll contact both you and {{ defendantName }} to tell you what to do next."
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
@@ -1328,6 +1340,10 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",    
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
@@ -1367,7 +1383,10 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case"
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
+        "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
@@ -3104,6 +3123,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Please select I confirm I’ve read and accept the terms of the agreement",

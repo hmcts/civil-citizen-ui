@@ -1,6 +1,10 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as utilityService from 'modules/utilityService';
-import {getBilingualLangPreference, saveBilingualLangPreference} from 'services/features/response/bilingualLangPreferenceService';
+import {
+  getBilingualLangPreference,
+  saveBilingualLangPreference,
+  saveClaimantBilingualLangPreference,
+} from 'services/features/response/bilingualLangPreferenceService';
 import {Claim} from 'common/models/claim';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -127,6 +131,62 @@ describe('Bilingual Langiage Preference Service', () => {
       });
       //Then
       await expect(saveBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
+        '',
+      ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('saveBilingualLangPreference for claim creation', () => {
+    it('should save ENGLISH bilingual language preference data successfully when claim exists', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.ENGLISH,
+        '',
+      ));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
+    it('should save WELSH_AND_ENGLISH bilingual language preference data successfully when claim exists', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
+        '',
+      ));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
+    it('should rethrow error when error occurs on get claim for ENGLISH bilingual language preference', async () => {
+      //When
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveClaimantBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.ENGLISH,
+        '',
+      ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should rethrow error when error occurs on get claim WELSH_AND_ENGLISH bilingual language preference', async () => {
+      //When
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveClaimantBilingualLangPreference('123', new GenericYesNo(
         ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
         '',
       ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
