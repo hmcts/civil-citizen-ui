@@ -84,7 +84,6 @@ export class TypeOfDocumentsForm {
     typeOfDocuments: TypeOfDocumentsItemForm [];
 
   constructor(title: string, hint?:string){
-    // Initialize default values or leave them undefined
     this.title = title;
     this.hint = hint;
     this.typeOfDocuments = [];
@@ -103,7 +102,6 @@ export class TypeOfDocumentsForm {
   }
 
   mapTypeOfDocumentsFormFromUploadDocuments(uploadDocuments: UploadDocuments): TypeOfDocumentsForm {
-
     if(UploadDocuments !== undefined) {
       uploadDocuments.typeOfDocuments.forEach((typeOfDocuments) => {
         const foundItem = this.typeOfDocuments.find((item) => item.type === typeOfDocuments.type);
