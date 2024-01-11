@@ -16,10 +16,10 @@ export class PropertiesVolume {
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-cui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
       PropertiesVolume.setSecret('secrets.civil-cui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
-      if (server.locals.ENV === 'aat') {
-        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key-non-prod', 'services.cmc.url');
+      if (server.locals.ENV === 'preview') {
+        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key-non-prod', 'launchDarkly.sdk');
       } else {
-        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key', 'services.cmc.url');
+        PropertiesVolume.setSecret('secrets.civil-cui.launch-darkly-sdk-key', 'launchDarkly.sdk');
       }
     }
   }

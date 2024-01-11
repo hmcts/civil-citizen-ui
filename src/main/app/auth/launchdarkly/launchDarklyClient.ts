@@ -1,7 +1,7 @@
 import config from 'config';
 import {LDClient, init, LDFlagValue} from 'launchdarkly-node-server-sdk';
 
-const launchDarklyTestSdk = config.get<string>('launchDarkly.test.sdk');
+const launchDarklyTestSdk = config.get<string>('launchDarkly.sdk');
 
 const user = {
   'name': 'civil-service',
