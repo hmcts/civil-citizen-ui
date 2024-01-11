@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 
-import {MEDIATION_TYPE_OF_DOCUMENTS} from 'routes/urls';
+import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -17,6 +17,7 @@ import {
   saveUploadDocument,
 } from 'services/features/response/mediation/uploadDocuments/uploadDocumentsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {convertToArrayOfStrings} from 'common/utils/stringUtils';
 
 const typeOfDocumentsViewPath = 'features/mediation/uploadDocuments/typeOfDocuments';
 const mediationTypeOfDocumentsController = Router();
@@ -32,16 +33,6 @@ const partyInformation = (claim: Claim) =>  {
 const typeOfDocumentsForm = new TypeOfDocumentsForm(`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}CHECKBOX_TITLE`, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}CHECKBOX_HINT`);
 typeOfDocumentsForm.typeOfDocuments.push(new TypeOfDocumentsItemForm(1,TypeOfMediationDocuments.YOUR_STATEMENT.toString(),`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.YOUR_STATEMENT}`, false, TypeOfMediationDocuments.YOUR_STATEMENT, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.YOUR_STATEMENT}_HINT`));
 typeOfDocumentsForm.typeOfDocuments.push(new TypeOfDocumentsItemForm(2,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT.toString(),`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, false, TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}_HINT`));
-
-function convertToArrayOfStrings(data: string | string[]): string[] {
-  if (typeof data === 'string') {
-    // If it's a string, convert it to an array of characters
-    return Array.of(data);
-  } else if (Array.isArray(data)) {
-    // If it's already an array, return it as is
-    return data;
-  }
-}
 
 async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response, claimId: string, claim: Claim) {
   res.render(typeOfDocumentsViewPath, {
@@ -78,7 +69,7 @@ mediationTypeOfDocumentsController.post(MEDIATION_TYPE_OF_DOCUMENTS, (async (req
       //get upload documents from claim and map to type of documents
       const uploadDocuments: UploadDocuments = getUploadDocuments(claim).mapUploadDocumentsFromTypeOfDocumentsForm(mapOfTypeOfDocumentsForm);
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
-      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS));
     }
   } catch (error) {
     next(error);

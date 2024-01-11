@@ -275,3 +275,4 @@ export const PAY_HEARING_FEE_SUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/paym
 export const HELP_WITH_FEES_ELIGIBILITY = 'https://www.gov.uk/get-help-with-court-fees#eligibility';
 export const START_MEDIATION_UPLOAD_FILES = `${MEDIATION_URL}/start-mediation-upload-documents`;
 export const MEDIATION_TYPE_OF_DOCUMENTS = `${MEDIATION_URL}/type-of-documents`;
+export const MEDIATION_UPLOAD_DOCUMENTS = `${MEDIATION_URL}/upload-documents`;

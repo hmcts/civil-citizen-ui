@@ -6,7 +6,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
 
-const getUploadDocuments = (claim: Claim): UploadDocuments => {
+export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
     if (claim.isClaimantIntentionPending()) {
       if (!claim.claimantResponse?.mediationUploadDocuments) return new UploadDocuments([]);
@@ -21,7 +21,7 @@ const getUploadDocuments = (claim: Claim): UploadDocuments => {
   }
 };
 
-const saveUploadDocument = async (claimId: string, value: any, uploadDocumentsPropertyName: keyof UploadDocuments): Promise<void> => {
+export const saveUploadDocument = async (claimId: string, value: any, uploadDocumentsPropertyName: keyof UploadDocuments): Promise<void> => {
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (claim.isClaimantIntentionPending()) {
@@ -44,5 +44,3 @@ const saveUploadDocument = async (claimId: string, value: any, uploadDocumentsPr
     throw error;
   }
 };
-
-export {getUploadDocuments, saveUploadDocument};
