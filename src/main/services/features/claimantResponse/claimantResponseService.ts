@@ -86,10 +86,10 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     deleteTaskListData(claim);
   } else if (isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
     deleteTaskListData(claim);
-  } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName,parentPropertyName )) {
+  } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName, parentPropertyName )) {
     delete claim.claimantResponse.chooseHowToProceed;
     deleteTaskListFormaliseRepaymentData(claim);
-  } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName , parentPropertyName)) {
+  } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName, parentPropertyName)) {
     deleteTaskListFormaliseRepaymentData(claim);
   }
   return claim;

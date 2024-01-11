@@ -107,7 +107,7 @@ export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: s
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.chooseHowToProceed) {
+  if (claim.claimantResponse?.chooseHowToProceed?.option) {
     chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
   return chooseHowFormaliseTask;
