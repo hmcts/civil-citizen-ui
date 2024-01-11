@@ -52,6 +52,19 @@ const expertDocument = {
 };
 
 const typeDocument = {
+  witnessOptionName: null,
+  typeOfDocument: 'type',
+  documentIssuedDate: new Date(0),
+  documentUpload: {
+    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+    document_filename: 'document_type.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+  } as Document,
+  createdDatetime: new Date(0),
+} as UploadEvidenceDocumentType;
+
+const documentReferred = {
+  witnessOptionName: 'witness name',
   typeOfDocument: 'type',
   documentIssuedDate: new Date(0),
   documentUpload: {
@@ -80,7 +93,8 @@ const documentForType = {
   document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
 } as Document;
 
-const documentTypeAsParameter = new UploadEvidenceDocumentType('type', new Date(0), documentForType, new Date(0));
+const documentTypeAsParameter = new UploadEvidenceDocumentType(null,'type', new Date(0), documentForType, new Date(0));
+const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), documentForType, new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 
@@ -275,6 +289,8 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
       uploadEvidenceElementCCD.value = expertDocument;
       break;
     case EvidenceUploadWitness.DOCUMENTS_REFERRED:
+      uploadEvidenceElementCCD.value = documentReferred;
+      break;
     case EvidenceUploadDisclosure.DISCLOSURE_LIST:
     case EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE:
     case EvidenceUploadTrial.CASE_SUMMARY:
@@ -371,7 +387,7 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
         new UploadDocumentTypes(false,witnessAsParameter,  EvidenceUploadWitness.NOTICE_OF_INTENTION, uuid),
       );
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, uuid),
+        new UploadDocumentTypes(false, documentReferredAsParameter, EvidenceUploadWitness.DOCUMENTS_REFERRED, uuid),
       );
       break;
     case 'expert':
