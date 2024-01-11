@@ -1,5 +1,9 @@
 {
   "COMMON": {
+    "CONTACT_NAME": "Enw cyswllt",
+    "CONTACT_NUMBER": "Rhif cyswllt",
+    "CONTACT_EMAIL": "Contact email",
+    "UNAVAILABLE_DATES": "Dyddiadau pan nad ydych ar gael",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -1883,6 +1887,15 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
               "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
+            },
+            "SUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was ",
+              "PAGE_TITLE2": "successful",
+              "PAYMENT_IS": "Your payment reference number is",
+              "PAYMENT_SUMMARY": "Payment summary",
+              "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
+              "PAYMENT_FOR": "Payment for",
+              "TOTAL_AMOUNT": "Total amount"
             }
           }
         },
@@ -2710,6 +2723,9 @@
       "THE_COURT_WILL_REVIEW_CASE": "Bydd y llys yn adolygu'r achos dros y swm llawn o £{{ claimAmount }}.",
       "THE_COURT_WILL_REVIEW_CASE_HEARING": "Bydd y llys yn adolygu'r achos. Efallai y bydd rhaid mynd i wrandawiad.",
       "WE_WILL_ASK_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad.",
+      "CLAIMANT_REJECTS_MEDIATION": "If {{ claimantName }} rejects your response the next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION1": "The next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION2": "If you cannot reach an agreement at mediation, the court will review the case.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
       "YOU_SETTLED_CLAIM": "This claim is now settled",
