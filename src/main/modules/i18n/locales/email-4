@@ -1,0 +1,44 @@
+//TODO: requested
+
+"Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
+"Do you agree the defendant has paid the £{{ paidAmount }} in full?",
+"Settle the claim",
+"Proceed with the claim"
+"Explain why you believe the defendant can afford to pay more or to pay sooner.",
+"Why did you reject the repayment plan?"
+"Repayment plan accepted",
+"The court has accepted your repayment plan"
+"Rejection reason"
+"Claimant response task list"
+"Terms of the agreement",
+"Completion date",
+"This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+"Neither party can make any further claims relating to this case, other than to enforce it.",
+"Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+"If the agreement is broken",
+"The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+"Sign the agreement",
+"Make sure this agreement includes everything you’ve agreed with {{ defendant }} before signing. You won’t be able to change this later.",
+"I confirm I’ve read and accept the terms of the agreement."
+"Enter company details",
+"Enter company details"
+"Amount you owe, in pounds",
+"Monthly instalment amount, in pounds"
+"Your mediation appointment will be arranged within 28 days",
+"You both agreed a settlement through mediation",
+"MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
+"We've sent your offer to the claimant. You have rejected the claim.",
+"The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
+"The claimant has rejected you offer. You have rejected the claim.",
+"{{ claimantName }} rejected your admission of £{{ amount }}",
+"Your mediation appointment will be arranged within 28 days",
+"Send us more details before the hearing",
+"You both agreed a settlement through mediation"
+"claim number {{ claimNumber }}"
+"Monthly payments, in pounds",
+"Total owed, in pounds"
+"Debt Respite Scheme reference number"
+"Expected end date",
+"This is the end date that it is due to finish (optional)",
+"Expected end date"
+"Your claim may be invalid if you use the wrong address."

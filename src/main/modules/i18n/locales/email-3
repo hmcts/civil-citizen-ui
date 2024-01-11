@@ -1,5 +1,4 @@
-// TODO: to send email
-
+// TODO: sent
 "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date."
 "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full."
 "Do you accept a repayment date of {{ paymentDate }}?"

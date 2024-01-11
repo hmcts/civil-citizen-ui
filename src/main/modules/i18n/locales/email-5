@@ -1,0 +1,48 @@
+"AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ claimant }} before signing. You won’t be able to change this later.",
+"CHOOSE_NOT_TO_SIGN": "You can choose not to sign the settlement agreement, for example if you think you can't afford it.",
+"CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+"LABEL": "Completion date"
+"FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
+"IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+"NO": "No - I reject the terms of the agreement.",
+"ON_HOLD": "The claim will be put on hold and the claimant can't request a CCJ against you.",
+"REQUEST_CCJ": "The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement. You can ask a judge to change the plan based on your financial details. The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
+"SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+"SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
+"LABEL": "The agreement",
+"PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
+"REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+"THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+"VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
+"YES": "Yes - I confirm I've read and accept the terms of the agreement."
+"PAGE_TITLE": "Respond to the settlement agreement",
+"TITLE": "Respond to the settlement agreement"
+"PAGE_TITLE": "claim interest from"
+"PAGE_TITLE": "Government department"
+"PAGE_TITLE": "Defendant Address in England or Wales"
+"PAGE_TITLE": "Defendant Age Eligibility"
+"ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
+"APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
+"DECIDE": "Decide whether to apply for Help with Fees",
+"MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
+"MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
+"WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+"WILL_NEED": "You will need this number to make your claim when you are returned to this service."
+"PAGE_TITLE": "Individual or Multiparty Claim"
+"PAGE_TITLE": "Claim fee has changed",
+"TITLE": "Claim fee has changed",
+"PARAGRAPH_1": "You submitted a claim, but did not pay the claim fee, so it was not issued and sent to the other parties.",
+"PARAGRAPH_2": "Since then the claim fee has been recalculated and is now £{{ claimFee }}.",
+"PARAGRAPH_3": "To proceed with this claim you need to create a new claim and pay the claim fee.",
+"BUTTON_LABEL": "Create new claim"
+"DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+"NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
+"REFERENCE_NUMBER": "Help with fees reference number"
+"INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
+"TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
+"HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
+"CLAIM_ENDED_TITLE": "This claim has ended",
+"CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "{{ claimantName }} rejected your repayment plan.",
+"CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "The court will review the case. We’ll contact you by post to tell you what to do next.",
+"CLAIMANT_REJECT_PAYMENT_PLAN_MSG3": "Your online account won’t be updated - any further updates will be by post.",
+"EMAIL": "Email :",
