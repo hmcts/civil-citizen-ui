@@ -75,6 +75,7 @@ import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 
 export class CivilClaimResponse {
   id: string;
@@ -149,6 +150,7 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
+  applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
   //Defendant Response part
   respondent1BankAccountList?: CCDBankAccount[];
   disabilityPremiumPayments?: YesNoUpperCamelCase;
