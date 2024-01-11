@@ -25,7 +25,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:pr-3818'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-3870'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     keyVaults:
@@ -240,6 +240,7 @@ ccd:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
+      image: hmctspublic.azurecr.io/ccd/api-gateway-web:prod-66e26b9-20231116094420
       devcpuRequests: 500m
       devmemoryRequests: 2048Mi
       devmemoryLimits: 4096Mi
