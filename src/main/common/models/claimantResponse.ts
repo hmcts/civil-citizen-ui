@@ -14,6 +14,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -36,6 +37,7 @@ export class ClaimantResponse {
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;
+  mediationUploadDocuments: UploadDocuments;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;

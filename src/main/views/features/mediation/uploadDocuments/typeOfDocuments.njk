@@ -10,14 +10,19 @@
 {{ setPageTitle(t(pageTitle)) }}
 {% endblock %}
 
+
 {% block content %}
+
 {% set checkboxItems = [] %}
-{% for item in form.model.items %}
+{% for item in form.model.typeOfDocuments %}
 {% set checkboxItems = (checkboxItems.push(
     {
       text: t(item.text),
       value: item.value,
-      selected: item.selected
+      checked: item.checked,
+      hint: {
+        text: t(item.hint)
+      }
     }), checkboxItems) %}
 {% endfor %}
 
@@ -29,6 +34,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-!-margin-bottom-8">
+          <h1 class="govuk-heading-l">{{ t(pageTitle) }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <p class="govuk-body-l">{{
@@ -49,7 +55,13 @@
                                       classes: "govuk-fieldset__legend--l"
                                     }
                                 },
-                items: checkboxItems
+                hint: {
+                  text: t(form.model.hint)
+                },
+                items: checkboxItems,
+                errorMessage: {
+                  text:t(form.errorFor('typeOfDocuments'))
+                } if form.hasErrors()
               })
               }}
             </div>

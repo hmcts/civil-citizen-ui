@@ -357,6 +357,10 @@
       "TYPE_OF_DOCUMENTS": {
         "CHECKBOX_TITLE": "Mediation non-attendance",
         "CHECKBOX_HINT": "Select all that apply",
+        "YOUR_STATEMENT": "Your Statement",
+        "YOUR_STATEMENT_HINT": "A written statement explaining why you were unable to attend mediation appointment",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in your statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor's notes"
       },
       "START_PAGE": {
         "PAGE_TITLE": "Upload your documents",
