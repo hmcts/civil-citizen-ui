@@ -69,7 +69,7 @@ const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
   const hearingFeeActionable = claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee != null;
 
   if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
-    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), undefined, TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
+    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
   } else if (hearingFeeActionable) {
     const hearingFeeUrl = PAY_HEARING_FEE_URL.replace(':id', claim.id);
     const hearingFeeTaskStatus = TaskStatus.ACTION_NEEDED;
