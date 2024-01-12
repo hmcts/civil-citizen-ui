@@ -16,7 +16,7 @@ nodejs:
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
         - launch-darkly-sdk-key-non-prod
-          alias: launch-darkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
