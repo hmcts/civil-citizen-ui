@@ -500,5 +500,5 @@ export default [
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
   startMediationUploadDocumentsController,
-  mediationTypeOfDocumentsController
+  mediationTypeOfDocumentsController,
 ];
