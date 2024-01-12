@@ -14,7 +14,6 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
-        - launch-darkly-sdk-key-non-prod
         - launch-darkly-sdk-key
           alias: launch-darkly-sdk-key
   environment:
