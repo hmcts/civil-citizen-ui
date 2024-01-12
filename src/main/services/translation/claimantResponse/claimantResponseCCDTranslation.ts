@@ -13,7 +13,6 @@ import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convert
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
 import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate}
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
