@@ -59,4 +59,4 @@ health:
 appInsights:
   instrumentationKey:
 launchDarkly:
-  sdk:
+  sdk: 'test'
