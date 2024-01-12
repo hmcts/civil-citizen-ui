@@ -58,3 +58,5 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+launchDarkly:
+  sdk:
