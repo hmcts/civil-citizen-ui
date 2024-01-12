@@ -1,6 +1,7 @@
 import config from 'config';
 import {LDClient, init, LDFlagValue} from 'launchdarkly-node-server-sdk';
-
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('draftStoreService');
 const launchDarklyTestSdk = config.get<string>('launchDarkly.sdk');
 
 const user = {
@@ -11,6 +12,7 @@ const user = {
 let ldClient: LDClient;
 
 async function getClient(): Promise<LDClient> {
+  logger.info(`LD Key is ::::: ${launchDarklyTestSdk}`);
   const client = init(launchDarklyTestSdk);
   await client.waitForInitialization();
   return client;
