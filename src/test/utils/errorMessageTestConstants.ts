@@ -69,7 +69,7 @@ export const enum TestMessages {
   MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Mediation contact person confirmation',
   MEDIATION_EMAIL_CONFIRMATION = 'Mediation email confirmation',
   MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
-  MEDIATION_UPLOAD_DOCUMENTS_START_PAGE = 'Upload your documents',
+  MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE = 'Upload your documents',
   MEDIATION_UNAVAILABILITY_DATES = 'Unavailability dates for mediation',
   MEDIATION_ALTERNATIVE_EMAIL_ADDRESS = 'Alternative email address',
   MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_CONFIRMATION = 'Unavailability for mediation',
