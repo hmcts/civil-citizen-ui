@@ -1,4 +1,4 @@
-import {NextFunction, Router} from 'express';
+import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DASHBOARD_CLAIMANT_URL} from '../../urls';
@@ -21,7 +21,7 @@ const claimantClaimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimantClaimSummaryController.get([DASHBOARD_CLAIMANT_URL], async (req, res, next: NextFunction) => {
+claimantClaimSummaryController.get([DASHBOARD_CLAIMANT_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -35,7 +35,7 @@ claimantClaimSummaryController.get([DASHBOARD_CLAIMANT_URL], async (req, res, ne
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
