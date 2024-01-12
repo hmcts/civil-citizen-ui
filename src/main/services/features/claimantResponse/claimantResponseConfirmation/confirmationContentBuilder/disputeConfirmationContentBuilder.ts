@@ -12,10 +12,11 @@ export const getClaimantResponseStatus = (claim: Claim, statement: string, lang:
   const claimNumber = claim.legacyCaseReference;
   // TODO: update this date as submission date When submission implemented on check-and-send page
   const responseSubmitDate = formatDateToFullDate(new Date(), lang);
-
+  
   let htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
   <br><strong>${claimNumber}</strong><br>
   <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`;
+  
   if (claim.ccdState == CaseState.IN_MEDIATION) {
     const documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
     const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
