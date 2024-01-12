@@ -1,5 +1,9 @@
 {
   "COMMON": {
+    "CONTACT_NAME": "Contact name",
+    "CONTACT_NUMBER": "Contact number",
+    "CONTACT_EMAIL": "Contact email",
+    "UNAVAILABLE_DATES": "Dates unavailable",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -418,6 +422,23 @@
         "REJECTED_TITLE": "If your application for help with fees is rejected",
         "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
         "TITLE" : "Help with fees"
+      },
+      "REFERENCE_NUMBER": {
+        "TITLE_YES": "Enter your help with fees reference number",
+        "SUBTITLE_YES": "You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.",
+        "HINT_YES": "For example, HWF-A1B-23C",
+        "TITLE_NO": "Next steps",
+        "PARAGRAPH_NO": "You must apply for help with fees before submitting your application.",
+        "QUESTION_TITLE": "Do you have a help with fees reference number?",
+        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+        "LIST_ITEMS": {
+          "FIRST": "Go to ",
+          "FIRST_LINK": "apply for help with fees (opens in a new tab).",
+          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track.",
+          "THIRD": "Complete the help with fees application.",
+          "FOURTH": "Return here to your online money claims account.",
+          "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
+        }
       }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
@@ -1883,6 +1904,15 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+            },
+            "SUCCESSFUL": {
+              "PAGE_TITLE": "Your payment was ",
+              "PAGE_TITLE2": "successful",
+              "PAYMENT_IS": "Your payment reference number is",
+              "PAYMENT_SUMMARY": "Payment summary",
+              "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
+              "PAYMENT_FOR": "Payment for",
+              "TOTAL_AMOUNT": "Total amount"
             }
           }
         },
@@ -2710,6 +2740,9 @@
       "THE_COURT_WILL_REVIEW_CASE": "The court will review the case for the full amount of £{{ claimAmount }}.",
       "THE_COURT_WILL_REVIEW_CASE_HEARING": "The court will review the case. You might have to go to a hearing.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
+      "CLAIMANT_REJECTS_MEDIATION": "If {{ claimantName }} rejects your response the next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION1": "The next step will be mediation. The mediation service will contact you to give you a date for your appointment.",
+      "WE_WILL_MEDIATION2": "If you cannot reach an agreement at mediation, the court will review the case.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SETTLED_CLAIM": "This claim is now settled",
@@ -3222,6 +3255,7 @@
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
+    "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
