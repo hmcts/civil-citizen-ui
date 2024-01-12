@@ -1,4 +1,4 @@
-import {CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
+import {CCDClaimantPayBySetDate, CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export const toCCDPayBySetDate = (paymentDate: Date, paymentOption: PaymentOptionType | undefined, respondentPaymentDeadline: Date): CCDPayBySetDate => {
@@ -13,3 +13,10 @@ export const toCCDPayBySetDate = (paymentDate: Date, paymentOption: PaymentOptio
     };
   }
 };
+
+export const toCCDClaimantPayBySetDate = (paymentDate: Date): CCDClaimantPayBySetDate => {
+  return {
+    paymentSetDate: paymentDate,
+  };
+};
+
