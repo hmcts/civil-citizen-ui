@@ -16,13 +16,14 @@ import {submitResponse} from 'services/features/response/submission/submitRespon
 import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
+function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(req.params.id, claim, lang);
+  const summarySections = getSummarySections(req.params.id, claim, lang, carmApplicable);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
@@ -35,8 +36,9 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(req, res, form, claim);
+      renderView(req, res, form, claim, carmApplicable);
     } catch (error) {
       next(error);
     }
