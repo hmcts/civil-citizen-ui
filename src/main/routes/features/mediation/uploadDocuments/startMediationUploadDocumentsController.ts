@@ -5,18 +5,17 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {
-  FinaliseYourTrialSectionBuilder,
-} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 const startMediationUploadFileViewPath = 'features/common/static-page';
 const startMediationUploadDocumentsController = Router();
-const pageTitle = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE';
 const MEDIATION_START_PAGE = 'PAGES.MEDIATION.START_PAGE.';
+const pageTitle = `${MEDIATION_START_PAGE}PAGE_TITLE`;
+
 const getContents = (claimId: string, claim: Claim) => {
 
-  return new FinaliseYourTrialSectionBuilder()
+  return new PageSectionBuilder()
     .addMainTitle(`${MEDIATION_START_PAGE}PAGE_TITLE`)
     .addLeadParagraph('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.PARTIES', {

@@ -8,7 +8,7 @@ const logger = Logger.getLogger('freeMediationService');
 export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
     if (!claim.mediationUploadDocuments) return new UploadDocuments([]);
-    return claim.mediationUploadDocuments;
+    return new UploadDocuments(claim.mediationUploadDocuments.typeOfDocuments);
   } catch (error) {
     logger.error(error);
     throw error;
