@@ -75,6 +75,7 @@ import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 
 export class CivilClaimResponse {
   id: string;
@@ -268,6 +269,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
+  mediationUploadDocuments?: UploadDocuments;
 }
 
 export interface ClaimFeeData {
