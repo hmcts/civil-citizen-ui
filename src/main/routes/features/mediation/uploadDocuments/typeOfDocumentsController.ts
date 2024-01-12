@@ -7,8 +7,6 @@ import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 
 import {
-  TypeOfDocumentsForm,
-  TypeOfDocumentsItemForm,
   TypeOfMediationDocuments, UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -18,6 +16,8 @@ import {
 } from 'services/features/response/mediation/uploadDocuments/uploadDocumentsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToArrayOfStrings} from 'common/utils/stringUtils';
+import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
+import {TypeOfDocumentsItemForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsItemForm';
 
 const typeOfDocumentsViewPath = 'features/mediation/uploadDocuments/typeOfDocuments';
 const mediationTypeOfDocumentsController = Router();
@@ -30,6 +30,7 @@ const partyInformation = (claim: Claim) =>  {
     defendantName: claim.getDefendantFullName(),
   };
 };
+
 const typeOfDocumentsForm = new TypeOfDocumentsForm(`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}CHECKBOX_TITLE`, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}CHECKBOX_HINT`);
 typeOfDocumentsForm.typeOfDocuments.push(new TypeOfDocumentsItemForm(1,TypeOfMediationDocuments.YOUR_STATEMENT.toString(),`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.YOUR_STATEMENT}`, false, TypeOfMediationDocuments.YOUR_STATEMENT, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.YOUR_STATEMENT}_HINT`));
 typeOfDocumentsForm.typeOfDocuments.push(new TypeOfDocumentsItemForm(2,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT.toString(),`${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, false, TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, `${MEDIATION_TYPE_OF_DOCUMENTS_PAGE}${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}_HINT`));
