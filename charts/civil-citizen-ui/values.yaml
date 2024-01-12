@@ -46,7 +46,7 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
-        - launch-darkly-sdk-key
+        - name: launch-darkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
