@@ -3,6 +3,7 @@ const ResponseSteps  =  require('../features/response/steps/lipDefendantResponse
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const LoginSteps =  require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -16,6 +17,8 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    let user = await createAccount();
+    config.defendantCitizenUser.email = user.email;
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
