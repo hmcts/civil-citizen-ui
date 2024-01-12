@@ -13,7 +13,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {
   getUploadDocuments,
   saveUploadDocument,
-} from 'services/features/response/mediation/uploadDocuments/uploadDocumentsService';
+} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToArrayOfStrings} from 'common/utils/stringUtils';
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';

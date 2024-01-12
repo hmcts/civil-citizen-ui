@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {
   getUploadDocuments,
   saveUploadDocument,
-} from 'services/features/response/mediation/uploadDocuments/uploadDocumentsService';
+} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {
   TypeOfDocuments,
   TypeOfMediationDocuments,
