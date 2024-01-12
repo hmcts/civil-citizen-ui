@@ -99,7 +99,6 @@ export class ClaimantResponse {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
 
-
   hasClaimantNotAgreedToMediation(): boolean {
     return this.mediation?.mediationDisagreement?.option === YesNo.NO;
   }
