@@ -28,7 +28,7 @@ export class TypeOfDocumentsForm {
   }
 
   mapTypeOfDocumentsFormFromUploadDocuments(uploadDocuments: UploadDocuments): TypeOfDocumentsForm {
-    if(UploadDocuments !== undefined) {
+    if(uploadDocuments !== undefined) {
       uploadDocuments.typeOfDocuments.forEach((typeOfDocuments) => {
         const foundItem = this.typeOfDocuments.find((item) => item.type === typeOfDocuments.type);
         // Check if the item is found before modifying
