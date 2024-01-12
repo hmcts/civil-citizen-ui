@@ -43,7 +43,3 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.ConfirmEmailDetails();
   await ResponseSteps.EnterUnavailableDates();
 }).tag('@carm');
-
-AfterSuite(async  () => {
- // await unAssignAllUsers();
-});

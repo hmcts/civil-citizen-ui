@@ -42,7 +42,3 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
 }).tag('@carm');
-
-AfterSuite(async  () => {
-  //await unAssignAllUsers();
-});
