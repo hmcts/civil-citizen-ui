@@ -14,7 +14,7 @@ const PropertiesVolume = {
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
       PropertiesVolume.setSecret('secrets.civil-citizen-ui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
-      PropertiesVolume.setSecret('secrets.civil-cui.LAUNCH_DARKLY_SDK_KEY', 'launchDarkly.sdk');
+      PropertiesVolume.setSecret('secrets.civil-citizen-ui.LAUNCH_DARKLY_SDK_KEY', 'launchDarkly.sdk');
     }
   },
   setSecret: (fromPath, toPath) => {
