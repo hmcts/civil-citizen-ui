@@ -40,17 +40,13 @@ claimantClaimSummaryController.get([DASHBOARD_CLAIMANT_URL], async (req, res, ne
 async function getTabs(claimId: string, claim: Claim, lang: string): Promise<TabItem[]>
 {
   const tabItems = [] as TabItem[];
-  
-  const latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
-  const latestUpdateTabId = TabId.LATEST_UPDATE;
+
   const latestUpdateContent = getLatestUpdateContentForClaimant(claimId, claim, lang);
 
-  const noticesTabLabel= TabLabel.DOCUMENTS;
-  const noticesTabId = TabId.DOCUMENTS;
   const noticesContent: ClaimSummaryContent[] = await getDocumentsContent(claim, claimId, lang);
 
-  tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
-  tabItems.push(new TabItem(noticesTabLabel, noticesTabId, noticesContent));
+  tabItems.push(new TabItem(TabLabel.LATEST_UPDATE, TabId.LATEST_UPDATE, latestUpdateContent));
+  tabItems.push(new TabItem(TabLabel.DOCUMENTS,  TabId.DOCUMENTS, noticesContent));
 
   return tabItems;
 }
