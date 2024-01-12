@@ -1,7 +1,7 @@
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {ClaimantResponse} from 'common/models/claimantResponse';
-import {convertDateToStringFormat} from 'common/utils/dateUtils';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
   switch(paymentOptionType) {
@@ -23,7 +23,7 @@ export const toCCDClaimantSuggestedPayByDate = (claimantResponse?: ClaimantRespo
 
 export const toCCDClaimantSuggestedFirstRepaymentDate = (claimantResponse?: ClaimantResponse): string => {
   const firstRepaymentDate = claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.firstRepaymentDate;
-  
+
   if(toCCDClaimantSuggestedPayByInstalments(claimantResponse) && (firstRepaymentDate)) {
     return convertDateToStringFormat(firstRepaymentDate);
   } 

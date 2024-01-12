@@ -24,18 +24,26 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response, next: NextFunction) => {
-  (async () => {
-    try {
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(generateRedisKey(req));
-      const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-      renderView(req, res, claim, lang, claimFee);
-    } catch (error) {
-      next(error);
-    }
-  })();
-},
+judgmentAmountSummaryExtendedController.get(
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  (req: AppRequest, res: Response, next: NextFunction) => {
+    (async () => {
+      try {
+        const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+        const claim = await getCaseDataFromStore(generateRedisKey(req));
+
+        if (!claim.claimFee?.calculatedAmountInPence) {
+          throw new Error();
+        }
+        const claimFee = convertToPoundsFilter(
+          claim.claimFee?.calculatedAmountInPence,
+        );
+        renderView(req, res, claim, lang, claimFee);
+      } catch (error) {
+        next(error);
+      }
+    })();
+  },
 );
 
 judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {

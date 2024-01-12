@@ -21,3 +21,4 @@ export const toCCDClaimantPayBySetDate = (paymentDate: Date): CCDClaimantPayBySe
     paymentSetDate: convertDateToStringFormat(((paymentDate as unknown as PaymentDate).date)),
   };
 };
+

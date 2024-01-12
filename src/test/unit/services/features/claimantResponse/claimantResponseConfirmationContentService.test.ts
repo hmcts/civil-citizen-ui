@@ -107,7 +107,11 @@ describe('Claimant Response Confirmation service', () => {
 
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'}; //new ClaimantMediationLip('No');
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: paymentOptionType},
@@ -154,7 +158,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'No'};
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       alreadyPaid: {option: 'yes'},
@@ -178,7 +186,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
@@ -199,7 +211,11 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and says not settle with no mediation', () => {
 
     // Given
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'No' };
+    claim.claimantResponse.mediation = <Mediation>{
+      mediationDisagreement: {
+        option: YesNo.NO,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
     // When
@@ -220,7 +236,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.mediation = new Mediation(undefined, {option: YesNo.YES}, undefined, undefined);
     claim.partialAdmission = {
@@ -249,7 +269,11 @@ describe('Claimant Response Confirmation service', () => {
 
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'Yes'};
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: paymentOptionType},
@@ -275,7 +299,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = {hasAgreedFreeMediation: 'Yes'};
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
       alreadyPaid: {option: 'yes'},
@@ -300,7 +328,11 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.applicant1AcceptAdmitAmountPaidSpec = 'No';
     claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
@@ -322,7 +354,11 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant rejected defendant`s response as full defence states paid and says not settle with yes mediation', () => {
 
     // Given
-    claim.applicant1ClaimMediationSpecRequiredLip = { hasAgreedFreeMediation: 'Yes' };
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
     const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
@@ -433,6 +469,49 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG3');
     expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
     expect(claimantResponseConfirmationContent[5]).toBeUndefined();
+  });
+
+  it('Claimant rejected defendant`s repayment plan and proposed repayment plan by set date, reject the court decision and request judge to decide repayment plan', () => {
+    // Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.courtProposedDate = new CourtProposedDate(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG4');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
+    expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG5');
+    expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
+    expect(claimantResponseConfirmationContent[6]).toBeUndefined();
+  });
+
+  it('Claimant rejected defendant`s repayment plan and proposed repayment plan by installment, reject the court decision and request judge to decide repayment plan', () => {
+    // Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
+    claim.claimantResponse.courtProposedPlan = new CourtProposedPlan(CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN);
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG4');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG2');
+    expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG5');
+    expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
+    expect(claimantResponseConfirmationContent[6]).toBeUndefined();
   });
 });
 

@@ -9,9 +9,12 @@ import {toCCDYesNo} from '../response/convertToCCDYesNo';
 import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
-import {toCCDClaimantPaymentOption, toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {toCCDRepaymentPlanFrequency} from '../response/convertToCCDRepaymentPlan';
+import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
+import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate}
+  from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -45,6 +48,6 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount.toString(),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
-    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate) : undefined,
+    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate((claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate)?.date) : undefined,
   };
 };
