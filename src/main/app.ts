@@ -70,9 +70,8 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
-  secure: false,
   cookie : {
-    secure: productionMode,
+    secure: false,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
