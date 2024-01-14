@@ -5014,11 +5014,11 @@ __metadata:
   linkType: hard
 
 "config@npm:^3.3.8":
-  version: 3.3.9
-  resolution: "config@npm:3.3.9"
+  version: 3.3.10
+  resolution: "config@npm:3.3.10"
   dependencies:
     json5: ^2.2.3
-  checksum: 2c29e40be22274462769670a4b69fcbcad2d3049eb15030073e410d32c892ef29e0c879a3d68ef92ddd572c516e4f65a11bb6458f680a44ceb0f051bcd3d97ff
+  checksum: c0b472fb9366418687c8ddfa167152dfbfd77bba698cc5d5f1eac3867282302c3d63aa299f403dbe75efc0c5ccd9c82526d73c69b85874d87457564d53ffe37c
   languageName: node
   linkType: hard
 
