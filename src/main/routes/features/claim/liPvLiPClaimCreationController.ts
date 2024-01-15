@@ -140,6 +140,6 @@ liPvLiPClaimCreationController.post(CLAIM_CHECK_ANSWERS_URL, (async (req: any, r
     console.error(`Error = ${e}`);
     next(e);
   }
-}) as RequestHandler)
+}) as RequestHandler);
 
 export default liPvLiPClaimCreationController;
