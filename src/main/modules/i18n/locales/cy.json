@@ -1333,6 +1333,7 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
@@ -1343,6 +1344,11 @@
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
       "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of £{{ feeAmount }} on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        },
         "HELP_WITH_FEES": {
           "TITLE": "We're reviewing your help with fees application",
           "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
@@ -2781,7 +2787,8 @@
       "INCOMPLETE": "Anghyflawn",
       "IN_PROGRESS": "In progress",
       "READY_TO_VIEW": "Ready to view",
-      "NOT_AVAILABLE_YET": "Not available yet"
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
