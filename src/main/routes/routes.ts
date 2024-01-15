@@ -264,6 +264,7 @@ import claimBilingualLangPreferenceController from 'routes/features/claim/biling
 import paymentSuccessfulController from 'routes/features/claim/paymentSuccessfulController';
 import alternativeContactPersonMediationController
   from 'routes/features/mediation/alternativeContactPersonMediationController';
+import liPvLiPClaimCreationController from 'routes/features/claim/liPvLiPClaimCreationController';
 export default [
   homeController,
   dashboardController,
@@ -498,4 +499,5 @@ export default [
   alternativeTelephoneMediationController,
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
+  liPvLiPClaimCreationController,
 ];

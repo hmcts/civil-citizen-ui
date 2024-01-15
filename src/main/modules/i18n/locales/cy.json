@@ -1405,6 +1405,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
+      "TEST_CLAIM": "Test Claim",
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
