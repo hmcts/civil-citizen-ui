@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
@@ -8,27 +8,22 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/back.njk" import back %}
 
 {% block pageTitle %}
     {{ setPageTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE') }}
 {% endblock %}
 
 {% block content %}
-
-    {{ govukBackLink({
-        text: t('COMMON.BUTTONS.BACK'),
-        href: backUrl,
-        classes: 'govuk-!-margin-top-0'
-    }) }}
-
-    <div class="govuk-width-container govuk-!-padding-top-9">
-        <main class="govuk-main-wrapper govuk-!-padding-top-7" role="main">
+    <div class="govuk-width-container govuk-!-padding-top-0">
+        <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
           {% if form.hasErrors() %}
             {{ errorSummary(form.getAllErrors(), t) }}
           {% endif %}
             <div class="govuk-grid-row govuk-!-margin-top-0">
                 <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
                     {{ csrfProtection(csrf) }}
+                    {{ back(backUrl,t) }}
                     {% for content in applyHelpWithFeesContent %}
                         {{ itemContent(content,t) }}
                     {% endfor %}
