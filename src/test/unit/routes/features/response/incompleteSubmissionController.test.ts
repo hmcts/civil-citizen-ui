@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
