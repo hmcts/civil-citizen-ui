@@ -13,8 +13,8 @@ interface ClaimData {
         individualLastName: string;
         individualFirstName: string;
         provideCorrespondenceAddress: string;
-        primaryAddress: {};
-        correspondenceAddress: {};
+        primaryAddress: any;
+        correspondenceAddress: any;
         carmEnabled: boolean;
       };
       dateOfBirth: { date: string; year: number; month: number; day: number };
@@ -26,17 +26,17 @@ interface ClaimData {
         individualTitle: string;
         individualLastName: string;
         individualFirstName: string;
-        primaryAddress: {};
+        primaryAddress: any;
       };
       emailAddress: { emailAddress: string };
       partyPhone: { phone: string };
     };
     totalClaimAmount: number;
     claimAmountBreakup: {
-      value: {};
+      value: any;
     }[];
     claimInterest: string;
-    interest: {};
+    interest: any;
     claimDetails: {
       helpWithFees: { option: string; referenceNumber: string };
       reason: { text: string };
