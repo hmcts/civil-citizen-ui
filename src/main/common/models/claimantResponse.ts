@@ -98,4 +98,17 @@ export class ClaimantResponse {
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
+
+  hasClaimantNotAgreedToMediation(): boolean {
+    return this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasClaimantAgreedToMediation(): boolean {
+    return this.mediation?.canWeUse?.option === YesNo.YES;
+  }
+  
+  get isClaimantRejectedCourtDecision(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
 }
