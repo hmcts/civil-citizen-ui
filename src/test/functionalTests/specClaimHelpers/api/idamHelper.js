@@ -30,9 +30,9 @@ async function accessToken(user) {
   }
 }
 
-async function createAccount(email) {
+async function createAccount(email, password) {
   try {
-    let body = {'email': email, 'password': 'Password12!', 'forename': 'forename', 'surname': 'surname', 'roles': [{'code': 'citizen'}]};
+    let body = {'email': email, 'password': password, 'forename': 'forename', 'surname': 'surname', 'roles': [{'code': 'citizen'}]};
     let result = await restHelper.request(`${idamUrl}/testing-support/accounts/`, {'Content-Type': 'application/json'}, body);
     
     console.log('Account created: ', email);
