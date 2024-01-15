@@ -18,12 +18,9 @@ const PropertiesVolume = {
     }
   },
   setSecret: (fromPath, toPath) => {
-    console.log('************launch darkly token***********');
-    console.debug(get(config, fromPath));
     if (config.has(fromPath)) {
       set(config, toPath, get(config, fromPath));
     }
-    console.debug(config.get(toPath));
   },
 };
 

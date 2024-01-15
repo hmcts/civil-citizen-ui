@@ -1,6 +1,5 @@
 import config from 'config';
-import {LDClient, init, LDFlagValue} from 'launchdarkly-node-server-sdk';
-const launchDarklyTestSdk = config.get<string>('services.launchDarkly.sdk');
+import { LDClient, init, LDFlagValue } from 'launchdarkly-node-server-sdk';
 
 const user = {
   'name': 'civil-service',
@@ -9,20 +8,22 @@ const user = {
 
 let ldClient: LDClient;
 
-async function getClient(): Promise<LDClient> {
+async function getClient(): Promise<void> {
+  const launchDarklyTestSdk = config.get<string>('services.launchDarkly.sdk');
   console.log('******************Launchdarkly initializing token below****************');
   console.log(launchDarklyTestSdk);
-  const client = init(launchDarklyTestSdk);
-  await client.waitForInitialization();
-  console.log('***********initialized the launch darkly instance***************');
-  console.debug(client);
-  return client;
+  if (launchDarklyTestSdk) {
+    const client = init(launchDarklyTestSdk);
+    ldClient = await client.waitForInitialization();
+    console.log('***********initialized the launch darkly instance***************');
+    console.debug(client);
+  }
 }
 
 export async function getFlagValue(
   key: string,
 ): Promise<LDFlagValue> {
-  if (!ldClient && launchDarklyTestSdk) ldClient = await getClient();
+  if (!ldClient) await getClient();
   if (ldClient)
     return await ldClient.variation(key, user, false);
 }
