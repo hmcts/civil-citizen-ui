@@ -70,14 +70,14 @@ export const getRespondToClaimLink = (claimId: string, lang: string): ClaimSumma
   );
 };
 
-export const getClaimantRespondToClaimLink = (claim: Claim, claimId: string, lang: string): ClaimSummarySection => {
+export const getClaimantRespondToClaimLink = (claim: Claim, lang: string): ClaimSummarySection => {
   if (!claim.isFAPaymentOptionPayImmediately()) {
     return (
       {
         type: ClaimSummaryType.LINK,
         data: {
           text: t('COMMON.BUTTONS.RESPOND_TO_CLAIM', {lng: lang}),
-          href: CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claimId),
+          href: CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claim.id),
         },
       }
     );

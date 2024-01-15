@@ -16,8 +16,8 @@ export const getLatestUpdateContent = (claimId: string, claim: Claim, lng: strin
   });
 };
 
-export const getLatestUpdateContentForClaimant = (claimId: string, claim: Claim, lng: string): ClaimSummaryContent[] => {
-  const responseToClaimSectionForClaimant = buildResponseToClaimSectionForClaimant(claim, claimId, lng);
+export const getLatestUpdateContentForClaimant = (claim: Claim, lng: string): ClaimSummaryContent[] => {
+  const responseToClaimSectionForClaimant = buildResponseToClaimSectionForClaimant(claim, lng);
   const latestUpdateContent = [responseToClaimSectionForClaimant];
 
   const filteredLatestUpdateContent = latestUpdateContent.filter(sectionContent => sectionContent.length);

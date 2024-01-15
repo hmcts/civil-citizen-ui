@@ -497,10 +497,10 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   return sectionContent.flat();
 };
 
-export const buildResponseToClaimSectionForClaimant = (claim: Claim, claimId: string, lang: string): ClaimSummarySection[] => {
+export const buildResponseToClaimSectionForClaimant = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
-  const respondToClaimLink = getClaimantRespondToClaimLink(claim, claimId, lng);
+  const respondToClaimLink = getClaimantRespondToClaimLink(claim, lng);
   if (claim.isClaimantIntentionPending()) {
     sectionContent.push(respondToClaimLink);
   }
