@@ -23,6 +23,7 @@ export async function getFlagValue(
   key: string,
 ): Promise<LDFlagValue> {
   if (!ldClient && launchDarklyTestSdk) ldClient = await getClient();
+  if (ldClient)
   return await ldClient.variation(key, user, false);
 }
 
