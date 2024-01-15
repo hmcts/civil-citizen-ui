@@ -315,7 +315,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-      logger.info('submitted event ' + data.event);
+   
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
