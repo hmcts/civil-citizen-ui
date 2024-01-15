@@ -20,11 +20,13 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
   const lng = getLng(lang);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
   const paymentOption = claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+  const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION.${paymentOption.toUpperCase()}` : '';
+  const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const paymentDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_TITLE', {lng}),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME', {lng}),
-        paymentOption?.charAt(0).toUpperCase() + paymentOption?.substring(1), ccjPaidAmountHref, changeLabel(lng)),
+        paymentOptionText?.charAt(0).toUpperCase() + paymentOptionText?.substring(1), ccjPaidAmountHref, changeLabel(lng)),
     ],
   });
 

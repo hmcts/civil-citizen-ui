@@ -107,7 +107,7 @@ export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: s
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.chooseHowToProceed) {
+  if (claim.claimantResponse?.chooseHowToProceed?.option) {
     chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
   return chooseHowFormaliseTask;
@@ -137,7 +137,7 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
   };
 
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
-    || (claim.isPAPaymentOptionByDate() && claim.partialAdmission?.paymentIntention?.paymentDate)
+    || (claim.isPAPaymentOptionByDate() && claim.claimantResponse?.suggestedPaymentIntention)
     || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
