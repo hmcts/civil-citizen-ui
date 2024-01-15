@@ -49,7 +49,6 @@ describe('Latest Update Content service', () => {
   describe('test getLatestUpdateContentForClaimant', () => {
     const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
     const claim = new Claim();
-    const mockClaimId = '5129';
     const lng = 'en';
     const caseData = Object.assign(claim, mockClaim.case_data);
     caseData.ccdState = 'AWAITING_APPLICANT_INTENTION';
