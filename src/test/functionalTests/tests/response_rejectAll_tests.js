@@ -17,7 +17,7 @@ Feature('Response with RejectAll');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    let user = await createAccount();
+    let user = await createAccount(config.defendantCitizenUser.email);
     config.defendantCitizenUser.email = user.email;
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
@@ -81,4 +81,5 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
