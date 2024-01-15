@@ -22,8 +22,11 @@ export class PropertiesVolume {
   }
 
   private static setSecret(fromPath: string, toPath: string): void {
+    console.log('************launch darkly token***********');
+    console.debug(get(config, fromPath));
     if (config.has(fromPath)) {
       set(config, toPath, get(config, fromPath));
     }
+    console.debug(config.get(toPath));
   }
 }
