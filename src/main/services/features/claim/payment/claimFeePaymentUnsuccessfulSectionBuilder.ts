@@ -1,6 +1,6 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 export class PaymentUnsuccessfulSectionBuilder extends PageSectionBuilder {
 

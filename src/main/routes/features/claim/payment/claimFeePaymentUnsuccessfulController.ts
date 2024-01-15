@@ -3,13 +3,13 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import {
- getPaymentUnsuccessfulBodyContent,
+  getPaymentUnsuccessfulBodyContent,
 } from 'services/features/claim/payment/claimFeePaymentConfirmationContent';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getLng} from "common/utils/languageToggleUtils";
+import {getLng} from 'common/utils/languageToggleUtils';
 const paymentUnsuccessfulController: Router = Router();
 
 const paymentUnsuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-unsuccessful';

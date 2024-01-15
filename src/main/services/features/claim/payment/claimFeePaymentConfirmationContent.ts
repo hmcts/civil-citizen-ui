@@ -1,8 +1,8 @@
 import {Claim} from 'models/claim';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/payment/claimFeePaymentSuccessfulSectionBuilder';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {PaymentUnsuccessfulSectionBuilder} from "services/features/claim/payment/claimFeePaymentUnsuccessfulSectionBuilder";
-import {t} from "i18next";
+import {PaymentUnsuccessfulSectionBuilder} from 'services/features/claim/payment/claimFeePaymentUnsuccessfulSectionBuilder';
+import {t} from 'i18next';
 
 export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
   return new PaymentSuccessfulSectionBuilder()
@@ -46,5 +46,5 @@ export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lang : string, 
       callCharges, callChargesLink,
       t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FIND_OUT_CHARGES', {lng: lang}),
       t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FULL_STOP', {lng: lang}))
-    .build()
-}
+    .build();
+};
