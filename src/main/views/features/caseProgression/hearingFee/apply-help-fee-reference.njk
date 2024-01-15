@@ -6,7 +6,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/back.njk" import back %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% block pageTitle %}
@@ -14,24 +14,17 @@
 {% endblock %}
 
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: startApplyHelpFee,
-    classes: 'govuk-!-margin-top-0'
-  }) }}
-  <div class="govuk-width-container govuk-!-padding-top-9">
-    <main class="govuk-main-wrapper govuk-!-padding-top-7" role="main">
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% if form.hasErrors() %}
         {{ errorSummary(form.getAllErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          {{ csrfProtection(csrf) }}
+            {{ back(startApplyHelpFee,t) }}
           {% for content in applyHelpFeeReferenceContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
-
-
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set yesHtml %}

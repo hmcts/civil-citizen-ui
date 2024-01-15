@@ -5,6 +5,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/back.njk" import back %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
@@ -17,12 +18,8 @@
 }) %}
 
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: backLink
-  }) }}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -34,8 +31,9 @@
         {% endif %}
         {% endset -%}
       {% endif %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+         {{ back(backUrl,t) }}
           <h1 class="govuk-heading-l">{{ t('PAGES.AGREED_RESPONSE_DEADLINE.TITLE') }}</h1>
         </div>
       </div>
