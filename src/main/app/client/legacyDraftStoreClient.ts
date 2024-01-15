@@ -37,7 +37,7 @@ const getOcmcDraftClaims = async (userToken: string): Promise<DashboardClaimantI
       '/drafts',
       {headers},
     );
-    logger.info(`Draft raw data retrieved from Legacy Draft Store: ${JSON.stringify(response.data)}`);
+    logger.info(`Draft raw data retrieved from Legacy Draft Store`);
     const ocmcDraftData: OcmcDraftData = response.data as unknown as OcmcDraftData;
     const draft = ocmcDraftData?.data?.length? ocmcDraftData.data[0]: undefined;
     return draftOcmcClaimToDashboardItem(draft);

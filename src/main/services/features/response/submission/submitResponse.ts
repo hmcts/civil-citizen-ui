@@ -23,7 +23,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
     const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
-    logger.info(ccdResponse);
+    logger.info('Successfully translated the defendant response to ccd')
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);

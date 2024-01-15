@@ -10,8 +10,12 @@ const user = {
 let ldClient: LDClient;
 
 async function getClient(): Promise<LDClient> {
+  console.log('******************Launchdarkly initializing token below****************');
+  console.log(launchDarklyTestSdk);
   const client = init(launchDarklyTestSdk);
   await client.waitForInitialization();
+  console.log('***********initialized the launch darkly instance***************');
+  console.debug(client);
   return client;
 }
 

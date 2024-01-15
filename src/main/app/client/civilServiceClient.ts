@@ -131,7 +131,6 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      logger.info('----ccd-caseDetails----', caseDetails);
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       return convertCaseToClaim(caseDetails);
@@ -316,7 +315,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-      logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
+      logger.info('submitted event ' + data.event);
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
