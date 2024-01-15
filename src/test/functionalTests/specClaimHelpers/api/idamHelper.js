@@ -32,26 +32,27 @@ async function accessToken(user) {
 
 async function createAccount(email) {
   try {
-    let body = {"email": email, "password": "Password12!", "forename": "forename", "surname": "surname", "roles": [{"code": "citizen"}]};
+    let body = {'email': email, 'password': 'Password12!', 'forename': 'forename', 'surname': 'surname', 'roles': [{'code': 'citizen'}]};
     let result = await restHelper.request(`${idamUrl}/testing-support/accounts/`, {'Content-Type': 'application/json'}, body);
     
-    console.log('Account created: ', email)
+    console.log('Account created: ', email);
 
     return result.json();
   } catch (error) {
-    console.error("Error creating account:", error);
+    console.error('Error creating account:', error);
     throw error; 
   }
 }
 
 async function deleteAccount(email) {
   try {
-    let result = await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, method = 'DELETE');
+    let method = 'DELETE';
+    await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, method);
 
     console.log('Accounr deleted: ' + email);
     
   } catch (error) {
-    console.error("Error deleting account:", error);
+    console.error('Error deleting account:', error);
     throw error; 
   }
 }
@@ -69,5 +70,5 @@ module.exports = {
   accessToken,
   userId,
   createAccount,
-  deleteAccount
+  deleteAccount,
 };
