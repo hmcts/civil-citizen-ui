@@ -2299,18 +2299,18 @@
         "TOTAL_AMOUNT": "Total amount"
       },
       "UNSUCCESSFUL": {
-        "PAGE_TITLE": "Your payment was unsuccessful",
-        "CLAIM_NUMBER": "Claim Number: {{ claimNumber }}",
+        "CALL_US_ON": "Or, call us on ",
+        "CLAIM_NUMBER": "Claim number: {{ claimNumber }}",
         "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
-        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "FIND_OUT_CHARGES": "Find out about call charges",
+        "FULL_STOP": ".",
         "GO_BACK": "Go back and ",
         "TRY_PAYMENT_AGAIN": "try the payment again",
-        "CALL_US_ON": "Or, call us on ",
-        "PHONE_NUMBER": "0300 123 7050",
         "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "PAGE_TITLE": "Your payment was unsuccessful",
         "OPEN_TIMES": "Opening times:",
-        "FIND_OUT_CHARGES": "Find out about call charges",
-        "FULL_STOP": "."
+        "PHONE_NUMBER": "0300 123 7050"
       }
     },
     "PAYMENT_OPTION": {
