@@ -81,7 +81,7 @@ describe('toCUICaseProgression', () => {
     ccdClaim.respondent1RevisedHearingRequirements = {revisedHearingRequirements: YesNoUpperCamelCase.YES, revisedHearingComments: 'textArea'};
     ccdClaim.applicantHearingOtherComments = {hearingOtherComments: 'other trial info'};
     ccdClaim.respondent1HearingOtherComments = {hearingOtherComments: 'other trial info'};
-    ccdClaim.hearingFeeHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: '12341234123'};
+    ccdClaim.hearingHelpFeesReferenceNumber =  '12341234123';
 
     const expectedOutput = createCUIClaim();
     expectedOutput.defendantTrialArrangements = getTrialArrangementFilled();

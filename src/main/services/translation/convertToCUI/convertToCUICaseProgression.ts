@@ -18,6 +18,7 @@ import {
 } from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {toCUITrialArrangements} from 'services/translation/convertToCUI/convertToCUITrialArrangements';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {YesNo} from 'form/models/yesNo';
 
 export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
   if (!ccdClaim) {
@@ -51,8 +52,8 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
 
-    if(ccdClaim.hearingFeeHelpWithFees?.helpWithFee) {
-      caseProgression.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(ccdClaim.hearingFeeHelpWithFees.helpWithFee.toLowerCase(), ccdClaim.hearingFeeHelpWithFees.helpWithFeesReferenceNumber);
+    if(ccdClaim.hearingHelpFeesReferenceNumber) {
+      caseProgression.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, ccdClaim.hearingHelpFeesReferenceNumber);
     }
 
     return caseProgression;

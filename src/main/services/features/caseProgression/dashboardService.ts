@@ -65,15 +65,15 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
 
 const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
   const hearingFeeActionable = claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee != null;
+  const hearingDueDate =  new Date(claim?.caseProgressionHearing?.hearingFeeInformation?.hearingDueDate);
+  const hearingFeeHelpText = t('PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE', {hearingDueDate: formatStringDateDMY(hearingDueDate)});
 
   if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber){
     const taskStatus = TaskStatus.IN_PROGRESS;
-    return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', taskStatus, false, TaskStatusColor[taskStatus]);
+    return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', taskStatus, false, TaskStatusColor[taskStatus], hearingFeeHelpText);
   } else if (hearingFeeActionable) {
     const hearingFeeUrl = PAY_HEARING_FEE_URL.replace(':id', claim.id);
     const hearingFeeTaskStatus = TaskStatus.ACTION_NEEDED;
-    const hearingDueDate =  new Date(claim?.caseProgressionHearing?.hearingFeeInformation?.hearingDueDate);
-    const hearingFeeHelpText = t('PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE', {hearingDueDate: formatStringDateDMY(hearingDueDate)});
     return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), hearingFeeUrl, hearingFeeTaskStatus, false, TaskStatusColor[hearingFeeTaskStatus], hearingFeeHelpText);
   }
   return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]);
