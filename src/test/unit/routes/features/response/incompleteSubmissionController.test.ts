@@ -7,6 +7,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from "models/claim";
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -39,6 +40,11 @@ describe('Response - Check answers', () => {
 
   describe('on GET', () => {
     it('should return incomplete submission page', async () => {
+      mockGetCaseDataFromStore.mockImplementation(() => {
+        const claim = new Claim();
+        claim.submittedDate = new Date();
+        return claim;
+      });
       mockOutstandingTasksFromCase.mockImplementation(() => [
         {
           description: TASK_DESCRIPTION,
