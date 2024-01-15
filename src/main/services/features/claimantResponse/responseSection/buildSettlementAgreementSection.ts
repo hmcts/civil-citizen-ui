@@ -4,20 +4,25 @@ import {t} from 'i18next';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {
-  getAmount, getFinalPaymentDate,
-  getFirstRepaymentDate,
-  getPaymentAmount,
+  getAmount, getFinalPaymentDate, getFinalPaymentDateForClaimantPlan,
+  getFirstRepaymentDate, getFirstRepaymentDateClaimantPlan,
+  getPaymentAmount, getPaymentAmountClaimantPlan,
   getPaymentDate,
-  getRepaymentFrequency,
+  getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan,
 } from 'common/utils/repaymentUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
-export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string): SummarySection => {
-  const paymentDate = t(formatDateToFullDate(getPaymentDate(claim), lng));
+export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
+
+  const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
+
+  const paymentDate = t(formatDateToFullDate(isClaimantPlanAccepted? date.date:getPaymentDate(claim), lng));
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   return summarySection({
@@ -25,21 +30,24 @@ export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: 
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', { fullName, amount, paymentDate, lng }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng as string)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${paymentDate}`),
-    ], 
-  }); 
+    ],
+  });
 };
 
-export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lng: string): SummarySection => {
+export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
-  const instalmentAmount = getPaymentAmount(claim);
-  const frequency = t(`COMMON.PAYMENT_FREQUENCY.${getRepaymentFrequency(claim)}`, { lng })?.toLowerCase();
-  const instalmentDate = formatDateToFullDate(getFirstRepaymentDate(claim), lng);
+  const instalmentAmount = isClaimantPlanAccepted ? getPaymentAmountClaimantPlan(claim) : getPaymentAmount(claim);
+  const paymentFrequency= isClaimantPlanAccepted ? getRepaymentFrequencyForClaimantPlan(claim) : getRepaymentFrequency(claim);
+  console.log(paymentFrequency);
+  const frequency = t(`COMMON.PAYMENT_FREQUENCY.${paymentFrequency}`, { lng })?.toLowerCase();
+
+  const instalmentDate = isClaimantPlanAccepted ? formatDateToFullDate(getFirstRepaymentDateClaimantPlan(claim), lng) : formatDateToFullDate(getFirstRepaymentDate(claim), lng);
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lng, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng as string)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${formatDateToFullDate(getFinalPaymentDate(claim), lng)}`),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${isClaimantPlanAccepted?formatDateToFullDate(getFinalPaymentDateForClaimantPlan(claim),lng):formatDateToFullDate(getFinalPaymentDate(claim), lng)}`),
     ],
   });
 };
@@ -48,12 +56,20 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlement = claim.isSignASettlementAgreement();
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
-
-  if (isSignSettlementForPayBySetDate)
-    return buildSummaryForPayBySetDate(claim, claimId, lng);
-
-  if (isSignSettlementForPayByInstallments)
-    return buildSummaryForPayByInstallments(claim, claimId, lng);
+  if (claim.hasCourtAcceptedClaimantsPlan()) {
+    if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE) {
+      return buildSummaryForPayBySetDate(claim, claimId, lng,true);
+    } else if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.INSTALMENTS) {
+      return buildSummaryForPayByInstallments(claim, claimId, lng,true);
+    }
+  }else {
+    if (isSignSettlementForPayBySetDate) {
+      return buildSummaryForPayBySetDate(claim, claimId, lng, false);
+    }
+    if (isSignSettlementForPayByInstallments) {
+      return buildSummaryForPayByInstallments(claim, claimId, lng, false);
+    }
+  }
 };
 
 export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {

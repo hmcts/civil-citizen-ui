@@ -10,7 +10,7 @@ import {
   convertFrequencyToText,
   convertFrequencyToTextForRepaymentPlan,
   getAmount,
-  getFinalPaymentDate,
+  getFinalPaymentDate, getFinalPaymentDateForClaimantPlan,
   getFirstRepaymentDate,
   getPaymentAmount,
   getPaymentDate,
@@ -22,6 +22,9 @@ import {t} from 'i18next';
 import {YesNo} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from 'common/models/claim';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
@@ -398,6 +401,34 @@ describe('repaymentUtils', () => {
       const result = getAmount(claim);
       //Then
       expect(result).toBe(1000);
+    });
+  });
+
+  describe('Claimant plan accepted',()=>{
+
+    it('should return final repayment date when repayment frequency is set to WEEK', () => {
+      //Given
+      claim.claimantResponse = { chooseHowToProceed: { option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT } } as ClaimantResponse;
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.partialAdmission=new PartialAdmission();
+
+      claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+      claim.partialAdmission.howMuchDoYouOwe.amount = 200;
+      claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
+      claim.claimantResponse=new ClaimantResponse();
+      claim.claimantResponse.courtDecision=RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      claim.claimantResponse.suggestedPaymentIntention={
+        paymentOption:PaymentOptionType.INSTALMENTS,
+        repaymentPlan:{
+          paymentAmount:10,
+          repaymentFrequency:TransactionSchedule.WEEK,
+          firstRepaymentDate:new Date(),
+        }
+      };      //When
+      const finalRepaymentDate = getFinalPaymentDateForClaimantPlan(claim);
+      //Then
+      const expected = addDaysToDate(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate, (19 * WEEKDAYS));
+      expect(finalRepaymentDate).toEqual(expected);
     });
   });
 
