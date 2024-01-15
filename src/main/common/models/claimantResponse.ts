@@ -69,6 +69,10 @@ export class ClaimantResponse {
     return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
+  get isSignASettlementAgreement(): boolean {
+    return this.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+  }
+
   get isClaimantAcceptedPaymentPlan() : boolean {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
@@ -86,7 +90,25 @@ export class ClaimantResponse {
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
   }
 
+  get isRequestJudgePaymentPlan(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE 
+      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
+
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
+  }
+
+  hasClaimantNotAgreedToMediation(): boolean {
+    return this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasClaimantAgreedToMediation(): boolean {
+    return this.mediation?.canWeUse?.option === YesNo.YES;
+  }
+  
+  get isClaimantRejectedCourtDecision(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
   }
 }
