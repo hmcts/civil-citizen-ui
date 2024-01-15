@@ -16,7 +16,7 @@ export class PropertiesVolume {
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.civil-cui.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
       PropertiesVolume.setSecret('secrets.civil-cui.civil-citizen-ui-token-key', 'services.pcq.tokenKey');
-      PropertiesVolume.setSecret('secrets.civil-cui.LAUNCH_DARKLY_SDK_KEY', 'launchDarkly.sdk');
+      PropertiesVolume.setSecret('secrets.civil-cui.LAUNCH_DARKLY_SDK_KEY', 'services.launchDarkly.sdk');
 
     }
   }
