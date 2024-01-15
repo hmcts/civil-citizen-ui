@@ -24,7 +24,7 @@ export async function getFlagValue(
 ): Promise<LDFlagValue> {
   if (!ldClient && launchDarklyTestSdk) ldClient = await getClient();
   if (ldClient)
-  return await ldClient.variation(key, user, false);
+    return await ldClient.variation(key, user, false);
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
