@@ -9,6 +9,8 @@ services:
     microservice: 'civil_service'
   postcodeLookup:
     ordnanceSurveyApiKey:
+  launchDarkly:
+    sdk:
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
@@ -58,5 +60,4 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
-launchDarkly:
-  sdk:
+
