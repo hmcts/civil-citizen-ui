@@ -84,7 +84,7 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
         paymentOption:PaymentOptionType.INSTALMENTS,
         repaymentPlan:{
           paymentAmount:10,
-        }
+        },
       };
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');

@@ -43,7 +43,7 @@ const getFinalDay = (repaymentFrequency: string, firstRepaymentDate: Date, numbe
       break;
   }
   return finalRepaymentDate;
-}
+};
 
 export const getFinalPaymentDateForClaimantPlan = (claim: Claim): Date => {
   const numberOfInstalments = getNumberOfInstalmentsForClaimantPlan(claim);
@@ -51,7 +51,6 @@ export const getFinalPaymentDateForClaimantPlan = (claim: Claim): Date => {
   const repaymentFrequency = getRepaymentFrequencyForClaimantPlan(claim);
 
   return getFinalDay(repaymentFrequency, firstRepaymentDate, numberOfInstalments);
-  ;
 };
 
 export const getAmount = (claim: Claim): number => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
@@ -62,7 +61,6 @@ export const getPaymentAmount = (claim: Claim): number => {
   }
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
-
 
 export const getPaymentAmountClaimantPlan = (claim: Claim): number => {
   return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount;

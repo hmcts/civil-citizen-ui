@@ -423,8 +423,9 @@ describe('repaymentUtils', () => {
           paymentAmount:10,
           repaymentFrequency:TransactionSchedule.WEEK,
           firstRepaymentDate:new Date(),
-        }
-      };      //When
+        },
+      };
+      //When
       const finalRepaymentDate = getFinalPaymentDateForClaimantPlan(claim);
       //Then
       const expected = addDaysToDate(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate, (19 * WEEKDAYS));
