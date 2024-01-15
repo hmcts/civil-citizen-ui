@@ -20,6 +20,7 @@ import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPR
 import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
 import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
+import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -56,5 +57,6 @@ export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDCl
   const ccdClaim = translateDraftClaimToCCD(claim, req);
   ccdClaim.timelineOfEvents = toCCDTimelineEvent(claim.claimDetails?.timeline);
   ccdClaim.claimFee = toCCDClaimFee(claim.claimFee);
+  ccdClaim.claimantBilingualLanguagePreference = toCCDLanguage(claim.claimantBilingualLanguagePreference);
   return ccdClaim;
 };
