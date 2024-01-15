@@ -8,6 +8,11 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftSt
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('routes/guards/ccjConfirmationGuard', () => ({
+  ccjConfirmationGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('CCJ confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,7 +29,7 @@ describe('CCJ confirmation controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const res = await request(app).get(CCJ_CONFIRMATION_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('County Court Judgement requested');
+      expect(res.text).toContain('County Court Judgment requested');
     });
 
     it('should return http 500 when has error in the get method', async () => {

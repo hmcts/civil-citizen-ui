@@ -17,6 +17,9 @@ import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
 import {PartyType} from 'models/partyType';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
@@ -29,11 +32,12 @@ const detailsURLs = [
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 ];
 
-function renderPage(res: Response, req: Request, claimantDetails: GenericForm<PartyDetails>, partyType: PartyType): void {
+function renderPage(res: Response, req: Request, claimantDetails: GenericForm<PartyDetails>, partyType: PartyType, carmEnabled: boolean): void {
   if (partyType === PartyType.COMPANY || partyType === PartyType.ORGANISATION) {
     res.render(claimantOrganisationDetailsPath, {
       party: claimantDetails,
       type: partyType,
+      carmEnabled: carmEnabled,
     });
   } else {
     res.render(claimantIndividualDetailsPath, {
@@ -48,7 +52,9 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
     const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
-    renderPage(res, req, claimantDetails, claimant.type);
+    const claim: Claim = await getCaseDataFromStore(caseId);
+    const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
+    renderPage(res, req, claimantDetails, claimant.type, carmEnabled);
   } catch (error) {
     next(error);
   }
@@ -56,16 +62,18 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
 
 claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const caseId = (<AppRequest>req).session?.user?.id;
+  const claim: Claim = await getCaseDataFromStore(caseId);
+  const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
 
   try {
     const claimant = await getClaimantInformation(caseId);
-    const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body));
+    const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body, carmEnabled));
 
     partyDetails.validateSync();
 
     if (partyDetails.hasErrors()) {
       generateCorrespondenceAddressErrorMessages(partyDetails);
-      renderPage(res, req, partyDetails, claimant.type);
+      renderPage(res, req, partyDetails, claimant.type, carmEnabled);
     } else {
       await saveClaimantProperty(caseId, 'partyDetails', partyDetails.model);
 

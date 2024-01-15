@@ -3,6 +3,7 @@ const config = require('../../config');
 const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 
@@ -37,4 +38,8 @@ Scenario('No response submitted, date agreed upon request time  @citizenUI @nigh
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await ResponseSteps.DefendantSummaryPage(claimRef);
   }
+});
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
 });

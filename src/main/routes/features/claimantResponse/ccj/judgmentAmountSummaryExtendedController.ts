@@ -5,16 +5,13 @@ import {
 } from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import config from 'config';
 import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
@@ -25,18 +22,26 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   });
 }
 
-judgmentAmountSummaryExtendedController.get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response, next: NextFunction) => {
-  (async () => {
-    try {
-      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(generateRedisKey(req));
-      const claimFee = await civilServiceClient.getClaimAmountFee(claim.totalClaimAmount, req);
-      renderView(req, res, claim, lang, claimFee);
-    } catch (error) {
-      next(error);
-    }
-  })();
-},
+judgmentAmountSummaryExtendedController.get(
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  (req: AppRequest, res: Response, next: NextFunction) => {
+    (async () => {
+      try {
+        const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+        const claim = await getCaseDataFromStore(generateRedisKey(req));
+
+        if (!claim.claimFee?.calculatedAmountInPence) {
+          throw new Error();
+        }
+        const claimFee = convertToPoundsFilter(
+          claim.claimFee?.calculatedAmountInPence,
+        );
+        renderView(req, res, claim, lang, claimFee);
+      } catch (error) {
+        next(error);
+      }
+    })();
+  },
 );
 
 judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {

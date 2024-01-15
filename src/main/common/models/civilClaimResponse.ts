@@ -46,7 +46,7 @@ import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {Evidence} from 'form/models/evidence/evidence';
-import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDLanguage, CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
@@ -74,6 +74,7 @@ import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreath
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 
 export class CivilClaimResponse {
   id: string;
@@ -194,8 +195,6 @@ export interface CCDClaim extends ClaimUpdate {
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
-  trialReadyApplicant?: YesNoUpperCamelCase;
-  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
   documentForDisclosure?: UploadEvidenceElementCCD[];
@@ -253,6 +252,10 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentDate?: Date;
   repaymentFrequency?: CCDPaymentFrequency;
   repaymentSuggestion?: string;
+  trialReadyApplicant?: YesNoUpperCamelCase;
+  applicantRevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
+  applicantHearingOtherComments?: CCDTrialArrangementsOtherComments;
+  trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   enterBreathing?: CCDBreathingSpaceStartInfo;
@@ -264,7 +267,10 @@ export interface CCDClaim extends ClaimUpdate {
   liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
-  applicant1RepaymentOptionForDefendantSpec?: CCDPaymentOption;
+  applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
+  claimantBilingualLanguagePreference?:CCDLanguage;
+  hearingHelpFeesReferenceNumber?: string;
+
 }
 
 export interface ClaimFeeData {

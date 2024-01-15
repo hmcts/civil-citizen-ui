@@ -1,6 +1,6 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import * as requestModels from 'common/models/AppRequest';
-import {CCDClaim, CivilClaimResponse} from 'common/models/civilClaimResponse';
+import {CCDClaim, CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
@@ -28,6 +28,8 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDPaymentOption} from 'models/ccdResponse/ccdPaymentOption';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -490,7 +492,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest);
+      const claim = await civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -556,7 +558,182 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('getClaimFeeData', () => {
+    const mockData = {
+      calculatedAmountInPence: 123,
+      code: 'code',
+      version: 1,
+    };
+
+    it('should get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, mockedAppRequest);
+
+      //Then
+      expect(feeResponse).toEqual(mockData);
+    });
+
+    it('should get claim fee amount', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, mockedAppRequest);
+
+      //Then
+      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+    });
+
+    it('should throw error on get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //Then
+      await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('getClaimFeeData', () => {
+    const mockData = {
+      calculatedAmountInPence: 123,
+      code: 'code',
+      version: 1,
+    };
+
+    it('should get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, mockedAppRequest);
+
+      //Then
+      expect(feeResponse).toEqual(mockData);
+    });
+
+    it('should get claim fee amount', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, mockedAppRequest);
+
+      //Then
+      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+    });
+
+    it('should throw error on get claim fee data', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //Then
+      await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+  describe('verifyOcmcPin', () => {
+
+    it('should get redirectUrl for OCMC claimSummary', async () => {
+      const mockResponse: AxiosResponse = {
+        config: undefined, headers: undefined, statusText: 'OK',
+        status: 200,
+        data: 'https://redirectUrl',
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue(mockResponse);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+
+      //Then
+      expect(redirectUrl).toEqual('https://redirectUrl');
+    });
+  });
+
+  describe('getFeePaymentRedirectInformation', () => {
+    const claimId = '1';
+    it('should get payment redirect information', async () => {
+      const mockHearingFeePaymentRedirectInfo = {
+        status: 'initiated',
+        nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data: mockHearingFeePaymentRedirectInfo});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentRedirectInformation(claimId, FeeType.HEARING, mockedAppRequest);
+
+      //Then
+      expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
+    });
+
+    it('should throw error on get hearing fee redirect information', async () => {
+      //Given
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //Then
+      await expect(civilServiceClient.getFeePaymentRedirectInformation(claimId,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getFeePaymentStatus', () => {
+    const mockHearingFeePaymentRedirectInfo = {
+      status: 'Success',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
+      paymentReference: 'RC-1701-0909-0602-0418',
+    };
+    it('should get payment status info', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockHearingFeePaymentRedirectInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, mockedAppRequest);
+
+      //Then
+      expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
+    });
+
+    it('should throw error on get hearing fee redirect information', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //Then
+      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

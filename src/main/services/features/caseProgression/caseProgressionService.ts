@@ -10,7 +10,7 @@ import {
 } from 'models/document/documentType';
 import {
   ExpertSection,
-  FileOnlySection,
+  FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection,
@@ -49,6 +49,8 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
     if(parentPropertyName == 'defendantTrialArrangements' && !claim?.caseProgression.defendantTrialArrangements)
     {
       claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+    } else if (parentPropertyName == 'claimantTrialArrangements' && !claim?.caseProgression.claimantTrialArrangements) {
+      claim.caseProgression.claimantTrialArrangements = new TrialArrangements();
     }
 
     if(caseProgressionPropertyName == 'hearingFeeHelpSelection')
@@ -174,7 +176,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   const witnessStatement = getFormSection<WitnessSection>(req.body.witnessStatement, bindRequestToWitnessSectionObj);
   const witnessSummary = getFormSection<WitnessSection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
   const noticeOfIntention = getFormSection<WitnessSection>(req.body.noticeOfIntention, bindRequestToWitnessSectionObj);
-  const documentsReferred = getFormSection<TypeOfDocumentSection>(req.body.documentsReferred, bindRequestToTypeOfDocumentSectionObj);
+  const documentsReferred = getFormSection<ReferredToInTheStatementSection>(req.body.documentsReferred, bindRequestToReferredToInTheStatementSectionObj);
 
   const expertReport = getFormSection<ExpertSection>(req.body.expertReport, bindRequestToExpertSectionObj);
   const expertStatement = getFormSection<ExpertSection>(req.body.expertStatement, bindRequestToExpertSectionObj);
@@ -218,6 +220,16 @@ const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
+  return formObj;
+};
+
+const bindRequestToReferredToInTheStatementSectionObj = (request: any): ReferredToInTheStatementSection => {
+  const formObj: ReferredToInTheStatementSection = new ReferredToInTheStatementSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.witnessName = request['witnessName'] != null ? request['witnessName'].trim() : null;
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }

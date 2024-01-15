@@ -66,6 +66,8 @@ nodejs:
     DRAFT_STORE_API_URL: http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
+    GOVPAY_URL: https://card.payments.service.gov.uk
+    CARM_DATE: '01 May 2024'
 
   autoscaling:
     enabled: true

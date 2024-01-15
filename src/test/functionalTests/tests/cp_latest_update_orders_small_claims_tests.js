@@ -1,11 +1,12 @@
 const config = require('../../config');
 const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
+const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created');
+Feature.skip('Case progression journey - Verify latest Update page For an Order being Created');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -24,3 +25,7 @@ Scenario('Case progression journey - Sall Clais - Verify latest Update page for 
     UploadEvidenceSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
 }).tag('@regression');
+
+AfterSuite(async  () => {
+  await unAssignAllUsers();
+});

@@ -1,5 +1,5 @@
 {
-  "id": 1645882162449409,
+  "id": "1645882162449409",
   "jurisdiction": "CIVIL",
   "case_type_id": "CIVIL",
   "created_date": "2022-03-01T13:29:22.447",
@@ -187,6 +187,13 @@
         "phone": "111"
       },
       "partyDetails": {
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 18",
+          "addressLine3": "Church Road"
+        },
         "contactPerson": "Felipe",
         "partyName": "Version 1"
       }
@@ -614,6 +621,15 @@
           "textArea": "a witness requires a courtroom with step-free access."
         },
         "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
+      },
+      "hearing": {
+        "paymentInformation": {
+          "paymentReference": "RC-1701-0909-0602-0418",
+          "status": "Initiated"
+        }
+      },
+      "helpFeeReferenceNumberForm": {
+        "referenceNumber": "12345678901"
       }
     }
   }
