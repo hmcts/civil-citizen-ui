@@ -2302,10 +2302,13 @@
         "PAGE_TITLE": "Your payment was unsuccessful",
         "CLAIM_NUMBER": "Claim Number: {{ claimNumber }}",
         "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
-        "NO_MONEY_TAKEN": "No money has been taken from your account",
-        "CALL_US_ON": "Or, call us on {{ telephone }} to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "GO_BACK": "Go back and ",
+        "TRY_PAYMENT_AGAIN": "try the payment again",
+        "CALL_US_ON": "Or, call us on 0300 123 7050 to make your payment manually, quoting the case reference above.",
         "OPEN_TIMES": "Opening times:",
-        "FIND_OUT_CHARGES": "Find out about call charges"
+        "FIND_OUT_CHARGES": "Find out about call charges",
+        "FULL_STOP": "."
       }
     },
     "PAYMENT_OPTION": {

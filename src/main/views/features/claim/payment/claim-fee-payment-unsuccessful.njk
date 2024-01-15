@@ -13,17 +13,9 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           {{ csrfProtection(csrf) }}
-          {% for content in paymentSuccessfulPanel %}
+          {% for content in paymentUnsuccessfulBody %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          {% for content in paymentSuccessfulBody %}
-            {{ itemContent(content,t) }}
-          {% endfor %}
-          <div class="govuk-width-container govuk-!-padding-top-5">
-          {% for content in paymentSuccessfulButton %}
-            {{ itemContent(content,t) }}
-          {% endfor %}
-          </div>
         </div>
       </div>
     </main>
