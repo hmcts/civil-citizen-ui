@@ -930,7 +930,7 @@ describe('Latest Update Content Builder', () => {
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
       // When
-      const responseToClaimSection = buildResponseToClaimSectionForClaimant(claim, claim.id, lng);
+      const responseToClaimSection = buildResponseToClaimSectionForClaimant(claim, lng);
       // Then
       expect(responseToClaimSection.length).toBe(1);
       expect(responseToClaimSection[0].data.text).toBe('COMMON.BUTTONS.RESPOND_TO_CLAIM');

@@ -55,10 +55,10 @@ describe('Latest Update Content service', () => {
     caseData.ccdState = 'AWAITING_APPLICANT_INTENTION';
     caseData.respondent1 = {responseType: 'PART_ADMISSION'};
     caseData.partialAdmission.paymentIntention.paymentOption = 'BY_SET_DATE';
-    const actualLatestUpdateContent = getLatestUpdateContentForClaimant(mockClaimId, caseData, lng);
+    const actualLatestUpdateContent = getLatestUpdateContentForClaimant(caseData, lng);
     it('should return response to claim section latest update content for claimant', () => {
       //when
-      const claimantResponseToClaimSection = buildResponseToClaimSectionForClaimant(caseData, mockClaimId, lng);
+      const claimantResponseToClaimSection = buildResponseToClaimSectionForClaimant(caseData, lng);
       const latestUpdateContent = [claimantResponseToClaimSection];
       const filteredLatestUpdateContent = latestUpdateContent.filter(sectionContent => sectionContent.length);
       const formattedLatestUpdateContent = filteredLatestUpdateContent.map((sectionContent, index) => {
