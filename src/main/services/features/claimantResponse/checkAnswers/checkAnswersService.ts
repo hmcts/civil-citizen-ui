@@ -31,7 +31,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     return buildHowYouWishToProceed(claim, claimId, lang);
   };
   const getFreeTelephoneMediationSection = () => {
-    return (directionQuestionnaireFromClaimant(claim)
+    return (directionQuestionnaireFromClaimant(claim) && claim.isSmallClaimsTrackDQ
     )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
