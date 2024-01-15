@@ -58,44 +58,44 @@ const liPvLiPClaimCreationController = Router();
 
 liPvLiPClaimCreationController.post(CLAIM_CHECK_ANSWERS_URL, (async (req: any, res: any, next) => {
   const data: ClaimData = {
-    draftClaimCreatedAt: "2024-01-10T15:17:19.576Z",
-    id: "d07aa471-8c94-4d66-bbd9-3d5dc1574a70",
+    draftClaimCreatedAt: '2024-01-10T15:17:19.576Z',
+    id: 'd07aa471-8c94-4d66-bbd9-3d5dc1574a70',
     resolvingDispute: true,
     completingClaimConfirmed: true,
     applicant1: {
-      type: "INDIVIDUAL",
+      type: 'INDIVIDUAL',
       partyDetails: {
-        individualTitle: "Mr",
-        individualLastName: "McTest",
-        individualFirstName: "Test",
-        provideCorrespondenceAddress: "no",
+        individualTitle: 'Mr',
+        individualLastName: 'McTest',
+        individualFirstName: 'Test',
+        provideCorrespondenceAddress: 'no',
         primaryAddress: {},
         correspondenceAddress: {},
         carmEnabled: false,
       },
       dateOfBirth: {
-        date: "1996-11-04T00:00:00.000Z",
+        date: '1996-11-04T00:00:00.000Z',
         year: 1996,
         month: 11,
         day: 4,
       },
       partyPhone: {
-        phone: "00000000000",
+        phone: '00000000000',
       },
     },
     respondent1: {
-      type: "INDIVIDUAL",
+      type: 'INDIVIDUAL',
       partyDetails: {
-        individualTitle: "Mr",
-        individualLastName: "McNotreal",
-        individualFirstName: "Notreal",
+        individualTitle: 'Mr',
+        individualLastName: 'McNotreal',
+        individualFirstName: 'Notreal',
         primaryAddress: {},
       },
       emailAddress: {
-        emailAddress: "civilmoneyclaimsdemo@gmail.com",
+        emailAddress: 'civilmoneyclaimsdemo@gmail.com',
       },
       partyPhone: {
-        phone: "",
+        phone: '',
       },
     },
     totalClaimAmount: 4567,
@@ -104,30 +104,30 @@ liPvLiPClaimCreationController.post(CLAIM_CHECK_ANSWERS_URL, (async (req: any, r
         value: {},
       },
     ],
-    claimInterest: "no",
+    claimInterest: 'no',
     interest: {},
     claimDetails: {
       helpWithFees: {
-        option: "no",
-        referenceNumber: "",
+        option: 'no',
+        referenceNumber: '',
       },
       reason: {
-        text: "dhgrhb",
+        text: 'dhgrhb',
       },
       timeline: {
         rows: [Array],
       },
       evidence: {
-        comment: "",
+        comment: '',
         evidenceItem: [Array],
       },
     },
     claimFee: {
-      calculatedAmountInPence: "20500",
-      code: "FEE0207",
-      version: "4",
+      calculatedAmountInPence: '20500',
+      code: 'FEE0207',
+      version: '4',
     },
-    pcqId: "c173e04f-4a70-4624-9fc2-6db717b7eb0e",
+    pcqId: 'c173e04f-4a70-4624-9fc2-6db717b7eb0e',
   };
 
   try {
