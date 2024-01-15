@@ -47,9 +47,9 @@ async function createAccount(email) {
 async function deleteAccount(email) {
   try {
     let method = 'DELETE';
-    await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, method);
+    await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, undefined, method);
 
-    console.log('Accounr deleted: ' + email);
+    console.log('Account deleted: ' + email);
     
   } catch (error) {
     console.error('Error deleting account:', error);
