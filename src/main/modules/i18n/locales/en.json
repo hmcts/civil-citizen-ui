@@ -2305,7 +2305,9 @@
         "NO_MONEY_TAKEN": "No money has been taken from your account.",
         "GO_BACK": "Go back and ",
         "TRY_PAYMENT_AGAIN": "try the payment again",
-        "CALL_US_ON": "Or, call us on 0300 123 7050 to make your payment manually, quoting the case reference above.",
+        "CALL_US_ON": "Or, call us on ",
+        "PHONE_NUMBER": "0300 123 7050",
+        "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
         "OPEN_TIMES": "Opening times:",
         "FIND_OUT_CHARGES": "Find out about call charges",
         "FULL_STOP": "."

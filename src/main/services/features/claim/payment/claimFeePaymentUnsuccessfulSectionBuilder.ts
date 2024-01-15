@@ -1,16 +1,17 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from "i18next";
 
 export class PaymentUnsuccessfulSectionBuilder extends PageSectionBuilder {
 
-  addPhoneNumber() {
+  addPhoneNumber(lang : string) {
     const section = ({
       type: ClaimSummaryType.HTML,
       data: {
         html: `<p class="govuk-body ">
-                Or, call us on
-                <span class="govuk-body govuk-!-font-weight-bold">0300 123 7050</span>
-                to make your payment manually, quoting the case reference above.
+                ${t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CALL_US_ON', { lng: lang })}
+                <span class="govuk-body govuk-!-font-weight-bold">${t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PHONE_NUMBER', { lng: lang })}</span>
+                ${t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.MAKE_YOUR_PAYMENT', { lng: lang })}
                </p>`,
       },
     });
