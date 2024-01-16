@@ -8,7 +8,7 @@ import {
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {
-  deleteDraftClaimFromStore,
+  // deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
   saveDraftClaim,
@@ -22,8 +22,8 @@ const paymentUnsuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-u
 
 async function renderView(res: Response, req: any, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const redisClaimId = generateRedisKey(req);
-  await deleteDraftClaimFromStore(redisClaimId);
+  // const redisClaimId = generateRedisKey(req);
+  // await deleteDraftClaimFromStore(redisClaimId);
   res.render(paymentUnsuccessfulViewPath,
     {
       paymentUnsuccessfulBody: getPaymentUnsuccessfulBodyContent(claim, getLng(lang)),
