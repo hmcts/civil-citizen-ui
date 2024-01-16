@@ -23,7 +23,6 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
-    console.log('first repayment date is ' + ccdResponse.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec);
     logger.info('Submitting claimant intention...', ccdResponse);
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
