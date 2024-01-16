@@ -10,17 +10,14 @@ import { CCDClaimantPaymentOption } from 'models/ccdResponse/ccdClaimantPaymentO
 import { toCCDClaimantPaymentOption } from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ClaimantResponse} from 'models/claimantResponse';
-
-export interface PaymentDate {
-  paymentSetDate: Date,
-}
+import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: Date;
-  applicant1RequestedPaymentDateForDefendantSpec?: PaymentDate;
+  applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
 }
 
 export interface ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD

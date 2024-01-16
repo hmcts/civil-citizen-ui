@@ -267,7 +267,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('100');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(100);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
@@ -286,7 +286,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(200);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_WEEK);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
@@ -305,7 +305,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(200);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
