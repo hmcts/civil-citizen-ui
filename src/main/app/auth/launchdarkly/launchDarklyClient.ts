@@ -10,13 +10,10 @@ let ldClient: LDClient;
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk = config.get<string>('services.launchDarkly.sdk');
-  console.log('******************Launchdarkly initializing token below****************');
-  console.log(launchDarklyTestSdk);
+
   if (launchDarklyTestSdk) {
     const client = init(launchDarklyTestSdk);
     ldClient = await client.waitForInitialization();
-    console.log('***********initialized the launch darkly instance***************');
-    console.debug(client);
   }
 }
 
