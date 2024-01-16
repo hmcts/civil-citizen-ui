@@ -19,9 +19,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
-
   const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
-
   const paymentDate = t(formatDateToFullDate(isClaimantPlanAccepted? date.date:getPaymentDate(claim), lng));
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
@@ -34,7 +32,7 @@ export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: 
   });
 };
 
-export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
+export const buildSummaryForPayByInstalments = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const fullName = claim.getDefendantFullName();
   const amount = getAmount(claim);
   const instalmentAmount = isClaimantPlanAccepted ? getPaymentAmountClaimantPlan(claim) : getPaymentAmount(claim);
@@ -56,17 +54,17 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
   if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE) {
+    if (claim.claimantResponse.suggestedPaymentIntention.paymentOption === PaymentOptionType.BY_SET_DATE) {
       return buildSummaryForPayBySetDate(claim, claimId, lng,true);
-    } else if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.INSTALMENTS) {
-      return buildSummaryForPayByInstallments(claim, claimId, lng,true);
+    } else if (claim.claimantResponse.suggestedPaymentIntention.paymentOption === PaymentOptionType.INSTALMENTS) {
+      return buildSummaryForPayByInstalments(claim, claimId, lng,true);
     }
   }else {
     if (isSignSettlementForPayBySetDate) {
       return buildSummaryForPayBySetDate(claim, claimId, lng, false);
     }
     if (isSignSettlementForPayByInstallments) {
-      return buildSummaryForPayByInstallments(claim, claimId, lng, false);
+      return buildSummaryForPayByInstalments(claim, claimId, lng, false);
     }
   }
 };

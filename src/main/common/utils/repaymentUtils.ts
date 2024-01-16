@@ -64,6 +64,7 @@ export const getPaymentAmount = (claim: Claim): number => {
 export const getPaymentAmountClaimantPlan = (claim: Claim): number => {
   return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount;
 };
+
 export const getPaymentDate = (claim: Claim): Date => {
   if (claim.isFullAdmission()) {
     return claim.fullAdmission?.paymentIntention?.paymentDate;
