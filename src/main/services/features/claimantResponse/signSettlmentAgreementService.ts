@@ -34,7 +34,6 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
 };
 
 function getTextForPayByDate(claim: Claim, lang: string, isClaimantPlanAccepted: boolean) {
-  console.log(claim.claimantResponse.suggestedPaymentIntention.paymentDate);
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
   return {

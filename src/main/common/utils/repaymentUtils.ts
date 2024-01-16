@@ -29,7 +29,6 @@ export const getFinalPaymentDate = (claim: Claim): Date => {
 };
 
 const getFinalDay = (repaymentFrequency: string, firstRepaymentDate: Date, numberOfInstalments: number): Date => {
-
   let finalRepaymentDate = new Date(Date.now());
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
@@ -80,7 +79,6 @@ export const getRepaymentFrequency = (claim: Claim): string => {
 };
 
 export const getRepaymentFrequencyForClaimantPlan = (claim: Claim): string => {
-
   return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency;
 };
 
