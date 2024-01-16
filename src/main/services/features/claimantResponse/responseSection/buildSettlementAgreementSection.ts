@@ -39,7 +39,6 @@ export const buildSummaryForPayByInstallments = (claim: Claim, claimId: string, 
   const amount = getAmount(claim);
   const instalmentAmount = isClaimantPlanAccepted ? getPaymentAmountClaimantPlan(claim) : getPaymentAmount(claim);
   const paymentFrequency= isClaimantPlanAccepted ? getRepaymentFrequencyForClaimantPlan(claim) : getRepaymentFrequency(claim);
-  console.log(paymentFrequency);
   const frequency = t(`COMMON.PAYMENT_FREQUENCY.${paymentFrequency}`, { lng })?.toLowerCase();
 
   const instalmentDate = isClaimantPlanAccepted ? formatDateToFullDate(getFirstRepaymentDateClaimantPlan(claim), lng) : formatDateToFullDate(getFirstRepaymentDate(claim), lng);
