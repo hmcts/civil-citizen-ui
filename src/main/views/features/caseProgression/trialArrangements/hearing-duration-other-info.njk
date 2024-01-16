@@ -5,6 +5,7 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/back.njk" import back %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 
@@ -13,15 +14,11 @@
 {% endblock %}
 
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: hasAnythingChangedUrl,
-    classes: 'govuk-!-margin-top-0'
-  }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ back(hasAnythingChangedUrl,t) }}
           <p class="govuk-body">
             {% for content in hearingDurationContents %}
               {{ itemContent(content,t) }}
