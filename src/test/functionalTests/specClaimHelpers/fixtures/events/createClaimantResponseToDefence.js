@@ -72,7 +72,7 @@ module.exports = {
         applicantDefenceResponseDocumentAndDQFlag: null,
         showConditionFlags: null,
         applicant1ProceedWithClaimSpec2v1: null,
-        responseClaimTrack: 'FAST_CLAIM',
+        responseClaimTrack: 'SMALL_CLAIM',
         allocatedTrack: null,
         claimType: null,
         defenceRouteRequired: 'DISPUTES_THE_CLAIM',

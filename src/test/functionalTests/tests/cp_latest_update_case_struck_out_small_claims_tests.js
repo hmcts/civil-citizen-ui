@@ -6,7 +6,7 @@ const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignment
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature.skip('Case progression - Case Struck Out journey - Small Claims');
+Feature('Case progression - Case Struck Out journey - Small Claims');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
