@@ -25,13 +25,13 @@ export const getPaymentSuccessfulButtonContent = (redirectUrl : string) => {
     .build();
 };
 
-export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lang : string, claimId: string) => {
+export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lang : string) => {
   const callChargesLink = 'https://www.gov.uk/call-charges';
   const callCharges = 'www.gov.uk/call-charges';
   return new PaymentUnsuccessfulSectionBuilder()
 
     .addMainTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PAGE_TITLE', {lng: lang}))
-    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimNumber: claimId, lng: lang}))
+    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimNumber: claim.id, lng: lang}))
     .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIMANT_V_DEFENDANT', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName(),lng: lang}))
     .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.NO_MONEY_TAKEN', {lng: lang}))
     .addLink(
