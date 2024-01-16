@@ -11,11 +11,11 @@ import {
   deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
-  saveDraftClaim
+  saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {getFeePaymentRedirectInformation} from "services/features/feePayment/feePaymentService";
-import {FeeType} from "form/models/helpWithFees/feeType";
+import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 const paymentUnsuccessfulController: Router = Router();
 
 const paymentUnsuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-unsuccessful';
