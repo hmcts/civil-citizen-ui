@@ -17,8 +17,9 @@ export const toCCDPayBySetDate = (paymentDate: Date, paymentOption: PaymentOptio
 };
 
 export const toCCDClaimantPayBySetDate = (paymentDate: Date): CCDClaimantPayBySetDate => {
+  if(paymentDate) {
   return {
     paymentSetDate: convertDateToStringFormat(((paymentDate as unknown as PaymentDate).date)),
   };
+}
 };
-
