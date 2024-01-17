@@ -271,6 +271,8 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDueDate?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   claimantBilingualLanguagePreference?:CCDLanguage;
+  hearingHelpFeesReferenceNumber?: string;
+
 }
 
 export interface ClaimFeeData {

@@ -422,6 +422,23 @@
         "REJECTED_TITLE": "If your application for help with fees is rejected",
         "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
         "TITLE" : "Help with fees"
+      },
+      "REFERENCE_NUMBER": {
+        "TITLE_YES": "Enter your help with fees reference number",
+        "SUBTITLE_YES": "You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.",
+        "HINT_YES": "For example, HWF-A1B-23C",
+        "TITLE_NO": "Next steps",
+        "PARAGRAPH_NO": "You must apply for help with fees before submitting your application.",
+        "QUESTION_TITLE": "Do you have a help with fees reference number?",
+        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+        "LIST_ITEMS": {
+          "FIRST": "Go to ",
+          "FIRST_LINK": "apply for help with fees (opens in a new tab).",
+          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track.",
+          "THIRD": "Complete the help with fees application.",
+          "FOURTH": "Return here to your online money claims account.",
+          "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
+        }
       }
     },
     "ARE_YOU_SEVERELY_DISABLED": {
@@ -3259,6 +3276,7 @@
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
+    "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
