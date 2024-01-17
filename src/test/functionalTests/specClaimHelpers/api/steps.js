@@ -156,7 +156,7 @@ module.exports = {
         claimSpecData.serviceUpdateDto(caseId, 'paid'));
       console.log('Service request update sent to callback URL');
     }
-    await waitForFinishedBusinessProcess(caseId);    
+    await waitForFinishedBusinessProcess(caseId);
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
@@ -242,7 +242,7 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState) => {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, ClaimType) => {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
@@ -259,7 +259,7 @@ module.exports = {
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
-      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse();
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(ClaimType);
     } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
       responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
     } else if (defenceType === config.defenceType.rejectAllDisputeAll) {
