@@ -1,0 +1,78 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE') }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.TITLE") %}
+      {% set question = t("PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.QUESTION") %}
+      {% set id = "option" %}
+      {% set name = "option" %}
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors, t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <p class="govuk-body-m">
+            {{ t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1') }}
+          </p>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+          <p class="govuk-body-m">
+            {{ t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_2') }}
+          </p>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+          <p class="govuk-body-m">
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-two-thirds">
+                <h4 class="govuk-heading-m">{{ question }}</h4>
+              </div>
+             </div>
+          </p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: id,
+              name: name,
+              items: [
+                {
+                  value: ClaimBilingualLanguagePreference.ENGLISH,
+                  checked: true if form.model.option==ClaimBilingualLanguagePreference.ENGLISH else false,
+                  html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.ENGLISH') + "</span>"
+                },
+                {
+                  value: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
+                  checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH else false,
+                  html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH_AND_ENGLISH') + "</span>"
+                }
+              ],
+              errorMessage: {
+                html: t(form.errorFor(name))
+              } if form.hasFieldError(name)
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

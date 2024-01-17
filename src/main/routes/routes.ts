@@ -242,6 +242,8 @@ import telephoneMediationController from 'routes/features/mediation/telephoneMed
 import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
 import telephoneMediationConfirmationController
   from 'routes/features/mediation/telephoneMediationConfirmationController';
+import applyHelpFeeReferenceController
+  from 'routes/features/caseProgression/hearingFee/applyHelpFeeReferenceController';
 import paymentUnsuccessfulController
   from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
 import payHearingFeeConfirmationController
@@ -257,6 +259,7 @@ import mediationUnavailabilityNextThreeMonthsConfirmationController
 import mediationUnavailabilitySelectDatesController
   from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import claimBilingualLangPreferenceController from 'routes/features/claim/bilingualLangPreferenceController';
 import paymentSuccessfulController from 'routes/features/claim/paymentSuccessfulController';
 import alternativeContactPersonMediationController
   from 'routes/features/mediation/alternativeContactPersonMediationController';
@@ -270,6 +273,7 @@ export default [
   phoneDetailsController,
   responseDobController,
   claimDetailsController,
+  claimBilingualLangPreferenceController,
   ageEligibilityController,
   responsePostcodeLookupController,
   citizenResponseTypeController,
@@ -482,6 +486,7 @@ export default [
   telephoneMediationController,
   emailMediationConfirmationController,
   telephoneMediationConfirmationController,
+  applyHelpFeeReferenceController,
   paymentUnsuccessfulController,
   payHearingFeeConfirmationController,
   makePaymentAgainController,
