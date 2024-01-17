@@ -27,7 +27,7 @@ civil-service:
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:PR-3900'
     imagePullPolicy: Always
-    ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
+    ingressHost: ${SERVICE_NAME}-civil-service-pr-3900.preview.platform.hmcts.net
     memoryLimits: "6Gi" # was 4
     cpuRequests: "500m"
     keyVaults:
