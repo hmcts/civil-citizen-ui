@@ -79,7 +79,8 @@ module.exports = {
   performAnAssistedOrder: async (user, caseId) => {
     console.log('This is inside performAnAssistedOrder() : ' + caseId);
     eventName = 'GENERATE_DIRECTIONS_ORDER';
-    const payload = createAnAssistedOrder.createAnAssistedOrder();
+    const document = await apiRequest.uploadDocument();
+    const payload = createAnAssistedOrder.createAnAssistedOrder(document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
