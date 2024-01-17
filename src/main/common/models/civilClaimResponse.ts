@@ -46,7 +46,7 @@ import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {Evidence} from 'form/models/evidence/evidence';
-import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDLanguage, CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
@@ -269,6 +269,8 @@ export interface CCDClaim extends ClaimUpdate {
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
+  claimantBilingualLanguagePreference?:CCDLanguage;
+  hearingHelpFeesReferenceNumber?: string;
   hearingFeePaymentDetails?: PaymentDetails;
 }
 

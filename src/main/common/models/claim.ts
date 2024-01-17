@@ -105,6 +105,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  claimantBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   pcqId: string;
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
