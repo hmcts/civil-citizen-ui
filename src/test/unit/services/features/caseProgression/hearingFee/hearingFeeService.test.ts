@@ -15,6 +15,7 @@ describe('hearing Fee service', () => {
     const spyTriggerEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
     const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
     const givenHelpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, '12345678901');
+
     const testClaim = {
       ...mockClaim,
       case_data: {
