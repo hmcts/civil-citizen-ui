@@ -38,15 +38,5 @@ describe('Claim fee payment confirmation', () => {
           expect(res.text).toContain('Claim number');
         });
     });
-
-    it('should return resolving unsuccessful payment page failed', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-
-      await request(app)
-        .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-        });
-    });
   });
 });

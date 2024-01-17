@@ -30,8 +30,8 @@ async function renderView(res: Response, req: any, claim: Claim, claimId: string
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED , req);
-    const claim =  await getCaseDataFromStore(generateRedisKey(req));
+    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
+    const claim = await getCaseDataFromStore(generateRedisKey(req));
     claim.claimDetails.claimFeePayment=paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     await renderView(res, req, claim, claimId);
