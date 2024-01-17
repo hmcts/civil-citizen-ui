@@ -192,12 +192,14 @@ class UploadYourDocument {
     I.attachFile('noticeOfIntention[1][fileUpload]', 'features/caseProgression/data/TestTIF.tif');
 
     //Docuents Referred to in the stateent - Subsection
+    I.fillField('documentsReferred[0][witnessName]', 'Docuents referred witness nae 1');
     I.fillField('documentsReferred[0][typeOfDocument]', 'Docuents referred Type of Docuent 1');
     I.fillField('documentsReferred[0][dateInputFields][dateDay]', '09');
     I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
     I.attachFile('documentsReferred[0][fileUpload]', 'features/caseProgression/data/TestTIFF.tiff');
     I.click('div:nth-of-type(6) #add-another-witness-list');
+    I.fillField('documentsReferred[1][witnessName]', 'Docuents referred witness nae 2');
     I.fillField('documentsReferred[1][typeOfDocument]', 'Docuents referred Type of Docuent 2');
     I.fillField('documentsReferred[1][dateInputFields][dateDay]', '10');
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');
@@ -322,12 +324,14 @@ class UploadYourDocument {
     I.attachFile('witnessSummary[1][fileUpload]', 'features/caseProgression/data/TestDOCX.docx');
 
     //Docuents Referred to in the stateent - Subsection
+    I.fillField('documentsReferred[0][witnessName]', 'Docuents referred witness nae 1');
     I.fillField('documentsReferred[0][typeOfDocument]', 'Docuents referred Type of Docuent 1');
     I.fillField('documentsReferred[0][dateInputFields][dateDay]', '05');
     I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
     I.attachFile('documentsReferred[0][fileUpload]', 'features/caseProgression/data/TestJPEG.jpeg');
     I.click('[method=\'post\'] div:nth-of-type(3) #add-another-witness-list');
+    I.fillField('documentsReferred[1][witnessName]', 'Docuents referred witness nae 2');
     I.fillField('documentsReferred[1][typeOfDocument]', 'Docuents referred Type of Docuent 2');
     I.fillField('documentsReferred[1][dateInputFields][dateDay]', '06');
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');

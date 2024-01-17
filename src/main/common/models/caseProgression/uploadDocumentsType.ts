@@ -97,12 +97,14 @@ export class UploadEvidenceExpert {
 }
 
 export class UploadEvidenceDocumentType{
+  witnessOptionName?: string;
   typeOfDocument?: string;
   documentIssuedDate?: Date;
   documentUpload: Document;
   createdDatetime: Date;
 
-  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
+  constructor(witnessOptionName: string, typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
+    this.witnessOptionName = witnessOptionName;
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;
