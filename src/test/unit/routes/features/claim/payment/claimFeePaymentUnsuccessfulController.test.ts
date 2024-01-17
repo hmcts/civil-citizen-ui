@@ -6,7 +6,7 @@ import {PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {
   mockCivilClaim,
 } from '../../../../../utils/mockDraftStore';
-import {CivilServiceClient} from "client/civilServiceClient";
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
