@@ -22,8 +22,6 @@ const paymentUnsuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-u
 
 async function renderView(res: Response, req: any, claim: Claim, claimId: string) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  // const redisClaimId = generateRedisKey(req);
-  // await deleteDraftClaimFromStore(redisClaimId);
   res.render(paymentUnsuccessfulViewPath,
     {
       paymentUnsuccessfulBody: getPaymentUnsuccessfulBodyContent(claim, getLng(lang), claimId),
