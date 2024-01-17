@@ -8,7 +8,6 @@ import {
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {
-  // deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
   saveDraftClaim,
