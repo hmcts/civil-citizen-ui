@@ -49,6 +49,8 @@ async function deleteAccount(email) {
     await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, undefined, method);
 
     console.log('Account deleted: ' + email);
+
+    config.defendantCitizenUser.email = `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`;
     
   } catch (error) {
     console.error('Error deleting account:', error);
