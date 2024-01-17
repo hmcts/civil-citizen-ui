@@ -67,7 +67,6 @@ module.exports = {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
     console.log('The value of the userId from the startEventForCitizen() : '+userId);
-    console.log('The value of the Auth Token from the startEventForCitizen() : '+tokens.userAuth);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
@@ -121,5 +120,12 @@ module.exports = {
       serviceRequestUpdateDto,'PUT');
 
     return response || {};
+  },
+
+  uploadDocument: async () => {
+    let endpointURL = getCivilServiceUrl() + '/testing-support/upload/test-document';
+    let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
+      {}, 'POST');
+    return await response.json();
   },
 };
