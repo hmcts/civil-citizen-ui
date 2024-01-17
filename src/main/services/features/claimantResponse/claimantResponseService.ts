@@ -1,7 +1,7 @@
-import {ClaimantResponse} from '../../../common/models/claimantResponse';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {
   translateAccountType,
@@ -9,10 +9,10 @@ import {
   translateRepaymentSchedule,
   translateResidenceType,
 } from '../../genericService';
-import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyFormat';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
-import {PriorityDebts} from '../../../common/form/models/statementOfMeans/priorityDebts';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {YesNo} from 'form/models/yesNo';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertFrequencyToText, getFinalPaymentDate, getRepaymentFrequency, getRepaymentLength} from 'common/utils/repaymentUtils';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
@@ -91,6 +91,9 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     deleteTaskListFormaliseRepaymentData(claim);
   } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName, parentPropertyName)) {
     deleteTaskListFormaliseRepaymentData(claim);
+  } else if (isFullDefenceDisputeNoProceed(claim, parentPropertyName) || isFullDefencePaidAgreed(claim, claimantResponsePropertyName)) {
+    delete claim.claimantResponse.mediation;
+    delete claim.claimantResponse.directionQuestionnaire;
   }
   return claim;
 }
@@ -108,6 +111,18 @@ function deleteTaskListData(claim: Claim) {
   delete claim.claimantResponse.signSettlementAgreement;
   delete claim.claimantResponse.ccjRequest;
   delete claim.claimantResponse.courtDecision;
+}
+
+function isFullDefenceDisputeNoProceed(claim: Claim, claimantResponsePropertyName: string): boolean {
+  return claim.isFullDefence()
+    && claim.isRejectAllOfClaimDispute()
+    && claimantResponsePropertyName === 'intentionToProceed';
+}
+
+function isFullDefencePaidAgreed(claim: Claim, claimantResponsePropertyName: string): boolean {
+  return claim.isFullDefence()
+    && claim.hasConfirmedAlreadyPaid()
+    && claimantResponsePropertyName === 'hasFullDefenceStatesPaidClaimSettled';
 }
 
 function isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName: string): boolean {

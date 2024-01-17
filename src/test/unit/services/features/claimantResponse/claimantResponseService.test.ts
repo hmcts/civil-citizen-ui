@@ -1,7 +1,7 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   constructBanksAndSavingsAccountSection,
   constructChildrenSection,
@@ -15,26 +15,26 @@ import {
   constructSelfEmploymentDetailsSection,
   getClaimantResponse, getFinancialDetails,
   saveClaimantResponse,
-} from '../../../../../main/services/features/claimantResponse/claimantResponseService';
-import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
-import {getLng} from '../../../../../main/common/utils/languageToggleUtils';
-import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import {ResidenceType} from '../../../../../main/common/form/models/statementOfMeans/residence/residenceType';
-import {Residence} from '../../../../../main/common/form/models/statementOfMeans/residence/residence';
-import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
-import {EmploymentCategory} from '../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
-import {RegularIncome} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {Transaction} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {RegularExpenses} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
-import {CourtOrder} from '../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
-import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
-import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
-import {CCJRequest} from '../../../../../main/common/models/claimantResponse/ccj/ccjRequest';
+} from 'services/features/claimantResponse/claimantResponseService';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {ResidenceType} from 'form/models/statementOfMeans/residence/residenceType';
+import {Residence} from 'form/models/statementOfMeans/residence/residence';
+import {NumberOfChildren} from 'form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {Transaction} from 'form/models/statementOfMeans/expensesAndIncome/transaction';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
+import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
+import {Debts} from 'form/models/statementOfMeans/debts/debts';
+import {DebtItems} from 'form/models/statementOfMeans/debts/debtItems';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
-import {RejectionReason} from '../../../../../main/common/form/models/claimantResponse/rejectionReason';
-import {PaymentOptionType} from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {TransactionSource} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -53,6 +53,8 @@ import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProcee
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -68,6 +70,37 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 const languageMock = getLng as jest.Mock;
 const REDIS_FAILURE = 'Redis DraftStore failure.';
 
+describe('full defence claimant response', () => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+  claim.rejectAllOfClaim = new RejectAllOfClaim();
+  claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.mediation = new Mediation();
+  claim.claimantResponse.mediation.mediationDisagreement = new GenericYesNo(YesNo.YES);
+  it('should set null mediation  if full defence dispute agreed', async () => {
+
+    mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+      return claim;
+    });
+    jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'option', 'intentionToProceed');
+    //Then
+    expect(claim.claimantResponse.mediation).toBeUndefined();
+  });
+
+  it('should set null mediation  if full defence paid agreed', async () => {
+    claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
+    mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+    jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'option', 'hasFullDefenceStatesPaidClaimSettled');
+    //Then
+    expect(claim.claimantResponse.mediation).toBeUndefined();
+  });
+});
 describe('Claimant Response Service', () => {
   describe('getClaimantResponse', () => {
     it('should return undefined if direction claimant response is not set', async () => {
