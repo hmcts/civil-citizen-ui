@@ -14,7 +14,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-const YES_OPTION = 'Yes';
 const DATE = '25 December 2023';
 const AMOUNT_ALREADY_PAID = '£200';
 const AMOUNT_TO_BE_PAID = '£800';
@@ -31,7 +30,7 @@ describe('Payment Section', () => {
     //Then
     expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.PAYMENT_TITLE');
     expect(summarySections.sections[1].summaryList.rows.length).toBe(5);
-    expect(summarySections.sections[1].summaryList.rows[0].value.html).toBe(YES_OPTION);
+    expect(summarySections.sections[1].summaryList.rows[0].value.html).toBe('COMMON.VARIATION.YES');
     expect(summarySections.sections[1].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].href).toBe(constructResponseUrlWithIdParams(CLAIM_ID, CCJ_PAID_AMOUNT_URL));
     expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME');
