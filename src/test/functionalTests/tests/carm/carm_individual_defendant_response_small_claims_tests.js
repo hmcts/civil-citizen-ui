@@ -28,8 +28,7 @@ Before(async ({api}) => {
   }
 });
 
-// Skipped due to CIV-12117 bug
-Scenario.skip('LiP Defendant Response with Part Admit', async () => {
+Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
