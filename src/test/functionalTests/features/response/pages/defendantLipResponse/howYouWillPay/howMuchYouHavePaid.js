@@ -10,7 +10,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: '#main-content button.govuk-button',
 };
 const currentDate = new Date();
 const day = currentDate.getDate();
