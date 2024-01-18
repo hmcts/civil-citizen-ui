@@ -4,9 +4,10 @@ import nock from 'nock';
 import config from 'config';
 import {PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {
-  mockCivilClaim,
+  mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {TestMessages} from "../../../../../utils/errorMessageTestConstants";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -36,6 +37,18 @@ describe('Claim fee payment confirmation', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Claim number');
+        });
+    });
+
+    it('should return 500 error page for redis failure', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
+
+      await request(app)
+        .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
