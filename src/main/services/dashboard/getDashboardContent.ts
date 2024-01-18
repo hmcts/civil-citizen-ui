@@ -32,18 +32,13 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
         .build())
       .build();
 
-    if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
+    const feeType = FeeType.HEARING;
 
-      const feeType = FeeType.HEARING;
-
-      const helpWithFeesNotification = new NotificationBuilder(t('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE', { lng }))
-        .addContent(new PageSectionBuilder()
-          .addParagraph(t(`PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.${feeType}_CONTENT`, { lng, feeType: feeType }))
-          .build())
-        .build();
-
-      dashboardNotificationsList.push(helpWithFeesNotification);
-    }
+    const helpWithFeesNotification = new NotificationBuilder(t('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE', { lng }))
+      .addContent(new PageSectionBuilder()
+        .addParagraph(t(`PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.${feeType}_CONTENT`, { lng, feeType: feeType }))
+        .build())
+      .build();
 
     const payTheHearingFee = new NotificationBuilder(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE', { lng }))
       .addContent(new PageSectionBuilder()
@@ -51,7 +46,9 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
         .build())
       .build();
 
-    if (claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
+    if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
+      dashboardNotificationsList.push(helpWithFeesNotification);
+    } else if (claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
       dashboardNotificationsList.push(payTheHearingFee);
     }
     dashboardNotificationsList.push(waitForDefendantResponseNotification);
