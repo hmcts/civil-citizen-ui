@@ -16,7 +16,7 @@ Before(async ({api}) => {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
