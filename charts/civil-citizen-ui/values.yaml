@@ -49,6 +49,8 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
