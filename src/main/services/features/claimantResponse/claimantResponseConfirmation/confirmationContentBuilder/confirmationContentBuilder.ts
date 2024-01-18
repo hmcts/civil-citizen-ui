@@ -14,9 +14,11 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  console.log('elif');
+  console.log(claim);
   let claimantResponseStatusTitle: string;
   if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    !claimantResponse.isClaimantRejectedCourtDecision) {
+    claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
@@ -54,7 +56,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-  
+
   if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
     !claimantResponse.isClaimantRejectedCourtDecision) {
     return SignSettlementAgreementNextSteps;
