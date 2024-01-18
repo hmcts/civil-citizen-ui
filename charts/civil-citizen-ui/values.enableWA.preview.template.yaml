@@ -12,6 +12,9 @@ servicebus:
 global:
   jobKind: CronJob
 
+civil-wa:
+  enabled: true
+
 ccd-message-publisher:
   java:
     ingressHost: ccd-message-publisher-${SERVICE_FQDN}
@@ -33,8 +36,6 @@ ccd-message-publisher:
         secretRef: civil-sb-preview
         key: connectionString
 
-civil-wa:
-  enabled: true
 
 wa:
   wa:
