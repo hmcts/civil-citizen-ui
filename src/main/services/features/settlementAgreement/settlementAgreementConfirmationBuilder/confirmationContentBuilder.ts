@@ -56,7 +56,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
       {
         type: ClaimSummaryType.PARAGRAPH,
         data: {
-          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lgn: lang}),
+          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lng: lang}),
         },
       },
     );
@@ -65,7 +65,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CANT_REQUEST_CCJ', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CANT_REQUEST_CCJ', {lng: lang}),
       },
     },
     {
@@ -85,7 +85,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.GET_RECEIPTS', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.GET_RECEIPTS', {lng: lang}),
       },
     },
   ]);
@@ -103,25 +103,25 @@ const getRejectSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CAN_REQUEST_CCJ', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CAN_REQUEST_CCJ', {lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.REQUEST_CCJ', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.REQUEST_CCJ', {lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.COURT_REVIEWED_PLAN', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.COURT_REVIEWED_PLAN', {lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.EMAIL_YOU', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.EMAIL_YOU', {lng: lang}),
       },
     },
   ];

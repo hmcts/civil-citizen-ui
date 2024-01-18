@@ -17,19 +17,19 @@ export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string)
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.DEFENDANT_TO_PAY_YOU_IMMEDIATELY', {admittedAmount, lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.DEFENDANT_TO_PAY_YOU_IMMEDIATELY', {admittedAmount, lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.PAYMENT_BY', {paymentDate, lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.PAYMENT_BY', {paymentDate, lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.TELL_US_SETTLEMENT', {lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.TELL_US_SETTLEMENT', {lng: lang}),
       },
     },
   ];
