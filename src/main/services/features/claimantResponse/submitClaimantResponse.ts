@@ -23,7 +23,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFeeAmount);
       ccdResponse = {...ccdResponseForRequestDefaultJudgement, ...ccdResponse};
     }
-    logger.info('Submitting claimant intention...', ccdResponse);
+    logger.info('Submitting claimant intention...');
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
     logger.error(err);
