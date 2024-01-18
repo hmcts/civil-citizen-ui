@@ -8,7 +8,12 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR - Fast Track ');
+const obj = {
+  api: 'string',
+  name2: 'string2'
+}
+
+Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
