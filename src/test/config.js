@@ -14,7 +14,7 @@ if (!process.env.TEST_PASSWORD) {
 module.exports = {
   TestUrl: testUrl,
   env: process.env.ENVIRONMENT_NAME || 'local',
-  TestHeadlessBrowser: false,
+  TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   WaitForText: 60,
