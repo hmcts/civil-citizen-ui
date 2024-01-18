@@ -7,7 +7,7 @@ import {
   mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {TestMessages} from "../../../../../utils/errorMessageTestConstants";
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
