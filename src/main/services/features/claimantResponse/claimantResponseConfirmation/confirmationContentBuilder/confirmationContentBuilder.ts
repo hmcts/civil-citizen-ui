@@ -14,8 +14,6 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-  console.log('elif');
-  console.log(claim);
   let claimantResponseStatusTitle: string;
   if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
     claimantResponse.isClaimantRejectedCourtDecision) {
