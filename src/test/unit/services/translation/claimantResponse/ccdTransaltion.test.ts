@@ -20,6 +20,9 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();
@@ -230,6 +233,96 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
     //Then
     expect(ccdClaim.applicant1LiPResponse.claimantCourtDecision).toBe(undefined);
+  });
+
+  it('should translate applicant1 suggested repaymentPlan INSTALMENTS with MONTH frequency for defendantSpec to ccd', () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
+      paymentAmount: 100,
+      repaymentFrequency: 'MONTH',
+      firstRepaymentDate: new Date(Date.now()),
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('100');
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
+  });
+
+  it('should translate applicant1 suggested repaymentPlan INSTALMENTS with WEEK frequency for defendantSpec to ccd', () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
+      paymentAmount: 200,
+      repaymentFrequency: 'WEEK',
+      firstRepaymentDate: new Date(Date.now()),
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_WEEK);
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
+  });
+
+  it('should translate applicant1 suggested repaymentPlan INSTALMENTS with TWO_WEEKS frequency for defendantSpec to ccd', () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
+      paymentAmount: 200,
+      repaymentFrequency: 'TWO_WEEKS',
+      firstRepaymentDate: new Date(Date.now()),
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
+  });
+
+  it('should translate applicant1 suggested repaymentPlan SET BY DATE for defendantSpec to ccd', () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).not.toBeNull();
+  });
+
+  it('should translate applicant1 suggested repaymentPlan IMMEDIATELY for defendantSpec to ccd', () => {
+    //Given
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).toBeUndefined();
+    expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
   });
 });
 
