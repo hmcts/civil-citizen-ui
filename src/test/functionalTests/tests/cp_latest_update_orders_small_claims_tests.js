@@ -13,8 +13,8 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
     await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
