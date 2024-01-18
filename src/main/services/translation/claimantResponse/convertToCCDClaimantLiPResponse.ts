@@ -22,6 +22,7 @@ export interface CCDClaimantLiPResponse {
   applicant1SignedSettlementAgreement?: YesNoUpperCamelCase,
   claimantResponseOnCourtDecision?: CourtProposedDateOptions | CourtProposedPlanOptions,
   claimantCourtDecision?: RepaymentDecisionType,
+  applicant1RejectedRepaymentReason?: string,
 }
 
 const toChoosesHowToProceed = {
@@ -37,5 +38,6 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     applicant1SignedSettlementAgreement: toCCDYesNoFromBooleanString(claimantResponse?.signSettlementAgreement?.signed),
     claimantResponseOnCourtDecision: claimantResponse?.courtProposedDate?.decision ? claimantResponse?.courtProposedDate?.decision : claimantResponse?.courtProposedPlan?.decision,
     claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
+    applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
   };
 };
