@@ -35,10 +35,6 @@ dependencies:
     version: 1.0.4
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
-  - name: camunda-bpm
-    version: 0.0.44
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-camunda-bpm.enabled
 
   # WA
   - name: wa

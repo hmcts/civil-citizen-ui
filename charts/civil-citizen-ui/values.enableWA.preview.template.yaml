@@ -12,14 +12,6 @@ servicebus:
 global:
   jobKind: CronJob
 
-civil-camunda-bpm:
-  enabled: false
-
-camunda-bpm:
-  # comes from WA chart
-  java:
-    ingressHost: camunda-${SERVICE_FQDN}
-
 ccd-message-publisher:
   java:
     ingressHost: ccd-message-publisher-${SERVICE_FQDN}

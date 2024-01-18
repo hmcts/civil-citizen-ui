@@ -302,8 +302,5 @@ camunda-bpm:
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       CAMUNDA_DB_CONN_OPTIONS: ""
 
-civil-camunda-bpm:
-  enabled: true
-
 civil-wa:
   enabled: false
