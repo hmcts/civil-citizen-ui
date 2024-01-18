@@ -40,5 +40,5 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('carm') as boolean;
 }
