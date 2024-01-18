@@ -1,5 +1,5 @@
 module.exports = {
-  createClaimantIntendsToProceedResponse: (ClaimType) => {
+  createClaimantIntendsToProceedResponse: (claimType) => {
     const claimantResponseData = {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
@@ -72,7 +72,7 @@ module.exports = {
         applicantDefenceResponseDocumentAndDQFlag: null,
         showConditionFlags: null,
         applicant1ProceedWithClaimSpec2v1: null,
-        responseClaimTrack: ClaimType,
+        responseClaimTrack: claimType,
         allocatedTrack: null,
         claimType: null,
         defenceRouteRequired: 'DISPUTES_THE_CLAIM',
