@@ -11,8 +11,6 @@ const fields ={
 
 class ConfirmYourDetails {
 
-
-
   async enterYourDetails() {
     await I.waitForText('Confirm your details', config.WaitForText);
     await I.fillField(fields.firstName, 'Test');
