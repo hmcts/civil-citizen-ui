@@ -10,7 +10,7 @@ export class PaymentUnsuccessfulSectionBuilder extends PageSectionBuilder {
       data: {
         html: `<p class="govuk-body ">
                 ${t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CALL_US_ON', { lng })}
-                <span class="govuk-body govuk-!-font-weight-bold">phoneNumber</span>
+                <span class="govuk-body govuk-!-font-weight-bold">${ phoneNumber }</span>
                 ${t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.MAKE_YOUR_PAYMENT', { lng })}
                </p>`,
       },

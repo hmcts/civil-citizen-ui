@@ -32,7 +32,7 @@ export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lng : string, c
   return new PaymentUnsuccessfulSectionBuilder()
 
     .addMainTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PAGE_TITLE', { lng }))
-    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimNumber: claimId, lng }))
+    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimId: claimId, lng }))
     .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIMANT_V_DEFENDANT', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName(), lng }))
     .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.NO_MONEY_TAKEN', { lng }))
     .addLink(
