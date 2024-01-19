@@ -11,8 +11,7 @@ const fields ={
 
 class ConfirmYourDetails {
 
-  async enterYourDetails(isIndividual) {
-    if(!isIndividual) {
+  async enterYourDetails() {
       await I.waitForText('Confirm your details', config.WaitForText);
       await I.fillField(fields.firstName, 'Test');
       await I.fillField(fields.lastName, 'Test');
@@ -20,7 +19,6 @@ class ConfirmYourDetails {
       await I.fillField(fields.telephone, '09797979797');
       await I.fillField(fields.jobTitle, 'Test');
       await I.click('Save and continue');
-    }
   }
 }
 

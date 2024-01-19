@@ -530,7 +530,7 @@ class ResponseSteps {
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
     await this.SelectGiveEvidenceYourself();
-    await this.EnterYourDetails(isIndividual);
+    if(!isIndividual) await this.EnterYourDetails();
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -550,7 +550,7 @@ class ResponseSteps {
     await this.SelectOptionForSharedExpert();
     await this.EnterExpertDetails();
     await this.SelectGiveEvidenceYourself();
-    await this.EnterYourDetails(isIndividual);
+    if(!isIndividual) await this.EnterYourDetails();
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -577,8 +577,8 @@ class ResponseSteps {
     await giveEvidenceYourself.SelectGiveEvidenceYourself();
   }
 
-  async EnterYourDetails(isIndividual) {
-    await confirmYourDetails.enterYourDetails(isIndividual);
+  async EnterYourDetails() {
+    await confirmYourDetails.enterYourDetails();
   }
 
   async EnterDefedantWitnesses() {
