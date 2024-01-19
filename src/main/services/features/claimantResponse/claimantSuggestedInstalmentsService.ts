@@ -29,7 +29,7 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
 export const getClaimantSuggestedInstalmentsForm = async (req: Request): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
-    const claimAmountAccepted : number = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+    const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return new RepaymentPlanForm(
       claimAmountAccepted,
       req.body.paymentAmount,
