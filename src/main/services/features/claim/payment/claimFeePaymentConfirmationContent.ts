@@ -25,26 +25,27 @@ export const getPaymentSuccessfulButtonContent = (redirectUrl : string) => {
     .build();
 };
 
-export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lang : string, claimId: string) => {
+export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lng : string, claimId: string) => {
   const callChargesLink = 'https://www.gov.uk/call-charges';
   const callCharges = 'www.gov.uk/call-charges';
+  const phoneNumber = '0300 123 7050';
   return new PaymentUnsuccessfulSectionBuilder()
 
-    .addMainTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PAGE_TITLE', {lng: lang}))
-    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimNumber: claimId, lng: lang}))
-    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIMANT_V_DEFENDANT', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName(),lng: lang}))
-    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.NO_MONEY_TAKEN', {lng: lang}))
+    .addMainTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PAGE_TITLE', { lng }))
+    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', {claimNumber: claimId, lng }))
+    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIMANT_V_DEFENDANT', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName(), lng }))
+    .addParagraph(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.NO_MONEY_TAKEN', { lng }))
     .addLink(
-      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.TRY_PAYMENT_AGAIN', {lng: lang}),
+      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.TRY_PAYMENT_AGAIN', { lng }),
       claim?.claimDetails?.claimFeePayment?.nextUrl,
-      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.GO_BACK', {lng: lang}),
-      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FULL_STOP', {lng: lang}))
-    .addPhoneNumber(lang)
-    .addTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.OPEN_TIMES', {lng: lang}))
-    .addParagraph(t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS', {lng: lang}))
+      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.GO_BACK', { lng }),
+      '.')
+    .addPhoneNumber(lng, phoneNumber)
+    .addTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.OPEN_TIMES', { lng }))
+    .addParagraph(t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS', { lng }))
     .addLink(
       callCharges, callChargesLink,
-      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FIND_OUT_CHARGES', {lng: lang}),
-      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FULL_STOP', {lng: lang}))
+      t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FIND_OUT_CHARGES', { lng }),
+      '.')
     .build();
 };
