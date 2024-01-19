@@ -52,7 +52,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: 'citizen3.user@gmail.com',
+    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
