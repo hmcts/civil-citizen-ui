@@ -27,6 +27,7 @@ import { PaymentDate } from 'form/models/admission/fullAdmission/paymentOption/p
 import { CcjPaymentOption } from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import { InstalmentFirstPaymentDate } from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
 import { TransactionSchedule } from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 describe('Translate claimant ccj request to ccd', () => {
   let claim: Claim;
@@ -78,7 +79,7 @@ describe('Translate claimant ccj request to ccd', () => {
       applicant1RepaymentOptionForDefendantSpec:
         CCDClaimantPaymentOption.SET_DATE,
       applicant1RequestedPaymentDateForDefendantSpec: {
-        paymentSetDate: paymentDate,
+        paymentSetDate: convertDateToStringFormat(paymentDate),
       },
     });
   });
@@ -126,7 +127,7 @@ describe('Translate claimant ccj request to ccd', () => {
         'ONCE_ONE_MONTH',
       applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 50,
       applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec:
-        paymentDate,
+        convertDateToStringFormat(paymentDate),
       applicant1RequestedPaymentDateForDefendantSpec: {},
     });
   });
@@ -169,7 +170,7 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1RepaymentOptionForDefendantSpec:
       CCDClaimantPaymentOption.SET_DATE,
       applicant1RequestedPaymentDateForDefendantSpec: {
-        paymentSetDate: paymentDate.date,
+        paymentSetDate: convertDateToStringFormat(paymentDate.date),
       },
     });
   });
@@ -202,7 +203,7 @@ describe('Translate claimant default ccj request to ccd', () => {
       CCDClaimantPaymentOption.REPAYMENT_PLAN,
       applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: 'ONCE_ONE_WEEK',
       applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 50,
-      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: new Date(2024, 0, 1),
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(new Date(2024, 0, 1)),
       applicant1RequestedPaymentDateForDefendantSpec: {},
     });
   });
