@@ -1,12 +1,12 @@
 module.exports = {
-  createCaseProgressionToSDOState: () => {
+  createCaseProgressionToSDOState: (claimType) => {
     const judgeToSDOData = {
       event: 'CREATE_SDO',
       caseDataUpdate: {
         drawDirectionsOrderRequired: 'No',
         drawDirectionsOrder: null,
         drawDirectionsOrderSmallClaims: null,
-        claimsTrack: 'smallClaimsTrack',
+        claimsTrack: claimType,
         smallClaims: [],
         drawDirectionsOrderSmallClaimsAdditionalDirections: [],
         fastClaims: [],
