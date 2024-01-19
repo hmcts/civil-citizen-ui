@@ -44,7 +44,6 @@ ccd-message-publisher:
         secretRef: civil-sb-preview
         key: connectionString
 
-
 wa:
   wa:
     postgresql:
