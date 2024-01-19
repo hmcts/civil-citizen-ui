@@ -3,12 +3,14 @@ import {
   CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
+import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 
 const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
@@ -46,6 +48,9 @@ judgmentAmountSummaryExtendedController.get(
 
 judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {
   (async () => {
+    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+    await saveDraftClaim(claim.id, claim, true);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
   })();
 },
