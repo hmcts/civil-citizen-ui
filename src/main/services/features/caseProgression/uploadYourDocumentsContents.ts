@@ -30,6 +30,6 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
     .addParagraph('PAGES.UPLOAD_DOCUMENTS.FORMAT')
-    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', constructResponseUrlWithIdParams(claimId,TYPES_OF_DOCUMENTS_URL), false, constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL))
+    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', constructResponseUrlWithIdParams(claimId,TYPES_OF_DOCUMENTS_URL), true, constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL))
     .build();
 };
