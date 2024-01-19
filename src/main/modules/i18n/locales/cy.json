@@ -1092,7 +1092,7 @@
         "CCJ_REQUESTED": "Gofynnwyd am ddyfarniad Llys Sirol",
         "CCJ_NEXT_STEP_MSG1": "Rydych wedi gofyn am Ddyfarniad Llys Sirol yn erbyn y diffynnydd.",
         "CCJ_NEXT_STEP_MSG2": "Pan fyddwn wedi prosesu eich cais, byddwn yn postio copi o’r dyfarniad atoch chi ac at {{ defendantName }}.",
-        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them."
+        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
         "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
         "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
         "CCJ_NEXT_STEP_MSG6": "We'll contact both you and {{ defendantName }} to tell you what to do next."
