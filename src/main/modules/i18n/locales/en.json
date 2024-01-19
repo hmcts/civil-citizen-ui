@@ -2349,7 +2349,7 @@
       },
       "UNSUCCESSFUL": {
         "CALL_US_ON": "Or, call us on ",
-        "CLAIM_NUMBER": "Claim number: {{ claimNumber }}",
+        "CLAIM_NUMBER": "Claim number: {{ claimId }}",
         "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
         "FIND_OUT_CHARGES": "Find out about call charges",
         "GO_BACK": "Go back and ",
