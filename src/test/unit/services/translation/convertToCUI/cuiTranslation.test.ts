@@ -7,11 +7,11 @@ import { CCDSameRateInterestSelection, CCDSameRateInterestType } from 'common/mo
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {PartyType} from 'common/models/partyType';
-import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import { CCDDJPaymentOption } from 'common/models/ccdResponse/ccdDJPaymentOption';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { CCDPaymentOption } from 'common/models/ccdResponse/ccdPaymentOption';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -263,5 +263,20 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.respondentPaymentDeadline).toEqual(undefined);
+  });
+  
+  it('should translate paymentDate to CUI model', () => {
+    //Given
+    const paymentDate = new Date('2023-12-07');
+    const input: CCDClaim = {
+      applicant1RequestedPaymentDateForDefendantSpec : {
+        paymentSetDate: paymentDate.toString(),
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
   });
 });

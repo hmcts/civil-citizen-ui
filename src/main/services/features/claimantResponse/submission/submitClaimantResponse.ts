@@ -27,7 +27,6 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     }
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
     logger.info('Translation claimant response sent to civil-service - submit event');
-    logger.info(ccdResponse);
     return await civilServiceClient.submitClaimantResponseDJEvent(claimId, ccdResponse, req);
   } catch (err) {
     logger.error(err);
