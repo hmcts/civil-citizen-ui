@@ -39,13 +39,13 @@ export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lng : string, c
       t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.TRY_PAYMENT_AGAIN', { lng }),
       claim?.claimDetails?.claimFeePayment?.nextUrl,
       t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.GO_BACK', { lng }),
-      ".")
+      '.')
     .addPhoneNumber(lng, phoneNumber)
     .addTitle(t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.OPEN_TIMES', { lng }))
     .addParagraph(t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS', { lng }))
     .addLink(
       callCharges, callChargesLink,
       t('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FIND_OUT_CHARGES', { lng }),
-      ".")
+      '.')
     .build();
 };
