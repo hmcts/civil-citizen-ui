@@ -34,16 +34,19 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
 };
 
 function getTextForPayByDate(claim: Claim, lang: string, isClaimantPlanAccepted: boolean) {
-  const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
-
+  let paymentDate = claim.getPaymentDate();
+  if (isClaimantPlanAccepted) {
+    const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
+    paymentDate = date.date;
+  }
   return {
     paymentText: t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', {
       lng: lang,
       fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
-      paymentDate: isClaimantPlanAccepted ? formatDateToFullDate(date.date, lang) : formatDateToFullDate(claim.getPaymentDate(), lang),
+      paymentDate: formatDateToFullDate(paymentDate, lang),
     }),
-    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', {finalRepaymentDate: isClaimantPlanAccepted ? formatDateToFullDate(date.date, lang) : formatDateToFullDate(claim.getPaymentDate(), lang)}),
+    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', {finalRepaymentDate: formatDateToFullDate(paymentDate, lang)}),
   };
 }
 
