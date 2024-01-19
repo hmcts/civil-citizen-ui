@@ -7,6 +7,7 @@ const ContactNumberDetailsPage = require('../pages/defendantLipResponse/confirmY
 const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/respondType');
 const PaymentOptionPage = require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
 const CheckYourAnswersPage = require('../pages/defendantLipResponse/checkYourAnswers');
+const ConfirmationPage = require('../pages/defendantLipResponse/confirmation');
 const DateToPayOn = require('../pages/defendantLipResponse/yourRepaymentPlan/dateToPayOn');
 const ShareYouFinancialDetailsIntro = require('../pages/defendantLipResponse/shareYourFinancialDetails/shareYouFinancialDetailsIntro');
 const BankAccountsDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/bankAccountsDetails');
@@ -35,6 +36,7 @@ const RejectAllOfClaim = require('../pages/defendantLipResponse/howYouWillPay/re
 const CarerDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/defendantLipResponse/howYouWillPay/howMuchYouHavePaid');
+const YouHavePaidLess = require('../pages/defendantLipResponse/howYouWillPay/youHavePaidLess');
 const HowMuchDoYouOwe = require('../pages/defendantLipResponse/howYouWillPay/howMuchDoYouOwe');
 const AddYourTimeLine = require('../pages/defendantLipResponse/whyDoYouDisagree/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagreeTheClaimAmount');
@@ -92,6 +94,7 @@ const contactNumberDetailsPage = new ContactNumberDetailsPage();
 const respondTypePage = new RespondTypePage();
 const paymentOptionPage = new PaymentOptionPage();
 const checkYourAnswersPage = new CheckYourAnswersPage();
+const confirmationPage = new ConfirmationPage();
 const dateToPayOn = new DateToPayOn();
 const shareYourFinancialDetailsIntro = new ShareYouFinancialDetailsIntro();
 const bankAccountDetails = new BankAccountsDetails();
@@ -120,6 +123,7 @@ const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
 const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 const howMuchYouHavePaid = new HowMuchYouHavePaid();
+const youHavePaidLess = new YouHavePaidLess();
 const howMuchDoYouOwe = new HowMuchDoYouOwe();
 const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 const whyDoYouDisagree = new WhyDoYouDisagree();
@@ -236,6 +240,22 @@ class ResponseSteps {
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
+  }
+
+  async verifyMediationDetailsInCYA(claimRef) {
+    await checkYourAnswersPage.verifyMediationDetailsInCYA(claimRef);
+  }
+
+  async clickEmailChangeLink() {
+    await checkYourAnswersPage.clickEmailChangeLink();
+  }
+
+  async verifyEditedEmailDetails() {
+    await checkYourAnswersPage.verifyEditedEmailDetails();
+  }
+
+  async fillStatementOfTruthAndSubmit() {
+    await checkYourAnswersPage.fillStatementOfTruthAndSubmit();
   }
 
   async EnterDateToPayOn() {
@@ -364,6 +384,14 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
   }
 
+  async VerifyPaidLessPage() {
+    await youHavePaidLess.verifyPaidLessPage();
+  }
+
+  async VerifyConfirmationPage(claimType) {
+    await confirmationPage.verifyConfirmationPage(claimType);
+  }
+
   async EnterHowMuchYouHavePaidError(claimRef, amount, responseType) {
     await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
   }
@@ -482,6 +510,10 @@ class ResponseSteps {
   }
   async ConfirmAltEmailDetails() {
     await alternativeEmail.confirmAltEmail();
+  }
+
+  async clickSaveButton() {
+    I.click('Save and continue');
   }
 
   async EnterUnavailableDates() {

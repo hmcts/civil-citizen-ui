@@ -121,4 +121,11 @@ module.exports = {
 
     return response || {};
   },
+
+  uploadDocument: async () => {
+    let endpointURL = getCivilServiceUrl() + '/testing-support/upload/test-document';
+    let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
+      {}, 'POST');
+    return await response.json();
+  },
 };
