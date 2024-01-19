@@ -72,6 +72,7 @@ const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sen
 const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
 const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
 const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
+const ConfirmYourDetails = require('../pages/defendantLipResponse/defendantDQ/confirmYourDetails');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -131,6 +132,7 @@ const hearingRequirements = new HearingRequirements();
 const dqExpert = new DQExpert();
 const expertReportDetails = new ExpertReportDetails();
 const giveEvidenceYourself = new GiveEvidenceYourself();
+const confirmYourDetails = new ConfirmYourDetails();
 const defendantWitnesses = new DefendantWitnesses();
 const cantAttendHearing = new CantAttendHearing();
 const availabilityDates = new AvailabilityDates();
@@ -523,11 +525,12 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
     await this.SelectGiveEvidenceYourself();
+    await this.EnterYourDetails(isIndividual);
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -538,7 +541,7 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
-  async EnterDQForFastTrack(claimRef){
+  async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
     await this.SelectConsiderClaimantDocs();
@@ -547,6 +550,7 @@ class ResponseSteps {
     await this.SelectOptionForSharedExpert();
     await this.EnterExpertDetails();
     await this.SelectGiveEvidenceYourself();
+    await this.EnterYourDetails(isIndividual);
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -571,6 +575,10 @@ class ResponseSteps {
 
   async SelectGiveEvidenceYourself() {
     await giveEvidenceYourself.SelectGiveEvidenceYourself();
+  }
+
+  async EnterYourDetails(isIndividual) {
+    await confirmYourDetails.enterYourDetails(isIndividual);
   }
 
   async EnterDefedantWitnesses() {
