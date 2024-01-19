@@ -11,12 +11,13 @@ import { toCCDClaimantPaymentOption } from 'services/translation/claimantRespons
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
+import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
-  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: Date;
+  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
 }
 
@@ -47,9 +48,9 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
         applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentIntention.paymentOption),
         applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(paymentIntention.repaymentPlan?.repaymentFrequency),
         applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: paymentIntention.repaymentPlan?.paymentAmount,
-        applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: paymentIntention.repaymentPlan?.firstRepaymentDate,
+        applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(paymentIntention.repaymentPlan?.firstRepaymentDate),
         applicant1RequestedPaymentDateForDefendantSpec: {
-          paymentSetDate: paymentIntention.paymentDate,
+          paymentSetDate: convertDateToStringFormat(paymentIntention.paymentDate),
         },
       };
     }
@@ -86,9 +87,9 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentOption),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency),
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount,
-    applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date,
+    applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(claimantResponse.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date),
     applicant1RequestedPaymentDateForDefendantSpec: {
-      paymentSetDate: claimantResponse.ccjRequest?.defendantPaymentDate?.date,
+      paymentSetDate: convertDateToStringFormat(claimantResponse.ccjRequest?.defendantPaymentDate?.date),
     },
   };
 };
