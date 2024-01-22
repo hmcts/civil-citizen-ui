@@ -268,6 +268,8 @@ import claimFeePaymentConfirmationController
   from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
 import claimIssuePaymentSuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
+import claimIssuePaymentUnsuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
 
 export default [
   homeController,
@@ -505,4 +507,5 @@ export default [
   alternativeContactPersonMediationController,
   claimFeePaymentConfirmationController,
   claimIssuePaymentSuccessfulController,
+  claimIssuePaymentUnsuccessfulController,
 ];
