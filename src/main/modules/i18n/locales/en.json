@@ -1220,6 +1220,13 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
+    "CONFIRM_YOUR_DETAILS_EVIDENCE": {
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "GIVE_DETAILS": "Give details of the person that will be giving evidence.",
+      "PAGE_TITLE": "Confirm your details evidence",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "TITLE": "Confirm your details"
+    },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Give details of the documents",
       "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
@@ -3222,9 +3229,13 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
+    "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
+    "ENTER_YOUR_FIRST_NAME": "Enter your first name",
+    "ENTER_YOUR_LAST_NAME": "Enter your last name",
+    "ENTER_YOUR_JOB_TITLE": "Enter your job title",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "EXPENSES_ENTER_OTHER_SOURCE": "Enter other expense source",
     "EXPENSES_AMOUNT": {
@@ -3415,6 +3426,7 @@
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
@@ -3480,6 +3492,7 @@
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
+    "VALID_PHONE_NUMBER_EVIDENCE": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
