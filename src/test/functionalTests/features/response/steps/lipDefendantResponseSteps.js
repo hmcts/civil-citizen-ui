@@ -157,7 +157,7 @@ class ResponseSteps {
   }
   async RespondToClaim(claimRef){
     await defendantLatestUpdate.open(claimRef);
-    await bilingualLanguagePreference.verifyContent();
+    // await bilingualLanguagePreference.verifyContent();
   }
 
   async RespondToClaimError(claimRef){

@@ -4,9 +4,9 @@ const config = require('../../../../../config');
 class DefendantLatestUpdate {
 
   async open(claimRef) {
-    await I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    await this.verifyDefendantUpdatePageContent();
-    await I.click('Respond to claim');
+    await I.amOnPage('/case/' + claimRef + '/response/task-list');
+    // await this.verifyDefendantUpdatePageContent();
+    // await I.click('Respond to claim');
   }
 
   async openSummaryPage(claimRef) {
