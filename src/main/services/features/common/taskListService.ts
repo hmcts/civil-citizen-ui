@@ -1,16 +1,16 @@
-import {TaskStatus} from '../../../common/models/taskList/TaskStatus';
-import {TaskList} from '../../../common/models/taskList/taskList';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {TaskList} from 'models/taskList/taskList';
 import {
   buildPrepareYourResponseSection,
   buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildSubmitSection,
   buildYourHearingRequirementsSection,
-} from '../../../common/utils/taskList/taskListBuilder';
-import {Task} from '../../../common/models/taskList/task';
-import {getLng} from '../../../common/utils/languageToggleUtils';
+} from 'common/utils/taskList/taskListBuilder';
+import {Task} from 'models/taskList/task';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
-import {Claim} from '../../../common/models/claim';
+import {Claim} from 'models/claim';
 
 const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, carmApplicable = false) => {
 
@@ -32,8 +32,8 @@ const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, car
   return filteredTaskGroups;
 };
 
-const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string): Task[] => {
-  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang));
+const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang, carmApplicable));
 };
 
 const isOutstanding = (task: Task): boolean => {

@@ -1,5 +1,7 @@
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
   switch(paymentOptionType) {
@@ -9,4 +11,22 @@ export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType)
       return CCDClaimantPaymentOption.SET_DATE;
     default: return CCDClaimantPaymentOption.IMMEDIATELY;
   }
+};
+
+export const toCCDClaimantSuggestedPayByInstalments = (claimantResponse?: ClaimantResponse): boolean => {
+  return claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+};
+
+export const toCCDClaimantSuggestedPayByDate = (claimantResponse?: ClaimantResponse): boolean => {
+  return claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+};
+
+export const toCCDClaimantSuggestedFirstRepaymentDate = (claimantResponse?: ClaimantResponse): string => {
+  const firstRepaymentDate = claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.firstRepaymentDate;
+
+  if(toCCDClaimantSuggestedPayByInstalments(claimantResponse) && (firstRepaymentDate)) {
+    return convertDateToStringFormat(firstRepaymentDate);
+  } 
+
+  return undefined;
 };
