@@ -1043,10 +1043,11 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithMediationSectionWithOption = (option: YesNo ): Claim => {
+export const createClaimWithMediationSectionWithOption = (option: YesNo, isCompany = false): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    isCompany? claim.respondent1.type = PartyType.COMPANY: claim.respondent1.type = PartyType.INDIVIDUAL;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
