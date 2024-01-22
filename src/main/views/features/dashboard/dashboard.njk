@@ -10,13 +10,8 @@
   <h1 class="govuk-heading-l">{{ t('PAGES.DASHBOARD.TITLE') }}</h1>
   {% if not claimDraftSaved %}
     <p class="govuk-body">
-      <div>
       <a class="govuk-link govuk-!-font-weight-bold" href={{ newOcmcClaimUrl }} target="_blank" rel="noreferrer noopener">
         {{ t('PAGES.DASHBOARD.MAKE_A_NEW_CLAIM')}}
-      </a>
-      </div>
-      <a class="govuk-link govuk-!-font-weight-bold" href={{ liPvLiPClaimCreationTestUrl }} target="_blank" rel="noreferrer noopener">
-        {{ t('PAGES.DASHBOARD.TEST_CLAIM')}}
       </a>
     </p>
   {% endif %}
