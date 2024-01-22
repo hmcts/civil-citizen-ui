@@ -1405,7 +1405,6 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
-      "TEST_CLAIM": "Test Claim",
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
@@ -3129,7 +3128,8 @@
     "COOKIES_URL": "Cwcis",
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
-    "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
+    "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau",
+    "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",

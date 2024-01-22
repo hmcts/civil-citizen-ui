@@ -1,6 +1,6 @@
 import { AppRequest } from 'common/models/AppRequest';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { CLAIM_CHECK_ANSWERS_URL, DUMMY_PATH } from 'routes/urls';
+import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { app } from '../../../app';
 import { calculateExpireTimeForDraftClaimInSeconds } from 'common/utils/dateUtils';
 const checkAnswersViewPath = 'features/claim/create-draft'
@@ -121,7 +121,7 @@ const draftClaim = {
 
 
 const createDraftClaim = Router();
-createDraftClaim.get(DUMMY_PATH, (async (req: AppRequest, res: Response, next: NextFunction) => {
+createDraftClaim.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
         return res.render(checkAnswersViewPath);
     } catch (error) {
@@ -129,7 +129,7 @@ createDraftClaim.get(DUMMY_PATH, (async (req: AppRequest, res: Response, next: N
     }
 }) as RequestHandler)
 
-createDraftClaim.post(DUMMY_PATH, (async (req: AppRequest, res: Response, next: NextFunction) => {
+createDraftClaim.post(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
         const userId = req.session?.user?.id;
         draftClaim.id = userId;

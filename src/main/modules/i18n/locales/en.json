@@ -1405,7 +1405,6 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
-      "TEST_CLAIM": "Test Claim",
       "TITLE": "Your money claims account",
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
@@ -3129,7 +3128,8 @@
     "COOKIES_URL": "Cookies",
     "HELP_USING_GOV_URL": "Help using GOV.UK",
     "PRIVACY_POLICY_URL": "Privacy Policy",
-    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
+    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions",
+    "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
