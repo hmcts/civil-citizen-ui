@@ -499,5 +499,5 @@ export default [
   alternativeTelephoneMediationController,
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
-  createDraftClaim
+  createDraftClaim,
 ];
