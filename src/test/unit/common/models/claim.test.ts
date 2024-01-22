@@ -1786,6 +1786,40 @@ describe('Documents', () => {
     });
   });
 
+  describe('Test of method hasClaimantAcceptedDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasClaimantAcceptedDefendantResponse is No', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "YES" option', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   function getCaseProgressionDocuments() {
     const caseProgressionHearingDocuments = new CaseProgressionHearingDocuments();
     caseProgressionHearingDocuments.id = '1221';
