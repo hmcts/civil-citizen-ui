@@ -890,6 +890,10 @@ export class Claim {
     return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
   }
 
+  hasCourtAcceptedClaimantsPlan() {
+    return this.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+  }
+
   getPaymentDate() {
     if (this.isPAPaymentOptionByDate()) {
       return this.partialAdmission.paymentIntention.paymentDate;
