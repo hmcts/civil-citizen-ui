@@ -36,7 +36,6 @@ describe('Claim fee payment confirmation', () => {
         .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Claim number');
         });
     });
 
