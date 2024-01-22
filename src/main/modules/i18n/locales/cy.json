@@ -968,7 +968,7 @@
         "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
         "STANDARD_BREATHING_SPACE": "Standard breathing space"
       },
-      "EXPECTED_END_DATE": "Expected end date"
+      "EXPECTED_END_DATE": "Dyddiad gorffen disgwyliedig"
     },
     "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
       "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
@@ -1077,7 +1077,7 @@
         },
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
-          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
         }
       },
       "REJECTED_PAYMENT_PLAN": {
@@ -1361,9 +1361,9 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
-        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
-        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
-        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
+        "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
+        "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu",
+        "MEDIATION_UNSUCCESSFUL":"Nid oedd y cyfryngu yn llwyddiannus"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1373,20 +1373,20 @@
         "CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE": "Achos wedi ei basio i Ganolfan Fusnes y Llys Sirol",
         "CASE_SENT_TO_COURT": "Achos wedi ei anfon i'r llys",
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
-        "CLAIM_SENT_TO_CLAIMANT": "We've sent your offer to the claimant. You have rejected the claim.",
+        "CLAIM_SENT_TO_CLAIMANT": "Rydym wedi anfon eich cynnig at yr hawlydd. Rydych wedi gwrthod yr hawliad",
         "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
         "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Mae {{ claimantName }}  yn derbyn eich cynnig o £{{ amount }}",
-        "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
+        "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "Mae’r hawlydd wedi derbyn eich cynnig. Mae angen i chi lofnodi cytundeb cyfreithiol i setlo y tu allan i'r llys. Rydych wedi gwrthod yr hawliad",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "Mae {{ claimantName }} yn gofyn i chi lofnodi cytundeb setlo.",
         "CLAIMANT_CONFIRMED_PAYMENT": "Mae {{ claimantName }} wedi cadarnhau eich bod wedi talu",
-        "CLAIMANT_REJECT_OFFER": "The claimant has rejected you offer. You have rejected the claim.",
-        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}",
+        "CLAIMANT_REJECT_OFFER": "Mae’r hawlydd wedi gwrthod eich cynnig. Rydych wedi gwrthod yr hawliad",
+        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "Mae {{ claimantName }} wedi gwrthod eich addefiad o £{{ amount }}",
         "CLAIMANT_REQUESTED_CCJ": "Gofynnodd {{ claimantName }}  am Ddyfarniad Llys Sirol yn eich erbyn ar {{ccjRequestedDate}}",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich erbyn",
-        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
-        "MORE_DETAILS_REQUIRED": "Send us more details before the hearing",
-        "MEDIATION_UNSUCCESSFUL": "Roedd cyfryngu yn aflwyddiannus",
-        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
+        "MORE_DETAILS_REQUIRED": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
+        "MEDIATION_UNSUCCESSFUL": "Nid oedd y cyfryngu yn llwyddiannus",
+        "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu",
         "NO_RESPONSE_ON_TIME": "Ymateb i hawliad: {{ numberOfDays }} diwrnod yn weddill",
         "NO_RESPONSE_OVERDUE": "Ymateb i hawliad: {{ numberOfDays }} yn hwyr",
         "NO_RESPONSE_DUE_TODAY": "Ymateb i hawliad: yn ddyledus heddiw",
@@ -1407,25 +1407,25 @@
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
-      "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
+      "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
       "PAGE_TITLE": "Unrhyw ddyledion?",
-      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Taliadau misol, mewn punnoedd",
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
-      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
+      "TOTAL_OWED_IN_POUNDS": "Y cyfanswm sy’n ddyledus, mewn punnoedd"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Rhowch y cyfeirnod (dewisol):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "PAGE_TITLE": "Cyfeirnod Cynllun Seibiant Dyled",
       "TITLE": "Oes gennych chi rif cyfeirnod Cynllun Seibiant Dyled?"
     },
     "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Expected end date",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
-      "TITLE": "Expected end date"
+      "PAGE_TITLE": "Dyddiad gorffen disgwyliedig",
+      "THIS_IS_THE": "Dyma'r dyddiad gorffen y disgwylir iddo orffen (dewisol)",
+      "TITLE": "Dyddiad gorffen disgwyliedig"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
@@ -1435,7 +1435,7 @@
       "CONTACT_PERSON": "Enw'r person cyswllt (dewisol)",
       "CONTACT_PERSON_HINT": "Efallai bod hwn yn rhywun rydych wedi trafod yr hawliad gydag ef.",
       "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
-      "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
+      "INVALID_CLAIM": "Gall eich cais fod yn annilys os byddwch chi'n defnyddio'r cyfeiriad anghywir.",
       "NO_WORK_ADDRESS": "Ni allwch ddefnyddio ei gyfeiriad gwaith.",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
