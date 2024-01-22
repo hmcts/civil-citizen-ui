@@ -39,7 +39,7 @@
             {{ csrfProtection(csrf) }}
             <p class="govuk-body-l">{{
               t(
-              'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId})}}</p>
+              'COMMON.CASE_REFERENCE', {claimId: claimId})}}</p>
             <p class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</p>
             <p class="govuk-body">{{t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT')}}</p>
             <div class='multiple-row'>

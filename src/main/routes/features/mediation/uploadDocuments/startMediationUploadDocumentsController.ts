@@ -17,11 +17,12 @@ const getContents = (claimId: string, claim: Claim) => {
 
   return new PageSectionBuilder()
     .addMainTitle(`${MEDIATION_START_PAGE}PAGE_TITLE`)
-    .addLeadParagraph('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify(claimId)})
     .addLeadParagraph('COMMON.PARTIES', {
       claimantName: claim.getClaimantFullName(),
       defendantName: claim.getDefendantFullName(),
     })
+
     .addParagraph(`${MEDIATION_START_PAGE}YOU_DID_NOT_ATTEND`)
     .addParagraph(`${MEDIATION_START_PAGE}IF_YOU_WERE_UNABLE`)
     .addParagraph(`${MEDIATION_START_PAGE}YOU_CANNOT_WITHDRAW`)

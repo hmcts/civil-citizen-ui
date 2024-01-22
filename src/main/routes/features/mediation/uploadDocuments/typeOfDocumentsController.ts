@@ -15,7 +15,7 @@ import {
   saveUploadDocument,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {convertToArrayOfStrings} from 'common/utils/stringUtils';
+import {caseNumberPrettify, convertToArrayOfStrings} from 'common/utils/stringUtils';
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
 import {TypeOfDocumentsItemForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsItemForm';
 
@@ -39,7 +39,7 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
   res.render(typeOfDocumentsViewPath, {
     form: form,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
-    claimId: claimId,
+    claimId: caseNumberPrettify(claimId),
     partyInformation: partyInformation(claim)});
 }
 
