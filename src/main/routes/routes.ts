@@ -70,6 +70,7 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -267,6 +268,7 @@ import claimFeePaymentConfirmationController
   from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
 import claimIssuePaymentSuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
+
 export default [
   homeController,
   dashboardController,
@@ -332,6 +334,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
