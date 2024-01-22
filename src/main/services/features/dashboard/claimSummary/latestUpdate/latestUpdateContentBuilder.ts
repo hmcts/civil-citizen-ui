@@ -1,6 +1,7 @@
 import {Claim} from 'models/claim';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
+  getClaimantRespondToClaimLink,
   getNotPastResponseDeadlineContent,
   getPastResponseDeadlineContent,
   getRespondToClaimLink,
@@ -492,6 +493,16 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(getLastUpdateForNoMediation(claim));
   } else {
     sectionContent.push(generateLastUpdateResponseSections(responseStatus, claim, lng, respondentPaymentDeadline));
+  }
+  return sectionContent.flat();
+};
+
+export const buildResponseToClaimSectionForClaimant = (claim: Claim, lang: string): ClaimSummarySection[] => {
+  const sectionContent = [];
+  const lng = getLng(lang);
+  const respondToClaimLink = getClaimantRespondToClaimLink(claim, lng);
+  if (claim.isClaimantIntentionPending()) {
+    sectionContent.push(respondToClaimLink);
   }
   return sectionContent.flat();
 };
