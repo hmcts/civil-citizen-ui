@@ -32,8 +32,8 @@ const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, car
   return filteredTaskGroups;
 };
 
-const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string): Task[] => {
-  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang));
+const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang, carmApplicable));
 };
 
 const isOutstanding = (task: Task): boolean => {

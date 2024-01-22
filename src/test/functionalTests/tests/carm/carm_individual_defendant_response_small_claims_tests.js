@@ -2,6 +2,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
 const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -17,6 +18,7 @@ Feature('CARM - LiP Defendant Journey - Small claims track - Individual');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType, carmEnabled, 'Individual');
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -28,8 +30,7 @@ Before(async ({api}) => {
   }
 });
 
-// Skipped due to CIV-12117 bug
-Scenario.skip('LiP Defendant Response with Part Admit', async () => {
+Scenario('LiP Defendant Response with Part Admit', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -51,4 +52,5 @@ Scenario.skip('LiP Defendant Response with Part Admit', async () => {
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
