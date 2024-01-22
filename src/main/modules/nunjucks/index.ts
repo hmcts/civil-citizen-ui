@@ -153,7 +153,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
     nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
     nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
-    nunjucksEnv.addGlobal('TestingSupportUrl', `${moneyClaimBaseUrl}/testing-support/create-draft-claim`);
+    nunjucksEnv.addGlobal('TestingSupportUrl', `/testing-support/create-draft-claim`);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
