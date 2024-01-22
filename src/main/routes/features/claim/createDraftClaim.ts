@@ -1,9 +1,9 @@
-import { AppRequest } from "common/models/AppRequest";
-import { NextFunction, RequestHandler, Response, Router } from "express";
-import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from "routes/urls";
-import { app } from "../../../app";
-import { calculateExpireTimeForDraftClaimInSeconds } from "common/utils/dateUtils";
-const checkAnswersViewPath = "features/claim/create-draft";
+import { AppRequest } from 'common/models/AppRequest';
+import { NextFunction, RequestHandler, Response, Router } from 'express';
+import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
+import { app } from '../../../app';
+import { calculateExpireTimeForDraftClaimInSeconds } from 'common/utils/dateUtils';
+const checkAnswersViewPath = 'features/claim/create-draft';
 
 const draftClaim = {
   case_data: {
@@ -98,7 +98,7 @@ const draftClaim = {
       },
       evidence: {
         comment: '',
-        evidenceItem: [] as any,
+        evidenceItem: '',
       },
       statementOfTruth: {
         isFullAmountRejected: false,
@@ -121,7 +121,7 @@ const createDraftClaim = Router();
 createDraftClaim.get(TESTING_SUPPORT_URL, (async (
   req: AppRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     return res.render(checkAnswersViewPath);
@@ -133,7 +133,7 @@ createDraftClaim.get(TESTING_SUPPORT_URL, (async (
 createDraftClaim.post(TESTING_SUPPORT_URL, (async (
   req: AppRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const userId = req.session?.user?.id;
@@ -143,7 +143,7 @@ createDraftClaim.post(TESTING_SUPPORT_URL, (async (
     draftStoreClient.set(userId, JSON.stringify(draftClaim));
     await draftStoreClient.expireat(
       userId,
-      calculateExpireTimeForDraftClaimInSeconds(new Date())
+      calculateExpireTimeForDraftClaimInSeconds(new Date()),
     );
     return res.redirect(CLAIM_CHECK_ANSWERS_URL);
   } catch (error) {
