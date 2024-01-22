@@ -70,6 +70,7 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -120,7 +121,6 @@ import expertSmallClaimsController from './features/directionsQuestionnaire/expe
 import sharedExpertController from './features/directionsQuestionnaire/experts/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/experts/permissionForExpertController';
-import confirmYourDetailsEvidenceController from './features/directionsQuestionnaire/confirmYourDetailsEvidenceController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController
@@ -270,6 +270,7 @@ import claimIssuePaymentSuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
 import claimIssuePaymentUnsuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
+
 export default [
   homeController,
   dashboardController,
@@ -335,6 +336,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
@@ -383,7 +385,6 @@ export default [
   permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
-  confirmYourDetailsEvidenceController,
   defendantYourselfEvidenceController,
   expertDetailsController,
   sentExpertReportsController,

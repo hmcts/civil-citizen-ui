@@ -24,12 +24,12 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res:
   }
 })as RequestHandler);
 
-claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req:   AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED , req);
     const claim =  await getCaseDataFromStore(generateRedisKey(req));
-    claim.claimDetails.claimFeePayment=paymentRedirectInformation;
+    claim.claimDetails.claimFeePayment = paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     res.redirect(paymentRedirectInformation?.nextUrl);
   } catch (error) {
