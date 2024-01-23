@@ -267,6 +267,7 @@ import alternativeContactPersonMediationController
 import startMediationUploadDocumentsController
   from 'routes/features/mediation/uploadDocuments/startMediationUploadDocumentsController';
 import mediationTypeOfDocumentsController from 'routes/features/mediation/uploadDocuments/typeOfDocumentsController';
+import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
 export default [
   homeController,
   dashboardController,
@@ -503,4 +504,5 @@ export default [
   alternativeContactPersonMediationController,
   startMediationUploadDocumentsController,
   mediationTypeOfDocumentsController,
+  mediationUploadDocumentsController,
 ];

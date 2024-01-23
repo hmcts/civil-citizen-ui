@@ -1,11 +1,12 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
-{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
-{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+
 
 {% block pageTitle %}
 {{ setPageTitle('PAGES.EVIDENCE.PAGE_TITLE') }}
@@ -14,13 +15,20 @@
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
     {% if form != null and form.hasErrors() %}
-      {{ errorSummary(form.getAllErrors(), t) }}
+    {{ errorSummary(form.getAllErrors(), t) }}
     {% endif %}
 
-
+    {% set rowNumberToShowRemoveButton = 2 %}
+    {% set witnessContentLength = witnessContent.length %}
+    {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
     {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
     {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
-    {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
+    {% set paragraph = t('PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST') %}
+    {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') %}
+    {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
+    {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
+    {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
+    {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
     <div class="govuk-grid-row">
       <form method="post" novalidate>
@@ -29,51 +37,60 @@
 
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
+
+          <p class="govuk-body-l">{{
+            t(
+            'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId})}}</p>
+          <p class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</p>
+
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
-          <hr class="govuk-section-break--s govuk-section-break--visible">
 
-          {% if disclosureContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ disclosure }}</h2>
-            {% for disclosureSections in disclosureContent %}
+            {% if yourStatementContent.length > 0 %}
+
+            {% for yourStatementSection in yourStatementContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
-                {% for section in disclosureSections %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
-                  {{ claimSummaryContent({
-                  contentSections: section.contentSections
-                  }) }}
-                  {% endcall %}
+                {% for section in yourStatementSection %}
+                {% call govukFieldset({
+                  classes: 'moj-add-another__item',
+                  legend: {
+                  classes: 'moj-add-another__title',
+                  isPageHeading: false
+                }
+                }) %}
+                {{ claimSummaryContent({
+                                         contentSections: section.contentSections
+                                       }) }}
+                {% endcall %}
                 {% endfor %}
+                <div class="govuk-button-group">
+                  <button type="submit" name="action" value="add_another"  className="govuk-button" data-module="govuk-button">
+                    add another
+                  </button>
+                </div>
                 <div class="moj-button-action">
-                      {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-disclosure-list'
-                        }
-                      }) }}
+                  {{ govukButton({
+                                   text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                    attributes: {
+                    'id': 'add-another-disclosure-list'
+                  }
+                  }) }}
                 </div>
                 <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
             </div>
             {% endfor %}
-          {% endif %}
+            {% endif %}
 
-          <div class="govuk-button-group">
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE')
-            }) }}
-            <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-          </div>
-          {{ contactUsForHelp(t) }}
+            <br>
+              <div class="govuk-button-group">
+                {{ govukButton({
+                                 text: t('COMMON.BUTTONS.CONTINUE')
+                }) }}
+              </div>
+              {{ contactUsForHelp(t) }}
         </div>
       </form>
     </div>
