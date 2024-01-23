@@ -31,7 +31,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     } 
     
     return paymentStatus.errorDescription !== paymentCancelledByUser ? 
-    PAY_CLAIM_FEE_UNSUCCESSFUL_URL  : CLAIM_CONFIRMATION_URL;
+      PAY_CLAIM_FEE_UNSUCCESSFUL_URL  : CLAIM_CONFIRMATION_URL;
   }
   catch (error) {
     logger.error(error);
