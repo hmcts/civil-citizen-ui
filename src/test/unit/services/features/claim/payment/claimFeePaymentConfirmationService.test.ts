@@ -5,7 +5,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
+import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {Claim} from 'common/models/claim';
 
 jest.mock('modules/draft-store');
@@ -54,6 +54,22 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     //Then
     expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
+  });
+
+  it('should return to Payment confirmation page when payment is canceled by user', async () => {
+    const mockclaimFeePaymentInfo = {
+      status: 'Failed',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
+      paymentReference: 'RC-1701-0909-0602-0418',
+      errorDescription: 'Payment was cancelled by the user',
+    };
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    //when
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
+
+    //Then
+    expect(actualPaymentRedirectUrl).toBe(CLAIM_CONFIRMATION_URL);
   });
 
   it('should return 500 error page for any service error', async () => {
