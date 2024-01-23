@@ -218,7 +218,7 @@ import hearingDurationController from 'routes/features/caseProgression/trialArra
 import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import documentViewController from 'routes/features/document/documentViewController';
 import feeChangeController from './features/claim/feeChangeController';
-import createDraftClaim from './features/claim/createDraftClaim';
+import createDraftClaimController from './features/claim/createDraftClaim';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
@@ -501,5 +501,5 @@ export default [
   alternativeTelephoneMediationController,
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
-  createDraftClaim,
+  createDraftClaimController,
 ];
