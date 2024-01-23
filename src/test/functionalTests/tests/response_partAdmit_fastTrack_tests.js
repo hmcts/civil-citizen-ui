@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit');
+Feature('Response with PartAdmit - FastTrack');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -44,7 +44,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @re
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterDQForFastTrack(claimRef);
+  await ResponseSteps.EnterDQForFastTrack(claimRef, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
 });
 
