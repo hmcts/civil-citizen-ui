@@ -7,11 +7,13 @@ import {TaskItem} from 'models/taskList/task';
 import {TaskStatus, TaskStatusColor} from 'models/taskList/TaskStatus';
 import {Dashboard} from 'models/caseProgression/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {PaymentStatus} from 'models/PaymentDetails';
 import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {formatStringDateDMY} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
+const success = 'Success';
 export const getDashboardForm = async (claim: Claim,claimId: string):Promise<TaskList[]> => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
@@ -49,12 +51,7 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
       hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.ADD_TRIAL'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
     }
     if (!claim.isLRClaimant() && claim.isClaimant()) {
-      const hearingFeeActionable = claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee != null;
-      const hearingFeeUrl = hearingFeeActionable ? PAY_HEARING_FEE_URL.replace(':id', claim.id) :'#';
-      const hearingFeeTaskStatus = hearingFeeActionable ? TaskStatus.ACTION_NEEDED : TaskStatus.NOT_AVAILABLE_YET;
-      const hearingDueDate =  new Date(claim?.caseProgressionHearing?.hearingFeeInformation?.hearingDueDate);
-      const hearingFeeHelpText = hearingFeeActionable ? t('PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE', {hearingDueDate: formatStringDateDMY(hearingDueDate)}) : null;
-      hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), hearingFeeUrl, hearingFeeTaskStatus, false, TaskStatusColor[hearingFeeTaskStatus], hearingFeeHelpText)));
+      hearings.tasks.push((checkHearingPaymentStatus(claim)));
     }
     hearings.tasks.push((new TaskItem(t('PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET])));
 
@@ -67,3 +64,19 @@ export const generateNewDashboard = (claim: Claim): TaskList[] => {
   }
   return newDashboard;
 };
+
+const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
+  const hearingFeeActionable = claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee != null;
+
+  if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
+  } else if (hearingFeeActionable) {
+    const hearingFeeUrl = PAY_HEARING_FEE_URL.replace(':id', claim.id);
+    const hearingFeeTaskStatus = TaskStatus.ACTION_NEEDED;
+    const hearingDueDate =  new Date(claim?.caseProgressionHearing?.hearingFeeInformation?.hearingDueDate);
+    const hearingFeeHelpText = t('PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE', {hearingDueDate: formatStringDateDMY(hearingDueDate)});
+    return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), hearingFeeUrl, hearingFeeTaskStatus, false, TaskStatusColor[hearingFeeTaskStatus], hearingFeeHelpText);
+  }
+  return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]);
+};
+

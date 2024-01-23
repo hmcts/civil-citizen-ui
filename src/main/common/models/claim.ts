@@ -137,7 +137,6 @@ export class Claim {
   feeTypeHelpRequested: FeeType;
   applicant1Represented?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
-  helpWithFeesRequested: string;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
 
