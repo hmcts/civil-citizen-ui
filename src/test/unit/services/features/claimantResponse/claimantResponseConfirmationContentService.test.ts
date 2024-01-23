@@ -145,7 +145,7 @@ describe('Claimant Response Confirmation service', () => {
 
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-    
+
     // Then
     expect(claimantResponseConfirmationContent[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SEND_FINANCIAL_DETAILS.TITLE');
@@ -377,7 +377,7 @@ describe('Claimant Response Confirmation service', () => {
       new WhyDoYouDisagree(''),
       new Defence(),
     );
-   
+
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
 
@@ -543,9 +543,8 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.mediation = mediation;
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-    //Then 
+    //Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
-    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.DOWNLOAD_YOUR_HEARING_REQUIREMENTS');
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
   });
