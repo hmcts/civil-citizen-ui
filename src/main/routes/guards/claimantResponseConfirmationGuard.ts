@@ -13,7 +13,7 @@ export const claimantResponseConfirmationGuard = (async (req: Request, res: Resp
     const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
     const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
     const claim = await civilServiceClient.retrieveClaimDetails(req.params?.id, <AppRequest>req);
-    if (claim.isClaimantIntentionPending() && !req.originalUrl.includes('claimant-response/confirmation')) {
+    if (claim.isClaimantIntentionPending()) {
       logger.info('Redirecting to claimant response task list from ', req.url);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
     } else {

@@ -32,9 +32,6 @@ const MOCK_REQUEST = () => {
   return {
     session: {
       claimId: CLAIM_ID,
-      user: {
-        id: '123',
-      },
     },
   } as unknown as AppRequest;
 };

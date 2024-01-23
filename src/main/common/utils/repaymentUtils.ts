@@ -16,20 +16,12 @@ export const getNumberOfInstalments = (claim: Claim): number => {
   return Math.ceil(getAmount(claim) / getPaymentAmount(claim));
 };
 
-export const getNumberOfInstalmentsForClaimantPlan = (claim: Claim): number => {
-  return Math.ceil(getAmount(claim) / getPaymentAmountClaimantPlan(claim));
-};
-
 export const getFinalPaymentDate = (claim: Claim): Date => {
+  let finalRepaymentDate = new Date(Date.now());
   const numberOfInstalments = getNumberOfInstalments(claim);
   const firstRepaymentDate = getFirstRepaymentDate(claim);
   const repaymentFrequency = getRepaymentFrequency(claim);
 
-  return getFinalDay(repaymentFrequency, firstRepaymentDate, numberOfInstalments);
-};
-
-const getFinalDay = (repaymentFrequency: string, firstRepaymentDate: Date, numberOfInstalments: number): Date => {
-  let finalRepaymentDate = new Date(Date.now());
   switch (repaymentFrequency) {
     case TransactionSchedule.WEEK:
       finalRepaymentDate = addDaysToDate(firstRepaymentDate, (numberOfInstalments - 1) * WEEKDAYS);
@@ -44,14 +36,6 @@ const getFinalDay = (repaymentFrequency: string, firstRepaymentDate: Date, numbe
   return finalRepaymentDate;
 };
 
-export const getFinalPaymentDateForClaimantPlan = (claim: Claim): Date => {
-  const numberOfInstalments = getNumberOfInstalmentsForClaimantPlan(claim);
-  const firstRepaymentDate = getFirstRepaymentDateClaimantPlan(claim);
-  const repaymentFrequency = getRepaymentFrequencyForClaimantPlan(claim);
-
-  return getFinalDay(repaymentFrequency, firstRepaymentDate, numberOfInstalments);
-};
-
 export const getAmount = (claim: Claim): number => claim.partialAdmission?.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : claim.totalClaimAmount;
 
 export const getPaymentAmount = (claim: Claim): number => {
@@ -59,10 +43,6 @@ export const getPaymentAmount = (claim: Claim): number => {
     return claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
   }
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
-};
-
-export const getPaymentAmountClaimantPlan = (claim: Claim): number => {
-  return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount;
 };
 
 export const getPaymentDate = (claim: Claim): Date => {
@@ -79,19 +59,11 @@ export const getRepaymentFrequency = (claim: Claim): string => {
   return claim.partialAdmission?.paymentIntention?.repaymentPlan?.repaymentFrequency;
 };
 
-export const getRepaymentFrequencyForClaimantPlan = (claim: Claim): string => {
-  return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency;
-};
-
 export const getFirstRepaymentDate = (claim: Claim): Date => {
   if (claim.isFullAdmission()) {
     return new Date(claim.fullAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
   }
   return new Date(claim.partialAdmission?.paymentIntention?.repaymentPlan?.firstRepaymentDate);
-};
-
-export const getFirstRepaymentDateClaimantPlan = (claim: Claim): Date => {
-  return new Date(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.firstRepaymentDate);
 };
 
 export const getPaymentOptionType = (claim: Claim): PaymentOptionType => {

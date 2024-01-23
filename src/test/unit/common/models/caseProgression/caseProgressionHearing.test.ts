@@ -49,7 +49,7 @@ describe('testing of caseProgressionHearing class', ()=> {
 
     const caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, HearingDuration.MINUTES_180);
     //When
-    const resultDateExpected = caseProgressionHearing.getHearingDurationFormatted('en');
+    const resultDateExpected = caseProgressionHearing.getHearingDurationFormatted();
     //Then
     expect(resultDateExpected).toBe(t('COMMON.HEARING_DURATION.'+HearingDuration.MINUTES_180.toString()));
   });

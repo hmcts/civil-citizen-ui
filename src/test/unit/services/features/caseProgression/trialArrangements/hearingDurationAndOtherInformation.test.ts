@@ -41,7 +41,7 @@ describe('hearingDurationAndOtherInformation', () => {
     const claim = translateCCDCaseDataToCUIModel(claimContent.case_data);
 
     //when
-    const actualHearingDurationContent = getHearingDurationAndOtherInformation(claim, 'en', claimContent.id.toString());
+    const actualHearingDurationContent = getHearingDurationAndOtherInformation(claim, claimContent.id.toString());
 
     //Then
     expect(actualHearingDurationContent[0].data.text).toEqual(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));

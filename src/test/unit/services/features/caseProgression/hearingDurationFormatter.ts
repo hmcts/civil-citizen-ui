@@ -7,7 +7,7 @@ describe('Hearing Duration formatter', () => {
     //Given
     const hearingDurationExpected = t('COMMONS.HEARING_DURATION.MINUTES_60');
     //When
-    const hearingDurationActual = HearingDurationFormatter.formatHearingDuration(HearingDuration.MINUTES_60, 'en');
+    const hearingDurationActual = HearingDurationFormatter.formatHearingDuration(HearingDuration.MINUTES_60);
     //Then
     expect(hearingDurationExpected).toEqual(hearingDurationActual);
   });

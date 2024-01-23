@@ -1,4 +1,5 @@
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
+import * as requestModels from 'common/models/AppRequest';
 import {CCDClaim, CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import config from 'config';
 import {
@@ -29,14 +30,12 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {AppRequest} from 'common/models/AppRequest';
-import {req} from '../../../utils/UserDetails';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
-const appReq = <AppRequest>req;
-appReq.params = {id: '12345'};
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',
   applicant1 : {
@@ -79,7 +78,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const claimantDashboardItems = await civilServiceClient.getClaimsForClaimant(appReq);
+      const claimantDashboardItems = await civilServiceClient.getClaimsForClaimant(mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -108,7 +107,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const actualClaims: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(appReq);
+      const actualClaims: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
 
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -129,7 +128,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const feeRanges = await civilServiceClient.getFeeRanges(appReq);
+      const feeRanges = await civilServiceClient.getFeeRanges(mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -162,7 +161,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //When
-      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(appReq, mockFile);
+      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(mockedAppRequest, mockFile);
       //Then
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL);
       expect(actualCaseDocument.documentName).toEqual(mockCaseDocument.documentName);
@@ -185,7 +184,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPostUTF8} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //When
-      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(appReq, mockFile);
+      const actualCaseDocument: CaseDocument = await civilServiceClient.uploadDocument(mockedAppRequest, mockFile);
       //Then
       expect(mockPostUTF8.mock.calls[0][0]).toEqual(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL);
       expect(actualCaseDocument.documentName).toEqual(mockCaseDocument.documentName);
@@ -201,7 +200,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
-      await expect(civilServiceClient.uploadDocument(appReq, mockFile)).rejects.toThrow(TestMessages.DOCUMENT_UPLOAD_UNSUCCESSFUL);
+      await expect(civilServiceClient.uploadDocument(mockedAppRequest, mockFile)).rejects.toThrow(TestMessages.DOCUMENT_UPLOAD_UNSUCCESSFUL);
     });
   });
   describe('retrieveDocument', () => {
@@ -231,7 +230,7 @@ describe('Civil Service Client', () => {
       );
 
       //When
-      const fileResponse: FileResponse = await civilServiceClient.retrieveDocument(appReq, documentId);
+      const fileResponse: FileResponse = await civilServiceClient.retrieveDocument(mockedAppRequest, documentId);
 
       //Then
       expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId));
@@ -252,7 +251,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
-      await expect(civilServiceClient.retrieveDocument(appReq, documentId)).rejects.toEqual({'status': 404});
+      await expect(civilServiceClient.retrieveDocument(mockedAppRequest, documentId)).rejects.toEqual({'status': 404});
     });
   });
   describe('submitDefendantResponseEvent', () => {
@@ -267,13 +266,13 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantResponseEvent('123', {}, appReq);
+      const claim = await civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId', '1')
+        .replace(':submitterId', 'undefined')
         .replace(':caseId', '123'));
       expect(claim.applicant1.partyDetails.individualTitle).toEqual(mockClaim.applicant1.partyDetails.individualTitle);
       expect(claim.applicant1.partyDetails.individualFirstName).toEqual(mockClaim.applicant1.partyDetails.individualFirstName);
@@ -287,7 +286,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
@@ -300,7 +299,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const defendantDashboardItems = await civilServiceClient.getClaimsForDefendant(appReq);
+      const defendantDashboardItems = await civilServiceClient.getClaimsForDefendant(mockedAppRequest);
 
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -321,7 +320,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate,5, appReq);
+      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate,5, mockedAppRequest);
 
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -339,7 +338,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, 5, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, 5, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getCourtLocations test', () => {
@@ -350,7 +349,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const locations = await civilServiceClient.getCourtLocations(appReq);
+      const locations = await civilServiceClient.getCourtLocations(mockedAppRequest);
       //Then
       expect(locations.length).toBe(2);
       expect(locations[0].label).toBe(courtLocations[0].label);
@@ -367,7 +366,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      await civilServiceClient.assignDefendantToClaim(claimId, appReq);
+      await civilServiceClient.assignDefendantToClaim(claimId, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -380,7 +379,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.assignDefendantToClaim('1', appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.assignDefendantToClaim('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
@@ -392,7 +391,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', appReq);
+      const deadlineDate= await civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest);
       //Then
       expect(deadlineDate).toStrictEqual(responseDeadlineDate);
     });
@@ -403,7 +402,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getAgreedDeadlineResponseDate('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
@@ -417,7 +416,7 @@ describe('Civil Service Client', () => {
       }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const caseRoleResult = await civilServiceClient.getUserCaseRoles('1', appReq);
+      const caseRoleResult = await civilServiceClient.getUserCaseRoles('1', mockedAppRequest);
       //Then
       expect(caseRoleResult).toStrictEqual(caseRoleExpected[0]);
     });
@@ -431,7 +430,7 @@ describe('Civil Service Client', () => {
       }} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getUserCaseRoles('1', mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('submitDefendantResponseEvent', () => {
@@ -454,13 +453,13 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitClaimAfterPayment('123', data, appReq);
+      const claim = await civilServiceClient.submitClaimAfterPayment('123', data, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId', '1')
+        .replace(':submitterId', 'undefined')
         .replace(':caseId', '123'));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
@@ -478,7 +477,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitClaimAfterPayment('123', data, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitClaimAfterPayment('123', data, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
@@ -493,13 +492,13 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitTrialArrangement('123', {}, appReq);
+      const claim = await civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId', '1')
+        .replace(':submitterId', 'undefined')
         .replace(':caseId', '123'));
       expect(claim.caseProgression.defendantTrialArrangements.isCaseReady).toEqual('yes');
       expect(claim.caseProgression.defendantTrialArrangements.otherTrialInformation).toEqual('Other comments');
@@ -524,7 +523,7 @@ describe('Civil Service Client', () => {
         const civilServiceClient = new CivilServiceClient(baseUrl);
 
         //When
-        const courtDecision: RepaymentDecisionType = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', appReq, mockClaimantIntention);
+        const courtDecision: RepaymentDecisionType = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention);
 
         //Then
         expect(mockedAxios.create).toHaveBeenCalledWith({
@@ -547,7 +546,7 @@ describe('Civil Service Client', () => {
         mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
         const civilServiceClient = new CivilServiceClient(baseUrl);
         //Then
-        await expect(civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', appReq, mockClaimantIntention)).rejects.toThrow('error');
+        await expect(civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan('111', mockedAppRequest, mockClaimantIntention)).rejects.toThrow('error');
       });
     });
 
@@ -559,7 +558,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitTrialArrangement('123', {}, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitTrialArrangement('123', {}, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getClaimFeeData', () => {
@@ -576,7 +575,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, mockedAppRequest);
 
       //Then
       expect(feeResponse).toEqual(mockData);
@@ -589,7 +588,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, mockedAppRequest);
 
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
@@ -604,7 +603,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //Then
-      await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getClaimFeeData', () => {
@@ -621,7 +620,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, mockedAppRequest);
 
       //Then
       expect(feeResponse).toEqual(mockData);
@@ -634,7 +633,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, mockedAppRequest);
 
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
@@ -649,7 +648,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //Then
-      await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getClaimAmountFee(100, mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('verifyOcmcPin', () => {
@@ -686,7 +685,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentRedirectInformation(claimId, FeeType.HEARING, appReq);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentRedirectInformation(claimId, FeeType.HEARING, mockedAppRequest);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -701,7 +700,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getFeePaymentRedirectInformation(claimId,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentRedirectInformation(claimId,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
 
@@ -719,7 +718,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, mockedAppRequest);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -734,7 +733,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

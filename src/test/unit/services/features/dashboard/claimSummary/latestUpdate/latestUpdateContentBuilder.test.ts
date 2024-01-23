@@ -1,7 +1,7 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
 import {
-  buildResponseToClaimSection, buildResponseToClaimSectionForClaimant,
+  buildResponseToClaimSection,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
@@ -924,16 +924,5 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.THE_COURT_WILL_REVIEW_THE_CASE');
     });
   });
-  describe('test buildResponseToClaimSectionForClaimant ', () => {
-    it('test Response to claim link ', () => {
-      // Given
-      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      // When
-      const responseToClaimSection = buildResponseToClaimSectionForClaimant(claim, lng);
-      // Then
-      expect(responseToClaimSection.length).toBe(1);
-      expect(responseToClaimSection[0].data.text).toBe('COMMON.BUTTONS.RESPOND_TO_CLAIM');
-    });
-  });
+
 });

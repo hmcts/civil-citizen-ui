@@ -1,22 +1,22 @@
 import request from 'supertest';
 import express from 'express';
-import {app} from '../../../../../../main/app';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
-import { CLAIM_FEE_BREAKUP} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import { CLAIM_FEE_BREAKUP } from 'routes/urls';
+import { mockRedisFailure } from '../../../../../utils/mockDraftStore';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+
 jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const app = express();
+app.use(express.json());
+app.use((req, res, next) => {
+  res.render = jest.fn((view, options) => res.status(200).send(options));
+  next();
+});
+app.use(claimFeeBreakDownController);
 
 describe('on GET', () => {
-  const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const app = express();
-  app.use(express.json());
-  app.use((req, res, next) => {
-    res.render = jest.fn((view, options) => res.status(200).send(options));
-    next();
-  });
-  app.use(claimFeeBreakDownController);
   it('should handle the get call of fee summary details', async () => {
     //given
     const claimId = '111111';
@@ -43,6 +43,7 @@ describe('on GET', () => {
           claimFee: mockClaimFee,
           hasInterest: true,
           totalAmount: mockTotalAmount,
+          redirectUrl: '/claim/'+claimId+'/pay-fees',
         });
       });
   });
@@ -55,16 +56,6 @@ describe('on GET', () => {
       .get(CLAIM_FEE_BREAKUP)
       .expect((res) => {
         expect(res.status).toBe(500);
-      });
-  });
-});
-describe('on POST', () => {
-  it('should handle the get call of fee summary details', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP)
-      .expect((res) => {
-        expect(res.status).toBe(302);
       });
   });
 });
