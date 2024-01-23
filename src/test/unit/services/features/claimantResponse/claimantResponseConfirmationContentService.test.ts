@@ -559,7 +559,7 @@ describe('Claimant Response Confirmation service', () => {
     //Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
   });
-  it('Claimant rejected defendant`s response and accepted the mediation', () => {
+  it('Case State is in mediation', () => {
     // Given
     claim.ccdState = CaseState.IN_MEDIATION;
     // When
