@@ -8,7 +8,7 @@ export const getClaimantResponseStatus = (claim: Claim, statement: string, lang:
   // TODO: update this date as submission date When submission implemented on check-and-send page
   const responseSubmitDate = formatDateToFullDate(new Date(), lang);
 
-  let htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
+  const htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
   <br><strong>${claimNumber}</strong><br>
   <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`;
 
