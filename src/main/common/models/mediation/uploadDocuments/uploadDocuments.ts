@@ -29,6 +29,10 @@ export class UploadDocuments {
   orderArrayById() {
     return this.typeOfDocuments.sort((a, b) => a.id - b.id);
   }
+
+  getByType(type : TypeOfMediationDocuments) {
+    return this.typeOfDocuments.find((item) => item.type === type);
+  }
   mapUploadDocumentsFromTypeOfDocumentsForm(typeOfDocumentsForm: TypeOfDocumentsForm): UploadDocuments {
     //just object that has been checked
     const arrayOfTypeOfDocumentsForm = typeOfDocumentsForm.typeOfDocuments;

@@ -45,7 +45,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsForm => {
 };
 
 export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments ) => {
-  const newObject = new TypeOfDocumentSection('','','')
+  const newObject = new TypeOfDocumentSection('','','');
   if(type === TypeOfMediationDocuments.YOUR_STATEMENT){
     uploadDocuments.documentsForYourStatement.push(newObject);
   } else if(type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT){
