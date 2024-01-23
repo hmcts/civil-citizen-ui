@@ -100,7 +100,7 @@ describe('dashboardService', () => {
             isClaimant: jest.fn().mockReturnValue(true),
             isLRClaimant: jest.fn(),
             isLRDefendant: jest.fn(),
-             },
+          },
         };
         //when
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
@@ -108,10 +108,9 @@ describe('dashboardService', () => {
         //Then
         expect(taskList.length).toEqual(2);
         expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-                expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
+        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
       });
         
-
       it('should show task done due to successful payment status', () => {
 
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
