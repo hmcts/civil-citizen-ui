@@ -548,7 +548,7 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
   });
-  it('Claimant rejected defendant`s payment plan', () => {
+  it('Claimant rejected defendant`s payment plan for company', () => {
     // Given
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
