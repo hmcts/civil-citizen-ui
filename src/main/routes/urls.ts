@@ -256,7 +256,6 @@ export const IS_CASE_READY_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/is-case-
 export const TRIAL_ARRANGEMENTS_HEARING_DURATION= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/hearing-duration-other-info`;
 export const TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/check-trial-arrangements`;
 export const HAS_ANYTHING_CHANGED_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/has-anything-changed`;
-export const HEARING_DURATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/hearing-duration`;
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/confirmation`;
 export const MAKE_APPLICATION_TO_COURT = 'https://www.gov.uk/government/publications/form-n244-application-notice';
 export const CANCEL_TRIAL_ARRANGEMENTS= `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/cancel`;

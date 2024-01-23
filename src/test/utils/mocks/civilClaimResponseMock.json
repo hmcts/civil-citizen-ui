@@ -304,7 +304,17 @@
       "calculatedResponseDeadline": "2024-05-01T00:00:00.000Z"
     },
     "caseProgressionHearing": {
-      "hearingDuration": "MINUTES_150"
+      "hearingDuration": "MINUTES_150",
+      "hearingFeeInformation": {
+        "hearingFee": {
+          "hearingDueDate": "2024-05-01T00:00:00.000Z",
+          "hearingFee": {
+            "calculatedAmountInPence": 10000,
+            "code": "1",
+            "version": "1"
+          }
+        }
+      }
     },
     "caseProgression": {
       "claimantLastUploadDate": "2022-06-21T14:15:19",
