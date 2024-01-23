@@ -7,4 +7,8 @@ export class UploadDocumentsForm {
   @ValidateNested()
     documentsForDocumentsReferred?: TypeOfDocumentSection[];
 
+  constructor(documentsForYourStatement?: TypeOfDocumentSection[], documentsForDocumentsReferred?: TypeOfDocumentSection[]) {
+    this.documentsForYourStatement = documentsForYourStatement;
+    this.documentsForDocumentsReferred = documentsForDocumentsReferred;
+  }
 }

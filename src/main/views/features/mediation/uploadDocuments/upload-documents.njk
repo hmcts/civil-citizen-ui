@@ -65,16 +65,13 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="govuk-button-group">
-                  <button type="submit" name="action" value="add_another"  className="govuk-button" data-module="govuk-button">
-                    add another
-                  </button>
-                </div>
-                <div class="moj-button-action">
                   {{ govukButton({
                                    text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                    classes: 'govuk-button--secondary govuk-!-margin-bottom-1',
+                    name: 'action',
+                    value: 'add_another-yourStatement',
                     attributes: {
-                    'id': 'add-another-disclosure-list'
+                    'id': 'add-another-yourStatement'
                   }
                   }) }}
                 </div>

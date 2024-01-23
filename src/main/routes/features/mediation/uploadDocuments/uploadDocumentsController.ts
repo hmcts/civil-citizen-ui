@@ -3,22 +3,22 @@ import {AppRequest} from 'models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
-  getUploadDocuments,
+  addAnother,
+  getUploadDocuments, getUploadDocumentsForm,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {GenericForm} from 'form/models/genericForm';
-import {convertToArrayOfStrings} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
 import {Claim} from 'models/claim';
 
 import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
 import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 //const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'uploadDocuments';
-const MEDIATION_UPLOAD_DOCUMENT_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
+//const MEDIATION_UPLOAD_DOCUMENT_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
 
 const partyInformation = (claim: Claim) =>  {
   return {
@@ -26,9 +26,9 @@ const partyInformation = (claim: Claim) =>  {
     defendantName: claim.getDefendantFullName(),
   };
 };
-
+let yourStatementContent: ClaimSummaryContent[][] = [];
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {
-  const yourStatementContent = getYourStatementContent(uploadDocuments, form);
+  yourStatementContent = getYourStatementContent(uploadDocuments, form);
   res.render(uploadDocumentViewPath, {
     form: form,
     yourStatementContent: yourStatementContent,
@@ -36,8 +36,6 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     claimId: claimId,
     partyInformation: partyInformation(claim)});
 }
-
-const typeOfDocumentsForm = new TypeOfDocumentsForm(`${MEDIATION_UPLOAD_DOCUMENT_PAGE}CHECKBOX_TITLE`, `${MEDIATION_UPLOAD_DOCUMENT_PAGE}CHECKBOX_HINT`);
 
 mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -54,10 +52,19 @@ mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: 
 mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    //const redisKey = generateRedisKey(<AppRequest>req);
-    //const claim = await getCaseDataFromStore(redisKey);
-    const mapOfTypeOfDocumentsForm =  typeOfDocumentsForm.mapTypeOfDocumentsFormFromStrings(convertToArrayOfStrings(req.body.typeOfDocuments));
-    const form = new GenericForm(mapOfTypeOfDocumentsForm);
+    const action = req.body.action;
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const uploadDocuments = getUploadDocuments(claim);
+    const uploadDocumentsForm = getUploadDocumentsForm(req);
+    const form = new GenericForm(uploadDocumentsForm);
+    console.log(action);
+    if (action === 'add_another-yourStatement') {
+      //add new object to the array
+      //yourStatementContent.
+      addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT );
+      return renderView(form, uploadDocuments, res, claimId, claim);
+    }
     await form.validate();
     if (form.hasErrors()) {
       //renderView(form, res, claimId, claim);
