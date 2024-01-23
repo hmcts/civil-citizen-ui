@@ -117,7 +117,7 @@ const draftClaim = {
   id: '',
 };
 
-const createDraftClaim = Router();
+export const createDraftClaim = Router();
 createDraftClaim.get(TESTING_SUPPORT_URL, (async (
   req: AppRequest,
   res: Response,
