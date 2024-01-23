@@ -7,11 +7,13 @@ import {TaskItem} from 'models/taskList/task';
 import {TaskStatus, TaskStatusColor} from 'models/taskList/TaskStatus';
 import {Dashboard} from 'models/caseProgression/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {PaymentStatus} from 'models/PaymentDetails';
 import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {formatStringDateDMY} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardService');
+const success = 'Success';
 export const getDashboardForm = async (claim: Claim,claimId: string):Promise<TaskList[]> => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
@@ -68,7 +70,9 @@ const checkHearingPaymentStatus = (claim: Claim): TaskItem => {
   const hearingDueDate =  new Date(claim?.caseProgressionHearing?.hearingFeeInformation?.hearingDueDate);
   const hearingFeeHelpText = t('PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE', {hearingDueDate: formatStringDateDMY(hearingDueDate)});
 
-  if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber){
+  if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+    return  new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', TaskStatus.DONE_NO_URL, false, TaskStatusColor[TaskStatus.DONE]);
+  } else if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber){
     const taskStatus = TaskStatus.IN_PROGRESS;
     return new TaskItem(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE'), '#', taskStatus, false, TaskStatusColor[taskStatus], hearingFeeHelpText);
   } else if (hearingFeeActionable) {

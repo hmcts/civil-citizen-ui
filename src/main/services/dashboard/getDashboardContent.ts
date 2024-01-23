@@ -4,12 +4,14 @@ import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {PaymentStatus} from 'models/PaymentDetails';
 import {NOTIFICATION_URL, PAY_HEARING_FEE_URL} from 'routes/urls';
 import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {getNotificationFromCache, saveNotificationToCache} from 'modules/draft-store/getDashboardCache';
 import {Notifications} from 'models/caseProgression/notifications';
 
+const success = 'Success';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
 
@@ -46,12 +48,21 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
         .build())
       .build();
 
-    if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
+    const hearingFeePaidNotification = new NotificationBuilder(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_TITLE', lng))
+      .addContent(new PageSectionBuilder()
+        .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAID_NOTIFICATION_SUBTITLE', lng))
+        .build())
+      .build();
+
+    dashboardNotificationsList.push(waitForDefendantResponseNotification);
+    if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
+      dashboardNotificationsList.push(hearingFeePaidNotification);
+    } else if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
       dashboardNotificationsList.push(helpWithFeesNotification);
     } else if (claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
       dashboardNotificationsList.push(payTheHearingFee);
     }
-    dashboardNotificationsList.push(waitForDefendantResponseNotification);
+
     await saveNotificationToCache(dashboardNotificationsList, ClaimantOrDefendant.CLAIMANT, claimId);
     return dashboardNotificationsList;
   } catch (error) {

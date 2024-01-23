@@ -120,6 +120,7 @@ import expertSmallClaimsController from './features/directionsQuestionnaire/expe
 import sharedExpertController from './features/directionsQuestionnaire/experts/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/experts/permissionForExpertController';
+import confirmYourDetailsEvidenceController from './features/directionsQuestionnaire/confirmYourDetailsEvidenceController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController
@@ -379,6 +380,7 @@ export default [
   permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
+  confirmYourDetailsEvidenceController,
   defendantYourselfEvidenceController,
   expertDetailsController,
   sentExpertReportsController,
