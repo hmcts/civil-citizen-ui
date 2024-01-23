@@ -130,25 +130,29 @@ createDraftClaim.get(TESTING_SUPPORT_URL, (async (
   }
 }) as RequestHandler);
 
-createDraftClaim.post(TESTING_SUPPORT_URL, (async (
-  req: AppRequest,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const userId = req.session?.user?.id;
-    draftClaim.id = userId;
-    draftClaim.case_data.id = userId;
-    const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(userId, JSON.stringify(draftClaim));
-    await draftStoreClient.expireat(
-      userId,
-      calculateExpireTimeForDraftClaimInSeconds(new Date()),
-    );
-    return res.redirect(CLAIM_CHECK_ANSWERS_URL);
-  } catch (error) {
-    next(error);
-  }
-}) as RequestHandler);
+createDraftClaim.post(TESTING_SUPPORT_URL, async (
+    req: AppRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const userId = req.session?.user?.id;
+      draftClaim.id = userId;
+      draftClaim.case_data.id = userId;
+      draftClaim.case_data.claimFee.calculatedAmountInPence = '45500';
+  
+      const draftStoreClient = app.locals.draftStoreClient;
+      draftStoreClient.set(userId, JSON.stringify(draftClaim));
+      await draftStoreClient.expireat(
+        userId,
+        calculateExpireTimeForDraftClaimInSeconds(new Date()),
+      );
+      return res.redirect(CLAIM_CHECK_ANSWERS_URL);
+    } catch (error) {
+      next(error);
+    }
+  }) as RequestHandler;
+  
+  
 
 export default createDraftClaim;
