@@ -3,8 +3,8 @@ import {HearingDuration} from 'models/caseProgression/hearingDuration';
 
 export class HearingDurationFormatter
 {
-  static formatHearingDuration(hearingDuration: HearingDuration): string
+  static formatHearingDuration(hearingDuration: HearingDuration, lng: string): string
   {
-    return t('COMMON.HEARING_DURATION.' + hearingDuration.toString());
+    return t('COMMON.HEARING_DURATION.' + hearingDuration.toString(), {lng});
   }
 }

@@ -21,17 +21,13 @@
         <div class="govuk-grid-column-two-thirds">
 
           {% if paymentOption === PaymentOptionType.BY_SET_DATE%}
-            <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.DEFENDANT_WILL_PAY_SET_DATE', {amount: repaymentPlan.paymentAmount, paymentDate: paymentDate})}}</p>
+            <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.DEFENDANT_WILL_PAY_SET_DATE', {amount: amount, paymentDate: paymentDate})}}</p>
           {% endif %}
 
           {% if paymentOption === PaymentOptionType.INSTALMENTS%}
             <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.THEY_HAVE_SUGGESTED_THIS') }}</p>
             {{ repaymentPlanSummary(repaymentPlan, t) }}
           {% endif %}
-
-          <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.IF_THINK_DEFENDANT_CAN_REPAY') }}
-            <a href="mailto:contactocmc@justice.gov.uk">contactocmc@justice.gov.uk</a>
-          </p>
 
         </div>
       </div>
