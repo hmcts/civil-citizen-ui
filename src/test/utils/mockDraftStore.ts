@@ -6,7 +6,7 @@ import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMo
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
-import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
+import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicantIndividualMock.json';
 import civilClaimResponseRespondentIndividualWithPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithPhoneNumberMock.json';
 import civilClaimResponseRespondentIndividualWithoutPhoneNumber from './mocks/civilClaimResponseRespondentIndividualWithoutPhoneNumberMock.json';
 import civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse from './mocks/civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalseMock.json';

@@ -60,9 +60,11 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
+      "BACK_TO_CASE_DETAILS": "Back to case details",
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -78,7 +80,8 @@
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
-      "HEARING_FEE": "Hearing fee"
+      "HEARING_FEE": "Hearing fee",
+      "CLAIM_FEE": "Claim fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -2333,6 +2336,17 @@
     "PARTNER_SEVERE_DISABILITY": {
       "PAGE_TITLE": "Partner with severe disability",
       "TITLE": "Is your partner severely disabled?"
+    },
+    "PAYMENT_CONFIRMATION": {
+      "SUCCESSFUL": {
+        "PAGE_TITLE": "Your payment was ",
+        "PAGE_TITLE2": "successful",
+        "PAYMENT_IS": "Your payment reference number is",
+        "PAYMENT_SUMMARY": "Payment summary",
+        "CONFIRMATION": "You will receive a confirmation email in the next hour.",
+        "PAYMENT_FOR": "Payment for",
+        "TOTAL_AMOUNT": "Total amount"
+      }
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",

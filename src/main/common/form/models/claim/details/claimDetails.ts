@@ -16,12 +16,13 @@ export class ClaimDetails {
   statementOfTruth?: QualifiedStatementOfTruthClaimIssue;
   claimFeePayment?: PaymentInformation;
 
-  constructor(reason?: Reason, timeline?: ClaimantTimeline, helpWithFees?: HelpWithFees, evidence?: Evidence,breathingSpace?: BreathingSpace, statementOfTruth?: QualifiedStatementOfTruth) {
+  constructor(reason?: Reason, timeline?: ClaimantTimeline, helpWithFees?: HelpWithFees, evidence?: Evidence,breathingSpace?: BreathingSpace, statementOfTruth?: QualifiedStatementOfTruth, claimFeePayment?: PaymentInformation) {
     this.reason = reason;
     this.helpWithFees = helpWithFees;
     this.timeline = timeline;
     this.evidence = evidence;
     this.breathingSpace = breathingSpace;
     this.statementOfTruth = statementOfTruth;
+    this.claimFeePayment= claimFeePayment;
   }
 }
