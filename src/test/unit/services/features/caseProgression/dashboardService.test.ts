@@ -180,6 +180,9 @@ describe('dashboardService', () => {
             hearingFeePaymentDetails: {
               status: PaymentStatus.FAILED,
             },
+            caseProgression: {
+              helpFeeReferenceNumberForm: null,
+            },
           },
         };
         //when
