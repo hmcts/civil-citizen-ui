@@ -70,17 +70,14 @@ describe('Accessibility', async () => {
       app.get(url, (req: any, res: any) => {
         url = url.replace(':id', '1645882162449409');
         const filePath = translateUrlToFilePath(url);
-        console.error(filePath);
         const fileContent = fs.readFileSync(filePath,  'utf8');
-        console.error(fileContent);
         res.send(fileContent);
       });
 
       await pa11y(agent.get(url).url, options)
         .then((result: Pa11yResult) => {
-          result.documentTitle == 'Error' ? fail() : null;
+          result.documentTitle == 'Error' ? fail('This page was titled "error", which suggests it did not render correctly.') : null;
           expectNoErrors(result.issues);
-          console.log(result);
         });
     });
   }
