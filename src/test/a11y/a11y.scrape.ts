@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as urls from '../../main/routes/urls';
 import config from 'config';
-import nock, {isDone} from 'nock';
+import nock from 'nock';
 import {IGNORED_URLS} from './ignored-urls';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
@@ -82,9 +82,7 @@ describe('Accessibility', () => {
     jest.spyOn(courtLocationCache, 'getCourtLocationsFromCache').mockReturnValue(Promise.resolve([{code: 'code', label: 'label'}]));
   });
 
-  scraper(urlsList).then((value) => {
-    isDone();
-  });
+  scraper(urlsList).then();
 });
 
 async function scraper(urlsList: string[]) {
