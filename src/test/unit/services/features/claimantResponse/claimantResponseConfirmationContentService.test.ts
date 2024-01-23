@@ -548,6 +548,17 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
   });
+  it('Claimant rejected defendant`s response and accepted the mediation', () => {
+    // Given
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    claim.respondent1.type = PartyType.COMPANY;
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    //Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
+  });
 });
 
 function getClaim (){
