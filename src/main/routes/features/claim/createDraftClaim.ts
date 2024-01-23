@@ -4,7 +4,6 @@ import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import {saveDraftClaimToCache} from 'modules/draft-store/draftClaimCache';
 const checkAnswersViewPath = 'features/claim/create-draft';
 
-
 const createDraftClaimController = Router();
 createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
