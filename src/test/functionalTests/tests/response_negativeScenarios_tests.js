@@ -81,6 +81,7 @@ Scenario('Personal detail error screen @nightly', async () => {
 
 //todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
+  
 });
 
 AfterSuite(async  () => {
