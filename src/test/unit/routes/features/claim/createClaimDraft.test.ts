@@ -1,10 +1,9 @@
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import createDraftClaimController from 'routes/features/claim/createDraftClaim';
-//import checkAnswersViewPath from 'routes/features/claim/createDraftClaim';
 import config from 'config';
 import nock from 'nock';
+import { TESTING_SUPPORT_URL } from 'routes/urls';
 
 describe('createDraftClaim Router', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,7 +20,6 @@ describe('createDraftClaim Router', () => {
     it('should render the correct view', async () => {
       const response = await request(app).get(TESTING_SUPPORT_URL);
       expect(response.status).toBe(302);
-      console.log(response)
     });
 
     describe('processDraftClaim function', () =>     
