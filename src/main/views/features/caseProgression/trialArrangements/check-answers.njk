@@ -26,7 +26,7 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
 
           {% for content in caseInfoContents %}
-            {{ itemContent(content) }}
+            {{ itemContent(content, t) }}
           {% endfor %}
 
           {% for section in summarySections.sections %}
