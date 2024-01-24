@@ -9,6 +9,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/back.njk" import back %}
+{% from "../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
     {{ setPageTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE') }}
@@ -41,9 +42,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="govuk-grid-column-one-quarter govuk-!-margin-top-0">
-                    {{ contactUsForHelp(t) }}
-                </div>
+              {{ contactUsForHelpOneThird(t) }}
         </main>
     </div>
 {% endblock %}
