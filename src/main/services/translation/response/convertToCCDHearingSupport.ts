@@ -22,17 +22,21 @@ function ccdHearingSupportRequirementList(hearingSupportItem: SupportRequired) {
 
 function ccdHearingSupportRequirementListToStringFormat(hearingSupportItem: SupportRequired) {
   const supportRequirementsList: string[] = [];
-  if (hearingSupportItem?.disabledAccess?.selected)
+  if (hearingSupportItem?.disabledAccess?.selected) {
     supportRequirementsList.push(SupportDetails.DISABLED_ACCESS);
-  if (hearingSupportItem?.hearingLoop?.selected)
+  }
+  if (hearingSupportItem?.hearingLoop?.selected) {
     supportRequirementsList.push(SupportDetails.HEARING_LOOPS);
-  if (hearingSupportItem?.languageInterpreter?.selected)
+  }
+  if (hearingSupportItem?.languageInterpreter?.selected) {
     supportRequirementsList.push(`${SupportDetails.LANGUAGE_INTERPRETER}:${hearingSupportItem.languageInterpreter.content}`);
-  if (hearingSupportItem?.signLanguageInterpreter?.selected)
+  }
+  if (hearingSupportItem?.signLanguageInterpreter?.selected) {
     supportRequirementsList.push(`${SupportDetails.SIGN_INTERPRETER}:${hearingSupportItem.signLanguageInterpreter.content}`);
-  if (hearingSupportItem?.otherSupport?.selected)
+  }
+  if (hearingSupportItem?.otherSupport?.selected) {
     supportRequirementsList.push(`${SupportDetails.OTHER_SUPPORT}:${hearingSupportItem.otherSupport.content}`);
-
+  }
   return supportRequirementsList;
 }
 function ccdHearingSupportRequirement(items: SupportRequired[] | undefined) {
