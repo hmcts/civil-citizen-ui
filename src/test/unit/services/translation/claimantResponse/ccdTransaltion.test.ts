@@ -393,6 +393,28 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
   });
+
+  it('should translate dq support hearing details', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.claimantResponse.directionQuestionnaire.hearing = {
+      supportRequiredList: {
+        option: YesNo.YES,
+        items: [{
+          fullName: 'expert1',
+          hearingLoop: { selected: true },
+        }],
+      },
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1DQHearingSupport).toEqual({ supportRequirements: 'Yes', supportRequirementsAdditional: 'expert1 :Hearing loop;' });
+  });
 });
 
 function getClaimantResponseDQ(claim: Claim): Claim {
