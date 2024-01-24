@@ -90,15 +90,11 @@ async function scraper(urlsList: string[]) {
 
   console.log(`for loop start: ${Date.now() - start}ms`);
 
-  for (let url of urlsList) {
+  for (const url of urlsList) {
     if(url.includes(urls.STATEMENT_OF_MEANS_URL)){
       app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     } else {
       app.locals.draftStoreClient = mockCivilClaim;
-    }
-
-    if (url.includes(':id')) {
-      url = url.replace(':id', '1645882162449409');
     }
 
     it('Scraping '+url, async () => {
