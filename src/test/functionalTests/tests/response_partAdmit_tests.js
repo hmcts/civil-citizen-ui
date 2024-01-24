@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit');
+Feature('Response with PartAdmit - Small Claims');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {

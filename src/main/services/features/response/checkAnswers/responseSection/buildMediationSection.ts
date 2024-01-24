@@ -24,17 +24,21 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     summaryRows: [],
   });
   //CONTACT NAME SECTION
-  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {
-    lng: getLng(lang),
-    defendantContactPerson: claim.respondent1.partyDetails.contactPerson,
-  }),
-  t(`COMMON.VARIATION_2.${claim.mediation.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
-  constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
-  if (claim.mediation.isMediationContactNameCorrect.option === YesNo.NO) {
-    mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NAME', {lng: getLng(lang)}),
-      claim.mediation.alternativeMediationContactPerson.alternativeContactPerson,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL), changeLabel(lang)));
+  if (claim.isBusiness()) {
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {
+      lng: getLng(lang),
+      defendantContactPerson: claim.respondent1.partyDetails.contactPerson,
+    }),
+    t(`COMMON.VARIATION_2.${claim.mediation.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
+    constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
+
+    if (claim.mediation.isMediationContactNameCorrect.option === YesNo.NO) {
+      mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NAME', {lng: getLng(lang)}),
+        claim.mediation.alternativeMediationContactPerson.alternativeContactPerson,
+        constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL), changeLabel(lang)));
+    }
   }
+
   //PHONE SECTION
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT', {
     lng: getLng(lang),
