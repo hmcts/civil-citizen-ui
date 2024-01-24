@@ -126,4 +126,4 @@ const saveDraftClaimToCache = async (userId: string) => {
   );
 };
 
-export { saveDraftClaimToCache, draftClaim, };
+export { saveDraftClaimToCache, draftClaim };

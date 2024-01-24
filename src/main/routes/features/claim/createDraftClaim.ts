@@ -7,7 +7,7 @@ const checkAnswersViewPath = 'features/claim/create-draft';
 const createDraftClaimController = Router();
 createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-  return res.render(checkAnswersViewPath, res);
+    return res.render(checkAnswersViewPath, res);
   } catch (error) {
     next(error);
   }
@@ -23,4 +23,4 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: AppRequest, re
   }
 }) as RequestHandler);
 
-  export default createDraftClaimController;
+export default createDraftClaimController;
