@@ -96,6 +96,19 @@
     </div>
   {% endif %}
 
+  {% if content.type === ClaimSummaryType.REMOVE_BUTTON %}
+  <div>
+    {{ govukButton({
+                     href: content.data.href,
+                     text:  t(content.data.text),
+      name: 'action',
+      value: content.data.category+'['+content.data.index+'][removeButton]',
+      classes: content.data.classes,
+      isStartButton: content.data.isStartButton
+    }) }}
+  </div>
+  {% endif %}
+
   {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
     <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href={{ content.data.href }}>
       {{ t(content.data.text) }}

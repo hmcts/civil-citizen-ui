@@ -44,12 +44,23 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsForm => {
   return new UploadDocumentsForm(documentsForYourStatement, null);
 };
 
-export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments ) => {
+export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments, ) => {
   const newObject = new TypeOfDocumentSection('','','');
+
   if(type === TypeOfMediationDocuments.YOUR_STATEMENT){
     uploadDocuments.documentsForYourStatement.push(newObject);
   } else if(type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT){
     uploadDocuments.documentsForDocumentsReferred.push(newObject);
+  }
+};
+
+export const removeItem = (uploadDocuments: UploadDocumentsForm, action: string  ) => {
+  const [category,index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+
+  if(category === 'documentsForYourStatement'){
+    uploadDocuments.documentsForYourStatement.splice(Number(index),1);
+  } else if(category === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT){
+    uploadDocuments.documentsForYourStatement.splice(Number(index),1);
   }
 };
 

@@ -5,7 +5,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {
   addAnother,
   getUploadDocuments,
-  getUploadDocumentsForm,
+  getUploadDocumentsForm, removeItem,
   saveUploadDocument,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {GenericForm} from 'form/models/genericForm';
@@ -124,8 +124,10 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, action, form);
       return renderView(form, uploadDocuments, res, claimId, claim);
+    } else if (action?.includes('[removeButton]')) {
+      removeItem(uploadDocumentsForm, action);
+      return renderView(form, uploadDocuments, res, claimId, claim);
     }
-    //todo add upload button
     //todo remove button
     form.validateSync();
     if (form.hasErrors()) {
