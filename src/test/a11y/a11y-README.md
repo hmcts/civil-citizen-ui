@@ -84,6 +84,6 @@ Files do not show immediately upon finish. You might have to wait a few seconds 
 
 Run the tests:a11y command.
 
-If your mock does not load, or your mock uses a line signalling a redirect, rather than a view, errors will show.
+If your mock does not load, or your mock only shows a redirect, rather than a view, errors will show.
 
 Check each error, and either update the mock, or ignore the url as appropriate.
