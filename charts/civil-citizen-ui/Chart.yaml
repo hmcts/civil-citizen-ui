@@ -12,7 +12,7 @@ dependencies:
     version: 3.0.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: civil-service
-    version: 0.0.48
+    version: 0.0.58
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-service.enabled
   - name: ccd
@@ -28,7 +28,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
   - name: camunda-bpm
-    version: 0.0.43
+    version: 0.0.44
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: camunda-bpm.enabled
   - name: servicebus
@@ -37,7 +37,7 @@ dependencies:
     condition: servicebus.enabled
   # WA
   - name: wa
-    version: 0.1.7
+    version: ~1.0.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   # CCD message publisher

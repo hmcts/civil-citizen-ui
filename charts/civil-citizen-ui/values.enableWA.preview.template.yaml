@@ -9,11 +9,9 @@ servicebus:
         subscriptionNeeded: yes
         requiresSession: true
 
-civil-camunda-bpm:
-  enabled: false
-
 camunda-bpm:
   # comes from WA chart
+  enabled: false
   java:
     ingressHost: camunda-${SERVICE_FQDN}
 
