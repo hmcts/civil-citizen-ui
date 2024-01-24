@@ -266,6 +266,9 @@ import claimBilingualLangPreferenceController from 'routes/features/claim/biling
 import paymentSuccessfulController from 'routes/features/claim/paymentSuccessfulController';
 import alternativeContactPersonMediationController
   from 'routes/features/mediation/alternativeContactPersonMediationController';
+import startMediationUploadDocumentsController
+  from 'routes/features/mediation/uploadDocuments/startMediationUploadDocumentsController';
+import mediationTypeOfDocumentsController from 'routes/features/mediation/uploadDocuments/typeOfDocumentsController';
 export default [
   homeController,
   dashboardController,
@@ -502,4 +505,6 @@ export default [
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
   createDraftClaimController,
+  startMediationUploadDocumentsController,
+  mediationTypeOfDocumentsController,
 ];
