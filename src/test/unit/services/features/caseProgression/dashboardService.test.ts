@@ -2,6 +2,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {YesNo} from 'form/models/yesNo';
+import {PaymentStatus} from 'models/PaymentDetails';
 import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
@@ -87,7 +88,6 @@ describe('dashboardService', () => {
       });
 
       it('should show task in progress due to help with fees reference number', () => {
-
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
         claimWithPaymentStatus = {
           ...mockClaim,
@@ -110,8 +110,8 @@ describe('dashboardService', () => {
         expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
         expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
       });
-
-      it('should show task not available due to lack of Help With Fees reference number', () => {
+        
+      it('should show task done due to successful payment status', () => {
 
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
         claimWithPaymentStatus = {
@@ -119,12 +119,70 @@ describe('dashboardService', () => {
           state: CaseState.AWAITING_APPLICANT_INTENTION,
           case_data: {
             ...mockClaim.case_data,
-            caseProgression: {
-              helpFeeReferenceNumberForm: new ApplyHelpFeesReferenceForm(YesNo.NO),
-            },
             isClaimant: jest.fn().mockReturnValue(true),
             isLRClaimant: jest.fn(),
             isLRDefendant: jest.fn(),
+            caseProgressionHearing: {
+              hearingFeePaymentDetails: {
+                status: PaymentStatus.SUCCESS,
+              },
+            },
+          },
+        };
+        //when
+        const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
+
+        //Then
+        expect(taskList.length).toEqual(2);
+        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
+        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.DONE);
+      });
+
+      it('should show task done due to successful payment status data available in redis ', () => {
+
+        mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+        claimWithPaymentStatus = {
+          ...mockClaim,
+          state: CaseState.AWAITING_APPLICANT_INTENTION,
+          case_data: {
+            ...mockClaim.case_data,
+            isClaimant: jest.fn().mockReturnValue(true),
+            isLRClaimant: jest.fn(),
+            isLRDefendant: jest.fn(),
+            caseProgression: {
+              hearing: {
+                paymentInformation: {
+                  status: 'Success',
+                },
+              },
+            },
+          },
+        };
+        //when
+        const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
+
+        //Then
+        expect(taskList.length).toEqual(2);
+        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
+        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.DONE);
+      });
+
+      it('should show task not available due to failed payment status', () => {
+        mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+        claimWithPaymentStatus = {
+          ...mockClaim,
+          state: CaseState.AWAITING_APPLICANT_INTENTION,
+          case_data: {
+            ...mockClaim.case_data,
+            isClaimant: jest.fn().mockReturnValue(true),
+            isLRClaimant: jest.fn(),
+            isLRDefendant: jest.fn(),
+            hearingFeePaymentDetails: {
+              status: PaymentStatus.FAILED,
+            },
+            caseProgression: {
+              helpFeeReferenceNumberForm: null,
+            },
           },
         };
         //when
@@ -146,6 +204,7 @@ describe('dashboardService', () => {
             caseProgression: {
               helpFeeReferenceNumberForm: null,
             },
+
             isClaimant: jest.fn().mockReturnValue(true),
             isLRClaimant: jest.fn(),
             isLRDefendant: jest.fn(),

@@ -32,10 +32,10 @@ describe('getDashboardContent', () => {
       const claimantNotifications = await getClaimantNotifications(claim.id, claim, 'en');
 
       //Then
-      expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-      expect(claimantNotifications[0].content).toEqual(hearingFeeNotificationContent);
-      expect(claimantNotifications[1].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
-      expect(claimantNotifications[1].content).toEqual(defendantResponseNotificationContent);
+      expect(claimantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
+      expect(claimantNotifications[0].content).toEqual(defendantResponseNotificationContent);
+      expect(claimantNotifications[1].title).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
+      expect(claimantNotifications[1].content).toEqual(hearingFeeNotificationContent);
       expect(claimantNotifications[2]).toBeUndefined();
 
     });
@@ -84,9 +84,9 @@ describe('getDashboardContent', () => {
       const claimantNotifications = await getClaimantNotifications(claim.id, claim, lang);
 
       //Then
-      expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE');
-      expect(claimantNotifications[0].content).toEqual(helpWithFeesNotificationContent);
-      expect(claimantNotifications[1].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
+      expect(claimantNotifications[0].title).toEqual('PAGES.LATEST_UPDATE_CONTENT.WAIT_DEFENDANT_TO_RESPOND');
+      expect(claimantNotifications[1].title).toEqual('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE');
+      expect(claimantNotifications[1].content).toEqual(helpWithFeesNotificationContent);
 
     });
 

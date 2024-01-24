@@ -4,7 +4,7 @@
 
   <div>
     <li class="app-task-list__item">
-       {% if task.status===TaskStatus.NOT_AVAILABLE_YET %}
+       {% if task.status===TaskStatus.NOT_AVAILABLE_YET or task.status===TaskStatus.DONE_NO_URL %}
           <span class="app-task-list__task-name">
              <a>{{ t(task.description) }}</a>
           </span>
