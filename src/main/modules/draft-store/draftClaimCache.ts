@@ -38,7 +38,7 @@ const draftClaim = {
       },
       partyPhone: {},
       emailAddress: {
-        emailAddress: 'citizen.user1@gmail.com',
+        emailAddress: 'civilmoneyclaimsdemo@gmail.com',
       },
     },
     respondent1: {
@@ -116,7 +116,6 @@ const draftClaim = {
 const saveDraftClaimToCache = async (userId: string) => {
   draftClaim.id = userId;
   draftClaim.case_data.id = userId;
-  draftClaim.case_data.claimFee.calculatedAmountInPence = '45500';
   draftClaim.case_data.draftClaimCreatedAt = new Date().toISOString();
 
   await app.locals.draftStoreClient.set(userId, JSON.stringify(draftClaim));

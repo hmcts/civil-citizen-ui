@@ -842,6 +842,9 @@
         "PAGE_TITLE": "Continue claiming interest",
         "TITLE": "Continue to claim interest after you submit your claim?"
       },
+      "CREATE_DRAFT": {
+        "PAGE_TITLE": "Create draft claim"
+      },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",
         "PERSONAL_EMAIL": "This must be their personal email address",

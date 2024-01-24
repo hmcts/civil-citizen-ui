@@ -842,6 +842,9 @@
         "PAGE_TITLE": "Parhau i hawlio llog",
         "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
       },
+      "CREATE_DRAFT": {
+        "PAGE_TITLE": "Create draft claim"
+      },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Ei gyfeiriad e-bost (dewisol)",
         "PERSONAL_EMAIL": "Rhaid mai dyma yw ei gyfeiriad e-bost personol",
