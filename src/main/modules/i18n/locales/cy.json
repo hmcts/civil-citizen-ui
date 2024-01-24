@@ -2358,7 +2358,7 @@
         "CALL_US_ON": "Or, call us on ",
         "CLAIM_NUMBER": "Rhif yr hawliad: {{ claimId }}",
         "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
-        "FIND_OUT_CHARGES": "Gwybodaeth am brisiau galwadau",
+        "FIND_OUT_CHARGES": "Gwybodaeth am brisiau galwadau:",
         "GO_BACK": "Go back and ",
         "TRY_PAYMENT_AGAIN": "try the payment again",
         "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
