@@ -14,7 +14,7 @@ export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
     .addTitle('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
       claim.claimFee.calculatedAmountInPence)),
-      'COMMON.MICRO_TEXT.CLAIM_FEE')
+    'COMMON.MICRO_TEXT.CLAIM_FEE')
     .build();
 };
 
