@@ -13,7 +13,8 @@ export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION')
     .addTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence)))
+      claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence)),
+      'COMMON.MICRO_TEXT.HEARING_FEE')
     .build();
 };
 
