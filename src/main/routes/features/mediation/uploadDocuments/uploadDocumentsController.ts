@@ -1,6 +1,6 @@
 import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   addAnother,
@@ -17,14 +17,34 @@ import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadD
 import {
   TypeOfDocuments,
   TypeOfMediationDocuments,
-  UploadDocuments
+  UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {CaseDocument} from 'models/document/caseDocument';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'typeOfDocuments';
 //const MEDIATION_UPLOAD_DOCUMENT_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
+
+const multer = require('multer');
+const fileSize = Infinity;
+
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: fileSize,
+  },
+});
 
 const partyInformation = (claim: Claim) =>  {
   return {
@@ -33,10 +53,42 @@ const partyInformation = (claim: Claim) =>  {
   };
 };
 let yourStatementContent: ClaimSummaryContent[][] = [];
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
+async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
+  const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  const target = `${category}[${index}][fileUpload]`;
+  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
+    file.fieldname === target,
+  );
+  if (inputFile[0]){
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+    form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
+    form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
+
+    form.validateSync();
+    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
+    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
+        && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
+        && !form?.errorFor(`${errorFieldNamePrefix}`)) {
+
+      const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = document;
+    }
+  }
+  const claim: Claim = await getCaseDataFromStore(claimId);
+  const uploadDocuments = getUploadDocuments(claim);
+  renderView(form, uploadDocuments, res, claimId, claim);
+}
+
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {
   yourStatementContent = getYourStatementContent(uploadDocuments, form);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
   res.render(uploadDocumentViewPath, {
     form: form,
+    currentUrl: currentUrl,
     yourStatementContent: yourStatementContent,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     claimId: claimId,
@@ -55,7 +107,7 @@ mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: 
   }
 }) as RequestHandler);
 
-mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, (async (req, res, next) => {
+mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(), (async (req, res, next) => {// nosonar
   try {
     const claimId = req.params.id;
     const action = req.body.action;
@@ -72,6 +124,8 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, (async (req,
     } else if(action === 'add_another-documents_referred'){
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
       return renderView(form, uploadDocuments, res, claimId, claim);
+    } else if (action?.includes('[uploadButton]')) {
+      await uploadSingleFile(req, res, claimId, action, form);
     }
     //todo add upload button
     //todo remove button

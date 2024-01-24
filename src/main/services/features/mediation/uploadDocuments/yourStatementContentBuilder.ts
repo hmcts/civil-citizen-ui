@@ -18,12 +18,15 @@ export const buildYourStatementSection = (section: TypeOfDocumentSection = null,
     invalidMonthError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateMonth]`, documentsForYourStatement),
     invalidYearError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateYear]`, documentsForYourStatement),
     invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, documentsForYourStatement),
+    invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, documentsForYourStatement)
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, documentsForYourStatement)
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForYourStatement),
   };
   return new UploadDocumentsSectionBuilder()
     .addTitle(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, null, 'govuk-!-width-three-quarters')
     .addInputArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`, '', '', documentsForYourStatement, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForYourStatement))
     .addDateArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}DATE_INPUT.${TypeOfMediationDocuments.YOUR_STATEMENT}`, invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForYourStatement, 'dateInputFields', 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index )
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForYourStatement, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForYourStatement), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForYourStatement, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.invalidFileError, section?.caseDocument)
     .addRemoveSectionButton(form?.model.documentsForYourStatement?.length > 1 || false)
     .build();
 };

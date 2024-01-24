@@ -243,6 +243,8 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
+    <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
+    <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
      <div class="govuk-inset-text">
        {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -258,6 +260,13 @@
               'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
+         {{ govukButton({
+                          id: 'uploadFileButton',
+                          name: 'action',
+                          value: content.data.category+'['+content.data.index+'][uploadButton]',
+           text: t('COMMON.UPLOAD_FILE'),
+           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+         }) }}
     </div>
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocument]',

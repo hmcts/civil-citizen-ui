@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "UPLOAD_FILE": "Upload file",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
