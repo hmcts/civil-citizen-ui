@@ -3,6 +3,7 @@ import {Claim} from 'common/models/claim';
 import {NotificationBuilder} from 'common/utils/dashboard/notificationBuilder';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 import {PaymentStatus} from 'models/PaymentDetails';
 import {NOTIFICATION_URL, PAY_HEARING_FEE_URL} from 'routes/urls';
 import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
@@ -33,6 +34,14 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
         .build())
       .build();
 
+    const feeType = FeeType.HEARING;
+
+    const helpWithFeesNotification = new NotificationBuilder(t('PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.TITLE', { lng }))
+      .addContent(new PageSectionBuilder()
+        .addParagraph(t(`PAGES.DASHBOARD.NOTIFICATIONS.HELP_WITH_FEES.${feeType}_CONTENT`, { lng, feeType: feeType }))
+        .build())
+      .build();
+
     const payTheHearingFee = new NotificationBuilder(t('PAGES.DASHBOARD.HEARINGS.PAY_FEE', { lng }))
       .addContent(new PageSectionBuilder()
         .addLink(t('PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.TEXT', {lng}),PAY_HEARING_FEE_URL.replace(':id', claim.id),t('PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.TEXT_BEFORE',{lng}), t('PAGES.DASHBOARD.NOTIFICATIONS.HEARINGS.PAY_FEE', { lng, feeAmount, hearingDueDate } ))
@@ -48,6 +57,8 @@ export const getClaimantNotifications = async (claimId: string, claim: Claim, ln
     dashboardNotificationsList.push(waitForDefendantResponseNotification);
     if (claim.caseProgression?.hearing?.paymentInformation?.status === success || claim.caseProgressionHearing?.hearingFeePaymentDetails?.status === PaymentStatus.SUCCESS) {
       dashboardNotificationsList.push(hearingFeePaidNotification);
+    } else if (claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber) {
+      dashboardNotificationsList.push(helpWithFeesNotification);
     } else if (claim?.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
       dashboardNotificationsList.push(payTheHearingFee);
     }

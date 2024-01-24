@@ -1,6 +1,8 @@
 import {CaseState} from 'form/models/claimDetails';
-import {PaymentStatus} from 'models/PaymentDetails';
 import {TaskStatus} from 'models/taskList/TaskStatus';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {YesNo} from 'form/models/yesNo';
+import {PaymentStatus} from 'models/PaymentDetails';
 import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
@@ -16,7 +18,11 @@ const uploadBundlesTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE', 
 const addTrialArrangementsTask = {description: 'PAGES.DASHBOARD.HEARINGS.ADD_TRIAL', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
 const hearingFeeActionableTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'ACTION_NEEDED', statusColor: 'govuk-tag--red', url: '/case/1234567890/case-progression/pay-hearing-fee', helpText: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE'} as Task;
 const hearingFeeTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
+
 describe('dashboardService', () => {
+  let mockClaim;
+  let claimWithPaymentStatus;
+
   describe('generateNewDashboard', () => {
     describe('as Claimant', () => {
       it('with hearing fee actionable + trial arrangements if hearing fee + fast track type', () => {
@@ -81,9 +87,30 @@ describe('dashboardService', () => {
 
       });
 
-      let mockClaim;
-      let claimWithPaymentStatus;
+      it('should show task in progress due to help with fees reference number', () => {
+        mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+        claimWithPaymentStatus = {
+          ...mockClaim,
+          state: CaseState.AWAITING_APPLICANT_INTENTION,
+          case_data: {
+            ...mockClaim.case_data,
+            caseProgression: {
+              helpFeeReferenceNumberForm: new ApplyHelpFeesReferenceForm(YesNo.YES, '12341234123'),
+            },
+            isClaimant: jest.fn().mockReturnValue(true),
+            isLRClaimant: jest.fn(),
+            isLRDefendant: jest.fn(),
+          },
+        };
+        //when
+        const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
+        //Then
+        expect(taskList.length).toEqual(2);
+        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
+        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
+      });
+        
       it('should show task done due to successful payment status', () => {
 
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
@@ -153,6 +180,9 @@ describe('dashboardService', () => {
             hearingFeePaymentDetails: {
               status: PaymentStatus.FAILED,
             },
+            caseProgression: {
+              helpFeeReferenceNumberForm: null,
+            },
           },
         };
         //when
@@ -164,13 +194,17 @@ describe('dashboardService', () => {
         expect(taskList[0].tasks[3].status).toEqual(TaskStatus.NOT_AVAILABLE_YET);
       });
 
-      it('should show task not available  due to missing payment info', () => {
+      it('should show task not available due to missing payment info', () => {
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
         claimWithPaymentStatus = {
           ...mockClaim,
           state: CaseState.AWAITING_APPLICANT_INTENTION,
           case_data: {
             ...mockClaim.case_data,
+            caseProgression: {
+              helpFeeReferenceNumberForm: null,
+            },
+
             isClaimant: jest.fn().mockReturnValue(true),
             isLRClaimant: jest.fn(),
             isLRDefendant: jest.fn(),

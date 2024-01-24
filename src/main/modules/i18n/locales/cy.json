@@ -1364,9 +1364,13 @@
       "NEXT_STEPS": "Y camau nesaf",
       "NOTIFICATIONS": {
         "HEARINGS": {
-          "PAY_FEE": "of £{{ feeAmount }} on {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
           "TEXT": "pay the hearing fee "
+        },
+        "HELP_WITH_FEES": {
+          "TITLE": "We're reviewing your help with fees application",
+          "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
         }
       },
       "ORDERS_NOTICE": {
@@ -1385,7 +1389,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",       
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
