@@ -127,6 +127,9 @@
       "TITLE": "Cookies on Money Claims",
       "VIEW_COOKIES": "View cookies"
     },
+    "CREATE_DRAFT": {
+      "PAGE_TITLE": "Create draft claim"
+    },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Evidence",
       "ROW_TYPE": "Type"
@@ -841,9 +844,6 @@
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Continue claiming interest",
         "TITLE": "Continue to claim interest after you submit your claim?"
-      },
-      "CREATE_DRAFT": {
-        "PAGE_TITLE": "Create draft claim"
       },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Their email address (optional)",

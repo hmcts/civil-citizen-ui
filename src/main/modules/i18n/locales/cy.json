@@ -127,6 +127,9 @@
       "TITLE": "Cwcis ar y gwasanaeth Hawliadau am Arian",
       "VIEW_COOKIES": "Gweld cwcis"
     },
+    "CREATE_DRAFT": {
+      "PAGE_TITLE": "Create draft claim"
+    },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
       "ROW_TYPE": "Type"
@@ -841,9 +844,6 @@
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Parhau i hawlio llog",
         "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
-      },
-      "CREATE_DRAFT": {
-        "PAGE_TITLE": "Create draft claim"
       },
       "DEFENDANT_EMAIL": {
         "PAGE_TITLE": "Ei gyfeiriad e-bost (dewisol)",
