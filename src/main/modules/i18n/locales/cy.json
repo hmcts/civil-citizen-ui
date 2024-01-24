@@ -1465,31 +1465,31 @@
     },
     "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT": {
       "DETAILS": {
-        "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ claimant }} before signing. You won’t be able to change this later.",
-        "CHOOSE_NOT_TO_SIGN": "You can choose not to sign the settlement agreement, for example if you think you can't afford it.",
-        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych wedi ei gytuno â {{ claimant }} cyn ichi arwyddo. Ni fyddwch yn gallu newid hyn yn nes ymlaen.",
+        "CHOOSE_NOT_TO_SIGN": "Gallwch ddewis peidio â llofnodi’r cytundeb setlo, er enghraifft os nad ydych yn credu na allwch ei fforddio.",
+        "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) ar gyfer unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
         "COMPLETION_DATE": {
           "DATE": "{{ finalRepaymentDate }}",
-          "LABEL": "Completion date"
+          "LABEL": "Dyddiad cwblhau"
         },
-        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
-        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
-        "NO": "No - I reject the terms of the agreement.",
-        "ON_HOLD": "The claim will be put on hold and the claimant can't request a CCJ against you.",
-        "REQUEST_CCJ": "The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement. You can ask a judge to change the plan based on your financial details. The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
-        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
-        "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
+        "FIRST_PARAGRAPH": "Mae'r cytundeb hwn yn setlo'r hawliad a wnaed gan {{ claimant }}  yn erbyn {{ defendant }}. Mae hyn yn cynnwys yr holl arian sy'n ddyledus yn yr hawliad, er enghraifft ffioedd llys, treuliau neu log.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
+        "NO": "Na - rwy’n gwrthod telerau’r cytundeb.",
+        "ON_HOLD": "Bydd yr hawliad yn cael ei ohirio ac ni all yr hawlydd wneud cais am CCJ yn eich erbyn.",
+        "REQUEST_CCJ": "Gall yr hawlydd wneud cais am CCJ yn eich erbyn i orfodi'r cynllun ad-dalu a ddangosir yn y cytundeb. Gallwch ofyn i farnwr newid y cynllun yn seiliedig ar eich manylion ariannol. Mae'r llys wedi adolygu'r cynllun ac yn credu y gallwch ei fforddio, felly efallai na fydd barnwr yn ei newid.",
+        "SECOND_PARAGRAPH": "Ni all yr un o'r ddau barti wneud unrhyw hawliadau pellach yn ymwneud â'r achos hwn, heblaw ei orfodi.",
+        "SIGN_THE_AGREEMENT": "Ydych chi eisiau llofnodi'r cytundeb setlo?",
         "THE_AGREEMENT": {
-          "LABEL": "The agreement",
-          "PAY_BY_SET_DATE": "Bydd {{fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "LABEL": "Y cytundeb",
+          "PAY_BY_SET_DATE": "Bydd {{ defendant }} yn talu £{{ amount }} erbyn dim hwyrach na {{ paymentDate }}.",
+          "REPAYMENT_PLAN": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} bob {{ theAgreementRepaymentFrequency }}. Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}."
         },
-        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
-        "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
-        "YES": "Yes - I confirm I've read and accept the terms of the agreement."
+        "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a lawrlwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
+        "VALID_YES_NO_OPTION": "Dewiswch Ydw - rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb os ydych am dderbyn y cytundeb",
+        "YES": "Ydw - Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."
       },
-      "PAGE_TITLE": "Respond to the settlement agreement",
-      "TITLE": "Respond to the settlement agreement"
+      "PAGE_TITLE": "Ymateb i'r cytundeb setlo",
+      "TITLE": "Ymateb i'r cytundeb setlo"
     },
     "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
       "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
@@ -1570,7 +1570,7 @@
       "TITLE": "A oes gennych anabledd?"
     },
     "INTEREST_START_DATE": {
-      "PAGE_TITLE": "claim interest from",
+      "PAGE_TITLE": "hawlio llog gan",
       "TITLE": "Nodwch y dyddiad yr ydych am ddechrau hawlio llog",
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn?"
     },
@@ -1591,7 +1591,7 @@
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
       "LIST_OF_GOVERNMENT": "Gweler y rhestr o adrannau'r llywodraeth (yn agor mewn ffenestr newydd).",
-      "PAGE_TITLE": "Government department",
+      "PAGE_TITLE": "Adran o’r llywodraeth",
       "TITLE": "Ydych chi'n hawlio yn erbyn adran o'r llywodraeth?"
     },
     "ELIGIBILITY_CLAIM_TYPE": {
@@ -1601,12 +1601,12 @@
       "TITLE": "Dros bwy ydych chi’n gwneud hawliad?"
     },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
-      "PAGE_TITLE": "Defendant Address in England or Wales",
+      "PAGE_TITLE": "Mae cyfeiriad y diffynnydd yng Nghymru neu Loegr",
       "TITLE": "A oes gan yr unigolyn neu'r sefydliad rydych chi'n hawlio yn ei erbyn gyfeiriad post yng Nghymru neu Loegr?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "Rydw i'n hawlio yn erbyn cwmni neu sefydliad",
-      "PAGE_TITLE": "Defendant Age Eligibility",
+      "PAGE_TITLE": "Cymhwyster oedran y diffynnydd",
       "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
@@ -1615,18 +1615,18 @@
       "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol."
     },
     "ELIGIBILITY_HWF_REFERENCE": {
-      "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
-      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
-      "DECIDE": "Decide whether to apply for Help with Fees",
-      "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
-      "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
+      "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r hawliad hwn y bydd gennych chi un.",
+      "APPLY_FOR_HELP_LINK": "Gwneud cais am Help i Dalu Ffioedd",
+      "DECIDE": "Penderfynu a ddylid gwneud cais am Help i Dalu Ffioedd",
+      "MAKE_A_NOTE": "Gwnewch nodyn o'r rhif Help i Dalu Ffioedd pan fyddwch yn gwneud cais.",
+      "MAKE_CLAIM_USING": " a gwneud hawliad gan ddefnyddio rhif Help i Dalu Ffioedd. Os oes angen i chi ddefnyddio'r cais papur am Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein  yna ni fyddwch yn gallu defnyddio Hawliadau Arian Sifil Ar-lein i gychwyn eich cais.",
       "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
-      "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
-      "WILL_NEED": "You will need this number to make your claim when you are returned to this service."
+      "WHEN_YOU_APPLY": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwnnw.",
+      "WILL_NEED": "Bydd angen y rhif hwn arnoch i wneud eich cais pan fyddwch yn dychwelyd i'r gwasanaeth hwn."
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
-      "PAGE_TITLE": "Individual or Multiparty Claim",
+      "PAGE_TITLE": "Hawliad unigol neu amlbarti",
       "TITLE": "A yw'r hawliad hwn yn erbyn mwy nag un unigolyn neu sefydliad?"
     },
     "ELIGIBILITY_TOTAL_AMOUNT": {
@@ -1744,12 +1744,12 @@
       "TITLE": "Esboniwch yn fras pam na allwch dalu ar unwaith"
     },
     "FEE_CHANGE": {
-      "PAGE_TITLE": "Claim fee has changed",
-      "TITLE": "Claim fee has changed",
-      "PARAGRAPH_1": "You submitted a claim, but did not pay the claim fee, so it was not issued and sent to the other parties.",
-      "PARAGRAPH_2": "Since then the claim fee has been recalculated and is now £{{ claimFee }}.",
-      "PARAGRAPH_3": "To proceed with this claim you need to create a new claim and pay the claim fee.",
-      "BUTTON_LABEL": "Create new claim"
+      "PAGE_TITLE": "Mae ffi’r hawliad wedi newid",
+      "TITLE": "Mae ffi’r hawliad wedi newid",
+      "PARAGRAPH_1": "Fe wnaethoch gyflwyno hawliad, ond ni wnaethoch dalu'r ffi, felly ni chafodd ei gychwyn a'i anfon at y partïon eraill.",
+      "PARAGRAPH_2": "Ers hynny mae ffi’r hawliad wedi cael ei hailgyfrifo ac mae bellach yn £{{ claimFee }}.",
+      "PARAGRAPH_3": "I barhau â’r hawliad hwn, mae angen i chi greu hawliad newydd a thalu ffi’r hawliad.",
+      "BUTTON_LABEL": "Creu hawliad newydd"
     },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
@@ -1827,12 +1827,12 @@
       "NO_OPTION": "Na – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
       "TITLE": "Sut mae am dalu?",
-      "NO_OPTION_HINT_TEXT": "The defendant should have sent you their financial details. You’ll need to send them to us. We’ll issue a CCJ against them. The terms of the CCJ will depend on whether we believe they can afford your suggested repayment plan."
+      "NO_OPTION_HINT_TEXT": "Dylai'r diffynnydd fod wedi anfon eu manylion ariannol atoch. Bydd angen i chi eu hanfon atom. Byddwn yn cyhoeddi CCJ yn eu herbyn. Bydd telerau'r CCJ yn dibynnu a ydym yn credu y gallant fforddio eich cynllun ad-dalu a awgrymir."
     },
     "HELP_WITH_FEES": {
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
       "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
-      "REFERENCE_NUMBER": "Help with fees reference number",
+      "REFERENCE_NUMBER": "Cyfeirnod Help i Dalu Ffioedd",
       "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
@@ -1868,18 +1868,18 @@
       "AMOUNT_ALREADY_PAID": "Swm namyn yr hyn a dalwyd eisoes",
       "CLAIM_TOTAL": "Cyfanswm",
       "JUDGMENT_STATEMENT": "Bydd y dyfarniad yn gorchymyn i'r diffynnydd dalu £{{ subTotal }}, gan gynnwys ffi’r hawliad ac unrhyw log, fel y dangosir yn y tabl hwn:",
-      "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
-      "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
-      "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
+      "INTEREST_TO_DATE_RESPONSE": "Llog a gyfrifir ar {{ interestRate }}% am {{ numberOfDays }} diwrnod.",
+      "TOTAL_PERIOD": "({{ interestFromDate }} tan {{ interestToDate}})",
+      "HOW_INTEREST_IS_CALCULATED": "Cyfrifir llog fel \"{{ reason }}\" am {{numberOfDays}} diwrnod."
     },
     "LATEST_UPDATE_CONTENT": {
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "Dydych chi ddim wedi ymateb i'r hawliad. Gall {{ claimantName }} nawr ofyn am Ddyfarniad Llys Sirol yn eich erbyn.",
-      "CLAIM_ENDED_TITLE": "This claim has ended",
+      "CLAIM_ENDED_TITLE": "Mae’r hawliad hwn wedi dod i ben",
       "CLAIM_ENDED_MESSAGE": "Daeth {{claimantName}} â'i gais yn eich erbyn i ben ar {{acceptFullDefenseDate}}",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "Cadarnhaodd {{claimantName}} eich bod wedi setlo ar {{settlementDate}}",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "{{ claimantName }} rejected your repayment plan.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "The court will review the case. We’ll contact you by post to tell you what to do next.",
-      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3": "Your online account won’t be updated - any further updates will be by post.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "Mae {{claimantName }} gwrthod eich cynllun ad-dalu.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "Bydd y llys yn adolygu’r achos. Byddwn yn cysylltu â chi drwy’r post i ddweud wrthych beth i'w wneud nesaf.",
+      "CLAIMANT_REJECT_PAYMENT_PLAN_MSG3": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru - bydd unrhyw ddiweddariadau pellach yn cael eu hanfon drwy’r post.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "Gall Dyfarniad Llys Sirol olygu eich bod yn ei chael hi'n anodd cael credyd, fel morgais neu gontract ffôn symudol. Gallai beilïaid hefyd gael eu hanfon i'ch cartref.",
       "CCJ_REQUESTED_TITLE": "Gofynnodd {{claimantName}} am Ddyfarniad Llys Sirol (CCJ) yn eich erbynk",
       "CCJ_REQUESTED_MSG1": "Fe wnaethon nhw dderbyn eich cynllun ad-dalu.",

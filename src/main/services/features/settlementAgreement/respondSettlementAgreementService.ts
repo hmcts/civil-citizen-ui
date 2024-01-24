@@ -29,7 +29,7 @@ function getTextForPayByDate(claim: Claim, lang: string){
       lang: lang,
       defendant: claim.getDefendantFullName(),
       amount: getAmount(claim),
-      paymentDate: formatDateToFullDate(claim.getPaymentIntention().paymentDate),
+      paymentDate: formatDateToFullDate(claim.getPaymentIntention().paymentDate, lang),
     }),
     completionDateText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(claim.getPaymentIntention().paymentDate, lang) }),
   };

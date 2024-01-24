@@ -74,9 +74,10 @@ export const calculateInterest = (amount: number, interest: number, startDate: D
 };
 
 export const getInterestData = (claim: Claim, lang: string) => {
-  const interestStartDate = formatDateToFullDate(getInterestStartDate(claim), getLng(lang));
-  const interestEndDate = formatDateToFullDate(new Date());
-  const numberOfDays = getNumberOfDaysBetweenTwoDays(interestStartDate, interestEndDate);
+  const interestStrtDate = getInterestStartDate(claim);
+  const interestStartDate = formatDateToFullDate(interestStrtDate, getLng(lang));
+  const interestEndDate = formatDateToFullDate(new Date(), getLng(lang));
+  const numberOfDays = getNumberOfDaysBetweenTwoDays(interestStrtDate, new Date());
   const interestToDate = calculateInterestToDate(claim);
   const interestRate = getInterestRate(claim);
   const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
