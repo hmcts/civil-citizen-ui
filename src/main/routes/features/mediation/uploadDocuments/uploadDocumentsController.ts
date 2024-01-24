@@ -78,9 +78,6 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
       form.model[category as keyof UploadDocumentsForm][+index].caseDocument = document;
     }
   }
-  const claim: Claim = await getCaseDataFromStore(claimId);
-  const uploadDocuments = getUploadDocuments(claim);
-  renderView(form, uploadDocuments, res, claimId, claim);
 }
 
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {
@@ -126,6 +123,7 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       return renderView(form, uploadDocuments, res, claimId, claim);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, action, form);
+      return renderView(form, uploadDocuments, res, claimId, claim);
     }
     //todo add upload button
     //todo remove button
