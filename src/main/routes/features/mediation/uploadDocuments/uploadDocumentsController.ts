@@ -19,11 +19,13 @@ import {
   TypeOfMediationDocuments,
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
-import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {CaseDocument} from 'models/document/caseDocument';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  getDocumentsForDocumentsReferred
+} from "services/features/mediation/uploadDocuments/documentsForDocumentsReferredService";
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -52,7 +54,6 @@ const partyInformation = (claim: Claim) =>  {
     defendantName: claim.getDefendantFullName(),
   };
 };
-let yourStatementContent: ClaimSummaryContent[][] = [];
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
@@ -81,12 +82,15 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
 }
 
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {
-  yourStatementContent = getYourStatementContent(uploadDocuments, form);
+  const yourStatementContent = getYourStatementContent(uploadDocuments, form);
+  const documentsForDocumentsReferred = getDocumentsForDocumentsReferred(uploadDocuments, form);
+
   const currentUrl = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
   res.render(uploadDocumentViewPath, {
     form: form,
     currentUrl: currentUrl,
     yourStatementContent: yourStatementContent,
+    documentsForDocumentsReferred: documentsForDocumentsReferred,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     claimId: claimId,
     partyInformation: partyInformation(claim)});
@@ -128,7 +132,7 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       removeItem(uploadDocumentsForm, action);
       return renderView(form, uploadDocuments, res, claimId, claim);
     }
-    //todo remove button
+
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, uploadDocuments, res, claimId, claim);
