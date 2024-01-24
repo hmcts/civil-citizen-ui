@@ -15,3 +15,13 @@ export function removeWhiteSpacesIfNoText(text:string): string {
     return text;
   }
 }
+
+export function convertToArrayOfStrings(data: string | string[]): string[] {
+  if (typeof data === 'string') {
+    // If it's a string, convert it to an array of characters
+    return Array.of(data);
+  } else if (Array.isArray(data)) {
+    // If it's already an array, return it as is
+    return data;
+  }
+}
