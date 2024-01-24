@@ -17,7 +17,6 @@ nodejs:
         - civil-citizen-ui-token-key
         - name: launch-darkly-sdk-key-non-prod
           alias: LAUNCH_DARKLY_SDK_KEY
-
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
