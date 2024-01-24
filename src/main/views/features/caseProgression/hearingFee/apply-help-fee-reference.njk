@@ -8,6 +8,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/back.njk" import back %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
@@ -63,12 +64,8 @@
               {{ itemContent(content,t) }}
             {% endfor %}
           </form>
-
-
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>

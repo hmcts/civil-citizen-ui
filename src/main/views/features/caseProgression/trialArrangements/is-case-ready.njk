@@ -12,6 +12,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 
 {% set noHtml %}
@@ -54,9 +55,7 @@
             </div>
           </form>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>

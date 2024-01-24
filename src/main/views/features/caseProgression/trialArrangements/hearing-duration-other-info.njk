@@ -8,6 +8,7 @@
 {% from "../../../macro/back.njk" import back %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE') }}
@@ -19,11 +20,9 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           {{ back(hasAnythingChangedUrl,t) }}
-          <p class="govuk-body">
             {% for content in hearingDurationContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
-          </p>
           <div class="form-group">
             <form method="post" novalidate>
               {{ csrfProtection(csrf) }}
@@ -48,9 +47,7 @@
             </form>
           </div>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>

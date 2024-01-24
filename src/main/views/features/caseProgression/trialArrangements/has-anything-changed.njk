@@ -8,6 +8,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% set yesHtml %}
  {{ govukTextarea({
@@ -60,9 +61,7 @@
             </div>
           </form>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>

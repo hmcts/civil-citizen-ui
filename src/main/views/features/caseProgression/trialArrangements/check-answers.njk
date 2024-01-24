@@ -7,6 +7,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/back.njk" import back %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
@@ -47,9 +48,7 @@
             </div>
           </form>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>

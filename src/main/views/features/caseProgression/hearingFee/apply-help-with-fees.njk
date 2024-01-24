@@ -4,6 +4,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/back.njk" import back %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PAGE_TITLE') }}
@@ -34,9 +35,7 @@
                     </div>
                   </form>
             </div>
-              <div class="govuk-grid-column-one-third">
-                {{ contactUsForHelp(t) }}
-              </div>
+            {{ contactUsForHelpOneThird(t) }}
           </div>
         </main>
       </div>
