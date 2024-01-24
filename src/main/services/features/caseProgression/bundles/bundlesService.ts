@@ -27,9 +27,9 @@ function getBundles(claim: Claim, lang: string): ClaimSummaryContent {
   const tableRows = getBundleTableRows(claim);
 
   const bundlesSection = new TabSectionBuilder()
-    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW')
-    .addLink('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_LINK', MAKE_APPLICATION_TO_COURT, 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_BEFORE', 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_AFTER', null, true)
-    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.NEW_DOCUMENT_NOT_INCLUDED')
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW', {lng: lang}))
+    .addLink(t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_LINK', {lng: lang}), MAKE_APPLICATION_TO_COURT, t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_BEFORE', {lng: lang}), t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_AFTER', {lng: lang}), null, true)
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.BUNDLES.NEW_DOCUMENT_NOT_INCLUDED', {lng: lang}))
     .addTable(tableHeaders, tableRows, 'tableWrap')
     .build();
 
