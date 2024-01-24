@@ -7,7 +7,6 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/external-link.njk" import externalLink %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.PAGE_TITLE') }}
@@ -37,6 +36,8 @@
         }) }}
       </div>
     </div>
-    {{ contactUsForHelpOneThird(t) }}
+    <div class="govuk-grid-column-one-third">
+      {{ contactUsForHelp(t) }}
+    </div>
   </div>
 {% endblock %}
