@@ -13,9 +13,9 @@ module.exports = {
         totalClaimAmount:totalClaimAmount,
         respondent1:{
           individualDateOfBirth:'1987-11-01T00:00:00.000Z',
-          individualFirstName:'John',
-          individualLastName:'Doe',
-          individualTitle:'Sir',
+          firstName:'John',
+          lastName:'Doe',
+          title:'Sir',
           partyEmail:'civilmoneyclaimsdemo@gmail.com',
           partyPhone:'07123456789',
           primaryAddress:{

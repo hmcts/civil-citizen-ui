@@ -30,9 +30,9 @@
     },
     "respondent1": {
       "partyDetails": {
-        "individualTitle": "Miss",
-        "individualLastName": "Elms",
-        "individualFirstName": "Sarah",
+        "title": "Miss",
+        "lastName": "Elms",
+        "firstName": "Sarah",
         "postToThisAddress": "no",
         "primaryAddress": {
           "addressLine1": "12 street",
@@ -64,9 +64,9 @@
     },
     "applicant1": {
       "partyDetails": {
-        "individualTitle": "Mr",
-        "individualLastName": "Wells",
-        "individualFirstName": "Jason",
+        "title": "Mr",
+        "lastName": "Wells",
+        "firstName": "Jason",
         "primaryAddress": {
           "addressLine1": "1 street",
           "postCode": "hu9 5bx"

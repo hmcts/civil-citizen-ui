@@ -14,7 +14,7 @@ const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1?.type === PartyType.ORGANISATION || claim.respondent1?.type === PartyType.COMPANY) {
     return claim.respondent1?.partyDetails.partyName;
   }
-  return `${claim.respondent1?.partyDetails.individualTitle} ${claim.respondent1?.partyDetails.individualFirstName} ${claim.respondent1?.partyDetails.individualLastName}`;
+  return `${claim.respondent1?.partyDetails.title} ${claim.respondent1?.partyDetails.firstName} ${claim.respondent1?.partyDetails.lastName}`;
 };
 
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {

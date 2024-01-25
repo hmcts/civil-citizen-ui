@@ -13,14 +13,14 @@
 {% macro citizenDetailsSection(t, type) %}
   {% if type === partyType.INDIVIDUAL %}
     <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.TITLE') }}</h2>
-    <p class="govuk-body">{% if party.model.individualTitle %}{{ party.model.individualTitle }}{% endif %}</p>
-    <input type="hidden" id="individualTitle" name="individualTitle" value="{{ party.model.individualTitle }}"/>
+    <p class="govuk-body">{% if party.model.title %}{{ party.model.title }}{% endif %}</p>
+    <input type="hidden" id="title" name="title" value="{{ party.model.title }}"/>
     <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.FIRST_NAME') }}</h2>
-    <p class="govuk-body">{% if party.model.individualFirstName %}{{ party.model.individualFirstName }}{% endif %}</p>
-    <input type="hidden" id="individualFirstName" name="individualFirstName" value="{{ party.model.individualFirstName }}"/>
+    <p class="govuk-body">{% if party.model.firstName %}{{ party.model.firstName }}{% endif %}</p>
+    <input type="hidden" id="firstName" name="firstName" value="{{ party.model.firstName }}"/>
     <h2 class="govuk-heading-m">{{ t('COMMON.INPUT_LABELS.LAST_NAME') }}</h2>
-    <p class="govuk-body">{% if party.model.individualLastName %}{{ party.model.individualLastName }}{% endif %}</p>
-    <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
+    <p class="govuk-body">{% if party.model.lastName %}{{ party.model.lastName }}{% endif %}</p>
+    <input type="hidden" id="lastName" name="lastName" value="{{ party.model.lastName }}"/>
   {% else %}
     <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FULL_NAME') }}</h2>
     <p class="govuk-body">
@@ -28,13 +28,13 @@
       {{ party.model.partyName }}</p>
       <input type="hidden" id="partyName" name="partyName" value="{{ party.model.partyName }}"/>
     {% else %}
-      {% if party.model.individualFirstName %}
-        {{ party.model.individualFirstName }}
-        <input type="hidden" id="individualFirstName" name="individualFirstName" value="{{ party.model.individualFirstName }}"/>
+      {% if party.model.firstName %}
+        {{ party.model.firstName }}
+        <input type="hidden" id="firstName" name="firstName" value="{{ party.model.firstName }}"/>
       {% endif %}
-      {% if party.model.individualLastName %}
-        {{ party.model.individualLastName }}
-        <input type="hidden" id="individualLastName" name="individualLastName" value="{{ party.model.individualLastName }}"/>
+      {% if party.model.lastName %}
+        {{ party.model.lastName }}
+        <input type="hidden" id="lastName" name="lastName" value="{{ party.model.lastName }}"/>
       {% endif %}
     </p>
     {% endif %}

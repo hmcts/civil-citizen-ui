@@ -7,16 +7,16 @@
   "case_data": {
     "applicant1": {
       "type": "INDIVIDUAL",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Jan",
-      "individualLastName": "Clark",
+      "title": "Mr.",
+      "firstName": "Jan",
+      "lastName": "Clark",
       "partyName": "Mr. Jan Clark"
     },
     "respondent1": {
       "type": "INDIVIDUAL",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Joe",
-      "individualLastName": "Doe",
+      "title": "Mr.",
+      "firstName": "Joe",
+      "lastName": "Doe",
       "partyName": "Mr. Joe Doe",
       "partyPhone": {
         "phone": "654323472",

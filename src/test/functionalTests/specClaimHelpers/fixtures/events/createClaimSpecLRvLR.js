@@ -3,9 +3,9 @@ const config = require('../../../../config');
 
 const respondent1 = {
   type: 'INDIVIDUAL',
-  individualFirstName: 'John',
-  individualLastName: 'Doe',
-  individualTitle: 'Sir',
+  firstName: 'John',
+  lastName: 'Doe',
+  title: 'Sir',
   primaryAddress: buildAddress('respondent'),
   partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };

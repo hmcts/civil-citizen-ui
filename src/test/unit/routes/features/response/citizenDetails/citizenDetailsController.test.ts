@@ -26,9 +26,9 @@ const claim = new Claim();
 const buildClaimOfRespondent = (): Party => {
   claim.respondent1 = new Party();
   claim.respondent1.partyDetails = new PartyDetails({});
-  claim.respondent1.partyDetails.individualTitle = 'individualTitle';
-  claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
-  claim.respondent1.partyDetails.individualLastName = 'individualLastName';
+  claim.respondent1.partyDetails.title = 'title';
+  claim.respondent1.partyDetails.firstName = 'firstName';
+  claim.respondent1.partyDetails.lastName = 'lastName';
   claim.respondent1.partyDetails.primaryAddress = buildAddress();
   claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
   return claim.respondent1;
@@ -155,9 +155,9 @@ describe('Confirm Details page', () => {
     const buildClaimOfRespondentWithoutCorrespondent = (): Party => {
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = new PartyDetails({});
-      claim.respondent1.partyDetails.individualTitle = 'individualTitle';
-      claim.respondent1.partyDetails.individualFirstName = 'individualFirstName';
-      claim.respondent1.partyDetails.individualLastName = 'individualLastName';
+      claim.respondent1.partyDetails.title = 'title';
+      claim.respondent1.partyDetails.firstName = 'firstName';
+      claim.respondent1.partyDetails.lastName = 'lastName';
       claim.respondent1.partyDetails.primaryAddress = buildAddress();
       return claim.respondent1;
     };

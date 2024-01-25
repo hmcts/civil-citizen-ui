@@ -28,9 +28,9 @@ const claim = new Claim();
 const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
   claim.applicant1 = new Party();
   claim.applicant1.partyDetails = new PartyDetails({});
-  claim.applicant1.partyDetails.individualTitle = 'individualTitle';
-  claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
-  claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+  claim.applicant1.partyDetails.title = 'title';
+  claim.applicant1.partyDetails.firstName = 'firstName';
+  claim.applicant1.partyDetails.lastName = 'lastName';
   claim.applicant1.partyDetails.primaryAddress = buildAddress();
   claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
   claim.applicant1.partyDetails.partyName = 'partyName';
@@ -175,9 +175,9 @@ describe('Claimant Organisation Details page', () => {
         claim.applicant1 = new Party();
         claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.ORGANISATION;
-        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
-        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
-        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.title = 'title';
+        claim.applicant1.partyDetails.firstName = 'firstName';
+        claim.applicant1.partyDetails.lastName = 'lastName';
         claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };
@@ -544,9 +544,9 @@ describe('Claimant Organisation Details page', () => {
         claim.applicant1 = new Party();
         claim.applicant1.partyDetails = new PartyDetails({});
         claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.partyDetails.individualTitle = 'individualTitle';
-        claim.applicant1.partyDetails.individualFirstName = 'individualFirstName';
-        claim.applicant1.partyDetails.individualLastName = 'individualLastName';
+        claim.applicant1.partyDetails.title = 'title';
+        claim.applicant1.partyDetails.firstName = 'firstName';
+        claim.applicant1.partyDetails.lastName = 'lastName';
         claim.applicant1.partyDetails.primaryAddress = buildAddress();
         return claim;
       };

@@ -39,9 +39,9 @@ const mockRespondent: Party = {
   responseType: '',
   partyPhone: {phone: ''},
   partyDetails: {
-    individualLastName: '',
-    individualFirstName: '',
-    individualTitle: '',
+    lastName: '',
+    firstName: '',
+    title: '',
     primaryAddress: new Address('', '', '', '', ''),
     correspondenceAddress: new Address(),
   },

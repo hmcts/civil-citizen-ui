@@ -37,9 +37,9 @@ describe('map party info to additional party details', () => {
         year: null,
       },
       partyDetails: {
-        individualTitle: 'Mrs',
-        individualLastName: 'Clark',
-        individualFirstName: 'Jane',
+        title: 'Mrs',
+        lastName: 'Clark',
+        firstName: 'Jane',
         partyName: 'Mrs Jane Clark',
         primaryAddress: new Address(),
       },

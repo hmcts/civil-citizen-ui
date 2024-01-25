@@ -18,9 +18,9 @@
     "applicant1": {
       "type": "INDIVIDUAL",
       "partyDetails": {
-        "individualTitle": "Mr",
-        "individualFirstName": "Jon",
-        "individualLastName": "Doe"
+        "title": "Mr",
+        "firstName": "Jon",
+        "lastName": "Doe"
       },
       "primaryAddress": {
         "County": "Kent",
@@ -34,9 +34,9 @@
     },
     "respondent1": {
       "type": "SOLE_TRADER",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Jan",
-      "individualLastName": "Clark",
+      "title": "Mr.",
+      "firstName": "Jan",
+      "lastName": "Clark",
       "partyName": "Mr. Jan Clark",
       "primaryAddress": {
         "County": "Kent",

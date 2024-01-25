@@ -7,9 +7,9 @@ module.exports = {
       caseData: {
         respondent1: {
           type: 'INDIVIDUAL',
-          individualTitle: 'Sir',
-          individualFirstName: 'John',
-          individualLastName: 'Doe',
+          title: 'Sir',
+          firstName: 'John',
+          lastName: 'Doe',
           individualDateOfBirth: '1987-11-01',
           primaryAddress: {
             AddressLine1: 'Test AddressLine1',
@@ -158,9 +158,9 @@ module.exports = {
       caseData: {
         respondent1: {
           type: 'INDIVIDUAL',
-          individualTitle: 'Sir',
-          individualFirstName: 'John',
-          individualLastName: 'Doe',
+          title: 'Sir',
+          firstName: 'John',
+          lastName: 'Doe',
           individualDateOfBirth: '1987-11-01',
           primaryAddress: {
             AddressLine1: 'Test AddressLine1',

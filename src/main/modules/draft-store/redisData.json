@@ -88,9 +88,9 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualFirstName": "Jane",
-          "individualLastName": "Doe",
+          "title": "Mrs.",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "partyName": "Version 1",
           "primaryAddress": {
             "County": "Kent",
@@ -107,9 +107,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualFirstName": "Jane",
-          "individualLastName": "Doe",
+          "title": "Mrs.",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "partyName": "Mrs. Jane Doe",
           "primaryAddress": {
             "county": "Kent",
@@ -337,9 +337,9 @@
         "type": "SOLE_TRADER",
         "partyPhone": "(0)207 127 0000",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "soleTraderTradingAs": "Gardener",
           "primaryAddress": {
             "county": "London",
@@ -539,9 +539,9 @@
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Alex",
-          "individualLastName": "Van",
+          "title": "Mr.",
+          "firstName": "Alex",
+          "lastName": "Van",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -557,9 +557,9 @@
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jhon",
-          "individualLastName": "Smith",
+          "title": "Mr.",
+          "firstName": "Jhon",
+          "lastName": "Smith",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -715,9 +715,9 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -1093,9 +1093,9 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "partyName": "Mr. Jan Clark",
           "primaryAddress": {
             "county": "Kent",
@@ -1111,9 +1111,9 @@
       "respondent1": {
         "type": "SOLE_TRADER",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "soleTraderTradingAs": "Clark's Sons Ltd.",
           "primaryAddress": {
             "county": "Kent",
@@ -1316,9 +1316,9 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -1333,9 +1333,9 @@
       "respondent1": {
         "type": "SOLE_TRADER",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -1542,9 +1542,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualFirstName": "Jane",
-          "individualLastName": "Doe",
+          "title": "Mrs.",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -1713,9 +1713,9 @@
         "type": "SOLE_TRADER",
         "partyPhone": "(0)207 127 0000",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jan",
-          "individualLastName": "Clark",
+          "title": "Mr.",
+          "firstName": "Jan",
+          "lastName": "Clark",
           "soleTraderTradingAs": "Gardener",
           "primaryAddress": {
             "county": "London",
@@ -1889,9 +1889,9 @@
         "type": "INDIVIDUAL",
         "partyPhone": "(0)207 127 0000",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Alex",
-          "individualLastName": "Van",
+          "title": "Mr.",
+          "firstName": "Alex",
+          "lastName": "Van",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -1906,9 +1906,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mr.",
-          "individualFirstName": "Jhon",
-          "individualLastName": "Smith",
+          "title": "Mr.",
+          "firstName": "Jhon",
+          "lastName": "Smith",
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
@@ -2190,9 +2190,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualFirstName": "Jane",
-          "individualLastName": "Doe",
+          "title": "Mrs.",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "partyName": "Mrs. Jane Doe",
           "postToThisAddress": "no",
           "primaryAddress": {
@@ -2670,9 +2670,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualFirstName": "Jane",
-          "individualLastName": "Doe",
+          "title": "Mrs.",
+          "firstName": "Jane",
+          "lastName": "Doe",
           "partyName": "Mrs. Jane Doe",
           "postToThisAddress": "no",
           "primaryAddress": {
@@ -2920,9 +2920,9 @@
       "respondent1": {
         "type": "INDIVIDUAL",
         "partyDetails": {
-          "individualTitle": "Mrs.",
-          "individualLastName": "Doe",
-          "individualFirstName": "Jane",
+          "title": "Mrs.",
+          "lastName": "Doe",
+          "firstName": "Jane",
           "postToThisAddress": "no",
           "primaryAddress": {
             "addressLine1": "Flat 2",
@@ -3179,9 +3179,9 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "individualTitle": "Sir",
-        "individualLastName": "Doe",
-        "individualFirstName": "John",
+        "title": "Sir",
+        "lastName": "Doe",
+        "firstName": "John",
         "individualDateOfBirth": "1977-01-01",
         "partyTypeDisplayValue": "Individual"
       },
@@ -3599,9 +3599,9 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "individualTitle": "Sir",
-        "individualLastName": "Doe",
-        "individualFirstName": "John",
+        "title": "Sir",
+        "lastName": "Doe",
+        "firstName": "John",
         "partyTypeDisplayValue": "Individual"
       },
       "applicantSolicitor1PbaAccountsIsEmpty": "No",

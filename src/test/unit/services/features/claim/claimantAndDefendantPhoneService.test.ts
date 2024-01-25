@@ -12,9 +12,9 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const party: Party = {
   partyDetails: {
-    individualTitle: '',
-    individualLastName: '',
-    individualFirstName: '',
+    title: '',
+    lastName: '',
+    firstName: '',
     partyName: '',
   },
   partyPhone: {phone: '01632960001'},

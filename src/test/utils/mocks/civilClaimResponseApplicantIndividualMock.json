@@ -8,9 +8,9 @@
     "applicant1": {
       "type": "INDIVIDUAL",
       "partyDetails": {
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
+        "title": "Mr.",
+        "firstName": "Jan",
+        "lastName": "Clark",
         "partyName": "Mr. Jan Clark"
       }
     },
@@ -20,9 +20,9 @@
         "emailAddress": "test@test.com"
       },
       "partyDetails": {
-        "individualTitle": "Mr.",
-        "individualFirstName": "Joe",
-        "individualLastName": "Doe",
+        "title": "Mr.",
+        "firstName": "Joe",
+        "lastName": "Doe",
         "partyName": "Mr. Joe Doe"
       }
     }

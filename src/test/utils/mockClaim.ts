@@ -32,9 +32,9 @@ export const buildAddress = (): Address => {
 export const buildRespondent1 = (): Party => {
   const respondent = new Party();
   respondent.partyDetails = new PartyDetails({});
-  respondent.partyDetails.individualTitle = 'Mrs.';
-  respondent.partyDetails.individualLastName = 'Mary';
-  respondent.partyDetails.individualFirstName = 'Richards';
+  respondent.partyDetails.title = 'Mrs.';
+  respondent.partyDetails.lastName = 'Mary';
+  respondent.partyDetails.firstName = 'Richards';
   respondent.partyDetails.partyName = 'Mrs Richards Mary';
   respondent.partyDetails.contactPerson = 'Mrs Richards Mary';
   respondent.partyPhone = new PartyPhone('0208339922');
@@ -60,9 +60,9 @@ function buildMockClaim(): Claim {
       year: null,
     },
     partyDetails: {
-      individualTitle: 'Mrs',
-      individualLastName: 'Clark',
-      individualFirstName: 'Jane',
+      title: 'Mrs',
+      lastName: 'Clark',
+      firstName: 'Jane',
       partyName: 'Mrs Jane Clark',
       primaryAddress: new Address(),
       contactPerson: 'Mrs Jane Clark',
