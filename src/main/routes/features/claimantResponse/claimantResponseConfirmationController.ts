@@ -1,11 +1,11 @@
-import { RequestHandler, Response, Router } from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {CLAIMANT_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseConfirmationGuard';
-import { AppRequest } from 'common/models/AppRequest';
-import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const claimantResponseConfirmationController = Router();
 

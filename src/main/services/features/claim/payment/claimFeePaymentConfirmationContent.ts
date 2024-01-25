@@ -1,25 +1,25 @@
 import {Claim} from 'models/claim';
-import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 
 export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addPanel(claim.caseProgression.hearing.paymentInformation.paymentReference)
+    .addPanel(claim.claimDetails?.claimFeePayment?.paymentReference)
     .build();
 };
 
 export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION')
-    .addTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY')
+    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION')
+    .addTitle('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence)),
-    'COMMON.MICRO_TEXT.HEARING_FEE')
+      claim.claimFee.calculatedAmountInPence)),
+    'COMMON.MICRO_TEXT.CLAIM_FEE')
     .build();
 };
 
 export const getPaymentSuccessfulButtonContent = (redirectUrl : string) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', redirectUrl)
+    .addButton('COMMON.BUTTONS.GO_TO_ACCOUNT', redirectUrl)
     .build();
 };
