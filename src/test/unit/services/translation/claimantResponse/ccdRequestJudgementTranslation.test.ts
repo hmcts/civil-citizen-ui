@@ -68,6 +68,25 @@ describe('Translate claimant ccd request  to ccd version', () => {
     });
   });
 
+  
+  it('should not translate ccj request for judgment admission into the CCD response when ccj Request is not present', () => {
+    claim.claimantResponse.ccjRequest = {};
+    const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
+    expect(ccdResponse).toEqual({
+      'ccjJudgmentAmountClaimFee': '300',
+      'ccjJudgmentLipInterest': '0',
+      'ccjPaymentPaidSomeAmount': null,
+      'ccjPaymentPaidSomeOption': undefined,
+      'partialPayment':undefined,
+      'partialPaymentAmount':undefined,
+      'paymentSetDate':undefined,
+      'paymentTypeSelection':'IMMEDIATELY',
+      'repaymentDue':undefined,
+      'repaymentFrequency':undefined,
+      'repaymentSuggestion': undefined,
+    });
+  });
+
   it('should translate the partial payment amount when option is Yes', () => {
     // given
     const claim = new Claim();
