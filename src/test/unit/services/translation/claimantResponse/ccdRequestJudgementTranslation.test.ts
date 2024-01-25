@@ -68,7 +68,6 @@ describe('Translate claimant ccd request  to ccd version', () => {
     });
   });
 
-  
   it('should not translate ccj request for judgment admission into the CCD response when ccj Request is not present', () => {
     claim.claimantResponse.ccjRequest = {};
     const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
