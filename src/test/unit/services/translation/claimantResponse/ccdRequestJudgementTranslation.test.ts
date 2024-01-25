@@ -1,9 +1,9 @@
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { CaseState } from 'common/form/models/claimDetails';
-import { YesNo } from 'common/form/models/yesNo';
-import { Claim } from 'common/models/claim';
-import { ClaimantResponse } from 'common/models/claimantResponse';
-import { translateClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {CaseState} from 'common/form/models/claimDetails';
+import {YesNo} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {translateClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 describe('Translate claimant ccd request  to ccd version', () => {
   let claim: Claim;
@@ -26,8 +26,8 @@ describe('Translate claimant ccd request  to ccd version', () => {
         repaymentPlanInstalments: {
           amount: 100,
         },
-    }, 
-  } as any;
+      }, 
+    } as any;
 
     const ccdResponse = translateClaimantResponseRequestDefaultJudgementToCCD(claim, 300);
     expect(ccdResponse).toEqual({

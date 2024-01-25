@@ -1,14 +1,14 @@
-import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import { Claim } from 'common/models/claim';
-import { toCCDYesNo } from '../response/convertToCCDYesNo';
-import { calculateInterestToDate } from 'common/utils/interestUtils';
-import { CCDClaim } from 'common/models/civilClaimResponse';
-import { toCCDDJPaymentOption } from './convertToCCDDJPaymentOption';
-import { convertToPence } from '../claim/moneyConversation';
-import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
-import { toCCDDJPaymentFrequency } from '../response/convertToCCDDJPaymentFrequency';
-import { CCDDJPaymentOption } from 'common/models/ccdResponse/ccdDJPaymentOption';
-import { CCDPaymentFrequency } from 'common/models/ccdResponse/ccdPaymentFrequency';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {Claim} from 'common/models/claim';
+import {toCCDYesNo} from '../response/convertToCCDYesNo';
+import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {CCDClaim} from 'common/models/civilClaimResponse';
+import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
+import {convertToPence} from '../claim/moneyConversation';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {toCCDDJPaymentFrequency} from '../response/convertToCCDDJPaymentFrequency';
+import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
+import {CCDPaymentFrequency} from 'common/models/ccdResponse/ccdPaymentFrequency';
 
 export interface ClaimantResponseRequestDefaultJudgementToCCD extends CCDClaim {
   ccjPaymentPaidSomeOption?: string,
