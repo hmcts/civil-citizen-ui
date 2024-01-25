@@ -15,6 +15,9 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key-non-prod
+          alias: LAUNCH_DARKLY_SDK_KEY
+
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
@@ -28,6 +31,8 @@ civil-service:
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
+    memoryLimits: "6Gi" # was 4
+    cpuRequests: "500m"
     keyVaults:
       civil:
         resourceGroup: civil
@@ -50,8 +55,8 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: appinsights-connection-string
             alias: appinsights-connection-string
-#          - name: AppInsightsInstrumentationKey
-#            alias: azure.application-insights.instrumentation-key
+          - name: AppInsightsInstrumentationKey
+            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
           - name: cmc-db-password-v11
@@ -101,8 +106,8 @@ civil-service:
       FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      CUI_URL: ${SERVICE_NAME}.preview.platform.hmcts.net
-      CUI_URL_RESPOND_TO_CLAIM: ${SERVICE_NAME}.preview.platform.hmcts.net/first-contact/start
+      CUI_URL: https://${SERVICE_FQDN}
+      CUI_URL_RESPOND_TO_CLAIM: https://${SERVICE_FQDN}/first-contact/start
       CLAIM_STORE_URL: http://cmc-claim-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -227,6 +232,7 @@ ccd:
 
   ccd-api-gateway-web:
     nodejs:
+      image: hmctspublic.azurecr.io/ccd/api-gateway-web:prod-66e26b9-20231116094420
       imagePullPolicy: Always
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}

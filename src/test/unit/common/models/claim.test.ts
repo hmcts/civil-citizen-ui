@@ -9,7 +9,7 @@ import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {YesNo} from 'common/form/models/yesNo';
 import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
-import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
+import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicantIndividualMock.json';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartyType} from 'common/models/partyType';
 import {PartialAdmission} from 'common/models/partialAdmission';
@@ -1781,6 +1781,40 @@ describe('Documents', () => {
       claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.NO};
       //When
       const result = claim.hasClaimantRejectedDefendantResponse();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('Test of method hasClaimantAcceptedDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with empty claimantResponse', () => {
+      //Given
+      claim.claimantResponse = new ClaimantResponse();
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with hasClaimantAcceptedDefendantResponse is No', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.NO};
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with "YES" option', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {option: YesNo.YES};
+      //When
+      const result = claim.hasClaimantAcceptedDefendantResponse();
       //Then
       expect(result).toBe(true);
     });

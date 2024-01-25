@@ -16,7 +16,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled,
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -44,6 +44,12 @@ let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  performCaseHearingFeeUnpaid: async (user, caseId) => {
+    console.log('This is inside performCaseHearingFeeUnpaid() : ' + caseId);
+    await hearingFeeUnpaid(caseId);
+    console.log('End of performCaseHearingFeeUnpaid()');
+  },
 
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
@@ -73,7 +79,8 @@ module.exports = {
   performAnAssistedOrder: async (user, caseId) => {
     console.log('This is inside performAnAssistedOrder() : ' + caseId);
     eventName = 'GENERATE_DIRECTIONS_ORDER';
-    const payload = createAnAssistedOrder.createAnAssistedOrder();
+    const document = await apiRequest.uploadDocument();
+    const payload = createAnAssistedOrder.createAnAssistedOrder(document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
@@ -90,10 +97,10 @@ module.exports = {
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
 
-  performCaseProgressedToSDO: async (user, caseId) => {
+  performCaseProgressedToSDO: async (user, caseId, claimType) => {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
@@ -150,11 +157,11 @@ module.exports = {
         claimSpecData.serviceUpdateDto(caseId, 'paid'));
       console.log('Service request update sent to callback URL');
     }
-
+    await waitForFinishedBusinessProcess(caseId);
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
-    await waitForFinishedBusinessProcess(caseId);
+    //await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -236,7 +243,7 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState) => {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType) => {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
@@ -253,7 +260,7 @@ module.exports = {
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
-      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse();
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType);
     } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
       responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
     } else if (defenceType === config.defenceType.rejectAllDisputeAll) {

@@ -833,6 +833,7 @@ describe('Check Answers service', () => {
     beforeEach(() => {
       claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for full defence intention to proceed', () => {
@@ -856,6 +857,7 @@ describe('Check Answers service', () => {
       claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = {alreadyPaid: {option: YesNo.YES}};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for part admit and paid accept', () => {
@@ -879,6 +881,7 @@ describe('Check Answers service', () => {
       claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = {alreadyPaid: {option: YesNo.YES}};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for part admit and payment accept', () => {

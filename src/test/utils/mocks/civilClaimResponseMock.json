@@ -242,6 +242,12 @@
       },
       "helpWithFees": {
         "option": "yes"
+      },
+      "claimFeePayment" : {
+        "paymentInformation": {
+        "paymentReference": "RC-1701-0909-0602-0418",
+         "status": "Initiated"
+        }
       }
     },
     "claimAmountBreakup": [
@@ -621,6 +627,15 @@
           "textArea": "a witness requires a courtroom with step-free access."
         },
         "otherTrialInformation": "a witness needs to leave the court by 3pm due to caring responsibilities"
+      },
+      "hearing": {
+        "paymentInformation": {
+          "paymentReference": "RC-1701-0909-0602-0418",
+          "status": "Initiated"
+        }
+      },
+      "helpFeeReferenceNumberForm": {
+        "referenceNumber": "12345678901"
       }
     }
   }

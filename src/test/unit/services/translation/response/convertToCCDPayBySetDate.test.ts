@@ -1,4 +1,4 @@
-import {toCCDPayBySetDate} from 'services/translation/response/convertToCCDPayBySetDate';
+import {toCCDPayBySetDate, toCCDClaimantPayBySetDate} from 'services/translation/response/convertToCCDPayBySetDate';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 describe('translate Payment Deadline Date to CCD model', () => {
@@ -25,5 +25,26 @@ describe('translate Payment Deadline Date to CCD model', () => {
       whenWillThisAmountBePaid: paymentDate,
     };
     expect(output).toEqual(expected);
+  });
+});
+
+describe('translate Claimant PayBySetDate to CCD model', () => {
+
+  it('should return paymentSetDate if pay by set date', () => {
+    //Given
+    const paymentDate: Date = new Date(2023, 11, 28);
+    //When
+    const output = toCCDClaimantPayBySetDate(paymentDate);
+    //Then
+    expect(output).not.toBeNull();
+  });
+
+  it('should return paymentSetDate if pay by set date', () => {
+    //Given
+    const paymentDate: Date = null;
+    //When
+    const output = toCCDClaimantPayBySetDate(paymentDate);
+    //Then
+    expect(output).toBeUndefined();
   });
 });

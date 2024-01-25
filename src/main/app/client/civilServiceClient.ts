@@ -19,6 +19,8 @@ import {
   CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -39,6 +41,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { ClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -128,7 +131,6 @@ export class CivilServiceClient {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
-      logger.info('----ccd-caseDetails----', caseDetails);
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       return convertCaseToClaim(caseDetails);
@@ -313,7 +315,6 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-      logger.info('submitted event ' + data.event + ' with update ' + data.caseDataUpdate);
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
@@ -392,6 +393,27 @@ export class CivilServiceClient {
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
+      throw err;
+    }
+  }
+  async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
+      return plainToInstance(PaymentInformation, response.data);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      return plainToInstance(PaymentInformation, response.data);
+    } catch (err: unknown) {
+      logger.error(err);
       throw err;
     }
   }

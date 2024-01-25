@@ -16,7 +16,7 @@ function toCCDUnavailableDateType(type: UnavailableDateType) {
   }
 }
 
-function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
+export function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
   if (!dateDetails?.length) return undefined;
   const smallClaimUnavailableDates = dateDetails.map((unavailableDatePeriod: UnavailableDatePeriod) => {
     return {
