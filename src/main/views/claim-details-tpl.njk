@@ -49,8 +49,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endblock %}
 
 {% block footer %} 
-{{ NODE_ENV }}
-{% if NODE_ENV != 'production' %}
+{% if developmentMode != 'production' %}
 {{ govukFooter({
     meta: {
       items: [
