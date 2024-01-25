@@ -1,4 +1,4 @@
-import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {MEDIATION_UPLOAD_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -23,8 +23,8 @@ import {CaseDocument} from 'models/document/caseDocument';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  getDocumentsForDocumentsReferred
-} from "services/features/mediation/uploadDocuments/documentsForDocumentsReferredService";
+  getDocumentsForDocumentsReferred,
+} from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -84,8 +84,8 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
 
   const currentUrl = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
   if(!form ){
-    const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT).uploadDocuments;
-    const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT).uploadDocuments;
+    const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments || [];
+    const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments || [];
     form = new GenericForm(new UploadDocumentsForm(typeOfDocuments, documentsForDocumentsReferred));
   }
   const yourStatementContent = getYourStatementContent(uploadDocuments, form);
@@ -106,7 +106,7 @@ mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: 
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);
-    renderView(null, uploadDocuments, res, claimId, claim);
+    renderView(undefined, uploadDocuments, res, claimId, claim);
   } catch (error) {
     next(error);
   }
@@ -141,7 +141,6 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     if (form.hasErrors()) {
       renderView(form, uploadDocuments, res, claimId, claim);
     } else {
-      //todo add save part get all objects from the form and save them
       if (uploadDocumentsForm.documentsForYourStatement.length > 0) {
         const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
         documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
@@ -152,7 +151,7 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       }
 
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
-      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND));
     }
   } catch (error) {
     next(error);

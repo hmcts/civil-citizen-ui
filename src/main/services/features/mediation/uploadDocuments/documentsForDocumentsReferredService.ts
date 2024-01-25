@@ -11,15 +11,12 @@ import {
   buildDocumentsReferredSection,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredContentBuilder';
 
-
 export const getDocumentsForDocumentsReferred = (uploadDocuments: UploadDocuments, form: GenericForm<UploadDocumentsForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
   const documentsReferred = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
 
-  if(documentsReferred.uploadDocuments !== undefined && documentsReferred.uploadDocuments.length > 0 ){
-    sectionContent.push(documentsForDocumentsReferred(form));
-  } else {
+  if(documentsReferred){
     sectionContent.push(documentsForDocumentsReferred(form));
   }
 

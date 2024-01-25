@@ -14,9 +14,7 @@ export const getYourStatementContent = (uploadDocuments: UploadDocuments, form: 
 
   const yourStatement = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.YOUR_STATEMENT);
 
-  if(yourStatement.uploadDocuments !== undefined && yourStatement.uploadDocuments.length > 0 ){
-    sectionContent.push(documentsForYourStatement(form));
-  } else {
+  if(yourStatement){
     sectionContent.push(documentsForYourStatement(form));
   }
 

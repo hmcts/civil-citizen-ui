@@ -5,7 +5,10 @@ import {Request} from 'express';
 import {
   TypeOfDocumentSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {
+  TypeOfDocumentYourNameSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {CaseDocument} from 'models/document/caseDocument';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -40,18 +43,19 @@ export const saveUploadDocument = async (claimId: string, value: any, uploadDocu
 };
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsForm => {
-  const documentsForYourStatement = getFormSection<TypeOfDocumentSection>(req.body.documentsForYourStatement, bindRequestToTypeOfDocumentSectionObj);
-  const documentsForDocumentsReferred = getFormSection<TypeOfDocumentSection>(req.body.documentsForDocumentsReferred, bindRequestToTypeOfDocumentSectionObj);
+  const documentsForYourStatement: TypeOfDocumentYourNameSection[] = getFormSection<TypeOfDocumentSection>(req.body.documentsForYourStatement, bindRequestYourNameSectionObj);
+  const documentsForDocumentsReferred: TypeOfDocumentSection[] = getFormSection<TypeOfDocumentSection>(req.body.documentsForDocumentsReferred, bindRequestToTypeOfDocumentSectionObj);
 
   return new UploadDocumentsForm(documentsForYourStatement, documentsForDocumentsReferred);
 };
 
 export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments ) => {
-  const newObject = new TypeOfDocumentSection('','','');
+  const typeOfDocumentSection = new TypeOfDocumentSection('','','');
+  const typeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection('','','');
   if(type === TypeOfMediationDocuments.YOUR_STATEMENT){
-    uploadDocuments.documentsForYourStatement.push(newObject);
+    uploadDocuments.documentsForYourStatement.push(typeOfDocumentYourNameSection);
   } else if(type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT){
-    uploadDocuments.documentsForDocumentsReferred.push(newObject);
+    uploadDocuments.documentsForDocumentsReferred.push(typeOfDocumentSection);
   }
 };
 
@@ -75,6 +79,14 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
+  }
+  return formObj;
+};
+const bindRequestYourNameSectionObj = (request: any): TypeOfDocumentYourNameSection => {
+  const formObj: TypeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
