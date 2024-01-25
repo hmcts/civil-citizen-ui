@@ -18,6 +18,7 @@ export class TypeOfDocumentsForm {
   orderArrayById() {
     return this.typeOfDocuments.sort((a, b) => a.id - b.id);
   }
+
   mapTypeOfDocumentsFormFromStrings(strings: string[]): TypeOfDocumentsForm {
     if(strings === undefined) {
       this.typeOfDocuments.forEach((item) => item.checked = false);

@@ -11,6 +11,7 @@ export class TypeOfDocumentsItemForm {
   hint?: string;
   @ValidateNested()
     uploadDocuments?: TypeOfDocumentSection[];
+
   constructor(id: number, value: string, text: string, checked: boolean, type: TypeOfMediationDocuments, hint?: string ) {
     this.id = id;
     this.value = value;
@@ -19,6 +20,4 @@ export class TypeOfDocumentsItemForm {
     this.type = type;
     this.hint = hint;
   }
-
-
 }

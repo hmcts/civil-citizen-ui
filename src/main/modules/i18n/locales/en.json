@@ -62,9 +62,11 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
+      "BACK_TO_CASE_DETAILS": "Back to case details",
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -80,7 +82,8 @@
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
-      "HEARING_FEE": "Hearing fee"
+      "HEARING_FEE": "Hearing fee",
+      "CLAIM_FEE": "Claim fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -378,10 +381,10 @@
       "TYPE_OF_DOCUMENTS": {
         "CHECKBOX_TITLE": "Mediation non-attendance",
         "CHECKBOX_HINT": "Select all that apply",
-        "YOUR_STATEMENT": "Your Statement",
-        "YOUR_STATEMENT_HINT": "A written statement explaining why you were unable to attend mediation appointment",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in your statement",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor's notes"
+        "YOUR_STATEMENT": "Your statement",
+        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
       },
       "START_PAGE": {
         "PAGE_TITLE": "Upload your documents",
@@ -396,7 +399,7 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
         "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, LPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -1259,6 +1262,13 @@
       "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+    },
+    "CONFIRM_YOUR_DETAILS_EVIDENCE": {
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "GIVE_DETAILS": "Give details of the person that will be giving evidence.",
+      "PAGE_TITLE": "Confirm your details evidence",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "TITLE": "Confirm your details"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Give details of the documents",
@@ -2377,6 +2387,17 @@
       "PAGE_TITLE": "Partner with severe disability",
       "TITLE": "Is your partner severely disabled?"
     },
+    "PAYMENT_CONFIRMATION": {
+      "SUCCESSFUL": {
+        "PAGE_TITLE": "Your payment was ",
+        "PAGE_TITLE2": "successful",
+        "PAYMENT_IS": "Your payment reference number is",
+        "PAYMENT_SUMMARY": "Payment summary",
+        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
+        "PAYMENT_FOR": "Payment for",
+        "TOTAL_AMOUNT": "Total amount"
+      }
+    },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "PAGE_TITLE_FOR_PART_ADMIT": "Part Admit - Payment option",
@@ -2485,7 +2506,7 @@
     },
     "REPAYMENT_PLAN_SUMMARY": {
       "CLAIMANTS_REPAYMENT_PLAN": "The claimant’s repayment plan",
-      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay £{{amount}} by {{paymentDate}}",
       "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
       "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days",
       "REPAYMENT_PLAN": "The repayment plan",
@@ -3238,9 +3259,13 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
+    "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
+    "ENTER_YOUR_FIRST_NAME": "Enter your first name",
+    "ENTER_YOUR_LAST_NAME": "Enter your last name",
+    "ENTER_YOUR_JOB_TITLE": "Enter your job title",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "EXPENSES_ENTER_OTHER_SOURCE": "Enter other expense source",
     "EXPENSES_AMOUNT": {
@@ -3431,6 +3456,7 @@
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
@@ -3496,6 +3522,7 @@
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
+    "VALID_PHONE_NUMBER_EVIDENCE": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"

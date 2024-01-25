@@ -70,6 +70,7 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -120,6 +121,7 @@ import expertSmallClaimsController from './features/directionsQuestionnaire/expe
 import sharedExpertController from './features/directionsQuestionnaire/experts/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/experts/permissionForExpertController';
+import confirmYourDetailsEvidenceController from './features/directionsQuestionnaire/confirmYourDetailsEvidenceController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController
@@ -220,7 +222,6 @@ import feeChangeController from './features/claim/feeChangeController';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
-import claimFeeController from 'routes/features/claim/claimFeeController';
 import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
 import respondSettlementAgreementConfirmationController
   from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
@@ -267,7 +268,12 @@ import alternativeContactPersonMediationController
 import startMediationUploadDocumentsController
   from 'routes/features/mediation/uploadDocuments/startMediationUploadDocumentsController';
 import mediationTypeOfDocumentsController from 'routes/features/mediation/uploadDocuments/typeOfDocumentsController';
+import claimFeePaymentConfirmationController
+  from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
+import claimIssuePaymentSuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
 import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
+
 export default [
   homeController,
   dashboardController,
@@ -333,6 +339,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
@@ -381,6 +388,7 @@ export default [
   permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
+  confirmYourDetailsEvidenceController,
   defendantYourselfEvidenceController,
   expertDetailsController,
   sentExpertReportsController,
@@ -475,7 +483,6 @@ export default [
   feeChangeController,
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
-  claimFeeController,
   cancelTrialArrangementsController,
   breathingSpaceLiftedCheckAnswersController,
   respondSettlementAgreementController,
@@ -504,5 +511,8 @@ export default [
   alternativeContactPersonMediationController,
   startMediationUploadDocumentsController,
   mediationTypeOfDocumentsController,
+  claimFeePaymentConfirmationController,
+  claimIssuePaymentSuccessfulController,
   mediationUploadDocumentsController,
+
 ];
