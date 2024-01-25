@@ -1,4 +1,9 @@
-import {caseNumberPrettify, documentIdExtractor, removeWhiteSpacesIfNoText} from 'common/utils/stringUtils';
+import {
+  caseNumberPrettify,
+  convertToArrayOfStrings,
+  documentIdExtractor,
+  removeWhiteSpacesIfNoText,
+} from 'common/utils/stringUtils';
 
 describe('case number formatter', () => {
   it('should return case id string spaced after every 4 characters', () => {
@@ -28,5 +33,23 @@ describe('removeWhiteSpacesIfNoText', () => {
     const result = removeWhiteSpacesIfNoText('     ');
     //Then
     expect(result).toEqual('');
+  });
+
+  describe('convertToArrayOfStrings', () => {
+    it('should return an array when receive a string', () => {
+      //When
+      const result = convertToArrayOfStrings('text');
+      //Then
+      expect(result).toEqual(['text']);
+    });
+
+    it('should return same array when is an array', () => {
+      //Given
+      const strings  = ['text', 'text2'];
+      //When
+      const result = convertToArrayOfStrings(strings);
+      //Then
+      expect(result).toEqual(strings);
+    });
   });
 });
