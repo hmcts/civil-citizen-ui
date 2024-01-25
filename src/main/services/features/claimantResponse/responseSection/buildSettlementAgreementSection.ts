@@ -54,9 +54,9 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
   if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.claimantResponse.suggestedPaymentIntention.paymentOption === PaymentOptionType.BY_SET_DATE) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       return buildSummaryForPayBySetDate(claim, claimId, lng,true);
-    } else if (claim.claimantResponse.suggestedPaymentIntention.paymentOption === PaymentOptionType.INSTALMENTS) {
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS) {
       return buildSummaryForPayByInstalments(claim, claimId, lng,true);
     }
   }else {

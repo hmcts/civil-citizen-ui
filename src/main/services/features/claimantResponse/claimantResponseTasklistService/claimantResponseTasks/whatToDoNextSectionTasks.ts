@@ -55,7 +55,7 @@ export function getFullDefenceTask(claim: Claim, claimId: string, lang: string):
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (claim?.claimantResponse?.intentionToProceed?.option) {
+  if (claim?.getIntentionToProceed()) {
     decideWetherToProceed.status = TaskStatus.COMPLETE;
   }
   return decideWetherToProceed;
@@ -107,7 +107,7 @@ export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: s
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.chooseHowToProceed?.option) {
+  if (claim.getHowToProceed()) {
     chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
   return chooseHowFormaliseTask;

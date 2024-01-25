@@ -8,7 +8,6 @@ import {
   getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan, getCCJNextStepsForJudgeDecideRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
@@ -54,7 +53,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-  
+
   if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
     !claimantResponse.isClaimantRejectedCourtDecision) {
     return SignSettlementAgreementNextSteps;
@@ -124,14 +123,14 @@ function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
   return (
     claim.isFullDefence() &&
-    claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
+    claim.hasClaimantIntentToProceedResponse()
   );
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
-    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
-    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
+  return (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY
+    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE
+    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS);
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
