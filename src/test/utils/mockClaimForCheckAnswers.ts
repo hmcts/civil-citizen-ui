@@ -72,6 +72,8 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {deepCopy} from './deepCopy';
+import {mockClaim} from './mockClaim';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -80,6 +82,7 @@ const FIRST_NAME = 'John';
 const LAST_NAME = 'Richards';
 const CONTACT_NUMBER = '077777777779';
 const EMAIL_ADDRESS = 'contact@gmail.com';
+const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
 
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
@@ -283,7 +286,7 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
 };
 
 export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim => {
-  const claim = new Claim();
+  claim.claimFee.calculatedAmountInPence = 5000;
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();
@@ -300,7 +303,7 @@ export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim =
 };
 
 export const createCCJClaimWithClaimResponseDetailsForPayByInstalments = (): Claim => {
-  const claim = new Claim();
+  claim.claimFee.calculatedAmountInPence = 5000;
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();
