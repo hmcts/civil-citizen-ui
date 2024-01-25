@@ -4,6 +4,7 @@
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Contact email",
     "UNAVAILABLE_DATES": "Dyddiadau pan nad ydych ar gael",
+    "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -359,6 +360,31 @@
     }
   },
   "PAGES": {
+    "MEDIATION": {
+      "TYPE_OF_DOCUMENTS": {
+        "CHECKBOX_TITLE": "Mediation non-attendance",
+        "CHECKBOX_HINT": "Select all that apply",
+        "YOUR_STATEMENT": "Your statement",
+        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
+      },
+      "START_PAGE": {
+        "PAGE_TITLE": "Upload your documents",
+        "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
+        "IF_YOU_WERE_UNABLE": "If you were unable to attend mediation due to exceptional circumstances, you can explain why with supporting evidence, such as a doctor’s note or photographs of relevant documents. This is sometimes known as filing a representation. If the judge accepts your reasons for non-attendance, you will not be issued with a penalty.",
+        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example, ‘version 2’.",
+        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+
+        "DEADLINES_FOR_UPLOADING_TITLE": "Deadlines for uploading documents",
+        "YOU_HAVE_UNTIL": "You have until 14 days before your hearing to submit documents.",
+        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+
+        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
+        "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+      }
+    },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
       "PAGE_TEXT": "Please provide an alternative number"
@@ -2350,7 +2376,7 @@
         "PAGE_TITLE2": "successful",
         "PAYMENT_IS": "Your payment reference number is",
         "PAYMENT_SUMMARY": "Payment summary",
-        "CONFIRMATION": "You will receive a confirmation email in the next hour.",
+        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
         "PAYMENT_FOR": "Payment for",
         "TOTAL_AMOUNT": "Total amount"
       }
