@@ -5,7 +5,7 @@ const fields ={
   reason: 'textarea[id="text"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  continue: '#main-content button.govuk-button',
 };
 
 class Explanation {

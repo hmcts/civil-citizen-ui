@@ -30,6 +30,7 @@ describe('claimantResponseConfirmationGuard', () => {
   });
   it('should redirect if claimantResponseConfirmationGuard returns true', async () => {
     // Given
+    req = {params: {id: '123'}, originalUrl: '' };
     const claim = {
       isClaimantIntentionPending: jest.fn().mockReturnValue(true),
     } as unknown as Claim;

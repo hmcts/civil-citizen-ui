@@ -242,6 +242,12 @@
       },
       "helpWithFees": {
         "option": "yes"
+      },
+      "claimFeePayment" : {
+        "paymentInformation": {
+        "paymentReference": "RC-1701-0909-0602-0418",
+         "status": "Initiated"
+        }
       }
     },
     "claimAmountBreakup": [
@@ -627,6 +633,9 @@
           "paymentReference": "RC-1701-0909-0602-0418",
           "status": "Initiated"
         }
+      },
+      "helpFeeReferenceNumberForm": {
+        "referenceNumber": "12345678901"
       }
     }
   }
