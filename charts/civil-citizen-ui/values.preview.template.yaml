@@ -15,6 +15,9 @@ nodejs:
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key-non-prod
+          alias: LAUNCH_DARKLY_SDK_KEY
+
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
@@ -52,8 +55,8 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: appinsights-connection-string
             alias: appinsights-connection-string
-#          - name: AppInsightsInstrumentationKey
-#            alias: azure.application-insights.instrumentation-key
+          - name: AppInsightsInstrumentationKey
+            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
           - name: cmc-db-password-v11
