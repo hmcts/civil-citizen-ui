@@ -28,7 +28,6 @@ describe('Claim Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
     };
 
-    jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     const submitClaimAfterPaymentEvent = jest.spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment').mockResolvedValueOnce({} as Claim);
   
