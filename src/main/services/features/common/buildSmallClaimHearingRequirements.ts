@@ -13,7 +13,7 @@ import {buildExpertReportSection} from 'services/features/common/hearingExportsR
 export const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})
     + t('PAGES.DETERMINATION_WITHOUT_HEARING.IE', {lng});
-  const determinationWithoutHearingOption = directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.YES
+  const determinationWithoutHearingOption = directionQuestionnaire.getDecisionDeterminationWithoutHearing() === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -26,7 +26,7 @@ export const determinationWithoutHearingQuestion = (claim: Claim, claimId: strin
 };
 
 export const determinationWithoutHearingReason = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
-  const reason = directionQuestionnaire?.hearing?.determinationWithoutHearing?.reasonForHearing;
+  const reason = directionQuestionnaire.getReasonForHearing();
 
   return summaryRow(
     t('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY', {lng}),
@@ -38,7 +38,7 @@ export const determinationWithoutHearingReason = (claim: Claim, claimId: string,
 
 export const buildSmallClaimHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
   hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng,directionQuestionnaire));
-  if (directionQuestionnaire?.hearing?.determinationWithoutHearing?.option === YesNo.NO) {
+  if (directionQuestionnaire.getDecisionDeterminationWithoutHearing() === YesNo.NO) {
     hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claim, claimId, lng,directionQuestionnaire));
   }
   hearingRequirementsSection.summaryList.rows.push(... buildExpertReportSection(claim, claimId, lng,directionQuestionnaire));

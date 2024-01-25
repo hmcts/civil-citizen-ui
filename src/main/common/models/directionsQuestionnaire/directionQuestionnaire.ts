@@ -133,4 +133,12 @@ export class DirectionQuestionnaire {
     }
     return false;
   }
+
+  getReasonForHearing(): string {
+    return this.hearing?.determinationWithoutHearing?.reasonForHearing;
+  }
+
+  getDecisionDeterminationWithoutHearing() : string {
+    return this.hearing?.determinationWithoutHearing?.option;
+  }
 }
