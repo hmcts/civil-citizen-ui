@@ -75,6 +75,7 @@ import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {CCDRespondentLiPResponseCarm} from "models/ccdResponse/ccdRespondentLiPResponseCarm";
 
 export class CivilClaimResponse {
   id: string;
@@ -173,6 +174,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPResponseCarm?: CCDRespondentLiPResponseCarm;
   respondent1LiPFinancialDetails?: CCDFinancialDetailsLiP,
   respondent1DQLanguage?: CCDWelshLanguageRequirements;
   respondent1DQVulnerabilityQuestions?: CCDVulnerability;

@@ -21,6 +21,7 @@ import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
 import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
 import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {toCCDRespondentLiPResponseCarm} from "services/translation/response/convertToCCDRespondentLiPResponseCarm";
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -45,6 +46,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestClaimUntil: claim.interest?.interestEndDate,
     claimantUserDetails: getClaimantIdamDetails(req.session?.user),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    respondent1LiPResponseCarm: toCCDRespondentLiPResponseCarm(claim), //mapper
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
     helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),

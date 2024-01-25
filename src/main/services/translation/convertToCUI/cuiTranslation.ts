@@ -22,6 +22,7 @@ import { InterestEndDateType, SameRateInterestType } from 'common/form/models/cl
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {toCUIMediationCarm} from "services/translation/convertToCUI/convertToCUIMediationCarm";
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -35,6 +36,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondent1 = toCUIPartyRespondent(ccdClaim.respondent1,ccdClaim.respondent1LiPResponse);
   claim.respondent1.responseType = ccdClaim.respondent1ClaimResponseTypeForSpec;
   claim.mediation = toCUIMediation(ccdClaim.respondent1LiPResponse?.respondent1MediationLiPResponse);
+  claim.mediationCarm = toCUIMediationCarm(ccdClaim.respondent1LiPResponseCarm?.respondent1MediationLiPResponseCarm);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);

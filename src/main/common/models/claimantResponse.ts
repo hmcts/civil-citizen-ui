@@ -14,6 +14,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
+import {MediationCarm} from "models/mediation/mediationCarm";
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -30,6 +31,7 @@ export class ClaimantResponse {
   courtProposedPlan?: CourtProposedPlan;
   courtDecision?: RepaymentDecisionType;
   mediation?: Mediation;
+  mediationCarm?: MediationCarm;
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
@@ -91,7 +93,7 @@ export class ClaimantResponse {
   }
 
   get isRequestJudgePaymentPlan(): boolean {
-    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE 
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
   }
 
@@ -106,7 +108,7 @@ export class ClaimantResponse {
   hasClaimantAgreedToMediation(): boolean {
     return this.mediation?.canWeUse?.option === YesNo.YES;
   }
-  
+
   get isClaimantRejectedCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
         || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;

@@ -69,6 +69,8 @@ import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {CCDRespondentLiPResponseCarm} from "models/ccdResponse/ccdRespondentLiPResponseCarm";
+import {MediationCarm} from "models/mediation/mediationCarm";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -86,6 +88,7 @@ export class Claim {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
+  mediationCarm?: MediationCarm;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
@@ -111,6 +114,7 @@ export class Claim {
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPResponseCarm?: CCDRespondentLiPResponseCarm;
   caseProgressionHearing?: CaseProgressionHearing;
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;

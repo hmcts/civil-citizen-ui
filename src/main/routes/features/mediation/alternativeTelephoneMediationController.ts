@@ -4,7 +4,10 @@ import {
   MEDIATION_EMAIL_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -26,7 +29,7 @@ const renderView = (form: GenericForm<AlternativeTelephone>, res: Response, req:
 alternativeTelephoneMediationController.get(MEDIATION_ALTERNATIVE_PHONE_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(mediation.alternativeMediationTelephone);
     renderView(form, res, req);
   } catch (error) {
@@ -44,7 +47,7 @@ alternativeTelephoneMediationController.post(MEDIATION_ALTERNATIVE_PHONE_URL, (a
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
-      await saveMediation(redisKey, form.model, MEDIATION_PROPERTY_NAME);
+      await saveMediationCarm(redisKey, form.model, MEDIATION_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     }
   } catch (error) {

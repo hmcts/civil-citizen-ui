@@ -41,6 +41,8 @@ import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCD
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
+import {toCCDRespondentLiPResponseCarm} from "services/translation/response/convertToCCDRespondentLiPResponseCarm";
+import {toAgreedMediationCarm} from "services/translation/response/convertToCCDAgreedMediationCarm";
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -50,10 +52,12 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate ,paymentIntention?.paymentOption, claim.respondentPaymentDeadline),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
+    responseClaimMediationSpecRequiredCarm: toAgreedMediationCarm(claim.mediationCarm),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    respondent1LiPResponseCarm: toCCDRespondentLiPResponseCarm(claim),
     respondent1LiPFinancialDetails : toCCDResponseLiPFinancialDetails(claim.statementOfMeans),
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
     specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
