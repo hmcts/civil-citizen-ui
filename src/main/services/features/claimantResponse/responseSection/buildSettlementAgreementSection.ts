@@ -4,11 +4,16 @@ import {t} from 'i18next';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {
-  getAmount, getFinalPaymentDate, getFinalPaymentDateForClaimantPlan,
-  getFirstRepaymentDate, getFirstRepaymentDateClaimantPlan,
-  getPaymentAmount, getPaymentAmountClaimantPlan,
+  getAmount,
+  getFinalPaymentDate,
+  getFinalPaymentDateForClaimantPlan,
+  getFirstRepaymentDate,
+  getFirstRepaymentDateClaimantPlan,
+  getPaymentAmount,
+  getPaymentAmountClaimantPlan,
   getPaymentDate,
-  getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan,
+  getRepaymentFrequency,
+  getRepaymentFrequencyForClaimantPlan,
 } from 'common/utils/repaymentUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL} from 'routes/urls';
@@ -72,7 +77,7 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
 export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
-  const paymentOption = claim.claimantResponse?.ccjRequest?.paidAmount?.option;
+  const paymentOption = claim.getHasDefendantPaid();
 
   const judgmentRequestSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
@@ -81,12 +86,12 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
         paymentOption === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, ccjPaidAmountHref, changeLabel(lng)),
     ],
   });
-  if (claim.claimantResponse?.ccjRequest?.paidAmount?.amount) {
+  if (claim.getDefendantPaidAmount()) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
       '£' + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
   }
 
-  if (claim.claimantResponse?.ccjRequest?.paidAmount) {
+  if (claim.getHasDefendantPaid) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), '£' + judgmentSummaryDetails.total));
   }
   return judgmentRequestSection;

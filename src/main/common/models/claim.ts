@@ -14,7 +14,8 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState, CCDHelpWithFees,
+  CaseState,
+  CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -70,6 +71,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -664,6 +667,38 @@ export class Claim {
 
   getDefendantPaidAmount(): number | undefined {
     return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  getHasDefendantPaid() : YesNo {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  }
+
+  getCCJTotalAmount() : number {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.totalAmount;
+  }
+
+  getCCJPaymentOption() : PaymentOptionType {
+    return this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type;
+  }
+
+  getCCJPaymentDate() : Date {
+    return this.claimantResponse?.ccjRequest?.defendantPaymentDate?.date;
+  }
+
+  getCCJRepaymentPlan() : RepaymentPlanInstalments {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments;
+  }
+
+  getCCJRepaymentPlanAmount() : number {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount;
+  }
+
+  getCCJRepaymentPlanFrequency() : TransactionSchedule {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency;
+  }
+
+  getCCJRepaymentPlanDate() : Date {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date;
   }
 
   hasDefendantPaid(): boolean {
