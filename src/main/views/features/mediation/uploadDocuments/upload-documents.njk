@@ -2,14 +2,16 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 
 
 {% block pageTitle %}
-{{ setPageTitle('PAGES.UPLOAD_DOCUMENTS.TITLE') }}
+{{ setPageTitle(t('PAGES.UPLOAD_DOCUMENTS.TITLE')) }}
 {% endblock %}
 {% block content %}
 <div class="govuk-width-container caseProgression">
@@ -46,7 +48,7 @@
 
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
-          <h1 class="govuk-heading-l">{{ titleH3 }}</h1>
+
             {% if yourStatementContent.length > 0 %}
 
             {% for yourStatementSection in yourStatementContent %}
@@ -62,7 +64,7 @@
                 }) %}
                 {{ claimSummaryContent({
                                          contentSections: section.contentSections
-                                       }) }}
+                                       }, t) }}
                 {% endcall %}
                 {% endfor %}
                 <div class="govuk-button-group">
@@ -81,7 +83,6 @@
             </div>
             {% endfor %}
             {% endif %}
-
           {% if documentsReferredContent.length > 0 %}
           {% for documentsReferredSection in documentsReferredContent %}
           <div class="row-container">
@@ -96,7 +97,7 @@
               }) %}
               {{ claimSummaryContent({
                                        contentSections: section.contentSections
-                                     }) }}
+                                     }, t) }}
               {% endcall %}
               {% endfor %}
               <div class="govuk-button-group">
