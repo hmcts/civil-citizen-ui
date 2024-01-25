@@ -3,7 +3,7 @@ const ResponseSteps  =  require('../features/response/steps/lipDefendantResponse
 const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
@@ -17,10 +17,11 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit');
+Feature('Response with PartAdmit - Small Claims');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -133,4 +134,5 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
