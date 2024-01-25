@@ -97,10 +97,10 @@ module.exports = {
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
 
-  performCaseProgressedToSDO: async (user, caseId) => {
+  performCaseProgressedToSDO: async (user, caseId, claimType) => {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState();
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
@@ -243,7 +243,7 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, ClaimType) => {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType) => {
     let responsePayload;
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
@@ -260,7 +260,7 @@ module.exports = {
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
-      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(ClaimType);
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType);
     } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
       responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
     } else if (defenceType === config.defenceType.rejectAllDisputeAll) {
