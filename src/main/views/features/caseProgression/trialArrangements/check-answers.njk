@@ -5,8 +5,9 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/back.njk" import back %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
@@ -14,15 +15,11 @@
 {% set submitText = t('COMMON.BUTTONS.SUBMIT') %}
 
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: hearingDurationTrialArrangementsUrl,
-    classes: 'govuk-!-margin-top-0'
-  }) }}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+        {{ back(hearingDurationTrialArrangementsUrl,t) }}
           <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
 
           {% for content in caseInfoContents %}
@@ -51,9 +48,7 @@
             </div>
           </form>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>
