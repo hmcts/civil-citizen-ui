@@ -10,7 +10,7 @@ import {getEmptyStringIfUndefined} from 'common/utils/checkYourAnswer/formatAnsw
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {buildExpertReportSection} from 'services/features/common/hearingExportsReportBuilderSection';
 
-export const determinationWithoutHearingQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
+export const determinationWithoutHearingQuestion = (claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
   const determinationWithoutHearingQuestion = t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING', {lng})
     + t('PAGES.DETERMINATION_WITHOUT_HEARING.IE', {lng});
   const determinationWithoutHearingOption = directionQuestionnaire.getDecisionDeterminationWithoutHearing() === YesNo.YES
@@ -25,7 +25,7 @@ export const determinationWithoutHearingQuestion = (claim: Claim, claimId: strin
   );
 };
 
-export const determinationWithoutHearingReason = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
+export const determinationWithoutHearingReason = (claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
   const reason = directionQuestionnaire.getReasonForHearing();
 
   return summaryRow(
@@ -37,9 +37,9 @@ export const determinationWithoutHearingReason = (claim: Claim, claimId: string,
 };
 
 export const buildSmallClaimHearingRequirements = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire) => {
-  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claim, claimId, lng,directionQuestionnaire));
+  hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingQuestion(claimId, lng,directionQuestionnaire));
   if (directionQuestionnaire.getDecisionDeterminationWithoutHearing() === YesNo.NO) {
-    hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(determinationWithoutHearingReason(claimId, lng,directionQuestionnaire));
   }
   hearingRequirementsSection.summaryList.rows.push(... buildExpertReportSection(claim, claimId, lng,directionQuestionnaire));
 };
