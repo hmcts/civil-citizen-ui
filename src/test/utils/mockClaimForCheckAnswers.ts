@@ -86,6 +86,11 @@ const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
 
 export const createClaimWithBasicRespondentDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
+  claim.claimFee = {
+    calculatedAmountInPence: 5000,
+    code: 'code',
+    version: 1,
+  },
   claim.respondent1 = {
     partyPhone: {phone: CONTACT_NUMBER},
     emailAddress: {emailAddress: EMAIL_ADDRESS},
@@ -117,6 +122,11 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
 };
 export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim => {
   const claim = new Claim();
+  claim.claimFee = {
+    calculatedAmountInPence: 5000,
+    code: 'code',
+    version: 1,
+  },
   claim.applicant1 = {
     partyPhone: {phone: CONTACT_NUMBER},
     dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
@@ -216,6 +226,11 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
 
 export const createClaimWithIndividualDetails = (): Claim => {
   const claim = new Claim();
+  claim.claimFee = {
+    calculatedAmountInPence: 5000,
+    code: 'code',
+    version: 1,
+  },
   claim.respondent1 = {
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
@@ -286,7 +301,6 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
 };
 
 export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim => {
-  claim.claimFee.calculatedAmountInPence = 5000;
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();
@@ -303,7 +317,6 @@ export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim =
 };
 
 export const createCCJClaimWithClaimResponseDetailsForPayByInstalments = (): Claim => {
-  claim.claimFee.calculatedAmountInPence = 5000;
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo('Yes');
   claim.claimantResponse.ccjRequest = new CCJRequest();
