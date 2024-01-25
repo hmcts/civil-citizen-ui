@@ -2,7 +2,7 @@ import config from 'config';
 import axios from 'axios';
 import {PartyType} from 'common/models/partyType';
 import {createToken} from './generatePcqToken';
-import {EncryptedPcqParams, PcqParameters} from "client/pcq/pcqParameters";
+import {EncryptedPcqParams, PcqParameters} from 'client/pcq/pcqParameters';
 
 const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';

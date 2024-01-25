@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import config from 'config';
-import {PcqParameters} from "client/pcq/pcqParameters";
+import {PcqParameters} from 'client/pcq/pcqParameters';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('generate-pcq-token');

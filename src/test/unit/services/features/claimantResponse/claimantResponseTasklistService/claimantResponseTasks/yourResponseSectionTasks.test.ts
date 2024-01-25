@@ -9,7 +9,7 @@ import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {CaseState} from 'form/models/claimDetails';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
