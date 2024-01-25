@@ -360,14 +360,19 @@
   "PAGES": {
     "MEDIATION": {
       "UPLOAD_DOCUMENTS": {
+        "SECTION_TITLE": "Mediation non-attendance",
+
         "TITLE": {
-          "YOUR_STATEMENT": "Your statement"
+          "YOUR_STATEMENT": "Your statement",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
         },
         "YOUR_NAME": {
-          "YOUR_STATEMENT": "Your name"
+          "YOUR_STATEMENT": "Your name",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Type of document"
         },
         "DATE_INPUT": {
-          "YOUR_STATEMENT" : "Date statement was written"
+          "YOUR_STATEMENT" : "Date statement was written",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
         }
       },
       "TYPE_OF_DOCUMENTS": {

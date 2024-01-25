@@ -8,6 +8,7 @@ import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadD
 import {TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 
 const documentsForYourStatement = 'documentsForYourStatement';
+
 const fileUpload = 'fileUpload';
 const MEDIATION_UPLOAD_DOCUMENTS_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
 
@@ -30,4 +31,3 @@ export const buildYourStatementSection = (section: TypeOfDocumentSection = null,
     .addRemoveSectionButton(form?.model.documentsForYourStatement?.length > 1 || false, documentsForYourStatement, index )
     .build();
 };
-

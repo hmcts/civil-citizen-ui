@@ -41,7 +41,9 @@ export const saveUploadDocument = async (claimId: string, value: any, uploadDocu
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsForm => {
   const documentsForYourStatement = getFormSection<TypeOfDocumentSection>(req.body.documentsForYourStatement, bindRequestToTypeOfDocumentSectionObj);
-  return new UploadDocumentsForm(documentsForYourStatement, null);
+  const documentsForDocumentsReferred = getFormSection<TypeOfDocumentSection>(req.body.documentsForDocumentsReferred, bindRequestToTypeOfDocumentSectionObj);
+
+  return new UploadDocumentsForm(documentsForYourStatement, documentsForDocumentsReferred);
 };
 
 export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments, ) => {
@@ -59,8 +61,8 @@ export const removeItem = (uploadDocuments: UploadDocumentsForm, action: string 
 
   if(category === 'documentsForYourStatement'){
     uploadDocuments.documentsForYourStatement.splice(Number(index),1);
-  } else if(category === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT){
-    uploadDocuments.documentsForYourStatement.splice(Number(index),1);
+  } else if(category === 'documentsForDocumentsReferred'){
+    uploadDocuments.documentsForDocumentsReferred.splice(Number(index),1);
   }
 };
 

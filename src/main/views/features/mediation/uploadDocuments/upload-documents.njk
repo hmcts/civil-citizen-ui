@@ -9,7 +9,7 @@
 
 
 {% block pageTitle %}
-{{ setPageTitle('PAGES.EVIDENCE.PAGE_TITLE') }}
+{{ setPageTitle('PAGES.UPLOAD_DOCUMENTS.TITLE') }}
 {% endblock %}
 {% block content %}
 <div class="govuk-width-container caseProgression">
@@ -23,6 +23,7 @@
     {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
     {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
     {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
+    {% set titleH3 = t('PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE') %}
     {% set paragraph = t('PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST') %}
     {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') %}
     {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
@@ -45,7 +46,7 @@
 
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
-
+          <h1 class="govuk-heading-l">{{ titleH3 }}</h1>
             {% if yourStatementContent.length > 0 %}
 
             {% for yourStatementSection in yourStatementContent %}
@@ -81,6 +82,39 @@
             {% endfor %}
             {% endif %}
 
+          {% if documentsReferredContent.length > 0 %}
+          {% for documentsReferredSection in documentsReferredContent %}
+          <div class="row-container">
+            <div data-module="moj-add-another">
+              {% for section in documentsReferredSection %}
+              {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                classes: 'moj-add-another__title',
+                isPageHeading: false
+              }
+              }) %}
+              {{ claimSummaryContent({
+                                       contentSections: section.contentSections
+                                     }) }}
+              {% endcall %}
+              {% endfor %}
+              <div class="govuk-button-group">
+                {{ govukButton({
+                                 text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                  classes: 'govuk-button--secondary govuk-!-margin-bottom-1',
+                  name: 'action',
+                  value: 'add_another-documents_referred',
+                  attributes: {
+                  'id': 'add_another-documents_referred'
+                }
+                }) }}
+              </div>
+              <hr class="govuk-section-break--s govuk-section-break--visible">
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
             <br>
               <div class="govuk-button-group">
                 {{ govukButton({

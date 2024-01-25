@@ -15,7 +15,6 @@ import {Claim} from 'models/claim';
 import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
 import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {
-  TypeOfDocuments,
   TypeOfMediationDocuments,
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
@@ -82,15 +81,20 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
 }
 
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {
-  const yourStatementContent = getYourStatementContent(uploadDocuments, form);
-  const documentsForDocumentsReferred = getDocumentsForDocumentsReferred(uploadDocuments, form);
 
   const currentUrl = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
+  if(!form ){
+    const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT).uploadDocuments;
+    const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT).uploadDocuments;
+    form = new GenericForm(new UploadDocumentsForm(typeOfDocuments, documentsForDocumentsReferred));
+  }
+  const yourStatementContent = getYourStatementContent(uploadDocuments, form);
+  const documentsReferredContent = getDocumentsForDocumentsReferred(uploadDocuments, form);
   res.render(uploadDocumentViewPath, {
     form: form,
     currentUrl: currentUrl,
     yourStatementContent: yourStatementContent,
-    documentsForDocumentsReferred: documentsForDocumentsReferred,
+    documentsReferredContent: documentsReferredContent,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     claimId: claimId,
     partyInformation: partyInformation(claim)});
@@ -118,7 +122,7 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     console.log(action);
-    let typeOfDocuments: TypeOfDocuments;
+    //let typeOfDocuments: TypeOfDocuments;
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
       return renderView(form, uploadDocuments, res, claimId, claim);
@@ -138,7 +142,16 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       renderView(form, uploadDocuments, res, claimId, claim);
     } else {
       //todo add save part get all objects from the form and save them
-      await saveUploadDocument(redisKey, typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
+      if (uploadDocumentsForm.documentsForYourStatement.length > 0) {
+        const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
+        documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
+      }
+      if (uploadDocumentsForm.documentsForDocumentsReferred.length > 0) {
+        const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+        documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
+      }
+
+      await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS));
     }
   } catch (error) {
