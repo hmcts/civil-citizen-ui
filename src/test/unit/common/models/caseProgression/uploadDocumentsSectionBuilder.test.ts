@@ -1,4 +1,4 @@
-import { UploadDocumentsSectionBuilder } from 'common/models/caseProgression/uploadDocumentsSectionBuilder';
+import {UploadDocumentsSectionBuilder} from 'common/models/caseProgression/uploadDocumentsSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 describe('UploadDocumentsSectionBuilder tests', ()=> {
@@ -20,8 +20,8 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const inputArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addInputArray(inputArrayExpected.data.text,inputArrayExpected.data.classes,
-        inputArrayExpected.data.hint,inputArrayExpected.data.category,inputArrayExpected.data.field, inputArrayExpected.data.value)
+      .addInputArray(inputArrayExpected.data.text, inputArrayExpected.data.classes,
+        inputArrayExpected.data.hint, inputArrayExpected.data.category, inputArrayExpected.data.field, inputArrayExpected.data.value)
       .build();
 
     //Then
@@ -60,7 +60,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
       .addDateArray(dateArrayExpected.data.text, errors, dateArrayExpected.data.hint,
-        dateArrayExpected.data.category,  dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue,0,dateArrayExpected.data.parentField)
+        dateArrayExpected.data.category, dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue, 0, dateArrayExpected.data.parentField)
       .build();
 
     //Then
@@ -86,8 +86,8 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const uploadArrayBuilt = new UploadDocumentsSectionBuilder()
-      .addUploadArray(uploadArrayExpected.data.text,uploadArrayExpected.data.html,
-        uploadArrayExpected.data.category,uploadArrayExpected.data.field, 0, uploadArrayExpected.data.classes, uploadArrayExpected.data.errorMessage)
+      .addUploadArray(uploadArrayExpected.data.text, uploadArrayExpected.data.html,
+        uploadArrayExpected.data.category, uploadArrayExpected.data.field, 0, uploadArrayExpected.data.classes, uploadArrayExpected.data.errorMessage)
       .build();
 
     //Then
@@ -114,8 +114,8 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
     //When
     const selectBuilt = new UploadDocumentsSectionBuilder()
-      .addSelect(selectExpected.data.text,selectExpected.data.classes,selectExpected.data.hint
-        ,selectExpected.data.choose,selectExpected.data.items,selectExpected.data.category,selectExpected.data.field, selectExpected.data.value)
+      .addSelect(selectExpected.data.text, selectExpected.data.classes, selectExpected.data.hint
+        , selectExpected.data.choose, selectExpected.data.items, selectExpected.data.category, selectExpected.data.field, selectExpected.data.value)
       .build();
 
     //Then

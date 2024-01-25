@@ -24,7 +24,7 @@ export const buildExpertReportSection = (section: ExpertSection = null, index = 
     .addTitle('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', '', '', expertReport, 'expertName', section?.expertName, index, form?.errorFor(`${errorFieldNamePrefix}[expertName]`, expertReport))
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.FIELD_EXPERTISE', '', '', expertReport, 'fieldOfExpertise', section?.fieldOfExpertise, index, form?.errorFor(`${errorFieldNamePrefix}[fieldOfExpertise]`, expertReport))
-    .addDateArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE_REPORT_WAS', invalidDateErrors,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReport, 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index,'dateInputFields')
+    .addDateArray('PAGES.UPLOAD_DOCUMENTS.EXPERT.DATE_REPORT_WAS', invalidDateErrors,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', expertReport, 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index, 'dateInputFields')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', expertReport, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, expertReport), section?.caseDocument)
     .addRemoveSectionButton(form?.model.expertReport?.length > 1 || false)
     .build();
