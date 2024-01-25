@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
-import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/payment/claimFeePaymentSuccessfulSectionBuilder';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import {PaymentUnsuccessfulSectionBuilder} from 'services/features/claim/payment/claimFeePaymentUnsuccessfulSectionBuilder';
 
 export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
@@ -14,7 +14,8 @@ export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION')
     .addTitle('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      claim.claimFee.calculatedAmountInPence)))
+      claim.claimFee.calculatedAmountInPence)),
+    'COMMON.MICRO_TEXT.CLAIM_FEE')
     .build();
 };
 
