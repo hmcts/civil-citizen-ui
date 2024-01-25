@@ -11,45 +11,35 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/back.njk" import back %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
 {% endblock %}
 
 {% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: startPayHearingFee,
-    classes: 'govuk-!-margin-top-0'
-  }) }}
-  <div class="govuk-width-container govuk-!-padding-top-9">
-    <main class="govuk-main-wrapper govuk-!-padding-top-7" role="main">
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% if form.hasErrors() %}
         {{ errorSummary(form.getAllErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          {{ csrfProtection(csrf) }}
+          {{ back(startPayHearingFee,t) }}
           {% for content in applyHelpFeeSelectionContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
 
-
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml}) }}
             {% for content in applyHelpFeeSelectionButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
           </form>
-
-
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
+        {{ contactUsForHelpOneThird(t) }}
       </div>
     </main>
   </div>
