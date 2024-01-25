@@ -4,6 +4,7 @@
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Contact email",
     "UNAVAILABLE_DATES": "Dyddiadau pan nad ydych ar gael",
+    "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -60,9 +61,11 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
+      "BACK_TO_CASE_DETAILS": "Back to case details",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
+      "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
@@ -78,7 +81,8 @@
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
     },
     "MICRO_TEXT": {
-      "HEARING_FEE": "Ffi gwrandawiad"
+      "HEARING_FEE": "Ffi gwrandawiad",
+      "CLAIM_FEE": "Claim fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -356,6 +360,31 @@
     }
   },
   "PAGES": {
+    "MEDIATION": {
+      "TYPE_OF_DOCUMENTS": {
+        "CHECKBOX_TITLE": "Mediation non-attendance",
+        "CHECKBOX_HINT": "Select all that apply",
+        "YOUR_STATEMENT": "Your statement",
+        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
+      },
+      "START_PAGE": {
+        "PAGE_TITLE": "Upload your documents",
+        "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
+        "IF_YOU_WERE_UNABLE": "If you were unable to attend mediation due to exceptional circumstances, you can explain why with supporting evidence, such as a doctor’s note or photographs of relevant documents. This is sometimes known as filing a representation. If the judge accepts your reasons for non-attendance, you will not be issued with a penalty.",
+        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example, ‘version 2’.",
+        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+
+        "DEADLINES_FOR_UPLOADING_TITLE": "Deadlines for uploading documents",
+        "YOU_HAVE_UNTIL": "You have until 14 days before your hearing to submit documents.",
+        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+
+        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
+        "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+      }
+    },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
       "PAGE_TEXT": "Please provide an alternative number"
@@ -1217,6 +1246,13 @@
       "PAGE_TITLE": "Cael y manylion yn iawn",
       "YOULL_HAVE_TO_PAY": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych am"
     },
+    "CONFIRM_YOUR_DETAILS_EVIDENCE": {
+      "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
+      "GIVE_DETAILS": "Rhowch fanylion yr unigolyn a fydd yn rhoi tystiolaeth.",
+      "PAGE_TITLE": "Confirm your details evidence",
+      "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
+      "TITLE": "Cadarnhewch eich manylion"
+    },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Rhowch fanylion y dogfennau",
       "PAGE_TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?",
@@ -1357,7 +1393,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",       
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
@@ -2335,6 +2371,17 @@
       "PAGE_TITLE": "Partner with severe disability",
       "TITLE": "A oes gan eich partner anabledd difrifol?\n"
     },
+    "PAYMENT_CONFIRMATION": {
+      "SUCCESSFUL": {
+        "PAGE_TITLE": "Your payment was ",
+        "PAGE_TITLE2": "successful",
+        "PAYMENT_IS": "Your payment reference number is",
+        "PAYMENT_SUMMARY": "Payment summary",
+        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
+        "PAYMENT_FOR": "Payment for",
+        "TOTAL_AMOUNT": "Total amount"
+      }
+    },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "PAGE_TITLE_FOR_PART_ADMIT": "Part Admit - Payment option",
@@ -3197,9 +3244,13 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn y 3 mis nesaf",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad yw ar gael o fod cyn y dyddiad y mae ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
+    "ENTER_VALID_EMAIL_EVIDENCE": "Rhowch gyfeiriad e-bost yn y fformat cywir, fel name@example.com",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
     "ENTER_VALID_SECURITY_CODE": "Rhowch god diogelwch dilys",
     "ENTER_VALID_TITLE": "Rhowch deitl dilys",
+    "ENTER_YOUR_FIRST_NAME": "Rhowch eich enw cyntaf",
+    "ENTER_YOUR_LAST_NAME": "Rhowch eich enw olaf",
+    "ENTER_YOUR_JOB_TITLE": "Rhowch deitl eich swydd",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "EXPENSES_ENTER_OTHER_SOURCE": "Rhowch fanylion unrhyw ffynhonnell arall o wariant",
     "EXPENSES_AMOUNT": {
@@ -3390,6 +3441,7 @@
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must be no longer than 50 characters",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
+    "THERE_IS_A_PROBLEM": "Mae yna broblem",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
@@ -3455,6 +3507,7 @@
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
+    "VALID_PHONE_NUMBER_EVIDENCE": "Rhowch rif ffôn, fel 01632 960 001, 07700 900 982, neu +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Dywedwch wrthym pam ydych chi eisiau gwrandawiad dros y ffôn neu wrandawiad fideo",
       "YES_NO": "Dewiswch ydw os ydych chi eisiau gwneud cais am wrandawiad dros y ffôn neu wrandawiad fideo"
