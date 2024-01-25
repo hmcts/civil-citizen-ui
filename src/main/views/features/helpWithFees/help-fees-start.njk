@@ -8,6 +8,8 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% block pageTitle %}
     {{ setPageTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE') }}
@@ -20,7 +22,15 @@
         href: backUrl,
         classes: 'govuk-!-margin-top-0'
     }) }}
-
+    {% set html %}
+       {% for item in notification.content %}
+           {{ itemContent(item, t) }}
+       {% endfor %}
+     {% endset %}
+    {{ govukNotificationBanner({
+      titleText: notification.title,
+      html: html
+    }) }}
     <div class="govuk-width-container govuk-!-padding-top-9">
         <main class="govuk-main-wrapper govuk-!-padding-top-7" role="main">
           {% if form.hasErrors() %}

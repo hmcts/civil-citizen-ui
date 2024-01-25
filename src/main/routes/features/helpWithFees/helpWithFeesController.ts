@@ -14,6 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimantNotifications} from 'services/dashboard/getDashboardContent';
 
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
@@ -21,6 +22,8 @@ const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
 
 applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
+
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
     const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
@@ -29,7 +32,15 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res:
       backUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
     }
     const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl, backUrl: backUrl});
+    const notification = getClaimantNotifications (claim, lang);
+    if (lang === 'en') {
+      res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl, backUrl: backUrl, notification:notification[0]});
+
+    }else{
+      res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl, backUrl: backUrl,notification:notification[1]});
+
+    }
+
   } catch (error) {
     next(error);
   }
