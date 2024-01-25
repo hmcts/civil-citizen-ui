@@ -89,7 +89,7 @@ describe('Trial Arrangements check answers - on POST', () => {
     const CivilServiceClientServiceMock = jest
       .spyOn(CivilServiceClient.prototype, 'submitTrialArrangement')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim),
+        new Promise((resolve) => resolve(claim),
         ),
       );
 

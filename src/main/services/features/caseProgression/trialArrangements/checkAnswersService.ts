@@ -18,6 +18,6 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getCaseInfoContents = (claimId: string, claim: Claim, lang?: string | unknown): ClaimSummarySection[] => {
-  return buildCaseInfoContents(claim, claimId, lang);
+export const getCaseInfoContents = (claimId: string, claim: Claim): ClaimSummarySection[] => {
+  return buildCaseInfoContents(claim, claimId);
 };

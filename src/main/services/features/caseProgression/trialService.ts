@@ -9,7 +9,7 @@ import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgres
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[][] => {
-  const sectionContent: any[] = [];
+  const sectionContent: ClaimSummaryContent[][] = [];
 
   let uploadDocuments: UploadDocuments;
 

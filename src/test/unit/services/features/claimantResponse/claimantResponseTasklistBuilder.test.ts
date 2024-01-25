@@ -50,7 +50,9 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {PartialAdmission} from 'models/partialAdmission';
-import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -61,45 +63,33 @@ jest.mock('i18next', () => ({
 describe('Full Defence', () => {
   const claimId = '5129';
   const lang = 'en';
-  it('should display decide wether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
+  it('should display decide whether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
     //Given
-    const claim = {
-      isPartialAdmission: jest.fn(),
-      isPartialAdmissionPaid: jest.fn(),
-      isFullDefence: jest.fn(),
-      hasPaidInFull: jest.fn(),
-      hasConfirmedAlreadyPaid: jest.fn(),
-      isFullAdmission: jest.fn(),
-      claimantResponse: {
-        hasFullDefenceStatesPaidClaimSettled: {
-          option: 'no',
-        },
-        hasPartPaymentBeenAccepted: {
-          option: 'no',
-        },
-      },
-      totalClaimAmount: 9000,
-      rejectAllOfClaim: {
-        howMuchHaveYouPaid: {
-          amount: '900000',
-        },
-      },
-      isClaimantIntentionPending: jest.fn(),
-      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
-      hasClaimantRejectedDefendantResponse: jest.fn(),
-      hasClaimantRejectedDefendantPaid: jest.fn(),
-      hasClaimantRejectedPartAdmitPayment: jest.fn(),
-      isDefendantAgreedForMediation: jest.fn(),
-    } as any;
-    claim.isFullDefence.mockReturnValue(true);
-    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
-    claim.isClaimantIntentionPending.mockReturnValue(true);
-    claim.hasPaidInFull.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
-    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
-    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
-    claim.isDefendantAgreedForMediation.mockReturnValue(true);
+    const claim=new Claim();
+    claim.mediation=new Mediation();
+    claim.mediation.companyTelephoneNumber=new CompanyTelephoneNumber();
+    claim.mediation.companyTelephoneNumber.mediationPhoneNumber='1';
+    claim.mediation.canWeUse={
+      mediationPhoneNumber:'12',
+    };
+    claim.respondent1=new Party();
+    claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+    claim.claimantResponse=new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou=new GenericYesNo();
+    claim.claimantResponse.hasDefendantPaidYou.option=YesNo.NO;
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled=new GenericYesNo();
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option=YesNo.NO;
+    claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.YES;
+    claim.claimantResponse.hasPartAdmittedBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartAdmittedBeenAccepted.option=YesNo.NO;
+    claim.totalClaimAmount=9000;
+    claim.rejectAllOfClaim=new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+    claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+    claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
+
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
@@ -116,39 +106,30 @@ describe('Full Defence', () => {
   });
   it('should display decide wether to proceed task with proceed value as no as complete and mediation part is built for full defense states paid', () => {
     //Given
-    const claim = {
-      isPartialAdmission: jest.fn(),
-      isPartialAdmissionPaid: jest.fn(),
-      isFullDefence: jest.fn(),
-      hasPaidInFull: jest.fn(),
-      hasConfirmedAlreadyPaid: jest.fn(),
-      isFullAdmission: jest.fn(),
-      claimantResponse: {
-        hasPartPaymentBeenAccepted: {
-          option: 'no',
-        },
-      },
-      totalClaimAmount: 9000,
-      rejectAllOfClaim: {
-        howMuchHaveYouPaid: {
-          amount: '900000',
-        },
-      },
-      responseStatus: ClaimResponseStatus.RC_PAID_FULL,
-      isClaimantIntentionPending: jest.fn(),
-      hasClaimantRejectedDefendantAdmittedAmount: jest.fn(),
-      hasClaimantRejectedDefendantResponse: jest.fn(),
-      hasClaimantRejectedDefendantPaid: jest.fn(),
-      hasClaimantRejectedPartAdmitPayment: jest.fn(),
-    } as any;
-    claim.isFullDefence.mockReturnValue(true);
-    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
-    claim.isClaimantIntentionPending.mockReturnValue(true);
-    claim.hasPaidInFull.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
-    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
-    claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+    const claim=new Claim();
+    claim.mediation=new Mediation();
+    claim.mediation.companyTelephoneNumber=new CompanyTelephoneNumber();
+    claim.mediation.companyTelephoneNumber.mediationPhoneNumber='1';
+    claim.mediation.canWeUse={
+      mediationPhoneNumber:'12',
+    };
+    claim.respondent1=new Party();
+    claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+    claim.claimantResponse=new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou=new GenericYesNo();
+    claim.claimantResponse.hasDefendantPaidYou.option=YesNo.YES;
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled=new GenericYesNo();
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option=YesNo.NO;
+    claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.YES;
+    claim.claimantResponse.hasPartAdmittedBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartAdmittedBeenAccepted.option=YesNo.NO;
+    claim.totalClaimAmount=9000;
+    claim.rejectAllOfClaim=new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+    claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+    claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     //Then
@@ -166,7 +147,7 @@ describe('Full Defence', () => {
     claim.rejectAllOfClaim = {
       option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
         amount: 9000,
-      } as any,
+      } as HowMuchHaveYouPaid,
     };
     claim.totalClaimAmount = 9000;
     claim.claimantResponse = {
@@ -922,7 +903,7 @@ describe('Claimant Response Task List builder', () => {
       claim.rejectAllOfClaim = {
         option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
           amount: 8000,
-        } as any,
+        } as HowMuchHaveYouPaid,
       };
       claim.totalClaimAmount = 9000;
       //When
@@ -944,7 +925,7 @@ describe('Claimant Response Task List builder', () => {
       claim.rejectAllOfClaim = {
         option: RejectAllOfClaimType.ALREADY_PAID, howMuchHaveYouPaid: {
           amount: 8000,
-        } as any,
+        } as HowMuchHaveYouPaid,
       };
       claim.totalClaimAmount = 9000;
       claim.claimantResponse = new ClaimantResponse();

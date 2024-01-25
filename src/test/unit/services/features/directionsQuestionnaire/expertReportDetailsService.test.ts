@@ -63,10 +63,8 @@ describe('Expert Report Details service', () => {
       expect(expertReportDetails?.reportDetails).toBeUndefined();
     });
     it('should set option to undefined when no option is selected', async () => {
-      //Given
-      const value: any = {};
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.option, value?.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(undefined, undefined);
       //Then
       expect(expertReportDetails.option).toBeUndefined();
     });

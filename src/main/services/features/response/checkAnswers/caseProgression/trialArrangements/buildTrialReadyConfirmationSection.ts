@@ -43,7 +43,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
   return trialReadySummarySections;
 };
 
-export const buildCaseInfoContents = (claim: Claim, claimId: string, lang: string | unknown): ClaimSummarySection[] => {
+export const buildCaseInfoContents = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   return new PageSectionBuilder()
     .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE',
       {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')

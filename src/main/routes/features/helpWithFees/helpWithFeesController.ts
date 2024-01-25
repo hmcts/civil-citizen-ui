@@ -35,7 +35,7 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res:
   }
 }) as RequestHandler);
 
-applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Response, next: NextFunction) => {
+applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
@@ -54,7 +54,7 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Re
         }
       }
       claim.helpWithFeesRequested = req.body.option;
-      const redisKey = generateRedisKey(req);
+      const redisKey = generateRedisKey(<AppRequest>req);
       await saveDraftClaim(redisKey, claim);
       res.redirect(redirectUrl);
     }

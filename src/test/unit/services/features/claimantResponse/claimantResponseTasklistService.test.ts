@@ -1,5 +1,4 @@
 import {Claim} from 'common/models/claim';
-import {ClaimResponseStatus} from 'models/claimResponseStatus';
 import {TaskList} from 'common/models/taskList/taskList';
 import {getClaimantResponseTaskLists,outstandingClaimantResponseTasks} from '../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {Task} from 'common/models/taskList/task';
@@ -11,6 +10,18 @@ import {
   buildWhatToDoNextSection,
   buildYourResponseSection,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder';
+import {Mediation} from 'models/mediation/mediation';
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {CaseState} from 'form/models/claimDetails';
+import {PartialAdmission} from 'models/partialAdmission';
 
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder');
 
@@ -180,29 +191,33 @@ describe('outstanding Claimant Response Tasks', () => {
 
   it('should return an array of TaskLists with expected task groups for full defence and paid full', () => {
     // given
-    const claim = {
-      isFullDefence: jest.fn(),
-      isClaimantIntentionPending: jest.fn(),
-      isPartialAdmissionNotPaid: jest.fn(),
-      isPartialAdmissionPaid: jest.fn(),
-      isRejectAllOfClaimDispute: jest.fn(),
-      isPartialAdmission: jest.fn(),
-      isFullAdmission: jest.fn(),
-      hasConfirmedAlreadyPaid: jest.fn(),
-      hasPaidInFull: jest.fn(),
-      hasClaimantRejectedDefendantPaid: jest.fn(),
-      responseStatus: ClaimResponseStatus.RC_PAID_FULL,
-    } as any;
-    claim.isFullDefence.mockReturnValue(true);
-    claim.isClaimantIntentionPending.mockReturnValue(true);
-    claim.isPartialAdmissionNotPaid.mockReturnValue(false);
-    claim.isPartialAdmissionPaid.mockReturnValue(false);
-    claim.isRejectAllOfClaimDispute.mockReturnValue(false);
-    claim.isPartialAdmission.mockReturnValue(false);
-    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
-    claim.hasPaidInFull.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(true);
-    claim.isFullAdmission.mockReturnValue(false);
+    const claim=new Claim();
+    claim.mediation=new Mediation();
+    claim.mediation.companyTelephoneNumber=new CompanyTelephoneNumber();
+    claim.mediation.companyTelephoneNumber.mediationPhoneNumber='1';
+    claim.mediation.canWeUse={
+      mediationPhoneNumber:'12',
+    };
+    claim.respondent1=new Party();
+    claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+    claim.claimantResponse=new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou=new GenericYesNo();
+    claim.claimantResponse.hasDefendantPaidYou.option=YesNo.NO;
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled=new GenericYesNo();
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option=YesNo.NO;
+    claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.YES;
+    claim.claimantResponse.hasPartAdmittedBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartAdmittedBeenAccepted.option=YesNo.NO;
+    claim.totalClaimAmount=9000;
+    claim.rejectAllOfClaim=new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+    claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+    claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.partialAdmission=new PartialAdmission();
+    claim.partialAdmission.alreadyPaid=new GenericYesNo();
+    claim.partialAdmission.alreadyPaid.option = YesNo.YES;
 
     // when
     const taskLists: TaskList[] = getClaimantResponseTaskLists(
@@ -225,38 +240,33 @@ describe('outstanding Claimant Response Tasks', () => {
 
   it('should return an array of TaskLists with expected task groups for full defence and paid less', () => {
     // given
-
-    const claim = {
-      isFullDefence: jest.fn(),
-      isClaimantIntentionPending: jest.fn(),
-      isPartialAdmissionNotPaid: jest.fn(),
-      isPartialAdmissionPaid: jest.fn(),
-      isRejectAllOfClaimDispute: jest.fn(),
-      isPartialAdmission: jest.fn(),
-      isFullAdmission: jest.fn(),
-      hasConfirmedAlreadyPaid: jest.fn(),
-      hasPaidInFull: jest.fn(),
-      hasClaimantRejectedDefendantPaid: jest.fn(),
-      isRejectAllOfClaimAlreadyPaid: jest.fn(),
-      hasClaimantConfirmedDefendantPaid: jest.fn(),
-      hasClaimantSettleTheClaimForDefendantPartlyPaidAmount: jest.fn(),
-      isDefendantAgreedForMediation: jest.fn(),
-      responseStatus: ClaimResponseStatus.RC_PAID_LESS,
-    } as any;
-    claim.isFullDefence.mockReturnValue(true);
-    claim.isClaimantIntentionPending.mockReturnValue(true);
-    claim.isPartialAdmissionNotPaid.mockReturnValue(false);
-    claim.isPartialAdmissionPaid.mockReturnValue(false);
-    claim.isRejectAllOfClaimDispute.mockReturnValue(false);
-    claim.isPartialAdmission.mockReturnValue(false);
-    claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
-    claim.hasPaidInFull.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantPaid.mockReturnValue(true);
-    claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
-    claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount.mockReturnValue(true);
-    claim.hasClaimantConfirmedDefendantPaid.mockReturnValue(false);
-    claim.isFullAdmission.mockReturnValue(false);
-    claim.isDefendantAgreedForMediation.mockReturnValue(true);
+    const claim=new Claim();
+    claim.mediation=new Mediation();
+    claim.mediation.companyTelephoneNumber=new CompanyTelephoneNumber();
+    claim.mediation.companyTelephoneNumber.mediationPhoneNumber='1';
+    claim.mediation.canWeUse={
+      mediationPhoneNumber:'12',
+    };
+    claim.respondent1=new Party();
+    claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+    claim.claimantResponse=new ClaimantResponse();
+    claim.claimantResponse.hasDefendantPaidYou=new GenericYesNo();
+    claim.claimantResponse.hasDefendantPaidYou.option=YesNo.NO;
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled=new GenericYesNo();
+    claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option=YesNo.NO;
+    claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.YES;
+    claim.claimantResponse.hasPartAdmittedBeenAccepted=new GenericYesNo();
+    claim.claimantResponse.hasPartAdmittedBeenAccepted.option=YesNo.NO;
+    claim.totalClaimAmount=9000;
+    claim.rejectAllOfClaim=new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+    claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+    claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.partialAdmission=new PartialAdmission();
+    claim.partialAdmission.alreadyPaid=new GenericYesNo();
+    claim.partialAdmission.alreadyPaid.option = YesNo.YES;
 
     // when
     const taskLists: TaskList[] = getClaimantResponseTaskLists(

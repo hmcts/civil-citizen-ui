@@ -27,7 +27,7 @@ const courtProposedDateController = Router();
 const crPropertyName = 'decision';
 const crParentName = 'courtProposedDate';
 
-function renderView(form: GenericForm<CourtProposedDate>, paymentDate: any, res: Response): void {
+function renderView(form: GenericForm<CourtProposedDate>, paymentDate: string, res: Response): void {
   res.render(courtProposedDateViewPath, { form, paymentDate });
 }
 

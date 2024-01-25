@@ -3,6 +3,13 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {getSettleTheClaimForTask} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import {Claim} from 'models/claim';
 import {YesNo} from 'form/models/yesNo';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {CaseState} from 'form/models/claimDetails';
+import {GenericYesNo} from "form/models/genericYesNo";
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -39,16 +46,16 @@ describe('Your response section task', () => {
 
     it('should return incomplete for not answer', () => {
       //Given
-      const claim = {
-        isFullDefence: jest.fn(),
-        hasPaidInFull: jest.fn(),
-        isRejectAllOfClaimAlreadyPaid: jest.fn(),
-        hasClaimantRejectedPartAdmitPayment: jest.fn(),
-      } as any;
-      claim.isFullDefence.mockReturnValue(true);
-      claim.hasPaidInFull.mockReturnValue(true);
-      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
-      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+      const claim=new Claim();
+      claim.respondent1=new Party();
+      claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+      claim.totalClaimAmount=9000;
+      claim.rejectAllOfClaim=new RejectAllOfClaim();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+      claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+      claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
+
       //When
       const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
       //Then
@@ -57,16 +64,19 @@ describe('Your response section task', () => {
 
     it('should return incomplete for Full Defence and Paid and hasFullDefenceStatesPaidClaimSettled undefined', () => {
       //Given
-      const claim = {
-        isFullDefence: jest.fn(),
-        hasPaidInFull: jest.fn(),
-        isRejectAllOfClaimAlreadyPaid: jest.fn(),
-        hasClaimantRejectedPartAdmitPayment: jest.fn(),
-      } as any;
-      claim.isFullDefence.mockReturnValue(true);
-      claim.hasPaidInFull.mockReturnValue(true);
-      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
-      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(true);
+      const claim=new Claim();
+      claim.respondent1=new Party();
+      claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+      claim.totalClaimAmount=9000;
+      claim.rejectAllOfClaim=new RejectAllOfClaim();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+      claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+      claim.claimantResponse=new ClaimantResponse();
+      claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+      claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.NO;
+      claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
+
       claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: undefined };
       //When
       const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
@@ -76,16 +86,18 @@ describe('Your response section task', () => {
 
     it('should return incomplete for Full Defence and Paid and claimantResponse undefined', () => {
       //Given
-      const claim = {
-        isFullDefence: jest.fn(),
-        hasPaidInFull: jest.fn(),
-        isRejectAllOfClaimAlreadyPaid: jest.fn(),
-        hasClaimantRejectedPartAdmitPayment: jest.fn(),
-      } as any;
-      claim.isFullDefence.mockReturnValue(true);
-      claim.hasPaidInFull.mockReturnValue(true);
-      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
-      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(true);
+      const claim=new Claim();
+      claim.respondent1=new Party();
+      claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+      claim.totalClaimAmount=9000;
+      claim.rejectAllOfClaim=new RejectAllOfClaim();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+      claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+      claim.claimantResponse=new ClaimantResponse();
+      claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+      claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.NO;
+      claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = undefined;
       //When
       const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);
@@ -95,16 +107,18 @@ describe('Your response section task', () => {
 
     it('should return complete for Full Defence and Paid', () => {
       //Given
-      const claim = {
-        isFullDefence: jest.fn(),
-        hasPaidInFull: jest.fn(),
-        isRejectAllOfClaimAlreadyPaid: jest.fn(),
-        hasClaimantRejectedPartAdmitPayment: jest.fn(),
-      } as any;
-      claim.isFullDefence.mockReturnValue(true);
-      claim.hasPaidInFull.mockReturnValue(true);
-      claim.isRejectAllOfClaimAlreadyPaid.mockReturnValue(true);
-      claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(true);
+      const claim=new Claim();
+      claim.respondent1=new Party();
+      claim.respondent1.responseType=ResponseType.FULL_DEFENCE;
+      claim.totalClaimAmount=9000;
+      claim.rejectAllOfClaim=new RejectAllOfClaim();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid=new HowMuchHaveYouPaid();
+      claim.rejectAllOfClaim.howMuchHaveYouPaid.amount=9000;
+      claim.rejectAllOfClaim.option=RejectAllOfClaimType.ALREADY_PAID;
+      claim.claimantResponse=new ClaimantResponse();
+      claim.claimantResponse.hasPartPaymentBeenAccepted=new GenericYesNo();
+      claim.claimantResponse.hasPartPaymentBeenAccepted.option=YesNo.NO;
+      claim.ccdState=CaseState.AWAITING_APPLICANT_INTENTION;
       claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.YES } };
       //When
       const settleTheClaimForTask = getSettleTheClaimForTask(claim, claimId, lang);

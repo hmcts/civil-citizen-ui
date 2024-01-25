@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_CANCEL_JOURNEY,
@@ -15,14 +15,15 @@ import {getButtonsContents} from 'services/features/caseProgression/hearingFee/a
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {getClaimById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
 
-async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string) {
   let claim: Claim = await getClaimById(claimId, req, true);
   if (!claim.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
-    const redisKey = generateRedisKey(req);
+    const redisKey = generateRedisKey(<AppRequest>req);
     await deleteDraftClaimFromStore(redisKey);
     claim = await getClaimById(claimId, req, true);
   }

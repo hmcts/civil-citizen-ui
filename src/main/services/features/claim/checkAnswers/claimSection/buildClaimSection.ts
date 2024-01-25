@@ -1,11 +1,11 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {addTimeLine} from './addTimeLine';
 import {addEvidence} from './addEvidence';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
-import {CLAIM_REASON_URL} from '../../../../../routes/urls';
+import {summaryRow} from 'models/summaryList/summaryList';
+import {CLAIM_REASON_URL} from 'routes/urls';
 
 export const buildClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
 

@@ -60,7 +60,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
       .addDateArray(dateArrayExpected.data.text, errors, dateArrayExpected.data.hint,
-        dateArrayExpected.data.category, dateArrayExpected.data.parentField,  dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
+        dateArrayExpected.data.category,  dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue,0,dateArrayExpected.data.parentField)
       .build();
 
     //Then

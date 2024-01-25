@@ -26,7 +26,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lang: string) : Cl
   }
 
   if (checkClaimDismissedHearingDueDate(claim)) {
-    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang, false));
+    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lang));
     return getClaimSummaryContent(sectionContent.flat());
   }
   if(checkEvidenceUploaded(claim, false)){
@@ -82,8 +82,8 @@ export const getViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySecti
   return buildViewFinalGeneralOrderContent(claim);
 };
 
-export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
-  return buildClaimDismissedHearingDueDateUpdateContent(claim, lang, isClaimant);
+export const getClaimDismissedHearingDueDateUpdateContent  = (claim: Claim, lang: string): ClaimSummarySection[][] => {
+  return buildClaimDismissedHearingDueDateUpdateContent(claim, lang);
 };
 
 export const getClaimSummaryContent = (section: ClaimSummarySection[][]) : ClaimSummaryContent[] => {

@@ -11,7 +11,7 @@ import {
   getTopElements,
   saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
-import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
@@ -73,7 +73,7 @@ describe('checkAnswersServiceTest', () => {
         disclosureEvidenceSection: returnValue,
         expertEvidenceSection: returnValue,
         trialEvidenceSection: returnValue,
-      } as documentUploadSections;
+      } as DocumentUploadSections;
       expect(summarySectionActual).toEqual(summarySectionExpected);
     });
 
@@ -122,7 +122,7 @@ describe('checkAnswersServiceTest', () => {
         jest
           .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
           .mockReturnValue(
-            new Promise((resolve, reject) => resolve(emptyClaim),
+            new Promise((resolve) => resolve(emptyClaim),
             ),
           );
       });

@@ -6,7 +6,7 @@ import {app} from '../../../../../main/app';
 import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
@@ -96,7 +96,7 @@ describe('Respond To Settlement Agreement', () => {
 
     it('should return error on empty post', async () => {
       const mockClaim = new Claim();
-      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim as any);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim as Claim);
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION'));

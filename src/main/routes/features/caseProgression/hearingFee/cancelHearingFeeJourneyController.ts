@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Router} from 'express';
+import { RequestHandler, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_CANCEL_JOURNEY,
@@ -9,7 +9,7 @@ import {AppRequest} from 'models/AppRequest';
 
 const cancelHearingFeeJourneyController: Router = Router();
 
-cancelHearingFeeJourneyController.get(HEARING_FEE_CANCEL_JOURNEY, (async (req, res, next: NextFunction) => {
+cancelHearingFeeJourneyController.get(HEARING_FEE_CANCEL_JOURNEY, (async (req, res) => {
   const claimId = req.params.id;
   const redisClaimId = generateRedisKey(<AppRequest>req);
   await deleteDraftClaimFromStore(redisClaimId);

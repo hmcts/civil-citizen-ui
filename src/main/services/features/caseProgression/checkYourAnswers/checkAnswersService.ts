@@ -5,7 +5,7 @@ import {
   getTrialSummarySection,
   getWitnessSummarySection,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
-import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
@@ -36,7 +36,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string | unknown): documentUploadSections => {
+export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string | unknown): DocumentUploadSections => {
 
   return {
     witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
