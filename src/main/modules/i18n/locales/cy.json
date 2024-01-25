@@ -2363,8 +2363,9 @@
         "TRY_PAYMENT_AGAIN": "try the payment again",
         "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
         "NO_MONEY_TAKEN": "No money has been taken from your account.",
-        "PAGE_TITLE": "Your payment was unsuccessful",
-        "OPEN_TIMES": "Opening times:"
+        "PAGE_TITLE": "Claim fee payment unsuccessful",
+        "OPEN_TIMES": "Opening times:",
+        "TITLE": "Your payment was unsuccessful"
       }
     },
     "PAYMENT_OPTION": {

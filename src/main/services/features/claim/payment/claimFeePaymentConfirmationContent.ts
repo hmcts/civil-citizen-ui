@@ -29,23 +29,14 @@ export const getPaymentUnsuccessfulBodyContent = (claim : Claim, lng : string, c
   const callCharges = 'www.gov.uk/call-charges';
   const phoneNumber = '0300 123 7050';
   return new PaymentUnsuccessfulSectionBuilder()
-    .addMainTitle('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.PAGE_TITLE', { lng })
+    .addMainTitle('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.TITLE', { lng })
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIM_NUMBER', { claimId: claimId, lng })
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.CLAIMANT_V_DEFENDANT', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName(), lng })
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.NO_MONEY_TAKEN', { lng })
-    .addLink(
-      'PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.TRY_PAYMENT_AGAIN',
-      claim?.claimDetails?.claimFeePayment?.nextUrl,
-      'PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.GO_BACK',
-      '.',
-      { lng })
+    .addPaymentLink(lng, claim?.claimDetails?.claimFeePayment?.nextUrl)
     .addPhoneNumber(lng, phoneNumber)
     .addTitle('PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.OPEN_TIMES', { lng })
     .addParagraph('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS', { lng })
-    .addLink(
-      callCharges, callChargesLink,
-      'PAGES.PAYMENT_CONFIRMATION.UNSUCCESSFUL.FIND_OUT_CHARGES',
-      '.',
-      { lng })
+    .addCallChargesLink(lng, callCharges, callChargesLink)
     .build();
 };
