@@ -193,9 +193,24 @@ ccd:
     postgresSecret: postgres
     postgresHostname: civil-preview.postgres.database.azure.com
     databaseNamePrefix: "pr-${CHANGE_ID}-"
+  ccd-admin-web:
+    nodejs:
+      autoscaling:
+        enabled: false
+      image: hmctspublic.azurecr.io/ccd/admin-web:latest
+      ingressHost: admin-web-${SERVICE_FQDN}
+      keyVaults: []
+
   ccd-api-gateway-web:
     nodejs:
+      autoscaling:
+        enabled: false
+      keyVaults: [ ]
+      environment:
+        PROXY_PRINT_SERVICE: http://ccd-case-print-service-${SERVICE_FQDN}
+        ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
       ingressHost: gateway-${SERVICE_FQDN}
+      ingressIP: ${INGRESS_IP}
   ccd-data-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
@@ -203,6 +218,7 @@ ccd:
       devcpuRequests: 500m
       devmemoryRequests: 2048Mi
       devmemoryLimits: 4096Mi
+      keyVaults: [ ]
       environment:
         OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
         CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: civil_service,aac_manage_case_assignment
@@ -210,6 +226,7 @@ ccd:
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   ccd-definition-store-api:
     java:
+      keyVaults: [ ]
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
 
 camunda-bpm:
