@@ -85,6 +85,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   }
   return formObj;
 };
+
 const bindRequestYourNameSectionObj = (request: any): TypeOfDocumentYourNameSection => {
   const formObj: TypeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
