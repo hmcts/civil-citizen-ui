@@ -219,7 +219,7 @@ export const buildFullDisputeResponseContent = (claim: Claim, lng: string): Clai
 };
 export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
+    ...getResponseStatement(claim.getDefendantFullName(), t('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_LESS_STATEMENT', {lng}), claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
     ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode(), lng),
     ...getWhyTheyDisagreeWithClaim(claim.getRejectAllOfClaimDisagreementReason(), lng),
@@ -232,7 +232,7 @@ export const buildFullDisputePaidLessResponseContent = (claim: Claim, lng: strin
 
 export const buildFullDisputePaidFullResponseContent = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
-    ...getResponseStatement(claim.getDefendantFullName(), 'PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', claim.isRejectAllOfClaimAlreadyPaid()),
+    ...getResponseStatement(claim.getDefendantFullName(), t('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', {lng}), claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
     ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode(), lng),
   ];
