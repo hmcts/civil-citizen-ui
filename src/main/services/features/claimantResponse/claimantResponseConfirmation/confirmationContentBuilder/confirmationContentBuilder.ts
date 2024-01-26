@@ -15,8 +15,10 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    !claimantResponse.isClaimantRejectedCourtDecision) {
+  if (isClaimantRejectPaymentPlan(claim)
+    && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed()
+    && !claimantResponse.isClaimantRejectedCourtDecision
+    && !hasClaimantRejectedDefendantResponse(claim)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
@@ -54,9 +56,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-  
+
   if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    !claimantResponse.isClaimantRejectedCourtDecision) {
+    !claimantResponse.isClaimantRejectedCourtDecision && !hasClaimantRejectedDefendantResponse(claim)) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
@@ -94,7 +96,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
-    claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
+    claim.isFullDefence() && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedDefendantResponse());
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,

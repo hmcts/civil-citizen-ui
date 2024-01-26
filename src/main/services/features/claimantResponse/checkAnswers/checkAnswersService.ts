@@ -82,6 +82,7 @@ function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
     || claim.hasClaimantIntentToProceedResponse()
     || claim.hasClaimantRejectedDefendantPaid()
     || claim.hasClaimantRejectedPartAdmitPayment()
+    || claim.hasClaimantRejectedDefendantResponse()
   );
 }
 

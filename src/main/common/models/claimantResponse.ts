@@ -91,7 +91,7 @@ export class ClaimantResponse {
   }
 
   get isRequestJudgePaymentPlan(): boolean {
-    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE 
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
   }
 
@@ -104,9 +104,11 @@ export class ClaimantResponse {
   }
 
   hasClaimantAgreedToMediation(): boolean {
-    return this.mediation?.canWeUse?.option === YesNo.YES;
+    return (this.mediation?.canWeUse?.option === YesNo.YES || this.mediation?.canWeUse?.mediationPhoneNumber !== undefined)
+    || (this.mediation?.companyTelephoneNumber?.option === YesNo.NO)
+    || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined)
   }
-  
+
   get isClaimantRejectedCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
         || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
