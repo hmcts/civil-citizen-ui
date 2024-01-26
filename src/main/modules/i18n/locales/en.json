@@ -1611,10 +1611,11 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
+      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a Help With Fees reference number related a different claim or to any application fees.It will be invalid as you cannot use the same Help with Fees reference number twice.",
+      "PARAGRAPH1_3": "If you do not have a Help with Fees reference number for this claim, you should make a Help with Fees application which will provide you with a reference number.",
       "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
-      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
+      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is form N1.",
+      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number (For example HWF-C2D-45E). Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
       "PLEASE_NOTE": "Please Note:",
       "THIS_CLAIM": "THIS CLAIM",
       "TITLE": "Apply For Help With Fees"

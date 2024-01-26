@@ -1611,10 +1611,11 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
-      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio rhif sy'n gysylltiedig â hawliad gwahanol. Os nad oes gennych rif Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dilynwch y cyfarwyddiadau isod.",
+      "PARAGRAPH1_2": "efallai bod gennych rif cyfeirnod yn barod. Os felly, gallwch arbed eich cais a pharhau a'i nodi pan ofynnir i chi. Peidiwch â defnyddio cyfeirnod Help Gyda Ffioedd sy'n ymwneud â chais gwahanol nac i unrhyw ffioedd ymgeisio. Bydd yn annilys gan na allwch ddefnyddio'r un rhif cyfeirnod Help gyda Ffioedd ddwywaith.",
+      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help gyda Ffioedd ar gyfer y cais hwn, dylech wneud cais Help gyda Ffioedd a fydd yn rhoi rhif cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
-      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwnnw.",
-      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod. Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
+      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw hwnnw.",
+      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
       "PLEASE_NOTE": "Sylwer:",
       "THIS_CLAIM": "YR HAWLIAD HWN",
       "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
