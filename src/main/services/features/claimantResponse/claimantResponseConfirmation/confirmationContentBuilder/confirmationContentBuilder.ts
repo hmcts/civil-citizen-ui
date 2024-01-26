@@ -19,7 +19,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
 
   if (isClaimantRejectPaymentPlan(claim) && claim.isBusiness()) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
-  } else if (claimantResponse.isSignASettlementAgreement) {
+  } else if (claimantResponse.isSignSettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
@@ -64,7 +64,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return RCDisputeNotContinueNextSteps;
   }
 
-  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED) {
+  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
   }
 
