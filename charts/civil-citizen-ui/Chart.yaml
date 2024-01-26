@@ -16,7 +16,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-service.enabled
   - name: ccd
-    version: 8.0.29
+    version: 9.0.20
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.enabled
   - name: xui-webapp
@@ -28,7 +28,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
   - name: camunda-bpm
-    version: 0.0.43
+    version: 0.0.44
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: camunda-bpm.enabled
   - name: servicebus
@@ -36,34 +36,16 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
 # WA
-  - name: wa-task-management-api
-    version: ~0.0.37
+  - name: wa
+    version: ~1.0.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
-  - name: wa-task-monitor
-    version: ~0.0.27
+  - name: postgresql
+    version: 1.0.2
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-case-event-handler
-    version: 0.0.37
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-workflow-api
-    version: 0.0.36
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  # WA Crons
-  - name: wa-task-batch-service
-    version: ~0.0.15
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-message-cron-service
-    version: ~0.0.3
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  # CCD message publisher
+    condition: postgresql.enabled
+
   - name: ccd-message-publisher
     version: ~0.1.7
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
-
