@@ -95,7 +95,7 @@ function translateFullAdmission(claim: Claim, ccdClaim: CCDClaim, claimantRespon
 function translatePartialAdmission(claim: Claim, ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
   claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
   claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec);
-  claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
+  claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim.applicant1AcceptAdmitAmountPaidSpec);
 }
 
 function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {

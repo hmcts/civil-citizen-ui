@@ -2098,4 +2098,34 @@ describe('Documents', () => {
       expect(result).toEqual(true);
     });
   });
+
+  describe('hasClaimantAcceptedToSettleClaim', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false when not accepted', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true if accepted', () => {
+      //Given
+      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  
 });

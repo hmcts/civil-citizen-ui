@@ -21,4 +21,5 @@ export interface ClaimUpdate {
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   respondentSignSettlementAgreement? : YesNoUpperCamelCase;
   applicant1RequestedPaymentDateForDefendantSpec? : CCDClaimantPayBySetDate;
+  applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
 }

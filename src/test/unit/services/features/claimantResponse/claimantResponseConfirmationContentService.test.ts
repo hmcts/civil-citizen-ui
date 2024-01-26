@@ -8,7 +8,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -61,6 +61,7 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.applicant1AcceptAdmitAmountPaidSpec = YesNoUpperCamelCase.YES;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
     };
@@ -80,7 +81,7 @@ describe('Claimant Response Confirmation service', () => {
 
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
-    claim.claimantResponse.signSettlementAgreement.signed = 'true';
+    claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
     // Then
@@ -512,6 +513,20 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG5');
     expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
     expect(claimantResponseConfirmationContent[6]).toBeUndefined();
+  });
+  it('Claimant accepted defendant`s response to settle the claim', () => {
+    // Given
+    claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE.CLAIM_SETTLE');
   });
 });
 

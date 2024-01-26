@@ -200,7 +200,7 @@ export class Claim {
       return ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN;
     }
 
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid() && !this.hasClaimantAcceptedToSettleClaim()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
@@ -894,6 +894,10 @@ export class Claim {
 
   hasCourtAcceptedClaimantsPlan() {
     return this.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+  }
+
+  hasClaimantAcceptedToSettleClaim(): boolean {
+    return this.isFullDefence() && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
   }
 
   getPaymentDate() {

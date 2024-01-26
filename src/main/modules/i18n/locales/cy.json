@@ -1077,6 +1077,9 @@
         "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
+      "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
+        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+      },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "Wnaethoch chi ddim bwrw ymlaen â'r hawliad",
         "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrtho."
