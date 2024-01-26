@@ -76,12 +76,14 @@ const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
   interest.interestClaimFrom = ccdClaim?.interestClaimFrom;
   interest.interestClaimOptions = InterestClaimOptionsType[ccdClaim?.interestClaimOptions];
   interest.interestEndDate = InterestEndDateType[ccdClaim?.interestClaimUntil];
+  
   if(interest.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST) {
-    let totalInterest = new TotalInterest();
+    const totalInterest = new TotalInterest();
     totalInterest.amount = ccdClaim.breakDownInterestTotal;
     totalInterest.reason = ccdClaim.breakDownInterestDescription;
     interest.totalInterest = totalInterest;
    }
+
   if (ccdClaim?.interestFromSpecificDate) {
     const ccdInterestDate = new Date(ccdClaim?.interestFromSpecificDate);
     interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim?.interestFromSpecificDateDescription);
