@@ -17,7 +17,7 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claim.totalClaimAmount,
-    claimFee,
+    claimFee: claimFee.toFixed(2),
     judgmentSummaryDetails,
   });
 }
