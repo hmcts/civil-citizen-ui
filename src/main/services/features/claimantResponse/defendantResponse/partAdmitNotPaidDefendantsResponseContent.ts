@@ -97,7 +97,7 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): Cl
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE',
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng: lang}),
         variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang)},
       },
     }];
