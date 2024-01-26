@@ -10,6 +10,7 @@ export class TypeOfDocumentSectionMapper {
     }
     return undefined;
   }
+
   static mapMulterFileToSingleFile(file: Express.Multer.File): FileUpload {
     return TypeOfDocumentSectionMapper.createFileUpload(file);
   }
