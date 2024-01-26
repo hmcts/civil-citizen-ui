@@ -85,7 +85,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   }
 
   if (hasClaimantRejectedDefendantResponse(claim)) {
-    if(hasEitherPartyNotAgreedToMediation(claim)) {
+    if(hasEitherPartyNotAgreedToMediation(claim) || claim.isFastTrackClaim) {
       return RejectedResponseNoMediationNextSteps;
     }
     else if(claimantResponse.hasClaimantAgreedToMediation()) {

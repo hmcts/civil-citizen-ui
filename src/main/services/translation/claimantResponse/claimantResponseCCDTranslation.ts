@@ -5,7 +5,7 @@ import {toCCDVulnerability} from '../response/convertToCCDVulenrabilityQuestions
 import {toCCDSpecificCourtLocations} from '../response/convertToCCDSpecificCourtLocations';
 import {toCCDSmallClaimHearing} from '../response/convertToCCDSmallClaimHearing';
 import {toCCDClaimantLiPResponse} from './convertToCCDClaimantLiPResponse';
-import {toCCDYesNo} from '../response/convertToCCDYesNo';
+import {toCCDYesNo, toCCDYesNoReverse} from '../response/convertToCCDYesNo';
 import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
@@ -22,6 +22,14 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
     return toCCDYesNo(claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option);
   } else {
     return undefined;
+  }
+}
+
+function isClaimantWantToProceed(claim: Claim) {
+  if (claim.isFullDefence() && claim.hasPaidInFull()) {
+    return toCCDYesNoReverse(claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option)
+  } else {
+    return toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option)
   }
 }
 
@@ -43,7 +51,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1PartAdmitConfirmAmountPaidSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
     applicant1PartAdmitIntentionToSettleClaimSpec: isClaimantWantToSettleTheClaim(claim),
     applicant1FullDefenceConfirmAmountPaidSpec: (claim.isFullDefence()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
-    applicant1ProceedWithClaim : toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option),
+    applicant1ProceedWithClaim : isClaimantWantToProceed(claim),
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount.toString(),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
