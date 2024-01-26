@@ -103,7 +103,7 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it('should redirect to the next page when inputs are validated', async () => {
+    it('should redirect to the next page when inputs are validated with documentsForYourStatement', async () => {
 
       const documentsForYourStatement = {
         'documentsForYourStatement': [{
@@ -128,10 +128,60 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
+    it('should redirect to the next page when inputs are validated with documentsReferred', async () => {
+
+      const documentsForDocumentsReferred = {
+        'documentsReferred': [{
+          'typeOfDocument': 'Word',
+          'dateInputFields': {
+            'dateDay': '14',
+            'dateMonth': '10',
+            'dateYear': '2020',
+          },
+          caseDocument: caseDoc,
+        }],
+      };
+
+      const sections = Object.assign(documentsForDocumentsReferred);
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(sections)
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND);
+        });
+    });
+
     it('should add another yourStatement', async () => {
 
       const documentsForYourStatement = {
         action: 'add_another-yourStatement',
+        'documentsForYourStatement': [{
+          'typeOfDocument': 'Word',
+          'dateInputFields': {
+            'dateDay': '14',
+            'dateMonth': '10',
+            'dateYear': '2020',
+          },
+          caseDocument: caseDoc,
+        }],
+      };
+
+      const sections = Object.assign(documentsForYourStatement);
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(sections)
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should add another documentsReferred', async () => {
+
+      const documentsForYourStatement = {
+        action: 'add_another-documentsReferred',
         'documentsForYourStatement': [{
           'typeOfDocument': 'Word',
           'dateInputFields': {
@@ -169,10 +219,10 @@ describe('Mediation upload your documents Controller', () => {
 
       await request(app)
         .post(CONTROLLER_URL)
-        .field('action', 'documentsForDocumentsReferred[0][uploadButton]')
-        .field('documentsForDocumentsReferred[0][dateInputFields]', JSON.stringify(validDate))
-        .field('documentsForDocumentsReferred[0][typeOfDocument]', 'test document')
-        .attach('documentsForDocumentsReferred[0][fileUpload]', file.buffer, {
+        .field('action', 'documentsForYourStatement[0][uploadButton]')
+        .field('documentsForYourStatement[0][dateInputFields]', JSON.stringify(validDate))
+        .field('documentsForYourStatement[0][typeOfDocument]', 'test document')
+        .attach('documentsForYourStatement[0][fileUpload]', file.buffer, {
           filename: file.originalname,
           contentType: file.mimetype,
         })
@@ -181,26 +231,29 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it('should add another documentsReferred', async () => {
+    it('should upload file documentsReferred', async () => {
+      const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+        documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date()};
 
-      const documentsForYourStatement = {
-        action: 'add_another-documentsReferred',
-        'documentsForYourStatement': [{
-          'typeOfDocument': 'Word',
-          'dateInputFields': {
-            'dateDay': '14',
-            'dateMonth': '10',
-            'dateYear': '2020',
-          },
-          caseDocument: caseDoc,
-        }],
-      };
-
-      const sections = Object.assign(documentsForYourStatement);
+      const civilServiceUrl = config.get<string>('services.civilService.url');
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(200, mockCaseDocument);
+      const validDate = new DateInputFields('12', '11', '2020');
 
       await request(app)
         .post(CONTROLLER_URL)
-        .send(sections)
+        .field('action', 'documentsForDocumentsReferred[0][uploadButton]')
+        .field('documentsForDocumentsReferred[0][dateInputFields]', JSON.stringify(validDate))
+        .field('documentsForDocumentsReferred[0][typeOfDocument]', 'test document')
+        .attach('documentsForDocumentsReferred[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
         .expect((res: express.Response) => {
           expect(res.status).toBe(200);
         });
