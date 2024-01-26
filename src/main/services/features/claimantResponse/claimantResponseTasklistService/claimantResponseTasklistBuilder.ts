@@ -46,9 +46,9 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     handleAcceptOrRejectRepaymentPlanTask(claim, claimId, lang, tasks);
   } else if (claim.isPartialAdmission()) {
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-    if (claimantResponse.isClaimantNotAcceptedPartAdmittedAmount) {
+    if (claimantResponse.isClaimantNotAcceptedPartAdmittedAmount && claim.isDefendantAgreedForMediation()) {
       tasks.push(freeTelephoneMediationTask);
-    } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
+    } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claim.isPAPaymentOptionPayImmediately()) {
       tasks.push(acceptOrRejectRepaymentPlanTask);
       handleAcceptOrRejectRepaymentPlanTask(claim, claimId, lang, tasks);
     }
