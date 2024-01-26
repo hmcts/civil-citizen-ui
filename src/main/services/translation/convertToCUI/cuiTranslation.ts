@@ -82,7 +82,7 @@ const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
     totalInterest.amount = ccdClaim.breakDownInterestTotal;
     totalInterest.reason = ccdClaim.breakDownInterestDescription;
     interest.totalInterest = totalInterest;
-   }
+  }
 
   if (ccdClaim?.interestFromSpecificDate) {
     const ccdInterestDate = new Date(ccdClaim?.interestFromSpecificDate);
