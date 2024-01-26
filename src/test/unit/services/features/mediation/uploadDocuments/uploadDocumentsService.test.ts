@@ -75,5 +75,21 @@ describe('upload document service For Mediation', () => {
       expect(spySave).toBeCalledWith('1',claim);
 
     });
+
+    it('should upload file', async () => {
+      //Given
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const uploadDocument = new UploadDocuments(TYPE_OF_DOCUMENTS_DATA);
+      //claim.mediationUploadDocuments = uploadDocument;
+
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //when
+      await saveUploadDocument('1', uploadDocument.typeOfDocuments, 'typeOfDocuments');
+      //then
+      expect(spySave).toBeCalledWith('1',claim);
+
+    });
   });
 });

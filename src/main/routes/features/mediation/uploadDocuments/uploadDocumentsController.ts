@@ -145,14 +145,11 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       renderView(form, uploadDocuments, res, claimId, claim);
     } else {
       // set upload documents with new data
-      if (uploadDocumentsForm.documentsForYourStatement.length > 0) {
-        const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
-        documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
-      }
-      if (uploadDocumentsForm.documentsForDocumentsReferred.length > 0) {
-        const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
-        documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
-      }
+      const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
+      documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
+
+      const documentsForReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+      documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND));
     }

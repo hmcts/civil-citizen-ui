@@ -16,6 +16,8 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import express from 'express';
+import {CaseDocument} from 'models/document/caseDocument';
+import {DateInputFields} from 'models/caseProgression/uploadDocumentsUserForm';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,6 +28,13 @@ const TYPE_OF_DOCUMENTS = Array.of(new TypeOfDocuments(1,TypeOfMediationDocument
 
 const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS;
 const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
+const file = {
+  fieldname: 'documentsForYourStatement[0][fileUpload]',
+  originalname: 'test.txt',
+  mimetype: 'text/plain',
+  size: 123,
+  buffer: Buffer.from('Test file content'),
+};
 
 describe('Mediation upload your documents Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -143,6 +152,35 @@ describe('Mediation upload your documents Controller', () => {
           expect(res.status).toBe(200);
         });
     });
+
+    it('should upload file yourStatement', async () => {
+      const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+        documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date()};
+
+      const civilServiceUrl = config.get<string>('services.civilService.url');
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(200, mockCaseDocument);
+      const validDate = new DateInputFields('12', '11', '2020');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .field('action', 'documentsForDocumentsReferred[0][uploadButton]')
+        .field('documentsForDocumentsReferred[0][dateInputFields]', JSON.stringify(validDate))
+        .field('documentsForDocumentsReferred[0][typeOfDocument]', 'test document')
+        .attach('documentsForDocumentsReferred[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
     it('should add another documentsReferred', async () => {
 
       const documentsForYourStatement = {
@@ -168,10 +206,35 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it('should remove item', async () => {
+    it('should remove item documentsReferred', async () => {
 
       const documentsForYourStatement = {
         action: 'add_another-documentsReferred[removeButton]',
+        'documentsReferred': [{
+          'typeOfDocument': 'Word',
+          'dateInputFields': {
+            'dateDay': '14',
+            'dateMonth': '10',
+            'dateYear': '2020',
+          },
+          caseDocument: caseDoc,
+        }],
+      };
+
+      const sections = Object.assign(documentsForYourStatement);
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(sections)
+
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(200);
+        });
+    });
+    it('should remove item documentsForYourStatement', async () => {
+
+      const documentsForYourStatement = {
+        action: 'add_another-documentsForYourStatement[removeButton]',
         'documentsForYourStatement': [{
           'typeOfDocument': 'Word',
           'dateInputFields': {
@@ -188,10 +251,12 @@ describe('Mediation upload your documents Controller', () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send(sections)
+
         .expect((res: express.Response) => {
           expect(res.status).toBe(200);
         });
     });
+
     it('should return http 500 when has error', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
