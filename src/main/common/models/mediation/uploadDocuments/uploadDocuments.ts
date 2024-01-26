@@ -1,5 +1,5 @@
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
-import {TypeOfDocumentSection} from "models/caseProgression/uploadDocumentsUserForm";
+import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 export enum TypeOfMediationDocuments {
     YOUR_STATEMENT = 'YOUR_STATEMENT',
@@ -30,9 +30,6 @@ export class UploadDocuments {
     return this.typeOfDocuments.sort((a, b) => a.id - b.id);
   }
 
-  getByType(type : TypeOfMediationDocuments) {
-    return this.typeOfDocuments.find((item) => item.type === type);
-  }
   mapUploadDocumentsFromTypeOfDocumentsForm(typeOfDocumentsForm: TypeOfDocumentsForm): UploadDocuments {
     //just object that has been checked
     const arrayOfTypeOfDocumentsForm = typeOfDocumentsForm.typeOfDocuments;

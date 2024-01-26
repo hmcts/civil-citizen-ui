@@ -25,7 +25,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
-import {caseNumberPrettify} from "common/utils/stringUtils";
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -129,7 +129,7 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
       return renderView(form, uploadDocuments, res, claimId, claim);
-    } else if(action === 'add_another-documents_referred'){
+    } else if(action === 'add_another-documentsReferred'){
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
       return renderView(form, uploadDocuments, res, claimId, claim);
     } else if (action?.includes('[uploadButton]')) {
