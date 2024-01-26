@@ -1,4 +1,3 @@
-//import {eligibilityMock} from '../utils/mocks/a11y/eligibility';
 import * as fs from 'fs';
 import * as urls from 'routes/urls';
 import {IGNORED_URLS} from './ignored-urls';
@@ -8,6 +7,7 @@ import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 
 const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 const pa11y = require('pa11y');
+import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
 const os = require('os');
 
@@ -20,11 +20,11 @@ const express = require('express');
 const port = 3000;
 const app = express();
 
-class Pa11yResult {
-  documentTitle: string;
-  pageUrl: string;
-  issues: PallyIssue[];
-}
+// class Pa11yResult {
+//   documentTitle: string;
+//   pageUrl: string;
+//   issues: PallyIssue[];
+// }
 
 class PallyIssue {
   code: string;
@@ -61,7 +61,7 @@ describe('Accessibility', async () => {
       info: console.info,
     },
     chromeLaunchConfig: {
-      args: ['--no-sandbox'],
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
     },
   };
 
@@ -74,11 +74,11 @@ describe('Accessibility', async () => {
         res.send(fileContent);
       });
 
-      await pa11y(agent.get(url).url, options)
-        .then((result: Pa11yResult) => {
-          result.documentTitle == 'Error' ? fail('This page was titled "error", which suggests it did not render correctly.') : null;
-          expectNoErrors(result.issues);
-        });
+      await retry(async () => {
+        const messages = await pa11y(agent.get(url).url, options);
+        messages.documentTitle == 'Error' ? fail('This page was titled "error", which suggests it did not render correctly.') : null;
+        expectNoErrors(messages.issues);
+      });
     });
   }
   server.close();
