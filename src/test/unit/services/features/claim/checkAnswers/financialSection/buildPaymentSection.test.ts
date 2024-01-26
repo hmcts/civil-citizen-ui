@@ -16,7 +16,7 @@ jest.mock('i18next', () => ({
 
 const DATE = '25 December 2023';
 const AMOUNT_ALREADY_PAID = '£200';
-const AMOUNT_TO_BE_PAID = '£1,029.41';
+const AMOUNT_TO_BE_PAID = '£1,029.63';
 const FIRST_PAYMENT_DATE = '6 June 2023';
 const INSTALMENTS_OF = '£200';
 const CLAIM_ID = 'claimId';
