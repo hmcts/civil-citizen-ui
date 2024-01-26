@@ -149,7 +149,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
       respondent1: getPartyIndividualCCD(),
       respondent1ClaimResponseTypeForSpec: 'PART_ADMISSION',
       applicant1AcceptPartAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
-      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+      applicant1AcceptAdmitAmountPaidSpec: YesNoUpperCamelCase.YES,
       specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
     };
 

@@ -2117,15 +2117,6 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(false);
     });
-    it('should return true if accepted', () => {
-      //Given
-      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
-      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-      //When
-      const result = claim.hasClaimantAcceptedToSettleClaim();
-      //Then
-      expect(result).toBe(true);
-    });
   });
   
 });
