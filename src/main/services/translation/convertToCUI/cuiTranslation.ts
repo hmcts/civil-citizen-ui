@@ -22,8 +22,8 @@ import { InterestEndDateType, SameRateInterestType } from 'common/form/models/cl
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
-import {CCDRejectAllOfClaimType} from "models/ccdResponse/ccdRejectAllOfClaimType";
-import {toCUIClaimantMediation} from "services/translation/convertToCUI/convertToCUIClaimantMediation";
+import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);

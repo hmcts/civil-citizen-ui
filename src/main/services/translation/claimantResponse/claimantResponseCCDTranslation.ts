@@ -27,9 +27,9 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
 
 function isClaimantWantToProceed(claim: Claim) {
   if (claim.isFullDefence() && claim.hasPaidInFull()) {
-    return toCCDYesNoReverse(claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option)
+    return toCCDYesNoReverse(claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option);
   } else {
-    return toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option)
+    return toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option);
   }
 }
 
