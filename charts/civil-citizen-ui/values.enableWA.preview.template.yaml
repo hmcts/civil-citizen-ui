@@ -4,6 +4,9 @@ civil-wa:
 global:
   jobKind: CronJob
 
+camunda-bpm:
+  enabled: false
+
 ccd-message-publisher:
   java:
     ingressHost: ccd-message-publisher-${SERVICE_FQDN}
