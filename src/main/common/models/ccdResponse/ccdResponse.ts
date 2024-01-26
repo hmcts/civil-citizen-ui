@@ -28,7 +28,7 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
-import {CCDRespondentLiPResponseCarm} from "models/ccdResponse/ccdRespondentLiPResponseCarm";
+import {CcdMediationCarm} from "models/ccdResponse/ccdMediationCarm";
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
@@ -73,7 +73,7 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQRecurringExpenses?: CCDRecurringExpenses[];
   respondent1DQRecurringExpensesFA?: CCDRecurringExpenses[];
   respondent1LiPResponse?: CCDRespondentLiPResponse;
-  respondent1LiPResponseCarm?: CCDRespondentLiPResponseCarm;
+  respondent1LiPResponseCarm?: CcdMediationCarm;
   respondent1LiPFinancialDetails?: CCDFinancialDetailsLiP,
   respondent1DQLanguage?: CCDWelshLanguageRequirements;
   respondent1DQVulnerabilityQuestions?: CCDVulnerability;

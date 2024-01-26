@@ -69,8 +69,8 @@ import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {CCDRespondentLiPResponseCarm} from "models/ccdResponse/ccdRespondentLiPResponseCarm";
 import {MediationCarm} from "models/mediation/mediationCarm";
+import {CcdMediationCarm} from "models/ccdResponse/ccdMediationCarm";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -114,7 +114,7 @@ export class Claim {
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
-  respondent1LiPResponseCarm?: CCDRespondentLiPResponseCarm;
+  respondent1LiPResponseCarm?: CcdMediationCarm;
   caseProgressionHearing?: CaseProgressionHearing;
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
