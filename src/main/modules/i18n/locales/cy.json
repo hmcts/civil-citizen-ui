@@ -2557,18 +2557,18 @@
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
       "EMPLOYED": "Oes ganddo swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
-      "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
+      "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wsdi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
-        "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+        "DEFENDANT_ADMITS": "Mae {{ defendant }} yn cyfaddef fod arno'r holl arian rydych chi wedi'i hawlio. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol.",
         "HOW_THEY_WANT_PAY": "Sut mae am dalu?",
-        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
+        "THEY_OFFERED_PAY": "Mae wedi cynnig talu hyn i chi mewn rhandaliadau."
       },
       "FULL_RESPONSE": "Ymateb llawn",
-      "HOW_PAID": "How they say they paid?",
+      "HOW_PAID": "Sut dywedodd ei fod wedi talu?",
       "MONTHLY_EXPENSES": "Treuliau misol",
       "MONTHLY_INCOME": "Incwm misol",
       "PAGE_TITLE": "Review defendant’s response",
-      "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
+      "PART_ADMIT_ALREADY_PAID_STATEMENT": "Dywedodd {{ defendant }} ei fod yn talu £{{ paidAmount }}. Dywedodd mai dyma'r cyfan sydd arno, nid y swm yr oeddech chi'n ei hawlio.",
       "PART_ADMIT_NOT_PAID": {
         "DEFENDANT_ADMITS_THEY_OWE": "Mae {{ defendant }} yn cyfaddef bod arno £{{ paidAmount }} ichi. Nid yw’n credu bod arno’r swm llawn a hawlir.",
         "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu £{{ paidAmount }} i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
@@ -2577,7 +2577,7 @@
         "WHY_THEY_DONT_OWE": "Pam nad oes arno'r swm sy'n cael ei hawlio?"
       },
       "PAY_EXPENSES": "A yw'n talu unrhyw dreuliau?",
-      "PAYMENT_DATE": "They’ve offered to pay you this by {{ paymentDate }}",
+      "PAYMENT_DATE": "Mae wedi cynnig talu hyn i chi erbyn {{ paymentDate }}",
       "RECEIVE_INCOME": "A yw'n cael unrhyw incwm?",
       "REJECT_CLAIM_STATEMENT": "Mae {{ defendant }} wedi gwrthod yr hawliad.",
       "SEE_FINANCIAL_DETAILS": "Gweler ei fanylion ariannol",
@@ -2590,8 +2590,8 @@
       "TOTAL_PAID_AMOUNT": "Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Pam na all dalu'r swm llawn nawr?",
       "WHERE_THEY_LIVE": "Lle mae'n byw?",
-      "WHEN_THEY_SAY_THEY_PAID": "When they say they paid this amount?",
-      "WHY_THEY_DISAGREE_AMOUNT": "Why they say they don’t owe the amount you claimed?",
+      "WHEN_THEY_SAY_THEY_PAID": "Pan mae'n dweud ei fod wedi talu'r swm hwn?",
+      "WHY_THEY_DISAGREE_AMOUNT": "Pam mae'n dweud nad oes arno’r swm yr oeddech chi'n ei hawlio?",
       "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â'r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
@@ -2607,11 +2607,11 @@
           "REGULAR_PAYMENTS": "Taliadau rheolaidd o"
         }
       },
-      "WHEN_THEY_PAID_THIS_AMOUNT": "When they say they paid this amount",
-      "HOW_THEY_PAID": "How they said they paid?",
-      "THEY_DONT_OWE_CLAIM_AMOUNT": "Why they say they dont owe the amount you claimed?",
-      "REJECT_CLAIM_PAID_FULL_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}.",
-      "REJECT_CLAIM_PAID_LESS_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount}}. They said this is all they owe, not the amount you claim."
+      "WHEN_THEY_PAID_THIS_AMOUNT": "Pan mae'n dweud ei fod wedi talu'r swm hwn",
+      "HOW_THEY_PAID": "Sut dywedodd ei fod wedi talu?",
+      "THEY_DONT_OWE_CLAIM_AMOUNT": "Pam mae'n dweud nad oes arno’r swm yr oeddech chi'n ei hawlio?",
+      "REJECT_CLAIM_PAID_FULL_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}}.",
+      "REJECT_CLAIM_PAID_LESS_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}}. Dywedodd mai dyma'r cyfan sydd arno, nid y swm rydych chi'n ei hawlio."
     },
     "SELF_EMPLOYED": {
       "ANNUAL_TURNOVER_IN_POUNDS": "Annual Turnover, in pounds",
