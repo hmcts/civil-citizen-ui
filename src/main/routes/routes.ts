@@ -228,7 +228,6 @@ import respondSettlementAgreementConfirmationController
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import repaymentPlanSummaryClaimantController from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
-
 import payHearingFeeStartScreenController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 import applyHelpFeeSelectionController
