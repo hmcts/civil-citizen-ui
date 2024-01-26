@@ -7,31 +7,17 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../dashboard/claim-summary-content.njk" import claimSummaryContent %}
-{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
-
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% block pageTitle %}
-{{ setPageTitle(t('PAGES.UPLOAD_DOCUMENTS.TITLE')) }}
+  {{ setPageTitle(t(pageTitle)) }}
 {% endblock %}
 {% block content %}
 <div class="govuk-width-container caseProgression">
   <main class="govuk-main-wrapper" role="main">
     {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
+      {{ errorSummary(form.getAllErrors(), t) }}
     {% endif %}
-
-    {% set rowNumberToShowRemoveButton = 2 %}
-    {% set witnessContentLength = witnessContent.length %}
-    {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
-    {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
-    {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
-    {% set titleH3 = t('PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE') %}
-    {% set paragraph = t('PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST') %}
-    {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') %}
-    {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
-    {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
-    {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
-    {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
     <div class="govuk-grid-row">
       <form method="post" action={{ currentUrl }}?_csrf={{csrf}} enctype='multipart/form-data' novalidate>
@@ -39,15 +25,15 @@
         <div id="content"></div>
 
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
+          <h1 class="govuk-heading-l">{{ t(pageTitle) }}</h1>
 
-          <p class="govuk-body-l">{{
-            t(
-            'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId})}}</p>
+          <p class="govuk-body-l">{{t('COMMON.CASE_REFERENCE', {claimId: claimId})}}</p>
+
           <p class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</p>
 
-          <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
-          <p class="govuk-body-m">{{ paragraph }}</p>
+          <h2 class="govuk-heading-s">{{ t(subtitle) }}</h2>
+          <p class="govuk-body-m">{{ t(paragraph) }}</p>
+          <h1 class="govuk-heading-l">{{ t(sectionTitle) }}</h1>
 
             {% if yourStatementContent.length > 0 %}
 
@@ -62,14 +48,11 @@
                   isPageHeading: false
                 }
                 }) %}
-                {{ claimSummaryContent({
-                                         contentSections: section.contentSections
-                                       }, t) }}
+                  {{ claimSummaryContent({ contentSections: section.contentSections }, t) }}
                 {% endcall %}
                 {% endfor %}
                 <div class="govuk-button-group">
-                  {{ govukButton({
-                                   text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                  {{ govukButton({text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                     classes: 'govuk-button--secondary govuk-!-margin-bottom-1',
                     name: 'action',
                     value: 'add_another-yourStatement',
@@ -95,14 +78,11 @@
                 isPageHeading: false
               }
               }) %}
-              {{ claimSummaryContent({
-                                       contentSections: section.contentSections
-                                     }, t) }}
+                {{ claimSummaryContent({contentSections: section.contentSections }, t) }}
               {% endcall %}
               {% endfor %}
               <div class="govuk-button-group">
-                {{ govukButton({
-                                 text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                {{ govukButton({ text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                   classes: 'govuk-button--secondary govuk-!-margin-bottom-1',
                   name: 'action',
                   value: 'add_another-documents_referred',
