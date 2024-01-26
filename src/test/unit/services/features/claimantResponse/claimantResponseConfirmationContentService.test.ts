@@ -8,7 +8,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -61,7 +61,6 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.applicant1AcceptAdmitAmountPaidSpec = YesNoUpperCamelCase.YES;
     claim.partialAdmission = {
       paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
     };
@@ -81,7 +80,8 @@ describe('Claimant Response Confirmation service', () => {
 
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
-    claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
+    claim.claimantResponse.signSettlementAgreement.signed = 'true';
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
     // Then
