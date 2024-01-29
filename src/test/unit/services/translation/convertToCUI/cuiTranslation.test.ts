@@ -1,9 +1,12 @@
 import {CCDClaim} from 'common/models/civilClaimResponse';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {TimeLineDocument, Document} from 'common/models/document/document';
-import { InterestClaimFromType, InterestEndDateType } from 'common/form/models/claimDetails';
-import { CCDInterestType } from 'common/models/ccdResponse/ccdInterestType';
-import { CCDSameRateInterestSelection, CCDSameRateInterestType } from 'common/models/ccdResponse/ccdSameRateInterestSelection';
+import {Document, TimeLineDocument} from 'common/models/document/document';
+import {InterestClaimFromType, InterestEndDateType} from 'common/form/models/claimDetails';
+import {CCDInterestType} from 'common/models/ccdResponse/ccdInterestType';
+import {
+  CCDSameRateInterestSelection,
+  CCDSameRateInterestType,
+} from 'common/models/ccdResponse/ccdSameRateInterestSelection';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {PartyType} from 'common/models/partyType';
@@ -264,7 +267,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.respondentPaymentDeadline).toEqual(undefined);
   });
-  
+
   it('should translate paymentDate to CUI model', () => {
     //Given
     const paymentDate = new Date('2023-12-07');
@@ -278,5 +281,31 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
+  });
+
+  it('should translate claimant mediation to CUI model for undefined', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : undefined,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : {
+        companyTelephoneOptionMediationLiP: YesNoUpperCamelCase.NO,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation.companyTelephoneNumber.option).toContain(YesNo.NO);
   });
 });
