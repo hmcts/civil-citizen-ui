@@ -300,7 +300,6 @@ describe('Translate claimant default ccj request to ccd', () => {
     expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
-  
   it('should not translate when ccjPaymentOption is not presentthe payment type selection', () => {
     // given
     const claim = new Claim();
@@ -314,7 +313,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
-      expect(ccdClaim).toEqual({
+    expect(ccdClaim).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
       'ccjPaymentPaidSomeAmount': null,
@@ -322,9 +321,9 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1: toCCDParty(claim.applicant1),
       respondent1: toCCDParty(claim.respondent1),
       totalClaimAmount: undefined,
-      applicant1RepaymentOptionForDefendantSpec: 'IMMEDIATELY',
+      applicant1RepaymentOptionForDefendantSpec: CCDClaimantPaymentOption.IMMEDIATELY,
       applicant1RequestedPaymentDateForDefendantSpec: {
-            'paymentSetDate': undefined,
+        'paymentSetDate': undefined,
       },
       'partialPayment':undefined,
       'partialPaymentAmount':undefined,
