@@ -2152,5 +2152,21 @@ describe('Documents', () => {
       //Then
       expect(result).toEqual(true);
     });
+
+    it('should return false if hasFullDefenceStatesPaidClaimSettled is No with reason undefined', () => {
+      //Given
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: undefined,
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
   });
 });
