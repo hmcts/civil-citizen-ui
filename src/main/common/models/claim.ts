@@ -70,8 +70,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
-import {MediationCarm} from "models/mediation/mediationCarm";
-import {CcdMediationCarm} from "models/ccdResponse/ccdMediationCarm";
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 
 export class Claim {
   resolvingDispute: boolean;

@@ -14,7 +14,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
-import {MediationCarm} from "models/mediation/mediationCarm";
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;

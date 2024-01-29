@@ -76,7 +76,7 @@ import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
-import {CcdMediationCarm} from "models/ccdResponse/ccdMediationCarm";
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 
 export class CivilClaimResponse {
   id: string;

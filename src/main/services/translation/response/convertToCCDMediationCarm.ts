@@ -1,8 +1,8 @@
 import {toCCDYesNoFromGenericYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {toCCDUnavailableDates} from 'services/translation/response/convertToCCDSmallClaimHearing';
-import {CcdMediationCarm} from "models/ccdResponse/ccdMediationCarm";
-import {MediationCarm} from "models/mediation/mediationCarm";
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 export const toCCDMediationCarm = (mediation: MediationCarm): CcdMediationCarm => {
   if (!mediation) return undefined;

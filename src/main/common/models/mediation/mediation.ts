@@ -10,7 +10,7 @@ export class Mediation {
   companyTelephoneNumber: CompanyTelephoneNumber;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
-              companyTelephoneNumber?: CompanyTelephoneNumber) {
+    companyTelephoneNumber?: CompanyTelephoneNumber) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;

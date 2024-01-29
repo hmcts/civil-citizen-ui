@@ -6,7 +6,7 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {
   getMediationCarm,
-  saveMediationCarm
+  saveMediationCarm,
 } from 'services/features/response/mediation/mediationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';

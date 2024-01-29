@@ -2,7 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Mediation} from 'models/mediation/mediation';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {Claim} from 'models/claim';
-import {MediationCarm} from "models/mediation/mediationCarm";
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');

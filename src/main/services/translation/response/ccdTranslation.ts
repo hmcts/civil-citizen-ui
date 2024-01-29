@@ -39,8 +39,8 @@ import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCD
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
-import {toAgreedMediationCarm} from "services/translation/response/convertToCCDAgreedMediationCarm";
-import {toCCDMediationCarm} from "services/translation/response/convertToCCDMediationCarm";
+import {toAgreedMediationCarm} from 'services/translation/response/convertToCCDAgreedMediationCarm';
+import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
