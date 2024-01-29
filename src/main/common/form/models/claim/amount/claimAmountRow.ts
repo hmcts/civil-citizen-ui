@@ -38,13 +38,6 @@ export class ClaimAmountRow {
     if(!value){
       return undefined;
     }
-    return new ClaimAmountRow(value.reason, Number(value.amount));
-  }
-
-  public static fromObject2(value: Record<string, string>): ClaimAmountRow {
-    if(!value){
-      return undefined;
-    }
     return new ClaimAmountRow(value.reason, value.amount? Number(value.amount) : undefined);
   }
 

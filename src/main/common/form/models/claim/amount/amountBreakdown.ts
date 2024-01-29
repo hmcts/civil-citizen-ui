@@ -49,12 +49,4 @@ export class AmountBreakdown {
     const rows = (value.claimAmountRows as Array<Record<string,string>>).map((row)=> ClaimAmountRow.fromObject(row));
     return new AmountBreakdown(rows, Number(value.totalAmount));
   }
-
-  public static fromObject2(value: Record<string, object>) : AmountBreakdown {
-    if(!value){
-      return undefined;
-    }
-    const rows = (value.claimAmountRows as Array<Record<string,string>>).map((row)=> ClaimAmountRow.fromObject2(row));
-    return new AmountBreakdown(rows, Number(value.totalAmount));
-  }
 }

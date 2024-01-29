@@ -34,7 +34,7 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
     console.log(action);
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
     if (action === 'add_another-claimAmount') {
-      const form2 = new GenericForm(AmountBreakdown.fromObject2(req.body));
+      const form2 = new GenericForm(AmountBreakdown.fromObject(req.body));
       form2.model.claimAmountRows.push(new ClaimAmountRow());
       renderView(form2, res);
     } else {
