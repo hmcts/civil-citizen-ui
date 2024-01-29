@@ -15,6 +15,7 @@ import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {CCDRejectAllOfClaimType} from "models/ccdResponse/ccdRejectAllOfClaimType";
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -307,5 +308,23 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.mediation.companyTelephoneNumber.option).toContain(YesNo.NO);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
+      totalClaimAmount: 100,
+      respondToClaim: {
+        howMuchWasPaid: 10000
+      },
+      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option).toEqual(YesNo.YES);
   });
 });
