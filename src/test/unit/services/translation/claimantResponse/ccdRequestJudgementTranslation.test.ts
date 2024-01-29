@@ -300,6 +300,42 @@ describe('Translate claimant default ccj request to ccd', () => {
     expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
+  
+  it('should not translate when ccjPaymentOption is not presentthe payment type selection', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {
+        ccjPaymentOption: {},
+      },
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+
+    // then
+      expect(ccdClaim).toEqual({
+      'ccjJudgmentAmountClaimFee': '300',
+      'ccjJudgmentLipInterest': '0',
+      'ccjPaymentPaidSomeAmount': null,
+      'ccjPaymentPaidSomeOption': undefined,
+      applicant1: toCCDParty(claim.applicant1),
+      respondent1: toCCDParty(claim.respondent1),
+      totalClaimAmount: undefined,
+      applicant1RepaymentOptionForDefendantSpec: 'IMMEDIATELY',
+      applicant1RequestedPaymentDateForDefendantSpec: {
+            'paymentSetDate': undefined,
+      },
+      'partialPayment':undefined,
+      'partialPaymentAmount':undefined,
+      'paymentSetDate':undefined,
+      'paymentTypeSelection':'IMMEDIATELY',
+      'repaymentDue':undefined,
+      'repaymentFrequency':undefined,
+      'repaymentSuggestion': undefined,
+    });
+  });
+
   it('should translate the payment type selection', () => {
     // given
     const claim = new Claim();
