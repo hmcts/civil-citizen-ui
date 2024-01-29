@@ -4,7 +4,7 @@ import {
 } from 'form/models/claimSummarySection';
 import { t } from 'i18next';
 import {Claim} from 'models/claim';
-import {BILINGUAL_LANGUAGE_PREFERENCE_URL} from 'routes/urls';
+import {BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 
 export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean, lang : string): ClaimSummarySection => {
   return isResponseDeadlineExtended ? ({
@@ -70,3 +70,16 @@ export const getRespondToClaimLink = (claimId: string, lang: string): ClaimSumma
   );
 };
 
+export const getClaimantRespondToClaimLink = (claim: Claim, lang: string): ClaimSummarySection => {
+  if (!claim.isFAPaymentOptionPayImmediately()) {
+    return (
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: t('COMMON.BUTTONS.RESPOND_TO_CLAIM', {lng: lang}),
+          href: CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claim.id),
+        },
+      }
+    );
+  }  
+};
