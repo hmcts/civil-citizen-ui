@@ -26,13 +26,6 @@ class BankAccountsDetails {
     await I.fillField(fields.account1Balance, '2000');
   }
 
-  async enterBankAccountDetailsError() {
-    await I.waitForText('List your bank and savings accounts', config.WaitForText);
-    await I.selectOption(fields.accounts1, 'Current account');
-    await I.see('Select a type of account');
-    await I.see('Enter a valid number');
-  }
-
   async enterAdditionalBankAccountDetails() {
     await I.click(buttons.addAnotherAccount);
     await I.selectOption(fields.accounts3, 'ISA');

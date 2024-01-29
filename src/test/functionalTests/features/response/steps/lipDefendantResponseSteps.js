@@ -291,12 +291,6 @@ class ResponseSteps {
     await this.EnterExplanation();
   }
 
-  async EnterFinancialDetailsErrors(claimRef) {
-    await this.ShareYourFinancialDetailsIntro(claimRef);
-    await this.EnterBankAccountDetailsError();
-    await this.EnterBankAccountDetails();
-  }
-
   async ShareYourFinancialDetailsIntro(claimRef) {
     await shareYourFinancialDetailsIntro.open(claimRef);
     await shareYourFinancialDetailsIntro.clickContinue();
@@ -304,11 +298,6 @@ class ResponseSteps {
 
   async EnterBankAccountDetails() {
     await bankAccountDetails.enterBankAccountDetails();
-    await bankAccountDetails.clickContinue();
-  }
-
-  async EnterBankAccountDetailsError() {
-    await bankAccountDetails.enterBankAccountDetailsError();
     await bankAccountDetails.clickContinue();
   }
 

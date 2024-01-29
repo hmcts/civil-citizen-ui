@@ -75,13 +75,6 @@ Before(async ({api}) => {
 
 //todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
-  // await ResponseSteps.RespondToClaim(claimRef);
-  // await ResponseSteps.EnterPersonalDetails(claimRef);
-  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  // await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
-  // await ResponseSteps.EnterPaymentOption(claimRef, admitAll, bySetDate);
-  // await ResponseSteps.EnterDateToPayOn();
-  // await ResponseSteps.EnterFinancialDetailsErrors(claimRef);
 });
 
 // AfterSuite(async  () => {
