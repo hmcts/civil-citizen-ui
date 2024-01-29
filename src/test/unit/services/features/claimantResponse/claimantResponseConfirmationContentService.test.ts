@@ -528,21 +528,6 @@ describe('Claimant Response Confirmation service', () => {
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
   });
-
-  it('Claimant rejected payment plan claimant response section title', () => {
-    // Given
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.suggestedPaymentIntention = {
-      paymentOption: PaymentOptionType.INSTALMENTS
-    }
-
-    // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-    // Then
-    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
-  });
 });
 
 function getClaim (){
