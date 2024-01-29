@@ -48,10 +48,8 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Re
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
         redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_START);
-      } else {
-        if(claim.feeTypeHelpRequested === FeeType.HEARING) {
-          redirectUrl = constructResponseUrlWithIdParams(claimId, hearingFeeBackUrl);
-        }
+      } else if (claim.feeTypeHelpRequested === FeeType.HEARING) {
+        redirectUrl = constructResponseUrlWithIdParams(claimId, hearingFeeBackUrl);
       }
       claim.helpWithFeesRequested = req.body.option;
       const redisKey = generateRedisKey(req);

@@ -21,7 +21,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
       buildTheirDetailsSection(claim, claimId, lang),
-      buildClaimAmountSection(claim, claimId, lang),
+      buildClaimAmountSection(claim, lang),
       buildClaimSection(claim, claimId, lang),
     ],
   };

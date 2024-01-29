@@ -11,9 +11,8 @@ import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantRes
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
-import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate}
+import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate, toCCDClaimantPaymentOption}
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {

@@ -1,14 +1,13 @@
 import * as express from 'express';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'form/models/genericForm';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {Language} from '../../../../common/models/directionsQuestionnaire/welshLanguageRequirements/language';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Language} from 'models/directionsQuestionnaire/welshLanguageRequirements/language';
+import {getCaseDataFromStore,generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const welshLanguageController = express.Router();

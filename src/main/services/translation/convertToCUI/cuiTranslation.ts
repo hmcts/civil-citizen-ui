@@ -25,7 +25,7 @@ import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProcee
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
-  const ccdClaim: CCDClaim = Object.assign({}, ccdClaimObj);
+  const ccdClaim: CCDClaim = {...ccdClaimObj};
   const claimantResponse: ClaimantResponse = new ClaimantResponse();
   claimantResponse.suggestedPaymentIntention = new PaymentIntention();
   claimantResponse.chooseHowToProceed = new ChooseHowToProceed();

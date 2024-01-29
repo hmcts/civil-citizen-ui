@@ -39,12 +39,10 @@ const getContactName = (claim: Claim) => {
 const getCanWeUse = (claim: Claim) => {
   if (claim.mediation?.canWeUse?.option) {
     return YesNoUpperCase.YES;
-  } else {
-    if (claim.mediation?.mediationDisagreement?.option) {
-      return YesNoUpperCase.NO;
-    } else if (claim.mediation?.companyTelephoneNumber) {
-      return YesNoUpperCase.YES;
-    }
+  } else if (claim.mediation?.mediationDisagreement?.option) {
+    return YesNoUpperCase.NO;
+  } else if (claim.mediation?.companyTelephoneNumber) {
+    return YesNoUpperCase.YES;
   }
 };
 

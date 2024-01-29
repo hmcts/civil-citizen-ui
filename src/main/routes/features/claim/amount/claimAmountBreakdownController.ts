@@ -33,12 +33,10 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
+    } else if (form.model.isValidTotal()) {
+      await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
     } else {
-      if (form.model.isValidTotal()) {
-        await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
-      } else {
-        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
-      }
+      res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
     }
   } catch (error) {
     next(error);

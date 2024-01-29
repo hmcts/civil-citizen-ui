@@ -152,48 +152,12 @@ export class Claim {
   }
 
   get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isFAPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    if (this.isFullAdmission() && this.fullAdmitResponseStatus()) {
+      return this.fullAdmitResponseStatus();
     }
 
-    if (this.isFullAdmission() && this.isFAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
-      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
-    }
-
-    if (this.isFullAdmission() && this.isFAPaymentOptionBySetDate() && !this.isClaimantRejectedPaymentPlan()) {
-      return ClaimResponseStatus.FA_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES) {
-        return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED;
-      }
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.NO) {
-        return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED;
-      }
-      if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.NO) {
-        return ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED;
-      }
-      return ClaimResponseStatus.PA_ALREADY_PAID;
-    }
-
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO && this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO) {
-      return ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
-      if (this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES) {
-        return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED;
-      }
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate() && !this.isClaimantRejectedPaymentPlan()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
-      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    if (this.isPartialAdmission() && this.partialAdmissionStatus()) {
+      return this.partialAdmissionStatus();
     }
 
     if ((this.isPartialAdmission() || this.isFullAdmission()) && this.isClaimantRejectedPaymentPlan()) {
@@ -203,17 +167,72 @@ export class Claim {
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
+    if (this.isFullDefence() && this.fullDefenceResponseStatus()) {
+      return this.fullDefenceResponseStatus();
+    }
+    return null;
+  }
 
-    if (this.isFullDefence() && this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
-      return ClaimResponseStatus.RC_DISPUTE;
+  partialAdmissionPaymentOption(): ClaimResponseStatus {
+    if (this.isPAPaymentOptionPayImmediately()) {
+      if (this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.YES) {
+        return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED;
+      }
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
+    if (this.isPAPaymentOptionByDate() && !this.isClaimantRejectedPaymentPlan()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+    if (this.isPAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+  }
+
+  partialAdmissionStatus(): ClaimResponseStatus {
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return this.partialAdmitPaidResponseStatus();
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO && this?.applicant1AcceptAdmitAmountPaidSpec === YesNoUpperCamelCase.NO) {
+      return ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED;
+    }
+    if (this.isPartialAdmission() && this.partialAdmission?.paymentIntention) {
+      return this.partialAdmissionPaymentOption();
+    }
+  }
+
+  fullDefenceResponseStatus(): ClaimResponseStatus {
+    if (this.isRejectAllOfClaimDispute() && this.ccdState !== CaseState.JUDICIAL_REFERRAL) {
+      return ClaimResponseStatus.RC_DISPUTE;
+    } else if (this.ccdState === CaseState.JUDICIAL_REFERRAL
       && (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
       && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
       return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
     }
+  }
 
+  fullAdmitResponseStatus(): ClaimResponseStatus {
+    if (this.isFAPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    } else if (this.isFAPaymentOptionInstallments() && !this.isClaimantRejectedPaymentPlan()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    } else if (this.isFAPaymentOptionBySetDate() && !this.isClaimantRejectedPaymentPlan()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+  }
+
+  partialAdmitPaidResponseStatus(): ClaimResponseStatus {
+    if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_SETTLED;
+    }
+    if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.YES && this?.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.NO) {
+      return ClaimResponseStatus.PA_ALREADY_PAID_ACCEPTED_NOT_SETTLED;
+    }
+    if (this?.applicant1PartAdmitConfirmAmountPaidSpec === YesNoUpperCamelCase.NO) {
+      return ClaimResponseStatus.PA_ALREADY_PAID_NOT_ACCEPTED;
+    }
+    return ClaimResponseStatus.PA_ALREADY_PAID;
   }
 
   getClaimantFullName(): string {
@@ -580,12 +599,10 @@ export class Claim {
   get canWeUseFromClaimantResponse(): YesNoUpperCase {
     if (this.claimantResponse.mediation?.canWeUse?.option) {
       return YesNoUpperCase.YES;
-    } else {
-      if (this.claimantResponse.mediation?.mediationDisagreement?.option) {
-        return YesNoUpperCase.NO;
-      } else if (this.claimantResponse.mediation?.companyTelephoneNumber) {
-        return YesNoUpperCase.YES;
-      }
+    } else if (this.claimantResponse.mediation?.mediationDisagreement?.option) {
+      return YesNoUpperCase.NO;
+    } else if (this.claimantResponse.mediation?.companyTelephoneNumber) {
+      return YesNoUpperCase.YES;
     }
     return YesNoUpperCase.NO;
   }

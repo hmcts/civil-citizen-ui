@@ -1,10 +1,10 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_EVIDENCE_URL,
@@ -14,12 +14,12 @@ import {
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   RESPONSE_YOUR_DEFENCE_URL,
-} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEvents/defendantTimeline';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {ResponseType} from '../../../../../common/form/models/responseType';
-import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
+} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {YesNo} from 'form/models/yesNo';
+import {ResponseType} from 'form/models/responseType';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evidenceType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
@@ -67,7 +67,7 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
   const amount = claim.rejectAllOfClaim.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
   const totalClaimAmount = claim.totalClaimAmount ? claim.totalClaimAmount : 0;
-  return !!(amount < totalClaimAmount);
+  return (amount < totalClaimAmount);
 };
 
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
