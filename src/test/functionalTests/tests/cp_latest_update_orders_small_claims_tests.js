@@ -7,7 +7,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -22,7 +22,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Sall Clais - Verify latest Update page for an Order being Created', () => {
+Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }

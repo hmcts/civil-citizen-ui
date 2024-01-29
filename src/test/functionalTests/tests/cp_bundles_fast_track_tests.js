@@ -8,7 +8,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Verify Bundle');
+Feature('Case progression journey - Verify Bundle - Fast Track ');
 
 Before(async ({api}) => {
   if (['demo'].includes(config.runningEnv)) {
@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Fast Track - Bundles', () => {
+Scenario('Case progression journey - Fast Track - Verify Bundles tab', () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }

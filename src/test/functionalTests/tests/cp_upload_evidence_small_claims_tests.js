@@ -7,7 +7,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Small Claims -Defendant & Claimant Response with RejectAll');
+Feature('Case progression journey - Defendant & Claimant Response with RejectAll - Small Claims');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.

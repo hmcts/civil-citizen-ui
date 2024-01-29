@@ -7,7 +7,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Upload Evidence - Fast Track - Defendant & Claimant Response with RejectAll');
+Feature('Case progression journey - Upload Evidence - Defendant & Claimant Response with RejectAll - Fast Track ');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

@@ -8,7 +8,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Verify Bundle');
+Feature('Case progression journey - Verify Bundle - Small Claims');
 
 Before(async ({api}) => {
   if (['demo'].includes(config.runningEnv)) {
@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Small Claims - Bundles', () => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
