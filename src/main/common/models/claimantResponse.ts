@@ -77,10 +77,6 @@ export class ClaimantResponse {
     return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
   }
 
-  get isClaimantNotAcceptedPaymentPlan() : boolean {
-    return this.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
-  }
-
   get isCourtDecisionInFavourOfDefendant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }

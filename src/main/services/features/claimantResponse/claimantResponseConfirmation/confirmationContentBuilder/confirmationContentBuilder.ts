@@ -64,10 +64,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return RCDisputeNotContinueNextSteps;
   }
 
-  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
+  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
   }
-
   if (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) {
     return ccjNextSteps;
   }
