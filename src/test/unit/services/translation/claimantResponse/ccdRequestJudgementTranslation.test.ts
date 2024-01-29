@@ -224,7 +224,7 @@ describe('Translate claimant default ccj request to ccd', () => {
   });
 
   it('should not translate ccj request for judgment admission into the CCD response when ccj Request is not present', () => {
-    claim.claimantResponse.ccjRequest = {};
+    claim.claimantResponse = new ClaimantResponse();
     const ccdResponse = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
@@ -282,6 +282,21 @@ describe('Translate claimant default ccj request to ccd', () => {
     const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
+    expect(ccdClaim.partialPaymentAmount).toBeUndefined();
+  });
+
+  it('should not translate the partial payment amount when option is not present', () => {
+    // given
+    const claim = new Claim();
+    claim.claimantResponse = {
+      ccjRequest: {},
+    } as any;
+
+    // when
+    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+
+    // then
+    expect(ccdClaim.partialPayment).toBeUndefined();
     expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
