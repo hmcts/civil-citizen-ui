@@ -29,6 +29,9 @@ civil-service:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:pr-3928'
+    devcpuRequests: 500m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     memoryLimits: "6Gi" # was 4
