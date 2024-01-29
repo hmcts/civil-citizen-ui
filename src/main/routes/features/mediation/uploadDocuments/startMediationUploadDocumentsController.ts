@@ -2,11 +2,10 @@ import {NextFunction, RequestHandler, Router} from 'express';
 import {
   MEDIATION_TYPE_OF_DOCUMENTS, START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
-import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {getClaimById} from "modules/utilityService";
 
 const startMediationUploadFileViewPath = 'features/common/static-page';
 const startMediationUploadDocumentsController = Router();
@@ -42,8 +41,7 @@ const getContents = (claimId: string, claim: Claim) => {
 startMediationUploadDocumentsController.get(START_MEDIATION_UPLOAD_FILES, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisKey);
+    const claim: Claim = await getClaimById(req.params.id, req, true);
     res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents: getContents(claimId, claim)});
   } catch (error) {
     next(error);
