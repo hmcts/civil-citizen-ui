@@ -12,6 +12,7 @@ import {
 } from '../../../urls';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 
 const expertDetailsController = Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
@@ -29,16 +30,28 @@ expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextFu
 
 expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: NextFunction) => {
   try {
+    const action = req.body.action;
+    console.log(action);
     const redisKey = generateRedisKey(<AppRequest>req);
     const expertDetailsList = getExpertDetailsForm(req.body.items);
     const form = new GenericForm(expertDetailsList);
-    form.validateSync();
-
-    if (form.hasNestedErrors()) {
+    if (action === 'add_another-expert') {
+      form.model.items.push(new ExpertDetails());
       res.render(expertDetailsViewPath, {form});
+    } else if (action.startsWith('remove-expert')) {
+      const index = action.substring('remove-expert'.length);
+      console.log(index);
+      form.model.items.splice(Number(index), 1);
+      res.render(expertDetailsViewPath, {form});
+      //form.model.items.splice()
     } else {
-      await saveDirectionQuestionnaire(redisKey, expertDetailsList, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_GIVE_EVIDENCE_YOURSELF_URL));
+      form.validateSync();
+      if (form.hasNestedErrors()) {
+        res.render(expertDetailsViewPath, {form});
+      } else {
+        await saveDirectionQuestionnaire(redisKey, expertDetailsList, dqPropertyName, dqParentName);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_GIVE_EVIDENCE_YOURSELF_URL));
+      }
     }
   } catch (error) {
     next(error);

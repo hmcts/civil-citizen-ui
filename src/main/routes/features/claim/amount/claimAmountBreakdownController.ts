@@ -11,6 +11,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
@@ -29,15 +30,23 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, async (req: AppRequest, res
   }
 }).post(CLAIM_AMOUNT_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const action = req.body.action;
+    console.log(action);
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
-    form.validateSync();
-    if (form.hasErrors()) {
-      renderView(form, res);
+    if (action === 'add_another-claimAmount') {
+      const form2 = new GenericForm(AmountBreakdown.fromObject2(req.body));
+      form2.model.claimAmountRows.push(new ClaimAmountRow());
+      renderView(form2, res);
     } else {
-      if (form.model.isValidTotal()) {
-        await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
       } else {
-        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
+        if (form.model.isValidTotal()) {
+          await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
+        } else {
+          res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
+        }
       }
     }
   } catch (error) {
