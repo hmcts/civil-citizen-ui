@@ -520,8 +520,8 @@ describe('Claimant Response Confirmation service', () => {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.suggestedPaymentIntention = {
-      paymentOption: PaymentOptionType.INSTALMENTS
-    }
+      paymentOption: PaymentOptionType.INSTALMENTS,
+    };
 
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
