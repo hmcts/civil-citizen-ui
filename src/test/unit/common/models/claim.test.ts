@@ -2098,4 +2098,59 @@ describe('Documents', () => {
       expect(result).toEqual(true);
     });
   });
+
+  describe('Claim isRejectionReasonCompleted', () => {
+    it('should return false if no claimantResponse object', () => {
+      //Given
+      const claim = new Claim();
+      claim.claimantResponse = undefined;
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return false if no hasPartPaymentBeenAccepted object', () => {
+      //Given
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return true if hasPartPaymentBeenAccepted is No with reason', () => {
+      //Given
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true if hasFullDefenceStatesPaidClaimSettled is No with reason', () => {
+      //Given
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(true);
+    });
+  });
 });

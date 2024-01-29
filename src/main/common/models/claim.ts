@@ -379,7 +379,7 @@ export class Claim {
 
   isRejectionReasonCompleted(): boolean {
     return (this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
-        || this.claimantResponse.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)
+        || this.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)
       && !!this.claimantResponse?.rejectionReason?.text;
   }
 
