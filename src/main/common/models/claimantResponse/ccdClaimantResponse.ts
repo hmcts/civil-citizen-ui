@@ -10,14 +10,14 @@ import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/conv
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
-import {ClaimantResponseRequestDefaultJudgementToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
 }
 
-export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseRequestDefaultJudgementToCCD {
+export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD {
   applicant1DQLanguage?: CCDWelshLanguageRequirements;
   applicant1DQVulnerabilityQuestions?: CCDVulnerability;
   applicant1DQRequestedCourt?: CCDSpecificCourtLocations;
@@ -36,7 +36,7 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1FullDefenceConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
-  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: string;
+  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;

@@ -194,6 +194,23 @@ describe('Translate claimant response to ccd version', () => {
     //Given
     const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     claim.claimantResponse = new ClaimantResponse();
+    claim.respondent1 ={
+      responseType: ResponseType.PART_ADMISSION,
+    };
+    claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec).toBe(YesNoUpperCamelCase.YES);
+  });
+
+  it('should translate applicant1PartAdmitIntentionToSettleClaimSpec to ccd when Full Defence and paid in less', () => {
+
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
+    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
 
     //When
@@ -250,7 +267,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('100');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(100);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
@@ -269,7 +286,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(200);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_WEEK);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
@@ -288,7 +305,7 @@ describe('Translate claimant response to ccd version', () => {
     const ccdClaim = translateClaimantResponseToCCD(claim);
 
     //Then
-    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe('200');
+    expect(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec).toBe(200);
     expect(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec).toBe(CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS);
     expect(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec).not.toBeNull();
     expect(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec).toBeUndefined();
