@@ -15,14 +15,15 @@ const getSpecificCourtLocationForm = async (claimId: string) => {
   return directionQuestionnaire.hearing?.specificCourtLocation?? new SpecificCourtLocation();
 };
 
-const getListOfCourtLocations = async (req: AppRequest): Promise<CourtLocation[]> =>{
+const getListOfCourtLocations = async (req: AppRequest): Promise<CourtLocation[]> => {
   const cachedCourtLocations = await getCourtLocationsFromCache();
-  if(!cachedCourtLocations || !cachedCourtLocations.length) {
-    const courtLocations = await civilServiceClient.getCourtLocations(req);
-    await saveCourtLocationsToCache(courtLocations);
-    return courtLocations;
+  if (cachedCourtLocations?.length > 0) {
+    return cachedCourtLocations;
   }
-  return cachedCourtLocations;
+  const courtLocations = await civilServiceClient.getCourtLocations(req);
+  await saveCourtLocationsToCache(courtLocations);
+  return courtLocations;
+
 };
 
 export {

@@ -197,7 +197,7 @@ export class DashboardDefendantItem extends DashboardItem {
 }
 
 export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
-  if (params && params.length) {
+  if (params && params.length > 0) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
       keyValue[param.key] = param.value;
@@ -209,17 +209,18 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
 };
 
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
-  if (!claim || !claim?.isDraftClaim()) {
+  if (claim?.isDraftClaim()) {
+    const draftClaim = new DashboardClaimantItem();
+    draftClaim.claimId = 'draft';
+    draftClaim.draft = true;
+    draftClaim.ocmc = false;
+    draftClaim.status = 'NO_STATUS';
+    draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
+    draftClaim.claimantName = claim.getClaimantFullName();
+    draftClaim.defendantName = claim.getDefendantFullName();
+    draftClaim.url = CLAIMANT_TASK_LIST_URL;
+    return draftClaim;
+  } else {
     return undefined;
   }
-  const draftClaim = new DashboardClaimantItem();
-  draftClaim.claimId = 'draft';
-  draftClaim.draft = true;
-  draftClaim.ocmc = false;
-  draftClaim.status = 'NO_STATUS';
-  draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
-  draftClaim.claimantName = claim.getClaimantFullName();
-  draftClaim.defendantName = claim.getDefendantFullName();
-  draftClaim.url = CLAIMANT_TASK_LIST_URL;
-  return draftClaim;
 };

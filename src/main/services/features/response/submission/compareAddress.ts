@@ -1,5 +1,5 @@
 import {isEqual} from 'lodash';
-import {Address} from '../../../../common/form/models/address';
+import {Address} from 'form/models/address';
 
 export const addressHasChange = (address: Address, originalAddress: Address): boolean => {
 
@@ -23,5 +23,5 @@ export const addressHasChange = (address: Address, originalAddress: Address): bo
 };
 
 export const processAddressLine = (addressLine?: string) => {
-  return addressLine ? addressLine : '';
+  return addressLine || '';
 };

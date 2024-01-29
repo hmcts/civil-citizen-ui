@@ -5,7 +5,7 @@ import { getOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSur
 
 export default Router()
   .get(POSTCODE_LOOKUP_URL, (req, res, next: NextFunction) => {
-    if (!req.query.postcode || !req.query.postcode.toString().trim()) {
+    if (!req?.query?.postcode) {
       return res.status(400).json({
         error: {
           status: 400,
