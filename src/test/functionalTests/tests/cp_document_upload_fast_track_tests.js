@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
@@ -27,7 +27,7 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
+    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 }).tag('@regression');
 

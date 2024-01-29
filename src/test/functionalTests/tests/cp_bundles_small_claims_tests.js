@@ -8,26 +8,26 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR');
+Feature('Case progression journey - Verify Bundle');
 
 Before(async ({api}) => {
-  //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
-  if (['preview', 'demo'].includes(config.runningEnv)) {
+  if (['demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
+    const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
+    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+    await api.performBundleGeneration(config.hearingCenterAdminWithRegionId1, claimRef);
   }
 });
 
-Scenario('Case progression journey - Small Claims - Verify uploaded documents by LR in the Documents tab', () => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
+Scenario('Case progression journey - Small Claims - Bundles', () => {
+  if (['demo'].includes(config.runningEnv)) {
+    CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
 }).tag('@regression');
 

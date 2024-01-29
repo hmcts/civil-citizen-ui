@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
@@ -24,7 +24,7 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Sall Clais - Verify latest Update page for an Order being Created', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
+    CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
 }).tag('@regression');
 

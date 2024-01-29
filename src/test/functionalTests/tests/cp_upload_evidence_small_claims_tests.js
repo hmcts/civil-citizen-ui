@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
@@ -24,7 +24,7 @@ Before(async ({api}) => {
 
 Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
+    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
 }).tag('@regression');
 

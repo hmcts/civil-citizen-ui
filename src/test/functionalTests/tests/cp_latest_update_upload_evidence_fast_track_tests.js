@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
@@ -23,7 +23,7 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Fast Track - Verify latest Update page for Upload Evidence', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
+    CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
 }).tag('@regression');
 
