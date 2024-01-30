@@ -13,46 +13,26 @@ import {
   MEDIATION_NEXT_3_MONTHS_URL,
   MEDIATION_PHONE_CONFIRMATION_URL, MEDIATION_UNAVAILABLE_SELECT_DATES_URL,
 } from 'routes/urls';
-import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const getCanWeUse = (claim: Claim) => {
-  if (claim.mediation?.canWeUse?.option) {
-    return YesNoUpperCase.YES;
-  } else {
-    if (claim.mediation?.mediationDisagreement?.option) {
-      return YesNoUpperCase.NO;
-    } else if (claim.mediation?.companyTelephoneNumber) {
-      return YesNoUpperCase.YES;
-    }
-  }
-};
-
 export const buildMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const canWeUse = getCanWeUse(claim);
-  const mediationContactPersonHref = constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL);
 
-  let mediationSection: SummarySection = null;
+  const mediationSection = summarySection({
+    title: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),
+    summaryRows: [],
+  });
 
-  if (canWeUse) {
-    mediationSection = summarySection({
-      title: t('COMMON.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TITLE`', {lng: getLng(lang)}),
-      summaryRows: [],
-    });
-    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.RESPONSE_CHECK_ANSWERS_URL', {lng: getLng(lang)}), t(`COMMON.VARIATION_2.${canWeUse}`, {lng: getLng(lang)}), mediationContactPersonHref, changeLabel(lang)));
-  }
-
-  if (canWeUse === YesNoUpperCase.YES) {
-    //CONTACT NAME SECTION
-    if (claim.isBusiness()) {
-      mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {
-        lng: getLng(lang),
-        defendantContactPerson: claim.respondent1.partyDetails.contactPerson,
-      }),
-      t(`COMMON.VARIATION_2.${claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
-      constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
+  //CONTACT NAME SECTION
+  if (claim.isBusiness()) {
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {
+      lng: getLng(lang),
+      defendantContactPerson: claim.respondent1.partyDetails.contactPerson,
+    }),
+    t(`COMMON.VARIATION_2.${claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()}`, {lng: getLng(lang)}),
+    constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
 
       if (claim.mediationCarm.isMediationContactNameCorrect.option === YesNo.NO) {
         mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NAME', {lng: getLng(lang)}),
@@ -98,7 +78,6 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
         changeLabel(lang),
       ));
     }
-  }
   return mediationSection;
 };
 
