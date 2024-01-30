@@ -1,8 +1,8 @@
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {Claim} from '../../../../common/models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
 import {translateDraftResponseToCCD} from '../../../translation/response/ccdTranslation';
 import {addressHasChange} from './compareAddress';
 import {
@@ -20,7 +20,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
-    claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
+    claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
     const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
     logger.info('Successfully translated the defendant response to ccd');

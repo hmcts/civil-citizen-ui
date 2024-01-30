@@ -33,8 +33,8 @@ breathingSpaceCheckAnswersController.get(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_U
 breathingSpaceCheckAnswersController.post(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL, breathingSpaceGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    await submitBreathingSpace(<AppRequest>req);
-    await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
+    await submitBreathingSpace(req);
+    await deleteDraftClaimFromStore(generateRedisKey(req));
     res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

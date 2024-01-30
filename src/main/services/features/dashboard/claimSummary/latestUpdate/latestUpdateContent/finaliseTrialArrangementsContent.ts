@@ -8,7 +8,8 @@ const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSIO
 
 export const getFinaliseTrialArrangements = (claim: Claim) => {
   const deadline = claim.finalisingTrialArrangementsDeadline;
-  const htmlText = `<p class="govuk-body">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`)}
+  const changesBeginning=t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`);
+  const htmlText = `<p class="govuk-body">${changesBeginning}
                                 <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: deadline})}</span>.
                               </p>`;
   const linkText = `${FINALISE_TRIAL_ARRANGEMENTS}.DIRECTIONS_QUESTIONNAIRE`;

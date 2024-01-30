@@ -20,7 +20,7 @@ function renderView(req: AppRequest, res: Response, breathingSpace: BreathingSpa
 breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
+    const breathingSpace = await getBreathingSpace(generateRedisKey(req));
     renderView(req, res, breathingSpace, claimId);
   } catch (error) {
     next(error);
@@ -29,8 +29,8 @@ breathingSpaceLiftedCheckAnswersController.get(BREATHING_SPACE_RESPITE_LIFTED_CH
 
 breathingSpaceLiftedCheckAnswersController.post(BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    await submitBreathingSpaceLifted(<AppRequest>req);
-    await deleteDraftClaimFromStore(generateRedisKey(req as unknown as AppRequest));
+    await submitBreathingSpaceLifted(req);
+    await deleteDraftClaimFromStore(generateRedisKey(req));
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);

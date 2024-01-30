@@ -23,7 +23,7 @@ export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppR
   try {
     if ((claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately())
       || (claim.isPartialAdmission() && claim.isPAPaymentOptionPayImmediately())) {
-      return await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, <AppRequest>req);
+      return await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
     }
     return undefined;
   } catch (error) {

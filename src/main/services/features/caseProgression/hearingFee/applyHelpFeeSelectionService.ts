@@ -18,7 +18,7 @@ const hearingFeeHelpSelection = 'hearingFeeHelpSelection';
 
 export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: GenericYesNo, req: AppRequest): Promise<string> => {
   try{
-    const redisClaimId = generateRedisKey(<AppRequest>req);
+    const redisClaimId = generateRedisKey(req);
     let redirectUrl;
     let paymentRedirectInformation;
     if (IsApplyHelpFeeModel.option === YesNo.NO) {

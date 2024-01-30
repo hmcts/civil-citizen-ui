@@ -8,7 +8,8 @@ import {t} from 'i18next';
 const UPLOAD_YOUR_DOCUMENTS = 'PAGES.UPLOAD_YOUR_DOCUMENTS';
 
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
-  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(`${UPLOAD_YOUR_DOCUMENTS}.AFTER_THE_DEADLINE`)}
+  const afterTheDeadline=t(`${UPLOAD_YOUR_DOCUMENTS}.AFTER_THE_DEADLINE`);
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${afterTheDeadline}
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${t(MAKE_APPLICATION_TO_COURT)}>${t(`${UPLOAD_YOUR_DOCUMENTS}.APPLY_TO_THE_COURT`)}</a>
         ${t(`${UPLOAD_YOUR_DOCUMENTS}.IF_YOU_WANT_ANY`)}
     </p><br>`;
