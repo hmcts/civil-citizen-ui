@@ -44,10 +44,20 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
   const baseProperty = caseData.isClaimantIntentionPending() ? caseData.claimantResponse : caseData;
   const experts = generateList(baseProperty.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
   const witnesses = generateList(baseProperty.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
+  const mySelf = baseProperty.directionQuestionnaire?.confirmYourDetailsEvidence;
   let nameList = [{
     value: '',
     text: t('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME', {lng: getLng(lang)}),
   }];
+  if (mySelf) {
+    const mySelfItem = [
+      {
+        value: mySelf.firstName + ' ' + mySelf.lastName,
+        text: mySelf.firstName + ' ' + mySelf.lastName,
+      },
+    ];
+    nameList = nameList.concat(mySelfItem);
+  }
   if (witnesses?.length) {
     nameList = nameList.concat(witnesses);
   }
