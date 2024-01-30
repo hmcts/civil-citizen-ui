@@ -12,6 +12,11 @@ import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {
+  CCDClaimantResponseOnCourtDecisionType,
+} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -264,7 +269,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.respondentPaymentDeadline).toEqual(undefined);
   });
-  
+
   it('should translate paymentDate to CUI model', () => {
     //Given
     const paymentDate = new Date('2023-12-07');
@@ -278,5 +283,35 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
+  });
+
+  it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
+    //Given
+
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedPlan.decision).toEqual(CCDClaimantResponseOnCourtDecisionType.ACCEPT_REPAYMENT_PLAN);
+  });
+
+  it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
+    //Given
+
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CCDClaimantResponseOnCourtDecisionType.JUDGE_REPAYMENT_DATE);
   });
 });
