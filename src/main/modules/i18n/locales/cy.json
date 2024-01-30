@@ -450,7 +450,7 @@
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
         "REJECTED_TITLE": "If your application for help with fees is rejected",
         "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
-        "TITLE" : "Help with fees"
+        "TITLE" : "Help i Dalu Ffioedd"
       },
       "REFERENCE_NUMBER": {
         "TITLE_YES": "Enter your help with fees reference number",
@@ -977,7 +977,7 @@
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
       "HEARING_DOCUMENTS": "hearing documents",
       "NOTICE_OF_INTENTION": "Intention to rely on hearsay evidence",
-      "NOTICES_AND_ORDERS": "Notices and orders",
+      "NOTICES_AND_ORDERS": "Hysbysiadau a gorchmynion",
       "LATEST_UPDATE": "Yr wybodaeth ddiweddaraf",
       "UPDATES": "Updates",
       "VIEW_CLAIM": "Gweld yr hawliad",
@@ -1653,7 +1653,7 @@
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
-      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
+      "APPLY_FOR_HELP_LINK": "Gwneud cais am help i dalu ffioedd",
       "DECIDE": "Decide whether to apply for Help with Fees",
       "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
       "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
@@ -1977,57 +1977,57 @@
           "YOUR_HEARING_TITLE": "Mae gwrandawiad wedi'i drefnu ar gyfer eich achos",
           "YOUR_TRIAL_PARAGRAPH": "Mae eich treial wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}.",
           "YOUR_HEARING_PARAGRAPH": "Mae eich gwrandawiad wedi'i drefnu ar {{ hearingDate }} am {{ hearingTimeHourMinute }} yn {{ courtName }}. ",
-          "VIEW_HEARING_NOTICE_BEFORE": "You should view the hearing notice under ",
-          "VIEW_HEARING_NOTICE_LINK": "Notices and Orders",
+          "VIEW_HEARING_NOTICE_BEFORE": "Dylech weld yr hysbysiad o wrandawiad o dan ",
+          "VIEW_HEARING_NOTICE_LINK": "Hysbysiadau a gorchmynion",
           "VIEW_HEARING_NOTICE_AFTER": ".",
           "VIEW_HEARING_NOTICE_BUTTON": "Gweld hysbysiad o’r gwrandawiad",
-          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Cadwch eich manylion cyswllt a manylion cyswllt unrhyw un yr hoffech ddibynnu arnynt yn y llys yn gyfredol. Gallwch ddiweddaru manylion cyswllt drwy ffonio'r llys ar 0300 303 5174."
         },
         "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
-            "LINK":"Apply for Help with Fees (open in a new window)",
-            "PAGE_TITLE":"Help with fees",
-            "PARAGRAPH_IF": "If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.",
-            "PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
-            "PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'hearing fee' followed by short explanation, for example 'hearing fee small claims' or 'hearing fee for fast track'.",
-            "PARAGRAPH_ONCE": "Once you have made your application, return to this page and click continue to proceed.",
-            "TITLE": "Apply for help with fees"
+            "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn ffenestr newydd)",
+            "PAGE_TITLE": "Help i Dalu Ffioedd",
+            "PARAGRAPH_IF": "Os oes gennych eisoes gyfeirnod Help i Dalu Ffioedd ar gyfer ffi cychwyn yr hawliad neu unrhyw ffioedd gwneud cais, ni ddylech ddefnyddio'r cyfeirnod hwnnw ar gyfer y cais hwn.",
+            "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am Help i Dalu Ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi.  Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
+            "PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys.  Rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
+            "PARAGRAPH_ONCE": "Unwaith y byddwch wedi gwneud eich cais, dychwelwch i'r dudalen hon a chliciwch ar ‘parhau’ i symud ymlaen.",
+            "TITLE": "Gwneud cais am help i dalu ffioedd"
           }
         },
         "VIEW_ORDER": {
-          "TITLE": "An order has been made on your claim",
-          "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
-          "ORDER_IS_AVAILABLE": "The order is available in 'Notices and orders'.",
-          "VIEW_ORDER": "View the order",
-          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Please keep your contact details and the contact details of anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050."
+          "TITLE": "Mae gorchymyn wedi'i wneud ar eich hawliad",
+          "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
+          "ORDER_IS_AVAILABLE": "Mae'r gorchymyn ar gael yn 'Hysbysiadau a gorchmynion'.",
+          "VIEW_ORDER": "Gweld y gorchymyn",
+          "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Cadwch eich manylion cyswllt a manylion cyswllt unrhyw un yr hoffech ddibynnu arnynt yn y llys yn gyfredol. Gallwch ddiweddaru manylion cyswllt drwy ffonio'r llys ar 0300 303 5174."
         },
         "FINALISE_TRIAL_ARRANGEMENTS": {
-          "TITLE": "Finalise your trial arrangements for your upcoming trial",
-          "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Finalise trial arrangements",
-          "DUE_BY": "Due by: Midnight, {{ finalisingTrialArrangementsDeadline }}",
-          "IF_THERE_ARE_CHANGES_BEGINNING": "If there are changes to your trial arrangements, you should let us know by",
-          "IF_THERE_ARE_CHANGES_END": "midnight, {{ finalisingTrialArrangementsDeadline }}",
-          "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
-          "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
-          "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
+          "TITLE": "Cadarnhau’r trefniadau ar gyfer eich treial sydd ar y gweill",
+          "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Cadarnhau trefniadau’r treial",
+          "DUE_BY": "Rhaid gwneud hyn erbyn: Hanner nos, {{ finalisingTrialArrangementsDeadline }}",
+          "IF_THERE_ARE_CHANGES_BEGINNING": "Os oes newidiadau i drefniadau eich treial, dylech roi gwybod i ni erbyn",
+          "IF_THERE_ARE_CHANGES_END": "hanner nos, {{ finalisingTrialArrangementsDeadline }}",
+          "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau",
+          "YOU_MAY_WISH_TO_REVIEW": "Efallai yr hoffech adolygu’r cyfarwyddiadau gwreiddiol a ddarparwyd gennych yn y",
+          "UNDER_NOTICES_AND_ORDERS": "o dan 'Hysbysiadau a gorchmynion' cyn cadarnhau trefniadau eich treial."
         },
         "BUNDLE": {
-          "TITLE": "Bundle is complete and ready to view",
-          "BUNDLE_CONTAINS_ALL_DOCUMENTS": "The bundle contains all the documents submitted by both parties. Please review the bundle to makes sure all the information is correct.",
-          "YOU_ARE_REMINDED": "You are reminded that the other party will also be able to view the bundle.",
-          "VIEW_BUNDLE": "View bundle"
+          "TITLE": "Mae’r Bwndel yn gyflawn ac yn barod i'w weld",
+          "BUNDLE_CONTAINS_ALL_DOCUMENTS": "Mae’r bwndel yn cynnwys yr holl ddogfennau a gyflwynwyd gan y ddau barti.  Adolygwch y bwndel i sicrhau bod yr holl wybodaeth yn gywir.",
+          "YOU_ARE_REMINDED": "Fe'ch atgoffir y bydd y parti arall hefyd yn gallu gweld y bwndel.",
+          "VIEW_BUNDLE": "Gweld y bwndel"
         },
         "CASE_DISMISSED_HEARING_DUE_DATE": {
-          "TITLE": "Claim has been struck out",
-          "DEFENDANT_WARNING": "This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for {{ hearingDate }} at {{ hearingTime }} will no longer take place.",
-          "DEFENDANT_PARAGRAPH": "If the claimant wants to reinstate this claim, they will need to make an application to the court."
+          "TITLE": "Mae’r hawliad wedi ei ddileu",
+          "DEFENDANT_WARNING": "Mae'r hawliad hwn wedi'i ddileu oherwydd nad yw'r hawlydd wedi talu ffi’r gwrandawiad fel y cyfarwyddir yn yr hysbysiad o wrandawiad. O ganlyniad, ni fydd y gwrandawiad a drefnwyd ar gyfer {{ hearingDate }} am {{ hearingTime }} yn digwydd mwyach.",
+          "DEFENDANT_PARAGRAPH": "Os yw'r hawlydd am adfer yr hawliad hwn, bydd angen iddo/i wneud cais i'r llys."
         },
         "VIEW_TRIAL_ARRANGEMENTS": {
-          "TITLE_OTHER_PARTY": "The other party has finalised their trial arrangements",
-          "TITLE_YOU": "You have finalised your trial arrangements",
-          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "You can view your trial arrangements under 'Notices and orders'.",
-          "YOU_CAN_VIEW_OTHER_PARTY": "You can view the other party's trial arrangements under 'Notices and orders'.",
-          "VIEW_TRIAL_ARRANGEMENTS_BUTTON": "View trial arrangements"
+          "TITLE_OTHER_PARTY": "Mae'r parti arall wedi cadarnhau eu trefniadau treial",
+          "TITLE_YOU": "Rydych wedi cadarnhau trefniadau'r treial",
+          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "Gallwch weld eich trefniadau treial o dan 'Hysbysiadau a gorchmynion'.",
+          "YOU_CAN_VIEW_OTHER_PARTY": "Gallwch weld trefniadau treial y parti arall o dan 'Hysbysiadau a gorchmynion'.",
+          "VIEW_TRIAL_ARRANGEMENTS_BUTTON": "Gweld trefniadau’r treial"
         }
       },
       "DID_N'T_PROCEED_WITH_IT_BEFORE_THE_DEADLINE": "Mae hyn oherwydd na wnaeth {{claimantName}} fwrw ymlaen ag ef cyn y dyddiad cau o 4pm ar {{deadline}}.",
@@ -3140,7 +3140,7 @@
         "RETURN_TO_CASE_DETAILS": "Return to case details",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.",
-        "NOTICES_AND_ORDERS": "Notices and orders",
+        "NOTICES_AND_ORDERS": "Hysbysiadau a gorchmynion",
         "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under",
         "IN_THE_CASE_DETAILS": "in the case details.",
         "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.",
