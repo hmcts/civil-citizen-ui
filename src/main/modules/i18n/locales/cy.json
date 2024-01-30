@@ -66,7 +66,7 @@
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
-      "GO_TO_ACCOUNT": "Go to your account",
+      "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
@@ -83,7 +83,7 @@
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
-      "CLAIM_FEE": "Claim fee"
+      "CLAIM_FEE": "Ffi’r hawliad"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -1410,7 +1410,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
@@ -1454,7 +1454,7 @@
         "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
@@ -2397,6 +2397,19 @@
         "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
         "PAYMENT_FOR": "Payment for",
         "TOTAL_AMOUNT": "Total amount"
+      },
+      "UNSUCCESSFUL": {
+        "CALL_US_ON": "Or, call us on ",
+        "CLAIM_NUMBER": "Rhif yr hawliad: {{ claimId }}",
+        "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
+        "FIND_OUT_CHARGES": "Gwybodaeth am brisiau galwadau:",
+        "GO_BACK": "Go back and ",
+        "TRY_PAYMENT_AGAIN": "try the payment again",
+        "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "PAGE_TITLE": "Claim fee payment unsuccessful",
+        "OPEN_TIMES": "Opening times:",
+        "TITLE": "Your payment was unsuccessful"
       }
     },
     "PAYMENT_OPTION": {
