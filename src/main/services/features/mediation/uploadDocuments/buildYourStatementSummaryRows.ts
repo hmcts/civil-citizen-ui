@@ -3,7 +3,7 @@ import {SummaryList, SummaryRow, summaryRow} from 'models/summaryList/summaryLis
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {CP_UPLOAD_DOCUMENTS_URL,} from 'routes/urls';
+import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
 import {
   TypeOfDocumentSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
@@ -18,6 +18,8 @@ const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE
 const getDate = (date: string): string => formatStringDateSlash(date);
 const documentUploaded = (lang: string | unknown): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
 
+const MEDIATION_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
+
 export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, claimId: string, lang: string | unknown): SummarySections => {
   const mediationSection = {} as SummarySections;
   mediationSection.sections = [] as SummarySection[];
@@ -28,13 +30,13 @@ export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, c
   const yourStatement = uploadedDocuments.typeOfDocuments.find(document => document.type === TypeOfMediationDocuments.YOUR_STATEMENT);
   if(yourStatement)
   {
-    getMediationSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT',yourStatement.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
+    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.YOUR_STATEMENT}`,yourStatement.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
   }
 
   const documentsReferred = uploadedDocuments.typeOfDocuments.find(document => document.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
   if(documentsReferred)
   {
-    getMediationSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', documentsReferred.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
+    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,documentsReferred.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
   }
 
   if(mediationSummarySection.summaryList.rows.length > 0)
@@ -45,15 +47,15 @@ export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, c
   return mediationSection;
 };
 
-const getMediationSummaryRows = (title: string, dateTitle: string,  documents: TypeOfDocumentSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getMediationSummaryRows = (title: string, nameStatement: string, dateTitle: string,  documents: TypeOfDocumentSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
 
   let index = 1;
   for(const document of documents) {
 
-    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
     let witnessSummaryRow = {} as SummaryRow;
 
-    const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.caseDocument.documentName};
+    const witnessNameElement = {title: t(nameStatement, {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),

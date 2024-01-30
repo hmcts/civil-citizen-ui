@@ -1,65 +1,86 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import { CP_EVIDENCE_UPLOAD_CANCEL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from 'routes/urls';
 import {
-  getBottomElements,
-  getSummarySections,
-  getTopElements, saveUploadedDocuments,
-} from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+  MEDIATION_EVIDENCE_UPLOAD_SUBMISSION_URL,
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
+} from 'routes/urls';
+
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {documentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
-import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
-import {MEDIATION_CHECK_ANSWERS_URL} from 'routes/urls';
-import {getMediationSummarySection} from "services/features/mediation/uploadDocuments/buildYourStatementSummaryRows";
+import {getMediationSummarySection} from 'services/features/mediation/uploadDocuments/buildYourStatementSummaryRows';
+import {getUploadDocuments} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {ClaimSummarySection} from 'form/models/claimSummarySection';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {
+  FinaliseYourTrialSectionBuilder,
+} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {saveUploadedDocuments} from "services/features/caseProgression/checkYourAnswers/checkAnswersService";
 
-const checkAnswersViewPath = 'features/caseProgression/check-answers';
+const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
 const mediationDocumentUploadCheckAnswerController = Router();
 
-function renderView(res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
-  const topPageContents = getTopElements(claim);
-  let summarySections: documentUploadSections;
-  const isSmallClaims = claim.isSmallClaimsTrackDQ;
+export const getTopElements = (claim:Claim, claimId: string): ClaimSummarySection[] => {
 
-  summarySections = getMediationSummarySection(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
+  return new PageSectionBuilder()
+    .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE')
+    .addLeadParagraph('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: caseNumberPrettify(claimId)})
+    .addLeadParagraph('COMMON.PARTIES', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName()})
+    .addInsetText('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL')
+    .build();
+};
+
+export const getBottomElements = (): ClaimSummarySection[] => {
+
+  return new FinaliseYourTrialSectionBuilder()
+    .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CONFIRMATION')
+    .addWarning('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT')
+    .build();
+};
+
+function renderView(uploadDocuments: UploadDocuments, res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, lang: string) {
+  const topPageContents = getTopElements(claim, claimId);
+
+  const summarySections = getMediationSummarySection(uploadDocuments, claimId, lang);
   const bottomPageContents = getBottomElements();
-  const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
-    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl,
-  });
+    form, topPageContents, summarySections, bottomPageContents});
 }
 
-mediationDocumentUploadCheckAnswerController.get(MEDIATION_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(claimId);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const uploadDocuments = getUploadDocuments(claim);
     const form = new GenericForm(new documentUploadSubmissionForm());
-    renderView(res, form, claim, claimId, claim.isClaimant(), lang);
+    renderView(uploadDocuments, res, form, claim, claimId, lang);
   } catch (error) {
     next(error);
   }
 })as RequestHandler);
 
-mediationDocumentUploadCheckAnswerController.post(MEDIATION_CHECK_ANSWERS_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new documentUploadSubmissionForm(req.body.signed));
-    const claim = await getCaseDataFromStore(claimId);
-    await form.validate();
-
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const uploadDocuments = getUploadDocuments(claim);
+    form.validateSync();
     if (form.hasErrors()) {
-      const isSmallClaims = claim.isSmallClaimsTrackDQ;
-      renderView(res, form, claim, claimId, isSmallClaims, lang);
+      renderView(uploadDocuments, res, form, claim, claimId, lang);
     } else {
       await saveUploadedDocuments(claim, <AppRequest>req);
-      await deleteDraftClaimFromStore(claimId);
-      res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
+      //await deleteDraftClaimFromStore(redisKey);
+      res.redirect(constructResponseUrlWithIdParams(claim.id, MEDIATION_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {
     next(error);
