@@ -70,7 +70,7 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
-import {toCCDYesNo, toCCDYesNoReverse} from "services/translation/response/convertToCCDYesNo";
+import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 
 export class Claim {
   resolvingDispute: boolean;
