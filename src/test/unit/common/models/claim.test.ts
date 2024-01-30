@@ -2100,9 +2100,14 @@ describe('Documents', () => {
   });
 
   describe('Claim isRejectionReasonCompleted', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+    });
+
     it('should return false if no claimantResponse object', () => {
       //Given
-      const claim = new Claim();
       claim.claimantResponse = undefined;
       //When
       const result = claim.isRejectionReasonCompleted();
@@ -2112,8 +2117,6 @@ describe('Documents', () => {
 
     it('should return false if no hasPartPaymentBeenAccepted object', () => {
       //Given
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
       //When
       const result = claim.isRejectionReasonCompleted();
@@ -2123,8 +2126,6 @@ describe('Documents', () => {
 
     it('should return true if hasPartPaymentBeenAccepted is No with reason', () => {
       //Given
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasPartPaymentBeenAccepted = {
         option : YesNo.NO,
       };
@@ -2139,8 +2140,6 @@ describe('Documents', () => {
 
     it('should return true if hasFullDefenceStatesPaidClaimSettled is No with reason', () => {
       //Given
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
         option : YesNo.NO,
       };
@@ -2155,8 +2154,6 @@ describe('Documents', () => {
 
     it('should return false if hasFullDefenceStatesPaidClaimSettled is No with reason undefined', () => {
       //Given
-      const claim = new Claim();
-      claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
         option : YesNo.NO,
       };

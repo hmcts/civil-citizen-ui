@@ -117,13 +117,21 @@ describe('Your response Section', () => {
     expect(yourResponseSection.summaryList.rows.length).toBe(4);
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
   });
+});
+
+describe('Your response Section for settle the claim', () => {
+  const claimId = '123';
+  const lng = 'en';
+  let claim: Claim;
+  beforeEach(() => {
+    claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.respondent1 = new Party();
+  });
 
   it('should return Settle The Claim Section when it is Full Defence and Paid with Yes', async () => {
     //Given
-    const claim = new Claim();
-    claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = new GenericYesNo(YesNo.YES);
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
@@ -136,10 +144,7 @@ describe('Your response Section', () => {
 
   it('should return Settle The Claim Section when it is Full Defence and Paid with No', async () => {
     //Given
-    const claim = new Claim();
-    claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = new GenericYesNo(YesNo.NO);
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
@@ -152,10 +157,7 @@ describe('Your response Section', () => {
 
   it('should return Settle The Claim Section when it is Part Admit and Paid with Yes', async () => {
     //Given
-    const claim = new Claim();
-    claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.YES);
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
@@ -168,10 +170,7 @@ describe('Your response Section', () => {
 
   it('should return Settle The Claim Section when it is Part Admit and Paid with No', async () => {
     //Given
-    const claim = new Claim();
-    claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);

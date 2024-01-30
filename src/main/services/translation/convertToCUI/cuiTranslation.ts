@@ -69,7 +69,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
-  claim.claimantResponse.mediation = ccdClaim.applicant1ClaimMediationSpecRequiredLip ? toCUIClaimantMediation(ccdClaim.applicant1ClaimMediationSpecRequiredLip) : undefined;
+  claim.claimantResponse.mediation = toCUIClaimantMediation(ccdClaim.applicant1ClaimMediationSpecRequiredLip);
   return claim;
 };
 
@@ -104,8 +104,8 @@ function translatePartialAdmission(claim: Claim, ccdClaim: CCDClaim, claimantRes
 function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
   claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim.applicant1ProceedWithClaim);
 
-  if (ccdClaim?.defenceRouteRequired == CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED
-    && (ccdClaim?.totalClaimAmount*100 == ccdClaim?.respondToClaim?.howMuchWasPaid)
+  if (ccdClaim?.defenceRouteRequired === CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED
+    && (ccdClaim?.totalClaimAmount*100 === ccdClaim?.respondToClaim?.howMuchWasPaid)
   ) {
     claimantResponse.hasFullDefenceStatesPaidClaimSettled = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
   }

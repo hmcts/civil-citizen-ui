@@ -192,7 +192,12 @@ describe('ClaimantResponse model', () => {
   });
 
   describe('hasClaimantNotAgreedToMediation', () => {
-    const claimantResponse = new ClaimantResponse();
+    let claimantResponse: ClaimantResponse;
+    beforeEach(() => {
+      claimantResponse = new ClaimantResponse();
+      claimantResponse.mediation = new Mediation();
+    });
+
     it('should return false with empty mediation object', () => {
       //When
       const result = claimantResponse.hasClaimantNotAgreedToMediation();
@@ -209,7 +214,6 @@ describe('ClaimantResponse model', () => {
     });
 
     it('should return false with empty mediationDisagreement object', () => {
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.mediationDisagreement = undefined;
       //When
       const result = claimantResponse.hasClaimantNotAgreedToMediation();
@@ -218,7 +222,6 @@ describe('ClaimantResponse model', () => {
     });
 
     it('should return false with empty option object', () => {
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.mediationDisagreement = {
         option: undefined,
       };
@@ -229,7 +232,6 @@ describe('ClaimantResponse model', () => {
     });
 
     it('should return false with option is Yes', () => {
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.mediationDisagreement = {
         option:  YesNo.YES,
       };
@@ -240,7 +242,6 @@ describe('ClaimantResponse model', () => {
     });
 
     it('should return true with option is No', () => {
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.mediationDisagreement = {
         option:  YesNo.NO,
       };
@@ -252,7 +253,11 @@ describe('ClaimantResponse model', () => {
   });
 
   describe('hasClaimantAgreedToMediation', () => {
-    const claimantResponse = new ClaimantResponse();
+    let claimantResponse: ClaimantResponse;
+    beforeEach(() => {
+      claimantResponse = new ClaimantResponse();
+      claimantResponse.mediation = new Mediation();
+    });
     it('should return false with empty mediation object', () => {
       //When
       const result = claimantResponse.hasClaimantAgreedToMediation();
@@ -270,7 +275,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return false with empty canWeUse and companyTelephoneNumber object', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       const result = claimantResponse.hasClaimantAgreedToMediation();
       //Then
       expect(result).toBe(false);
@@ -278,7 +282,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return true with canWeUse is Yes', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.canWeUse = {
         option:  YesNo.YES,
       };
@@ -289,7 +292,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return true with mediationPhoneNumber is input', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.canWeUse = {
         mediationPhoneNumber:  '0123456789',
       };
@@ -300,7 +302,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return false with companyTelephoneNumber is undefined', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.companyTelephoneNumber = undefined;
       const result = claimantResponse.hasClaimantAgreedToMediation();
       //Then
@@ -309,7 +310,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return true with companyTelephoneNumber option is no', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.companyTelephoneNumber = {
         option: YesNo.NO,
       };
@@ -320,7 +320,6 @@ describe('ClaimantResponse model', () => {
 
     it('should return true with mediationPhoneNumberConfirmation is input', () => {
       //When
-      claimantResponse.mediation = new Mediation();
       claimantResponse.mediation.companyTelephoneNumber = {
         mediationPhoneNumberConfirmation: '0123456789',
       };

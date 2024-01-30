@@ -9,7 +9,7 @@ export const toCCDYesNo = (value: YesNo | string) => {
 
 export const toCCDYesNoReverse = (value: YesNo | string) => {
   if (value) {
-    return value === YesNo.YES ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES ;
+    return value === YesNo.YES ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES;
   }
 };
 

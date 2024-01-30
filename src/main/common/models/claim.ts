@@ -70,6 +70,7 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {toCCDYesNo, toCCDYesNoReverse} from "services/translation/response/convertToCCDYesNo";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -821,6 +822,12 @@ export class Claim {
 
   isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
+  }
+
+  isClaimantWantToProceed() {
+    return (this.isFullDefence() && this.hasPaidInFull()) ?
+      toCCDYesNoReverse(this.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option) :
+      toCCDYesNo(this.claimantResponse?.intentionToProceed?.option);
   }
 
   threeWeeksBeforeHearingDateString() {

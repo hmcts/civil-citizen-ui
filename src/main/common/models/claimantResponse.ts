@@ -104,7 +104,7 @@ export class ClaimantResponse {
   }
 
   hasClaimantAgreedToMediation(): boolean {
-    return (this.mediation?.canWeUse?.option === YesNo.YES || this.mediation?.canWeUse?.mediationPhoneNumber !== undefined)
+    return (this.mediation?.canWeUse?.option === YesNo.YES || !this.mediation?.canWeUse?.mediationPhoneNumber)
     || (this.mediation?.companyTelephoneNumber?.option === YesNo.NO)
     || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined);
   }
