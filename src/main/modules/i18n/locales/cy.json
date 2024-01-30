@@ -1097,7 +1097,7 @@
         "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
         "TITLE": "You've signed a settlement agreement",
         "WE_EMAILED": "We've emailed {{ defendantName }} your proposed repayment plan and settlement agreement for them to sign.",
-        "WHAT_HAPPENS_NEXT": "What happens next"
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "REJECTED_DEFENDANT_RESPONSE": {
         "MESSAGE": "You've rejected their response",
@@ -1541,7 +1541,7 @@
       "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
       "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
       "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
-      "WHAT_HAPPENS_NEXT": "What happens next"
+      "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
@@ -1939,27 +1939,27 @@
       "CASE_PROGRESSION": {
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
-            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
-            "LINK_TEXT": "help with fees (opens in a new tab).",
-            "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
-            "QUESTION_TITLE": "Do you want to apply for help with fees?",
-            "TITLE": "Pay hearing fee"
+            "LINK_BEFORE": "Os ydych ar incwm isel, os nad oes gennych lawer o gynilion neu os ydych yn hawlio budd-daliadau, efallai y gallwch gael ",
+            "LINK_TEXT": "Help i Dalu Ffioedd (yn agor mewn tab newydd).",
+            "PARAGRAPH": "Os ydych yn bodloni'r meini prawf, efallai y cewch gymorth i dalu rhywfaint neu'r cyfan o'r ffi.",
+            "QUESTION_TITLE": "Ydych chi eisiau gwneud cais am Help i Dalu Ffioedd?",
+            "TITLE": "Talu ffi’r gwrandawiad"
           },
           "PAYMENT": {
             "UNSUCCESSFUL": {
-              "PAGE_TITLE": "Your payment was unsuccessful",
-              "NO_MONEY_TAKEN": "No money has been taken from your account",
-              "WHAT_HAPPENS_NEXT": "What happens next",
-              "PAYMENT_BY_CARD": "Payment by card",
-              "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "You can try to",
-              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "make a card payment",
-              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "again.",
-              "PAYMENT_BY_PHONE": "Payment by phone",
-              "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
-              "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
-              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
+              "PAGE_TITLE": "Roedd eich taliad yn aflwyddiannus",
+              "NO_MONEY_TAKEN": "Nid oes arian wedi ei gymryd o'ch cyfrif",
+              "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+              "PAYMENT_BY_CARD": "Talu gyda cherdyn",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "Gallwch geisio",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad gyda cherdyn",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto.",
+              "PAYMENT_BY_PHONE": "Talu dros y ffôn",
+              "PAYMENT_BY_PHONE_PARAGRAPH_1": "“Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "darllenwch fwy am gost galwadau (yn agor mewn tab newydd).",
+              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at y trosolwg o’r achos"
             },
             "SUCCESSFUL": {
               "PAGE_TITLE": "Your payment was ",
@@ -3138,7 +3138,7 @@
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
         "RETURN_TO_CASE_DETAILS": "Return to case details",
-        "WHAT_HAPPENS_NEXT": "What happens next",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.",
         "NOTICES_AND_ORDERS": "Notices and orders",
         "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under",
@@ -3156,7 +3156,7 @@
     "PAY_HEARING_FEE": {
       "START_PAGE": {
         "PAGE_TITLE": "Pay the hearing fee",
-        "TITLE": "Pay hearing fee",
+        "TITLE": "Talu ffi’r gwrandawiad",
         "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
         "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
       },
@@ -3164,7 +3164,7 @@
         "TITLE": "Confirmation of your hearing fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
         "REFERENCE_NUMBER": "Your reference number",
-        "WHAT_HAPPENS_NEXT": "What happens next",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
     }

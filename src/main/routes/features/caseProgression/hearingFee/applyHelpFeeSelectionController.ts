@@ -19,7 +19,7 @@ import {getClaimById} from 'modules/utilityService';
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
 
-async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
+async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string, lng: string) {
   let claim: Claim = await getClaimById(claimId, req, true);
   if (!claim.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
     const redisKey = generateRedisKey(req);
@@ -39,16 +39,17 @@ async function renderView(res: Response, req: any, form: any, claimId: string, r
       redirectUrl,
       form,
       startPayHearingFee,
-      applyHelpFeeSelectionContents: getApplyHelpFeeSelectionContents(),
+      applyHelpFeeSelectionContents: getApplyHelpFeeSelectionContents(lng),
       applyHelpFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }
 
 applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req, res, next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    await renderView(res, req, null, claimId, redirectUrl);
+    await renderView(res, req, null, claimId, redirectUrl, lng);
   }catch (error) {
     next(error);
   }
@@ -56,13 +57,14 @@ applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async
 
 applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res,next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
     form.validateSync();
     await form.validate();
     if (form.hasErrors()) {
       const redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_CANCEL_JOURNEY);
-      await renderView(res, req, form, claimId, redirectUrl);
+      await renderView(res, req, form, claimId, redirectUrl, lng);
     } else {
       const redirectUrl = await getRedirectUrl(claimId, form.model, req);
       res.redirect(redirectUrl);
