@@ -30,13 +30,13 @@ export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, c
   const yourStatement = uploadedDocuments.typeOfDocuments.find(document => document.type === TypeOfMediationDocuments.YOUR_STATEMENT);
   if(yourStatement)
   {
-    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.YOUR_STATEMENT}`,yourStatement.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
+    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.YOUR_STATEMENT}`,yourStatement.uploadDocuments.documentsForYourStatement, mediationSummarySection.summaryList, claimId, lang);
   }
 
   const documentsReferred = uploadedDocuments.typeOfDocuments.find(document => document.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
   if(documentsReferred)
   {
-    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,documentsReferred.uploadDocuments, mediationSummarySection.summaryList, claimId, lang);
+    getMediationSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,documentsReferred.uploadDocuments.documentsForDocumentsReferred, mediationSummarySection.summaryList, claimId, lang);
   }
 
   if(mediationSummarySection.summaryList.rows.length > 0)

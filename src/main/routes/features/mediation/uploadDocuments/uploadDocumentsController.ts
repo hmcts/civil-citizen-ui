@@ -85,8 +85,8 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
 
   const currentUrl = constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS);
   if(!form ){
-    const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments || [];
-    const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments || [];
+    const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments.documentsForYourStatement || [];
+    const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments.documentsForDocumentsReferred || [];
     form = new GenericForm(new UploadDocumentsForm(typeOfDocuments, documentsForDocumentsReferred));
   }
   const yourStatementContent = getYourStatementContent(uploadDocuments, form);
@@ -146,10 +146,10 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     } else {
       // set upload documents with new data
       const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
-      documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
+      documentsForYourStatement.uploadDocuments.documentsForYourStatement = uploadDocumentsForm.documentsForYourStatement;
 
-      const documentsForReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
-      documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
+      //const documentsForReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+      //documentsForReferred.uploadDocuments.documentsForDocumentsReferred = uploadDocumentsForm.documentsForDocumentsReferred;
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND));
     }
