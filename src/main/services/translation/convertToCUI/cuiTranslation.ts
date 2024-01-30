@@ -18,7 +18,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {
   toCUICCJRequest,
   toCUIChoosesHowToProceed,
-  toCUIClaimantPaymentOption
+  toCUIClaimantPaymentOption,
 } from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
@@ -29,7 +29,7 @@ import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProcee
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {
-  CCDClaimantResponseOnCourtDecisionType
+  CCDClaimantResponseOnCourtDecisionType,
 } from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
