@@ -2382,6 +2382,19 @@
         "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
         "PAYMENT_FOR": "Payment for",
         "TOTAL_AMOUNT": "Total amount"
+      },
+      "UNSUCCESSFUL": {
+        "CALL_US_ON": "Or, call us on ",
+        "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+        "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
+        "FIND_OUT_CHARGES": "Find out about call charges:",
+        "GO_BACK": "Go back and ",
+        "TRY_PAYMENT_AGAIN": "try the payment again",
+        "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "PAGE_TITLE": "Claim fee payment unsuccessful",
+        "OPEN_TIMES": "Opening times:",
+        "TITLE": "Your payment was unsuccessful"
       }
     },
     "PAYMENT_OPTION": {
