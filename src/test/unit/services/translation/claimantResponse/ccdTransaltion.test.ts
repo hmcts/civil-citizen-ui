@@ -410,6 +410,52 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1FullDefenceConfirmAmountPaidSpec).toBe(undefined);
   });
+
+  it('should translate dq support hearing details', () => {
+    //Given
+    const claim = new Claim();
+    const selectedValueWithContent = { selected: true, content: 'abc' };
+    const selectedValue = { selected: true };
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.claimantResponse.directionQuestionnaire.hearing = {
+      supportRequiredList: {
+        option: YesNo.YES,
+        items: [{
+          fullName: 'expert1',
+          hearingLoop: selectedValue,
+          languageInterpreter: selectedValueWithContent,
+          signLanguageInterpreter: selectedValueWithContent,
+          disabledAccess: selectedValue,
+          otherSupport: selectedValueWithContent,
+        },
+        ],
+      },
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1DQHearingSupport).toEqual({ supportRequirements: 'Yes', supportRequirementsAdditional: 'expert1 :Disabled access,Hearing loop,Language interpreter:abc,Sign language interpreter:abc,Other support:abc;' });
+  });
+  it('should translate dq no support hearing details provided', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+    claim.claimantResponse.directionQuestionnaire.hearing = {
+      supportRequiredList: {
+        option: YesNo.NO,
+      },
+    };
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1DQHearingSupport).toEqual({ supportRequirements: 'No' });
+  });
 });
 
 function getClaimantResponseDQ(claim: Claim): Claim {
