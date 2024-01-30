@@ -15,13 +15,22 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {toCUICCJRequest, toCUIChoosesHowToProceed, toCUIClaimantPaymentOption} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {
+  toCUICCJRequest,
+  toCUIChoosesHowToProceed,
+  toCUIClaimantPaymentOption
+} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import { InterestEndDateType, SameRateInterestType } from 'common/form/models/claimDetails';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {
+  CCDClaimantResponseOnCourtDecisionType
+} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -67,9 +76,22 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
+  claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
+  claim.claimantResponse.courtProposedDate = new CourtProposedDate();
+  claim.claimantResponse.courtProposedPlan.decision = toCUICourtDecisionPlan[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision];
+  claim.claimantResponse.courtProposedDate.decision = toCUICourtDecisionDate[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision];
   return claim;
 };
 
+export const toCUICourtDecisionDate : any =  {
+  [CCDClaimantResponseOnCourtDecisionType.ACCEPT_REPAYMENT_DATE]: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE,
+  [CCDClaimantResponseOnCourtDecisionType.JUDGE_REPAYMENT_DATE]:  CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+};
+
+export const toCUICourtDecisionPlan: any =  {
+  [CCDClaimantResponseOnCourtDecisionType.ACCEPT_REPAYMENT_PLAN]: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
+  [CCDClaimantResponseOnCourtDecisionType.JUDGE_REPAYMENT_PLAN]:  CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN,
+};
 const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
   const interest = new Interest();
   interest.interestClaimFrom = ccdClaim?.interestClaimFrom;

@@ -41,3 +41,11 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
   };
 };
+
+export enum CCDClaimantResponseOnCourtDecisionType {
+  ACCEPT_REPAYMENT_DATE = 'ACCEPT_REPAYMENT_DATE',
+  JUDGE_REPAYMENT_DATE = 'JUDGE_REPAYMENT_DATE',
+  ACCEPT_REPAYMENT_PLAN = 'ACCEPT_REPAYMENT_PLAN',
+  JUDGE_REPAYMENT_PLAN = 'JUDGE_REPAYMENT_PLAN',
+}
+

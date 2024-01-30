@@ -10,7 +10,6 @@ import {
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -54,7 +53,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-  
+
   if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
     !claimantResponse.isClaimantRejectedCourtDecision) {
     return SignSettlementAgreementNextSteps;
@@ -129,9 +128,7 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY
-    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE
-    || claim.claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS);
+  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO ;
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
