@@ -13,9 +13,6 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
-import {
-  CCDClaimantResponseOnCourtDecisionType,
-} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 
 const phoneCCD = '123456789';
@@ -297,7 +294,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
-    expect(claim.claimantResponse.courtProposedPlan.decision).toEqual(CCDClaimantResponseOnCourtDecisionType.ACCEPT_REPAYMENT_PLAN);
+    expect(claim.claimantResponse.courtProposedPlan.decision).toEqual(CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN);
   });
 
   it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
@@ -312,6 +309,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
-    expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CCDClaimantResponseOnCourtDecisionType.JUDGE_REPAYMENT_DATE);
+    expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
   });
 });
