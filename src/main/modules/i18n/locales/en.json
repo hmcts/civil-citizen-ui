@@ -3584,6 +3584,7 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
   }
 }

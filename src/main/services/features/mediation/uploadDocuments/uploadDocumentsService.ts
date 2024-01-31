@@ -6,6 +6,7 @@ import {
   TypeOfDocumentSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {
+  MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
@@ -78,7 +79,7 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+  const formObj: TypeOfDocumentSection = new MediationTypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;

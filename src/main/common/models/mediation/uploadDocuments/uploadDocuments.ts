@@ -1,5 +1,5 @@
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
-import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {MediationTypeOfDocumentSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 
 export enum TypeOfMediationDocuments {
     YOUR_STATEMENT = 'YOUR_STATEMENT',
@@ -10,9 +10,9 @@ export class TypeOfDocuments {
   id: number;
   type: TypeOfMediationDocuments;
   checked: boolean;
-  uploadDocuments?: TypeOfDocumentSection[];
+  uploadDocuments?: MediationTypeOfDocumentSection[];
 
-  constructor(id: number, type: TypeOfMediationDocuments, checked: boolean, uploadDocuments?: TypeOfDocumentSection[]) {
+  constructor(id: number, type: TypeOfMediationDocuments, checked: boolean, uploadDocuments?: MediationTypeOfDocumentSection[]) {
     this.id = id;
     this.type = type;
     this.checked = checked;
