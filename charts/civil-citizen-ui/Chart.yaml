@@ -8,6 +8,10 @@ maintainers:
   - name: HMCTS Civil Citizen Ui team
 
 dependencies:
+  - name: postgresql
+    version: 1.0.2
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: postgresql.enabled
   - name: nodejs
     version: 3.0.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
@@ -40,10 +44,6 @@ dependencies:
     version: ~1.0.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
-  - name: postgresql
-    version: 1.0.2
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: postgresql.enabled
 
   - name: ccd-message-publisher
     version: ~0.1.7
