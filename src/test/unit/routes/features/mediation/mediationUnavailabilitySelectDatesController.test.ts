@@ -12,7 +12,8 @@ import {Party} from 'models/party';
 import {getUnavailableDatesMediationForm} from 'services/features/mediation/unavailableDatesForMediationService';
 import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {CURRENT_DAY, CURRENT_DAY_PLUS_1, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
+import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
+import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -92,13 +93,15 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
 
     it('should redirect to task list with Long period date', async () => {
       //given
+      const currentDatePlusOne = new Date();
+      currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
       getUnavailableDatesMediationFormMock.mockImplementation(() => {
         const mockRequest: Record<string, any[]> = {
           'items': [{
             'type': UnavailableDateType.LONGER_PERIOD,
             'period': {
               'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              'end': {'day': CURRENT_DAY_PLUS_1, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+              'end': {'day': currentDatePlusOne.getDay(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
             },
           }],
         };
@@ -115,10 +118,7 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
     });
 
     it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: 'no'})
