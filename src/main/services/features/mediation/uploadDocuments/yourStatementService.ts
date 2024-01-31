@@ -1,11 +1,11 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 
 import {GenericForm} from 'form/models/genericForm';
-import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
 
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {
+  TypeOfDocumentYourNameSection,
+  UploadDocumentsForm
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {buildYourStatementSection} from 'services/features/mediation/uploadDocuments/yourStatementContentBuilder';
 
@@ -25,8 +25,8 @@ const documentsForYourStatement = (form: GenericForm<UploadDocumentsForm>): Clai
   const sectionContent = [];
 
   if (form && form.model.documentsForYourStatement.length != 0) {
-    form.model.documentsForYourStatement?.forEach(function (documentsForDisclosure: TypeOfDocumentSection, index: number) {
-      sectionContent.push([buildYourStatementSection(documentsForDisclosure, index, form)]);
+    form.model.documentsForYourStatement?.forEach(function (typeOfDocumentYourNameSection: TypeOfDocumentYourNameSection, index: number) {
+      sectionContent.push([buildYourStatementSection(typeOfDocumentYourNameSection, index, form)]);
     });
   } else {
     sectionContent.push([buildYourStatementSection()]);
