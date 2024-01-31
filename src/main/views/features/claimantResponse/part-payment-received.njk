@@ -10,7 +10,7 @@
 {% set Title = t('PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE', { paidAmount: paidAmount }) %}
 
 {% block pageTitle %}
-  {{ setPageTitle(pageTitle) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
