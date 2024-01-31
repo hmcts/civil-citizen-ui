@@ -4,7 +4,7 @@ import {GenericForm} from 'form/models/genericForm';
 
 import {
   TypeOfDocumentYourNameSection,
-  UploadDocumentsForm
+  UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {buildYourStatementSection} from 'services/features/mediation/uploadDocuments/yourStatementContentBuilder';
