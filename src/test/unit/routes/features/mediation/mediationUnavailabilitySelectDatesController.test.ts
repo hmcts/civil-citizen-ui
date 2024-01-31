@@ -94,7 +94,6 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
       //given
       const currentDatePlusOne = new Date();
       currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
-
       getUnavailableDatesMediationFormMock.mockImplementation(() => {
         const mockRequest: Record<string, any[]> = {
           'items': [{
