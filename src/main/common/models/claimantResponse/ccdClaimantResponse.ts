@@ -5,7 +5,7 @@ import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
-import {CCDExpert} from 'models/ccdResponse/ccdExpert';
+import {CCDDQSupportRequirements, CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
@@ -26,6 +26,7 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1LiPResponse?: CCDClaimantLiPResponse;
   applicant1ClaimExpertSpecRequired?: YesNoUpperCamelCase;
   applicant1DQExperts?: CCDExpert;
+  applicant1DQHearingSupport?: CCDDQSupportRequirements;
   applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
   applicant1AcceptFullAdmitPaymentPlanSpec?: YesNoUpperCamelCase;
