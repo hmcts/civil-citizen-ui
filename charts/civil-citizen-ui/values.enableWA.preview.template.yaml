@@ -46,6 +46,7 @@ wa:
   global:
     postgresUsername: hmcts
     postgresSecret: postgres
+    postgresHost: ${SERVICE_NAME}-postgresql
 #    postgresHost: civil-preview.postgres.database.azure.com
 #    databaseNamePrefix: "pr-${CHANGE_ID}-"
   wa:
