@@ -5,7 +5,7 @@ global:
   jobKind: CronJob
 
 camunda-bpm:
-  enabled: true
+  enabled: false
 
 ccd-message-publisher:
   java:
@@ -46,12 +46,9 @@ wa:
   global:
     postgresUsername: hmcts
     postgresSecret: postgres
-    postgresHost: ${SERVICE_NAME}-postgresql
-#    postgresHost: civil-preview.postgres.database.azure.com
-#    databaseNamePrefix: "pr-${CHANGE_ID}-"
+    postgresHost: civil-preview.postgres.database.azure.com
+    databaseNamePrefix: "pr-${CHANGE_ID}-"
   wa:
-    camunda:
-      enabled: false
     postgresql:
       enabled: false
   wa-case-event-handler:
@@ -62,10 +59,6 @@ wa:
         AZURE_SERVICE_BUS_CONNECTION_STRING:
           secretRef: civil-sb-preview
           key: connectionString
-        POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
       environment:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CCD_SEARCH_URL: http://{{ .Release.Name }}-ccd-data-store-api
@@ -74,8 +67,6 @@ wa:
         AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
         #AZURE_SERVICE_BUS_TOPIC_NAME: servicebus-topic-{{ .Release.Name }}-asb-ccd-case-events
         AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
 
   wa-task-monitor:
     java:
@@ -88,24 +79,10 @@ wa:
     java:
       environment:
         ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-      secrets:
-        POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
   wa-workflow-api:
     java:
       environment:
         DB_READER_USERNAME: "hmcts"
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-      secrets:
-        POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
 
 xui-webapp:
   nodejs:
