@@ -7,7 +7,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.JUDGMENT_AMOUNT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE') }}
 {% endblock %}
 {% set detailsHtml %}
   {% if (judgmentSummaryDetails.isBreakDownInterest) %}

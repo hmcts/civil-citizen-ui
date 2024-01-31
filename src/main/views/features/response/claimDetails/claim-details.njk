@@ -6,7 +6,7 @@
 {% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_DETAILS.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CLAIM_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
 {% set evidenceRows = claim.evidence %}

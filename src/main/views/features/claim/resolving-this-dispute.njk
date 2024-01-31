@@ -5,7 +5,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -27,7 +27,7 @@
             <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.SUGGESTING_TIMETABLE') }}</li>
             <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.MAKE_A_CLAIM') }}</li>
           </ul>
-          
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">

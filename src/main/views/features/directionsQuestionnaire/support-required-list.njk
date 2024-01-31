@@ -9,7 +9,7 @@
 {% from "../../macro/support-required.njk" import supportRequired %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
 {% endblock %}
 
 {% set rowNumberToShowRemoveButton = 2 %}
@@ -51,7 +51,7 @@
              {{ govukNotificationBanner({
               html:notificationHtml,
               titleText: t('PAGES.SUPPORT_REQUIRED.SUPPORT_REQUIREMENTS_HEADING')
-              }) 
+              })
             }}
             {% endif %}
             {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}

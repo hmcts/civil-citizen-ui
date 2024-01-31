@@ -12,7 +12,7 @@
 {% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}
 {% endblock %}
 
 {% set nexMonthDate = nextMonth.getDate() + ' ' + (nextMonth.getMonth() + 1) + ' ' + nextMonth.getFullYear() %}

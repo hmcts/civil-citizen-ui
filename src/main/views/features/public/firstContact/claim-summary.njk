@@ -8,7 +8,7 @@
 {% from "../../../macro/evidence-summary.njk" import evidenceSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PAGE_TITLE') }}
 {% endblock %}
 {% set hideLogout = true  %}
 {% set evidenceRows = claim.evidence.evidenceItem %}

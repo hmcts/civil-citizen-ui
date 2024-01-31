@@ -9,7 +9,7 @@
 {% from "./other-witness.njk" import otherWitnessItem %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.OTHER_WITNESSES.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.OTHER_WITNESSES.TITLE') }}
 {% endblock %}
 {% set rowNumberToShowRemoveButton = 2 %}
 {% set atLeastOneCourtOrderError = form.errorFor('witnessItems') %}

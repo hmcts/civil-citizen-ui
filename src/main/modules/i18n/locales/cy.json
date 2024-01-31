@@ -263,6 +263,8 @@
       "TITLE": "Datganiad Gwirionedd",
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
     },
+    "PAGE_TITLE_PART1": "Eich cyfrif hawliadau am arian",
+    "PAGE_TITLE_PART2": "Hawliadau am Arian",
     "TIMELINE": {
       "EXAMPLE_EVENT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
       "WHAT_HAPPENED": "Beth ddigwyddodd"

@@ -5,7 +5,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.YOU_CAN_USE_SERVICE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.YOU_CAN_USE_SERVICE.PAGE_TITLE') }}
 {% endblock %}
 {% set hideLogout = true  %}
 {% block content %}

@@ -7,7 +7,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.DEFENDANT_PHONE_NUMBER.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.DEFENDANT_PHONE_NUMBER.PAGE_TITLE') }}
 {% endblock %}
 {% set hideLogout = true  %}
 {% block content %}

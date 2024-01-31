@@ -7,7 +7,7 @@
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../../macro/error-summary.njk" import errorSummary %}
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.REGULAR_EXPENSES.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.REGULAR_EXPENSES.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
   {% set errors = form.getNestedErrors('model') %}

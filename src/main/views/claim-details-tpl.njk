@@ -19,7 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle()}}
+  {{setPageTitle(t)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({

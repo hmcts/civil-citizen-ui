@@ -6,7 +6,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
   {% if courtProposedPlanDecision %}
