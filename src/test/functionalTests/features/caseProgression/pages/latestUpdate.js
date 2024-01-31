@@ -5,21 +5,21 @@ const contactUs = new ContactUs();
 
 class LatestUpdate {
 
-  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrageentFlag = false, otherPartyTrialArrangementFlag = false, caseStruckOutFlag = false ) {
+  open(claimRef, claimType, hearingInitiatedFlag = true, orderCreatedFlag = false, trialArrangementFlag = false, otherPartyTrialArrangementFlag = false, caseStruckOutFlag = false, bundleFlag= false ) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag);
+    this.verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrangementFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag, bundleFlag);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrageentFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag) {
+  verifyLatestUpdatePageContent(claimType, hearingInitiatedFlag, orderCreatedFlag, trialArrangementFlag, otherPartyTrialArrangementFlag, caseStruckOutFlag, bundleFlag) {
     this.verifyHeadingDetails();
     if (hearingInitiatedFlag === true) {
       this.verifyHearingOrTrialNoticeSectionContent(claimType);
     }
-    if (trialArrageentFlag === true) {
+    if (trialArrangementFlag === true) {
       this.verifyTrialArrangeentTileContent();
     }
     if(orderCreatedFlag === true) {
@@ -32,6 +32,9 @@ class LatestUpdate {
       this.verifyCaseStruckOutTile();
     } else {
       this.verifyUploadDocumentTileContent(hearingInitiatedFlag);
+    }
+    if (bundleFlag === true) {
+      this.verifyBundleTileContent();
     }
     contactUs.verifyContactUs();
   }
@@ -54,7 +57,7 @@ class LatestUpdate {
     I.see('If the claimant wants to reinstate this claim, they will need to make an application to the court.');
   }
 
-  verifyTrialArrangeentsTile(claimType) {
+  verifyTrialArrangementsTile(claimType) {
     //TODO - Include the hearing date in the relevant Format
     if (claimType === 'FastTrack') {
       I.see('A trial has been scheduled for your case', 'h3');
@@ -114,6 +117,15 @@ class LatestUpdate {
   verifyOtherPartyTrialArrangementTileContent() {
     I.see('The other party has finalised their trial arrangements','h3');
     I.see('You can view the other party\'s trial arrangements under \'Notices and orders\'.');
+  }
+
+  verifyBundleTileContent() {
+    I.wait(2);
+    I.refreshPage();
+    I.see('Bundle is complete and ready to view','h3');
+    I.see('The bundle contains all the documents submitted by both parties.');
+    I.see('Please review the bundle to makes sure all the information is correct.');
+    I.see('You are reminded that the other party will also be able to view the bundle.');
   }
 }
 
