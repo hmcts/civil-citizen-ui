@@ -8,7 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "CIV-11768-Claimant-Intention-Case-Flags"
 def waStandaloneBranch = "master"
 def ccdBranch = "CIV-11768-Work-Allocation-for-Case-Flags"
 AppPipelineConfig pipelineConf
