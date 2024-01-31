@@ -15,16 +15,18 @@ import {
 } from 'routes/urls';
 import {YesNo} from 'form/models/yesNo';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
-
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const buildMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+  let mediationSection: SummarySection = null;
+  if(!claim.mediationCarm) {
+    return mediationSection;
+  }
 
-  const mediationSection = summarySection({
+  mediationSection = summarySection({
     title: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),
     summaryRows: [],
   });
-
   //CONTACT NAME SECTION
   if (claim.isBusiness()) {
     mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT_DEFENDANT', {
@@ -78,6 +80,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
       changeLabel(lang),
     ));
   }
+
   return mediationSection;
 };
 
