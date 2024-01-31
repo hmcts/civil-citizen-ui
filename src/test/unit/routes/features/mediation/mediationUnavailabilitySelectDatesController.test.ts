@@ -13,8 +13,6 @@ import {getUnavailableDatesMediationForm} from 'services/features/mediation/unav
 import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
-
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -118,7 +116,10 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: 'no'})
