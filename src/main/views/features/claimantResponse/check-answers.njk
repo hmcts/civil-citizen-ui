@@ -1,0 +1,69 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
+
+          {% for section in summarySections.sections %}
+            {% if section.summaryList.rows %}
+              <div class="govuk-!-margin-bottom-9">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                <div class="govuk-form-group">
+                  {{ govukSummaryList({
+                    rows: section.summaryList.rows
+                  }) }}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            <input type="hidden" name="type" value="{{ form.model.type }}">
+            <input type="hidden" name="isClaimantRejectedDefendantOffer" value="{{ form.model.isFullAmountRejected }}">
+            {% if form.model.isFullAmountRejected === true %}
+            {{ govukCheckboxes({
+              idPrefix: 'directionsQuestionnaireSigned',
+              name: 'directionsQuestionnaireSigned',
+              items: [
+                {
+                  value: true,
+                  html: t('COMMON.STATEMENT_OF_TRUTH.DETAILS_TRUTHY'),
+                  checked: true if form.model.directionsQuestionnaireSigned
+                }
+              ],
+              errorMessage: {
+              text:t(form.errorFor(directionsQuestionnaireSigned))
+              } if form.errorFor(directionsQuestionnaireSigned)
+            }) }}
+            {% endif %}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+{% endblock %}

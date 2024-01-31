@@ -3,20 +3,20 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
         - citizen-ui-idam-secret
-        - name: ordnance-survey-api-key
-          alias: ORDNANCE_SURVEY_API_KEY
+        - ordnance-survey-api-key
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
   environment:
-    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
 

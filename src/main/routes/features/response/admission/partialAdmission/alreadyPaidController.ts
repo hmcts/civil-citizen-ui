@@ -6,6 +6,8 @@ import {
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const alreadyPaidController = Router();
 const citizenAlreadyPaidViewPath = 'features/response/admission/partialAdmission/already-paid';
@@ -17,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res, next: NextFunction) => {
   try {
-    const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(req.params.id)));
+    const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(generateRedisKey(<AppRequest>req))));
     renderView(alreadyPaidForm, res);
   } catch (error) {
     next(error);
@@ -32,7 +34,7 @@ alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res, next: Next
     if (alreadyPaidForm.hasErrors()) {
       renderView(alreadyPaidForm, res);
     } else {
-      await partialAdmissionService.saveClaimAlreadyPaid(req.params.id, alreadyPaidForm.model.option);
+      await partialAdmissionService.saveClaimAlreadyPaid(generateRedisKey(<AppRequest>req), alreadyPaidForm.model.option);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {

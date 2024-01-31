@@ -6,9 +6,8 @@ import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
   FIRST_CONTACT_PIN_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
@@ -52,11 +51,22 @@ describe('Respond to Claim - Pin Controller', () => {
 
       app.locals.draftStoreClient = mockCivilClaim;
       app.request.cookies = { firstContact: { claimReference: '000MC000' } };
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '0000' }).expect((res) => {
+      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
         expect(app.request.cookies.firstContact.claimReference).toBe('000MC000');
-        expect(app.request.cookies.firstContact.pinVerified).toBe(YesNo.YES);
+      });
+    });
+
+    it('should redirect to claim summary when pin and reference match for OCMC', async () => {
+      nock(civilServiceUrl)
+        .post('/assignment/reference/000MC000/ocmc')
+        .reply(200, 'redirectUrl');
+
+      app.request.cookies = { firstContact: { claimReference: '000MC000' } };
+      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '00000001' }).expect((res) => {
+        expect(res.header.location).toBe('redirectUrl');
+        expect(res.status).toBe(302);
       });
     });
 

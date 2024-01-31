@@ -3,7 +3,20 @@ properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
     pipelineTriggers([cron('H 8 * * 1-5')]),
     parameters([
+        string(name: 'ENVIRONMENT', defaultValue: 'aat', description: 'Environment to test'),
         string(name: 'TEST_URL', defaultValue: 'https://civil-citizen-ui.aat.platform.hmcts.net', description: 'The URL you want to run tests against'),
+        string(name: 'EXUI_URL', defaultValue: 'https://manage-case.aat.platform.hmcts.net',
+          description: 'The URL you want to run the full functional tests against'),
+        string(name: 'IDAM_API_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net',
+          description: 'The URL of idam api'),
+        string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-aat.service.core-compute-aat.internal',
+          description: 'The URL of dm store'),
+        string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
+          description: 'The URL of service auth provider'),
+        string(name: 'CCD_DATA_STORE_URL', defaultValue: 'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
+          description: 'The URL of ccd data store'),
+        string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
+          description: 'The URL of civil service'),
     ])
 ])
 
@@ -55,52 +68,44 @@ def secrets = [
   ]
 ]
 
-def setUrls(suffix){
-  env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-  env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  if("${suffix}" == 'aat') {
-    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-${suffix}.service.core-compute-aat.internal"
-    env.URL="https://manage-case.aat.platform.hmcts.net"
-    env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
-
-  } else {
-    env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
-
-  }
-  env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+static Map<String, Object> secret(String secretName, String envVariable) {
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   envVariable: envVariable
+  ]
 }
+
+def secrets = [
+  'civil-${env}': [
+    secret('microservicekey-civil-service', 'S2S_SECRET'),
+    secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
+    secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
+    secret('civil-judge-password', 'JUDGE_PASSWORD'),
+    secret('system-update-user-password', 'SYSTEM_USER_PASSWORD')
+  ]
+]
+
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withNightlyPipeline(type, product, component) {
   env.TEST_URL = params.TEST_URL
-  env.RUNNING_ENV = params.ENVIRONMENT
-  setUrls("aat");
+  env.URL = params.EXUI_URL
+  env.DM_STORE_URL=params.DM_STORE_URL
+  env.IDAM_API_URL=params.IDAM_API_URL
+  env.SERVICE_AUTH_PROVIDER_API_BASE_URL = params.SERVICE_AUTH_PROVIDER_API_BASE_URL
+  env.CCD_DATA_STORE_URL = params.CCD_DATA_STORE_URL
+  env.CIVIL_SERVICE_URL = params.CIVIL_SERVICE_URL
+  env.TESTS_FOR_ACCESSIBILITY = false
+  overrideVaultEnvironments([
+    'aat': params.ENVIRONMENT
+  ])
   loadVaultSecrets(secrets)
-  //enableFullFunctionalTest()
-  enableCrossBrowserTest()
 
-   afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/saucelabs/**/*'
-   }
-
+  enableFullFunctionalTest(200)
 
   afterAlways('fullFunctionalTest') {
-       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
-
-        publishHTML target: [
-                allowMissing : true,
-                alwaysLinkToLastBuild: true,
-                keepAll : true,
-                reportDir : "functional-output/",
-                reportFiles : "functionalTests.html",
-                reportName : "Civil-Citizen-UI Functional tests result"
-        ]
-    }
-  //enablePactAs([
-    //AppPipelineDsl.PactRoles.CONSUMER
- // ])
+    archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
+  }
 }

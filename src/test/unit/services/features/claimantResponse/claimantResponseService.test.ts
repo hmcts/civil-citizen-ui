@@ -46,6 +46,13 @@ import {Party} from 'common/models/party';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getFinalPaymentDate} from 'common/utils/repaymentUtils';
 import {t} from 'i18next';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Mediation} from 'models/mediation/mediation';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -360,7 +367,7 @@ describe('Claimant Response Service', () => {
         hasDefendantPaidYou: {option: YesNo.NO},
       };
       await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
     });
 
     it('should update claim determination successfully', async () => {
@@ -375,7 +382,7 @@ describe('Claimant Response Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveClaimantResponse('validClaimId', claimantResponse?.hasDefendantPaidYou.option, 'hasDefendantPaidYou');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
 
     it('should update payment option successfully from payment by date', async () => {
@@ -393,7 +400,7 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
 
     it('should update payment option successfully from pay by instalments', async () => {
@@ -414,9 +421,150 @@ describe('Claimant Response Service', () => {
       //When
       await saveClaimantResponse('validClaimId', PaymentOptionType.IMMEDIATELY, 'paymentOption', 'suggestedPaymentIntention');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
     });
+    it('should delete hasPartPaymentBeenAccepted and rejectionReason fields from redis when hasDefendantPaidYou is no', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
+        claim.claimantResponse.rejectionReason = {text: 'test'};
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'hasDefendantPaidYou');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
+    });
+    it('should delete rejectionReason field from redis when hasPartPaymentBeenAccepted is yes', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.rejectionReason = {text: 'test'};
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.YES),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES) , 'hasPartPaymentBeenAccepted');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
+    });
+    it('should delete rejectionReason field from redis when hasFullDefenceStatesPaidClaimSettled is yes', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.rejectionReason = { text: 'test' };
+        return claim;
+      });
+      const claimantResponseToUpdate =
+      {
+        hasFullDefenceStatesPaidClaimSettled: new GenericYesNo(YesNo.YES),
+      };
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'hasFullDefenceStatesPaidClaimSettled');
+      //Then
+      expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
+    });
+    describe('reset tasklist data', () => {
+      const claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+      claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{ signed: 'true' };
+      claim.claimantResponse.ccjRequest = new CCJRequest();
+      claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
 
+      it('should delete data from redis when hasPartAdmittedBeenAccepted property submitted', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
+        claim.claimantResponse.mediation = new Mediation();
+        claim.claimantResponse.mediation.mediationDisagreement = new GenericYesNo(YesNo.YES);
+        claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+
+        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+        jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'hasPartAdmittedBeenAccepted');
+        //Then
+        expect(claim.claimantResponse.hasPartPaymentBeenAccepted).toBeUndefined();
+        expect(claim.claimantResponse.mediation).toBeUndefined();
+        expect(claim.claimantResponse.directionQuestionnaire).toBeUndefined();
+      });
+      it('should delete data from redis when fullAdmitSetDateAcceptPayment property submitted', async () => {
+        //Given
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+        claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+        claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+        claim.claimantResponse.courtProposedDate = new CourtProposedDate();
+        claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions.JUDGE_REPAYMENT_DATE;
+        claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+        claim.claimantResponse.signSettlementAgreement = <SignSettlmentAgreement>{signed: 'true'};
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
+        claim.claimantResponse.rejectionReason = new RejectionReason('response rejected');
+        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+        jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.YES), 'fullAdmitSetDateAcceptPayment');
+        //Then
+        expect(claim.claimantResponse.suggestedPaymentIntention).toBeUndefined();
+        expect(claim.claimantResponse.courtProposedDate).toBeUndefined();
+        expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
+        expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
+        expect(claim.claimantResponse.rejectionReason).toBeUndefined();
+      });
+      it('should delete data from redis when propose alternative repayment plan submitted', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+        jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', 'IMMEDIATELY', 'paymentOption', 'suggestedPaymentIntention');
+        //Then
+        expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
+        expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
+      });
+      it('should delete data from redis when courtProposedDate with decision submitted', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+        jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', 'JUDGE_REPAYMENT_DATE', 'decision', 'courtProposedDate');
+        //Then
+        expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
+        expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
+      });
+      it('should delete data from redis when chooseHowToProceed option submitted', async () => {
+        //Given
+        claim.claimantResponse.ccjRequest = new CCJRequest();
+        claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 111, 1000);
+        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+        jest.spyOn(draftStoreService, 'saveDraftClaim');
+        //When
+        await saveClaimantResponse('validClaimId', 'REQUEST_A_CCJ', 'option', 'chooseHowToProceed');
+        //Then
+        expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
+        expect(claim.claimantResponse.ccjRequest).toBeUndefined();
+      });
+    });
     describe('intentionToProceed', () => {
       claimantResponse.intentionToProceed = new GenericYesNo(YesNo.YES);
       it('should save claimant response successfully', async () => {
@@ -433,7 +581,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'intentionToProceed');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim intentionToProceed successfully', async () => {
@@ -450,7 +598,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', claimantResponse?.intentionToProceed.option, 'intentionToProceed');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
     });
 
@@ -470,7 +618,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim defendant dob successfully', async () => {
@@ -489,7 +637,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', YesNo.NO, 'defendantDOB', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
 
       it('should save rejection response successfully', async () => {
@@ -524,7 +672,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', ccjPaymentOption, 'ccjPaymentOption', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToSave});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToSave }, true);
       });
 
       it('should update claim defendant dob successfully', async () => {
@@ -550,7 +698,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('validClaimId', ccjPaymentOptionUpdate, 'ccjPaymentOption', 'ccjRequest');
         //Then
-        expect(spySave).toHaveBeenCalledWith('validClaimId', {claimantResponse: claimantResponseToUpdate});
+        expect(spySave).toHaveBeenCalledWith('validClaimId', { claimantResponse: claimantResponseToUpdate }, true);
       });
     });
 

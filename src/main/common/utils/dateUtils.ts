@@ -1,19 +1,20 @@
+import config from 'config';
 import {DateTime} from 'luxon';
 
-const FIVE_DAYS = 5;
-const SIX_DAYS = 6;
 const FOUR_PM = 16;
+const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
+const DAY_TO_SECONDS_UNIT = 86400;
 
 export const currentDateTime = () => {
   return DateTime.now();
 };
 
-export const addFiveDaysBefore4pm = (date: Date): Date => {
+export const addDaysBefore4pm = (date: Date, value: number): Date => {
   const datePlusDays = new Date(date);
   if (date.getUTCHours() > FOUR_PM) {
-    datePlusDays.setDate(date.getDate() + SIX_DAYS);
+    datePlusDays.setDate(date.getDate() + value + 1);
   } else {
-    datePlusDays.setDate(date.getDate() + FIVE_DAYS);
+    datePlusDays.setDate(date.getDate() + value);
   }
   return datePlusDays;
 } ;
@@ -83,6 +84,38 @@ export const formatStringDate = (text: string) => {
   return `${year}-${month}-${day}`;
 };
 
+export const formatStringDateSlash = (text: string) => {
+  const date = new Date(Date.parse(text));
+  const day = date.getDate().toString();
+  const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const checkEvidenceUploadTime = (date: Date): boolean => {
+
+  const endOfDay = 18;
+
+  if(date == undefined)
+  {
+    return false;
+  }
+  const today = new Date();
+  today.setHours(endOfDay, 0, 0, 0);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate()-1);
+
+  if(new Date().getHours() >= endOfDay) {
+    return date.getTime() >= yesterday.getTime() && date.getTime() < today.getTime();
+  } else {
+    const dayBeforeYesterday = new Date(yesterday);
+    dayBeforeYesterday.setDate(yesterday.getDate()-1);
+    return date.getTime() >= dayBeforeYesterday.getTime() && date.getTime() < yesterday.getTime();
+  }
+};
+
 export const formatStringDateDMY = (date: Date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const month = DateTime.fromJSDate(date).toFormat('MMM');
@@ -90,3 +123,19 @@ export const formatStringDateDMY = (date: Date) => {
 
   return `${day} ${month} ${year}`;
 };
+
+export const formatStringTimeHMS = (date: Date) => {
+  return `${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}`;
+};
+
+export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
+  return Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
+}
+
+export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
+  return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);
+}
+
+export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
+  return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
+}

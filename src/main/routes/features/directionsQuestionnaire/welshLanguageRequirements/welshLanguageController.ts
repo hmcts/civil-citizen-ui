@@ -8,6 +8,8 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Language} from '../../../../common/models/directionsQuestionnaire/welshLanguageRequirements/language';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welshLanguageRequirements/welsh-language';
@@ -20,7 +22,7 @@ function renderView(form: GenericForm<Language>, res: express.Response): void {
 
 welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const welshLanguageRequirements = directionQuestionnaire.welshLanguageRequirements?.language
       ? new Language(directionQuestionnaire.welshLanguageRequirements.language.speakLanguage, directionQuestionnaire.welshLanguageRequirements.language.documentsLanguage)
       : new Language();
@@ -33,13 +35,14 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
 welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm(new Language(req.body.speakLanguage, req.body.documentsLanguage));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, languageProperty, welshLanguageRequirementsProperty);
+      await saveDirectionQuestionnaire(redisKey, form.model, languageProperty, welshLanguageRequirementsProperty);
       const redirectUrl = claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }

@@ -3,24 +3,36 @@ import config = require('config');
 import cookieParser from 'cookie-parser';
 
 import express from 'express';
-import {Helmet} from './modules/helmet';
+import {Helmet} from 'modules/helmet';
 import * as path from 'path';
-import {HTTPError} from '../main/HttpError';
-import {Nunjucks} from './modules/nunjucks';
-import {PropertiesVolume} from './modules/properties-volume';
-import {AppInsights} from './modules/appinsights';
-import {I18Next} from './modules/i18n';
-import {HealthCheck} from './modules/health';
-import {OidcMiddleware} from './modules/oidc';
-import {DraftStoreClient} from './modules/draft-store';
-import {CSRFToken} from './modules/csrf';
+import {HTTPError} from './HttpError';
+import {Nunjucks} from 'modules/nunjucks';
+import {PropertiesVolume} from 'modules/properties-volume';
+import {AppInsights} from 'modules/appinsights';
+import {I18Next} from 'modules/i18n';
+import {HealthCheck} from 'modules/health';
+import {OidcMiddleware} from 'modules/oidc';
+import {DraftStoreClient} from 'modules/draft-store';
+import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import session from 'express-session';
-import {STATEMENT_OF_MEANS_URL} from 'routes/urls';
+import {
+  BASE_CLAIM_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
+  STATEMENT_OF_MEANS_URL,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+} from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
+import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
+import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
+import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
+import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -34,6 +46,8 @@ app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -43,6 +57,9 @@ new PropertiesVolume().enableFor(app);
 
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+
+logger.info('Creating OSplaces Client Instance');
+createOSPlacesClientInstance();
 
 logger.info('Adding configuration for session store');
 const sessionStore = getRedisStoreForSession();
@@ -69,8 +86,16 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
+app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
+app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+  IS_CASE_READY_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL], trialArrangementsGuard);
+
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
 app.use((_req, res, next) => {
   res.setHeader(

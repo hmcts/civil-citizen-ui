@@ -42,6 +42,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
         category: 'category',
+        parentField: 'parentField',
         field: 'date',
         text: 'title',
         hint: 'hint',
@@ -59,7 +60,7 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
     //When
     const dateArrayBuilt = new UploadDocumentsSectionBuilder()
       .addDateArray(dateArrayExpected.data.text, errors, dateArrayExpected.data.hint,
-        dateArrayExpected.data.category, dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
+        dateArrayExpected.data.category, dateArrayExpected.data.parentField,  dateArrayExpected.data.field, dateArrayExpected.data.dayValue, dateArrayExpected.data.monthValue, dateArrayExpected.data.yearValue)
       .build();
 
     //Then
@@ -76,13 +77,17 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         text: 'title',
         html: 'html',
         index: 0,
+        caseDocument: '',
+        classes: '',
+        errorMessage: '',
+        documentName: '',
       },
     });
 
     //When
     const uploadArrayBuilt = new UploadDocumentsSectionBuilder()
       .addUploadArray(uploadArrayExpected.data.text,uploadArrayExpected.data.html,
-        uploadArrayExpected.data.category,uploadArrayExpected.data.field)
+        uploadArrayExpected.data.category,uploadArrayExpected.data.field, 0, uploadArrayExpected.data.classes, uploadArrayExpected.data.errorMessage)
       .build();
 
     //Then

@@ -6,62 +6,69 @@
 
 {% block content %}
 
-  <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
-      {% set claimantName = claim.getClaimantFullName() %}
-      {% set defendantName = claim.getDefendantFullName() %}
-      {% set latestUpdate %}
-        {% for latestUpdateSection in latestUpdateContent %}
-          {{ claimSummaryContent({
-            contentSections: latestUpdateSection.contentSections,
-            hasDivider: latestUpdateSection.hasDivider
-          }) }}
-        {% endfor %}
-      {% endset %}
+    <div class="govuk-width-container govuk-!-padding-top-0">
+        <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+            {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
+            {% set claimantName = claim.getClaimantFullName() %}
+            {% set defendantName = claim.getDefendantFullName() %}
 
-      {% set documents %}
-        {% for documentsSection in documentsContent %}
-          {{ claimSummaryContent({
-            contentSections: documentsSection.contentSections
-          },t) }}
-        {% endfor %}
-      {% endset %}
+            <div class="govuk-grid-row govuk-!-margin-top-0">
+                <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+                    <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
+                    <p class="govuk-body-s">
+                        {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
+                        {{ claim.legacyCaseReference }}
+                    </p>
 
-      <div class="govuk-grid-row govuk-!-margin-top-0">
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
-          <p class="govuk-body-s">
-            {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
-            {{ claim.legacyCaseReference }}
-          </p>
+                    <div class="wordWrap">
+                        <div class="govuk-tabs" data-module="govuk-tabs">
+                            <ul class="govuk-tabs__list">
+                                {% for i in range(0, tabContent.length)  %}
+                                    {% if i == 0 %}
+                                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                                                {{ t(tabContent[i].label) }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="govuk-tabs__list-item">
+                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                                                {{ t(tabContent[i].label) }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
 
-          {{ govukTabs({
-            classes: 'tab-section',
-            items: [
-              {
-                label: t('PAGES.CLAIM_SUMMARY.LATEST_UPDATE'),
-                id: "latest-update",
-                panel: {html: latestUpdate}
-              },
-              {
-                label: t('PAGES.CLAIM_SUMMARY.DOCUMENTS'),
-                id: "documents",
-                panel: {html: documents}
-              }
-            ]
-          }) }}
+                            {% for i in range(0, tabContent.length)  %}
+                            {% if i == 0 %}
+                            <div class="govuk-tabs__panel" id="{{ tabContent[i].id }}">
+                                {% else %}
+                                <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="{{ tabContent[i].id }}">
+                                    {% endif %}
+                                    {% for tabSection in tabContent[i].panels %}
+                                        {{ claimSummaryContent({
+                                            contentSections: tabSection.contentSections,
+                                            hasDivider: tabSection.hasDivider
+                                        }, t) }}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {{ contactUsForHelp(t) }}
+                    </div>
+                    {{ aboutClaimWidget(t, {
+                        header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
+                        lines:[
+                            {title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: 'contact-them', hrefContact: claimantName},
+                            {title: 'COMMON.CLAIM_AMOUNT', content: totalClaimAmount, href: ''},
+                            {title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: '/case/' + claimId + '/response/claim-details', hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'},
+                            {title: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.HEADER', href: responseDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.DOWNLOAD_RESPONSE'} ]
+                    }) }}
+                </div>
+            </div>
+        </main>
+    </div>
 
-          {{ contactUsForHelp(t) }}
-        </div>
-        {{ aboutClaimWidget({
-          header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
-          lines:[
-            {title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
-            {title: t('COMMON.CLAIM_AMOUNT'), content: totalClaimAmount},
-            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]
-          }) }}
-      </div>
-    </main>
-  </div>
 {% endblock %}

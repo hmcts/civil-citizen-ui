@@ -4,7 +4,7 @@ import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnsw
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {createClaimWithBasicDetails, createClaimWithYourDetails} from '../../../../utils/mocks/claimDetailsMock';
+import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
@@ -12,6 +12,8 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -22,11 +24,18 @@ const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 
+jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
+jest.mock('../../../../../main/routes/guards/checkYourAnswersGuard', () => ({
+  checkYourAnswersClaimGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
@@ -34,10 +43,16 @@ const mockSubmitClaim = submitClaim as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 
+const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
+const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockClaimWithPcqId = new Claim();
+mockClaimWithPcqId.pcqId = '123';
+
 describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const checkYourAnswerEng = 'Check your answers';
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeAll(() => {
     nock(idamServiceUrl)
@@ -49,6 +64,7 @@ describe('Claim - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
+    isPcqShutterOnMock.mockResolvedValue(true);
   });
 
   describe('on GET', () => {
@@ -73,6 +89,9 @@ describe('Claim - Check answers', () => {
     it('should return check answers page with Your details and their details sections', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicDetails();
+      });
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaimWithPcqId;
       });
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
@@ -135,11 +154,27 @@ describe('Claim - Check answers', () => {
     });
   });
   describe('on Post', () => {
+
+    beforeAll(() => {
+      mockGetSummarySections.mockReset();
+    });
+    const spyClearcookie = jest.spyOn(app.response, 'clearCookie');
+
     it('should return errors when form is incomplete', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithYourDetails();
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
       });
-      const data = {signed: ''};
+      const data = {
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
@@ -148,7 +183,7 @@ describe('Claim - Check answers', () => {
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
-    it('should return payment button when Fee is no', async () => {
+    it('should return submit button when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.claimDetails = new ClaimDetails();
@@ -162,7 +197,7 @@ describe('Claim - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Submit and continue to payment');
+          expect(res.text).toContain('Submit claim');
         });
     });
     it('should return submit button when Fee is yes', async () => {
@@ -210,6 +245,8 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
+      expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
@@ -226,14 +263,17 @@ describe('Claim - Check answers', () => {
         directionsQuestionnaireSigned: 'Test',
         signerRole: 'Test',
         signerName: 'Test',
+        acceptNoChangesAllowed: 'true',
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('https://www.payments.service.gov.uk/card_details/');
+          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+      expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
+      expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {

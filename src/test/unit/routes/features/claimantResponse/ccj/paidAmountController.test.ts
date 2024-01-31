@@ -5,9 +5,11 @@ import {app} from '../../../../../../main/app';
 import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_EXTENDED_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
-} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import * as utilService from 'modules/utilityService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -20,6 +22,7 @@ describe('CCJ - Paid amount', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(utilService, 'getClaimById').mockResolvedValue({ isClaimantIntentionPending: () => true } as Claim);
   });
 
   describe('on GET', () => {
@@ -132,7 +135,7 @@ describe('CCJ - Paid amount', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
     });
     it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
       const res = await request(app).post(CCJ_PAID_AMOUNT_URL)

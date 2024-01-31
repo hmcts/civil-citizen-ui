@@ -11,9 +11,10 @@ import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
+import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 
@@ -76,6 +77,12 @@ const validDataForPost = {
   postToThisAddress: 'no',
 };
 
+const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
+const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
+  .mockReturnValue(Promise.resolve(claim));
+const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
+  .mockReturnValue(Promise.resolve(calmEnabled));
+
 describe('Confirm Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -88,6 +95,9 @@ describe('Confirm Details page', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
+    getCaseDataFromStoreSpy(mockClaim);
+    carmToggleSpy(true);
   });
 
   describe('on Exception', () => {
@@ -175,6 +185,39 @@ describe('Confirm Details page', () => {
       });
   });
 
+  it('should return mandatory contact person label and error on empty contact person - company', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.COMPANY);
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        contactPerson: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
+        expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
+        expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
+      });
+  });
+
+  it('should return optional contact person label when carm toggle disabled - company', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.COMPANY);
+    });
+    carmToggleSpy(false);
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        contactPerson: 'Joe Bloggs',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
+      });
+  });
+
   it('should return your details organisation page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(PartyType.ORGANISATION);
@@ -185,6 +228,39 @@ describe('Confirm Details page', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('Organisation name');
+      });
+  });
+
+  it('should return mandatory contact person label and error on empty contact person - organisation', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        contactPerson: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
+        expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
+        expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
+      });
+  });
+
+  it('should return optional contact person label when carm toggle disabled - organisation', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+    });
+    carmToggleSpy(false);
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        contactPerson: 'Joe Bloggs',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
       });
   });
 

@@ -1,33 +1,44 @@
-import {NextFunction, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
+import {NextFunction, RequestHandler, Router} from 'express';
+import {
+  CLAIM_CONFIRMATION_URL,
+  CLAIM_FEE_BREAKUP,
+  CLAIM_FEE_CHANGE_URL,
+} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
-import {DocumentUri} from 'models/document/documentType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-
+import {AppRequest} from 'models/AppRequest';
+import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
 
-claimSubmittedController.get(CLAIM_CONFIRMATION_URL, async (req, res, next: NextFunction) => {
+claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {
-      const claimNumber = claim.legacyCaseReference;
-      const downloadHref = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentType', DocumentUri.SEALED_CLAIM);
+      const claimNumber = claim.getFormattedCaseReferenceNumber(claimId);
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
+      const isClaimFeeChanged = await checkIfClaimFeeHasChanged(claimId, claim, <AppRequest>req);
+      const claimFeeBreakUpUrl = CLAIM_FEE_BREAKUP.replace(':id', claimId);
+      const feeChangeUrl = CLAIM_FEE_CHANGE_URL.replace(':id', claimId);
+      const redirectUrl = isClaimFeeChanged ? feeChangeUrl : claimFeeBreakUpUrl;
 
       res.render(claimSubmittedView, {
-        claimNumber, defendantFullName, defendantResponseLimit,
-        helpWithFee, downloadHref,
+        claimNumber,
+        defendantFullName,
+        defendantResponseLimit,
+        helpWithFee,
+        claimId,
+        redirectUrl,
       });
     }
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimSubmittedController;

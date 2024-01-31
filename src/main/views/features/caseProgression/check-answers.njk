@@ -1,8 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
 {% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
@@ -11,10 +13,6 @@
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 
-{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')
-                    + '<p class="govuk-!-margin-top-2">'
-                    + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
-                    +'</p>' %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -23,10 +21,27 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
-          {% if summarySections.witnessEvidenceSections %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.WITNESS_EVIDENCE') }}</h1>
-            {% for section in summarySections.witnessEvidenceSections.sections %}
+          {% for content in topPageContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+
+          {% if summarySections.disclosureEvidenceSection.sections.length > 0 %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h1>
+            {% for section in summarySections.disclosureEvidenceSection.sections %}
+              <div class="govuk-!-margin-bottom-9">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                <div class="govuk-form-group">
+                  {{ govukSummaryList({
+                    rows: section.summaryList.rows
+                  }) }}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if summarySections.witnessEvidenceSection.sections.length > 0 %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h1>
+            {% for section in summarySections.witnessEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
                     <div class="govuk-form-group">
@@ -37,10 +52,10 @@
                   </div>
             {% endfor %}
           {% endif %}
-  //Expert Evidence
-          {% if summarySections.expertEvidenceSections %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.EXPERT_EVIDENCE') }}</h1>
-            {% for section in summarySections.expertEvidenceSections.sections %}
+
+          {% if summarySections.expertEvidenceSection.sections.length > 0 %}
+            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h1>
+            {% for section in summarySections.expertEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
                     <div class="govuk-form-group">
@@ -49,40 +64,59 @@
                       }) }}
                     </div>
                   </div>
-              {% endif %}
             {% endfor %}
-  //Trial Documents
-          {% if summarySections.trialDocumentSections %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.EVIDENCE_UPLOAD.CHECK_YOUR_ANSWER.TRIAL') }}</h1>
-            {% for section in summarySections.trialDocumentSections.sections %}
-              {% if section.yourStatement %}
-                {% for statement in section.yourStatement %}
+          {% endif %}
+
+
+          {% if summarySections.trialEvidenceSection.sections.length > 0 %}
+            {% if isSmallClaims %}
+              <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS') }}</h1>
+            {% else %}
+              <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL') }}</h1>
+            {% endif %}
+            {% for section in summarySections.trialEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ statement.title }}</h2>
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
-                        rows: statement.summaryList.rows
+                        rows: section.summaryList.rows
                       }) }}
                     </div>
                   </div>
-              {% endif %}
             {% endfor %}
           {% endif %}
+          {% for content in bottomPageContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
-            {{ statementOfTruth(
-              t,
-              form,
-              labelHtml
-            ) }}
-            <div class="govuk-form-group">
+
+            {{ govukCheckboxes({
+              idPrefix: 'signed',
+              name: 'signed',
+              items: [
+                {
+                  value: true,
+                  html: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CORRECT'),
+                  checked: true if form.model.signed
+                }
+              ],
+              errorMessage: {
+                text:t(form.errorFor(signed))
+              } if form.errorFor(signed)
+            }) }}
+
+            <div class="govuk-button-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')
+                text: t('COMMON.BUTTONS.SUBMIT')
               }) }}
-              {{ contactUsForHelp(t) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
         </div>
       </div>
     </main>

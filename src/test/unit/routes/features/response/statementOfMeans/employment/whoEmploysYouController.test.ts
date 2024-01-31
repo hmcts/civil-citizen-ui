@@ -10,6 +10,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
@@ -45,20 +46,25 @@ const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
 const mockEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const mockEmployedAndSelfEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 const mockSelfEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('Who employs you', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -68,6 +74,7 @@ describe('Who employs you', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {

@@ -1,5 +1,5 @@
 import {DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
-import {buildPaginationData} from 'services/features/dashboard/claimPaginationService';
+import { buildPagination } from 'services/features/dashboard/claimPaginationService';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
@@ -12,46 +12,53 @@ describe('buildPaginationData Service', () => {
   const lang = 'en';
 
   // claims undefined
-  it('should return paginationArguments and paginatedClaims undefined when there is no claims', async () => {
+  it('should return paginationArguments undefined when there is no claims', async () => {
     // Given
-    const claims: DashboardDefendantItem[] = undefined;
+    const totalPages: number = undefined;
     const currentPageAsString: string = undefined;
     // When
-    const result = buildPaginationData(claims, currentPageAsString, lang);
+    const result = buildPagination(totalPages, currentPageAsString, lang);
     // Then
-    expect(result.paginationArguments).toBeUndefined();
-    expect(result.paginatedClaims).toBeUndefined();
+    expect(result).toBeUndefined();
   });
   // claims less than 10
   it('should return pagination arguments as undefined when claims are less than case per page', async () => {
     // Given
-    const claims: DashboardDefendantItem[] = generateClaims(true);
+    const totalPages = 1;
     const currentPageAsString = '2';
     // When
-    const result = buildPaginationData(claims, currentPageAsString, lang);
+    const result = buildPagination(totalPages, currentPageAsString, lang);
     // Then
-    expect(result.paginatedClaims.length).toEqual(4);
-    expect(result.paginatedClaims[0].claimantName).toEqual('Mr Baddy Bad');
-    expect(result.paginatedClaims[0].defendantName).toEqual('Mr Bad Guy');
-    expect(result.paginationArguments).toBeUndefined();
+    expect(result).toBeUndefined();
   });
   // claims more than 10
-  it('should return both pagination arguments and pagianted claims when there is more than case per page', async () => {
+  it('should return both pagination arguments and paginated claims when there is more than case per page', async () => {
     // Given
-    const claims: DashboardDefendantItem[] = generateClaims(false);
+    const totalPages = 2;
     const currentPageAsString = '2';
     // When
-    const result = buildPaginationData(claims, currentPageAsString, lang);
+    const result = buildPagination(totalPages, currentPageAsString, lang, 'claimantPage');
     // Then
-    expect(result.paginatedClaims.length).toEqual(3);
-    expect(result.paginatedClaims[0].claimNumber).toEqual('000MC038');
-    expect(result.paginatedClaims[0].claimantName).toEqual('GINNY Perro');
-    expect(result.paginatedClaims[0].defendantName).toEqual('Bruce Lee');
-    expect(result.paginationArguments.items.length).toEqual(2);
-    expect(result.paginationArguments.items[0]).toStrictEqual({'current': false, 'href': '/dashboard?lang=en&page=1', 'number': 1});
-    expect(result.paginationArguments.items[1]).toStrictEqual({'current': true, 'href': '/dashboard?lang=en&page=2', 'number': 2});
-    expect(result.paginationArguments.next).toBeUndefined();
-    expect(result.paginationArguments.previous).toStrictEqual({'href': '/dashboard?lang=en&page=1', 'text': 'PAGES.DASHBOARD.PREVIOUS'});
+    expect(result.items.length).toEqual(2);
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&claimantPage=1', 'number': 1 });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&claimantPage=2', 'number': 2 });
+    expect(result.next).toBeUndefined();
+    expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
+  });
+
+  // claims more than 10
+  it('should return both pagination arguments and paginated claims when there is more than case per page for claimant and defendant', async () => {
+    // Given
+    const totalPages = 2;
+    const currentPageAsString = '2';
+    // When
+    const result = buildPagination(totalPages, currentPageAsString, lang, 'defendantPage', 'claimantPage=1');
+    // Then
+    expect(result.items.length).toEqual(2);
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'number': 1 });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&defendantPage=2&claimantPage=1', 'number': 2 });
+    expect(result.next).toBeUndefined();
+    expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
   });
 });
 

@@ -24,23 +24,30 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
+  memoryRequests: 1024Mi
+  cpuRequests: 2500m
+  memoryLimits: 2048Mi
+  cpuLimits: 2500m
   devcpuRequests: 500m
-  devmemoryRequests: 512Mi
+  devmemoryRequests: 1Gi
   devcpuLimits: 2
-  devmemoryLimits: 1Gi
+  devmemoryLimits: 2Gi
+  readinessDelay: 130
+  livenessDelay: 130
   keyVaults:
-    civil-citizen-ui:
+    civil-cui:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
         - draft-store-access-key
         - citizen-ui-idam-secret
-        - name: ordnance-survey-api-key
-          alias: ORDNANCE_SURVEY_API_KEY
+        - ordnance-survey-api-key
         - cmc-s2s-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
@@ -52,8 +59,8 @@ nodejs:
     REDIS_HOST: 'civil-citizen-ui-draft-store-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
+    REDIS_EXPIRE_IN_DAYS: 180
     SECURE_COOKIE: 'true'
-    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
     DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -61,9 +68,11 @@ nodejs:
     DRAFT_STORE_API_URL: http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
+    GOVPAY_URL: https://card.payments.service.gov.uk
+    CARM_DATE: '01 May 2024'
 
   autoscaling:
-    enabled: false
-    maxReplicas: 16
+    enabled: true
+    maxReplicas: 5
     targetCPUUtilizationPercentage: 80
 

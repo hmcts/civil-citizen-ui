@@ -1,10 +1,12 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {
-  UploadDocumentsUserForm,
-  WitnessSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {
+  getMockDocumentsReferredSectionArray,
+  getMockWitnessSectionArray,
+} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {EvidenceUploadWitness} from 'models/document/documentType';
 
 describe('Witness service', () => {
   let mockClaim;
@@ -17,6 +19,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             witness: [
@@ -39,6 +42,7 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             witness: [
@@ -62,6 +66,34 @@ describe('Witness service', () => {
     expect(actualContent[3][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT');
   });
 
+  it('should return all witness content on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments: {
+            witness: [
+              {documentType: 'WITNESS_STATEMENT', selected: true},
+              {documentType: 'WITNESS_SUMMARY', selected: true},
+              {documentType: 'NOTICE_OF_INTENTION', selected: true},
+              {documentType: 'DOCUMENTS_REFERRED', selected: true},
+            ],
+          },
+        },
+      },
+    };
+    //when
+    const actualContent = getWitnessContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualContent.length).toEqual(4);
+  });
+
   it('should return no witness content', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, null);
 
@@ -77,6 +109,27 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualWitnessContent = getWitnessContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualWitnessContent.length).toEqual(0);
+  });
+
+  it('should return no section if claimantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
         caseProgression: {},
       },
     };
@@ -96,6 +149,26 @@ describe('Witness service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
+
+    //when
+    const actualContent = getWitnessContent(testClaim.case_data, null);
+
+    //Then
+    expect(actualContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
       },
     };
 
@@ -113,7 +186,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.witnessStatement = getMockWitnessSectionArray();
+    form.witnessStatement = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -131,7 +204,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.witnessSummary = getMockWitnessSectionArray();
+    form.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -149,7 +222,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.noticeOfIntention = getMockWitnessSectionArray();
+    form.noticeOfIntention = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -167,7 +240,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.documentsReferred = getMockWitnessSectionArray();
+    form.documentsReferred = getMockDocumentsReferredSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -179,10 +252,3 @@ describe('Witness service', () => {
   });
 
 });
-
-const getMockWitnessSectionArray = () => {
-  const sectionArray: WitnessSection[] = [];
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
-  sectionArray.push(new WitnessSection('12', '12', '2022'));
-  return sectionArray;
-};

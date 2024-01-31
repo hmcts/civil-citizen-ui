@@ -6,6 +6,7 @@
 {% from "../../macro/their-financial-details.njk" import theirFinancialDetails %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+
 {% block pageTitle %}
   {{ setPageTitle('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
 {% endblock %}
@@ -20,55 +21,68 @@
     {% set howDoTheyWantToPay = t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE') %}
     {% set defendantResponse = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.SUGGESTED_REPAYMENT') + ':' %}
   {% endif %}
+  {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+    {% set howDoTheyWantToPay = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.HOW_THEY_WANT_PAY') %}
+    {% set defendantResponse = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.SUGGESTED_REPAYMENT') + ':' %}
+    {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
+    {% set reasonsWhyYouCantPayImmediately = t(claim.statementOfMeans.explanation.text) %}
+  {% endif %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TITLE') }}</h1>
+
           {% for item in defendantsResponseContent %}
             {{ itemContent(item,t) }}
           {% endfor %}
-          {% if claim.responseStatus === 'FULL_ADMISSION_PAY_BY_DATE' %}
-            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+
+          {% if howDoTheyWantToPay %}
+            <h2 class="govuk-heading-s">{{ howDoTheyWantToPay }}</h2>
+          {% endif %}
+          <p class="govuk-body">{{ defendantResponse }}</p>
+
+          {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+            {% for item in repaymentPlan %}
+              {{ govukSummaryList({
+                rows: [
+                  {
+                    key: {
+                    text: item.key.text
+                  },
+                    value: {
+                    text: item.value.text
+                  }
+                  }
+                ]
+              }) }}
+            {% endfor %}
+          {% endif %}
+
+          {% if claim.isBusiness() === false %}
+            {% if unableToPayFullAmunt %}
+              <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
+              <p class="govuk-body">{{ reasonsWhyYouCantPayImmediately }}</p>
+            {% endif %}
+
+            {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+              {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
+            {% endif %}
           {% endif %}
           <h3 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_RESPONSE') }}</h3>
           <p class="govuk-body">
             <a href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
           </p>
-          {% if howDoTheyWantToPay %}
-            <h2 class="govuk-heading-s">{{ howDoTheyWantToPay }}</h2>
-          {% endif %}
-          <p class="govuk-body">{{ defendantResponse }}</p>
-          {% if unableToPayFullAmunt %}
-            <h2 class="govuk-heading-s">{{ unableToPayFullAmunt }}</h2>
-          {% endif %}
-          <p class="govuk-body">
-            {{ reasonsWhyYouCantPayImmediately }}
-          </p>
-          {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
-            {% for item in repaymentPlan %}
-              {{ govukSummaryList({
-                  rows: [
-                  {
-                      key: {
-                        text: item.key.text
-                      },
-                      value: {
-                        text: item.value.text
-                      }
-                    }
-                  ]
+
+          <form method="post" action="{{originalUrl}}" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                  text: t('COMMON.BUTTONS.CONTINUE')
               }) }}
-            {% endfor %}
-          {% endif %}
-          {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
-            {{ theirFinancialDetails(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SEE_FINANCIAL_DETAILS', claim, financialDetails) }}
-          {% endif %}
-          {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE'),
-              href: continueLink
-          }) }}
-          {{ contactUsForHelp(t) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
         </div>
       </div>
     </main>

@@ -1,0 +1,48 @@
+{% extends "claim-details-tpl.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/back.njk" import back %}
+{% from "../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
+
+{% block pageTitle %}
+    {{ setPageTitle('PAGES.APPLY_HELP_WITH_FEES.START.TITLE') }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-width-container govuk-!-padding-top-0">
+        <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+          {% if form.hasErrors() %}
+            {{ errorSummary(form.getAllErrors(), t) }}
+          {% endif %}
+            <div class="govuk-grid-row govuk-!-margin-top-0">
+                <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+                    {{ csrfProtection(csrf) }}
+                    {{ back(backUrl,t) }}
+                    {% for content in applyHelpWithFeesContent %}
+                        {{ itemContent(content,t) }}
+                    {% endfor %}
+
+                    <form method="post" novalidate>
+                        {{ csrfProtection(csrf) }}
+
+                        {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
+
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: t('COMMON.BUTTONS.CONTINUE')
+                            }) }}
+                            <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                        </div>
+                    </form>
+                </div>
+              {{ contactUsForHelpOneThird(t) }}
+        </main>
+    </div>
+{% endblock %}

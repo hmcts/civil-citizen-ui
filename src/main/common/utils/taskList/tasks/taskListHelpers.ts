@@ -85,3 +85,10 @@ export const hasClaimantResponseContactPersonAndCompanyPhone = (caseData: Claim)
 export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {
   return caseData.isFullDefence() && caseData.rejectAllOfClaim?.option !== RejectAllOfClaimType.COUNTER_CLAIM;
 };
+
+export const hasAllCarmRequiredFields = (respondent1: Party): boolean => {
+  if (respondent1.type === PartyType.INDIVIDUAL) {
+    return (!!respondent1.partyPhone && !!respondent1.dateOfBirth);
+  }
+  return (!!respondent1.partyPhone && !!respondent1.partyDetails.contactPerson);
+};

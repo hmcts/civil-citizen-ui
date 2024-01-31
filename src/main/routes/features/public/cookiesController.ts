@@ -15,18 +15,17 @@ export const defaultCookiePreferences = {
 };
 
 cookiesController.get(COOKIES_URL, (req: AppRequest, res: Response) => {
-  const cookiePreferences = req.cookies['money-claims-cookie-preferences'] ? req.cookies['money-claims-cookie-preferences'] : defaultCookiePreferences;
-  res.render(cookiesViewPath, {cookiePreferences});
+  const cookiePreferences = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : defaultCookiePreferences;
+  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences});
 });
 
 cookiesController.post(COOKIES_URL, async (req: AppRequest<CookiesModel>, res: Response) => {
-  const cookie = req.cookies['money-claims-cookie-preferences'] ? req.cookies['money-claims-cookie-preferences'] : {};
+  const cookie = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : {};
   cookie.analytics = req.body.analytics;
   cookie.apm = req.body.apm;
   res.cookie('money-claims-cookie-preferences', cookie);
   res.render(cookiesViewPath, {
     cookiePreferences: cookie,
-    isSavedPreferencesBannerDisplayed: true,
     redirectUrl: DASHBOARD_URL,
   });
 });

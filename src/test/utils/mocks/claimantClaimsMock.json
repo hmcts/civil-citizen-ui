@@ -1,9 +1,12 @@
-[
-  {
-    "claimNumber": "256MC007",
-    "claimantName": "Mr John Clark",
-    "defendantName": "Mr Bad Guy",
-    "claimAmount": "1000",
-    "responseDeadLine": "21-06-2022"
-  }
-]
+{
+  "claims": [
+    {
+      "claimNumber": "256MC007",
+      "claimantName": "Mr John Clark",
+      "defendantName": "Mr Bad Guy",
+      "claimAmount": "1000",
+      "responseDeadLine": "21-06-2022"
+    }
+  ],
+  "totalPages": 1
+}

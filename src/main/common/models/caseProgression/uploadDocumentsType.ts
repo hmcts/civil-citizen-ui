@@ -28,10 +28,10 @@ export class UploadDocuments {
     this.expert = expert;
     this.trial = trial;
     this.checkboxGrp = [
-      disclosure?.[0].selected, disclosure?.[1]?.selected,
-      witness?.[0].selected, witness?.[1]?.selected, witness?.[2]?.selected, witness?.[3]?.selected,
-      expert?.[0].selected, expert?.[1]?.selected, expert?.[2]?.selected, expert?.[3]?.selected,
-      trial?.[0].selected, trial?.[1]?.selected, trial?.[2]?.selected, trial?.[3]?.selected, trial?.[4]?.selected,
+      disclosure?.[0]?.selected, disclosure?.[1]?.selected,
+      witness?.[0]?.selected, witness?.[1]?.selected, witness?.[2]?.selected, witness?.[3]?.selected,
+      expert?.[0]?.selected, expert?.[1]?.selected, expert?.[2]?.selected, expert?.[3]?.selected,
+      trial?.[0]?.selected, trial?.[1]?.selected, trial?.[2]?.selected, trial?.[3]?.selected, trial?.[4]?.selected,
     ];
   }
 
@@ -62,7 +62,7 @@ export class UploadEvidenceWitness{
   witnessOptionDocument: Document;
   createdDatetime: Date;
 
-  constructor(witnessOptionDocument: Document, createdDatetime: Date, witnessOptionName?: string, witnessOptionUploadDate?: Date) {
+  constructor(witnessOptionName: string, witnessOptionUploadDate: Date, witnessOptionDocument: Document, createdDatetime: Date) {
     this.witnessOptionName = witnessOptionName;
     this.witnessOptionUploadDate = witnessOptionUploadDate;
     this.witnessOptionDocument = witnessOptionDocument;
@@ -81,9 +81,9 @@ export class UploadEvidenceExpert {
   createdDatetime: Date;
   expertDocument: Document;
 
-  constructor(expertDocument: Document, createdDatetime: Date, expertOptionName?: string, expertOptionExpertise?: string, expertOptionExpertises?: string,
-    expertOptionOtherParty?: string, expertDocumentQuestion?: string, expertDocumentAnswer?: string,
-    expertOptionUploadDate?: Date) {
+  constructor(expertOptionName: string, expertOptionExpertise: string, expertOptionExpertises: string,
+    expertOptionOtherParty: string, expertDocumentQuestion: string, expertDocumentAnswer: string,
+    expertOptionUploadDate: Date, expertDocument: Document, createdDatetime: Date) {
     this.expertOptionName = expertOptionName;
     this.expertOptionExpertise = expertOptionExpertise;
     this.expertOptionExpertises = expertOptionExpertises;
@@ -97,12 +97,14 @@ export class UploadEvidenceExpert {
 }
 
 export class UploadEvidenceDocumentType{
+  witnessOptionName?: string;
   typeOfDocument?: string;
   documentIssuedDate?: Date;
   documentUpload: Document;
   createdDatetime: Date;
 
-  constructor(documentUpload: Document, createdDatetime: Date, typeOfDocument?: string, documentIssuedDate?: Date) {
+  constructor(witnessOptionName: string, typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
+    this.witnessOptionName = witnessOptionName;
     this.typeOfDocument = typeOfDocument;
     this.documentIssuedDate = documentIssuedDate;
     this.documentUpload = documentUpload;

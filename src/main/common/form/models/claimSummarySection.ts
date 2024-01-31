@@ -27,6 +27,7 @@ export interface ClaimSummaryItem {
   head?: TableCell[];
   tableRows?: TableCell[][];
   title?: string;
+  externalLink?: boolean;
 }
 
 /**
@@ -53,5 +54,9 @@ export enum ClaimSummaryType {
   INPUT_ARRAY = 'inputArray',
   DATE_ARRAY = 'dateArray',
   UPLOAD_ARRAY = 'uploadArray',
-  SELECT = 'select'
+  SELECT = 'select',
+  BUTTON_WITH_CANCEL_LINK = 'buttonWithCancelLink',
+  NEW_TAB_BUTTON = 'newTabButton',
+  MICRO_TEXT = 'microText',
+  SPAN = 'span',
 }

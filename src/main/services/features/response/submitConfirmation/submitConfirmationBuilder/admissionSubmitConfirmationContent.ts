@@ -3,7 +3,6 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {addDaysToDate} from '../../../../../common/utils/dateUtils';
 
 export function getFAPAyImmediatelyStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantFullName();
@@ -100,8 +99,7 @@ export function getNextStepsTitle(lang: string):ClaimSummarySection[] {
 
 export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantFullName();
-  const immediatePaymentDate = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const immediatePaymentDeadline = formatDateToFullDate(immediatePaymentDate, lang);
+  const immediatePaymentDeadline = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   return [
     {
       type: ClaimSummaryType.HTML,
@@ -171,7 +169,7 @@ export function getNotPayImmediatelyContent(claim: Claim, lang: string): ClaimSu
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}:</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY', {claimantName, lng: lang})}${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU', {lng: lang})}</p>`,
         variables: {claimantName: claimantName},
       },
     },

@@ -2,6 +2,45 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
+
+  addStartButton(title: string, href: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        //TODO: (href) in the future we should add in here the document url (it is in development)
+        href: href,
+        isStartButton: true,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+  addMainTitle(mainTitle: string, variables?: unknown) {
+    const mainTitleSection = ({
+      type: ClaimSummaryType.MAINTITLE,
+      data: {
+        text: mainTitle,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(mainTitleSection);
+    return this;
+  }
+
+  addLeadParagraph(text: string, variables?: unknown, classes?: string) {
+    const leadParagraphSection = ({
+      type: ClaimSummaryType.LEAD_PARAGRAPH,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(leadParagraphSection);
+    return this;
+  }
+
   addTitle(title: string, variables?: any, classes?: string) {
     const titleSection = ({
       type: ClaimSummaryType.TITLE,
@@ -27,6 +66,44 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(paragraphSection);
     return this;
   }
+
+  addSpan(text: string, variables?: any, classes?: string) {
+    const spanSection = ({
+      type: ClaimSummaryType.SPAN,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(spanSection);
+    return this;
+  }
+
+  addInsetText(text: string, variables?: unknown) {
+    const insetSection = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(insetSection);
+    return this;
+  }
+
+  addRawHtml(html: string, variables?: any) {
+    const htmlSection = ({
+      type: ClaimSummaryType.HTML,
+      data: {
+        html: html,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(htmlSection);
+    return this;
+  }
+
   addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
@@ -52,6 +129,32 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(titleSection);
+    return this;
+  }
+
+  addMicroText(microText: string, variables?: unknown) {
+    const microTextSection = ({
+      type: ClaimSummaryType.MICRO_TEXT,
+      data: {
+        text: microText,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(microTextSection);
+    return this;
+  }
+
+  addButtonWithCancelLink(title: string, href: string, startButton = false, cancelHref?: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: startButton,
+        cancelHref: cancelHref,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
     return this;
   }
 

@@ -7,6 +7,7 @@ const ContactNumberDetailsPage = require('../pages/defendantLipResponse/confirmY
 const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/respondType');
 const PaymentOptionPage = require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
 const CheckYourAnswersPage = require('../pages/defendantLipResponse/checkYourAnswers');
+const ConfirmationPage = require('../pages/defendantLipResponse/confirmation');
 const DateToPayOn = require('../pages/defendantLipResponse/yourRepaymentPlan/dateToPayOn');
 const ShareYouFinancialDetailsIntro = require('../pages/defendantLipResponse/shareYourFinancialDetails/shareYouFinancialDetailsIntro');
 const BankAccountsDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/bankAccountsDetails');
@@ -35,12 +36,19 @@ const RejectAllOfClaim = require('../pages/defendantLipResponse/howYouWillPay/re
 const CarerDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/carerDetails');
 const ViewYourOptionsBeforeDeadline = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/viewYourOptionsBeforeDeadline');
 const HowMuchYouHavePaid = require('../pages/defendantLipResponse/howYouWillPay/howMuchYouHavePaid');
+const YouHavePaidLess = require('../pages/defendantLipResponse/howYouWillPay/youHavePaidLess');
 const HowMuchDoYouOwe = require('../pages/defendantLipResponse/howYouWillPay/howMuchDoYouOwe');
 const AddYourTimeLine = require('../pages/defendantLipResponse/whyDoYouDisagree/addYourTimeLine');
 const WhyDoYouDisagreeTheClaimAmount = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagreeTheClaimAmount');
 const WhyDoYouDisagree = require('../pages/defendantLipResponse/whyDoYouDisagree/whyDoYouDisagree');
 const ListYourEvidence = require('../pages/defendantLipResponse/whyDoYouDisagree/listYourEvidence');
 const FreeTelephoneMediation = require('../pages/defendantLipResponse/freeTelephoneMediation/freeTelephoneMediation');
+const TelephoneMediation = require('../pages/defendantLipResponse/telephoneMediation/telephoneMediation');
+const EmailConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/emailConfirmation');
+const PhoneConfirmation = require('../pages/defendantLipResponse/availabilityForMediation/phoneConfirmation');
+const ContactPerson = require('../pages/defendantLipResponse/availabilityForMediation/contactPerson');
+const AlternativeEmail = require('../pages/defendantLipResponse/availabilityForMediation/alternativeEmail');
+const NextThreeMonthsDate = require('../pages/defendantLipResponse/availabilityForMediation/nextThreeMonthsDate');
 const MediationCanWeUse = require('../pages/defendantLipResponse/freeTelephoneMediation/mediatonCanWeUse');
 const RequestMoreTime = require('../pages/defendantLipResponse/viewYourOptionsBeforeDeadline/requestMoreTime');
 const HearingRequirements = require('../pages/defendantLipResponse/defendantDQ/hearingRequirements');
@@ -64,12 +72,19 @@ const SentExpertReports = require('../pages/defendantLipResponse/defendantDQ/sen
 const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedExpert');
 const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
 const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
+const ConfirmYourDetails = require('../pages/defendantLipResponse/defendantDQ/confirmYourDetails');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
 const mediationCanWeUse = new MediationCanWeUse();
 const addYourTimeLine = new AddYourTimeLine();
 const freeTelephoneMediation = new FreeTelephoneMediation();
+const telephoneMediation = new TelephoneMediation();
+const emailConfirmation = new EmailConfirmation();
+const phoneConfirmation = new PhoneConfirmation();
+const contactPerson = new ContactPerson();
+const alternativeEmail = new AlternativeEmail();
+const nextThreeMonthsDate = new NextThreeMonthsDate();
 const listYourEvidence = new ListYourEvidence();
 const taskListPage = new TaskListPage();
 const defendantLatestUpdate = new DefendantLatestUpdate();
@@ -80,6 +95,7 @@ const contactNumberDetailsPage = new ContactNumberDetailsPage();
 const respondTypePage = new RespondTypePage();
 const paymentOptionPage = new PaymentOptionPage();
 const checkYourAnswersPage = new CheckYourAnswersPage();
+const confirmationPage = new ConfirmationPage();
 const dateToPayOn = new DateToPayOn();
 const shareYourFinancialDetailsIntro = new ShareYouFinancialDetailsIntro();
 const bankAccountDetails = new BankAccountsDetails();
@@ -108,6 +124,7 @@ const rejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails = new CarerDetails();
 const viewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 const howMuchYouHavePaid = new HowMuchYouHavePaid();
+const youHavePaidLess = new YouHavePaidLess();
 const howMuchDoYouOwe = new HowMuchDoYouOwe();
 const whyDoYouDisagreeTheClaimAmount = new WhyDoYouDisagreeTheClaimAmount();
 const whyDoYouDisagree = new WhyDoYouDisagree();
@@ -115,6 +132,7 @@ const hearingRequirements = new HearingRequirements();
 const dqExpert = new DQExpert();
 const expertReportDetails = new ExpertReportDetails();
 const giveEvidenceYourself = new GiveEvidenceYourself();
+const confirmYourDetails = new ConfirmYourDetails();
 const defendantWitnesses = new DefendantWitnesses();
 const cantAttendHearing = new CantAttendHearing();
 const availabilityDates = new AvailabilityDates();
@@ -142,19 +160,40 @@ class ResponseSteps {
     await bilingualLanguagePreference.verifyContent();
   }
 
+  async RespondToClaimError(claimRef){
+    await defendantLatestUpdate.open(claimRef);
+    await bilingualLanguagePreference.verifyContentError();
+  }
+
   async DefendantSummaryPage(claimRef){
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef) {
+  async EnterPersonalDetails(claimRef, carmEnabled) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(claimRef);
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+  }
+
+  async EnterCompDetails(carmEnabled) {
+    await taskListPage.verifyResponsePageContent();
+    await nameAndAddressDetailsPage.enterCompanyContactDetails();
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+  }
+
+  async EnterPersonalDetailsError(claimRef) {
+    await taskListPage.verifyResponsePageContent();
+    await nameAndAddressDetailsPage.emptyNameAndAddressDetails(claimRef);
+    await nameAndAddressDetailsPage.enterWrongPostcode();
   }
 
   async EnterYourOptionsForDeadline(claimRef, deadlineOption) {
     await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
+  }
+
+  async EnterYourOptionsForDeadlineError(claimRef, deadlineOption) {
+    await viewYourOptionsBeforeDeadline.selectYouOptionsError(claimRef, deadlineOption);
   }
 
   async EnterCompanyDetails(){
@@ -162,6 +201,12 @@ class ResponseSteps {
     await enterCompanyDetails.enterCompanyDetails();
     await enterCompanyDetails.enterCorrespondenceAddressManually();
     await contactNumberDetailsPage.enterContactNumber();
+  }
+
+  async EnterCompanyDetailError(){
+    await taskListPage.verifyResponsePageContent();
+    await enterCompanyDetails.emptyCompanyDetails();
+    await enterCompanyDetails.enterWrongPostcode();
   }
 
   async RespondToRequest(claimRef) {
@@ -176,20 +221,51 @@ class ResponseSteps {
     await addYourTimeLine.addTimeLineOfEvents();
   }
 
+  async AddYourTimeLineEventsError() {
+    await addYourTimeLine.addTimeLineOfEvents();
+  }
+
   async EnterResponseToClaim(claimRef, responseType) {
     await respondTypePage.enterResponseToClaim(claimRef, responseType);
+  }
+  async EnterResponseToClaimError(claimRef, responseType) {
+    await respondTypePage.enterResponseToClaimError(claimRef, responseType);
   }
 
   async EnterPaymentOption(claimRef, responseType, paymentOption) {
     await paymentOptionPage.enterPaymentOption(claimRef, responseType, paymentOption);
   }
 
-  async CheckAndSubmit(claimRef, responseType) {
-    await checkYourAnswersPage.checkAndSubmit(claimRef, responseType);
+  async EnterRepaymentPlan(claimRef) {
+    await repaymentPlan.enterRepaymentPlan(claimRef);
+  }
+
+  async CheckAndSubmit(claimRef, responseType, claimType) {
+    await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
+  }
+
+  async verifyMediationDetailsInCYA(claimRef) {
+    await checkYourAnswersPage.verifyMediationDetailsInCYA(claimRef);
+  }
+
+  async clickEmailChangeLink() {
+    await checkYourAnswersPage.clickEmailChangeLink();
+  }
+
+  async verifyEditedEmailDetails() {
+    await checkYourAnswersPage.verifyEditedEmailDetails();
+  }
+
+  async fillStatementOfTruthAndSubmit() {
+    await checkYourAnswersPage.fillStatementOfTruthAndSubmit();
   }
 
   async EnterDateToPayOn() {
     await dateToPayOn.enterDateToPayOn();
+  }
+
+  async EnterDateToPayOnError() {
+    await dateToPayOn.enterDateToPayOnError();
   }
 
   async EnterFinancialDetails(claimRef) {
@@ -310,8 +386,24 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetails(claimRef, amount, responseType);
   }
 
+  async VerifyPaidLessPage() {
+    await youHavePaidLess.verifyPaidLessPage();
+  }
+
+  async VerifyConfirmationPage(claimType) {
+    await confirmationPage.verifyConfirmationPage(claimType);
+  }
+
+  async EnterHowMuchYouHavePaidError(claimRef, amount, responseType) {
+    await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
+  }
+
   async EnterHowMuchMoneyYouOwe(claimRef, amount) {
     await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  }
+
+  async EnterHowMuchMoneyYouOweError(claimRef) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef);
   }
 
   async EnterEmployerDetails() {
@@ -363,8 +455,8 @@ class ResponseSteps {
     await explanation.enterExplanation();
   }
 
-  async EnterRepaymentPlan(claimRef) {
-    await repaymentPlan.enterRepaymentPlan(claimRef);
+  async EnterRepaymentPlanError(claimRef) {
+    await repaymentPlan.enterRepaymentPlanError(claimRef);
   }
 
   async SelectPartAdmitAlreadyPaid(option) {
@@ -377,6 +469,10 @@ class ResponseSteps {
 
   async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
     await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  }
+
+  async EnterWhyYouDisagreeTheClaimAmountError(claimRef, responseType) {
+    await whyDoYouDisagreeTheClaimAmount.enterReasonError(claimRef, responseType);
   }
 
   async EnterWhyYouDisagree(claimRef){
@@ -392,15 +488,49 @@ class ResponseSteps {
     await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
+  async EnterTelephoneMediationDetails() {
+    await telephoneMediation.selectMediation();
+    await taskListPage.verifyResponsePageContent();
+  }
+
+  async ConfirmEmailDetails() {
+    await emailConfirmation.confirmEmail();
+  }
+
+  async ConfirmPhoneDetails() {
+    await phoneConfirmation.enterPhoneDetails();
+  }
+
+  async ConfirmAltPhoneDetails() {
+    await phoneConfirmation.enterAltPhoneDetails();
+  }
+  async ConfirmAltEmailDetails() {
+    await alternativeEmail.confirmAltEmail();
+  }
+
+  async clickSaveButton() {
+    I.click('Save and continue');
+  }
+
+  async EnterUnavailableDates() {
+    await nextThreeMonthsDate.enterNextThreeMonthsDate();
+    await availabilityDates.enterUnavailableDates(true);
+    await taskListPage.verifyResponsePageContent();
+  }
+
+  async ConfirmContactPerson() {
+    await contactPerson.confirmContactPerson();
+  }
   EnterNoMediation(claimRef){
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
     await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -411,7 +541,7 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
-  async EnterDQForFastTrack(claimRef){
+  async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
     await this.SelectConsiderClaimantDocs();
@@ -420,6 +550,7 @@ class ResponseSteps {
     await this.SelectOptionForSharedExpert();
     await this.EnterExpertDetails();
     await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
     await this.EnterDefedantWitnesses();
     await this.SelectOptionForCantAttendHearing();
     await this.EnterUnavailabilityDates();
@@ -444,6 +575,10 @@ class ResponseSteps {
 
   async SelectGiveEvidenceYourself() {
     await giveEvidenceYourself.SelectGiveEvidenceYourself();
+  }
+
+  async EnterYourDetails() {
+    await confirmYourDetails.enterYourDetails();
   }
 
   async EnterDefedantWitnesses() {

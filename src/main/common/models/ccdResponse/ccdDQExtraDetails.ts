@@ -13,4 +13,5 @@ export interface CCDDQExtraDetails {
   considerClaimantDocuments?: YesNoUpperCamelCase;
   considerClaimantDocumentsDetails?: string;
   respondent1DQLiPExpert?: CCDLiPExpert;
+  applicant1DQLiPExpert?: CCDLiPExpert;
 }

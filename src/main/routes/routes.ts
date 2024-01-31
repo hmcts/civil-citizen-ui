@@ -67,8 +67,10 @@ import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/admission/fullRejection/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
+import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -119,6 +121,7 @@ import expertSmallClaimsController from './features/directionsQuestionnaire/expe
 import sharedExpertController from './features/directionsQuestionnaire/experts/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/experts/permissionForExpertController';
+import confirmYourDetailsEvidenceController from './features/directionsQuestionnaire/confirmYourDetailsEvidenceController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController
@@ -159,12 +162,14 @@ import howMuchContinueClaimingController from './features/claim/interest/howMuch
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
+import claimSettledConfirmationController
+  from './features/claimantResponse/claimSettledConfirmationController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
-import breathingSpaceCheckAnswersController from './features/claim/breathingSpace/checkAnswersController';
+import breathingSpaceCheckAnswersController from './features/breathingSpace/checkAnswersController';
 import totalAmountController from './features/claim/totalAmountController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
@@ -181,14 +186,17 @@ import settleAdmittedController from './features/claimantResponse/settleAdmitted
 import bilingualLangPreferenceController from './features/response/bilingualLangPreferenceController';
 import chooseHowToProceedController from './features/claimantResponse/chooseHowToProceedController';
 import repaymentPlanInstalmentsController from './features/claimantResponse/ccj/repaymentPlanInstalmentsController';
+import repaymentPlanSummaryDefendantController from './features/claimantResponse/ccj/repaymentPlanSummaryDefendantController';
 import courtProposedDateController from './features/claimantResponse/courtProposedDateController';
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
 import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
+import incompleteClaimantResponseSubmissionController from './features/claimantResponse/incompleteClaimantResponseSubmissionController';
 import assignClaimController from './features/claimAssignment/assignClaimController';
 import judgmentAmountSummaryController from './features/claimantResponse/ccj/judgmentAmountSummaryController';
+import judgmentAmountSummaryExtendedController from './features/claimantResponse/ccj/judgmentAmountSummaryExtendedController';
 import ccjCheckAnswersController from './features/claimantResponse/ccj/ccjCheckAnswersController';
 import claimantResponseTasklistController from './features/claimantResponse/claimantResponseTasklistController';
 import unavailableDatesForHearingController from './features/directionsQuestionnaire/hearing/unavailableDatesForHearingController';
@@ -200,8 +208,71 @@ import uploadDocumentsController from './features/caseProgression/uploadDocument
 import uploadYourDocumentsController from 'routes/features/caseProgression/uploadYourDocumentsController';
 import documentsUploadedController from 'routes/features/caseProgression/documentsUploadedController';
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
+import finaliseTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController';
 import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
+import claimTaskListController from './features/claim/claimTaskListController';
+import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
+import hasAnythingChangedController from 'routes/features/caseProgression/trialArrangements/hasAnythingChangedController';
+import claimFeeBreakDownController from './features/claim/payment/claimFeeBreakDownController';
+import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
+import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
+import documentViewController from 'routes/features/document/documentViewController';
+import feeChangeController from './features/claim/feeChangeController';
+import trialArrangementsConfirmationController
+  from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
+import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
+import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
+import respondSettlementAgreementConfirmationController
+  from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
+import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
+import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
+import repaymentPlanSummaryClaimantController from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
+import payHearingFeeStartScreenController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
+import applyHelpFeeSelectionController
+  from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
+import cancelHearingFeeJourneyController
+  from 'routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
+import applyHelpWithFeesController from 'routes/features/helpWithFees/helpWithFeesController';
+import applyHelpWithFeeController
+  from 'routes/features/caseProgression/hearingFee/applyHelpWithFeeController';
+import contactNameMediationConfirmationController
+  from 'routes/features/mediation/contactNameMediationConfirmationController';
+import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
+import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
+import telephoneMediationConfirmationController
+  from 'routes/features/mediation/telephoneMediationConfirmationController';
+import applyHelpFeeReferenceController
+  from 'routes/features/caseProgression/hearingFee/applyHelpFeeReferenceController';
+import paymentUnsuccessfulController
+  from 'routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
+import payHearingFeeConfirmationController
+  from 'routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import makePaymentAgainController
+  from 'routes/features/caseProgression/hearingFee/makePaymentAgainController';
+import paymentConfirmationController
+  from 'routes/features/caseProgression/hearingFee/paymentConfirmationController';
+import alternativeEmailAddressMediationController
+  from 'routes/features/mediation/alternativeEmailAddressMediationController';
+import mediationUnavailabilityNextThreeMonthsConfirmationController
+  from 'routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController';
+import mediationUnavailabilitySelectDatesController
+  from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
+import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import claimBilingualLangPreferenceController from 'routes/features/claim/bilingualLangPreferenceController';
+import paymentSuccessfulController from 'routes/features/claim/paymentSuccessfulController';
+import alternativeContactPersonMediationController
+  from 'routes/features/mediation/alternativeContactPersonMediationController';
+import startMediationUploadDocumentsController
+  from 'routes/features/mediation/uploadDocuments/startMediationUploadDocumentsController';
+import mediationTypeOfDocumentsController from 'routes/features/mediation/uploadDocuments/typeOfDocumentsController';
+import claimFeePaymentConfirmationController
+  from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
+import claimIssuePaymentSuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
+import claimIssuePaymentUnsuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
 
 export default [
   homeController,
@@ -211,6 +282,7 @@ export default [
   phoneDetailsController,
   responseDobController,
   claimDetailsController,
+  claimBilingualLangPreferenceController,
   ageEligibilityController,
   responsePostcodeLookupController,
   citizenResponseTypeController,
@@ -264,8 +336,10 @@ export default [
   youHavePaidLessController,
   yourDefenceController,
   incompleteSubmissionController,
+  incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
@@ -314,6 +388,7 @@ export default [
   permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
+  confirmYourDetailsEvidenceController,
   defendantYourselfEvidenceController,
   expertDetailsController,
   sentExpertReportsController,
@@ -350,6 +425,7 @@ export default [
   debtRespiteReferenceNumberController,
   breathingSpaceCheckAnswersController,
   datePaidViewController,
+  claimSettledConfirmationController,
   settleClaimController,
   acceptRepaymentPlanController,
   partPaymentReceivedController,
@@ -372,14 +448,18 @@ export default [
   bilingualLangPreferenceController,
   chooseHowToProceedController,
   repaymentPlanInstalmentsController,
+  repaymentPlanSummaryDefendantController,
+  repaymentPlanSummaryClaimantController,
   courtProposedDateController,
   signSettlementAgreementController,
   repaymentPlanAcceptedController,
   courtProposedPlanController,
   claimantResponseConfirmationController,
+  incompleteClaimantResponseSubmissionController,
   assignClaimController,
   ccjCheckAnswersController,
   judgmentAmountSummaryController,
+  judgmentAmountSummaryExtendedController,
   claimantResponseTasklistController,
   unavailableDatesForHearingController,
   claimantSuggestedPaymentOptionController,
@@ -390,6 +470,48 @@ export default [
   uploadYourDocumentsController,
   documentsUploadedController,
   cancelYourUploadController,
+  finaliseTrialArrangementsController,
   uploadFileController,
   documentUploadCheckAnswerController,
+  claimTaskListController,
+  isCaseReadyController,
+  hasAnythingChangedController,
+  claimFeeBreakDownController,
+  hearingDurationController,
+  trialCheckAnswersController,
+  documentViewController,
+  feeChangeController,
+  trialArrangementsConfirmationController,
+  claimantResponseCheckAnswersController,
+  cancelTrialArrangementsController,
+  breathingSpaceLiftedCheckAnswersController,
+  respondSettlementAgreementController,
+  respondSettlementAgreementConfirmationController,
+  respondSettlementAgreementController,
+  breathingSpaceLiftedCheckAnswersController,
+  payHearingFeeStartScreenController,
+  applyHelpWithFeeController,
+  applyHelpFeeSelectionController,
+  cancelHearingFeeJourneyController,
+  contactNameMediationConfirmationController,
+  telephoneMediationController,
+  emailMediationConfirmationController,
+  telephoneMediationConfirmationController,
+  applyHelpFeeReferenceController,
+  paymentUnsuccessfulController,
+  payHearingFeeConfirmationController,
+  makePaymentAgainController,
+  paymentConfirmationController,
+  applyHelpWithFeesController,
+  alternativeEmailAddressMediationController,
+  mediationUnavailabilityNextThreeMonthsConfirmationController,
+  mediationUnavailabilitySelectDatesController,
+  alternativeTelephoneMediationController,
+  paymentSuccessfulController,
+  alternativeContactPersonMediationController,
+  startMediationUploadDocumentsController,
+  mediationTypeOfDocumentsController,
+  claimFeePaymentConfirmationController,
+  claimIssuePaymentSuccessfulController,
+  claimIssuePaymentUnsuccessfulController,
 ];

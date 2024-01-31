@@ -3,11 +3,12 @@ import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../urls'
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {Claim} from '../../../../../common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim, generateRedisKey} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = Router();
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<Debts>, res: Response): void {
 debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: NextFunction) => {
   try {
     const debtsForm: GenericForm<Debts> = new GenericForm(new Debts());
-    const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
+    const responseDataRedis: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     if (responseDataRedis.statementOfMeans?.debts) {
       debtsForm.model.option = responseDataRedis.statementOfMeans.debts.option;
       if (debtsForm.model.option === YesNo.YES) {
@@ -35,17 +36,18 @@ debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: NextFunction) => {
 debtsController.post(CITIZEN_DEBTS_URL,
   async (req, res, next: NextFunction) => {
     try {
+      const redisKey = generateRedisKey(<AppRequest>req);
       const debtsForm: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, transformToDebts(req)));
       debtsForm.validateSync();
       if (debtsForm.hasErrors()) {
         renderView(debtsForm, res);
       } else {
-        const claim = await getCaseDataFromStore(req.params.id);
+        const claim = await getCaseDataFromStore(redisKey);
         if (!claim.statementOfMeans) {
           claim.statementOfMeans = new StatementOfMeans();
         }
         claim.statementOfMeans.debts = new Debts(req.body.option, removeEmptyValueToDebts(req));
-        await saveDraftClaim(req.params.id, claim);
+        await saveDraftClaim(redisKey, claim);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_EXPENSES_URL));
       }
     } catch (error) {

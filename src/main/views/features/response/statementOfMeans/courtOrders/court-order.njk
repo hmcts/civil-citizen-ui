@@ -29,6 +29,7 @@
       } if errorFor('rows['+courtOrderIndex+'][claimNumber]')
     }) }}
 
+    <p class="govuk-label">{{t('PAGES.COURT_ORDERS.OWED_AMOUNT')}}</p>
     {{ govukInput({
       id: 'rows[' + courtOrderIndex + '][amount]',
       name: 'rows[' + courtOrderIndex + '][amount]',
@@ -38,10 +39,9 @@
         text: "£"
       },
       label: {
-        text: t('PAGES.COURT_ORDERS.OWED_AMOUNT'),
-        attributes: {
-          'aria-label': t('PAGES.COURT_ORDERS.AMOUNT_YOU_OWE_IN_POUNDS')
-        }
+        text: t('PAGES.COURT_ORDERS.AMOUNT_YOU_OWE_IN_POUNDS'),
+        for: 'rows[' + courtOrderIndex + '][amount]',
+        classes: 'govuk-visually-hidden'
       },
       attributes: {
         'data-name': 'rows[%index%][amount]',
@@ -51,6 +51,7 @@
         text: t(errorFor('rows['+courtOrderIndex+'][amount]'))
       } if errorFor('rows['+courtOrderIndex+'][amount]')
     }) }}
+    <p class="govuk-label">{{t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_AMOUNT')}}</p>
     {{ govukInput({
       id: 'rows[' + courtOrderIndex + '][instalmentAmount]',
       name: 'rows[' + courtOrderIndex + '][instalmentAmount]',
@@ -60,10 +61,9 @@
         text: "£"
       },
       label: {
-        text: t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_AMOUNT'),
-        attributes: {
-          'aria-label': t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_IN_POUNDS')
-        }
+        text: t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_IN_POUNDS'),
+        for: 'rows[' + courtOrderIndex + '][instalmentAmount]',
+        classes: 'govuk-visually-hidden'
       },
       attributes: {
         'data-name': 'rows[%index%][instalmentAmount]',

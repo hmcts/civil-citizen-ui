@@ -1,5 +1,5 @@
-import {SupportRequired} from '../../../../../../../main/common/models/directionsQuestionnaire/supportRequired';
-import {generateSupportDetails} from '../../../../../../../main/services/features/response/checkAnswers/hearingRequirementsSection/addSupportRequiredList';
+import {SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
+import {generateSupportDetails} from 'services/features/common/addSupportRequiredList';
 
 jest.mock('../../../../../../../main/modules/i18n');
 
@@ -10,11 +10,12 @@ jest.mock('i18next', () => ({
 
 describe('generateSupportDetails', () => {
   const item = new SupportRequired();
+  const lng = 'en';
   it('should return disabled access', () => {
     // Given
     item.disabledAccess = {selected: true};
     //When
-    const result = generateSupportDetails(item);
+    const result = generateSupportDetails(item, lng);
     //Then
     expect(result).toContain('PAGES.SUPPORT_REQUIRED.DISABLE');
   });
@@ -22,7 +23,7 @@ describe('generateSupportDetails', () => {
     //Given
     item.hearingLoop = {selected: true};
     //When
-    const result = generateSupportDetails(item);
+    const result = generateSupportDetails(item, lng);
     //Then
     expect(result).toContain('PAGES.SUPPORT_REQUIRED.HEARING');
   });
@@ -33,7 +34,7 @@ describe('generateSupportDetails', () => {
       content: 'BSL',
     };
     //When
-    const result = generateSupportDetails(item);
+    const result = generateSupportDetails(item, lng);
     //Then
     expect(result).toContain('BSL');
     expect(result).toContain('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER');
@@ -45,7 +46,7 @@ describe('generateSupportDetails', () => {
       content: 'Spanish',
     };
     //When
-    const result = generateSupportDetails(item);
+    const result = generateSupportDetails(item, lng);
     //Then
     expect(result).toContain('Spanish');
     expect(result).toContain('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER');
@@ -57,7 +58,7 @@ describe('generateSupportDetails', () => {
       content: 'test',
     };
     //When
-    const result = generateSupportDetails(item);
+    const result = generateSupportDetails(item, lng);
     //Then
     expect(result).toContain('test');
     expect(result).toContain('AGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER');

@@ -1,0 +1,46 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}</h1>
+          </legend>
+        </div>
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ title }}</h2>
+          <p class="govuk-body govuk-!-margin-bottom-2">{{ description }}</p>
+          <p class="govuk-body govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.AFTER_COMPLETE') }}</p>
+          {% for taskList in taskLists %}
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+              <h2 class="app-task-list__section">
+                <span class="app-task-list__section-number">
+                  {{loop.index}} . </span>
+                  {{ t(taskList.title) }}
+              </h2>
+              <ol class="app-task-list app-task-list__items">
+                {% for task in taskList.tasks %}
+                  <li class="app-task-list__item">
+                    <span class="app-task-list__task-name">
+                      <a href={{task.url}}>{{ t(task.description) }}</a>
+                    </span>
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
+                      {{ t('PAGES.TASK_LIST.' + task.status) }}
+                    </strong>
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

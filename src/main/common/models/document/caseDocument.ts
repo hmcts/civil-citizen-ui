@@ -5,6 +5,7 @@ import {
   EvidenceUploadTrial,
   EvidenceUploadWitness,
 } from './documentType';
+import {CaseRole} from 'form/models/caseRoles';
 
 export interface CaseDocument {
   createdBy: string;
@@ -13,4 +14,5 @@ export interface CaseDocument {
   documentType: DocumentType|EvidenceUploadWitness|EvidenceUploadDisclosure|EvidenceUploadTrial;
   documentSize: number;
   createdDatetime: Date;
+  ownedBy?: CaseRole;
 }

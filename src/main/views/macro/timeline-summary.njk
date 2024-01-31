@@ -1,5 +1,4 @@
-{% macro timelineSummary(timelineRows) %}
-<div class="govuk-body">
+{% macro timelineSummary(t, timelineRows) %}
   <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
   <table class="govuk-table">
     <thead class="govuk-table__head">
@@ -17,5 +16,4 @@
       {% endfor %}
     </tbody>
   </table>
-</div>
 {% endmacro %}

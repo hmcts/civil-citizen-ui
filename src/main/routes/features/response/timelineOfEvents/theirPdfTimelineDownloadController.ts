@@ -1,19 +1,18 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import config from 'config';
 import {CASE_TIMELINE_DOCUMENTS_URL} from '../../../urls';
-import {DmStoreClient} from '../../../../app/client/dmStoreClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {displayPDF} from '../../../../common/utils/downloadUtils';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 
 const theirPdfTimelineDownloadController = Router();
-const baseUrl: string = config.get<string>('services.dmStore.baseUrl');
-const dmStoreClient = new DmStoreClient(baseUrl);
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 theirPdfTimelineDownloadController.get(CASE_TIMELINE_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(req.params.id);
-    const pdfDocument: Buffer = await dmStoreClient.retrieveDocumentByDocumentId(claim.extractDocumentId());
-    displayPDF(res, pdfDocument, claim.generatePdfFileName());
+    const pdfDocument = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest> req, req.params.documentId);
+    displayPDF(res, pdfDocument);
   } catch (error) {
     next(error);
   }

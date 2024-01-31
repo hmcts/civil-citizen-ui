@@ -194,37 +194,37 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].key.text).toBe('Contracts and agreements');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].value.html).toBe('Evidence details 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].key.text).toBe('Letters, emails and other correspondence');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CORRESPONDENCE');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].value.html).toBe('Evidence details 2');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[11].key.text).toBe('Expert witness');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[11].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_EXPERT_WITNESS');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[11].value.html).toBe('Evidence details 3');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[11].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[11].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[12].key.text).toBe('Photo evidence');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[12].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_PHOTO');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[12].value.html).toBe('Evidence details 4');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[12].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[12].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[13].key.text).toBe('Receipts');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[13].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_RECEIPTS');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[13].value.html).toBe('Evidence details 5');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[13].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[13].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[14].key.text).toBe('Statements of account');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[14].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_STATEMENT_OF_ACCOUNT');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[14].value.html).toBe('Evidence details 7');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[14].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[14].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[15].key.text).toBe('Other');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[15].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.VIDENCE_OTHER');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[15].value.html).toBe('Evidence details 8');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[15].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[15].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
@@ -248,7 +248,7 @@ describe('Partial Admit - Response Details', () => {
       //When
       const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].key.text).toBe('Contracts and agreements');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].value.html).toBe('Evidence details 1');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);

@@ -35,20 +35,10 @@
       {% set pdfAdmission = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PDF_ADMISSION') %}
       {% set pdfDefence = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PDF_DEFENCE') %}
       {% set supportEmailAddress = t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SUPPORT_EMAIL_ADDRESS') %}
-      {% set responseDeadline = form.formattedResponseDeadline() %}
       {% set pdfUrl = 'https://www.gov.uk/government/publications/form-n9b-defence-counterclaim-specified-amount'%}
       {% set signPosting = true %}
-
-      {% if form.applicant1.type === partyType.INDIVIDUAL or form.applicant1.type === partyType.SOLE_TRADER  %}
-        {% set claimantName = form.applicant1.individualTitle+' '+form.applicant1.individualFirstName+' '+form.applicant1.individualLastName %}
-      {% else %}
-        {% set claimantName = form.applicant1.partyName %}
-      {% endif %}
-      {% if form.respondent1.type === partyType.ORGANISATION or form.respondent1.type === partyType.COMPANY  %}
-        {% set defendantName = form.respondent1.partyName %}
-      {% else %}
-        {% set defendantName = form.respondent1.individualTitle+' '+form.respondent1.individualFirstName+' '+form.respondent1.individualLastName %}
-      {% endif %}
+      {% set claimantName = form.getClaimantFullName() %}
+      {% set defendantName = form.getDefendantFullName()%}
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

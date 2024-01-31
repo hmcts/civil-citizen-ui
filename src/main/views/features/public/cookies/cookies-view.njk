@@ -14,12 +14,12 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.COOKIES.TITLE') }}
 {% endblock %}
-
+{% set hideLogout = true  %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds"> 
+        <div class="govuk-grid-column-two-thirds">
           {% set html %}
           <p class="govuk-notification-banner__heading">{{ t('PAGES.COOKIES.COOKIE_SETTINGS_SAVED') }}</p>
           <p class="govuk-body">{{ t('PAGES.COOKIES.ADDITIONAL_COOKIES') }}</p>
@@ -28,12 +28,11 @@
               {{ t('COMMON.GO_TO_HOMEPAGE') }}</a>.
             </p>
           {% endset %}
-          {% if isSavedPreferencesBannerDisplayed %}
             {{ govukNotificationBanner({
               type: "success",
-              html: html
+              html: html,
+              classes: 'govuk-visually-hidden'
             }) }}
-            {% endif%}
             <h1 class="govuk-heading-l">{{ t('PAGES.COOKIES.TITLE') }}</h1>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION1') }}</p>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION2') }}</p>
@@ -69,7 +68,7 @@
                 }],
                 rows: tableRows
             }) }}
-            <form method="post" novalidate>
+            <form class='cookie-preferences-form' method="post" novalidate>
               {{ csrfProtection(csrf) }}
               {{ govukRadios({
                 classes: 'govuk-radios',
@@ -150,7 +149,8 @@
               <p class="govuk-body">{{ externalLink(t, 'PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES', externalURLs.essentialCookiesUrl, true) }}</p>
               <div class="govuk-form-group">
                 {{ govukButton({
-                  text: t('COMMON.BUTTONS.SAVE')
+                  text: t('COMMON.BUTTONS.SAVE'),
+                  id: 'cui-cookies-submit'
                 }) }}
                 {{ contactUsForHelp(t) }}
               </div>

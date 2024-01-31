@@ -8,11 +8,11 @@ class LoginSteps  {
     LoginPage.acceptCookies();
   }
 
-  EnterUserCredentials(username, password) {
-    I.wait(30);
-    LoginPage.open();
-    this.AcceptCookies();
-    LoginPage.login(username, password);
+  async EnterUserCredentials(username, password) {
+    await I.wait(10);
+    await LoginPage.open();
+    await this.AcceptCookies();
+    await LoginPage.login(username, password);
   }
 }
 

@@ -1,11 +1,11 @@
-{% macro newLine(title, content, href, hrefContact, hint, hintStyle) %}
+{% macro newLine(t, title, content, href, hrefContact, hint, hintStyle) %}
   <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t(title) }}</p>
   {% if href %}
     <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{ href }}>{{ t(hrefContact) }}</a></p>
   {% elif content%}
     <p class="govuk-body-s govuk-!-margin-bottom-0">{{ t(content) }}</p>
     {% if hint %}
-      <p class="govuk-body-s govuk-!-margin-bottom-0"><span class={{hintStyle}}>{{ hint }}</span></p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0"><span class={{hintStyle}}>{{ t(hint) }}</span></p>
     {% endif %}
   {% endif %}
 {% endmacro %}

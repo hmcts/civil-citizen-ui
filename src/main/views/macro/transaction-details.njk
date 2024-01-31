@@ -19,14 +19,14 @@
   <div class="civil-amountRow">
     <input type="hidden" name="{{ property }}[name]" value="{{ transactionSource.name }}"/>
     {% endif %}
+    <p class="govuk-label">{{ t(labels.amountLabel) }}</p>
     {{ govukInput({
       id: property + "[amount]",
       name: property + "[amount]",
       label: {
-        text: t(labels.amountLabel),
-        attributes: {
-          'aria-label': t('PAGES.REGULAR_EXPENSES.AMOUNT_PAID_IN_POUNDS')
-        }
+        text: t('PAGES.REGULAR_EXPENSES.AMOUNT_PAID_IN_POUNDS'),
+        for: property + "[amount]",
+        classes: 'govuk-visually-hidden'
       },
       prefix: {
         text: "£"

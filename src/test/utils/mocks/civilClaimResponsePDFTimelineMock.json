@@ -150,6 +150,21 @@
           "documentType": "SEALED_CLAIM",
           "createdDatetime": "2022-06-21T14:15:19"
         }
+      },
+      {
+        "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+            "document_filename": "response_claim_form_000MC001.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+          },
+          "documentName": "response_claim_form_000MC001.pdf",
+          "documentSize": 4444,
+          "documentType": "DEFENDANT_DEFENCE",
+          "createdDatetime": "2022-06-22T14:14:19"
+        }
       }
     ]
   }

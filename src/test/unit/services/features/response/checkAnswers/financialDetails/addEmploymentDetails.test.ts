@@ -154,7 +154,7 @@ describe('Unemployemt Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('Unemployed for 1 year 1 month');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
 
   });
 
@@ -165,7 +165,7 @@ describe('Unemployemt Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('Unemployed for 10 years 10 months');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
   });
 
   it('should return unemployment details with unemployment category equal to "Retired" when it exists', async () => {

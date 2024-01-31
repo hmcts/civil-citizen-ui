@@ -4,15 +4,16 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
-  BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
+  BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import { NextFunction, Request, Response } from 'express';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
+jest.mock('../../../../../main/routes/guards/breathingSpaceGuard', () => ({ breathingSpaceGuard: (req: Request, res: Response, next: NextFunction) => { next(); } }));
 describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -51,7 +52,7 @@ describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
         .post(BREATHING_SPACE_RESPITE_LIFTED_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL}`);
+          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL}`);
         });
     });
     it('should return errors date in the future', async () => {
@@ -74,7 +75,7 @@ describe('Claimant Response - Debt Respite Lifted Date Controller', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL}`);
+          expect(res.text).toContain(`Redirecting to ${BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL}`);
         });
     });
     it('should return http 500 when has error in the post method', async () => {

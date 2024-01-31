@@ -20,6 +20,7 @@ import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEve
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
+import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evidenceType';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -46,19 +47,21 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
 const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
   const evidenceItem = claim.evidence?.evidenceItem;
+  const lng = getLng(lang);
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lng: getLng(lang)}), '', yourEvidenceHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lng}), '', yourEvidenceHref, changeLabel(lang)),
   );
   if (evidenceItem) {
     for (const item of evidenceItem) {
+      const itemType = t(convertToEvidenceTypeToTranslationKey(item.type), {lng});
       section.summaryList.rows.push(
-        summaryRow(item.type, item.description, yourEvidenceHref, changeLabel(lang)),
+        summaryRow(itemType, item.description, yourEvidenceHref, changeLabel(lang)),
       );
     }
   }
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng: getLng(lang)}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
   );
 };
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
@@ -78,7 +81,7 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   } else {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date), '', changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date, getLng(lang)), '', changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED', {lng: getLng(lang)}), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
     ]);
   }
@@ -96,7 +99,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
   if (claim.rejectAllOfClaim.option !== RejectAllOfClaimType.DISPUTE) {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date), howMuchHaveYouPaidUrl, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date, getLng(lang)), howMuchHaveYouPaidUrl, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', {lng: getLng(lang)}), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
     ]);
   }

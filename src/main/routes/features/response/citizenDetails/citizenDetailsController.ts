@@ -12,6 +12,9 @@ import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/mod
 import {PartyPhone} from 'models/PartyPhone';
 import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const citizenDetailsController = Router();
 
@@ -26,12 +29,13 @@ const getViewPathWithType = (type: PartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetails>, type: PartyType, partyPhone: GenericForm<PartyPhone>): void {
+function renderPage(res: Response, req: Request, partyDetails: GenericForm<PartyDetails>, type: PartyType, partyPhone: GenericForm<PartyPhone>, carmEnabled: boolean): void {
 
   res.render(getViewPathWithType(type), {
     party: partyDetails,
     type: type,
     partyPhone: partyPhone,
+    carmEnabled: carmEnabled,
   });
 }
 
@@ -49,10 +53,13 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent: Party = await getDefendantInformation(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
     const partyDetails = new GenericForm(respondent.partyDetails);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.ccdPhoneExist));
-    renderPage(res, req, partyDetails, respondent.type, partyPhoneForm);
+    renderPage(res, req, partyDetails, respondent.type, partyPhoneForm, carmEnabled);
   } catch (error) {
     next(error);
   }
@@ -60,8 +67,11 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const respondent = await getDefendantInformation(req.params.id);
-    const partyDetails = new GenericForm(new PartyDetails(req.body));
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const respondent = await getDefendantInformation(redisKey);
+    const partyDetails = new GenericForm(new PartyDetails(req.body, carmEnabled));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
     partyDetails.validateSync();
@@ -69,12 +79,12 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
 
     if (partyDetails.hasErrors() || partyPhone.hasErrors()) {
       generateCorrespondenceAddressErrorMessages(partyDetails);
-      renderPage(res, req, partyDetails, respondent.type, partyPhone);
+      renderPage(res, req, partyDetails, respondent.type, partyPhone, carmEnabled);
     } else {
-      await saveDefendantProperty(req.params.id, propertyName, partyDetails.model);
+      await saveDefendantProperty(redisKey, propertyName, partyDetails.model);
       if (req.body?.partyPhone || (respondent?.partyPhone?.phone && respondent?.partyPhone?.ccdPhoneExist)) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone, true);
-        await saveTelephone(req.params.id, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephone(redisKey, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
       redirect(respondent, req, res);
     }

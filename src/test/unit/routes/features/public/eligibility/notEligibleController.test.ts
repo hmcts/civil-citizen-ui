@@ -3,9 +3,6 @@ import {app} from '../../../../../../main/app';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-
 describe("You can't use this service", () => {
   describe('on GET', () => {
     it("should return you can't use this service page", async () => {

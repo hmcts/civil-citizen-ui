@@ -5,7 +5,8 @@ import {
   IsOptional,
   Validate,
   ValidateIf,
-  ValidateNested} from 'class-validator';
+  ValidateNested,
+} from 'class-validator';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
 import {IsFileSize} from 'form/validators/isFileSize';
 import {DateConverter} from 'common/utils/dateConverter';
@@ -13,6 +14,7 @@ import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotI
 import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class UploadDocumentsUserForm {
   @ValidateNested()
@@ -26,7 +28,7 @@ export class UploadDocumentsUserForm {
   @ValidateNested()
     noticeOfIntention?: WitnessSection[];
   @ValidateNested()
-    documentsReferred?: FileOnlySection[];
+    documentsReferred?: ReferredToInTheStatementSection[];
   @ValidateNested()
     expertReport?: ExpertSection[];
   @ValidateNested()
@@ -47,7 +49,7 @@ export class UploadDocumentsUserForm {
     trialDocumentary?: TypeOfDocumentSection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
-    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSection[], noticeOfIntention?: WitnessSection[], documentsReferred?: TypeOfDocumentSection[],
+    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
     expertReport?: ExpertSection[], expertStatement?: ExpertSection[], questionsForExperts?: ExpertSection[], answersForExperts?: ExpertSection[],
     trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
@@ -78,21 +80,23 @@ export class UploadDocumentsUserForm {
 export class FileUpload {
   fieldname: string;
   originalname: string;
-  @IsAllowedMimeType({ message: 'ERRORS.VALID_MIME_TYPE_FILE' })
+  @IsAllowedMimeType({message: 'ERRORS.VALID_MIME_TYPE_FILE'})
     mimetype: string;
   buffer: ArrayBuffer;
-  @IsFileSize({ message: 'ERRORS.VALID_SIZE_FILE' })
+  @IsFileSize({message: 'ERRORS.VALID_SIZE_FILE'})
     size: number;
 }
 
 export class FileOnlySection {
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
 }
 
-export class DateInputFields extends  FileOnlySection {
-  @ValidateIf(o => ((o.dateDay!==undefined && o.dateMonth!==undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
-    || (o.dateDay!==undefined && o.dateMonth!==undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
+export class DateInputFields {
+  @ValidateIf(o => ((o.dateDay !== undefined && o.dateMonth !== undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
+    || (o.dateDay !== undefined && o.dateMonth !== undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
   @IsDefined({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
   @IsNotEmpty({message: 'ERRORS.VALID_YOU_MUST_ENTER_DOI'})
   @IsDate({message: 'ERRORS.VALID_DATE'})
@@ -112,7 +116,6 @@ export class DateInputFields extends  FileOnlySection {
     dateYear: string;
 
   constructor(day?: string, month?: string, year?: string) {
-    super();
     if (day !== undefined && month !== undefined && year != undefined) {
       this.dateDay = day;
       this.dateMonth = month;
@@ -122,29 +125,43 @@ export class DateInputFields extends  FileOnlySection {
   }
 }
 
-export class TypeOfDocumentSection extends DateInputFields {
+export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
-
+  @ValidateNested()
+    dateInputFields: DateInputFields;
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
+
   constructor(day?: string, month?: string, year?: string) {
-    super(day, month, year);
+    this.dateInputFields = new DateInputFields(day, month, year);
   }
 
 }
 
-export class WitnessSection extends DateInputFields {
+export class ReferredToInTheStatementSection extends TypeOfDocumentSection{
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
     witnessName: string;
+}
+
+export class WitnessSection {
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_WITNESS_NAME'})
+    witnessName: string;
+  @ValidateNested()
+    dateInputFields: DateInputFields;
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
+
   constructor(day?: string, month?: string, year?: string) {
-    super(day, month, year);
+    this.dateInputFields = new DateInputFields(day, month, year);
   }
 }
 
-export class ExpertSection extends DateInputFields {
+export class ExpertSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_EXPERT_NAME'})
   @IsOptional()
     expertName: string;
@@ -157,7 +174,7 @@ export class ExpertSection extends DateInputFields {
   @IsOptional()
     fieldOfExpertise: string;
 
-  // @IsNotEmpty({message: 'ERRORS.VALID_ENTER_OTHER_PARTY'})
+  @IsNotEmpty({message: 'ERRORS.VALID_SELECT_OTHER_PARTY'})
   @IsOptional()
     otherPartyName: string;
 
@@ -168,9 +185,15 @@ export class ExpertSection extends DateInputFields {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_DOCUMENT_QUESTIONS_OTHER_PARTY'})
   @IsOptional()
     otherPartyQuestionsDocumentName: string;
+  @ValidateNested()
+    dateInputFields: DateInputFields;
+
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
+  caseDocument: CaseDocument;
+
   constructor(day?: string, month?: string, year?: string) {
-    super(day, month, year);
+    this.dateInputFields = new DateInputFields(day, month, year);
   }
 }

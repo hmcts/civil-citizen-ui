@@ -1,3 +1,5 @@
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+
 export enum InterestClaimFromType {
   FROM_CLAIM_SUBMIT_DATE = 'FROM_CLAIM_SUBMIT_DATE',
   FROM_A_SPECIFIC_DATE = 'FROM_A_SPECIFIC_DATE'
@@ -19,7 +21,9 @@ export interface SameRateInterestSelection {
 }
 
 export interface ClaimFee {
-  calculatedAmountInPence: string;
+  calculatedAmountInPence: number;
+  code: string;
+  version: number;
 }
 
 export interface ClaimAmountBreakup {
@@ -42,8 +46,14 @@ export enum CaseState {
   CASE_STAYED = 'CASE_STAYED',
   CASE_SETTLED = 'CASE_SETTLED',
   IN_MEDIATION = 'IN_MEDIATION',
+  JUDICIAL_REFERRAL = 'JUDICIAL_REFERRAL',
 }
 
 export interface ClaimantMediationLip {
   hasAgreedFreeMediation: string
+}
+
+export interface CCDHelpWithFees {
+  helpWithFee: YesNoUpperCamelCase,
+  helpWithFeesReferenceNumber: string
 }

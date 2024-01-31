@@ -1,7 +1,9 @@
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {CaseState} from 'form/models/claimDetails';
-import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
+import {getMockSectionArray} from '../../../../utils/caseProgression/mockEvidenceUploadSections';
+import {EvidenceUploadDisclosure} from 'models/document/documentType';
 
 describe('Trial service', () => {
   let mockClaim;
@@ -14,6 +16,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments: {
             trial: [
@@ -37,6 +40,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [
@@ -70,6 +74,36 @@ describe('Trial service', () => {
     expect(actualTrialContent[4][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
   });
 
+  it('should return all sections if all selected on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
+        caseProgression: {
+          claimantUploadDocuments : {
+            trial: [
+              {documentType: 'CASE_SUMMARY', selected: true},
+              {documentType: 'SKELETON', selected: true},
+              {documentType: 'LEGAL', selected: true},
+              {documentType: 'COSTS', selected: true},
+              {documentType: 'DOCUMENTARY', selected: true},
+            ],
+          },
+        },
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(5);
+  });
+
   it('should return section 1 if selected', () => {
     //Given
     trialSections.case_data.caseProgression.defendantUploadDocuments.trial.find(
@@ -94,7 +128,7 @@ describe('Trial service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.trialCaseSummary = getMockSectionArray();
+    form.trialCaseSummary = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -129,7 +163,7 @@ describe('Trial service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.trialSkeletonArgument = getMockSectionArray();
+    form.trialSkeletonArgument = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -164,7 +198,7 @@ describe('Trial service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.trialAuthorities = getMockSectionArray();
+    form.trialAuthorities = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -199,7 +233,7 @@ describe('Trial service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.trialCosts = getMockSectionArray();
+    form.trialCosts = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -234,7 +268,7 @@ describe('Trial service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.trialDocumentary = getMockSectionArray();
+    form.trialDocumentary = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
@@ -261,6 +295,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [],
@@ -284,6 +319,27 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+        caseProgression: {},
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return no section if defendantUploadDocuments not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
         caseProgression: {},
       },
     };
@@ -303,6 +359,26 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
+      },
+    };
+
+    //when
+    const actualTrialContent = getTrialContent(testClaim.case_data, null,false);
+
+    //Then
+    expect(actualTrialContent.length).toEqual(0);
+  });
+
+  it('should return no section if caseProgression not present on claimant request', () => {
+    //Given
+    const mockClaim = require('../../../../utils/mocks/civilClaimantIntentionMock.json');
+    const testClaim = {
+      ...mockClaim,
+      state: CaseState.AWAITING_APPLICANT_INTENTION,
+      case_data: {
+        ...mockClaim.case_data,
+        isClaimant: jest.fn(() => true),
       },
     };
 
@@ -321,6 +397,7 @@ describe('Trial service', () => {
       state: CaseState.AWAITING_APPLICANT_INTENTION,
       case_data: {
         ...mockClaim.case_data,
+        isClaimant: jest.fn(),
         caseProgression: {
           defendantUploadDocuments : {
             trial: [
@@ -348,10 +425,3 @@ describe('Trial service', () => {
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
 });
-
-const getMockSectionArray = () => {
-  const sectionArray: TypeOfDocumentSection[] = [];
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
-  sectionArray.push(new TypeOfDocumentSection('12', '12', '2022'));
-  return sectionArray;
-};

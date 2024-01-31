@@ -6,7 +6,7 @@ const {retry} = require('./retryHelper');
 let incidentMessage;
 
 const MAX_RETRIES = 50;
-const RETRY_TIMEOUT_MS = 1000;
+const RETRY_TIMEOUT_MS = 10000;
 
 module.exports = {
   waitForFinishedBusinessProcess: async caseId => {
@@ -93,6 +93,42 @@ module.exports = {
       'POST');
 
     return await response.json();
+  },
+
+  hearingFeeUnpaid: async (caseId) => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    await restHelper.request(
+      `${config.url.civilService}/testing-support/${caseId}/trigger-hearing-fee-unpaid`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET')
+      .then(async response => {
+        if (response.status === 200) {
+          console.log(`Hearing Fee unpaid for ${caseId} successful`);
+        } else {
+          throw new Error(`Error occurred with status : ${response.status}`);
+        }
+      },
+      );
+  },
+
+  bundleGeneration: async (caseId) => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    await restHelper.request(
+      `${config.url.civilService}/testing-support/${caseId}/trigger-trial-bundle`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET')
+      .then(async response => {
+        if (response.status === 200) {
+          console.log(`Bundle for ${caseId} successful`);
+        } else {
+          throw new Error(`Error occurred with status : ${response.status}`);
+        }
+      },
+      );
   },
 
   checkToggleEnabled: async (toggle) => {

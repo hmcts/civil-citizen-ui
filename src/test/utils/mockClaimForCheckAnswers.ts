@@ -1,7 +1,9 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {TransactionSchedule} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {
+  TransactionSchedule,
+} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
@@ -47,7 +49,11 @@ import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 import {TimelineRow} from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {RejectAllOfClaimType} from '../../main/common/form/models/rejectAllOfClaimType';
 import {InterestClaimOptionsType} from '../../main/common/form/models/claim/interest/interestClaimOptionsType';
-import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestEndDateType,
+  SameRateInterestType,
+} from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from '../../main/common/models/fullAdmission';
 import {DebtRespiteStartDate} from '../../main/common/models/breathingSpace/debtRespiteStartDate';
@@ -62,6 +68,10 @@ import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/pay
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {InstalmentFirstPaymentDate} from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
+import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1033,6 +1043,53 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
+export const createClaimWithMediationSectionWithOption = (option: YesNo, isCompany = false): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    isCompany? claim.respondent1.type = PartyType.COMPANY: claim.respondent1.type = PartyType.INDIVIDUAL;
+  }
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+  claim.mediation = new Mediation();
+  claim.mediation.hasAvailabilityMediationFinished = true;
+  claim.mediation.hasTelephoneMeditationAccessed = true;
+  claim.mediation.isMediationEmailCorrect = new GenericYesNo(option);
+  claim.mediation.isMediationPhoneCorrect = new GenericYesNo(option);
+  claim.mediation.isMediationContactNameCorrect = new GenericYesNo(option);
+  claim.mediation.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
+
+  if (claim.mediation.isMediationEmailCorrect.option === option) {
+    claim.mediation.alternativeMediationEmail =  {
+      alternativeEmailAddress: 'test@test.com',
+    };
+  }
+  if (claim.mediation.isMediationPhoneCorrect.option === option) {
+    claim.mediation.alternativeMediationTelephone= {
+      alternativeTelephone: '123',
+    };
+  }
+  if (claim.mediation.isMediationContactNameCorrect.option === option) {
+    claim.mediation.alternativeMediationContactPerson =  {
+      alternativeContactPerson: 'test',
+    };
+  }
+  if (claim.mediation.hasUnavailabilityNextThreeMonths.option === option) {
+    claim.mediation.unavailableDatesForMediation = {
+      items: [
+        {
+          date: new Date('2024-01-01T00:00:00.000Z'),
+          from: new Date('2024-01-01T00:00:00.000Z'),
+          until: new Date('2024-01-02T00:00:00.000Z'),
+          unavailableDateType: UnavailableDateType.SINGLE_DATE,
+        },
+      ],
+    };
+  }
+  return claim as Claim;
+};
 export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
@@ -1249,6 +1306,36 @@ export const claimWithClaimTimeLineAndEvents = (): Claim => {
   claim.claimDetails.evidence = new Evidence('test', [new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'roof'), new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'door')]);
   claim.claimDetails.timeline = new ClaimantTimeline([new TimelineRow(1, 2, 2000, 'contract'), new TimelineRow(1, 2, 2002, 'meeting'), new TimelineRow(1, 2, 1999, 'damages')]);
 
+  return claim;
+};
+
+export const getClaimWithDefendantTrialArrangements = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const defendantTrialArrangements = new TrialArrangements();
+  defendantTrialArrangements.otherTrialInformation = 'Other Information';
+  defendantTrialArrangements.isCaseReady = YesNo.YES;
+  const hasAnythingChanged = new HasAnythingChangedForm();
+  hasAnythingChanged.textArea = 'Changed';
+  hasAnythingChanged.option = YesNo.YES;
+  defendantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
+  caseProgression.defendantTrialArrangements = defendantTrialArrangements;
+  claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const getClaimWithClaimantTrialArrangements = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const claimantTrialArrangements = new TrialArrangements();
+  claimantTrialArrangements.otherTrialInformation = 'Other Information';
+  claimantTrialArrangements.isCaseReady = YesNo.YES;
+  const hasAnythingChanged = new HasAnythingChangedForm();
+  hasAnythingChanged.textArea = 'Changed';
+  hasAnythingChanged.option = YesNo.YES;
+  claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
+  caseProgression.claimantTrialArrangements = claimantTrialArrangements;
+  claim.caseProgression = caseProgression;
   return claim;
 };
 

@@ -13,6 +13,8 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from 'common/form/models/yesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const cantAttendHearingInNext12MonthsController = Router();
 const dqPropertyName = 'cantAttendHearingInNext12Months';
@@ -24,7 +26,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, dqParentName)), res);
+    renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
@@ -39,7 +41,7 @@ cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
       const redirectUrl = form.model.option === YesNo.YES ? DQ_AVAILABILITY_DATES_FOR_HEARING_URL : DQ_PHONE_OR_VIDEO_HEARING_URL;
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }

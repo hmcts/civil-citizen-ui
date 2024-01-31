@@ -21,6 +21,11 @@
         "messageName": "",
         "option": "no"
       }
+    },
+    "claimantResponse": {
+      "chooseHowToProceed:": {
+        "option": "SIGN_A_SETTLEMENT_AGREEMENT"
+      }
     }
   }
 }

@@ -12,12 +12,16 @@
       "calculatedAmountInPence": "8000"
     },
     "issueDate": "2022-01-08",
+    "respondent1PinToPostLRspec":{
+      "accessCode": "H4WYG26R6PA9"
+    },
     "applicant1": {
       "type": "INDIVIDUAL",
-      "individualTitle": "Mr.",
-      "individualFirstName": "Jan",
-      "individualLastName": "Clark",
-      "partyName": "Mr. Jan Clark",
+      "partyDetails": {
+        "individualTitle": "Mr",
+        "individualFirstName": "Jon",
+        "individualLastName": "Doe"
+      },
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",

@@ -6,12 +6,21 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
-{% block pageTitle %}
-  {{ setPageTitle('PAGES.SETTLE_CLAIM_PART_PAYMENT_RECEIVED.PAGE_TITLE') }}
-{% endblock %}
 
-{% set yesHint = t('PAGES.SETTLE_CLAIM_PART_PAYMENT_RECEIVED.SETTLE_THE_CLAIM') %}
-{% set noHint = t('PAGES.SETTLE_CLAIM_PART_PAYMENT_RECEIVED.PROCEED_WITH_CLAIM')  %}
+{% if isPaidInFull %}
+  {% set PageTitle = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.PAGE_TITLE_IN_FULL', { paidAmount: paidAmount }) %}
+  {% set Title = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.TITLE_IN_FULL', { paidAmount: paidAmount }) %}
+{% else %}
+  {% set PageTitle = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.PAGE_TITLE_LESS_THAN_FULL', { paidAmount: paidAmount }) %}
+  {% set Title = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.TITLE_LESS_THAN_FULL', { paidAmount: paidAmount }) %}
+{% endif %}
+
+{% set yesHint = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.YES_HINT') %}
+{% set noHint = t('PAGES.CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID.NO_HINT')  %}
+
+{% block pageTitle %}
+  {{ setPageTitle(pageTitle) }}
+{% endblock %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -23,7 +32,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.SETTLE_CLAIM_PART_PAYMENT_RECEIVED.TITLE', { paidAmount: paidAmount }) }}</h1>
+          <h1 class="govuk-heading-l">{{ Title }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { yesHint: yesHint, noHint: noHint }) }}

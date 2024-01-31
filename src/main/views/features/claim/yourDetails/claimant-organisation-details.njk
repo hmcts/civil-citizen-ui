@@ -82,6 +82,23 @@
               value: party.model.partyName,
                 errorMessage: { text: t(party.errorFor('partyName')) } if party.errorFor('partyName')
             }) }}
+            {% if carmEnabled == true %}
+            {{ govukInput({
+              label: {
+                text: t('COMMON.MANDATORY_CONTACT_PERSON')
+              },
+              classes: "govuk-!-width-one-half",
+              id: "contactPerson",
+              name: "contactPerson",
+              value: party.model.contactPerson,
+              hint: {
+                text: t('PAGES.CITIZEN_DETAILS.CONTACT_PERSON_HINT')
+              },
+              errorMessage: {
+                              html: t(party.errorFor("contactPerson"))
+                            } if party.errorFor("contactPerson")
+            }) }}
+            {% else %}
             {{ govukInput({
               label: {
                 text: t('COMMON.OPTIONAL_CONTACT_PERSON')
@@ -94,6 +111,7 @@
                 text: t('PAGES.CITIZEN_DETAILS.CONTACT_PERSON_HINT')
               }
             }) }}
+            {% endif %}
               <div class="govuk-form-group">
                 <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
                 <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
@@ -117,7 +135,7 @@
               items: [
                 {
                   value: YesNo.NO,
-                  text: t('COMMON.NO'),
+                  text: t('COMMON.VARIATION_2.NO'),
                   checked: false if party.model.provideCorrespondenceAddress == YesNo.YES else true
                 },
                 {

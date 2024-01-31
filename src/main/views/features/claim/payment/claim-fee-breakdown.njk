@@ -1,0 +1,68 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
+{% block content %}
+    <div class="govuk-width-container">
+        <main class="govuk-main-wrapper" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-l">{{ t('PAGES.FEE_AMOUNT.TITLE') }}</h1>
+                    {{ govukSummaryList({
+                        rows: [
+                            {
+                                key: {
+                                    text: t('COMMON.CLAIM_AMOUNT'),
+                                    classes: "govuk-!-font-weight-regular"
+                                },
+                                value: {
+                                    text: "£" + totalClaimAmount,
+                                    classes: "govuk-!-text-align-right"
+                                }
+                            },
+                            {
+                                key: {
+                                    text: t('PAGES.TOTAL_AMOUNT.INTEREST_TO_DATE'),
+                                    classes: "govuk-!-font-weight-regular"
+                                },
+                                value: {
+                                    text: "£" + interest,
+                                    classes: "govuk-!-text-align-right"
+                                }
+                            } if hasInterest,
+                            {
+                                key: {
+                                    text: t('PAGES.TOTAL_AMOUNT.CLAIM_FEE'),
+                                    classes: "govuk-!-font-weight-regular"
+                                },
+                                value: {
+                                    text: "£" + claimFee,
+                                    classes: "govuk-!-text-align-right"
+                                }
+                            },
+                            {
+                                key: {
+                                    text: t('PAGES.TOTAL_AMOUNT.TOTAL_CLAIM_AMOUNT'),
+                                    classes: "black-border-top"
+                                },
+                                value: {
+                                    text: "£" + totalAmount,
+                                    classes: "black-border-top govuk-!-font-weight-bold govuk-!-text-align-right"
+                                }
+                            }
+                        ]
+                    }) }}
+                    <p class="govuk-body">{{ t('PAGES.FEE_AMOUNT.MESSAGE') }}</p>
+                    {% set buttonText = t('PAGES.FEE_AMOUNT.CONTINUE_TO_PAYMENT')+'(£' + claimFee +')' %}
+                    <form method="post" novalidate autocomplete="off">
+                        {{ csrfProtection(csrf) }}
+                        {{ govukButton({
+                 text: buttonText
+              }) }}
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

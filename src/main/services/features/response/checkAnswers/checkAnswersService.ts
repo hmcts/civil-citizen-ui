@@ -12,15 +12,16 @@ import {buildYourResponseToClaimSection} from './responseSection/buildYourRespon
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
-import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
-import {YesNo} from 'common/form/models/yesNo';
 import {
-  buildHearingRequirementsSection,
-} from 'services/features/response/checkAnswers/hearingRequirementsSection/buildHearingRequirementsSection';
+  buildFreeTelephoneMediationSection,
+} from './responseSection/buildFreeTelephoneMediationSection';
+import {YesNo} from 'common/form/models/yesNo';
+import {buildHearingRequirementsSection} from 'services/features/common/buildHearingRequirementsSection';
+import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown, carmApplicable = false): SummarySections => {
   const paymentOption: string = claim.fullAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
@@ -63,10 +64,13 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       : null;
   };
 
-  const getFreeTelephoneMediationSection = () => {
+  const getMediationSection = (carmApplicable = false) => {
+    const mediationSection =  carmApplicable ?
+      buildMediationSection(claim, claimId, lang) : buildFreeTelephoneMediationSection(claim, claimId, lang);
+
     return claim.isFullDefence()
     || claim.isPartialAdmission()
-      ? buildFreeTelephoneMediationSection(claim, claimId, lang)
+      ? mediationSection
       : null;
   };
 
@@ -85,14 +89,14 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getResponseDetailsSection(),
       getFinancialSectionPA(),
       getResponsePaymentSection(),
-      getFreeTelephoneMediationSection(),
+      getMediationSection(carmApplicable),
       getHearingRequirementsSection(),
     ],
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
-  return buildSummarySections(claim, claimId, lang);
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown, carmApplicable = false): SummarySections => {
+  return buildSummarySections(claim, claimId, lang, carmApplicable);
 };
 
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {

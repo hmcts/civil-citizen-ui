@@ -4,10 +4,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 
+
 {% block pageTitle %}
   {{ setPageTitle('PAGES.YOU_CAN_USE.PAGE_TITLE') }}
 {% endblock %}
-
+{% set hideLogout = true  %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -20,7 +21,7 @@
           {% endfor %}
           {{ govukButton({
             text: t('COMMON.BUTTONS.CONTINUE'),
-            href: '/login'
+            href: claimTaskListUrl
           }) }}
           {{ contactUsForHelp(t) }}
         </div>

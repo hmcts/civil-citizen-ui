@@ -4,11 +4,11 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {
   ASSIGN_CLAIM_URL,
-  CALLBACK_URL, DASHBOARD_URL,
+  CALLBACK_URL, CLAIMANT_TASK_LIST_URL, DASHBOARD_URL,
   FIRST_CONTACT_SIGNPOSTING_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL, UNAUTHORISED_URL,
-} from '../../../../main/routes/urls';
+} from 'routes/urls';
 
 import {getUserDetails} from '../../../../main/app/auth/user/oidc';
 
@@ -66,12 +66,10 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to assign claim url when claim id is set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
-      app.locals.assignClaimId = '1';
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('/assignclaim?id=1');
         });
       expect(app.locals.assignClaimId).toBeUndefined();
     });
@@ -103,6 +101,34 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to dashboard when query is string and user has citizen role', async () => {
       userDetails.roles = ['citizen'];
+      mockGetUserDetails.mockImplementation(async () => userDetails);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(DASHBOARD_URL);
+        });
+    });
+  });
+
+  describe('claim issue task-list', () => {
+    it('should claimIssueTasklist and redirect to sign in url when user is not logged in', async () => {
+      await request(app).get(CLAIMANT_TASK_LIST_URL ).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(SIGN_IN_URL);
+      });
+      expect(app.locals.claimIssueTasklist).toBe(true);
+    });
+    it('should redirect to claim issue task-list url when claimIssueTasklist is true', async () => {
+      mockGetUserDetails.mockImplementation(async () => userDetails);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+      expect(app.locals.claimIssueTasklist).toBeUndefined();
+    });
+    it('should redirect to dashboard when user is logged in and claimIssueTasklist is not set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})

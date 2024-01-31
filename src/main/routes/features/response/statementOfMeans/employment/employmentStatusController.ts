@@ -13,6 +13,8 @@ import {
   saveEmploymentData,
 } from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = Router();
@@ -39,7 +41,7 @@ function redirectToEmployersPage(form: GenericForm<EmploymentForm>, claimId: str
 
 employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: NextFunction) => {
   try {
-    const form = await getEmploymentForm(req.params.id);
+    const form = await getEmploymentForm(generateRedisKey(<AppRequest>req));
     renderView(form, res);
   } catch (error) {
     next(error);
@@ -53,7 +55,7 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: N
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveEmploymentData(req.params.id, form);
+      await saveEmploymentData(generateRedisKey(<AppRequest>req), form);
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {

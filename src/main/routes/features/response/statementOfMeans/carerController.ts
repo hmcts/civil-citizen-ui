@@ -4,6 +4,8 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {getCarer, saveCarer} from '../../../../services/features/response/statementOfMeans/carerService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = Router();
@@ -14,7 +16,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 carerController.get(CITIZEN_CARER_URL, async (req, res, next: NextFunction) => {
   try {
-    renderView(new GenericForm(await getCarer(req.params.id)), res);
+    renderView(new GenericForm(await getCarer(generateRedisKey(<AppRequest>req))), res);
   } catch (error) {
     next(error);
   }
@@ -28,7 +30,7 @@ carerController.post(CITIZEN_CARER_URL,
       renderView(carerForm, res);
     } else {
       try {
-        await saveCarer(req.params.id, carerForm.model);
+        await saveCarer(generateRedisKey(<AppRequest>req), carerForm.model);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
       } catch (error) {
         next(error);

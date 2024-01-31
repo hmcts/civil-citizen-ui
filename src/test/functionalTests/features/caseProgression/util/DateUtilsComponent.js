@@ -9,6 +9,11 @@ class DateUtilsComponent {
     return claimReference.toString().replace(/\d{4}(?=.)/g, '$& ');
   }
 
+  static rollDateToCertainWeeks(numWeeks) {
+    let currentDate = new Date();
+    return new Date(currentDate.setDate(currentDate.getDate() + numWeeks * 7));
+  }
+
   static rollWeekendDayToNextWorkingDay(date) {
     switch (date.getDay()) {
       case 0: //Sunday
@@ -29,6 +34,10 @@ class DateUtilsComponent {
       hour: 'numeric',
       minute : 'numeric',
     });
+  }
+
+  static formatDateToYYYYMMDD (date) {
+    return date.toISOString().substring(0,10);
   }
 
   static formatDateToSpecifiedDateFormat(date) {
@@ -139,6 +148,6 @@ class DateUtilsComponent {
 
 }
 
-const dateToday = DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
-console.log('There is a date Today : ' + dateToday);
+const fourWeeksFroToday = DateUtilsComponent.rollDateToCertainWeeks(4);
+console.log('There are 4 weeks fro Today : ' + DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFroToday));
 module.exports = {DateUtilsComponent};

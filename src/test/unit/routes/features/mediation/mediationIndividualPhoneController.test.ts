@@ -6,15 +6,17 @@ import {CAN_WE_USE_URL, RESPONSE_TASK_LIST_URL, CLAIMANT_RESPONSE_TASK_LIST_URL}
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
 const mockWithoutRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');
 
@@ -22,6 +24,8 @@ const civilClaimResponseMockWithRespondentPhone: string = JSON.stringify(noRespo
 const mockWithRespondentPhone = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithRespondentPhone)),
+  ttl: jest.fn(() => Promise.resolve({})),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,6 +35,7 @@ describe('Repayment Plan', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {

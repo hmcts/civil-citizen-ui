@@ -1,5 +1,6 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -22,11 +23,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
+  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, parentField = '', field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
         category: category,
+        parentField: parentField,
         field: field,
         text: title,
         hint: hint,
@@ -38,13 +40,14 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         monthValue: monthValue,
         yearValue: yearValue,
         index: index,
+
       },
     });
     this._claimSummarySections.push(section);
     return this;
   }
 
-  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string) {
+  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string, caseDocument?: CaseDocument) {
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
@@ -55,6 +58,8 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         html: html,
         index: index,
         errorMessage: errorMessage,
+        caseDocument: caseDocument ? JSON.stringify(caseDocument) : '',
+        documentName: caseDocument ? caseDocument.documentName : '',
       },
     });
     this._claimSummarySections.push(section);

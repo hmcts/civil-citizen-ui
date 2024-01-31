@@ -1,8 +1,6 @@
 services:
   civilService:
     url: CIVIL_SERVICE_URL
-  postcodeLookup:
-    ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
   idam:
     authorizationURL: IDAM_WEB_URL
     tokenURL: IDAM_API_URL
@@ -15,6 +13,7 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
+      expireInDays: REDIS_EXPIRE_IN_DAYS
     legacy:
       url: DRAFT_STORE_API_URL
   session:
@@ -32,6 +31,9 @@ services:
     url: OCMC_URL
   pcq:
     url: PCQ_URL
+  govPay:
+    url: GOVPAY_URL
+  carmDate: CARM_DATE
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

@@ -1,52 +1,13 @@
 import {UploadYourDocumentsSectionBuilder} from 'common/models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 
 describe('UploadYourDocumentsSectionBuilder tests', ()=> {
-  it('should create mainTitle', ()=> {
-  //Given
-    const mainTitleExpected = ({
-      type: ClaimSummaryType.MAINTITLE,
-      data: {
-        text: 'text',
-        variables: 'variables',
-      },
-    });
-
-    //When
-    const mainTitleBuilt = new UploadYourDocumentsSectionBuilder()
-      .addMainTitle(mainTitleExpected.data.text,mainTitleExpected.data.variables)
-      .build();
-
-    //Then
-    expect(mainTitleBuilt).toEqual([mainTitleExpected]);
-  });
-
-  it('should add leadParagraph', ()=> {
-    //Given
-    const leadParagraphExpected = ({
-      type: ClaimSummaryType.LEAD_PARAGRAPH,
-      data: {
-        text: 'text',
-        variables: 'variables',
-      },
-    });
-
-    //When
-    const leadParagraphBuilt = new UploadYourDocumentsSectionBuilder()
-      .addLeadParagraph(leadParagraphExpected.data.text,leadParagraphExpected.data.variables)
-      .build();
-
-    //Then
-    expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
-  });
-
   it('should add Inset Text', ()=> {
     //Given
     const insetTextExpected = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: t('text'),
+        html: 'text',
         variables: 'variables',
       },
     });

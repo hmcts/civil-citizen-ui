@@ -8,6 +8,10 @@ import {Mediation} from '../../../../../../main/common/models/mediation/mediatio
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {CaseState} from 'common/form/models/claimDetails';
+import {ClaimantResponse} from 'common/models/claimantResponse';
+import {Party} from 'common/models/party';
+import {PartyPhone} from 'common/models/PartyPhone';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -20,6 +24,20 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
+      });
+      //When
+      const response = await getCompanyTelephoneNumberData('129');
+      const [contactPerson, form] = response;
+      //Then
+      expect(form.option).toBeUndefined();
+      expect(contactPerson).toBeUndefined();
+    });
+    it('should get empty form when mediation does not exist for Claimant Response', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
       });
       //When
       const response = await getCompanyTelephoneNumberData('129');
@@ -57,6 +75,38 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
       expect(form.option).toBeTruthy();
       expect(form.mediationPhoneNumberConfirmation).toBe(telephoneNumber);
     });
+    it('should return populated form when companyTelephoneNumber exists for Claimant Response', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimantResponse = new ClaimantResponse();
+        claim.claimantResponse.mediation = new Mediation();
+        claim.claimantResponse.mediation.companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, telephoneNumber);
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const response = await getCompanyTelephoneNumberData('123');
+      const form = response[1];
+      //Then
+      expect(form.option).toBeTruthy();
+      expect(form.mediationPhoneNumberConfirmation).toBe(telephoneNumber);
+    });
+    it('should return populated form when companyTelephoneNumber exists for Claimant Response', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.partyPhone = new PartyPhone('123123123');
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+      //When
+      const response = await getCompanyTelephoneNumberData('123');
+      const form = response[1];
+      //Then
+      expect(form.mediationPhoneNumberConfirmation).toBe('123123123');
+    });
     it('should throw error when error is thrown from redis', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
@@ -71,6 +121,19 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveCompanyTelephoneNumberData('129', new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, telephoneNumber));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+    it('should save data successfully when claim exists but no mediation for Claimant Response', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When

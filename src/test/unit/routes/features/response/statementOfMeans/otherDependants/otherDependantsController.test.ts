@@ -12,6 +12,7 @@ import {mockResponseFullAdmitPayBySetDate, mockCivilClaimOptionNo, mockRedisFail
 import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
 import disabledPartnerMock from './disabledPartnerMock.json';
 import disabledChildrenMock from './disabledChildrenMock.json';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const option1ToRedirectToCarerJson = require('./option1ToRedirectToCarerMock.json');
@@ -20,34 +21,18 @@ const option2ToRedirectToCarerJson = require('./option2ToRedirectToCarerMock.jso
 const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
 const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
 const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
-const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
+export const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
 const civilClaimResponseDisabledPartnerMock: string = JSON.stringify(disabledPartnerMock);
 const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledChildrenMock);
 
-const mockWithoutOtherDependents = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutOtherDependent)),
-};
-const mockWithOption1ToRedirectToCarer = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseOption1ToRedirectToCarer)),
-};
-const mockWithOption2ToRedirectToCarer = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseOption2ToRedirectToCarer)),
-};
-export const mockWithSeverelyDisabledDefendant = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseSeverelyDisabledDefendant)),
-};
-const mockWithDisabledPartner = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledChildrenMock)),
-};
-const mockWithDisabledChildren = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledPartnerMock)),
-};
+export function mockDraftStore(mockData: string) {
+  return {
+    set: jest.fn(() => Promise.resolve({})),
+    get: jest.fn(() => Promise.resolve(mockData)),
+    ttl: jest.fn(() => Promise.resolve({})),
+    expireat: jest.fn(() => Promise.resolve({})),
+  };
+}
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -59,7 +44,8 @@ describe('Other Dependants', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
@@ -96,7 +82,7 @@ describe('Other Dependants', () => {
     });
 
     it('should return empty OtherDependants object', async () => {
-      app.locals.draftStoreClient = mockWithoutOtherDependents;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
@@ -119,7 +105,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when "no" is selected', async () => {
-      app.locals.draftStoreClient = mockWithDisabledChildren;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -130,7 +116,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when "yes" is selected and number of people and details are valid', async () => {
-      app.locals.draftStoreClient = mockWithDisabledPartner;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
@@ -141,7 +127,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when defendant is disabled and severely disabled', async () => {
-      app.locals.draftStoreClient = mockWithSeverelyDisabledDefendant;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseSeverelyDisabledDefendant);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -152,7 +138,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when partner is selected and disabled', async () => {
-      app.locals.draftStoreClient = mockWithDisabledPartner;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -163,7 +149,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when children is existing and any of them is disabled', async () => {
-      app.locals.draftStoreClient = mockWithDisabledChildren;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -174,7 +160,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
-      app.locals.draftStoreClient = mockWithOption1ToRedirectToCarer;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption1ToRedirectToCarer);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -185,7 +171,7 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
-      app.locals.draftStoreClient = mockWithOption2ToRedirectToCarer;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption2ToRedirectToCarer);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -253,7 +239,7 @@ describe('Other Dependants', () => {
     });
 
     it('should save when we dont have information on redis', async () => {
-      app.locals.draftStoreClient = mockWithoutOtherDependents;
+      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })

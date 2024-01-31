@@ -1,12 +1,12 @@
 module.exports = {
-  createCaseProgressionToSDOState: () => {
+  createCaseProgressionToSDOState: (claimType, document) => {
     const judgeToSDOData = {
       event: 'CREATE_SDO',
       caseDataUpdate: {
         drawDirectionsOrderRequired: 'No',
         drawDirectionsOrder: null,
         drawDirectionsOrderSmallClaims: null,
-        claimsTrack: 'smallClaimsTrack',
+        claimsTrack: claimType,
         smallClaims: [],
         drawDirectionsOrderSmallClaimsAdditionalDirections: [],
         fastClaims: [],
@@ -59,6 +59,22 @@ module.exports = {
         smallClaimsCreditHire: null,
         smallClaimsRoadTrafficAccident: null,
         smallClaimsAddNewDirections: [],
+        sdoOrderDocument: {
+          documentLink: {
+            document_url: document.document_url,
+            document_binary_url: document.document_binary_url,
+            document_filename: document.document_filename,
+            category_id: 'sdo',
+          },
+          documentName: 'fast_track_sdo_000MC014.pdf',
+          documentType: 'SDO_ORDER',
+          documentSize: '68814',
+          createdDatetime: '2023-09-20T10:08:24',
+          createdBy: 'Civil',
+        },
+        smallClaimsMethodInPerson: {
+          value: { code: '192280'},
+        },
       },
     };
     return judgeToSDOData;

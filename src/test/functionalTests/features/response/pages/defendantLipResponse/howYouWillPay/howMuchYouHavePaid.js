@@ -10,12 +10,14 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: '#main-content button.govuk-button',
 };
 const currentDate = new Date();
-const day = currentDate.getDay();
-const month = currentDate.getMonth();
+const day = currentDate.getDate();
+const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() - 1;
+const dayError = currentDate.getDay() + 1000;
+const monthError = currentDate.getMonth() - 1000;
 
 class HowMuchYouHavePaid {
 
@@ -38,6 +40,50 @@ class HowMuchYouHavePaid {
     await I.see('How did you pay this amount?');
     await I.fillField(fields.text, 'Bank transfer');
     await I.click(buttons.saveAndContinue);
+  }
+
+  async enterPaymentDetailsError(claimRef, amount, responseType) {
+    if(responseType == 'partial-admission'){
+      await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
+      await I.waitForText('How much have you paid the claimant?', config.WaitForText);
+      await I.click(buttons.saveAndContinue);
+      //empty fields
+      await I.see('There was a problem');
+      await I.see('Enter a valid amount');
+      await I.see('Enter a valid day');
+      await I.see('Enter a valid month');
+      await I.see('Enter a valid year');
+      await I.see('Enter text explaining how you paid');
+      //invalid date, month & year
+      await I.fillField(fields.day, dayError.toString());
+      await I.fillField(fields.month, monthError.toString());
+      await I.fillField(fields.year, '20');
+      await I.click(buttons.saveAndContinue);
+      await I.see('There was a problem');
+      await I.see('Enter a valid day');
+      await I.see('Enter a valid month');
+      await I.see('Enter a 4 digit year');
+    }else{
+      await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
+      await I.waitForText('How much have you paid?', config.WaitForText);
+      await I.click(buttons.saveAndContinue);
+      //empty fields
+      await I.see('There was a problem');
+      await I.see('Enter a valid amount');
+      await I.see('Enter a valid day');
+      await I.see('Enter a valid month');
+      await I.see('Enter a valid year');
+      await I.see('Enter text explaining how you paid');
+      //invalid date, month & year
+      await I.fillField(fields.day, dayError.toString());
+      await I.fillField(fields.month, monthError.toString());
+      await I.fillField(fields.year, '20');
+      await I.click(buttons.saveAndContinue);
+      await I.see('There was a problem');
+      await I.see('Enter a valid day');
+      await I.see('Enter a valid month');
+      await I.see('Enter a 4 digit year');
+    }
   }
 }
 

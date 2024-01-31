@@ -1,6 +1,6 @@
 {% from "./new-line.njk" import newLine %}
 
-{% macro aboutClaimWidget(aboutClaimParams) %}
+{% macro aboutClaimWidget(t, aboutClaimParams) %}
 {% set containerStyle= "govuk-grid-column-one-third" %}
 {% if aboutClaimParams.header %}
   {% set containerStyle= "govuk-grid-column-one-third govuk-!-padding-top-9" %}
@@ -11,7 +11,9 @@
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
     {% endif %}
     {% for claimLine in aboutClaimParams.lines %}
-      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact, claimLine.hint, claimLine.hintStyle ) }}
+      {% if claimLine.href !== undefined %}
+        {{ newLine(t, claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact, claimLine.hint, claimLine.hintStyle ) }}
+      {% endif %}
     {% endfor %}
   </div>
 {% endmacro %}

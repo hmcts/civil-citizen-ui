@@ -6,31 +6,40 @@ import {
 } from 'services/features/caseProgression/trialContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {TypeOfDocumentSection, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[][] => {
   const sectionContent: any[] = [];
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[0]?.selected) {
+  let uploadDocuments: UploadDocuments;
+
+  if (claim.isClaimant()) {
+    uploadDocuments = claim.caseProgression?.claimantUploadDocuments;
+  } else {
+    uploadDocuments = claim.caseProgression?.defendantUploadDocuments;
+  }
+
+  if(uploadDocuments?.trial[0]?.selected) {
     sectionContent.push(trialCaseSummary(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[1]?.selected) {
+  if(uploadDocuments?.trial[1]?.selected) {
     sectionContent.push(trialSkeletonArgument(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && !isSmallClaims) {
+  if(uploadDocuments?.trial[2]?.selected && !isSmallClaims) {
     sectionContent.push(trialAuthorities(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[3]?.selected) {
+  if(uploadDocuments?.trial[3]?.selected) {
     sectionContent.push(trialCosts(form));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[4]?.selected) {
+  if(uploadDocuments?.trial[4]?.selected) {
     sectionContent.push(trialDocumentary(form, isSmallClaims));
   }
 
-  if(claim.caseProgression?.defendantUploadDocuments?.trial[2]?.selected && isSmallClaims) {
+  if(uploadDocuments?.trial[2]?.selected && isSmallClaims) {
     sectionContent.push(trialAuthorities(form));
   }
 
@@ -40,7 +49,7 @@ export const getTrialContent = (claim: Claim, form: GenericForm<UploadDocumentsU
 const trialCaseSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.trialCaseSummary.length != 0) {
     form.model.trialCaseSummary?.forEach(function (trialCaseSummary: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildTrialCaseSummarySection(trialCaseSummary, index, form)]);
     });
@@ -57,7 +66,7 @@ const trialCaseSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSumm
 const trialSkeletonArgument = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.trialSkeletonArgument.length != 0) {
     form.model.trialSkeletonArgument?.forEach(function (trialSkeletonArgument: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildTrialSkeletonSection(trialSkeletonArgument, index, form)]);
     });
@@ -74,7 +83,7 @@ const trialSkeletonArgument = (form: GenericForm<UploadDocumentsUserForm>): Clai
 const trialAuthorities = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.trialAuthorities.length != 0) {
     form.model.trialAuthorities?.forEach(function (trialAuthorities: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildTrialLegalSection(trialAuthorities, index, form)]);
     });
@@ -91,7 +100,7 @@ const trialAuthorities = (form: GenericForm<UploadDocumentsUserForm>): ClaimSumm
 const trialCosts = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.trialCosts.length != 0) {
     form.model.trialCosts?.forEach(function (trialCosts: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildTrialCostSection(trialCosts, index, form)]);
     });
@@ -108,7 +117,7 @@ const trialCosts = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryCon
 const trialDocumentary = (form: GenericForm<UploadDocumentsUserForm>, isSmallClaims: boolean): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.trialDocumentary.length != 0) {
     form.model.trialDocumentary?.forEach(function (trialDocumentary: TypeOfDocumentSection, index: number) {
       sectionContent.push([buildTrialDocumentarySection(isSmallClaims, trialDocumentary, index, form)]);
     });

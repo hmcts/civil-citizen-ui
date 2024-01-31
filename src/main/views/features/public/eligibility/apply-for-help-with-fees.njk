@@ -9,7 +9,7 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.TITLE') }}
 {% endblock %}
-
+{% set hideLogout = true  %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -23,6 +23,7 @@
             </span>
             {{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PARAGRAPH1_2') }}
           </p>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PARAGRAPH1_3') }}</p>
           <p class="govuk-body-m">{{ externalLink(t, 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.TITLE', externalURLs.feesHelpUrl, true) }}</p>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PARAGRAPH2') }}</p>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PARAGRAPH3') }}</p>

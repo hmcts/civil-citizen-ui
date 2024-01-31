@@ -8,7 +8,9 @@ services:
     url: 'http://localhost:4000'
     microservice: 'civil_service'
   postcodeLookup:
-    ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
+    ordnanceSurveyApiKey:
+  launchDarkly:
+    sdk:
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
@@ -26,6 +28,7 @@ services:
       port: 6379
       key:
       tls: false
+      expireInDays: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:
@@ -49,11 +52,12 @@ services:
   pcq:
     url: 'https://pcq.aat.platform.hmcts.net'
     tokenKey: 'test'
+  govPay:
+    url: 'https://card.payments.service.gov.uk'
+  carmDate: '01 May 2024'
 health:
   timeout: 5000
   deadline: 15000
 appInsights:
   instrumentationKey:
-launchDarkly:
-  test:
-    sdk: 'sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62'
+

@@ -10,7 +10,8 @@ function calculateTotal() {
   const amountInputArray = Array.from(document.getElementsByClassName('civil-claim-amount'));
   if (amountInputArray.length) {
     const amountArray = amountInputArray.map(element => Number(element.value));
-    return amountArray.length ? amountArray.reduce((a, b) => a + b) : 0;
+    const total = amountArray.length ? amountArray.reduce((a, b) => a + b) : 0;
+    return total.toFixed(2);
   }
 }
 

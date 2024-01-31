@@ -19,6 +19,6 @@ export class DateMonthValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.monthExists?'ERRORS.VALID_REAL_DATE':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH';
+    return this.monthExists?'ERRORS.VALID_REAL_MONTH':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH';
   }
 }

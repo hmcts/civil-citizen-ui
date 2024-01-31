@@ -1,7 +1,5 @@
 import config from 'config';
-import {LDClient, init, LDFlagValue} from 'launchdarkly-node-server-sdk';
-
-const launchDarklyTestSdk = config.get<string>('launchDarkly.test.sdk');
+import { LDClient, init, LDFlagValue } from 'launchdarkly-node-server-sdk';
 
 const user = {
   'name': 'civil-service',
@@ -10,17 +8,21 @@ const user = {
 
 let ldClient: LDClient;
 
-async function getClient(): Promise<LDClient> {
-  const client = init(launchDarklyTestSdk);
-  await client.waitForInitialization();
-  return client;
+async function getClient(): Promise<void> {
+  const launchDarklyTestSdk = config.get<string>('services.launchDarkly.sdk');
+
+  if (launchDarklyTestSdk) {
+    const client = init(launchDarklyTestSdk);
+    ldClient = await client.waitForInitialization();
+  }
 }
 
 export async function getFlagValue(
   key: string,
 ): Promise<LDFlagValue> {
-  if (!ldClient) ldClient = await getClient();
-  return await ldClient.variation(key, user, false);
+  if (!ldClient) await getClient();
+  if (ldClient)
+    return await ldClient.variation(key, user, false);
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -33,4 +35,12 @@ export async function isServiceShuttered(): Promise<boolean> {
 
 export async function isPcqShutterOn(): Promise<boolean> {
   return await getFlagValue('shutter-pcq') as boolean;
+}
+
+export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+}
+
+export async function isCARMEnabled(): Promise<boolean> {
+  return await getFlagValue('carm') as boolean;
 }

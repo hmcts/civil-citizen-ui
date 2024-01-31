@@ -19,6 +19,6 @@ export class DateDayValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.dayExists?'ERRORS.VALID_REAL_DATE':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY';
+    return this.dayExists?'ERRORS.VALID_REAL_DAY':'ERRORS.VALID_DATE_OF_DOC_MUST_INCLUDE_DAY';
   }
 }

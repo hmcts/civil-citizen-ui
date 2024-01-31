@@ -28,20 +28,23 @@ export const isPcqElegible = (type: PartyType): boolean => {
 export const generatePcqUrl = (
   pcqId: string,
   actor: string,
-  ccdCaseId: string,
   partyId: string,
   returnUri: string,
   lang: string,
+  ccdCaseId?: string,
 ): string => {
   const pcqParameters: PcqParameters = {
     pcqId: pcqId,
     serviceId: SERVICE_ID,
     actor: actor,
-    ccdCaseId: ccdCaseId,
     partyId: partyId,
     returnUrl: returnUri,
     language: lang,
   };
+
+  if (ccdCaseId) {
+    pcqParameters.ccdCaseId = ccdCaseId;
+  }
 
   const encryptedPcqParams: EncryptedPcqParams = {
     ...pcqParameters,
@@ -51,17 +54,17 @@ export const generatePcqUrl = (
   const qs = Object.entries(encryptedPcqParams)
     .map(([key, value]) => key + '=' + value)
     .join('&');
-    
+
   return `${pcqBaseUrl}/service-endpoint?${qs}`;
 };
 
 export interface PcqParameters {
+  pcqId: string;
   serviceId: string;
   actor: string;
-  pcqId: string;
-  ccdCaseId?: string;
   partyId: string;
   returnUrl: string;
+  ccdCaseId?: string;
   language?: string;
 }
 

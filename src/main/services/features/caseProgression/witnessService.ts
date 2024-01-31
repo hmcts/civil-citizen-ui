@@ -8,27 +8,31 @@ import {
 } from 'services/features/caseProgression/witnessContentBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  TypeOfDocumentSection,
+  ReferredToInTheStatementSection,
   UploadDocumentsUserForm,
   WitnessSection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
 export const getWitnessContent = (claim: Claim, form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[0]?.selected){
+  const uploadDocuments: UploadDocuments = claim.isClaimant()
+    ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
+
+  if (uploadDocuments?.witness[0]?.selected){
     sectionContent.push(getWitnessStatement(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[1]?.selected){
+  if (uploadDocuments?.witness[1]?.selected){
     sectionContent.push(getWitnessSummary(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[2]?.selected){
+  if (uploadDocuments?.witness[2]?.selected){
     sectionContent.push(getNoticeOfIntention(form));
   }
 
-  if (claim.caseProgression?.defendantUploadDocuments?.witness[3]?.selected){
+  if (uploadDocuments?.witness[3]?.selected){
     sectionContent.push(getDocumentsReferred(form));
   }
 
@@ -38,7 +42,7 @@ export const getWitnessContent = (claim: Claim, form: GenericForm<UploadDocument
 const getWitnessStatement = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.witnessStatement.length != 0) {
     form.model.witnessStatement.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildWitnessStatement(witnessSection, index, form)]);
     });
@@ -55,7 +59,7 @@ const getWitnessStatement = (form: GenericForm<UploadDocumentsUserForm>): ClaimS
 const getWitnessSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.witnessSummary.length != 0) {
     form.model.witnessSummary.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildWitnessSummary(witnessSection, index, form)]);
     });
@@ -72,7 +76,7 @@ const getWitnessSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSum
 const getNoticeOfIntention = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
+  if (form && form.model.noticeOfIntention.length != 0) {
     form.model.noticeOfIntention.forEach(function (witnessSection: WitnessSection, index: number) {
       sectionContent.push([buildNoticeOfIntention(witnessSection, index, form)]);
     });
@@ -89,8 +93,8 @@ const getNoticeOfIntention = (form: GenericForm<UploadDocumentsUserForm>): Claim
 const getDocumentsReferred = (form: GenericForm<UploadDocumentsUserForm>): ClaimSummaryContent[] => {
   const sectionContent = [];
 
-  if (form) {
-    form.model.documentsReferred.forEach(function (documentsReferred: TypeOfDocumentSection, index: number) {
+  if (form && form.model.documentsReferred.length != 0) {
+    form.model.documentsReferred.forEach(function (documentsReferred: ReferredToInTheStatementSection, index: number) {
       sectionContent.push([buildDocumentsReferred(documentsReferred, index, form)]);
     });
   } else {

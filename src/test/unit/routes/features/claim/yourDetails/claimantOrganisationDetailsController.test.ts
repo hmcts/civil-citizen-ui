@@ -13,6 +13,8 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {PartyDetails} from 'form/models/partyDetails';
+import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
+import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -60,15 +62,25 @@ const validDataForPost = {
   contactPerson: 'contactPerson',
 };
 
+const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
+const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
+  .mockReturnValue(Promise.resolve(claim));
+const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
+  .mockReturnValue(Promise.resolve(calmEnabled));
+
 describe('Claimant Organisation Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  app.request.cookies = {eligibilityCompleted: true};
 
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.resetAllMocks();
+    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
+    getCaseDataFromStoreSpy(mockClaim);
+    carmToggleSpy(true);
   });
 
   describe('Organisation Type', () => {
@@ -122,6 +134,39 @@ describe('Claimant Organisation Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter organisation details');
+        });
+    });
+
+    it('should return mandatory contact person label and error on empty contact person', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
+      });
+      await request(app)
+        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
+        .send({
+          contactPerson: '',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
+          expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
+          expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
+        });
+    });
+
+    it('should return optional contact person label when carm toggle disabled', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
+      });
+      carmToggleSpy(false);
+      await request(app)
+        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
+        .send({
+          contactPerson: '',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
         });
     });
 
@@ -245,6 +290,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant Organisation details - should return error on empty primary postcode', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
+      });
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
@@ -347,6 +395,9 @@ describe('Claimant Organisation Details page', () => {
     });
 
     it('POST/Claimant Organisation details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
+      });
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
         .send({
@@ -452,6 +503,39 @@ describe('Claimant Organisation Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter company details');
+        });
+    });
+
+    it('should return mandatory contact person label and error on empty contact person', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.COMPANY);
+      });
+      await request(app)
+        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
+        .send({
+          contactPerson: '',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
+          expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
+          expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
+        });
+    });
+
+    it('should return optional contact person label when carm toggle disabled', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return buildClaimOfApplicantWithType(PartyType.COMPANY);
+      });
+      carmToggleSpy(false);
+      await request(app)
+        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
+        .send({
+          contactPerson: '',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
         });
     });
 
