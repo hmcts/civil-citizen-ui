@@ -180,7 +180,6 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequiredCarm).toBe(YesNoUpperCamelCase.YES);
     expect(claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationContactNameCorrect.toUpperCase());
     expect(claim.mediationCarm.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationPhoneCorrect.toUpperCase());
     expect(claim.mediationCarm.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationEmailCorrect.toUpperCase());
@@ -233,7 +232,6 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequiredCarm).toBe(YesNoUpperCamelCase.YES);
     expect(claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationContactNameCorrect.toUpperCase());
     expect(claim.mediationCarm.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationPhoneCorrect.toUpperCase());
     expect(claim.mediationCarm.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationEmailCorrect.toUpperCase());

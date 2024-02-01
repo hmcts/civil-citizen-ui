@@ -39,7 +39,6 @@ import {toCCDSmallClaimHearing} from 'services/translation/response/convertToCCD
 import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDFastClaimHearing';
 import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
-import {toAgreedMediationCarm} from 'services/translation/response/convertToCCDAgreedMediationCarm';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
@@ -50,7 +49,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate ,paymentIntention?.paymentOption, claim.respondentPaymentDeadline),
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
-    responseClaimMediationSpecRequiredCarm: toAgreedMediationCarm(claim.mediationCarm),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
     respondent1: toCCDParty(claim.respondent1),
