@@ -9,7 +9,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Language} from 'models/directionsQuestionnaire/welshLanguageRequirements/language';
 import {getCaseDataFromStore,generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {RequestHandler} from "express";
+import {RequestHandler} from 'express';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welshLanguageRequirements/welsh-language';

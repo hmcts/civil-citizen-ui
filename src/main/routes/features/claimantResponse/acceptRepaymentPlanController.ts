@@ -31,7 +31,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
     displayHintTextForNoOption,
     isPayBySetDate,
     defendantName,
-    proposedSetDate
+    proposedSetDate,
   });
 }
 
