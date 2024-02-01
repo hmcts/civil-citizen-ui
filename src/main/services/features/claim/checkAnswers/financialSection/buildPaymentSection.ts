@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {CCJ_PAID_AMOUNT_URL,} from 'routes/urls';
+import {CCJ_PAID_AMOUNT_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {GenericForm} from 'form/models/genericForm';
