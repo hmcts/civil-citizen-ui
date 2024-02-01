@@ -77,6 +77,19 @@ module.exports = {
     tokens.ccdEvent = response.token;
   },
 
+  startEventForLiPCitizen: async (eventName, payload) => {
+    let url = getCivilServiceUrl();
+    const userId = await idamHelper.userId(tokens.userAuth);
+    console.log('The value of the userId from the startEventForCitizen() : '+userId);
+    console.log('The value of the Auth Token from the startEventForCitizen() : '+tokens.userAuth);
+
+    url += `/cases/draft/citizen/${userId}/event`;
+
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
+      .then(response => response.json());
+    return response.id;
+  },
+
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),
       {
