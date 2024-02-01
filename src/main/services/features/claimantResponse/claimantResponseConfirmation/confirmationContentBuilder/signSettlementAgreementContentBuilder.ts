@@ -5,7 +5,7 @@ import {addDaysBefore4pm, formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getSignSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
   const defendantName = claim?.getDefendantFullName();
-  const respondByDate = formatDateToFullDate(addDaysBefore4pm(new Date(claim.claimantResponse.submittedDate), 7), lang);
+  const respondByDate = formatDateToFullDate(addDaysBefore4pm(new Date(), 7), lang);
   return [
     {
       type: ClaimSummaryType.TITLE,
