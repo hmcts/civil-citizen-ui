@@ -514,10 +514,11 @@
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Gwybodaeth am gamau y gallwch eu cymryd ar ôl cyhoeddi CCJ ",
       "PAGE_TITLE": "Cadarnhad Dyfarniad Llys Sirol",
-      "PROCESS_YOUR_REQUEST": "Byddwn yn prosesu eich cais ac yn postio copi o'r dyfarniad i chi ac i {{ defendantName }}. Rydym yn anelu at wneud hyn o fewn 10 diwrnod gwaith.",
+      "PROCESS_YOUR_REQUEST": "Byddwn yn prosesu eich cais ac yn postio copi o'r dyfarniad i chi ac i {{ defendantName }}. Ein nod yw prosesu'r cais hwn cyn gynted â phosibl.",
+      "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",
       "POSTAL_RESPONSE": "Os derbynnir ymateb drwy'r post cyn cyhoeddi'r dyfarniad bydd eich cais yn cael ei wrthod.",
       "TITLE": "Cais am Ddyfarniad Llys Sirol",
-      "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo - bydd unrhyw ddiweddariadau pellach drwy'r post.",
+      "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo a bydd unrhyw ddiweddariadau pellach drwy'r post.",
       "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach."
     },
     "CCJ_DEFENDANT_DOB": {
@@ -709,7 +710,7 @@
       "THE_AGREEMENT_CYA": "Y cytundeb",
       "TITLE": "Gwiriwch eich atebion",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
-      "TIMELINE_CLAIM_TITLE": "Llinell amser o'r hyn ddigwyddodd",
+      "TIMELINE_CLAIM_TITLE": "Llinell amser o'r hyn a ddigwyddodd",
       "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
       "TRIED_TO_SETTLE": "Ydych chi wedi ceisio setlo'r hawliad hwn cyn mynd i'r llys?",
       "UNEMPLOYMENT_FOR": "Diwaith ers {{ unemployedYears }} flwyddyn {{ unemployedMonths }} mis",
@@ -723,7 +724,7 @@
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
       "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} bob {{ frequency }}. Bydd y rhandaliad cyntaf yn cael ei dalu erbyn {{ instalmentDate }}",
-      "WILL_PAY_BY_PAYMENT_DATE": "Bydd {{ fullName }} yn talu £{{ amount }}, heb fod yn hwyrach na {{ paymentDate }}",
+      "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu £{{ amount }}, heb fod yn hwyrach na {{ paymentDate }}",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
       "YOUR_RESPONSE": "Eich ymateb"
     },
@@ -1035,14 +1036,13 @@
     },
     "CLAIMANT_RESPONSE": {
       "COURT_PROPOSED_DATE": {
-        "BASED_ON": "Based on financial details the defendant gave us, we don't believe they can pay by your proposed date.",
-        "COURT_CALCULATOR": "The court's calculator has determined {{ paymentDate }} as the date when they can pay you in full.",
-        "DO_YOU_ACCEPT": "Do you accept a repayment date of {{ paymentDate }}?",
-        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
-        "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
-        "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
-        "YES": "Yes"
+        "BASED_ON": "Yn seiliedig ar y manylion ariannol a roddwyd i ni gan y diffynnydd, nid ydym yn credu y gallant dalu erbyn y dyddiad a roddwyd gennych.",
+        "COURT_CALCULATOR": "Mae cyfrifiannell y llys wedi pennu {{ paymentDate }} fel y dyddiad pryd y gallant eich talu'n llawn.",
+        "DO_YOU_ACCEPT": "Ydych chi'n derbyn dyddiad ad-dalu o {{ paymentDate }}?",
+        "IF_YOU_WANT_JUDGE": "Os ydych chi eisiau i farnwr wneud cynllun ad-dalu, mae'n rhaid i chi ofyn am ddyfarniad ar gyfer cynllun arfaethedig y llys ar y sgrin nesaf.",
+        "NO_I_WANT_JUDGE": "Nac ydw - rwyf eisiau i farnwr wneud cynllun ad-dalu newydd",
+        "PAGE_TITLE": "Ni all y diffynnydd dalu erbyn y dyddiad a roddwyd gennych",
+        "TITLE": "Ni all y diffynnydd dalu erbyn y dyddiad a roddwyd gennych"
       },
       "COURT_PROPOSED_PLAN": {
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
@@ -1051,7 +1051,7 @@
         "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
         "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
         "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
-        "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
+        "IF_YOU_WANT_JUDGE": "Os ydych chi eisiau i farnwr wneud cynllun ad-dalu, mae'n rhaid i chi ofyn am ddyfarniad ar gyfer cynllun arfaethedig y llys ar y sgrin nesaf.",
         "I_WANT_ACCEPT": "I want to accept this repayment plan",
         "I_WANT_JUDGE": "I want a judge to make a repayment plan",
         "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
@@ -1385,9 +1385,11 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
+        "ACCEPTED_PARTIAL_ADMISSION": "Rydych wedi derbyn addefiad rhannol y diffynnydd. Maent wedi dweud y byddant yn talu ar unwaith.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu",
-        "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
-        "CLAIMANT_REQUESTED_CCJ": "Y Dyfarniad Llys Sirol (CCJ) y gofynnwyd amdano.",
+        "CLAIM_ENDED": "Bu ichi stopio’r hawliad hwn",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "Mae angen ichi anfon manylion ariannol y diffynnydd i’r llys",
+        "CLAIMANT_REQUESTED_CCJ": "Bu ichi ofyn am Ddyfarniad Llys Sirol yn erbyn {{ defendantName }}.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb",
         "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
@@ -1507,7 +1509,7 @@
         "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
         "COMPLETION_DATE": {
           "DATE": "{{ finalRepaymentDate }}",
-          "LABEL": "Completion date"
+          "LABEL": "Dyddiad cwblhau"
         },
         "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
         "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
@@ -1518,8 +1520,8 @@
         "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
         "THE_AGREEMENT": {
           "LABEL": "Y cytundeb",
-          "PAY_BY_SET_DATE": "Bydd {{ defendant }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} bob {{ frequency }}. Bydd y rhandaliad cyntaf yn cael ei dalu erbyn {{ firstRepaymentDate }}."
+          "PAY_BY_SET_DATE": "Bydd {{fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}.",
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -2588,7 +2590,7 @@
         "DEFENDANT_ADMITS_THEY_OWE": "Mae {{ defendant }} yn cyfaddef bod arno £{{ paidAmount }} ichi. Nid yw’n credu bod arno’r swm llawn a hawlir.",
         "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu £{{ paidAmount }} i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
         "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "Maen nhw wedi cynnig talu £{{ paidAmount }} i chi erbyn {{datePaid}}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
-        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Mae wedi cynnig talu £{{ paidAmount }} i chi ar unwaith. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Maen nhw wedi cynnig talu £{{{ paidAmount }} ar unwaith. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol.",
         "WHY_THEY_DONT_OWE": "Pam nad oes arno'r swm sy'n cael ei hawlio?"
       },
       "PAY_EXPENSES": "A yw'n talu unrhyw dreuliau?",
@@ -2602,7 +2604,7 @@
       "THEIR_EVIDENCE": "Their evidence",
       "THEIR_TOE": "Ei linell amser o ddigwyddiadau",
       "TITLE": "Ymateb y diffynnydd",
-      "TOTAL_PAID_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys y ffi hawlio a'r llog os yw'n berthnasol",
+      "TOTAL_PAID_AMOUNT": "Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
       "UNABLE_TO_PAY_FULL_AMOUNT": "Pam na all dalu'r swm llawn nawr?",
       "WHERE_THEY_LIVE": "Lle mae'n byw?",
       "WHEN_THEY_SAY_THEY_PAID": "Pan mae'n dweud ei fod wedi talu'r swm hwn?",
@@ -3205,7 +3207,7 @@
     "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
+    "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch 'Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb'",
     "CORRECT_DATE_NOT_IN_FUTURE": "Cywirwch y dyddiad, ni allwch ddefnyddio dyddiad yn y dyfodol.",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
