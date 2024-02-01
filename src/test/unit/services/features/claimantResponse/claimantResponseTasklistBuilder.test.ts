@@ -90,6 +90,7 @@ describe('Full Defence', () => {
       hasClaimantRejectedDefendantPaid: jest.fn(),
       hasClaimantRejectedPartAdmitPayment: jest.fn(),
       isDefendantAgreedForMediation: jest.fn(),
+      hasClaimantIntentToProceedResponse: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
@@ -99,6 +100,7 @@ describe('Full Defence', () => {
     claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
     claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
     claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+    claim.hasClaimantIntentToProceedResponse.mockReturnValue(false);
     claim.isDefendantAgreedForMediation.mockReturnValue(true);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -140,6 +142,7 @@ describe('Full Defence', () => {
       hasClaimantRejectedDefendantResponse: jest.fn(),
       hasClaimantRejectedDefendantPaid: jest.fn(),
       hasClaimantRejectedPartAdmitPayment: jest.fn(),
+      hasClaimantIntentToProceedResponse: jest.fn(),
     } as any;
     claim.isFullDefence.mockReturnValue(true);
     claim.hasConfirmedAlreadyPaid.mockReturnValue(true);
@@ -149,6 +152,7 @@ describe('Full Defence', () => {
     claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
     claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
     claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
+    claim.hasClaimantIntentToProceedResponse.mockReturnValue(false);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
     //Then
