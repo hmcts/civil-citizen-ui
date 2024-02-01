@@ -145,7 +145,6 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
 const buildSubmitSection = (claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
-  // TODO: when check and submit tasks page is developed we need to update logic of this task
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);

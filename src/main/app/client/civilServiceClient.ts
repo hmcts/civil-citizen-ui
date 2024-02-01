@@ -113,7 +113,6 @@ export class CivilServiceClient {
     await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => {
-          //TODO Maybe we need to convert also CCD to CUI
           const caseData = Object.assign(new Claim(), claim.case_data);
           return new CivilClaimResponse(claim.id, caseData);
         });
