@@ -26,7 +26,6 @@ import {CourtProposedPlan, CourtProposedPlanOptions} from 'common/form/models/cl
 import {RepaymentDecisionType} from 'common/models/claimantResponse/RepaymentDecisionType';
 import {DocumentType} from 'common/models/document/documentType';
 
-
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
