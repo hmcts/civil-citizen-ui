@@ -185,8 +185,6 @@ ccd:
       enabled: false
     userProfileImporter:
       enabled: false
-    userProfile:
-      enabled: false
 
   global:
     postgresUsername: hmcts
@@ -241,6 +239,14 @@ ccd:
     java:
       keyVaults: [ ]
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
+
+  ccd-user-profile-api:
+    java:
+      releaseNameOverride: ${SERVICE_NAME}-ccd-user-profile-api
+      imagePullPolicy: Always
+      environment:
+        RELEASE_REVISION: "{{ .Release.Revision }}"
+      disableKeyVaults: true
 
 camunda-bpm:
   enabled: true
