@@ -54,7 +54,7 @@ export const isFullAdmissionRepaymentPlanMissing = (caseData: Claim): boolean =>
 };
 
 export const isStatementOfMeansComplete = (caseData: Claim): boolean => {
-   return !!(caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
+  return !!(caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
 };
 
 export const financialDetailsShared = (caseData: Claim): boolean => {

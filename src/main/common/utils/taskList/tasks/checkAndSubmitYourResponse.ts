@@ -12,7 +12,7 @@ import {t} from 'i18next';
  */
 
 export const getCheckAndSubmitYourResponseTask = (claimId: string, lang: string): Task => {
- return {
+  return {
     description: t('TASK_LIST.SUBMIT.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
     url: constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL),
     status: TaskStatus.INCOMPLETE,
