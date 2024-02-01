@@ -6,7 +6,7 @@ import {CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaimClaimantIntention,
   mockCivilClaimClaimantIntentionNotSettle,
-  mockRedisFailure
+  mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {configureSpy} from '../../../../utils/spyConfiguration';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';

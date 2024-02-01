@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {
   getClaimantMediationAvailabilityTask,
-  getClaimantTelephoneMediationTask
+  getClaimantTelephoneMediationTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/mediationSectionTasks';
 
 jest.mock('../../../../../../../main/modules/i18n');

@@ -291,5 +291,5 @@ export {
   mockCivilClaimHearingFee,
   mockCivilClaimWithFeeType,
   mockDraftClaim,
-  mockCivilClaimClaimantIntentionNotSettle
+  mockCivilClaimClaimantIntentionNotSettle,
 };
