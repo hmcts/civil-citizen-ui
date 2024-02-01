@@ -87,7 +87,7 @@ export function buildClaimantResponseMediationSection(claim: Claim, claimId: str
     const tasks: Task[] = [];
     tasks.push(getClaimantTelephoneMediationTask(claim, claimId, lang));
     tasks.push(getClaimantMediationAvailabilityTask(claim, claimId, lang));
-    return { title: t('CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.TITLE', { lng: lang }), tasks };
+    return { title: t('COMMON.MEDIATION', { lng: lang }), tasks };
   }
 }
 

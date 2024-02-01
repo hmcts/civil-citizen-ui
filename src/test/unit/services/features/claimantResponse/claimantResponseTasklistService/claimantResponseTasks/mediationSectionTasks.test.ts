@@ -19,7 +19,7 @@ describe('Mediation section task', () => {
   describe('getClaimantTelephoneMediationTask', () => {
 
     const resultIncomplete = {
-      description: 'CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.TELEPHONE_MEDIATION',
+      description: 'COMMON.TELEPHONE_MEDIATION',
       url: '/case/5129/claimant-response/mediation/telephone-mediation',
       status: TaskStatus.INCOMPLETE,
     };
@@ -38,7 +38,7 @@ describe('Mediation section task', () => {
   describe('getClaimantMediationAvailabilityTask', () => {
 
     const resultIncomplete = {
-      description: 'CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.MEDIATION_AVAILABILITY',
+      description: 'COMMON.AVAILABILITY_FOR_MEDIATION',
       url: '/case/5129/claimant-response/mediation/availability',
       status: TaskStatus.INCOMPLETE,
     };

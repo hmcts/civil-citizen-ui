@@ -1113,8 +1113,8 @@ describe('Claimant Response Task List builder', () => {
       const mediation = buildClaimantResponseMediationSection(claim, claimId, lang, true);
       //Then
       expect(mediation.tasks.length).toEqual(2);
-      expect(mediation.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.TELEPHONE_MEDIATION');
-      expect(mediation.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.MEDIATION_AVAILABILITY');
+      expect(mediation.tasks[0].description).toEqual('COMMON.TELEPHONE_MEDIATION');
+      expect(mediation.tasks[1].description).toEqual('COMMON.AVAILABILITY_FOR_MEDIATION');
       expect(mediation.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       expect(mediation.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
     });

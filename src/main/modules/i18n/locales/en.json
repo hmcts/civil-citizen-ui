@@ -32,6 +32,7 @@
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
     "TELEPHONE_MEDIATION": "Telephone mediation",
     "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -315,11 +316,6 @@
       "REQUEST_COUNTY_COURT_JUDGMENT": "Request a County Court Judgment",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
       "TITLE": "Choose what to do next"
-    },
-    "MEDIATION": {
-      "TITLE": "Mediation",
-      "TELEPHONE_MEDIATION": "Telephone mediation",
-      "MEDIATION_AVAILABILITY": "Availability for mediation"
     },
     "HOW_THEY_RESPONDED": {
       "TITLE": "How they responded",
