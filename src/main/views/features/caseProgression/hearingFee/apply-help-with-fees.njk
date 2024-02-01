@@ -3,40 +3,30 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/back.njk" import back %}
+{% from "../../../macro/contact-us-for-help-one-third.njk" import contactUsForHelpOneThird %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
-    {{ govukBackLink({
-        text: t('COMMON.BUTTONS.BACK'),
-        href: backUrl,
-        classes: 'govuk-!-margin-top-0'
-      }) }}
-      <div class="govuk-width-container govuk-!-padding-top-9">
-        <main class="govuk-main-wrapper govuk-!-padding-left-3" role="main">
+      <div class="govuk-width-container govuk-!-padding-top-0">
+        <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
           <div class="govuk-grid-row govuk-!-margin-top-0">
             <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-
-              <div class="govuk-grid-row">
+              {{ back(backUrl,t) }}
                  <span class="govuk-caption-l">{{ t('COMMON.MICRO_TEXT.HEARING_FEE') }}</span>
                  <h1 class="govuk-heading-l">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE') }}</h1>
                   <form method="post" novalidate>
-                    {{ csrfProtection(csrf) }}
+                        {{ csrfProtection(csrf) }}
                         <p class="govuk-body-m govuk-!-padding-bottom-3">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_IF')}}</p>
-
                         <p class="govuk-body-m govuk-!-padding-bottom-3">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_INSTEAD')}}</p>
-
                         <p class="govuk-body-m govuk-!-padding-bottom-3">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_DURING')}}</p>
-
                         <p class="govuk-body-m govuk-!-padding-bottom-3">{{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE')}}</p>
                         <p class="govuk-body govuk-!-padding-bottom-6">
                             <a target="_blank" class="govuk-link " rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">{{t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK')}}</a>
                         </p>
-
-
                     <div class="govuk-button-group">
                          {{ govukButton({
                             text: t('COMMON.BUTTONS.CONTINUE')
@@ -44,11 +34,8 @@
                         <a class="govuk-link govuk-!-margin-left-2" href={{ redirectUrl }} rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
                     </div>
                   </form>
-              </div>
             </div>
-            <div class="govuk-grid-column-one-third">
-              {{ contactUsForHelp(t) }}
-            </div>
+            {{ contactUsForHelpOneThird(t) }}
           </div>
         </main>
       </div>

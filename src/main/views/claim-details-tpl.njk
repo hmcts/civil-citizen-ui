@@ -48,8 +48,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{ cookieBanner(t) }}
 {% endblock %}
 
-{% block footer %}
-{% if NODE_ENV !== 'production' %}
+{% block footer %} 
+{% if developmentMode != 'production' %}
 {{ govukFooter({
     meta: {
       items: [
