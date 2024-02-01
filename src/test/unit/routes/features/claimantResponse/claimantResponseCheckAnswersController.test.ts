@@ -31,6 +31,12 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 
+jest.mock('../../../../../main/routes/guards/claimantResponsecheckYourAnswersGuard', () => ({
+  claimantResponsecheckYourAnswersGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+
 jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
 
 const mockOutstandingClaimantResponseTasks =
