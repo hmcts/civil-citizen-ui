@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import {TaskList} from 'common/models/taskList/taskList';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
-  buildClaimantHearingRequirementsSection,
+  buildClaimantHearingRequirementsSection, buildClaimantResponseMediationSection,
   buildClaimantResponseSubmitSection,
   buildHowDefendantRespondSection,
   buildWhatToDoNextSection,
@@ -12,7 +12,7 @@ import { Task } from 'common/models/taskList/task';
 import { TaskStatus } from 'common/models/taskList/TaskStatus';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
-export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string) {
+export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string, carmApplicable: boolean) {
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
@@ -20,15 +20,21 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
   }
   if(canShowYourResponseSection(claim)) {
-    taskGroups.push(buildYourResponseSection(claim, claimId, lang));
+    taskGroups.push(buildYourResponseSection(claim, claimId, lang, carmApplicable));
   }
+
+  if (carmApplicable &&
+    (claim.hasClaimantIntentToProceedResponse() || claim.hasClaimantRejectedDefendantResponse() || claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) {
+    taskGroups.push(buildClaimantResponseMediationSection(claim, claimId, lang, carmApplicable));
+  }
+
   taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
   taskGroups.push(buildClaimantResponseSubmitSection(claimId, lang));
   return taskGroups.filter(item => item.tasks.length !== 0);
 }
 
-export const outstandingClaimantResponseTasks = (caseData: Claim, claimId: string, lang: string): Task[] => {
-  return outstandingTasksFromTaskLists(getClaimantResponseTaskLists(caseData, claimId, lang));
+export const outstandingClaimantResponseTasks = (caseData: Claim, claimId: string, lang: string, carmApplicable: boolean): Task[] => {
+  return outstandingTasksFromTaskLists(getClaimantResponseTaskLists(caseData, claimId, lang, carmApplicable));
 };
 
 const isOutstanding = (task: Task): boolean => {
