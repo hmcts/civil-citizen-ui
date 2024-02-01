@@ -15,16 +15,17 @@ import {Mediation} from 'common/models/mediation/mediation';
 import {PartyType} from 'common/models/partyType';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
-import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams } from 'common/form/models/admission/howMuchHaveYouPaid';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from 'common/form/models/defence';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import { CourtProposedDate, CourtProposedDateOptions } from 'common/form/models/claimantResponse/courtProposedDate';
-import { CourtProposedPlan, CourtProposedPlanOptions } from 'common/form/models/claimantResponse/courtProposedPlan';
-import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
-import { DocumentType } from 'common/models/document/documentType';
+import {CourtProposedDate, CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
+import {RepaymentDecisionType} from 'common/models/claimantResponse/RepaymentDecisionType';
+import {DocumentType} from 'common/models/document/documentType';
+
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -82,7 +83,8 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
     claim.claimantResponse.signSettlementAgreement.signed = 'true';
-    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
+    claim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
     // Then
@@ -571,7 +573,7 @@ describe('Claimant Response Confirmation service', () => {
   });
 });
 
-function getClaim (){
+function getClaim() {
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   claim.legacyCaseReference = '000MC009';

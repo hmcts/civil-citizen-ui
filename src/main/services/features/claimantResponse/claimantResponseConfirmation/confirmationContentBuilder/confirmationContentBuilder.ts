@@ -11,14 +11,15 @@ import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementCont
 import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import { CaseState } from 'common/form/models/claimDetails';
+import {CaseState} from 'common/form/models/claimDetails';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
-  if (isClaimantRejectPaymentPlan(claim) && claim.isBusiness()) {
+  if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
+    claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
-  } else if (claimantResponse.isSignSettlementAgreement) {
+  } else if (claimantResponse.isSignASettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
@@ -54,8 +55,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     claim.isClaimantRejectedPaymentPlan()) {
     return sendFinancialDetails;
   }
-  
-  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement) {
+
+  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
+    !claimantResponse.isClaimantRejectedCourtDecision) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
