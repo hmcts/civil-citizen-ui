@@ -967,7 +967,8 @@
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
         "UPLOADED_AFTER_DOCUMENT": "Document",
-        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Claimant's uploaded documents",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Defendant's uploaded documents"
       },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
@@ -1401,9 +1402,11 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
-        "CLAIM_ENDED": "This claim has ended",
-        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "CLAIM_ENDED": "You stopped this claim",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
+        "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
@@ -2397,6 +2400,19 @@
         "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
         "PAYMENT_FOR": "Payment for",
         "TOTAL_AMOUNT": "Total amount"
+      },
+      "UNSUCCESSFUL": {
+        "CALL_US_ON": "Or, call us on ",
+        "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+        "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
+        "FIND_OUT_CHARGES": "Find out about call charges:",
+        "GO_BACK": "Go back and ",
+        "TRY_PAYMENT_AGAIN": "try the payment again",
+        "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "PAGE_TITLE": "Claim fee payment unsuccessful",
+        "OPEN_TIMES": "Opening times:",
+        "TITLE": "Your payment was unsuccessful"
       }
     },
     "PAYMENT_OPTION": {
