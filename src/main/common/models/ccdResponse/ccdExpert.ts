@@ -7,6 +7,11 @@ export interface CCDExpert{
   jointExpertSuitable?: YesNoUpperCamelCase;
 }
 
+export interface CCDDQSupportRequirements {
+  supportRequirements?: YesNoUpperCamelCase;
+  supportRequirementsAdditional?: string
+}
+
 export enum CCDExportReportSent {
   YES = 'YES',
   NO ='NO',
@@ -16,6 +21,14 @@ export enum CCDExportReportSent {
 export interface CCDExpertDetails {
   id?: string,
   value?: CCDExpertDetailsItem,
+}
+
+export enum SupportDetails {
+  DISABLED_ACCESS = 'Disabled access',
+  HEARING_LOOPS = 'Hearing loop',
+  SIGN_INTERPRETER = 'Sign language interpreter',
+  LANGUAGE_INTERPRETER = 'Language interpreter',
+  OTHER_SUPPORT = 'Other support'
 }
 
 export interface CCDExpertDetailsItem {
