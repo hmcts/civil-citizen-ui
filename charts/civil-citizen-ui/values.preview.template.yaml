@@ -193,6 +193,7 @@ ccd:
     postgresSecret: postgres
     postgresHostname: civil-preview.postgres.database.azure.com
     databaseNamePrefix: "pr-${CHANGE_ID}-"
+    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
   ccd-admin-web:
     nodejs:
       autoscaling:
