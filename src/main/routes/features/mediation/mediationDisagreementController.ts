@@ -15,7 +15,6 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {CaseState} from '../../../common/form/models/claimDetails';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import { PartyType } from 'common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = Router();
