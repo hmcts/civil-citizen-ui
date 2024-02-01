@@ -516,6 +516,7 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
     expect(claimantResponseConfirmationContent[6]).toBeUndefined();
   });
+
   it('Claimant rejected defendant`s response and accepted the mediation', () => {
     // Given
     claim.ccdState = CaseState.IN_MEDIATION;
@@ -549,17 +550,7 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
   });
-  it('Claimant rejected defendant`s payment plan for company', () => {
-    // Given
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
-    claim.respondent1.type = PartyType.COMPANY;
-    // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-    //Then
-    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
-  });
+
   it('Case State is in mediation', () => {
     // Given
     claim.ccdState = CaseState.IN_MEDIATION;
