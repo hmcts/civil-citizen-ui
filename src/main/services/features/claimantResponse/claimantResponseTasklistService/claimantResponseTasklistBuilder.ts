@@ -83,12 +83,12 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 }
 
 export function buildClaimantResponseMediationSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
-  const tasks: Task[] = [];
   if (carmApplicable) {
+    const tasks: Task[] = [];
     tasks.push(getClaimantTelephoneMediationTask(claim, claimId, lang));
     tasks.push(getClaimantMediationAvailabilityTask(claim, claimId, lang));
+    return { title: t('CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.TITLE', { lng: lang }), tasks };
   }
-  return { title: t('CLAIMANT_RESPONSE_TASK_LIST.MEDIATION.TITLE', { lng: lang }), tasks };
 }
 
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
