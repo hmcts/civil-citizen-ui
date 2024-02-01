@@ -22,9 +22,9 @@ import {ResponseType} from '../../../../../common/form/models/responseType';
 import {RejectAllOfClaimType} from '../../../../../common/form/models/rejectAllOfClaimType';
 import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evidenceType';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
+const addTimeline = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
   const timeline = claim.partialAdmission?.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
 
@@ -44,7 +44,7 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
   );
 };
 
-const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
+const addEvidence = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
   const evidenceItem = claim.evidence?.evidenceItem;
   const lng = getLng(lang);
@@ -70,7 +70,7 @@ const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
   return !!(amount < totalClaimAmount);
 };
 
-const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
+const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string , yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
   const howMuchYouAdmitYouOweHref = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
@@ -91,7 +91,7 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   ]);
 };
 
-const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
+const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string , yourResponseDetailsSection: SummarySection) => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
   const rejectUrl = claim.rejectAllOfClaim.option == RejectAllOfClaimType.DISPUTE ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
   const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, rejectUrl);
@@ -106,7 +106,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
   if (isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), disagreeText, whyDoYouDisagreeUrl, changeLabel(lang)));
 };
 
-export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let yourResponseDetailsSection: SummarySection = null;
 
   yourResponseDetailsSection = summarySection({

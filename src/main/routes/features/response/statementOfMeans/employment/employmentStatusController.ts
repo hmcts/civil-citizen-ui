@@ -1,18 +1,18 @@
-import {NextFunction, Response, Router} from 'express';
-import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {EmploymentCategory} from '../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {EmploymentForm} from 'form/models/statementOfMeans/employment/employmentForm';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
 import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_UNEMPLOYED_URL,
-} from '../../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getEmploymentForm,
   saveEmploymentData,
-} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+} from 'services/features/response/statementOfMeans/employment/employmentService';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -39,16 +39,16 @@ function redirectToEmployersPage(form: GenericForm<EmploymentForm>, claimId: str
   }
 }
 
-employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: NextFunction) => {
+employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, (async (req, res, next: NextFunction) => {
   try {
     const form = await getEmploymentForm(generateRedisKey(<AppRequest>req));
     renderView(form, res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: NextFunction) => {
+employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, (async (req, res, next: NextFunction) => {
   const form = new GenericForm(new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory)));
   try {
     form.validateSync();
@@ -61,6 +61,6 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: N
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default employmentStatusController;

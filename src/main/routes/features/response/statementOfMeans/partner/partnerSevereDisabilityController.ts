@@ -1,9 +1,9 @@
-import {NextFunction, Response, Router} from 'express';
-import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL} from '../../../../urls';
-import {PartnerSevereDisabilityService} from '../../../../../services/features/response/statementOfMeans/partner/partnerSevereDisabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL} from 'routes/urls';
+import {PartnerSevereDisabilityService} from 'services/features/response/statementOfMeans/partner/partnerSevereDisabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -15,17 +15,17 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(partnerViewPath, {form});
 }
 
-partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res, next: NextFunction) => {
+partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, (async (req, res, next: NextFunction) => {
   try {
     const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(generateRedisKey(<AppRequest>req));
     renderView(partnerSevereDisability, res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try {
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
@@ -38,6 +38,6 @@ partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default partnerSevereDisabilityController;

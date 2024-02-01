@@ -1,15 +1,15 @@
 import * as express from 'express';
-import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {Language} from '../../../../common/models/directionsQuestionnaire/welshLanguageRequirements/language';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Language} from 'models/directionsQuestionnaire/welshLanguageRequirements/language';
+import {getCaseDataFromStore,generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {RequestHandler} from "express";
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welshLanguageRequirements/welsh-language';
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<Language>, res: express.Response): void {
   res.render(welshLanguageViewPath, {form});
 }
 
-welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
+welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const welshLanguageRequirements = directionQuestionnaire.welshLanguageRequirements?.language
@@ -30,9 +30,9 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
+welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -49,6 +49,6 @@ welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default welshLanguageController;

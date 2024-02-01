@@ -15,9 +15,9 @@ import {
 } from 'routes/urls';
 import {YesNo } from 'form/models/yesNo';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-export const buildMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildMediationSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
 
   const mediationSection = summarySection({
     title: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),

@@ -7,10 +7,10 @@ import {addEvidence} from './addEvidence';
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {CLAIM_REASON_URL} from '../../../../../routes/urls';
 
-export const buildClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildClaimSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
 
   const lng = getLng(lang);
-  const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
+  const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const claimSection = summarySection({
     title: t('PAGES.CLAIM_DETAILS.PAGE_TITLE', {lng}),
     summaryRows: [],

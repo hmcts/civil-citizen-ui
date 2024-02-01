@@ -15,7 +15,7 @@ export class TypeOfDocumentsForm {
     this.typeOfDocuments = [];
   }
 
-  mapTypeOfDocumentsFormFromStrings(strings: string[]): TypeOfDocumentsForm {
+  mapTypeOfDocumentsFormFromStrings(strings: string[]): this {
     if(strings === undefined) {
       this.typeOfDocuments.forEach((item) => item.checked = false);
     }else{
@@ -27,7 +27,7 @@ export class TypeOfDocumentsForm {
     return this;
   }
 
-  mapTypeOfDocumentsFormFromUploadDocuments(uploadDocuments: UploadDocuments): TypeOfDocumentsForm {
+  mapTypeOfDocumentsFormFromUploadDocuments(uploadDocuments: UploadDocuments): this {
     if(uploadDocuments !== undefined) {
       uploadDocuments.typeOfDocuments.forEach((typeOfDocuments) => {
         const foundItem = this.typeOfDocuments.find((item) => item.type === typeOfDocuments.type);

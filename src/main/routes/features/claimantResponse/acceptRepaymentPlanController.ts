@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -6,7 +6,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {getSetDatePaymentDetails} from 'services/features/claimantResponse/getSetDatePaymentDetails';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -25,10 +25,17 @@ const fullAdmitSetDatePaymentPath = 'features/claimantResponse/accept-repayment-
 let repaymentPlan: RepaymentPlanSummary;
 
 function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPlanSummary, res: Response, displayHintTextForNoOption: boolean, isPayBySetDate: boolean, defendantName: string, proposedSetDate: string): void {
-  res.render(fullAdmitSetDatePaymentPath, { form, repaymentPlan, displayHintTextForNoOption, isPayBySetDate, defendantName, proposedSetDate});
+  res.render(fullAdmitSetDatePaymentPath, {
+    form,
+    repaymentPlan,
+    displayHintTextForNoOption,
+    isPayBySetDate,
+    defendantName,
+    proposedSetDate
+  });
 }
 
-acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
+acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -47,9 +54,9 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, a
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, async (req: Request, res: Response, next: NextFunction) => {
+acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -70,6 +77,6 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default acceptRepaymentPlanController;

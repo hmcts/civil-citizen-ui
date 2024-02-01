@@ -1,15 +1,15 @@
-import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
   CLAIM_INTEREST_HOW_MUCH_URL,
-} from '../../../../routes/urls';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
-import {getClaimInterestForm} from '../../../../services/features/claim/interest/claimInterestService';
+} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {getClaimInterestForm} from 'services/features/claim/interest/claimInterestService';
 
 const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
@@ -18,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(continueClaimingInterestPath, {form});
 }
 
-continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
+continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
   const caseId = req.session?.user?.id;
   try {
     const interest = await getInterest(caseId);
@@ -26,9 +26,9 @@ continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, asy
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const body = req.body as Record<string, string>;
@@ -47,6 +47,6 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, as
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default continueClaimingInterestController;

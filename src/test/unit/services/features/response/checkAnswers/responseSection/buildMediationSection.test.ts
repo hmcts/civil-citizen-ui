@@ -66,7 +66,7 @@ describe('Mediation Section', () => {
 });
 
 const getMediationSection = (claim: Claim, claimId: string, lang: string) => {
-  const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+  const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
   const mediationSection = summarySection({
     title: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),

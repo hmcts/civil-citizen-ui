@@ -1,18 +1,18 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {
   DQ_EXPERT_CAN_STILL_EXAMINE_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
   PERMISSION_FOR_EXPERT_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -25,16 +25,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(permissionForExpertViewPath, {form});
 }
 
-permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
+permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, (async (req, res, next) => {
   try {
     const permissionForExpert = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(permissionForExpert), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
+permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const permissionForExpert = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
@@ -51,6 +51,6 @@ permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, n
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default permissionForExpertController;

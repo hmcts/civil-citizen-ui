@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getBilingualLangPreference,
@@ -37,7 +37,7 @@ bilingualLangPreferenceController.get(
   },
 );
 
-bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
+bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
     form.validateSync();
@@ -51,6 +51,6 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, async 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default bilingualLangPreferenceController;

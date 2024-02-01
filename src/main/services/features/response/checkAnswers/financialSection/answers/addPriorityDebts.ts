@@ -9,18 +9,18 @@ import {
 import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 let count: number;
 
-const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:Transaction, tKey:string, lang: string | unknown) => {
+const addPriorityDebtsListRow = (section:SummarySection, sectionHref:string, debtType:Transaction, tKey:string, lang: string) => {
   if (debtType?.declared && debtType?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow((count++) + '. ' + t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_TYPE', { lng: getLng(lang) }), t(tKey, { lng: getLng(lang) }), sectionHref, changeLabel(lang)));
     section.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(debtType.transactionSource.amount), sectionHref, changeLabel(lang)));
   }
 };
 
-export const addPriorityDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addPriorityDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourPriorityDebtsHref = CITIZEN_PRIORITY_DEBTS_URL.replace(':id', claimId);
 
   if (claim.statementOfMeans?.priorityDebts) {

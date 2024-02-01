@@ -1,17 +1,17 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from 'common/form/models/yesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -24,15 +24,15 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months', {form});
 }
 
-cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
+cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, (async (req, res, next) => {
   try {
     renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
+cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
@@ -48,6 +48,6 @@ cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default cantAttendHearingInNext12MonthsController;

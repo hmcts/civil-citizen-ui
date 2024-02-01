@@ -16,7 +16,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
-export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
   const paymentOption = claim.claimantResponse?.ccjRequest?.paidAmount?.option;

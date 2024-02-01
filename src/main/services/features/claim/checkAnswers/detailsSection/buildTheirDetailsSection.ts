@@ -22,7 +22,7 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let theirDetailsHref = CLAIM_DEFENDANT_COMPANY_DETAILS_URL;
   switch (claim.respondent1?.type) {
     case PartyType.INDIVIDUAL:

@@ -1,17 +1,17 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   AGREED_TO_MORE_TIME_URL,
   RESPONSE_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
-} from '../../../urls';
-import {generateRedisKey, getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
-import {Claim} from '../../../../common/models/claim';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
-import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
+} from 'routes/urls';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GenericForm} from 'form/models/genericForm';
+import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
+import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 
 const responseDeadlineOptionsController = Router();
@@ -27,7 +27,7 @@ function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: C
 }
 
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -35,10 +35,10 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
-  async (req: Request, res: Response, next: NextFunction) => {
+  ( async (req: Request, res: Response, next: NextFunction) => {
     try {
       let responseOption;
       let redirectUrl;
@@ -77,6 +77,6 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default responseDeadlineOptionsController;

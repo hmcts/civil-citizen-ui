@@ -1,13 +1,13 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -19,15 +19,15 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
 }
 
-requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
+requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, next) => {
   try {
     renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
+requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
@@ -42,6 +42,6 @@ requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default requestExtra4WeeksController;

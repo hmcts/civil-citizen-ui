@@ -1,18 +1,18 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
-import {Claim} from '../../../../common/models/claim';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
+import {Claim} from 'models/claim';
 import {
   getCaseDataFromStore,
   saveDraftClaim,
-} from '../../../../modules/draft-store/draftStoreService';
-import {AppRequest} from '../../../../common/models/AppRequest';
+} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
 
-claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claim: Claim = await getCaseDataFromStore(caseId);
@@ -25,9 +25,9 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: Respons
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = (<AppRequest>req).session.user?.id;
     const {year, month, day} = req.body;
@@ -45,6 +45,6 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: AppRequest | Request, r
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimantDoBController;

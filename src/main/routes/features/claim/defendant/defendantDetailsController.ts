@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
@@ -34,7 +34,7 @@ function renderView(res: Response, form: GenericForm<PartyDetails>, defendantTyp
   }
 }
 
-defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
+defendantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const defendantDetails = await getDefendantInformation(userId);
@@ -44,9 +44,9 @@ defendantDetailsController.get(detailsURLs, async (req: AppRequest, res: Respons
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-defendantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+defendantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const userId = (<AppRequest>req).session?.user?.id;
 
   try {
@@ -63,6 +63,6 @@ defendantDetailsController.post(detailsURLs, async (req: AppRequest | Request, r
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default defendantDetailsController;

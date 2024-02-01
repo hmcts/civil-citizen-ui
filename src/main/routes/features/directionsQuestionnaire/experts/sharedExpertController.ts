@@ -1,13 +1,13 @@
-import {Response, Router} from 'express';
-import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {RequestHandler, Response, Router} from 'express';
+import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -19,15 +19,15 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/experts/shared-expert', {form});
 }
 
-sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
+sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
   try {
     renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
-sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
+sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
@@ -42,6 +42,6 @@ sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default sharedExpertController;

@@ -1,13 +1,13 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_CONFIRM_YOUR_DETAILS_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   getGenericOption,
   getGenericOptionForm,
   saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
@@ -22,16 +22,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(defendantYourselfEvidenceViewPath, {form});
 }
 
-defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req, res, next: NextFunction) => {
+defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (req, res, next: NextFunction) => {
   try {
     const defendantYourselfEvidence = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req: Request, res: Response, next: NextFunction) => {
+defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -57,6 +57,6 @@ defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (r
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default defendantYourselfEvidenceController;

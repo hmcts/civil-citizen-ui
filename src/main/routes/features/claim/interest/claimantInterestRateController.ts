@@ -1,12 +1,12 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {CLAIM_INTEREST_RATE_URL,CLAIM_INTEREST_DATE_URL} from '../../../urls';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {GenericForm} from 'form/models/genericForm';
+import {CLAIM_INTEREST_RATE_URL,CLAIM_INTEREST_DATE_URL} from 'routes/urls';
 import {
   getInterestRateForm,
-} from '../../../../services/features/claim/interest/claimantInterestRateService';
-import {ClaimantInterestRate} from '../../../../common/form/models/claim/interest/claimantInterestRate';
+} from 'services/features/claim/interest/claimantInterestRateService';
+import {ClaimantInterestRate} from 'form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
-import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
@@ -16,7 +16,7 @@ function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): voi
   res.render(interestRateViewPath, {form});
 }
 
-interestRateController.get(CLAIM_INTEREST_RATE_URL, async (req:AppRequest, res: Response, next: NextFunction) => {
+interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.session.user?.id;
   try {
     const interest = await getInterest(claimId);
@@ -24,9 +24,9 @@ interestRateController.get(CLAIM_INTEREST_RATE_URL, async (req:AppRequest, res: 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-interestRateController.post(CLAIM_INTEREST_RATE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const claimId = (<AppRequest>req).session.user?.id;
   try {
     const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType,req.body.differentRate,req.body.reason);
@@ -41,6 +41,6 @@ interestRateController.post(CLAIM_INTEREST_RATE_URL, async (req: AppRequest | Re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default interestRateController;

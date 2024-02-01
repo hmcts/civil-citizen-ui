@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -29,7 +29,7 @@ function renderView(res: Response, form: Claim, fees: [TableItem[]], lang: strin
   });
 }
 
-sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res, next: NextFunction) => {
+sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -39,7 +39,7 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 const formatFeesRanges = (feesRanges: FeeRanges, lang: string): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];

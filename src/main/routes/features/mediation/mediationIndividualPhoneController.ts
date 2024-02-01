@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {MediationIndividualPhoneNumber} from 'common/form/models/mediation/mediationIndividualPhoneNumber';
 import {GenericForm} from 'common/form/models/genericForm';
 import {Mediation} from 'common/models/mediation/mediation';
@@ -31,7 +31,7 @@ const isTelephoneNumberSaved = (telephoneNumber: string, req: Request) => {
   return getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.mediationPhoneNumber));
 };
 
-mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: NextFunction) => {
+mediationIndividualPhoneController.get(CAN_WE_USE_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const mediation: Mediation = await getMediation(redisKey);
@@ -39,10 +39,10 @@ mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: Ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 mediationIndividualPhoneController.post(CAN_WE_USE_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -63,6 +63,6 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default mediationIndividualPhoneController;

@@ -16,9 +16,9 @@ import {UnemploymentCategory} from '../../../../../../common/form/models/stateme
 import {Unemployment} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {Employment} from '../../../../../../common/models/employment';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown): string => {
+const getTypeOfJobTranslation = (employment: Employment, lang: string ): string => {
   const tEmployed = t('PAGES.EMPLOYMENT_STATUS.EMPLOYED', { lng: getLng(lang) });
   const tSelfEmployed = t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED', { lng: getLng(lang) });
   const tEmployedAndSelfEmployed = t('PAGES.CHECK_YOUR_ANSWER.EMPLOYED_AND_SELF_EMPLOYED', { lng: getLng(lang) });
@@ -32,7 +32,7 @@ const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown)
   return typeOfJobsArr.length > 1 ? tEmployedAndSelfEmployed : typeOfJobsArr[0];
 };
 
-const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string | unknown) => {
+const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string ) => {
   const taxPayments = claim.statementOfMeans?.taxPayments;
   const isBehindTaxPayments = taxPayments?.owed ? YesNoUpperCase.YES : YesNoUpperCase.NO;
 
@@ -45,7 +45,7 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
   }
 };
 
-const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
+const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string ) => {
   const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
 
   financialSection.summaryList.rows.push(summaryRow(t('COMMON.EMPLOYMENT_TYPE', { lng: getLng(lang) }), getTypeOfJobTranslation(employment, lang), '', changeLabel(lang)));
@@ -67,7 +67,7 @@ const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, e
   }
 };
 
-const showUnemploymentDetails = (financialSection: SummarySection, unemployment: Unemployment, lang: string | unknown) => {
+const showUnemploymentDetails = (financialSection: SummarySection, unemployment: Unemployment, lang: string ) => {
   let unemploymentLengthOrOther: string;
   const years = unemployment?.unemploymentDetails?.years;
   const months = unemployment?.unemploymentDetails?.months;
@@ -88,7 +88,7 @@ const showUnemploymentDetails = (financialSection: SummarySection, unemployment:
   financialSection.summaryList.rows.push(summaryRow(t('COMMON.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
 };
 
-export const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourEmploymentHref = CITIZEN_EMPLOYMENT_URL.replace(':id', claimId);
   const whoEmploysYouHref = CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', claimId);
   const yourSelfEmploymentHref = CITIZEN_SELF_EMPLOYED_URL.replace(':id', claimId);

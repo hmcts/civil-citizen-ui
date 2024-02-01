@@ -8,13 +8,13 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Address} from '../../../../../common/form/models/address';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const addressToString = (address: Address) => {
   return address.addressLine1 + '<br>' + address.city + '<br>' + address.postCode;
 };
 
-export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
   const phoneNumberUrl = claim.respondent1?.partyPhone?.ccdPhoneExist ? CITIZEN_DETAILS_URL : CITIZEN_PHONE_NUMBER_URL;
   const phoneNumberLabel = claim.respondent1?.partyPhone?.ccdPhoneExist ? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER' ;

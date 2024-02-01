@@ -1,19 +1,19 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../routes/urls';
+} from 'routes/urls';
 import {
   BetweenSixteenAndNineteenDependants,
-} from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+} from 'form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../../../../services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+} from 'services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {hasDisabledChildren} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -30,15 +30,15 @@ function convertToForm(req: Request): GenericForm<BetweenSixteenAndNineteenDepen
   return new GenericForm(new BetweenSixteenAndNineteenDependants(value, maxValue));
 }
 
-betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
+betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, (async (req, res, next: NextFunction) => {
   try {
     renderView(await getForm(generateRedisKey(<AppRequest>req)), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: NextFunction) => {
+betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, (async (req, res, next: NextFunction) => {
   const form = convertToForm(req);
   try {
     form.validateSync();
@@ -55,5 +55,5 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 export default betweenSixteenAndNineteenController;

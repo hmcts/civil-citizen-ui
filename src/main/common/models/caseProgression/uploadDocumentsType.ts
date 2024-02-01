@@ -36,11 +36,12 @@ export class UploadDocuments {
   }
 
 }
+type caseDocumentType = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
 
 export class UploadDocumentTypes {
   selected?: boolean;
   uuid?: string;
-  caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
+  caseDocument?: caseDocumentType;
   documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial;
 
   constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType,

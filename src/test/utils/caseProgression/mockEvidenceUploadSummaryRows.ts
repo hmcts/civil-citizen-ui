@@ -7,7 +7,7 @@ import {CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const documentTitle = 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED';
 export const mockNameValue = 'John Smith';
 export const mockDocumentNameValue = 'document type';

@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CLAIM_DEFENDANT_PARTY_TYPE_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {PartyTypeSelection} from 'form/models/claim/partyTypeSelection';
@@ -14,7 +14,7 @@ import {AppRequest} from 'models/AppRequest';
 const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = Router();
 
-defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const defendant: Party = await getDefendantInformation(caseId);
@@ -24,9 +24,9 @@ defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: App
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const form = new GenericForm(new PartyTypeSelection(Object.assign(req.body).option));
@@ -41,6 +41,6 @@ defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: Ap
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default defendantPartyTypeController;

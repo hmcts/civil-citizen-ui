@@ -1,4 +1,4 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
@@ -14,7 +14,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string | unknown): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string ): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
@@ -30,7 +30,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
 
 const dashboardController = Router();
 
-dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
+dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const appRequest = <AppRequest> req;
   const user: UserDetails = appRequest.session.user;
@@ -49,6 +49,6 @@ dashboardController.get(DASHBOARD_URL, async function (req, res, next) {
   }catch(error){
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default dashboardController;

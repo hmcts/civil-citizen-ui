@@ -1,12 +1,12 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../urls';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
 import {
   getChildrenDisability,
   saveChildrenDisability,
-} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -15,7 +15,7 @@ const childrenDisabilityController = Router();
 
 childrenDisabilityController
   .get(CHILDREN_DISABILITY_URL,
-    async (req: Request, res: Response, next: NextFunction) => {
+    (async (req: Request, res: Response, next: NextFunction) => {
       try {
         const childrenDisability: GenericYesNo = await getChildrenDisability(generateRedisKey(<AppRequest>req));
         const form = new GenericForm(childrenDisability);
@@ -23,10 +23,10 @@ childrenDisabilityController
       } catch (error) {
         next(error);
       }
-    })
+    }) as RequestHandler)
   .post(
     CHILDREN_DISABILITY_URL,
-    async (req: Request, res: Response, next: NextFunction) => {
+    (async (req: Request, res: Response, next: NextFunction) => {
       const childrenDisability: GenericYesNo = new GenericYesNo(req.body.option);
       const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
@@ -42,6 +42,6 @@ childrenDisabilityController
           next(error);
         }
       }
-    });
+    }) as RequestHandler);
 
 export default childrenDisabilityController;

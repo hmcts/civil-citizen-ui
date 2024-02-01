@@ -1,17 +1,17 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {Evidence} from '../../../../common/form/models/evidence/evidence'; //buildEmptyForm
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {Evidence} from 'form/models/evidence/evidence'; //buildEmptyForm
 import {
   getClaimDetails,
   saveClaimDetails,
-} from '../../../../services/features/claim/details/claimDetailsService';
+} from 'services/features/claim/details/claimDetailsService';
 import * as utilEvidence from '../../../../common/form/models/evidence/transformAndRemoveEmptyValues';
 import {
   CLAIM_EVIDENCE_URL,
   CLAIMANT_TASK_LIST_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {AppRequest} from '../../../../common/models/AppRequest';
-import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const evidenceViewPath = 'features/claim/claimant-evidences';
 const evidenceController = Router();
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
   res.render(evidenceViewPath, {form});
 }
 
-evidenceController.get(CLAIM_EVIDENCE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+evidenceController.get(CLAIM_EVIDENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimDetails: ClaimDetails = await getClaimDetails(req.session.user?.id);
     Evidence.buildForm(claimDetails);
@@ -28,9 +28,9 @@ evidenceController.get(CLAIM_EVIDENCE_URL, async (req: AppRequest, res: Response
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-evidenceController.post(CLAIM_EVIDENCE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+evidenceController.post(CLAIM_EVIDENCE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new Evidence('', utilEvidence.transformToEvidences(req.body)));
     form.validateSync();
@@ -45,6 +45,6 @@ evidenceController.post(CLAIM_EVIDENCE_URL, async (req: AppRequest | Request, re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default evidenceController;

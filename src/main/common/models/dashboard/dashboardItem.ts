@@ -41,12 +41,12 @@ export abstract class DashboardItem {
     return this.ocmc ? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
   }
 
-  getStatus(lang: string | unknown): string {
+  getStatus(lang: string ): string {
     const dashboardStatus = this.getDashboardStatus(lang);
     const currentStatus = dashboardStatus[this.status];
     return currentStatus? translate(currentStatus?.translationKey, currentStatus?.parameter, lang): '';
   }
-  abstract getDashboardStatus(lang: string | unknown): DashboardStatus;
+  abstract getDashboardStatus(lang: string): DashboardStatus;
 }
 
 export class DashboardClaimantItem extends DashboardItem {
@@ -56,7 +56,7 @@ export class DashboardClaimantItem extends DashboardItem {
 
   }
 
-  getDashboardStatus(lang: string | unknown): DashboardStatus {
+  getDashboardStatus(lang: string ): DashboardStatus {
     const paramDefendantName = {key: 'defendantName', value: this.defendantName};
 
     return {
@@ -110,7 +110,7 @@ export class DashboardDefendantItem extends DashboardItem {
     this.url = '/dashboard/:claimId/defendant';
   }
 
-  getDashboardStatus(lang: string | unknown): DashboardStatus {
+  getDashboardStatus(lang: string ): DashboardStatus {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
     const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate, lang)};
@@ -201,7 +201,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string ) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {

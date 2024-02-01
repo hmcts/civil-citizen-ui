@@ -21,7 +21,7 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown, carmApplicable = false): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable = false): SummarySections => {
   const paymentOption: string = claim.fullAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
@@ -95,7 +95,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown, carmApplicable = false): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string , carmApplicable = false): SummarySections => {
   return buildSummarySections(claim, claimId, lang, carmApplicable);
 };
 

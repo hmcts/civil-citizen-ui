@@ -17,7 +17,7 @@ const getDefendantFullName = (claim: Claim): string => {
   return `${claim.respondent1?.partyDetails.individualTitle} ${claim.respondent1?.partyDetails.individualFirstName} ${claim.respondent1?.partyDetails.individualLastName}`;
 };
 
-export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT', {lng}),

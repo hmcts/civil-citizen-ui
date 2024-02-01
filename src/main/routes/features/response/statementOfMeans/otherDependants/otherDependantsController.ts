@@ -1,15 +1,15 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_OTHER_DEPENDANTS_URL,
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_CARER_URL,
-} from '../../../../urls';
-import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
-import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {Claim} from '../../../../../common/models/claim';
-import {generateRedisKey, getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+} from 'routes/urls';
+import {OtherDependants} from 'form/models/statementOfMeans/otherDependants';
+import {OtherDependantsService} from 'services/features/response/statementOfMeans/otherDependants/otherDependantsService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<OtherDependants>, res: Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: NextFunction) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, (async (req, res, next: NextFunction) => {
   try {
     const response = await otherDependantsService.getOtherDependants(generateRedisKey(<AppRequest>req));
     const otherDependants = response
@@ -30,10 +30,10 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, nex
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
@@ -53,6 +53,6 @@ otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default otherDependantsController;

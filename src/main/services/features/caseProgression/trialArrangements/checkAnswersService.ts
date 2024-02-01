@@ -6,7 +6,7 @@ import {
 } from 'services/features/response/checkAnswers/caseProgression/trialArrangements/buildTrialReadyConfirmationSection';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string ): SummarySections => {
   return {
     sections: [
       buildIsCaseReadyForTrialOrHearing(claim, claimId, lang),
@@ -14,10 +14,10 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummarySections => {
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getCaseInfoContents = (claimId: string, claim: Claim, lang?: string | unknown): ClaimSummarySection[] => {
+export const getCaseInfoContents = (claimId: string, claim: Claim, lang?: string ): ClaimSummarySection[] => {
   return buildCaseInfoContents(claim, claimId, lang);
 };

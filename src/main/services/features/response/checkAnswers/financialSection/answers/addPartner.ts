@@ -12,9 +12,9 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNo,YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addPartner = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addPartner = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourCohabitingHref = CITIZEN_PARTNER_URL.replace(':id', claimId);
   const yourPartnerAgeHref = CITIZEN_PARTNER_AGE_URL.replace(':id', claimId);
   const yourPartnerPensionHref = CITIZEN_PARTNER_PENSION_URL.replace(':id', claimId);
