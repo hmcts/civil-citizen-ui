@@ -11,7 +11,6 @@ import {
   CLAIM_INTEREST_URL,
   CLAIM_INTEREST_RATE_URL,
 } from '../../../../../routes/urls';
-import {InterestClaimFromType, SameRateInterestType} from '../../../../../common/form/models/claimDetails';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 
@@ -33,7 +32,7 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
     const interestClaimOptions = 'PAGES.INTEREST_CLAIM_OPTIONS.' + claim.interest?.interestClaimOptions;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.INTEREST_CLAIM_OPTIONS.TITLE', {lng}), t(interestClaimOptions, {lng}), CLAIM_INTEREST_TYPE_URL, changeLabel(lang)));
   }
-  if (claim?.interest?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC) {
+  if (claim?.isSameRateTypeEightPercent()) {
     const sameRateInterestType = 'PAGES.CLAIMANT_INTEREST_RATE.' + claim.interest?.sameRateInterestSelection.sameRateInterestType;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng}), t(sameRateInterestType, {lng}), CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
   } else if (claim.interest?.sameRateInterestSelection?.differentRate) {
@@ -44,7 +43,7 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
   if (claim?.interest?.interestClaimFrom) {
     const interestClaimFrom = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.' + claim.interest?.interestClaimFrom;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE', {lng}), t(interestClaimFrom, {lng}), CLAIM_INTEREST_DATE_URL, changeLabel(lang)));
-    if (claim?.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
+    if (claim?.isInterestFromASpecificDate()) {
       const interestClaimEndDate = 'PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.' + claim.interest.interestEndDate;
       claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.DATE_INTEREST', {lng}), formatDateToFullDate(claim.interest.interestStartDate.date, getLng(lang)), CLAIM_INTEREST_DATE_URL, changeLabel(lang)));
       claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON', {lng}), claim.interest.interestStartDate.reason, changeLabel(lang)));
@@ -56,4 +55,3 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
   }
   return claimAmountSection;
 };
-
