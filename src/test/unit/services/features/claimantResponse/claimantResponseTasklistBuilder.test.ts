@@ -97,10 +97,9 @@ describe('Full Defence', () => {
     claim.isClaimantIntentionPending.mockReturnValue(true);
     claim.hasPaidInFull.mockReturnValue(true);
     claim.hasClaimantRejectedDefendantAdmittedAmount.mockReturnValue(true);
-    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(false);
+    claim.hasClaimantRejectedDefendantResponse.mockReturnValue(true);
     claim.hasClaimantRejectedDefendantPaid.mockReturnValue(false);
     claim.hasClaimantRejectedPartAdmitPayment.mockReturnValue(false);
-    claim.hasClaimantIntentToProceedResponse.mockReturnValue(false);
     claim.isDefendantAgreedForMediation.mockReturnValue(true);
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
