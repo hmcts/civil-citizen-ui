@@ -83,7 +83,7 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
   });
   if (claim.claimantResponse?.ccjRequest?.paidAmount?.amount) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
-      '£' + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
+      '£' + (judgmentSummaryDetails.alreadyPaidAmount)));
   }
 
   if (claim.claimantResponse?.ccjRequest?.paidAmount) {

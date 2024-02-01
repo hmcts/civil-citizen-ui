@@ -7,7 +7,7 @@ import {YesNo} from 'form/models/yesNo';
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
   const claimFee = 50;
-
+  
   it('get summary details when claimInterest=Yes.', () => {
 
     //When
@@ -16,7 +16,7 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(true);
-    expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
+    expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
     const total = claim.totalClaimAmount + result.interestToDate + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
@@ -31,7 +31,7 @@ describe('Get Judgment amount summary', () => {
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(false);
     expect(result.subTotal).toEqual(claim.totalClaimAmount + claimFee);
-    expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
+    expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
     const total = claim.totalClaimAmount + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
