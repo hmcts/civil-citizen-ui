@@ -31,7 +31,7 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 
-jest.mock('../../../../../main/routes/guards/claimantResponsecheckYourAnswersGuard', () => ({
+jest.mock('../../../../../main/routes/guards/claimantResponseCheckYourAnswersGuard', () => ({
   claimantResponsecheckYourAnswersGuard: jest.fn((req, res, next) => {
     next();
   }),
