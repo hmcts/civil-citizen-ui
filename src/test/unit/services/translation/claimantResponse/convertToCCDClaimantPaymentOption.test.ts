@@ -29,6 +29,14 @@ describe('translate Claimant Payment Option to CCD model', () => {
     expect(result).toEqual(CCDClaimantPaymentOption.REPAYMENT_PLAN);
   });
 
+  it('payment option is undefined should return undefined', () => {
+    // GIVEN
+    // WHEN
+    const result = toCCDClaimantPaymentOption(undefined);
+    // THEN
+    expect(result).toBeUndefined();
+  });
+
   describe('ClaimantSuggestedRepaymentOption', () => {
     const claim = new Claim();
     claim.claimantResponse = new ClaimantResponse();
