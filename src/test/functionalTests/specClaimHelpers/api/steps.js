@@ -151,6 +151,7 @@ module.exports = {
     }
 
     await apiRequest.setupTokens(user);
+    console.log('Step 2');
     await apiRequest.startEvent(eventName);
     for (let pageId of Object.keys(createClaimSpecData.userInput)) {
       await assertValidDataSpec(createClaimSpecData, pageId);
