@@ -23,6 +23,7 @@ import { InterestStartDate } from 'common/form/models/interest/interestStartDate
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {toCUIMediationCarm} from 'services/translation/convertToCUI/convertToCUIMediationCarm';
+import { TotalInterest } from 'common/form/models/interest/totalInterest';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -77,6 +78,14 @@ const translateCCDInterestDetailsToCUI = (ccdClaim: CCDClaim) => {
   interest.interestClaimFrom = ccdClaim?.interestClaimFrom;
   interest.interestClaimOptions = InterestClaimOptionsType[ccdClaim?.interestClaimOptions];
   interest.interestEndDate = InterestEndDateType[ccdClaim?.interestClaimUntil];
+  
+  if(interest.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST) {
+    const totalInterest = new TotalInterest();
+    totalInterest.amount = ccdClaim.breakDownInterestTotal;
+    totalInterest.reason = ccdClaim.breakDownInterestDescription;
+    interest.totalInterest = totalInterest;
+  }
+
   if (ccdClaim?.interestFromSpecificDate) {
     const ccdInterestDate = new Date(ccdClaim?.interestFromSpecificDate);
     interest.interestStartDate = new InterestStartDate((ccdInterestDate.getDay() + 1).toString(), (ccdInterestDate.getMonth() + 1).toString(), ccdInterestDate.getFullYear().toString(), ccdClaim?.interestFromSpecificDateDescription);
