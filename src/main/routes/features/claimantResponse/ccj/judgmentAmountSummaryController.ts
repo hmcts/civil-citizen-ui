@@ -17,8 +17,8 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
   const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
-    claimAmount: claimAmountAccepted,
-    claimFee,
+    claimAmount: claimAmountAccepted.toFixed(2),
+    claimFee: claimFee.toFixed(2),
     judgmentSummaryDetails,
   });
 }
