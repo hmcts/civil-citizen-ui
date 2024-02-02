@@ -88,7 +88,7 @@ describe('Submit claimant response to ccd', () => {
         return claim;
       });
       const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
-      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
       //When
       await submitClaimantResponse(mockedAppRequest);
       //Then
@@ -112,7 +112,7 @@ describe('Submit claimant response to ccd', () => {
         return claim;
       });
       const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
-      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
       //When
       await submitClaimantResponse(mockedAppRequest);
       //Then
@@ -137,7 +137,7 @@ describe('Submit claimant response to ccd', () => {
         return claim;
       });
       const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
-      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
       //When
       await submitClaimantResponse(mockedAppRequest);
       //Then
@@ -162,7 +162,7 @@ describe('Submit claimant response to ccd', () => {
         return claim;
       });
       const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
-      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestDefaultJudgementToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
       //When
       await submitClaimantResponse(mockedAppRequest);
       //Then
