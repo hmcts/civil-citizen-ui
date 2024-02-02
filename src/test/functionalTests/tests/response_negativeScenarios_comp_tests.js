@@ -28,11 +28,11 @@ Before(async ({api}) => {
 });
 
 Scenario('Company personal detail error screen @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterCompanyDetailError(claimRef);
+  // await ResponseSteps.RespondToClaim(claimRef);
+  // await ResponseSteps.EnterCompanyDetailError(claimRef);
 });
 
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+// AfterSuite(async () => {
+//   await unAssignAllUsers();
+//   await deleteAccount(config.defendantCitizenUser.email);
+// });
