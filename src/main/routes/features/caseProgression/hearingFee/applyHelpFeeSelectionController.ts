@@ -15,6 +15,7 @@ import {getButtonsContents} from 'services/features/caseProgression/hearingFee/a
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {getClaimById} from 'modules/utilityService';
+import {t} from 'i18next';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
@@ -27,7 +28,7 @@ async function renderView(res: Response, req: any, form: any, claimId: string, r
     claim = await getClaimById(claimId, req, true);
   }
   if (!form) {
-    form = new GenericForm(new GenericYesNo(null, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    form = new GenericForm(new GenericYesNo(null, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     if(claim.caseProgression?.hearingFeeHelpSelection)
     {
       form = new GenericForm(claim.caseProgression.hearingFeeHelpSelection);
@@ -59,7 +60,7 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     form.validateSync();
     await form.validate();
     if (form.hasErrors()) {
@@ -75,4 +76,3 @@ applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (asyn
 }) as RequestHandler);
 
 export default applyHelpFeeSelectionController;
-
