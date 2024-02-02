@@ -16,8 +16,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
   if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    claimantResponse.isClaimantRejectedCourtDecision
-    && !hasClaimantRejectedDefendantResponse(claim)) {
+    claimantResponse.isClaimantRejectedCourtDecision) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignASettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';

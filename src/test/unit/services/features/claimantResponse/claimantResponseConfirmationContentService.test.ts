@@ -515,21 +515,6 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
     expect(claimantResponseConfirmationContent[6]).toBeUndefined();
   });
-
-  it('Claimant rejected payment plan claimant response section title', () => {
-    // Given
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.suggestedPaymentIntention = {
-      paymentOption: PaymentOptionType.INSTALMENTS,
-    };
-
-    // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
-    // Then
-    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE');
-  });
 });
 
 function getClaim() {
