@@ -27,7 +27,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @liptest @nightly', async () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @liptest @nightly @test', async () => {
 //TBA
 });
 
