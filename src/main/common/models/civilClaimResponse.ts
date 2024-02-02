@@ -75,7 +75,8 @@ import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
-import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 export class CivilClaimResponse {
   id: string;
@@ -271,7 +272,8 @@ export interface CCDClaim extends ClaimUpdate {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   claimantBilingualLanguagePreference?:CCDLanguage;
   hearingHelpFeesReferenceNumber?: string;
-  mediationUploadDocuments?: UploadDocuments;
+  res1MediationDocumentsReferred: TypeOfDocumentSection[];
+  res1MediationNonAttendanceDocs: TypeOfDocumentYourNameSection[];
 }
 
 export interface ClaimFeeData {

@@ -4,7 +4,7 @@ import {
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
 } from 'routes/urls';
 
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -20,6 +20,7 @@ import {
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {saveUploadedDocuments} from "services/features/caseProgression/checkYourAnswers/checkAnswersService";
+import {saveMediationUploadedDocuments} from "services/features/mediation/uploadDocuments/MediationCheckAnswersService";
 
 const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
 const mediationDocumentUploadCheckAnswerController = Router();
@@ -78,8 +79,8 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
     if (form.hasErrors()) {
       renderView(uploadDocuments, res, form, claim, claimId, lang);
     } else {
-      await saveUploadedDocuments(claim, <AppRequest>req);
-      //await deleteDraftClaimFromStore(redisKey);
+      await saveMediationUploadedDocuments(claimId, uploadDocuments, <AppRequest>req);
+      await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claim.id, MEDIATION_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {
