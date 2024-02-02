@@ -1,12 +1,9 @@
 import {CCDClaim} from 'common/models/civilClaimResponse';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
-import {Document, TimeLineDocument} from 'common/models/document/document';
-import {InterestClaimFromType, InterestEndDateType} from 'common/form/models/claimDetails';
-import {CCDInterestType} from 'common/models/ccdResponse/ccdInterestType';
-import {
-  CCDSameRateInterestSelection,
-  CCDSameRateInterestType,
-} from 'common/models/ccdResponse/ccdSameRateInterestSelection';
+import {TimeLineDocument, Document} from 'common/models/document/document';
+import { InterestClaimFromType, InterestEndDateType } from 'common/form/models/claimDetails';
+import { CCDInterestType } from 'common/models/ccdResponse/ccdInterestType';
+import { CCDSameRateInterestSelection, CCDSameRateInterestType } from 'common/models/ccdResponse/ccdSameRateInterestSelection';
 import {CCDAddress} from 'common/models/ccdResponse/ccdAddress';
 import {CCDParty} from 'common/models/ccdResponse/ccdParty';
 import {PartyType} from 'common/models/partyType';
@@ -282,6 +279,21 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
+  });
+
+  it('should translate totalInterest when InterestClaimOptionsType is BREAK_DOWN_INTEREST', () => {
+    //Given
+    const input: CCDClaim = {
+      interestClaimOptions: CCDInterestType.BREAK_DOWN_INTEREST,
+      breakDownInterestTotal: 1000,
+      breakDownInterestDescription: 'break down interest',
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.interest.totalInterest.amount).toEqual(1000);
+    expect(claim.interest.totalInterest.reason).toEqual('break down interest');
   });
 
   it('should translate claimant mediation to CUI model for undefined', () => {
