@@ -27,7 +27,7 @@ export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSum
   const wrap = 'tableWrap';
 
   const evidenceUploadTab = new TabSectionBuilder()
-    .addParagraph('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY')
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY', {lng: lang}))
     .addTable(getTableHeaders(disclosureHeading, disclosureListClaimant, true, lang), getTableRows(disclosureListClaimant, claim,true, lang), wrap)
     .addTable(getTableHeaders(disclosureHeading, disclosureListDefendant, false, lang), getTableRows(disclosureListDefendant, claim,false, lang), wrap)
     .addTable(getTableHeaders(witnessHeading, witnessListClaimant, true, lang), getTableRows(witnessListClaimant, claim,true, lang), wrap)
