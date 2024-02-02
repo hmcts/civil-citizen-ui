@@ -279,4 +279,19 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
   });
+
+  it('should translate totalInterest when InterestClaimOptionsType is BREAK_DOWN_INTEREST', () => {
+    //Given
+    const input: CCDClaim = {
+      interestClaimOptions: CCDInterestType.BREAK_DOWN_INTEREST,
+      breakDownInterestTotal: 1000,
+      breakDownInterestDescription: 'break down interest',
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.interest.totalInterest.amount).toEqual(1000);
+    expect(claim.interest.totalInterest.reason).toEqual('break down interest');
+  });
 });
