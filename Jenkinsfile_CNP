@@ -8,7 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "CIV-11543-case-state-and-notify-respondent"
-def dmnBranch = "master"
+def dmnBranch = "feat/CIV11807"
 def waStandaloneBranch = "master"
 def ccdBranch = "CIV-11543-claimant-intention-doc-type"
 AppPipelineConfig pipelineConf
