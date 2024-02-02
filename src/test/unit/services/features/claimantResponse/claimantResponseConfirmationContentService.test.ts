@@ -81,6 +81,8 @@ describe('Claimant Response Confirmation service', () => {
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
     claim.claimantResponse.signSettlementAgreement.signed = 'true';
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
+    claim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
     // When
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
     // Then
@@ -530,7 +532,7 @@ describe('Claimant Response Confirmation service', () => {
   });
 });
 
-function getClaim (){
+function getClaim() {
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   claim.legacyCaseReference = '000MC009';
