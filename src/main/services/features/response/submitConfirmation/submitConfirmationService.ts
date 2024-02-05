@@ -5,7 +5,6 @@ import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConf
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {YesNo} from 'form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitConfirmationService');
@@ -33,5 +32,5 @@ export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppR
 };
 
 export function isDefendantRejectedMediationOrFastTrackClaim(claim: Claim) : boolean {
-  return claim.mediation?.mediationDisagreement?.option === YesNo.NO || claim.isFastTrackClaim;
+  return claim.hasRespondent1NotAgreedMediation() || claim.isFastTrackClaim;
 }
