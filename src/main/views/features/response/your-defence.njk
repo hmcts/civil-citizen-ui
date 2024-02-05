@@ -5,7 +5,9 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
-
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.YOUR_DEFENCE.TITLE') }}
+{% endblock %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
