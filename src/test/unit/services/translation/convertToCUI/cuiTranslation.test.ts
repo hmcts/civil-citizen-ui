@@ -302,10 +302,10 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
 
     const input: CCDClaim = {
-      applicant1LiPResponse : {
+      applicant1LiPResponse: {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
-
+    }
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
