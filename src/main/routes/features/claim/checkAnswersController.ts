@@ -83,7 +83,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         res.clearCookie('eligibilityCompleted');
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       } else {
-        //await deleteDraftClaimFromStore(userId);
+        await deleteDraftClaimFromStore(userId);
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
