@@ -24,7 +24,6 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
-import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
