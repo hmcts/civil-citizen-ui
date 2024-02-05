@@ -305,7 +305,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
       applicant1LiPResponse: {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
-    }
+    };
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
