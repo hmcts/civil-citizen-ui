@@ -10,7 +10,6 @@ import {
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
