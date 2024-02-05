@@ -15,13 +15,19 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {toCUICCJRequest, toCUIChoosesHowToProceed, toCUIClaimantPaymentOption} from 'services/translation/convertToCUI/convertToCUICCJRequest';
+import {
+  toCUICCJRequest,
+  toCUIChoosesHowToProceed,
+  toCUIClaimantPaymentOption,
+} from 'services/translation/convertToCUI/convertToCUICCJRequest';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import { InterestEndDateType, SameRateInterestType } from 'common/form/models/claimDetails';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
@@ -70,6 +76,10 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
+  claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
+  claim.claimantResponse.courtProposedDate = new CourtProposedDate();
+  claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedPlanOptions];
+  claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedDateOptions];
   claim.claimantResponse.mediation = toCUIClaimantMediation(ccdClaim.applicant1ClaimMediationSpecRequiredLip);
   return claim;
 };

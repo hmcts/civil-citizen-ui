@@ -12,6 +12,8 @@ import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 
 const phoneCCD = '123456789';
@@ -279,6 +281,35 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
+  });
+
+  it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
+    //Given
+
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedPlan.decision).toEqual(CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN);
+  });
+
+  it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
+    //Given
+
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+      },
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
   });
 
   it('should translate totalInterest when InterestClaimOptionsType is BREAK_DOWN_INTEREST', () => {
