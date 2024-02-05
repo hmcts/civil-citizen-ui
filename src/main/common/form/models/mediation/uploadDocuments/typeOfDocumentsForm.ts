@@ -29,11 +29,13 @@ export class TypeOfDocumentsForm {
 
   mapTypeOfDocumentsFormFromUploadDocuments(uploadDocuments: UploadDocuments): TypeOfDocumentsForm {
     if(uploadDocuments !== undefined) {
-      uploadDocuments.typeOfDocuments.forEach((typeOfDocuments) => {
+      uploadDocuments.typeOfDocuments.forEach((typeOfDocuments, index) => {
         const foundItem = this.typeOfDocuments.find((item) => item.type === typeOfDocuments.type);
         // Check if the item is found before modifying
         if (foundItem) {
           foundItem.checked = typeOfDocuments.checked;
+        } else {
+          this.typeOfDocuments.push(new TypeOfDocumentsItemForm(index, '', '', typeOfDocuments.checked, typeOfDocuments.type));
         }
       });
     }
