@@ -93,10 +93,10 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
 
 const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
-  const rejectUrl = claim.rejectAllOfClaim.option == RejectAllOfClaimType.DISPUTE ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
+  const rejectUrl = claim.isRejectAllOfClaimDispute() ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
   const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, rejectUrl);
   const disagreeText = claim.rejectAllOfClaim.whyDoYouDisagree?.text ? claim.rejectAllOfClaim.whyDoYouDisagree.text : claim.rejectAllOfClaim.defence?.text;
-  if (claim.rejectAllOfClaim.option !== RejectAllOfClaimType.DISPUTE) {
+  if (!claim.isRejectAllOfClaimDispute()) {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date, getLng(lang)), howMuchHaveYouPaidUrl, changeLabel(lang)),

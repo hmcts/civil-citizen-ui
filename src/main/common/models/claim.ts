@@ -397,14 +397,6 @@ export class Claim {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
   }
 
-  isSignASettlementAgreement(): boolean {
-    return this.getHowToProceed() === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
-  }
-
-  isRequestACCJ(): boolean {
-    return this.getHowToProceed() === ChooseHowProceed.REQUEST_A_CCJ;
-  }
-
   hasConfirmedAlreadyPaid(): boolean {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID;
   }

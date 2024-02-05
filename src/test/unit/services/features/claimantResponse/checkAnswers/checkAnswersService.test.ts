@@ -15,6 +15,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {Party} from 'models/party';
+import { ChooseHowToProceed } from 'common/form/models/claimantResponse/chooseHowToProceed';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -703,8 +704,8 @@ describe('Check Answers service', () => {
           paymentDate: new Date(),
         },
       };
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = new Party();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
@@ -729,8 +730,8 @@ describe('Check Answers service', () => {
 
     it('should show the check your answers for pay by set date for full admit', () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
@@ -759,8 +760,8 @@ describe('Check Answers service', () => {
           paymentDate: new Date(),
         },
       };
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      const expectedPaymentDate = formatDateToFullDate(new Date());
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
       expect(result.sections[3].summaryList.rows.length).toEqual(2);
@@ -783,7 +784,8 @@ describe('Check Answers service', () => {
 
     it('should show the check your answers for pay by set date for full admit', () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
