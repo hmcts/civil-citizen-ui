@@ -73,13 +73,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
-      res.clearCookie('eligibilityCompleted');
-      res.clearCookie('eligibility');
+     // res.clearCookie('eligibilityCompleted');
+     // res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         //TODO Will be implemented after integration ready
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
         //res.redirect(paymentUrlWithId);
-        await deleteDraftClaimFromStore(userId);
+        //await deleteDraftClaimFromStore(userId);
         res.clearCookie('eligibilityCompleted');
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       } else {
