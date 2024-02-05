@@ -16,7 +16,11 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
 createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
-    await saveDraftClaimToCache(userId);
+    if (req.body && Object.keys(req.body).length > 0) {
+      await saveDraftClaimToCache(userId, req.body as any);
+    } else {
+      await saveDraftClaimToCache(userId);
+    }
     return res.redirect(CLAIM_CHECK_ANSWERS_URL);
   } catch (error) {
     next(error);

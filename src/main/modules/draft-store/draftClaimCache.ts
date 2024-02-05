@@ -1,128 +1,131 @@
 import {app} from '../../app';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 
-const draftClaim = {
-  case_data: {
-    draftClaimCreatedAt: '',
-    id: '',
-    resolvingDispute: true,
-    completingClaimConfirmed: true,
-    applicant1: {
-      type: 'INDIVIDUAL',
-      partyDetails: {
-        individualTitle: 'Mr',
-        individualLastName: 'Claim',
-        individualFirstName: 'Claimant',
-        provideCorrespondenceAddress: 'no',
-        primaryAddress: {
-          addressLine1: '123',
-          addressLine2: 'Fake Street',
-          addressLine3: '',
-          city: 'sheffield',
-          postCode: 'S12eu',
-        },
-        correspondenceAddress: {
-          addressLine1: '123',
-          addressLine2: 'Test Street',
-          addressLine3: '',
-          city: 'Liverpool',
-          postCode: 'L7 2pz',
-        },
-        carmEnabled: false,
-      },
-      dateOfBirth: {
-        date: '1995-01-01T00:00:00.000Z',
-        year: 1995,
-        month: 1,
-        day: 1,
-      },
-      partyPhone: {},
-      emailAddress: {
-        emailAddress: 'civilmoneyclaimsdemo@gmail.com',
-      },
-    },
-    respondent1: {
-      type: 'INDIVIDUAL',
-      partyDetails: {
-        individualTitle: 'Mr',
-        individualLastName: 'Defend',
-        individualFirstName: 'Defendant',
-        primaryAddress: {
-          addressLine1: '123',
-          addressLine2: 'Claim Road',
-          addressLine3: '',
-          city: 'Liverpool',
-          postCode: 'L7 2PZ',
-        },
-      },
-      emailAddress: {
-        emailAddress: 'civilmoneyclaimsdemo@gmail.com',
-      },
-      partyPhone: {
-        phone: '07800000000',
-      },
-    },
-    totalClaimAmount: 9000,
-    claimAmountBreakup: [
-      {
-        value: {
-          claimAmount: '9000',
-          claimReason: 'Injury',
-        },
-      },
-    ],
-    claimInterest: 'no',
-    interest: {},
-    claimDetails: {
-      helpWithFees: {
-        option: 'no',
-        referenceNumber: '',
-      },
-      reason: {
-        text: 'Injury',
-      },
-      timeline: {
-        rows: [
-          {
-            date: '2000-01-01T00:00:00.000Z',
-            description: 'test',
-            year: '2000',
-            month: '01',
-            day: '01',
-          },
-        ],
-      },
-      evidence: {
-        comment: '',
-        evidenceItem: '',
-      },
-      statementOfTruth: {
-        isFullAmountRejected: false,
-        type: 'basic',
-        signed: 'true',
-        acceptNoChangesAllowed: 'true',
-      },
-    },
-    claimFee: {
-      calculatedAmountInPence: '45500',
-      code: 'FEE0208',
-      version: '3',
-    },
-    pcqId: '4c10fec5-1278-45f3-89f0-d3d016d47f95',
-  },
+const draftClaim: { id: string, case_data?: CaseData } = {
   id: '',
+  case_data: {}
 };
 
-const saveDraftClaimToCache = async (userId: string, apiData?: unknown) => {
-  let claimToSave = storedClaimResponse || draftClaim;
+export interface CaseData {
+  id?: string;
+  draftClaimCreatedAt?: string;
+};
 
+const case_data = {
+  draftClaimCreatedAt: '',
+  id: '',
+  resolvingDispute: true,
+  completingClaimConfirmed: true,
+  applicant1: {
+    type: 'INDIVIDUAL',
+    partyDetails: {
+      individualTitle: 'Mr',
+      individualLastName: 'Claim',
+      individualFirstName: 'Claimant',
+      provideCorrespondenceAddress: 'no',
+      primaryAddress: {
+        addressLine1: '123',
+        addressLine2: 'Fake Street',
+        addressLine3: '',
+        city: 'sheffield',
+        postCode: 'S12eu',
+      },
+      correspondenceAddress: {
+        addressLine1: '123',
+        addressLine2: 'Test Street',
+        addressLine3: '',
+        city: 'Liverpool',
+        postCode: 'L7 2pz',
+      },
+      carmEnabled: false,
+    },
+    dateOfBirth: {
+      date: '1995-01-01T00:00:00.000Z',
+      year: 1995,
+      month: 1,
+      day: 1,
+    },
+    partyPhone: {},
+    emailAddress: {
+      emailAddress: 'civilmoneyclaimsdemo@gmail.com',
+    },
+  },
+  respondent1: {
+    type: 'INDIVIDUAL',
+    partyDetails: {
+      individualTitle: 'Mr',
+      individualLastName: 'Defend',
+      individualFirstName: 'Defendant',
+      primaryAddress: {
+        addressLine1: '123',
+        addressLine2: 'Claim Road',
+        addressLine3: '',
+        city: 'Liverpool',
+        postCode: 'L7 2PZ',
+      },
+    },
+    emailAddress: {
+      emailAddress: 'civilmoneyclaimsdemo@gmail.com',
+    },
+    partyPhone: {
+      phone: '07800000000',
+    },
+  },
+  totalClaimAmount: 9000,
+  claimAmountBreakup: [
+    {
+      value: {
+        claimAmount: '9000',
+        claimReason: 'Injury',
+      },
+    },
+  ],
+  claimInterest: 'no',
+  interest: {},
+  claimDetails: {
+    helpWithFees: {
+      option: 'no',
+      referenceNumber: '',
+    },
+    reason: {
+      text: 'Injury',
+    },
+    timeline: {
+      rows: [
+        {
+          date: '2000-01-01T00:00:00.000Z',
+          description: 'test',
+          year: '2000',
+          month: '01',
+          day: '01',
+        },
+      ],
+    },
+    evidence: {
+      comment: '',
+      evidenceItem: '',
+    },
+    statementOfTruth: {
+      isFullAmountRejected: false,
+      type: 'basic',
+      signed: 'true',
+      acceptNoChangesAllowed: 'true',
+    },
+  },
+  claimFee: {
+    calculatedAmountInPence: '45500',
+    code: 'FEE0208',
+    version: '3',
+  },
+  pcqId: '4c10fec5-1278-45f3-89f0-d3d016d47f95',
+};
+
+const saveDraftClaimToCache = async (userId: string, apiData = case_data) => {
+  let claimToSave = draftClaim;
+  claimToSave.case_data = apiData;
   claimToSave.id = userId;
   claimToSave.case_data.id = userId;
   claimToSave.case_data.draftClaimCreatedAt = new Date().toISOString();
-
-  if (apiData) {
-    claimToSave.case_data = apiData;
-  }
 
   await app.locals.draftStoreClient.set(userId, JSON.stringify(claimToSave));
   await app.locals.draftStoreClient.expireat(
@@ -132,4 +135,4 @@ const saveDraftClaimToCache = async (userId: string, apiData?: unknown) => {
 };
 
 
-export { saveDraftClaimToCache, draftClaim, storedClaimResponse };
+export { saveDraftClaimToCache, draftClaim };
