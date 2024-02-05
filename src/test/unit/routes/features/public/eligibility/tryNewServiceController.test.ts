@@ -10,7 +10,7 @@ describe('Try the new online service', () => {
     it('should return Try the new online service page', async () => {
       await request(app)
         .get(BASE_ELIGIBILITY_URL)
-        expect((res: { status: any; text: any; }) => {
+        .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.TRY_NEW_SERVICE.TITLE'));
          });
@@ -22,9 +22,9 @@ describe('Try the new online service', () => {
 
       await request(app)
         .get(BASE_ELIGIBILITY_URL)
-        expect((res: { status: any; redirect: any; }) => {
+        .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.redirect).toBeCalledWith(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
+          expect(res.text).toContain(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
          });
     });
   });
