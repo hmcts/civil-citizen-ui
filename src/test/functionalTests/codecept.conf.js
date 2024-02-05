@@ -1,6 +1,7 @@
 const testConfig = require('../config.js');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 exports.config = {
   tests: '../functionalTests/tests/**/*_tests.js',
@@ -10,12 +11,26 @@ exports.config = {
       url: testConfig.TestUrl,
       show: false,
       browser: 'chromium',
-      waitForTimeout: 20000,
+      waitForTimeout: testConfig.WaitForTimeout,
       windowSize: '1920x1080',
-      timeout: 20000,
+      timeout: testConfig.WaitForTimeout,
       waitForAction: 500,
       waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
+      retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: testConfig.WaitForTimeout,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testConfig.TestUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
     },
   },
   include: {
