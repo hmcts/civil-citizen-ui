@@ -23,7 +23,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     setRespondentDateOfBirth(claim);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-    if (claim.isClaimantIntentionPending()) {
+    if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
