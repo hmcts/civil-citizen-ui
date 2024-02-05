@@ -24,7 +24,6 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
 
 createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req, res: Response, next: NextFunction) => {
   try {
-    console.debug(req.body);
     const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
     await saveDraftClaimToCache(jwt.uid, caseData);
