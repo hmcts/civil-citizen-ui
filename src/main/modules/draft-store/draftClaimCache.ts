@@ -113,16 +113,23 @@ const draftClaim = {
   id: '',
 };
 
-const saveDraftClaimToCache = async (userId: string) => {
-  draftClaim.id = userId;
-  draftClaim.case_data.id = userId;
-  draftClaim.case_data.draftClaimCreatedAt = new Date().toISOString();
+const saveDraftClaimToCache = async (userId: string, apiData?: unknown) => {
+  let claimToSave = storedClaimResponse || draftClaim;
 
-  await app.locals.draftStoreClient.set(userId, JSON.stringify(draftClaim));
+  claimToSave.id = userId;
+  claimToSave.case_data.id = userId;
+  claimToSave.case_data.draftClaimCreatedAt = new Date().toISOString();
+
+  if (apiData) {
+    claimToSave.case_data = apiData;
+  }
+
+  await app.locals.draftStoreClient.set(userId, JSON.stringify(claimToSave));
   await app.locals.draftStoreClient.expireat(
     userId,
     calculateExpireTimeForDraftClaimInSeconds(new Date()),
   );
 };
 
-export { saveDraftClaimToCache, draftClaim };
+
+export { saveDraftClaimToCache, draftClaim, storedClaimResponse };
