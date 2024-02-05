@@ -234,8 +234,6 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1: toCCDParty(claim.applicant1),
       respondent1: toCCDParty(claim.respondent1),
       totalClaimAmount: 1000,
-      applicant1RepaymentOptionForDefendantSpec:
-      CCDClaimantPaymentOption.IMMEDIATELY,
       applicant1RequestedPaymentDateForDefendantSpec: {},
       'partialPayment':undefined,
       'partialPaymentAmount':undefined,
@@ -321,7 +319,6 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1: toCCDParty(claim.applicant1),
       respondent1: toCCDParty(claim.respondent1),
       totalClaimAmount: undefined,
-      applicant1RepaymentOptionForDefendantSpec: CCDClaimantPaymentOption.IMMEDIATELY,
       applicant1RequestedPaymentDateForDefendantSpec: {
         'paymentSetDate': undefined,
       },
