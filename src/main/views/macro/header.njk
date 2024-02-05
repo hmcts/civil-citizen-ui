@@ -1,8 +1,8 @@
 {% from 'govuk/components/header/macro.njk' import govukHeader %}
 
-{% macro headerComponent(t, hideLogout) %}
+{% macro headerComponent(t, user) %}
   {% set navigationList = [
-  ] if hideLogout else [
+  ] if isLoggedIn else [
     {
       href: '/dashboard',
       text: t('COMMON.HEADER.MY_ACCOUNT'),

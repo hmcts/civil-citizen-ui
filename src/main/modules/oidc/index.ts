@@ -96,6 +96,7 @@ export class OidcMiddleware {
     app.use((req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       if (appReq.session?.user) {
+        res.locals.isLoggedIn = true;
         if (appReq.session.user.roles?.includes(citizenRole)) {
           return next();
         }
