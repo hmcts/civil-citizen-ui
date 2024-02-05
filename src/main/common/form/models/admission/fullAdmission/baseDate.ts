@@ -2,7 +2,7 @@ import { Max, Min, Validate } from 'class-validator';
 import { OptionalDateFourDigitValidator } from 'form/validators/optionalDateFourDigitValidator';
 import { toNumberOrUndefined } from 'common/utils/numberConverter';
 
-export class BasePaymentDate {
+export class BaseDate {
 
   @Min(1, { message: 'ERRORS.VALID_DAY' })
   @Max(31, { message: 'ERRORS.VALID_DAY' })
