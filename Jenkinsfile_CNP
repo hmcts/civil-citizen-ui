@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "CIV-12281-claimant-intention-translated-doc-notifications"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
