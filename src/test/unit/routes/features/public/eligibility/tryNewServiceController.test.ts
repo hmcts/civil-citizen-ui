@@ -14,7 +14,6 @@ describe('Try the new online service', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.TRY_NEW_SERVICE.TITLE'));
          });
-
     });
 
     it('should return redirect to bilingual preference page if eligibilty and user session is already present', async () => {
@@ -29,5 +28,4 @@ describe('Try the new online service', () => {
          });
     });
   });
-
 });

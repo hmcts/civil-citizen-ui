@@ -1,6 +1,6 @@
 import {Response, Router} from 'express';
 import {BASE_ELIGIBILITY_URL, ELIGIBILITY_CLAIM_VALUE_URL, CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL} from '../../../urls';
-import { AppRequest } from 'common/models/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 
 const tryNewServiceController = Router();
 
