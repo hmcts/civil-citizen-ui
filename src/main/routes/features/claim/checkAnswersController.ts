@@ -73,8 +73,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
-      //res.clearCookie('eligibilityCompleted');
-      //res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
         //TODO Will be implemented after integration ready
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
