@@ -272,8 +272,8 @@ export interface CCDClaim extends ClaimUpdate {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   claimantBilingualLanguagePreference?:CCDLanguage;
   hearingHelpFeesReferenceNumber?: string;
-  res1MediationDocumentsReferred: TypeOfDocumentSection[];
-  res1MediationNonAttendanceDocs: TypeOfDocumentYourNameSection[];
+  res1MediationDocumentsReferred?: TypeOfDocumentSection[];
+  res1MediationNonAttendanceDocs?: TypeOfDocumentYourNameSection[];
 }
 
 export interface ClaimFeeData {

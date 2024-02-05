@@ -19,7 +19,6 @@ import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {saveUploadedDocuments} from "services/features/caseProgression/checkYourAnswers/checkAnswersService";
 import {saveMediationUploadedDocuments} from "services/features/mediation/uploadDocuments/MediationCheckAnswersService";
 
 const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
