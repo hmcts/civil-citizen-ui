@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "UPLOAD_FILE": "Upload file",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
@@ -361,6 +362,22 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "UPLOAD_DOCUMENTS": {
+        "SECTION_TITLE": "Mediation non-attendance",
+
+        "TITLE": {
+          "YOUR_STATEMENT": "Your statement",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
+        },
+        "YOUR_NAME": {
+          "YOUR_STATEMENT": "Your name",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Type of document"
+        },
+        "DATE_INPUT": {
+          "YOUR_STATEMENT" : "Date statement was written",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
+        }
+      },
       "TYPE_OF_DOCUMENTS": {
         "CHECKBOX_TITLE": "Mediation non-attendance",
         "CHECKBOX_HINT": "Select all that apply",
@@ -514,10 +531,11 @@
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
       "PAGE_TITLE": "County Court Judgment confirmation",
-      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
+      "PROCESS_YOUR_REQUEST": "We’ll process your request and send a copy of the judgment to you and to {{ defendantName }}. We aim to process this request as soon as possible.",
+      "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
       "TITLE": "County Court Judgment requested",
-      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "UPDATES": "Your online account will not be updated with the progress of this claim and any further updates will be by post.",
       "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
     },
     "CCJ_DEFENDANT_DOB": {
@@ -950,7 +968,8 @@
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
         "UPLOADED_AFTER_DOCUMENT": "Document",
-        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Claimant's uploaded documents",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Defendant's uploaded documents"
       },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
@@ -1040,8 +1059,7 @@
         "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
         "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
-        "YES": "Yes"
+        "TITLE": "The defendant can’t pay by your proposed date"
       },
       "COURT_PROPOSED_PLAN": {
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
@@ -1384,9 +1402,11 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
-        "CLAIM_ENDED": "This claim has ended",
-        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "CLAIM_ENDED": "You stopped this claim",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
+        "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
@@ -3544,6 +3564,7 @@
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
+    "VALID_ENTER_YOUR_NAME": "You must enter your name",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
     "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",
     "VALID_ENTER_EXPERT_NAMES": "You must enter the name of at least one expert",
@@ -3566,6 +3587,7 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
   }
 }
