@@ -107,9 +107,11 @@ describe('Your response Section', () => {
     expect(yourResponseSection.summaryList.rows.length).toBe(5);
   });
   it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
-  //Given
-
-    claim.claimantResponse = { suggestedPaymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, repaymentPlan: { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() } } } as ClaimantResponse;
+    //Given
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() };
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then

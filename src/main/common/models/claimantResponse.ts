@@ -107,6 +107,10 @@ export class ClaimantResponse {
     return this.mediation?.canWeUse?.option === YesNo.YES;
   }
 
+  isRejectionReasonCompleted(): boolean {
+    return this.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.rejectionReason?.text;
+  }
+
   get isClaimantRejectedCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
         || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;

@@ -380,10 +380,6 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
-  isRejectionReasonCompleted(): boolean {
-    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.claimantResponse?.rejectionReason?.text;
-  }
-
   getPaidAmount(): number {
     if (this.hasConfirmedAlreadyPaid()) {
       return this.isRejectAllOfClaimAlreadyPaid();

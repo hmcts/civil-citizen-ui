@@ -183,7 +183,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
 
-  if (claim.isRejectionReasonCompleted()) {
+  if (claimantResponse.isRejectionReasonCompleted()) {
     yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 
