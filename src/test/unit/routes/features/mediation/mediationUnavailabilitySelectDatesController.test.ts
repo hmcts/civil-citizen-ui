@@ -100,7 +100,7 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
             'type': UnavailableDateType.LONGER_PERIOD,
             'period': {
               'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              'end': {'day': currentDatePlusOne.getDay(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
+              'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
             },
           }],
         };
