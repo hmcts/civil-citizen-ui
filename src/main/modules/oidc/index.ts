@@ -35,7 +35,7 @@ const isEligibilityPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
 };
 
-const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
+export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
   return requestUrl.startsWith(TESTING_SUPPORT_URL)
 }
 
