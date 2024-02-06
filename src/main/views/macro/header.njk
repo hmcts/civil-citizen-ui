@@ -2,7 +2,6 @@
 
 {% macro headerComponent(t, user) %}
   {% set navigationList = [
-  ] if isLoggedIn else [
     {
       href: '/dashboard',
       text: t('COMMON.HEADER.MY_ACCOUNT'),
@@ -13,6 +12,8 @@
       text: t('COMMON.HEADER.SIGN_OUT'),
       active: false
     }
+  ] if user else [
+
   ] %}
   {% block header %}
     {{ govukHeader({
