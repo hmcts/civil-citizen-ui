@@ -22,10 +22,8 @@ import {
   getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import { ClaimantResponse } from 'common/models/claimantResponse';
-import {
-  getClaimantMediationAvailabilityTask,
-  getClaimantTelephoneMediationTask,
-} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/mediationSectionTasks';
+import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
+import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -85,8 +83,8 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
 export function buildClaimantResponseMediationSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
   if (carmApplicable) {
     const tasks: Task[] = [];
-    tasks.push(getClaimantTelephoneMediationTask(claim, claimId, lang));
-    tasks.push(getClaimantMediationAvailabilityTask(claim, claimId, lang));
+    tasks.push(getTelephoneMediationTask(claim, claimId, lang, true));
+    tasks.push(getAvailabilityForMediationTask(claim, claimId, lang, true));
     return { title: t('COMMON.MEDIATION', { lng: lang }), tasks };
   }
 }

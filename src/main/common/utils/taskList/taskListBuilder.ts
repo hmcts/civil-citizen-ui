@@ -123,8 +123,8 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
 
   if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
     if(carmApplicable) {
-      tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
-      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
+      tasks.push(getTelephoneMediationTask(caseData, claimId, lang, false));
+      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang, false));
     } else {
       tasks.push(getFreeTelephoneMediationTask(caseData, claimId, lang));
     }

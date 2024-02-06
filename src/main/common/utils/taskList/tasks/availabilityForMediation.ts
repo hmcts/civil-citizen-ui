@@ -9,13 +9,16 @@ import {
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
-const hasAvailabilityMediationFinished = (caseData: Claim): boolean => {
+const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boolean): boolean => {
+  if (claimantResponse) {
+    return caseData.claimantResponse?.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediation.hasAvailabilityMediationFinished;
+  }
   return caseData.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediation.hasAvailabilityMediationFinished;
 };
 
-export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
-  const availabilityMediationStatus = hasAvailabilityMediationFinished(caseData);
-  const url = caseData.isBusiness() ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
+export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string, claimantResponse: boolean): Task => {
+  const availabilityMediationStatus = hasAvailabilityMediationFinished(caseData, claimantResponse);
+  const url = (claimantResponse && caseData.isClaimantBusiness()) || caseData.isBusiness() ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
     constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL);
   return {
     description: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),
