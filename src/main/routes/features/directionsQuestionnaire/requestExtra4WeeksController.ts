@@ -5,7 +5,7 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -30,7 +30,7 @@ requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, n
 requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const form = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {

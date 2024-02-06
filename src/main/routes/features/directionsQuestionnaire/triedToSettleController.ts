@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -30,7 +30,7 @@ triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next)
 triedToSettleController.post(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const triedToSettle = getGenericOptionForm(req.body.option, dqPropertyName);
+    const triedToSettle = getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName);
     const form = new GenericForm(triedToSettle);
     form.validateSync();
 

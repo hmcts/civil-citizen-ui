@@ -10,7 +10,7 @@ import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -37,7 +37,7 @@ permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, ne
 permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const permissionForExpert = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const permissionForExpert = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     permissionForExpert.validateSync();
 
     if (permissionForExpert.hasErrors()) {
