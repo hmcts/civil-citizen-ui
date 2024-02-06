@@ -6,14 +6,17 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 export const getClaimantResponseStatus = (claim: Claim, statement: string, lang: string) => {
   const claimNumber = claim.legacyCaseReference;
   const responseSubmitDate = formatDateToFullDate(claim?.applicant1ResponseDate, lang);
+
+  const htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
+  <br><strong>${claimNumber}</strong><br>
+  <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`;
+
   return [
     {
       type: ClaimSummaryType.PANEL,
       data: {
         title: `<span class='govuk-!-font-size-36'>${t(statement, {lng: lang})}</span>`,
-        html: `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', {lng: lang})}</span>
-              <br><strong>${claimNumber}</strong><br>
-              <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`,
+        html: htmlContent,
       },
     },
   ];
