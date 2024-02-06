@@ -38,7 +38,7 @@ import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import config from 'config';
 import crypto from 'crypto';
-import {AppRequest} from "models/AppRequest";
+import {AppRequest} from 'models/AppRequest';
 
 const packageDotJson = require('../../../../package.json');
 
