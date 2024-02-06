@@ -44,7 +44,9 @@ def secrets = [
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
     secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
     secret('civil-judge-password', 'JUDGE_PASSWORD'),
-    secret('system-update-user-password', 'SYSTEM_USER_PASSWORD'),
+    secret('system-update-user-password', 'SYSTEM_USER_PASSWORD')
+  ],
+  'civil-cui-${env}': [
     secret('playwright-service-url', 'PLAYWRIGHT_SERVICE_URL'),
     secret('playwright-token', 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN'),
   ]
