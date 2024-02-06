@@ -11,6 +11,7 @@ if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
 }
 const waitForTime = 20000;
+process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 module.exports = {
   TestUrl: testUrl,
