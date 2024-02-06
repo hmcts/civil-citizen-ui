@@ -4,7 +4,7 @@ import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
 import { CourtProposedDate, CourtProposedDateOptions } from 'form/models/claimantResponse/courtProposedDate';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
-import { CourtProposedPlan, CourtProposedPlanOptions } from 'form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from 'models/mediation/mediation';
 import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestionnaire';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
@@ -65,14 +65,6 @@ export class ClaimantResponse {
     return this.signSettlementAgreement?.signed !== undefined;
   }
 
-  get isCCJRequested() : boolean {
-    return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
-  }
-
-  get isClaimantAcceptedPaymentPlan() : boolean {
-    return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
-  }
-
   get isCourtDecisionInFavourOfDefendant(): boolean {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
   }
@@ -81,12 +73,46 @@ export class ClaimantResponse {
     return this.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
   }
 
+  get isCCJRequested() : boolean {
+    return this.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+  }
+
+  get isSignASettlementAgreement(): boolean {
+    return this.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+  }
+
+  get isClaimantAcceptedPaymentPlan() : boolean {
+    return this.fullAdmitSetDateAcceptPayment?.option === YesNo.YES;
+  }
+
   get isClaimantAcceptsCourtDecision(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
   }
 
+  get isRequestJudgePaymentPlan(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+      || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
+
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
+
+  hasClaimantNotAgreedToMediation(): boolean {
+    return this.mediation?.mediationDisagreement?.option === YesNo.NO;
+  }
+
+  hasClaimantAgreedToMediation(): boolean {
+    return this.mediation?.canWeUse?.option === YesNo.YES || !!this.mediation.canWeUse.mediationPhoneNumber;
+  }
+
+  get isClaimantRejectedCourtDecision(): boolean {
+    return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
+        || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
+  get isClaimantAcceptCourtProposedPlanDecision() : boolean {
+    return this.courtProposedPlan?.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN;
+  }
+
 }

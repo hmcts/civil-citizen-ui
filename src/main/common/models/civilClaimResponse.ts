@@ -46,7 +46,7 @@ import {CCDDebtDetails} from 'models/ccdResponse/ccdDebtDetails';
 import {CCDRecurringIncome} from 'models/ccdResponse/ccdRecurringIncome';
 import {CCDRecurringExpenses} from 'models/ccdResponse/ccdRecurringExpenses';
 import {Evidence} from 'form/models/evidence/evidence';
-import {CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {CCDLanguage, CCDWelshLanguageRequirements} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {CCDVulnerability} from 'models/ccdResponse/ccdVulnerability';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
@@ -75,6 +75,8 @@ import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 
 export class CivilClaimResponse {
   id: string;
@@ -149,6 +151,7 @@ export interface CCDClaim extends ClaimUpdate {
   responseClaimMediationSpecRequired?: string;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
+  applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
   //Defendant Response part
   respondent1BankAccountList?: CCDBankAccount[];
   disabilityPremiumPayments?: YesNoUpperCamelCase;
@@ -268,6 +271,9 @@ export interface CCDClaim extends ClaimUpdate {
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
+  claimantBilingualLanguagePreference?:CCDLanguage;
+  hearingHelpFeesReferenceNumber?: string;
+  mediationUploadDocuments?: UploadDocuments;
 }
 
 export interface ClaimFeeData {

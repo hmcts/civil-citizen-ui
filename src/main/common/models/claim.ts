@@ -14,7 +14,8 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState, CCDHelpWithFees,
+  CaseState,
+  CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -69,6 +70,7 @@ import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -105,6 +107,7 @@ export class Claim {
   directionQuestionnaire?: DirectionQuestionnaire;
   respondent1ResponseDate?: Date;
   claimBilingualLanguagePreference: ClaimBilingualLanguagePreference;
+  claimantBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   pcqId: string;
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
@@ -137,6 +140,7 @@ export class Claim {
   helpWithFeesRequested: string;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
+  mediationUploadDocuments?: UploadDocuments;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -462,6 +466,10 @@ export class Claim {
 
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+  }
+
+  isAllFinalOrdersIssued(): boolean {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
   }
 
   isBusiness(): boolean {
@@ -868,6 +876,10 @@ export class Claim {
     return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
 
+  hasClaimantAcceptedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
@@ -887,6 +899,10 @@ export class Claim {
 
   hasClaimantRejectIntentToProceedResponse() {
     return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+  }
+
+  hasCourtAcceptedClaimantsPlan() {
+    return this.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
   }
 
   getPaymentDate() {

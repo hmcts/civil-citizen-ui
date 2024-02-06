@@ -12,6 +12,7 @@ import {
 import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationSection';
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
 import { buildSummaryForCourtDecisionDetails } from '../responseSection/buildCourtDecisionDetailsSection';
+import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
@@ -31,7 +32,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     return buildHowYouWishToProceed(claim, claimId, lang);
   };
   const getFreeTelephoneMediationSection = () => {
-    return (directionQuestionnaireFromClaimant(claim)
+    return (directionQuestionnaireFromClaimant(claim) && !isDefendantRejectedMediationOrFastTrackClaim(claim)
     )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
