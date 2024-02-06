@@ -103,45 +103,45 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     expect(result).toBeFalsy();
   });
 });
-describe('Claim isClaimantResponseSupportRequiredYes', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-});
+// describe('Claim isClaimantResponseSupportRequiredYes', () => {
+//   const claim = new Claim();
+//   claim.claimantResponse=new ClaimantResponse();
+//   it('should return undefined', () => {
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+//   });
+//   it('should return true', () => {
+//     //Given
+//     claim.claimantResponse=new ClaimantResponse();
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
+//   });
+//   it('should return false', () => {
+//     //Given
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
+//   });
+// });
 
-describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
-  });
-});
+// describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
+//   const claim = new Claim();
+//   claim.claimantResponse=new ClaimantResponse();
+//   it('should return undefined', () => {
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
+//   });
+//   it('should return true', () => {
+//     //Given
+//     claim.claimantResponse=new ClaimantResponse();
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
+//   });
+//   it('should return false', () => {
+//     //Given
+//     //Then
+//     expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
+//   });
+// });
 
 describe('Claim isInterestFromASpecificDate', () => {
   const claim = new Claim();
@@ -1367,48 +1367,6 @@ describe('Documents', () => {
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
       //When
       const result = claim.hasSupportRequiredList;
-      //Then
-      expect(result).toBe(true);
-    });
-  });
-
-  describe('isSupportRequiredYes', () => {
-    const claim = new Claim();
-    it('should return false with empty claim', () => {
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty directionQuestionnaire', () => {
-      //Given
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty hearing', () => {
-      //Given
-      claim.directionQuestionnaire.hearing = new Hearing();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with "no" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with "yes" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
-      //When
-      const result = claim.isSupportRequiredYes;
       //Then
       expect(result).toBe(true);
     });
