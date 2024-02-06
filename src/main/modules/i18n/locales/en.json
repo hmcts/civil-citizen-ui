@@ -1146,8 +1146,8 @@
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
-      "PAGE_TITLE": "How do you want the defandant to pay?",
-      "TITLE": "How do you want the defandant to pay?"
+      "PAGE_TITLE": "How do you want the defendant to pay?",
+      "TITLE": "How do you want the defendant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
