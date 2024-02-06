@@ -10,23 +10,39 @@ const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLES
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
 }
+const waitForTime = 20000;
+
 module.exports = {
   TestUrl: testUrl,
   env: process.env.ENVIRONMENT_NAME || 'local',
   TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
-  WaitForTimeout: 20000,
+  WaitForTimeout: waitForTime,
   WaitForText: 60,
   helpers: {
     Playwright: {
       url: testUrl,
       show: false,
       browser: 'chromium',
-      waitForTimeout: 20000,
-      timeout: 20000,
+      waitForTimeout: waitForTime,
+      timeout: waitForTime,
       waitForAction: 1000,
       waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
+      retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: waitForTime,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
     },
   },
   idamStub: {
