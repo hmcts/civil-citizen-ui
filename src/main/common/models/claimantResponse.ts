@@ -10,7 +10,7 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
@@ -93,6 +93,19 @@ export class ClaimantResponse {
   get isRequestJudgePaymentPlan(): boolean {
     return this.courtProposedDate?.decision === CourtProposedDateOptions.JUDGE_REPAYMENT_DATE
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
+  }
+
+  get canWeUseFromClaimantResponse(): YesNoUpperCase {
+    if (this.mediation?.canWeUse?.option) {
+      return YesNoUpperCase.YES;
+    } else {
+      if (this.mediation?.mediationDisagreement?.option) {
+        return YesNoUpperCase.NO;
+      } else if (this.mediation?.companyTelephoneNumber) {
+        return YesNoUpperCase.YES;
+      }
+    }
+    return YesNoUpperCase.NO;
   }
 
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {

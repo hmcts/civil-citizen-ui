@@ -23,7 +23,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -570,19 +570,6 @@ export class Claim {
     } else {
       return this.applicant1?.partyPhone?.phone;
     }
-  }
-
-  get canWeUseFromClaimantResponse(): YesNoUpperCase {
-    if (this.claimantResponse.mediation?.canWeUse?.option) {
-      return YesNoUpperCase.YES;
-    } else {
-      if (this.claimantResponse.mediation?.mediationDisagreement?.option) {
-        return YesNoUpperCase.NO;
-      } else if (this.claimantResponse.mediation?.companyTelephoneNumber) {
-        return YesNoUpperCase.YES;
-      }
-    }
-    return YesNoUpperCase.NO;
   }
 
   get isSupportRequiredDetailsAvailable(): boolean {

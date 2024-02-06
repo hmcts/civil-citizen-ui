@@ -14,7 +14,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = claim.contactNumberFromClaimantResponse;
   const contactName = claim.contactNameFromClaimantResponse;
-  const canWeUse = claim.canWeUseFromClaimantResponse;
+  const canWeUse = claim.claimantResponse?.canWeUseFromClaimantResponse;
 
   let freeTelephoneMediationSection: SummarySection = null;
 
