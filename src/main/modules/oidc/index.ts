@@ -9,6 +9,7 @@ import {
   CALLBACK_URL,
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
+  TESTING_SUPPORT_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
@@ -33,6 +34,10 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
 const isEligibilityPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
 };
+
+const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(TESTING_SUPPORT_URL)
+}
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
   const claimId = req.session.assignClaimId;
@@ -100,7 +105,7 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {

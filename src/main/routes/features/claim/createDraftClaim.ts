@@ -1,7 +1,6 @@
-import { AppRequest } from 'common/models/AppRequest';
-import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { TESTING_SUPPORT_URL } from 'routes/urls';
-//CLAIM_CHECK_ANSWERS_URL
+import { AppRequest, AppSession } from 'common/models/AppRequest';
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
@@ -22,13 +21,22 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
   }
 }) as RequestHandler);
 
-createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req, res: Response, next: NextFunction) => {
+createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
+    let userId = ((req.session) as AppSession)?.user?.id;
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
-    await saveDraftClaimToCache(jwt.uid, caseData);
-    // return res.redirect(CLAIM_CHECK_ANSWERS_URL);
-    return res.sendStatus(200);
+
+    if (req.body?.idToken) {
+      const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
+      userId = jwt?.uid;
+    }
+
+    await saveDraftClaimToCache(userId, caseData);
+    if (req.body?.idToken && userId) {
+      return res.sendStatus(200);
+    }
+    return res.redirect(CLAIM_CHECK_ANSWERS_URL);
+
   } catch (error) {
     next(error);
   }
