@@ -5,7 +5,7 @@ import {RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
 import {t} from 'i18next';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {saveMediation} from 'services/features/response/mediation/mediationService';
+import {saveMediationCarm} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
@@ -54,7 +54,7 @@ telephoneMediationController.post(TELEPHONE_MEDIATION_URL, (async (req, res, nex
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-    await saveMediation(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
+    await saveMediationCarm(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
     res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
   } catch (error) {
     next(error);

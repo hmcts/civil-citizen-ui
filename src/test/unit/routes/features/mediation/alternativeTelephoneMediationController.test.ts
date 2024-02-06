@@ -8,8 +8,8 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Mediation} from 'models/mediation/mediation';
 import {Claim} from 'models/claim';
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -32,11 +32,11 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
   beforeEach(() => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
-      const mediation = new Mediation();
+      const mediation = new MediationCarm();
       mediation.alternativeMediationTelephone = {
         alternativeTelephone: TELEPHONE_NUMBER,
       };
-      claim.mediation = mediation;
+      claim.mediationCarm = mediation;
       return claim;
     });
   });

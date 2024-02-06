@@ -5,7 +5,10 @@ import {
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -27,7 +30,7 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
 mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(new GenericYesNo(mediation.hasUnavailabilityNextThreeMonths?.option));
     renderView(form, res, req);
   } catch (error) {
@@ -45,12 +48,12 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
-      await saveMediation(redisKey, form.model, 'hasUnavailabilityNextThreeMonths');
+      await saveMediationCarm(redisKey, form.model, 'hasUnavailabilityNextThreeMonths');
       if (optionSelected === YesNo.NO){
-        await saveMediation(redisKey, true, 'hasAvailabilityMediationFinished');
+        await saveMediationCarm(redisKey, true, 'hasAvailabilityMediationFinished');
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       } else {
-        await saveMediation(redisKey, false, 'hasAvailabilityMediationFinished');
+        await saveMediationCarm(redisKey, false, 'hasAvailabilityMediationFinished');
         res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL));
       }
     }

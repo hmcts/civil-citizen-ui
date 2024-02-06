@@ -8,8 +8,6 @@ export const toAgreedMediation = (mediation: Mediation) => {
     return YesNoUpperCamelCase.NO;
   } else if (mediation?.companyTelephoneNumber) {
     return YesNoUpperCamelCase.YES;
-  } else if (mediation?.hasAvailabilityMediationFinished && mediation?.hasTelephoneMeditationAccessed) {
-    return YesNoUpperCamelCase.YES;
   } else {
     return YesNoUpperCamelCase.NO;
   }

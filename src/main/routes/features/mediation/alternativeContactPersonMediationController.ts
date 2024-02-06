@@ -4,7 +4,10 @@ import {
   MEDIATION_PHONE_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -26,7 +29,7 @@ const renderView = (form: GenericForm<AlternativeContactPerson>, res: Response, 
 alternativeContactPersonMediationController.get(MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(mediation.alternativeMediationContactPerson);
     renderView(form, res, req);
   } catch (error) {
@@ -44,7 +47,7 @@ alternativeContactPersonMediationController.post(MEDIATION_ALTERNATIVE_CONTACT_P
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
-      await saveMediation(redisKey, form.model, MEDIATION_PROPERTY_NAME);
+      await saveMediationCarm(redisKey, form.model, MEDIATION_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL));
     }
   } catch (error) {

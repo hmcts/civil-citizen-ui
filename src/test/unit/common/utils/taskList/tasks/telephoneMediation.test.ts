@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
-import {Mediation} from 'models/mediation/mediation';
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -26,8 +26,8 @@ describe('Telephone mediation', () => {
   describe('getTelephoneMediationTask', () => {
 
     it('should return complete', () => {
-      claim.mediation = new Mediation();
-      claim.mediation.hasTelephoneMeditationAccessed = true;
+      claim.mediationCarm = new MediationCarm();
+      claim.mediationCarm.hasTelephoneMeditationAccessed = true;
       const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
       expect(telephoneMediationTask.url).toEqual(resultComplete.url);
       expect(telephoneMediationTask.description).toEqual(resultComplete.description);
@@ -35,8 +35,8 @@ describe('Telephone mediation', () => {
     });
 
     it('should return incomplete', () => {
-      claim.mediation = new Mediation();
-      claim.mediation.hasTelephoneMeditationAccessed = false;
+      claim.mediationCarm = new MediationCarm();
+      claim.mediationCarm.hasTelephoneMeditationAccessed = false;
       const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang);
       expect(telephoneMediationTask.url).toEqual(resultComplete.url);
       expect(telephoneMediationTask.description).toEqual(resultComplete.description);
