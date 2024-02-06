@@ -106,7 +106,7 @@ export class ClaimantResponse {
   }
 
   hasClaimantAgreedToMediation(): boolean {
-    return this.mediation?.canWeUse?.option === YesNo.YES;
+    return this.mediation?.canWeUse?.option === YesNo.YES || !!this.mediation.canWeUse.mediationPhoneNumber;
   }
 
   get isClaimantRejectedCourtDecision(): boolean {

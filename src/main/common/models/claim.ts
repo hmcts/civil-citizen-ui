@@ -880,6 +880,10 @@ export class Claim {
     return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
 
+  hasClaimantAcceptedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
