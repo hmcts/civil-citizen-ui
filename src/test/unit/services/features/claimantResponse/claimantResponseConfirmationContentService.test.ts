@@ -24,6 +24,7 @@ import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {CourtProposedDate, CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 import {RepaymentDecisionType} from 'common/models/claimantResponse/RepaymentDecisionType';
+import {DocumentType} from 'common/models/document/documentType';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -516,6 +517,52 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_NEXT_STEP_MSG6');
     expect(claimantResponseConfirmationContent[6]).toBeUndefined();
   });
+
+  it('Claimant rejected defendant`s response and accepted the mediation', () => {
+    // Given
+    claim.ccdState = CaseState.IN_MEDIATION;
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = {
+      alreadyPaid: { option: 'yes' },
+      howMuchHaveYouPaid: { amount: 5000 } as HowMuchHaveYouPaid,
+    };
+    claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123', value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac',
+          document_filename: 'claimant_directions_questionnaire_form_000MC094.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary',
+        },
+        documentName: 'claimant_directions_questionnaire_form_000MC094.pdf',
+        documentSize: 45258,
+        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
+        createdDatetime: new Date('2022-06-28T14:37:13'),
+      },
+    }];
+    claim.claimantResponse = new ClaimantResponse();
+    const mediation = new Mediation({ option: YesNo.YES, mediationPhoneNumber: '01234' });
+    claim.claimantResponse.mediation = mediation;
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    //Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
+    expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
+    expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
+  });
+
+  it('Case State is in mediation', () => {
+    // Given
+    claim.ccdState = CaseState.IN_MEDIATION;
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    //Then
+    expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
+    expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
+
+  });
+
   it('Claimant accepted defendant`s response to settle the claim', () => {
     // Given
     claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';

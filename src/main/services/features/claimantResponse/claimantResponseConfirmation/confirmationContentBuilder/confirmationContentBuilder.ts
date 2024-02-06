@@ -11,7 +11,8 @@ import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementCont
 import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {getClaimSettleNextSteps} from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/claimSettleConfirmationBuilder';
+import {CaseState} from 'common/form/models/claimDetails';
+import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -86,7 +87,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   if(claim.hasClaimantAcceptedToSettleClaim()) {
     return acceptedResponseToSettle;
   }
-  
+
   if (hasClaimantRejectedDefendantResponse(claim)) {
     if(hasEitherPartyNotAgreedToMediation(claim)) {
       return RejectedResponseNoMediationNextSteps;
@@ -94,6 +95,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     else if(claimantResponse.hasClaimantAgreedToMediation()) {
       return RejectedResponseYesMediationNextSteps;
     }
+  }
+  if (claim.ccdState === CaseState.IN_MEDIATION) {
+    return RejectedResponseYesMediationNextSteps;
   }
 }
 
