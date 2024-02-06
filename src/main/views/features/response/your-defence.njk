@@ -6,7 +6,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% block pageTitle %}
-  {{ setPageTitle(t('PAGES.YOUR_DEFENCE.TITLE')) }}
+  {{ setPageTitle(t, 'PAGES.YOUR_DEFENCE.TITLE') }}
 {% endblock %}
 {% block content %}
   <div class="govuk-width-container">
