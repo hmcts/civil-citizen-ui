@@ -3,7 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -225,6 +225,6 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
   draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
   draftClaim.claimantName = claim.getClaimantFullName();
   draftClaim.defendantName = claim.getDefendantFullName();
-  draftClaim.url = CLAIMANT_TASK_LIST_URL;
+  draftClaim.url = BASE_ELIGIBILITY_URL;
   return draftClaim;
 };
