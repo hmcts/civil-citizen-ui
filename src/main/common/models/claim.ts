@@ -14,7 +14,8 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState, CCDHelpWithFees,
+  CaseState,
+  CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -467,6 +468,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
 
+  isAllFinalOrdersIssued(): boolean {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
+  }
+
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
@@ -869,6 +874,10 @@ export class Claim {
 
   hasClaimantRejectedDefendantAdmittedAmount() {
     return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  hasClaimantAcceptedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
   }
 
   hasClaimantRejectedDefendantResponse() {
