@@ -70,8 +70,7 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
-import {TypeOfDocumentSection} from "models/caseProgression/uploadDocumentsUserForm";
-import {TypeOfDocumentYourNameSection} from "form/models/mediation/uploadDocuments/uploadDocumentsForm";
+import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -142,8 +141,8 @@ export class Claim {
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
-  res1MediationDocumentsReferred?: TypeOfDocumentSection[];
-  res1MediationNonAttendanceDocs?: TypeOfDocumentYourNameSection[];
+  res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
+  res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
