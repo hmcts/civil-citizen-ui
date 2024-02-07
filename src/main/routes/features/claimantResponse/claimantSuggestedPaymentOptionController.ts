@@ -31,7 +31,7 @@ claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_UR
     const claimId = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(claimId, true);
     const updatedClaim = await clearClaimantSuggestion(claimId, claim);
-    renderView(new GenericForm(new PaymentOption(updatedClaim.claimantResponse.suggestedPaymentIntention?.paymentOption)), res);
+    renderView(new GenericForm(new PaymentOption(updatedClaim.getSuggestedPaymentIntentionOptionFromClaimant())), res);
   } catch (error) {
     next(error);
   }
