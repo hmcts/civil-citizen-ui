@@ -1,5 +1,8 @@
 {
   "COMMON": {
+    "VIEW_DOCUMENTS": "View documents",
+    "DOCUMENTS_UPLOADED": "Documents uploaded",
+    "CASE_REFERENCE_NUMBER": "Your case reference number",
     "UPLOAD_FILE": "Upload file",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
@@ -362,6 +365,12 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "CONFIRMATION_PAGE": {
+        "PAGE_TITLE": "Mediation upload documents confirmation",
+        "TEXT_BEFORE": "You can",
+        "LINK_TEXT": "upload more documents",
+        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+      },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
 

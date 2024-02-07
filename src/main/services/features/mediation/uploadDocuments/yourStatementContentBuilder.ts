@@ -25,7 +25,7 @@ export const buildYourStatementSection = (section: TypeOfDocumentYourNameSection
   };
   return new UploadDocumentsSectionBuilder()
     .addTitle(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, null, 'govuk-!-width-three-quarters')
-    .addInputArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`, '', '', documentsForYourStatement, 'yourName', section?.yourName, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForYourStatement))
+    .addInputArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}YOUR_NAME.${TypeOfMediationDocuments.YOUR_STATEMENT}`, '', '', documentsForYourStatement, 'yourName', section?.yourName, index, form?.errorFor(`${errorFieldNamePrefix}[yourName]`, documentsForYourStatement))
     .addDateArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}DATE_INPUT.${TypeOfMediationDocuments.YOUR_STATEMENT}`, invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForYourStatement, 'dateInputFields', 'date', section?.dateInputFields?.dateDay?.toString(), section?.dateInputFields?.dateMonth?.toString(), section?.dateInputFields?.dateYear?.toString(), index )
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForYourStatement, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.invalidFileError, section?.caseDocument)
     .addRemoveSectionButton(form?.model.documentsForYourStatement?.length > 1 || false, documentsForYourStatement, index )
