@@ -128,7 +128,7 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO ;
+  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
