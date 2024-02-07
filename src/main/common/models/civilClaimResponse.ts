@@ -77,8 +77,7 @@ import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
-import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
-import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import {CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 
 export class CivilClaimResponse {
   id: string;
