@@ -1,11 +1,13 @@
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {Experts} from './experts/experts';
 import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQuestions';
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
-import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+import {
+  getNumberOfUnavailableDays,
+} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
@@ -118,11 +120,11 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  getReasonForHearing(): string {
+  get getReasonForHearing(): string {
     return this.hearing?.determinationWithoutHearing?.reasonForHearing;
   }
 
-  getDecisionDeterminationWithoutHearing() : string {
+  get getDecisionDeterminationWithoutHearing() : string {
     return this.hearing?.determinationWithoutHearing?.option;
   }
 }
