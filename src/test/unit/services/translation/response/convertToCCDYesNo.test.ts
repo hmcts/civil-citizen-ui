@@ -1,7 +1,7 @@
 import {
   toCCDYesNo,
   toCCDYesNoFromBoolean,
-  toCCDYesNoFromGenericYesNo,
+  toCCDYesNoFromGenericYesNo, toCCDYesNoReverse,
 } from 'services/translation/response/convertToCCDYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -59,6 +59,24 @@ describe('translate YesNo to CCD model From Generic YesNo', () => {
   it('should return undefined', () => {
     const yesNoResponseCCD = toCCDYesNoFromGenericYesNo(undefined);
     expect(yesNoResponseCCD).toBe(undefined);
+  });
+
+  describe('translate YesNo to CCD model Reverse', () => {
+
+    it('should return Yes', () => {
+      const yesNoResponseCCD = toCCDYesNoReverse(YesNo.YES);
+      expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.NO);
+    });
+
+    it('should return No', () => {
+      const yesNoResponseCCD = toCCDYesNoReverse(YesNo.NO);
+      expect(yesNoResponseCCD).toBe(YesNoUpperCamelCase.YES);
+    });
+
+    it('should return undefined', () => {
+      const yesNoResponseCCD = toCCDYesNoReverse(undefined);
+      expect(yesNoResponseCCD).toBe(undefined);
+    });
   });
 });
 
