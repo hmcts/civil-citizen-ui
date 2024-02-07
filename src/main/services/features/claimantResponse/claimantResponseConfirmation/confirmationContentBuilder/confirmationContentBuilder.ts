@@ -8,8 +8,8 @@ import {
   getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan, getCCJNextStepsForJudgeDecideRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
@@ -126,12 +126,14 @@ function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
   return (
     claim.isFullDefence() &&
-    claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
+    claim.hasClaimantIntentToProceedResponse()
   );
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO ;
+  return (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY
+    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE
+    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS);
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {

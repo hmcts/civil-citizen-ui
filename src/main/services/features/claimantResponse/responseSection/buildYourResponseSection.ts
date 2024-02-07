@@ -27,7 +27,7 @@ import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/pay
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
-  const intentionToProceed = claim.claimantResponse?.intentionToProceed?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+  const intentionToProceed = claim.hasClaimantIntentToProceedResponse ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM', {lng}),
     t(`COMMON.${intentionToProceed}`, {lng}),
@@ -109,7 +109,7 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES
+  const option = claim.hasClaimantConfirmedDefendantPaid()
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -159,7 +159,7 @@ export const getReasonForRejecting = (claim : Claim, claimId: string, lng: strin
 };
 
 export const buildSummaryQuestionForChooseHowToProceed = (claim: Claim, claimId: string, lng: string) => {
-  const selectedOption = claim.claimantResponse?.chooseHowToProceed?.option;
+  const selectedOption = claim.getHowToProceed();
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN', { lng }),
     t(RESPONSFORCYAFORCHOOSEHOWTOPROCEED[selectedOption], { lng }),
@@ -200,14 +200,14 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
 
   if (claim.isClaimantRejectedPaymentPlan) {
 
-    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY) {
       yourResponse.summaryList.rows.push(buildFullAdmitPayImmediatelySummaryRows(claim, claimId, lng));
     }
-    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS) {
       yourResponse.summaryList.rows.push(...buildPartAdmitPayInstallmentsSummaryRows(claim, claimId, lng));
     }
 
-    if (claim.claimantResponse.suggestedPaymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       yourResponse.summaryList.rows.push(...buildPartAdmitPaySetDateSummaryRows(claim, claimId, lng));
     }
   }
@@ -216,8 +216,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
 };
 
 export const buildHowYouWishToProceed = (claim: Claim, claimId: string, lng: string) => {
-  const claimantResponse = claim.claimantResponse;
-  if (claimantResponse.chooseHowToProceed?.option) {
+  if (claim.getHowToProceed()) {
     return summarySection({
       title: t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_YOU_WISH_TO_PROCEED', { lng }),
       summaryRows: [buildSummaryQuestionForChooseHowToProceed(claim, claimId, lng)],
