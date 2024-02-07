@@ -1,11 +1,13 @@
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {Experts} from './experts/experts';
 import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQuestions';
 import {WelshLanguageRequirements} from './welshLanguageRequirements/welshLanguageRequirements';
 import {Witnesses} from './witnesses/witnesses';
 import {Hearing} from './hearing/hearing';
 import {YesNo} from 'common/form/models/yesNo';
-import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+import {
+  getNumberOfUnavailableDays,
+} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
@@ -54,68 +56,52 @@ export class DirectionQuestionnaire {
   }
 
   get isSmallClaimsDQJourneyCompleted(): boolean {
-    if (
-      this.hearing?.determinationWithoutHearing &&
+    return this.hearing?.determinationWithoutHearing &&
       this.isExpertJourneyCompleted &&
-      this.isCommonDQJourneyCompleted
-    ) {
-      return true;
-    }
-    return false;
+      this.isCommonDQJourneyCompleted;
+
   }
 
   get isFastTrackDQJourneyCompleted(): boolean {
-    if (
-      this.hearing?.triedToSettle &&
+    return this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.considerClaimantDocuments &&
       this.isExpertEvidenceJourneyCompleted &&
-      this.isCommonDQJourneyCompleted
-    ) {
-      return true;
-    }
-    return false;
+      this.isCommonDQJourneyCompleted;
+
   }
 
   get isCommonDQJourneyCompleted(): boolean {
-    if (
-      this.defendantYourselfEvidence &&
+    return !!(this.defendantYourselfEvidence &&
       this.witnesses?.otherWitnesses &&
       this.isUnavailabilityDatesCompleted &&
       this.hearing?.phoneOrVideoHearing &&
       this.vulnerabilityQuestions?.vulnerability &&
       this.hearing?.supportRequiredList &&
       this.hearing?.specificCourtLocation &&
-      this.welshLanguageRequirements?.language
-    ) {
-      return true;
-    }
-    return false;
+      this.welshLanguageRequirements?.language);
+
   }
 
   get isExpertJourneyCompleted(): boolean {
     if (!this.experts?.expertRequired) {
       return true;
     }
-    if (this.expertReportDetailsAvailable ||
+    return this.expertReportDetailsAvailable ||
       this.notRequestedToAskPermissiontoUseExpert ||
       this.nothingExpertCanExamine ||
-      this.isExpertDetailsAvailable) {
-      return true;
-    }
-    return false;
+      this.isExpertDetailsAvailable;
+
   }
 
   get isExpertEvidenceJourneyCompleted(): boolean {
     if (this.experts?.expertEvidence?.option === YesNo.NO) {
       return true;
     }
-    if (this.experts?.sentExpertReports &&
+    return this.experts?.sentExpertReports &&
       this.experts?.sharedExpert &&
-      this.isExpertDetailsAvailable) {
-      return true;
-    }
-    return false;
+      this.isExpertDetailsAvailable;
+
   }
 
   get isUnavailabilityDatesCompleted(): boolean {
@@ -132,5 +118,13 @@ export class DirectionQuestionnaire {
       }
     }
     return false;
+  }
+
+  get getReasonForHearing(): string {
+    return this.hearing?.determinationWithoutHearing?.reasonForHearing;
+  }
+
+  get getDecisionDeterminationWithoutHearing() : string {
+    return this.hearing?.determinationWithoutHearing?.option;
   }
 }
