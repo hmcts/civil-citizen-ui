@@ -1,5 +1,5 @@
 import {CaseState} from 'form/models/claimDetails';
-import {TaskStatus} from 'models/taskList/TaskStatus';
+import {TaskStatus} from 'models/dashboard/taskList/TaskStatus';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentStatus} from 'models/PaymentDetails';
@@ -8,16 +8,16 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {generateNewDashboard} from 'services/features/caseProgression/dashboardService';
-import {Task} from 'models/taskList/task';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CaseRole} from 'form/models/caseRoles';
 
-const viewHearingsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
-const uploadDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
-const viewDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
-const uploadBundlesTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
-const addTrialArrangementsTask = {description: 'PAGES.DASHBOARD.HEARINGS.ADD_TRIAL', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
-const hearingFeeActionableTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'ACTION_NEEDED', statusColor: 'govuk-tag--red', url: '/case/1234567890/case-progression/pay-hearing-fee', helpText: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE'} as Task;
-const hearingFeeTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as Task;
+const viewHearingsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+const uploadDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+const viewDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+const uploadBundlesTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+const addTrialArrangementsTask = {description: 'PAGES.DASHBOARD.HEARINGS.ADD_TRIAL', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+const hearingFeeActionableTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'ACTION_NEEDED', statusColor: 'govuk-tag--red', url: '/case/1234567890/case-progression/pay-hearing-fee', helpText: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE'} as DashboardTask;
+const hearingFeeTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
 
 describe('dashboardService', () => {
   let mockClaim;
@@ -110,7 +110,7 @@ describe('dashboardService', () => {
         expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
         expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
       });
-        
+
       it('should show task done due to successful payment status', () => {
 
         mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
