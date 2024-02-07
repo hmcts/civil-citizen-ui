@@ -2,7 +2,7 @@ import {AppRequest} from 'models/AppRequest';
 import {
   PAY_CLAIM_FEE_SUCCESSFUL_URL,
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
-  DASHBOARD_URL
+  DASHBOARD_URL,
 } from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
