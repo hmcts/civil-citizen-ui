@@ -1975,7 +1975,7 @@
               "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad gyda cherdyn",
               "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto.",
               "PAYMENT_BY_PHONE": "Talu dros y ffôn",
-              "PAYMENT_BY_PHONE_PARAGRAPH_1": "“Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
+              "PAYMENT_BY_PHONE_PARAGRAPH_1": "Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "darllenwch fwy am gost galwadau (yn agor mewn tab newydd).",
