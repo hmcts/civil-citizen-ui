@@ -71,6 +71,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -211,7 +213,7 @@ export class Claim {
 
     if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
       && (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
-      && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
+      && this.hasClaimantIntentToProceedResponse()) {
       return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
     }
 
@@ -396,11 +398,11 @@ export class Claim {
   }
 
   isSignASettlementAgreement(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+    return this.getHowToProceed() === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
   }
 
   isRequestACCJ(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+    return this.getHowToProceed() === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
   hasConfirmedAlreadyPaid(): boolean {
@@ -671,6 +673,38 @@ export class Claim {
     return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
   }
 
+  getHasDefendantPaid() : YesNo {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  }
+
+  getCCJTotalAmount() : number {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.totalAmount;
+  }
+
+  getCCJPaymentOption() : PaymentOptionType {
+    return this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type;
+  }
+
+  getCCJPaymentDate() : Date {
+    return this.claimantResponse?.ccjRequest?.defendantPaymentDate?.date;
+  }
+
+  getCCJRepaymentPlan() : RepaymentPlanInstalments {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments;
+  }
+
+  getCCJRepaymentPlanAmount() : number {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount;
+  }
+
+  getCCJRepaymentPlanFrequency() : TransactionSchedule {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency;
+  }
+
+  getCCJRepaymentPlanDate() : Date {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date;
+  }
+
   hasDefendantPaid(): boolean {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
   }
@@ -894,11 +928,11 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.claimantResponse?.intentionToProceed?.option === YesNo.YES;
+    return this?.getIntentionToProceed() === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
-    return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+    return this?.getIntentionToProceed() === YesNo.NO;
   }
 
   hasCourtAcceptedClaimantsPlan() {
@@ -911,6 +945,18 @@ export class Claim {
     } else if (this.isFAPaymentOptionBySetDate()) {
       return this.fullAdmission.paymentIntention.paymentDate;
     }
+  }
+
+  getSuggestedPaymentIntentionOptionFromClaimant() : PaymentOptionType {
+    return this.claimantResponse.suggestedPaymentIntention?.paymentOption;
+  }
+
+  getHowToProceed() : ChooseHowProceed {
+    return this.claimantResponse?.chooseHowToProceed?.option;
+  }
+
+  getIntentionToProceed(): string{
+    return this.claimantResponse?.intentionToProceed?.option;
   }
 }
 
