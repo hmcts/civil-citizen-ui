@@ -192,16 +192,13 @@ module.exports = {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
-    let eventName1 = 'CREATE_LIP_CLAIM';
-    let eventName2 = 'CREATE_CLAIM_SPEC_AFTER_PAYMENT';
-    caseId = null;
 
-    let  userAuth = await idamHelper.accessToken(user);
+    let userAuth = await idamHelper.accessToken(user);
     let userId = await idamHelper.userId(userAuth);
 
     await apiRequest.setupTokens(user);
     let payload = data.CREATE_LIP_CLAIM(userId);
-    caseId = await apiRequest.startEventForLiPCitizen(eventName1, payload);
+    caseId = await apiRequest.startEventForLiPCitizen(payload);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -209,7 +206,7 @@ module.exports = {
         respondent1ResponseDeadline: currentDate,
       },
     };
-    await apiRequest.startEventForCitizen(eventName2, caseId, newPayload);
+    await apiRequest.startEventForCitizen(caseId, newPayload);
     return caseId;
   },
 

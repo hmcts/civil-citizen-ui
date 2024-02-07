@@ -79,10 +79,10 @@ module.exports = {
           evidenceComment: '',
           respondent1MediationLiPResponse: '',
           respondent1DQExtraDetails: {
-            [Object]: undefined,
+            [Object]: '',
           },
           respondent1DQHearingSupportLip: {
-            [Object]: undefined,
+            [Object]: '',
           },
           respondent1LiPContactPerson: 'John Smith',
           respondent1LiPCorrespondenceAddress: '123 Test Street',
