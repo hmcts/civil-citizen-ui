@@ -284,7 +284,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse : {
         claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
@@ -299,16 +298,29 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse : {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
     };
-
+    
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
     expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
+  });
+
+  it('should translate totalInterest when InterestClaimOptionsType is BREAK_DOWN_INTEREST', () => {
+    //Given
+    const input: CCDClaim = {
+      interestClaimOptions: CCDInterestType.BREAK_DOWN_INTEREST,
+      breakDownInterestTotal: 1000,
+      breakDownInterestDescription: 'break down interest',
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    expect(claim.interest.totalInterest.amount).toEqual(1000);
+    expect(claim.interest.totalInterest.reason).toEqual('break down interest');
   });
 });

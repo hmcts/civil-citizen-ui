@@ -1,5 +1,5 @@
 module.exports = {
-  evidenceUploadFastTrack: () => {
+  evidenceUploadFastTrack: (document) => {
     return {
       event: 'EVIDENCE_UPLOAD_APPLICANT',
       caseDataUpdate: {
@@ -33,8 +33,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -48,8 +48,8 @@ module.exports = {
               documentIssuedDate: '2023-03-01',
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
@@ -63,8 +63,8 @@ module.exports = {
               witnessOptionUploadDate: '2023-03-01',
               createdDatetime: null,
               witnessOptionDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'hearing_small_claim_000MC013.pdf',
               },
             },
@@ -78,8 +78,8 @@ module.exports = {
               witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -93,8 +93,8 @@ module.exports = {
               witnessOptionUploadDate: '2023-03-01',
               createdDatetime: null,
               witnessOptionDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
@@ -109,8 +109,8 @@ module.exports = {
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -125,8 +125,8 @@ module.exports = {
               expertOptionUploadDate: '2023-03-02',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -141,8 +141,8 @@ module.exports = {
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -158,8 +158,8 @@ module.exports = {
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
@@ -175,8 +175,8 @@ module.exports = {
               expertOptionUploadDate: '2023-03-10',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'hearing_small_claim_000MC013.pdf',
               },
             },
@@ -188,8 +188,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -201,8 +201,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
@@ -214,8 +214,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -227,8 +227,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'hearing_small_claim_000MC013.pdf',
               },
             },
@@ -242,8 +242,8 @@ module.exports = {
               documentIssuedDate: '2023-02-01',
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
@@ -269,7 +269,7 @@ module.exports = {
       },
     };
   },
-  evidenceUploadSmallClaims: () => {
+  evidenceUploadSmallClaims: (document) => {
     return {
       event: 'EVIDENCE_UPLOAD_APPLICANT',
       caseDataUpdate: {
@@ -297,8 +297,8 @@ module.exports = {
               witnessOptionUploadDate: '2023-03-01',
               createdDatetime: null,
               witnessOptionDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'hearing_small_claim_000MC013.pdf',
               },
             },
@@ -312,8 +312,8 @@ module.exports = {
               witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -328,8 +328,8 @@ module.exports = {
               documentIssuedDate: '2023-01-01',
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -344,8 +344,8 @@ module.exports = {
               expertOptionUploadDate: '2023-03-02',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -360,8 +360,8 @@ module.exports = {
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'Order_2023-10-09.pdf',
               },
             },
@@ -373,8 +373,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/7b5de1e5-38c3-4962-8c46-f50a2a29bb7e/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: '000MC038-claim-response.pdf',
               },
             },
@@ -386,8 +386,8 @@ module.exports = {
             value: {
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/1e63189c-6300-4261-9801-be9ecbfbbc04/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'hearing_small_claim_000MC013.pdf',
               },
             },
@@ -401,8 +401,8 @@ module.exports = {
               documentIssuedDate: '2023-02-01',
               createdDatetime: null,
               documentUpload: {
-                document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3',
-                document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/0a431a33-6d04-4b06-b36b-5672d6be7ac3/binary',
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
                 document_filename: 'fast_track_sdo_000MC014.pdf',
               },
             },
