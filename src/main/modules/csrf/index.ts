@@ -9,11 +9,11 @@ export class CSRFToken {
         return next();
       }
       return csurf()(req, res, next);
-    })
+    });
     app.use((req, res, next) => {
       if (!isTestingSupportDraftUrl(req.originalUrl)) {
         res.locals.csrf = req.csrfToken();
-      };
+      }
       next();
     });
   }

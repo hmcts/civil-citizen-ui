@@ -3,13 +3,13 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 
 const draftClaim: { id: string, case_data?: CaseData } = {
   id: '',
-  case_data: {}
+  case_data: {},
 };
 
 export interface CaseData {
   id?: string;
   draftClaimCreatedAt?: string;
-};
+}
 
 const case_data = {
   draftClaimCreatedAt: '',
@@ -121,7 +121,7 @@ const case_data = {
 };
 
 const saveDraftClaimToCache = async (userId: string, apiData = case_data) => {
-  let claimToSave = draftClaim;
+  const claimToSave = draftClaim;
   claimToSave.case_data = apiData;
   claimToSave.id = userId;
   claimToSave.case_data.id = userId;
@@ -133,6 +133,5 @@ const saveDraftClaimToCache = async (userId: string, apiData = case_data) => {
     calculateExpireTimeForDraftClaimInSeconds(new Date()),
   );
 };
-
 
 export { saveDraftClaimToCache, draftClaim };

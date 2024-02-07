@@ -36,8 +36,8 @@ const isEligibilityPage = (requestUrl: string): boolean => {
 };
 
 export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
-  return requestUrl.startsWith(TESTING_SUPPORT_URL)
-}
+  return requestUrl.startsWith(TESTING_SUPPORT_URL);
+};
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
   const claimId = req.session.assignClaimId;
