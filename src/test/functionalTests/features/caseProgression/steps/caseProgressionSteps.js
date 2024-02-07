@@ -1,5 +1,6 @@
 const LatestUpdate = require('../pages/latestUpdate');
 const Documents = require('../pages/documents');
+const Bundles = require('../pages/bundles');
 const UploadYourDocumentsIntroduction = require('../pages/uploadEvidence/uploadYourDocumentsIntroduction');
 const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/whatTypeOfDocumentsDoYouWantToUpload');
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
@@ -9,13 +10,14 @@ const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadY
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
 const documentsTab = new Documents();
+const bundlesTab = new Bundles();
 const uploadYourDocumentsIntroduction = new UploadYourDocumentsIntroduction();
 const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToUpload();
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 
-class UploadEvidenceSteps {
+class CaseProgressionSteps {
 
   initiateUploadEvidenceJourney(claimRef, claimType) {
 
@@ -64,6 +66,10 @@ class UploadEvidenceSteps {
     documentsTab.open(claimRef, claimType, true);
   }
 
+  verifyBundle(claimRef, claimType) {
+    latestUpdateTab.open(claimRef, claimType,true, false, false, false, false, true);
+    bundlesTab.open(claimRef);
+  }
 }
 
-module.exports = new UploadEvidenceSteps();
+module.exports = new CaseProgressionSteps();

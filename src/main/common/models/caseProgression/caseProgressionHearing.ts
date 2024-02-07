@@ -71,7 +71,7 @@ export class CaseProgressionHearing {
     return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang);
   }
 
-  getHearingDurationFormatted(): string {
-    return HearingDurationFormatter.formatHearingDuration(this.hearingDuration);
+  getHearingDurationFormatted(lng: string): string {
+    return HearingDurationFormatter.formatHearingDuration(this.hearingDuration, lng);
   }
 }

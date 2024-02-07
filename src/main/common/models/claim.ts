@@ -14,7 +14,8 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseState, CCDHelpWithFees,
+  CaseState,
+  CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -69,6 +70,9 @@ import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -139,6 +143,7 @@ export class Claim {
   specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
+  mediationUploadDocuments?: UploadDocuments;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -209,7 +214,7 @@ export class Claim {
 
     if (this.isFullDefence() && this.ccdState === CaseState.JUDICIAL_REFERRAL
       && (this.hasRespondent1NotAgreedMediation() || this.isFastTrackClaim)
-      && this.claimantResponse.intentionToProceed.option === YesNo.YES) {
+      && this.hasClaimantIntentToProceedResponse()) {
       return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
     }
 
@@ -394,11 +399,11 @@ export class Claim {
   }
 
   isSignASettlementAgreement(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+    return this.getHowToProceed() === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
   }
 
   isRequestACCJ(): boolean {
-    return this.claimantResponse?.chooseHowToProceed?.option === ChooseHowProceed.REQUEST_A_CCJ;
+    return this.getHowToProceed() === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
   hasConfirmedAlreadyPaid(): boolean {
@@ -464,6 +469,10 @@ export class Claim {
 
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+  }
+
+  isAllFinalOrdersIssued(): boolean {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
   }
 
   isBusiness(): boolean {
@@ -663,6 +672,38 @@ export class Claim {
 
   getDefendantPaidAmount(): number | undefined {
     return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
+  }
+
+  getHasDefendantPaid() : YesNo {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  }
+
+  getCCJTotalAmount() : number {
+    return this.claimantResponse?.ccjRequest?.paidAmount?.totalAmount;
+  }
+
+  getCCJPaymentOption() : PaymentOptionType {
+    return this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type;
+  }
+
+  getCCJPaymentDate() : Date {
+    return this.claimantResponse?.ccjRequest?.defendantPaymentDate?.date;
+  }
+
+  getCCJRepaymentPlan() : RepaymentPlanInstalments {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments;
+  }
+
+  getCCJRepaymentPlanAmount() : number {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount;
+  }
+
+  getCCJRepaymentPlanFrequency() : TransactionSchedule {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency;
+  }
+
+  getCCJRepaymentPlanDate() : Date {
+    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date;
   }
 
   hasDefendantPaid(): boolean {
@@ -870,6 +911,10 @@ export class Claim {
     return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
   }
 
+  hasClaimantAcceptedDefendantAdmittedAmount() {
+    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
   hasClaimantRejectedDefendantResponse() {
     return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
   }
@@ -884,11 +929,15 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.claimantResponse?.intentionToProceed?.option === YesNo.YES;
+    return this?.getIntentionToProceed() === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
-    return this?.claimantResponse?.intentionToProceed?.option === YesNo.NO;
+    return this?.getIntentionToProceed() === YesNo.NO;
+  }
+
+  hasCourtAcceptedClaimantsPlan() {
+    return this.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
   }
 
   isLRClaimant() {
@@ -904,6 +953,18 @@ export class Claim {
     } else if (this.isFAPaymentOptionBySetDate()) {
       return this.fullAdmission.paymentIntention.paymentDate;
     }
+  }
+
+  getSuggestedPaymentIntentionOptionFromClaimant() : PaymentOptionType {
+    return this.claimantResponse.suggestedPaymentIntention?.paymentOption;
+  }
+
+  getHowToProceed() : ChooseHowProceed {
+    return this.claimantResponse?.chooseHowToProceed?.option;
+  }
+
+  getIntentionToProceed(): string{
+    return this.claimantResponse?.intentionToProceed?.option;
   }
 }
 

@@ -92,13 +92,13 @@ export const getTheirDefence = (text: string, lng: string): ClaimSummarySection[
   }];
 };
 
-const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lang: string): ClaimSummarySection[] => {
+const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lng: string): ClaimSummarySection[] => {
   return [
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE',
-        variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang)},
+        text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
+        variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
       },
     }];
 };
