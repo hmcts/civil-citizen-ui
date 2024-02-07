@@ -8,7 +8,6 @@ import {
   getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan, getCCJNextStepsForJudgeDecideRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
-import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
@@ -127,12 +126,12 @@ function hasEitherPartyNotAgreedToMediation(claim: Claim): boolean {
 function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
   return (
     claim.isFullDefence() &&
-    claim.claimantResponse?.intentionToProceed?.option === YesNo.YES
+    claim.hasClaimantIntentToProceedResponse()
   );
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO ;
+  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
