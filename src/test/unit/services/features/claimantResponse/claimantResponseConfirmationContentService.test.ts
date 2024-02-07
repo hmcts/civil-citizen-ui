@@ -6,7 +6,9 @@ import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {CaseState} from 'common/form/models/claimDetails';
-import {getClaimantResponseConfirmationContent} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
+import {
+  getClaimantResponseConfirmationContent,
+} from 'services/features/claimantResponse/claimantResponseConfirmation/claimantResponseConfirmationContentService';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -573,6 +575,7 @@ function getClaim() {
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement();
   claim.claimantResponse.submittedDate = new Date();
+  claim.applicant1ResponseDate = new Date();
   return claim;
 }
 
