@@ -20,7 +20,7 @@
     "test:a11y": "echo 'a11y tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline and unable to mock at the moment.'",
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.mock-test.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,reportFilename=a11y,inlineAssets=true,reportTitle=civil-citizen-ui",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "MOCHAWESOME_REPORTFILENAME=smokeTests yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
+    "test:smoke": "MOCHAWESOME_REPORTFILENAME=smokeTests REPORT_DIR=test-results/smokeTest yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
     "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers 32 --grep @regression --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers 2 --grep @carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
