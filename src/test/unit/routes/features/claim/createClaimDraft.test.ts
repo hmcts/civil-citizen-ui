@@ -18,7 +18,7 @@ describe('createDraftClaim Router', () => {
   describe('on GET', () => {
     it('should render the correct view', async () => {
       const response = await request(app).get(TESTING_SUPPORT_URL);
-      expect(response.status).toBe(302);
+      expect(response.status).toBe(200);
     });
 
     describe('processDraftClaim function', () => {
