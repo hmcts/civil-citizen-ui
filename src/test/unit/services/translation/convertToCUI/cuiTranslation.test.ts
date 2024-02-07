@@ -14,6 +14,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -299,11 +300,11 @@ describe('translateCCDCaseDataToCUIModel', () => {
   it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
     //Given
     const input: CCDClaim = {
-      applicant1LiPResponse : {
+      applicant1LiPResponse: {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
     };
-    
+
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
@@ -322,5 +323,90 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     expect(claim.interest.totalInterest.amount).toEqual(1000);
     expect(claim.interest.totalInterest.reason).toEqual('break down interest');
+  });
+
+  it('should translate claimant mediation to CUI model for undefined', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : undefined,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : {
+        companyTelephoneOptionMediationLiP: YesNoUpperCamelCase.NO,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation.companyTelephoneNumber.option).toContain(YesNo.NO);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
+      totalClaimAmount: 100,
+      respondToClaim: {
+        howMuchWasPaid: 10000,
+      },
+      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option).toEqual(YesNo.YES);
+  });
+
+  it('should translate claimant mediation to undefined for not equal value', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
+      totalClaimAmount: 100,
+      respondToClaim: {
+        howMuchWasPaid: 5000,
+      },
+      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to undefined for not paid already route', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.DISPUTES_THE_CLAIM,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = undefined;
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
   });
 });
