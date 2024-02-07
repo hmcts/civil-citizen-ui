@@ -86,9 +86,9 @@ module.exports = {
     url += `/cases/draft/citizen/${userId}/event`;
 
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200)
-      .then(response => response.json());
+      response.json();
     return response.id;
-  },
+},
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),
