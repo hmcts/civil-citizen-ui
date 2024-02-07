@@ -80,9 +80,7 @@ module.exports = {
   startEventForLiPCitizen: async (eventName, payload) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
-    Logger.info('The value of the userId from the startEventForCitizen() : '+userId);
-    Logger.info('The value of the Auth Token from the startEventForCitizen() : '+tokens.userAuth);
-
+    
     url += `/cases/draft/citizen/${userId}/event`;
 
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200)
