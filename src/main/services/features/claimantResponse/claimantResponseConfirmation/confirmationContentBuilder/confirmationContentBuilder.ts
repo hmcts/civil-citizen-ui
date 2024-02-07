@@ -10,6 +10,8 @@ import {
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {YesNo} from 'common/form/models/yesNo';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CaseState} from 'common/form/models/claimDetails';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -54,8 +56,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return sendFinancialDetails;
   }
 
-  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    !claimantResponse.isClaimantRejectedCourtDecision) {
+  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
@@ -88,6 +89,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     else if(claimantResponse.hasClaimantAgreedToMediation()) {
       return RejectedResponseYesMediationNextSteps;
     }
+  }
+  if (claim.ccdState === CaseState.IN_MEDIATION) {
+    return RejectedResponseYesMediationNextSteps;
   }
 }
 
