@@ -1,12 +1,13 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
   MEDIATION_NEXT_3_MONTHS_URL,
   MEDIATION_UNAVAILABLE_SELECT_DATES_URL, RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -45,10 +46,13 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
+      const claim = await getCaseDataFromStore(redisKey);
+      const isClaimantResponse = claim.isClaimantIntentionPending();
+      const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
       await saveMediation(redisKey, form.model, 'hasUnavailabilityNextThreeMonths');
       if (optionSelected === YesNo.NO){
         await saveMediation(redisKey, true, 'hasAvailabilityMediationFinished');
-        res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, url));
       } else {
         await saveMediation(redisKey, false, 'hasAvailabilityMediationFinished');
         res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL));

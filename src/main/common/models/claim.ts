@@ -73,6 +73,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -143,6 +144,7 @@ export class Claim {
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
+  applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
