@@ -66,14 +66,13 @@ module.exports = {
   startEventForCitizen: async (eventName, caseId, payload) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
-    Logger.info('The value of the userId from the startEventForCitizen() : '+userId);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
     url += `/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200)
-      response.json();
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    response.json();
     tokens.ccdEvent = response.token;
   },
 
@@ -83,10 +82,10 @@ module.exports = {
     
     url += `/cases/draft/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200)
-      response.json();
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    response.json();
     return response.id;
-},
+  },
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),
