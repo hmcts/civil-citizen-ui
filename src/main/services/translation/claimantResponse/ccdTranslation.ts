@@ -1,4 +1,3 @@
-import {YesNo} from 'form/models/yesNo';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {toCCDParty} from '../response/convertToCCDParty';
@@ -15,12 +14,12 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
     //TO DO: Test the commented code creating the claim from CUI.
     //applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
-    partialPayment: toCCDYesNo(claim.claimantResponse?.ccjRequest?.paidAmount?.option),
-    partialPaymentAmount: claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? convertToPence(claim.claimantResponse?.ccjRequest?.paidAmount?.amount).toString() : undefined,
-    paymentTypeSelection: toCCDDJPaymentOption( claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type),
-    paymentSetDate: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.BY_SET_DATE ? claim.claimantResponse?.ccjRequest?.defendantPaymentDate?.date : undefined,
-    repaymentFrequency: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency) : undefined,
-    repaymentDue:claim.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES ? (claim.claimantResponse?.ccjRequest?.paidAmount?.totalAmount - claim.claimantResponse?.ccjRequest?.paidAmount?.amount).toString() : undefined,
-    repaymentSuggestion: claim.claimantResponse?.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? claim.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount.toString() : undefined,
+    partialPayment: toCCDYesNo(claim.getHasDefendantPaid()),
+    partialPaymentAmount: claim.hasDefendantPaid() ? convertToPence(claim.getDefendantPaidAmount()).toString() : undefined,
+    paymentTypeSelection: toCCDDJPaymentOption( claim.getCCJPaymentOption()),
+    paymentSetDate: claim.getCCJPaymentOption() === PaymentOptionType.BY_SET_DATE ? claim.getCCJPaymentDate() : undefined,
+    repaymentFrequency: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.getCCJRepaymentPlanFrequency()) : undefined,
+    repaymentDue:claim.hasDefendantPaid() ? (claim.getCCJTotalAmount() - claim.getDefendantPaidAmount()).toString() : undefined,
+    repaymentSuggestion: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? claim.getCCJRepaymentPlanAmount().toString() : undefined,
   };
 };
