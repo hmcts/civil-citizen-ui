@@ -1,12 +1,12 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
 import {t} from 'i18next';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveMediation} from 'services/features/response/mediation/mediationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
 const availabilityForMediationViewPath = 'features/mediation/telephone-mediation.njk';
@@ -54,8 +54,11 @@ telephoneMediationController.post(TELEPHONE_MEDIATION_URL, (async (req, res, nex
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const isClaimantResponse = claim.isClaimantIntentionPending();
+    const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
     await saveMediation(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
-    res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, url));
   } catch (error) {
     next(error);
   }
