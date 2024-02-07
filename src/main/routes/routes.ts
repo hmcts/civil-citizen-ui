@@ -228,7 +228,6 @@ import respondSettlementAgreementConfirmationController
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
 import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import repaymentPlanSummaryClaimantController from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
-
 import payHearingFeeStartScreenController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 import applyHelpFeeSelectionController
@@ -272,6 +271,9 @@ import claimFeePaymentConfirmationController
   from 'routes/features/claim/payment/claimFeePaymentConfirmationController';
 import claimIssuePaymentSuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentSuccessfulController';
+import claimIssuePaymentUnsuccessfulController
+  from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
+import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
 
 export default [
   homeController,
@@ -512,4 +514,7 @@ export default [
   mediationTypeOfDocumentsController,
   claimFeePaymentConfirmationController,
   claimIssuePaymentSuccessfulController,
+  claimIssuePaymentUnsuccessfulController,
+  mediationUploadDocumentsController,
+
 ];

@@ -46,7 +46,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     handleAcceptOrRejectRepaymentPlanTask(claim, claimId, lang, tasks);
   } else if (claim.isPartialAdmission()) {
     tasks.push(acceptOrRejectDefendantAdmittedTask);
-    if (claimantResponse.isClaimantNotAcceptedPartAdmittedAmount) {
+    if (claimantResponse.isClaimantNotAcceptedPartAdmittedAmount && claim.isDefendantAgreedForMediation()) {
       tasks.push(freeTelephoneMediationTask);
     } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claim.isPAPaymentOptionPayImmediately()) {
       tasks.push(acceptOrRejectRepaymentPlanTask);
@@ -63,11 +63,11 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     }
   }
 
-  if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.isDefendantAgreedForMediation()) {
+  if (claim?.hasClaimantIntentToProceedResponse() && claim.isDefendantAgreedForMediation()) {
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO && claim.isDefendantAgreedForMediation())  {
+  if (claim?.hasClaimantRejectedDefendantResponse() && claim.isDefendantAgreedForMediation())  {
     tasks.push(freeTelephoneMediationTask);
   }
 
@@ -116,7 +116,7 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
 
-  if (claim.isClaimantIntentionPending() && claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES) {
+  if (claim.isClaimantIntentionPending() && claim?.hasClaimantIntentToProceedResponse()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
