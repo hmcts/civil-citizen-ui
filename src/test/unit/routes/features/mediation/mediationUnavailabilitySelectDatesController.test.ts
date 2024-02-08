@@ -13,7 +13,6 @@ import {getUnavailableDatesMediationForm} from 'services/features/mediation/unav
 import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
-
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -100,7 +99,7 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
             'type': UnavailableDateType.LONGER_PERIOD,
             'period': {
               'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              'end': {'day': currentDatePlusOne.getDay(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
+              'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
             },
           }],
         };

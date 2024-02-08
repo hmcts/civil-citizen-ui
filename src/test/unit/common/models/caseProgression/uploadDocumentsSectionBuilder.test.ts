@@ -121,4 +121,28 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
     //Then
     expect(selectBuilt).toEqual([selectExpected]);
   });
+
+  it('should add remove button', ()=> {
+    //Given
+    const removeButtonxpected = ({
+      type: ClaimSummaryType.REMOVE_BUTTON,
+      data: {
+        category: 'category',
+        classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
+        index: 0,
+      },
+    });
+
+    //When
+    const removeButton = new UploadDocumentsSectionBuilder()
+      .addRemoveSectionButton(true, 'category', 0 )
+      .build();
+    const noRemoveButton = new UploadDocumentsSectionBuilder()
+      .addRemoveSectionButton(false, 'category', 0 )
+      .build();
+    //Then
+    expect(removeButton).toEqual([removeButtonxpected]);
+    expect(noRemoveButton).toEqual([]);
+
+  });
 });
