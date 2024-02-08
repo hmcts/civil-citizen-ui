@@ -1,13 +1,14 @@
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from '../modules/draft-store/draftStoreService';
-import {CivilServiceClient} from '../app/client/civilServiceClient';
-import {Claim} from '../../main/common/models/claim';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
+import {Claim} from 'common/models/claim';
 import {Request} from 'express';
-// import {ClaimDetails} from '../common/form/models/claim/details/claimDetails';
-// import {Reason} from '../common/form/models/claim/details/reason';
+
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -39,4 +40,22 @@ export const getRedisStoreForSession = () => {
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });
+};
+
+export const getNotificationById = async (claimId: string): Promise<DashboardNotificationList> => {
+  const dashboardNotifications = await civilServiceClient.retrieveNotificationDetails(claimId);
+  if (dashboardNotifications) {
+    return dashboardNotifications;
+  } else {
+    throw new Error('Notifications not found...');
+  }
+};
+
+export const getDashboardById = async (claimId: string): Promise<Dashboard> => {
+  const dashboard = await civilServiceClient.retrieveDashboardDetails(claimId);
+  if (dashboard) {
+    return dashboard;
+  } else {
+    throw new Error('Dashboard not found...');
+  }
 };

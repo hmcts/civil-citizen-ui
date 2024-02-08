@@ -42,6 +42,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {Dashboard} from 'models/dashboard/dashboard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -416,5 +418,14 @@ export class CivilServiceClient {
       logger.error(err);
       throw err;
     }
+  }
+
+  async retrieveNotificationDetails(claimId: string): Promise<DashboardNotificationList>  {
+
+    return new DashboardNotificationList([]);
+  }
+
+  async retrieveDashboardDetails(claimId: string): Promise<Dashboard>  {
+    return new Dashboard([]);
   }
 }
