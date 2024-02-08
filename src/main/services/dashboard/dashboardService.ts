@@ -1,26 +1,25 @@
 import {
   getDashboardFromCache,
   getNotificationFromCache,
-  saveDashboardToCache,
+  saveDashboardToCache, saveNotificationToCache,
 } from 'modules/draft-store/getDashboardCache';
 import {Claim} from 'models/claim';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {getDashboardById, getNotificationById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
-//const success = 'Success';
+
 export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Dashboard> => {
   try {
-    const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-    const cachedDashboard:Dashboard = await getDashboardFromCache(caseRole,claimId);
-    if(cachedDashboard?.items?.length && !claim.hasCaseProgressionHearingDocuments()) {
-      return cachedDashboard;
+    const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
+    let dashboard: Dashboard = await getDashboardFromCache(caseRole, claimId);
+    if (!dashboard) {
+      dashboard = await getDashboardById(claimId);
+      await saveDashboardToCache(dashboard, caseRole, claimId);
     }
-    const dashboard:Dashboard = generateNewDashboard(claim);
-    await saveDashboard(dashboard,claim, claimId);
     return dashboard;
   } catch (error) {
     logger.error(error);
@@ -28,21 +27,19 @@ export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Das
   }
 };
 
-export const saveDashboard = async (dashboard:Dashboard, claim:Claim, claimId:string) =>{
-  try {
-    const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-    await saveDashboardToCache(dashboard,caseRole,claimId);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-export const getNotifications = async (claimId: string, claim: Claim, lng: string) => {
+export const getNotifications = async (claimId: string, claim: Claim) => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
     const cachedDashboardNotifications: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
-    const dashboardNotificationsList: DashboardNotification[]  = cachedDashboardNotifications.items;
+    let dashboardNotificationsList;
+    if (cachedDashboardNotifications){
+      dashboardNotificationsList = cachedDashboardNotifications.items;
+    }
+    else{
+      const dashboardNotifications: DashboardNotificationList = await getNotificationById(claimId);
+      dashboardNotificationsList = dashboardNotifications.items;
+      await saveNotificationToCache(dashboardNotifications,caseRole, claimId);
+    }
     return dashboardNotificationsList;
   } catch (error) {
     logger.error(error);
