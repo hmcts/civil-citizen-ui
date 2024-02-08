@@ -6,11 +6,11 @@ import {TabId} from 'routes/tabs';
 
 const FINALISE_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.FINALISE_TRIAL_ARRANGEMENTS';
 
-export const getFinaliseTrialArrangements = (claim: Claim) => {
+export const getFinaliseTrialArrangements = (claim: Claim, lng: string) => {
   const deadline = claim.finalisingTrialArrangementsDeadline;
-  const changesBeginning=t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`);
+  const changesBeginning=t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_BEGINNING`, { lng });
   const htmlText = `<p class="govuk-body">${changesBeginning}
-                                <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: deadline})}</span>.
+                                <span class="govuk-body govuk-!-font-weight-bold">${t(`${FINALISE_TRIAL_ARRANGEMENTS}.IF_THERE_ARE_CHANGES_END`, {finalisingTrialArrangementsDeadline: deadline,  lng})}</span>.
                               </p>`;
   const linkText = `${FINALISE_TRIAL_ARRANGEMENTS}.DIRECTIONS_QUESTIONNAIRE`;
   const linkHref =  DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES);

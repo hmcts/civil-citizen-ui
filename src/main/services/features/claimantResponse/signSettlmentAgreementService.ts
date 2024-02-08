@@ -17,9 +17,9 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   let data: object;
   if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.BY_SET_DATE) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.BY_SET_DATE) {
       data = getTextForPayByDate(claim, lang, true);
-    } else if (claim.claimantResponse.suggestedPaymentIntention.paymentOption == PaymentOptionType.INSTALMENTS) {
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.INSTALMENTS) {
       data = getTextForPayByInstallments(claim, lang, true);
     }
   } else {

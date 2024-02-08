@@ -502,12 +502,12 @@
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
       "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
       "ENGLISH": "English",
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "WELSH_AND_ENGLISH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -1146,8 +1146,8 @@
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
-      "PAGE_TITLE": "How do you want the defandant to pay?",
-      "TITLE": "How do you want the defandant to pay?"
+      "PAGE_TITLE": "How do you want the defendant to pay?",
+      "TITLE": "How do you want the defendant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",

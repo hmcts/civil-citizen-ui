@@ -7,14 +7,17 @@ export const getClaimantResponseStatus = (claim: Claim, statement: string, lang:
   const claimNumber = claim.legacyCaseReference;
   // TODO: update this date as submission date When submission implemented on check-and-send page
   const responseSubmitDate = formatDateToFullDate(new Date(), lang);
+
+  const htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
+  <br><strong>${claimNumber}</strong><br>
+  <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`;
+
   return [
     {
       type: ClaimSummaryType.PANEL,
       data: {
         title: `<span class='govuk-!-font-size-36'>${t(statement, {lng: lang})}</span>`,
-        html: `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', {lng: lang})}</span>
-              <br><strong>${claimNumber}</strong><br>
-              <span class='govuk-!-font-weight-bold govuk-!-font-size-24'>${responseSubmitDate}</span>`,
+        html: htmlContent,
       },
     },
   ];
