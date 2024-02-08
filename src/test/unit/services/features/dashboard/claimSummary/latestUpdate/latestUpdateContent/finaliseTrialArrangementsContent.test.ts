@@ -28,7 +28,7 @@ describe('test getFinaliseTrialArrangements', () => {
       .addButton(`${FINALISE_TRIAL_ARRANGEMENTS}.FINALISE_TRIAL_ARRANGEMENTS_BUTTON`, CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claim.id))
       .build();
     //When
-    const finaliseTrialArrangementsContentActual = getFinaliseTrialArrangements(claim);
+    const finaliseTrialArrangementsContentActual = getFinaliseTrialArrangements(claim, 'en');
     //Then
     expect(finaliseTrialArrangementsContentExpected).toEqual(finaliseTrialArrangementsContentActual);
   });
