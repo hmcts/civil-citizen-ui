@@ -5,7 +5,7 @@ import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIA
 import {t} from 'i18next';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {saveMediation} from 'services/features/response/mediation/mediationService';
+import {saveMediationCarm} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
@@ -57,7 +57,7 @@ telephoneMediationController.post(TELEPHONE_MEDIATION_URL, (async (req, res, nex
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
     const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
-    await saveMediation(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
+    await saveMediationCarm(redisKey, true, HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME);
     res.redirect(constructResponseUrlWithIdParams(claimId, url));
   } catch (error) {
     next(error);

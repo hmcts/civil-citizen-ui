@@ -11,9 +11,9 @@ import {t} from 'i18next';
 
 const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boolean): boolean => {
   if (claimantResponse) {
-    return caseData.claimantResponse?.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediation.hasAvailabilityMediationFinished;
+    return caseData.claimantResponse?.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediationCarm.hasAvailabilityMediationFinished;
   }
-  return caseData.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediation.hasAvailabilityMediationFinished;
+  return caseData.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediationCarm.hasAvailabilityMediationFinished;
 };
 
 export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string, claimantResponse: boolean): Task => {
