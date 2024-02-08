@@ -1,4 +1,5 @@
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
+import {MediationTypeOfDocumentSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 
 export enum TypeOfMediationDocuments {
     YOUR_STATEMENT = 'YOUR_STATEMENT',
@@ -9,13 +10,14 @@ export class TypeOfDocuments {
   id: number;
   type: TypeOfMediationDocuments;
   checked: boolean;
+  uploadDocuments?: MediationTypeOfDocumentSection[];
 
-  constructor(id: number, type: TypeOfMediationDocuments, checked: boolean) {
+  constructor(id: number, type: TypeOfMediationDocuments, checked: boolean, uploadDocuments?: MediationTypeOfDocumentSection[]) {
     this.id = id;
     this.type = type;
     this.checked = checked;
+    this.uploadDocuments = uploadDocuments;
   }
-
 }
 export class UploadDocuments {
 
@@ -27,6 +29,7 @@ export class UploadDocuments {
   orderArrayById() {
     return this.typeOfDocuments.sort((a, b) => a.id - b.id);
   }
+
   mapUploadDocumentsFromTypeOfDocumentsForm(typeOfDocumentsForm: TypeOfDocumentsForm): this {
     //just object that has been checked
     const arrayOfTypeOfDocumentsForm = typeOfDocumentsForm.typeOfDocuments;
