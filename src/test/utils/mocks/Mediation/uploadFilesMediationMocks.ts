@@ -2,6 +2,13 @@ import {TypeOfDocuments, TypeOfMediationDocuments} from 'models/mediation/upload
 import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
+import {
+  MediationDocumentsReferred,
+  MediationMediationNonAttendanceDocs,
+  MediationUploadDocumentsCCD,
+} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import {v4 as uuidv4} from 'uuid';
+import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
 
 const MOCK_CASE_DOCUMENT: CaseDocument = <CaseDocument>{  createdBy: 'test',
   documentLink: {document_url: 'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51', document_binary_url:'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51/binary', document_filename:'fileName'},
@@ -38,6 +45,24 @@ export const getReferredDocument = (): TypeOfDocumentSection[] => {
 
 export const getYourStatement = (): TypeOfDocumentYourNameSection[] => {
   return TYPE_OF_DOCUMENTS.find(document => document.type === TypeOfMediationDocuments.YOUR_STATEMENT).uploadDocuments as TypeOfDocumentYourNameSection[];
+};
+
+export const getReferredDocumentCCD = () => {
+  return getReferredDocument().map((newDoc : TypeOfDocumentSection) => {
+    const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
+    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, 'DefendantOneMediationDocs'), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
+    return mediationUploadDocumentsCCD;
+  });
+};
+
+export const getNonAttendanceDocumentsCCD = () => {
+  return getYourStatement().map((newDoc : TypeOfDocumentYourNameSection) => {
+    const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
+    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, 'DefendantOneMediationDocs'), newDoc.yourName, newDoc.dateInputFields.date, new Date());
+    return mediationUploadDocumentsCCD;
+  });
 };
 
 export const getTypeOfDocuments = () => {
