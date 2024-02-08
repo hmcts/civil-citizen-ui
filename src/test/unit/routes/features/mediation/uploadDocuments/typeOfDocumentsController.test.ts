@@ -8,18 +8,17 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {
-  TypeOfDocuments,
   TypeOfMediationDocuments,
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
+import {getTypeOfDocuments} from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const CONTROLLER_URL = MEDIATION_TYPE_OF_DOCUMENTS;
-const TYPE_OF_DOCUMENTS = Array.of(new TypeOfDocuments(1,TypeOfMediationDocuments.YOUR_STATEMENT, true),
-  new TypeOfDocuments(2,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, true));
+
 describe('Mediation Type Of Document Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -37,7 +36,7 @@ describe('Mediation Type Of Document Controller', () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
-      claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+      claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
       return claim;
     });
   });

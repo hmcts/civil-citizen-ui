@@ -11,14 +11,10 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {
-  TypeOfDocuments,
-  TypeOfMediationDocuments,
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
-import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
-import {CaseDocument} from 'models/document/caseDocument';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getTypeOfDocuments} from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -27,41 +23,10 @@ jest.mock('services/features/mediation/uploadDocuments/mediationCheckAnswersServ
 
 const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND;
 
-const MOCK_CASE_DOCUMENT: CaseDocument = <CaseDocument>{  createdBy: 'test',
-  documentLink: {document_url: 'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51', document_binary_url:'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51/binary', document_filename:'fileName'},
-  documentName: 'name',
-  documentType: null,
-  documentSize: 12345,
-  createdDatetime: new Date()};
-const TYPE_OF_DOCUMENT_YOUR_NAME_SECTION = new TypeOfDocumentYourNameSection('1','1', '2024');
-TYPE_OF_DOCUMENT_YOUR_NAME_SECTION.yourName = 'John Smith';
-TYPE_OF_DOCUMENT_YOUR_NAME_SECTION.caseDocument = MOCK_CASE_DOCUMENT;
-
-const TYPE_OF_DOCUMENT = new TypeOfDocumentSection('1','1', '2024');
-TYPE_OF_DOCUMENT.typeOfDocument = 'John Smith';
-TYPE_OF_DOCUMENT.caseDocument = MOCK_CASE_DOCUMENT;
-
-const TYPE_OF_DOCUMENTS = Array.of(new TypeOfDocuments(
-  1,
-  TypeOfMediationDocuments.YOUR_STATEMENT,
-  true,
-  Array.of(TYPE_OF_DOCUMENT_YOUR_NAME_SECTION),
-),
-new TypeOfDocuments(
-  2,
-  TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT,
-  true,
-  Array.of(TYPE_OF_DOCUMENT),
-),
-);
-
-TYPE_OF_DOCUMENT.typeOfDocument = 'document type';
-TYPE_OF_DOCUMENT.caseDocument = MOCK_CASE_DOCUMENT;
-
 const civilServiceClaim = new Claim();
 civilServiceClaim.respondent1 = new Party();
 civilServiceClaim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
-civilServiceClaim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+civilServiceClaim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
 civilServiceClaim.res1MediationDocumentsReferred = [];
 civilServiceClaim.res1MediationNonAttendanceDocs = [];
 
@@ -82,7 +47,7 @@ describe('Mediation check and send Controller', () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
-      claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+      claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
       return claim;
     });
 
