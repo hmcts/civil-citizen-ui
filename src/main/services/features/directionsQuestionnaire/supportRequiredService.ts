@@ -1,18 +1,19 @@
-import {Request} from 'express';
-import {t} from 'i18next';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { Request } from 'express';
+import { t } from 'i18next';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {
   Support,
   SupportRequired,
   SupportRequiredList,
   SupportRequiredParams,
 } from 'models/directionsQuestionnaire/supportRequired';
-import {Claim} from 'models/claim';
-import {YesNo} from 'form/models/yesNo';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {ClaimantResponse} from 'common/models/claimantResponse';
+import { Claim } from 'models/claim';
+import { YesNo } from 'form/models/yesNo';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { ClaimantResponse } from 'common/models/claimantResponse';
+import { PartyType } from 'models/partyType';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
 export interface NameListType {
@@ -44,10 +45,28 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
   const baseProperty = caseData.isClaimantIntentionPending() ? caseData.claimantResponse : caseData;
   const experts = generateList(baseProperty.directionQuestionnaire?.experts?.expertDetailsList?.items?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
   const witnesses = generateList(baseProperty.directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems?.map(item => ({firstName: item.firstName, lastName: item.lastName})));
+  const mySelf = baseProperty.directionQuestionnaire?.confirmYourDetailsEvidence;
   let nameList = [{
     value: '',
     text: t('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME', {lng: getLng(lang)}),
   }];
+  if (mySelf) {
+    const mySelfItem = [
+      {
+        value: mySelf.firstName + ' ' + mySelf.lastName,
+        text: mySelf.firstName + ' ' + mySelf.lastName,
+      },
+    ];
+    nameList = nameList.concat(mySelfItem);
+  } else if (caseData.respondent1?.type === PartyType.INDIVIDUAL && !caseData.isClaimantIntentionPending()) {
+    const mySelfItem = [
+      {
+        value: caseData.respondent1.partyDetails?.individualFirstName + ' ' + caseData.respondent1.partyDetails?.individualLastName,
+        text: caseData.respondent1.partyDetails?.individualFirstName + ' ' + caseData.respondent1.partyDetails?.individualLastName,
+      },
+    ];
+    nameList = nameList.concat(mySelfItem);
+  }
   if (witnesses?.length) {
     nameList = nameList.concat(witnesses);
   }

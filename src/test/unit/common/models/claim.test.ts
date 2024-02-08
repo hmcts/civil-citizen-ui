@@ -2098,4 +2098,92 @@ describe('Documents', () => {
       expect(result).toEqual(true);
     });
   });
+
+  describe('Claim isRejectionReasonCompleted', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+    });
+
+    it('should return false if no claimantResponse object', () => {
+      //Given
+      claim.claimantResponse = undefined;
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return false if no hasPartPaymentBeenAccepted object', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return true if hasPartPaymentBeenAccepted is No with reason', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true if hasFullDefenceStatesPaidClaimSettled is No with reason', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return false if hasFullDefenceStatesPaidClaimSettled is No with reason undefined', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: undefined,
+      };
+      //When
+      const result = claim.isRejectionReasonCompleted();
+      //Then
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('hasClaimantAcceptedToSettleClaim', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false when not accepted', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+  });
 });
