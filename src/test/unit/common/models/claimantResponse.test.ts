@@ -2,6 +2,8 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {Mediation} from 'models/mediation/mediation';
+import {YesNo} from 'form/models/yesNo';
 
 describe('ClaimantResponse model', () => {
   describe('isClaimantSuggestedPayImmediately', () => {
@@ -187,5 +189,143 @@ describe('ClaimantResponse model', () => {
       expect(result).toBe(true);
     });
 
+  });
+
+  describe('hasClaimantNotAgreedToMediation', () => {
+    let claimantResponse: ClaimantResponse;
+    beforeEach(() => {
+      claimantResponse = new ClaimantResponse();
+      claimantResponse.mediation = new Mediation();
+    });
+
+    it('should return false with empty mediation object', () => {
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with undefined mediation object', () => {
+      claimantResponse.mediation = undefined;
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with empty mediationDisagreement object', () => {
+      claimantResponse.mediation.mediationDisagreement = undefined;
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with empty option object', () => {
+      claimantResponse.mediation.mediationDisagreement = {
+        option: undefined,
+      };
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with option is Yes', () => {
+      claimantResponse.mediation.mediationDisagreement = {
+        option:  YesNo.YES,
+      };
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with option is No', () => {
+      claimantResponse.mediation.mediationDisagreement = {
+        option:  YesNo.NO,
+      };
+      //When
+      const result = claimantResponse.hasClaimantNotAgreedToMediation();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('hasClaimantAgreedToMediation', () => {
+    let claimantResponse: ClaimantResponse;
+    beforeEach(() => {
+      claimantResponse = new ClaimantResponse();
+      claimantResponse.mediation = new Mediation();
+    });
+    it('should return false with empty mediation object', () => {
+      //When
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with undefined mediation object', () => {
+      //When
+      claimantResponse.mediation = undefined;
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return false with empty canWeUse and companyTelephoneNumber object', () => {
+      //When
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with canWeUse is Yes', () => {
+      //When
+      claimantResponse.mediation.canWeUse = {
+        option:  YesNo.YES,
+      };
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return true with mediationPhoneNumber is input', () => {
+      //When
+      claimantResponse.mediation.canWeUse = {
+        mediationPhoneNumber:  '0123456789',
+      };
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return false with companyTelephoneNumber is undefined', () => {
+      //When
+      claimantResponse.mediation.companyTelephoneNumber = undefined;
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(false);
+    });
+
+    it('should return true with companyTelephoneNumber option is no', () => {
+      //When
+      claimantResponse.mediation.companyTelephoneNumber = {
+        option: YesNo.NO,
+      };
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(true);
+    });
+
+    it('should return true with mediationPhoneNumberConfirmation is input', () => {
+      //When
+      claimantResponse.mediation.companyTelephoneNumber = {
+        mediationPhoneNumberConfirmation: '0123456789',
+      };
+      const result = claimantResponse.hasClaimantAgreedToMediation();
+      //Then
+      expect(result).toBe(true);
+    });
   });
 });
