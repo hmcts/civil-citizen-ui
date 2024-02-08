@@ -13,7 +13,7 @@ const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boo
   if (claimantResponse) {
     return caseData.claimantResponse?.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediation.hasAvailabilityMediationFinished;
   }
-  return caseData.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediation.hasAvailabilityMediationFinished;
+  return caseData.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediationCarm.hasAvailabilityMediationFinished;
 };
 
 export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string, claimantResponse: boolean): Task => {

@@ -5,7 +5,10 @@ import {
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -32,7 +35,7 @@ emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (asyn
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const defendantEmail = await getDefendantEmail(redisKey);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(new GenericYesNo(mediation.isMediationEmailCorrect?.option));
     renderView(form, res,req, defendantEmail);
   } catch (error) {
@@ -50,7 +53,7 @@ emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, (asy
       const defendantEmail = await getDefendantEmail(redisKey);
       renderView(form, res, req, defendantEmail);
     } else {
-      await saveMediation(redisKey, form.model, 'isMediationEmailCorrect');
+      await saveMediationCarm(redisKey, form.model, 'isMediationEmailCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL))
         : res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     }

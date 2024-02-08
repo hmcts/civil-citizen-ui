@@ -10,7 +10,7 @@ const hasTelephoneMeditationCompleted = (claim: Claim, isClaimantResponse: boole
   if (isClaimantResponse) {
     return claim.claimantResponse?.mediation?.hasTelephoneMeditationAccessed === undefined ? false : claim.claimantResponse.mediation.hasTelephoneMeditationAccessed;
   }
-  return claim.mediation?.hasTelephoneMeditationAccessed === undefined ? false : claim.mediation.hasTelephoneMeditationAccessed;
+  return claim.mediationCarm?.hasTelephoneMeditationAccessed === undefined ? false : claim.mediationCarm.hasTelephoneMeditationAccessed;
 };
 
 export const getTelephoneMediationTask = (caseData: Claim, claimId: string, lang: string, isClaimantResponse: boolean): Task => {
