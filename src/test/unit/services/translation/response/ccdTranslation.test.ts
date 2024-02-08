@@ -160,10 +160,7 @@ describe('translate response to ccd version', () => {
   it('should translate mediation option to CCD with carm fields with hasTelephoneMeditationAccessed true and hasAvailabilityMediationFinished true and all option as yes', () => {
     //Given
     const claim = createFullAdmitClaim();
-    claim.mediation = {
-      canWeUse: undefined,
-      mediationDisagreement: undefined,
-      companyTelephoneNumber: undefined,
+    claim.mediationCarm = {
       isMediationContactNameCorrect: {
         option: YesNo.YES,
       },
@@ -183,24 +180,20 @@ describe('translate response to ccd version', () => {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
-    expect(claim.mediation.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationContactNameCorrect.toUpperCase());
-    expect(claim.mediation.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationPhoneCorrect.toUpperCase());
-    expect(claim.mediation.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationEmailCorrect.toUpperCase());
-    expect(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationContactPerson).toBe(undefined);
-    expect(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationTelephone).toBe(undefined);
-    expect(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationEmail).toBe(undefined);
-    expect(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.unavailableDatesForMediation).toBe(undefined);
+    expect(claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationContactNameCorrect.toUpperCase());
+    expect(claim.mediationCarm.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationPhoneCorrect.toUpperCase());
+    expect(claim.mediationCarm.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationEmailCorrect.toUpperCase());
+    expect(ccdResponse.respondent1LiPResponseCarm.alternativeMediationContactPerson).toBe(undefined);
+    expect(ccdResponse.respondent1LiPResponseCarm.alternativeMediationTelephone).toBe(undefined);
+    expect(ccdResponse.respondent1LiPResponseCarm.alternativeMediationEmail).toBe(undefined);
+    expect(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation).toBe(undefined);
 
   });
 
   it('should translate mediation option to CCD with carm fields with hasTelephoneMeditationAccessed true and hasAvailabilityMediationFinished true and all option as no', () => {
     //Given
     const claim = createFullAdmitClaim();
-    claim.mediation = {
-      canWeUse: undefined,
-      mediationDisagreement: undefined,
-      companyTelephoneNumber: undefined,
+    claim.mediationCarm = {
       isMediationContactNameCorrect: {
         option: YesNo.NO,
       },
@@ -235,21 +228,20 @@ describe('translate response to ccd version', () => {
       hasTelephoneMeditationAccessed: true,
       hasAvailabilityMediationFinished: true,
     };
-    const dateExpected = toCCDUnavailableDates(claim.mediation.unavailableDatesForMediation.items);
+    const dateExpected = toCCDUnavailableDates(claim.mediationCarm.unavailableDatesForMediation.items);
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
-    expect(claim.mediation.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationContactNameCorrect.toUpperCase());
-    expect(claim.mediation.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationPhoneCorrect.toUpperCase());
-    expect(claim.mediation.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.isMediationEmailCorrect.toUpperCase());
-    expect(claim.mediation.alternativeMediationContactPerson.alternativeContactPerson).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationContactPerson);
-    expect(claim.mediation.alternativeMediationTelephone.alternativeTelephone).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationTelephone);
-    expect(claim.mediation.alternativeMediationEmail.alternativeEmailAddress).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.alternativeMediationEmail);
-    expect(dateExpected[0].value.toDate).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.unavailableDatesForMediation[0].value.toDate);
-    expect(dateExpected[0].value.fromDate).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.unavailableDatesForMediation[0].value.fromDate);
-    expect(dateExpected[0].value.unavailableDateType).toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.unavailableDatesForMediation[0].value.unavailableDateType);
-    expect('defendant').toBe(ccdResponse.respondent1LiPResponse.respondent1MediationLiPResponse.unavailableDatesForMediation[0].value.who);
+    expect(claim.mediationCarm.isMediationContactNameCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationContactNameCorrect.toUpperCase());
+    expect(claim.mediationCarm.isMediationPhoneCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationPhoneCorrect.toUpperCase());
+    expect(claim.mediationCarm.isMediationEmailCorrect.option.toUpperCase()).toBe(ccdResponse.respondent1LiPResponseCarm.isMediationEmailCorrect.toUpperCase());
+    expect(claim.mediationCarm.alternativeMediationContactPerson.alternativeContactPerson).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationContactPerson);
+    expect(claim.mediationCarm.alternativeMediationTelephone.alternativeTelephone).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationTelephone);
+    expect(claim.mediationCarm.alternativeMediationEmail.alternativeEmailAddress).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationEmail);
+    expect(dateExpected[0].value.toDate).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.toDate);
+    expect(dateExpected[0].value.fromDate).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.fromDate);
+    expect(dateExpected[0].value.unavailableDateType).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.unavailableDateType);
+    expect('defendant').toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.who);
 
   });
 
