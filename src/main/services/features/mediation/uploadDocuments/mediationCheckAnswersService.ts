@@ -11,7 +11,7 @@ import {
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {v4 as uuidv4} from 'uuid';
-import {mapperMediationDocumentToCCDDocuments} from 'models/document/mapperCaseDocumentToDocuments';
+import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
 import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
