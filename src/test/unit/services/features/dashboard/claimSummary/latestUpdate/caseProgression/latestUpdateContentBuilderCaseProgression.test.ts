@@ -136,7 +136,7 @@ describe('Latest Update Content Builder Case Progression', () => {
         .build();
 
       //When
-      const finaliseTrialArrangementsSection = buildFinaliseTrialArrangements(claim);
+      const finaliseTrialArrangementsSection = buildFinaliseTrialArrangements(claim, 'en');
 
       //Then
       expect(finaliseTrialArrangementsSection).toEqual([lastedContentBuilderExpected]);
