@@ -6,7 +6,10 @@ import {
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -28,7 +31,7 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
 mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(new GenericYesNo(mediation.hasUnavailabilityNextThreeMonths?.option));
     renderView(form, res, req);
   } catch (error) {
@@ -49,12 +52,12 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT
       const claim = await getCaseDataFromStore(redisKey);
       const isClaimantResponse = claim.isClaimantIntentionPending();
       const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
-      await saveMediation(redisKey, form.model, 'hasUnavailabilityNextThreeMonths');
+      await saveMediationCarm(redisKey, form.model, 'hasUnavailabilityNextThreeMonths');
       if (optionSelected === YesNo.NO){
-        await saveMediation(redisKey, true, 'hasAvailabilityMediationFinished');
+        await saveMediationCarm(redisKey, true, 'hasAvailabilityMediationFinished');
         res.redirect(constructResponseUrlWithIdParams(claimId, url));
       } else {
-        await saveMediation(redisKey, false, 'hasAvailabilityMediationFinished');
+        await saveMediationCarm(redisKey, false, 'hasAvailabilityMediationFinished');
         res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL));
       }
     }

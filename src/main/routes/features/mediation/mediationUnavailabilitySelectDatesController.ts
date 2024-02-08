@@ -4,7 +4,10 @@ import {
   MEDIATION_UNAVAILABLE_SELECT_DATES_URL, RESPONSE_TASK_LIST_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -30,7 +33,7 @@ const renderView = (form: GenericForm<UnavailableDates>, res: Response, req: Req
 mediationUnavailabilitySelectDatesController.get(MEDIATION_UNAVAILABLE_SELECT_DATES_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(mediation.unavailableDatesForMediation);
     renderView(form, res, req);
   } catch (error) {
@@ -51,8 +54,8 @@ mediationUnavailabilitySelectDatesController.post(MEDIATION_UNAVAILABLE_SELECT_D
       const claim = await getCaseDataFromStore(redisKey);
       const isClaimantResponse = claim.isClaimantIntentionPending();
       const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
-      await saveMediation(redisKey, form.model, 'unavailableDatesForMediation');
-      await saveMediation(redisKey, true, 'hasAvailabilityMediationFinished');
+      await saveMediationCarm(redisKey, form.model, 'unavailableDatesForMediation');
+      await saveMediationCarm(redisKey, true, 'hasAvailabilityMediationFinished');
       res.redirect(constructResponseUrlWithIdParams(claimId, url));
     }
   } catch (error) {

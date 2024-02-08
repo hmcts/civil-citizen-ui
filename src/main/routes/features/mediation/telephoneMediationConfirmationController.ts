@@ -5,7 +5,10 @@ import {
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {
+  getMediationCarm,
+  saveMediationCarm,
+} from 'services/features/response/mediation/mediationService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
@@ -37,7 +40,7 @@ emailMediationConfirmationController.get(MEDIATION_PHONE_CONFIRMATION_URL, (asyn
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
     const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);
-    const mediation = await getMediation(redisKey);
+    const mediation = await getMediationCarm(redisKey);
     const form = new GenericForm(new GenericYesNo(mediation.isMediationPhoneCorrect?.option));
     renderView(form, res, req, partyPhone);
   } catch (error) {
@@ -57,7 +60,7 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
       const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);
       renderView(form, res, req, partyPhone);
     } else {
-      await saveMediation(redisKey, form.model, 'isMediationPhoneCorrect');
+      await saveMediationCarm(redisKey, form.model, 'isMediationPhoneCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL))
         : res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     }
