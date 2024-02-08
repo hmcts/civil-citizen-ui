@@ -1,10 +1,16 @@
-import {getDashboardFromCache, saveDashboardToCache} from 'modules/draft-store/getDashboardCache';
+import {
+  getDashboardFromCache,
+  getNotificationFromCache,
+  saveDashboardToCache,
+} from 'modules/draft-store/getDashboardCache';
 import {Claim} from 'models/claim';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dashboardService');
+const logger = Logger.getLogger('dashboardCache');
 //const success = 'Success';
 export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Dashboard> => {
   try {
@@ -31,6 +37,19 @@ export const saveDashboard = async (dashboard:Dashboard, claim:Claim, claimId:st
     throw error;
   }
 };
+
+export const getNotifications = async (claimId: string, claim: Claim, lng: string) => {
+  try {
+    const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+    const cachedDashboardNotifications: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
+    const dashboardNotificationsList: DashboardNotification[]  = cachedDashboardNotifications.items;
+    return dashboardNotificationsList;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const generateNewDashboard = (claim: Claim): Dashboard => {
   //TODO read the dashboard from the draft
   //const newDashboard: Dashboard = new Dashboard();

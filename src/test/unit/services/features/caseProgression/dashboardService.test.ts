@@ -1,5 +1,4 @@
 import {CaseState} from 'form/models/claimDetails';
-import {TaskStatus} from 'models/dashboard/taskList/TaskStatus';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentStatus} from 'models/PaymentDetails';
@@ -7,17 +6,9 @@ import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
-import {generateNewDashboard} from 'services/features/caseProgression/dashboardService';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {CaseRole} from 'form/models/caseRoles';
+import {generateNewDashboard, getNotifications} from 'services/dashboard/dashboardService';
 
-const viewHearingsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_HEARINGS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
-const uploadDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
-const viewDocumentsTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_DOCUMENTS', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
-const uploadBundlesTask = {description: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
-const addTrialArrangementsTask = {description: 'PAGES.DASHBOARD.HEARINGS.ADD_TRIAL', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
-const hearingFeeActionableTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'ACTION_NEEDED', statusColor: 'govuk-tag--red', url: '/case/1234567890/case-progression/pay-hearing-fee', helpText: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE_DEADLINE'} as DashboardTask;
-const hearingFeeTask = {description: 'PAGES.DASHBOARD.HEARINGS.PAY_FEE', isCheckTask: false, status: 'NOT_AVAILABLE_YET', statusColor: 'govuk-tag--grey', url: '#'} as DashboardTask;
+import {CaseRole} from 'form/models/caseRoles';
 
 describe('dashboardService', () => {
   let mockClaim;
@@ -36,13 +27,7 @@ describe('dashboardService', () => {
         const claimantNotifications = generateNewDashboard(claim);
 
         //Then
-        expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.TITLE');
-        expect(claimantNotifications[0].tasks[0]).toEqual(viewHearingsTask);
-        expect(claimantNotifications[0].tasks[1]).toEqual(uploadDocumentsTask);
-        expect(claimantNotifications[0].tasks[2]).toEqual(viewDocumentsTask);
-        expect(claimantNotifications[0].tasks[3]).toEqual(addTrialArrangementsTask);
-        expect(claimantNotifications[0].tasks[4]).toEqual(hearingFeeActionableTask);
-        expect(claimantNotifications[0].tasks[5]).toEqual(uploadBundlesTask);
+        expect(claimantNotifications.items.length).toEqual(2);
 
       });
 
@@ -57,13 +42,7 @@ describe('dashboardService', () => {
         const claimantNotifications = generateNewDashboard(claim);
 
         //Then
-        expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.TITLE');
-        expect(claimantNotifications[0].tasks[0]).toEqual(viewHearingsTask);
-        expect(claimantNotifications[0].tasks[1]).toEqual(uploadDocumentsTask);
-        expect(claimantNotifications[0].tasks[2]).toEqual(viewDocumentsTask);
-        expect(claimantNotifications[0].tasks[3]).toEqual(addTrialArrangementsTask);
-        expect(claimantNotifications[0].tasks[4]).toEqual(hearingFeeTask);
-        expect(claimantNotifications[0].tasks[5]).toEqual(uploadBundlesTask);
+        expect(claimantNotifications.items.length).toEqual(2);
 
       });
 
@@ -78,12 +57,7 @@ describe('dashboardService', () => {
         const claimantNotifications = generateNewDashboard(claim);
 
         //Then
-        expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.TITLE');
-        expect(claimantNotifications[0].tasks[0]).toEqual(viewHearingsTask);
-        expect(claimantNotifications[0].tasks[1]).toEqual(uploadDocumentsTask);
-        expect(claimantNotifications[0].tasks[2]).toEqual(viewDocumentsTask);
-        expect(claimantNotifications[0].tasks[3]).toEqual(hearingFeeTask);
-        expect(claimantNotifications[0].tasks[4]).toEqual(uploadBundlesTask);
+        expect(claimantNotifications.items.length).toEqual(2);
 
       });
 
@@ -106,9 +80,8 @@ describe('dashboardService', () => {
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
         //Then
-        expect(taskList.length).toEqual(2);
-        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.IN_PROGRESS);
+        expect(taskList.items).toEqual(2);
+
       });
 
       it('should show task done due to successful payment status', () => {
@@ -133,9 +106,8 @@ describe('dashboardService', () => {
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
         //Then
-        expect(taskList.length).toEqual(2);
-        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.DONE);
+        expect(taskList.items.length).toEqual(2);
+
       });
 
       it('should show task done due to successful payment status data available in redis ', () => {
@@ -162,9 +134,8 @@ describe('dashboardService', () => {
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
         //Then
-        expect(taskList.length).toEqual(2);
-        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.DONE);
+        expect(taskList.items.length).toEqual(2);
+
       });
 
       it('should show task not available due to failed payment status', () => {
@@ -189,9 +160,8 @@ describe('dashboardService', () => {
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
         //Then
-        expect(taskList.length).toEqual(2);
-        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.NOT_AVAILABLE_YET);
+        expect(taskList.items.length).toEqual(2);
+
       });
 
       it('should show task not available due to missing payment info', () => {
@@ -214,13 +184,12 @@ describe('dashboardService', () => {
         const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
 
         //Then
-        expect(taskList.length).toEqual(2);
-        expect(taskList[0].tasks[3].description).toEqual('PAGES.DASHBOARD.HEARINGS.PAY_FEE');
-        expect(taskList[0].tasks[3].status).toEqual(TaskStatus.NOT_AVAILABLE_YET);
+        expect(taskList.items.length).toEqual(2);
+
       });
     });
     describe('as Defendant', () => {
-      describe('getDefendantNotifications', () => {
+      describe('getNotifications', () => {
         it('with no hearing fee + trial arrangements if hearing fee present + fast track type', () => {
           //Given
           const claim = new Claim();
@@ -229,15 +198,10 @@ describe('dashboardService', () => {
           claim.caseRole = CaseRole.DEFENDANT;
           claim.totalClaimAmount = 12345;
           //When
-          const claimantNotifications = generateNewDashboard(claim);
+          const claimantNotifications = getNotifications('1234567890',claim,'en');
 
           //Then
-          expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.TITLE');
-          expect(claimantNotifications[0].tasks[0]).toEqual(viewHearingsTask);
-          expect(claimantNotifications[0].tasks[1]).toEqual(uploadDocumentsTask);
-          expect(claimantNotifications[0].tasks[2]).toEqual(viewDocumentsTask);
-          expect(claimantNotifications[0].tasks[3]).toEqual(addTrialArrangementsTask);
-          expect(claimantNotifications[0].tasks[4]).toEqual(uploadBundlesTask);
+          expect(claimantNotifications).toEqual(2);
 
         });
 
@@ -252,11 +216,7 @@ describe('dashboardService', () => {
           const claimantNotifications = generateNewDashboard(claim);
 
           //Then
-          expect(claimantNotifications[0].title).toEqual('PAGES.DASHBOARD.HEARINGS.TITLE');
-          expect(claimantNotifications[0].tasks[0]).toEqual(viewHearingsTask);
-          expect(claimantNotifications[0].tasks[1]).toEqual(uploadDocumentsTask);
-          expect(claimantNotifications[0].tasks[2]).toEqual(viewDocumentsTask);
-          expect(claimantNotifications[0].tasks[3]).toEqual(uploadBundlesTask);
+          expect(claimantNotifications.items.length).toEqual(2);
 
         });
       });

@@ -20,9 +20,8 @@ import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
-import {getDefendantNotifications} from 'services/dashboard/getDashboardContent';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getDashboardForm} from 'services/features/caseProgression/dashboardService';
+import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -39,7 +38,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
-      const dashboardNotifications = await getDefendantNotifications(claimId, claim, lang);
+      const dashboardNotifications = await getNotifications(claimId, claim, lang);
       const dashboardTaskList = await getDashboardForm(claim, claimId);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
