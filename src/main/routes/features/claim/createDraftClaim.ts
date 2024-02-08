@@ -12,6 +12,7 @@ interface IdTokenJwtPayload {
   family_name: string;
   roles: string[];
 }
+
 const createDraftClaimController = Router();
 createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
