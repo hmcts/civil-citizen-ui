@@ -71,6 +71,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
@@ -91,6 +93,7 @@ export class Claim {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
+  mediationCarm?: MediationCarm;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[]; // TODO: Release 2: ClaimDetails timeline needs to translate into this field
   taskSharedFinancialDetails?: boolean;
@@ -116,6 +119,7 @@ export class Claim {
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPResponseCarm?: CcdMediationCarm;
   caseProgressionHearing?: CaseProgressionHearing;
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
