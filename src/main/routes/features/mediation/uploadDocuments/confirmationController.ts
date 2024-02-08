@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  MEDIATION_CONFIRMATION,
+  MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
   START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
 
@@ -37,7 +37,7 @@ function renderView(res: Response, claimId: string) {
     content});
 }
 
-mediationConfirmationController.get(MEDIATION_CONFIRMATION, (async (req: AppRequest, res: Response, next: NextFunction) => {
+mediationConfirmationController.get(MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     renderView(res, claimId);

@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  MEDIATION_CONFIRMATION,
+  MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
 } from 'routes/urls';
 
@@ -19,7 +19,7 @@ import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {saveMediationUploadedDocuments} from "services/features/mediation/uploadDocuments/mediationCheckAnswersService";
+import {saveMediationUploadedDocuments} from 'services/features/mediation/uploadDocuments/mediationCheckAnswersService';
 
 const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
 const mediationDocumentUploadCheckAnswerController = Router();
@@ -80,7 +80,7 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
     } else {
       await saveMediationUploadedDocuments(claimId, uploadDocuments, <AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_CONFIRMATION));
+      res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION));
     }
   } catch (error) {
     next(error);
