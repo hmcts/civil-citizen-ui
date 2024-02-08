@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  MEDIATION_UPLOAD_DOCUMENTS,
+
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -17,18 +17,13 @@ import {
 } from 'models/mediation/uploadDocuments/uploadDocuments';
 import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
-import {
-  DocumentType,
-  EvidenceUploadDisclosure,
-  EvidenceUploadExpert, EvidenceUploadTrial,
-  EvidenceUploadWitness,
-} from 'models/document/documentType';
 import {CaseDocument} from 'models/document/caseDocument';
-import {Document} from 'models/document/document';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/mediation/uploadDocuments/mediationCheckAnswersService');
 
 const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND;
 
@@ -62,6 +57,14 @@ new TypeOfDocuments(
 
 TYPE_OF_DOCUMENT.typeOfDocument = 'document type';
 TYPE_OF_DOCUMENT.caseDocument = MOCK_CASE_DOCUMENT;
+
+const civilServiceClaim = new Claim();
+civilServiceClaim.respondent1 = new Party();
+civilServiceClaim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
+civilServiceClaim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+civilServiceClaim.res1MediationDocumentsReferred = [];
+civilServiceClaim.res1MediationNonAttendanceDocs = [];
+
 describe('Mediation check and send Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -80,9 +83,15 @@ describe('Mediation check and send Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
       claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
-
       return claim;
     });
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(civilServiceClaim),
+        ),
+      );
   });
 
   describe('on GET', () => {
@@ -117,13 +126,13 @@ describe('Mediation check and send Controller', () => {
           expect(res.header.location).toEqual(MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION);
         });
     });
-    it('should Valid checkbox when they are not checked', async () => {
+    it('should Valid signed is false', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({typeOfDocuments: ''})
+        .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
+          expect(res.text).toContain(TestMessages.MEDIATION_CHECK_YOUR_ANSWERS);
         });
     });
 
@@ -133,7 +142,7 @@ describe('Mediation check and send Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'Joe Bloggs'})
+        .send({signed: true})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

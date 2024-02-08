@@ -5,7 +5,7 @@ import {
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 
 const startMediationUploadFileViewPath = 'features/common/static-page';
 const startMediationUploadDocumentsController = Router();

@@ -6,29 +6,29 @@ import {
   START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 
+import * as utilityService from 'modules/utilityService';
+
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/utilityService');
 
 const CONTROLLER_URL = START_MEDIATION_UPLOAD_FILES;
 describe('Mediation Start Upload Documents Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
+    mockGetClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
@@ -47,7 +47,7 @@ describe('Mediation Start Upload Documents Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
+      mockGetClaimById.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
