@@ -15,7 +15,7 @@ import {Claim} from 'models/claim';
 import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
 import {
   TypeOfDocumentYourNameSection,
-  UploadDocumentsForm
+  UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {
   TypeOfMediationDocuments,
@@ -29,12 +29,11 @@ import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {TypeOfDocumentSection} from "models/caseProgression/uploadDocumentsUserForm";
+import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'typeOfDocuments';
-//const MEDIATION_UPLOAD_DOCUMENT_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
 
 const multer = require('multer');
 const fileSize = Infinity;
