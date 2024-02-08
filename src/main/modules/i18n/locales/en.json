@@ -1,9 +1,9 @@
 {
   "COMMON": {
+    "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
     "CASE_REFERENCE_NUMBER": "Your case reference number",
-    "UPLOAD_FILE": "Upload file",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
@@ -511,12 +511,12 @@
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
       "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
       "ENGLISH": "English",
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "WELSH_AND_ENGLISH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -540,10 +540,11 @@
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
       "PAGE_TITLE": "County Court Judgment confirmation",
-      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
+      "PROCESS_YOUR_REQUEST": "We’ll process your request and send a copy of the judgment to you and to {{ defendantName }}. We aim to process this request as soon as possible.",
+      "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
       "TITLE": "County Court Judgment requested",
-      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "UPDATES": "Your online account will not be updated with the progress of this claim and any further updates will be by post.",
       "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
     },
     "CCJ_DEFENDANT_DOB": {
@@ -1067,8 +1068,7 @@
         "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
         "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
-        "YES": "Yes"
+        "TITLE": "The defendant can’t pay by your proposed date"
       },
       "COURT_PROPOSED_PLAN": {
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
@@ -1155,8 +1155,8 @@
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
-      "PAGE_TITLE": "How do you want the defandant to pay?",
-      "TITLE": "How do you want the defandant to pay?"
+      "PAGE_TITLE": "How do you want the defendant to pay?",
+      "TITLE": "How do you want the defendant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
@@ -3596,6 +3596,7 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
   }
 }

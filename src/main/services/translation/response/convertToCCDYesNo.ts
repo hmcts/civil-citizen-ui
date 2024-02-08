@@ -7,6 +7,12 @@ export const toCCDYesNo = (value: YesNo | string) => {
   }
 };
 
+export const toCCDYesNoReverse = (value: YesNo | string) => {
+  if (value) {
+    return value === YesNo.YES ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES;
+  }
+};
+
 export const toCCDYesNoFromGenericYesNo = (value: GenericYesNo) => {
   if (value?.option) {
     return value?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
