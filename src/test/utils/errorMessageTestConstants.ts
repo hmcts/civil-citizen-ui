@@ -178,5 +178,7 @@ export const enum TestMessages {
   VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past',
   ENTER_CONTACT_PERSON = 'Enter contact person',
   FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters',
-  MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = 'Mediation upload documents confirmation'
+  MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = 'Mediation upload documents confirmation',
+  MEDIATION_CHECK_YOUR_DOCUMENTS = 'Check your documents',
+  MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers'
 }

@@ -15,9 +15,6 @@ import {getUploadDocuments} from 'services/features/mediation/uploadDocuments/up
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {
-  FinaliseYourTrialSectionBuilder,
-} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {saveMediationUploadedDocuments} from 'services/features/mediation/uploadDocuments/mediationCheckAnswersService';
 
@@ -36,7 +33,7 @@ export const getTopElements = (claim:Claim, claimId: string): ClaimSummarySectio
 
 export const getBottomElements = (): ClaimSummarySection[] => {
 
-  return new FinaliseYourTrialSectionBuilder()
+  return new PageSectionBuilder()
     .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CONFIRMATION')
     .addWarning('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_SHORT')
     .build();

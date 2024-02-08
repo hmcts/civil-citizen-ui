@@ -158,6 +158,18 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addWarning(text: string, variables?: any) {
+    const warningSection = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(warningSection);
+    return this;
+  }
+
   build() {
     return this._claimSummarySections;
   }
