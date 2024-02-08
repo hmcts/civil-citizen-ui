@@ -1,5 +1,5 @@
 const I = actor();
-const config = require('../../../../config');
+/*const config = require('../../../../config');
 
 const fields = {
   over25000: '#totalAmount',
@@ -25,7 +25,7 @@ const fields = {
   claimantAgeLessThan18: '#option-2',
   hwfReferenceYes: '#option',
   hwfReferenceNo: '#option-2',
-};
+};*/
 
 class CreateClaim {
 
