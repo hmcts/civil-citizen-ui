@@ -3,6 +3,7 @@ import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPRespo
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {CCDClaimantPayBySetDate} from '../ccdResponse/ccdPayBySetDate';
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 
 export interface EventDto {
   event: CaseEvent,
@@ -12,6 +13,7 @@ export interface EventDto {
 export interface ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
+  respondent1LiPResponseCarm?: CcdMediationCarm;
   issueDate?: Date;
   respondent1ResponseDeadline?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
