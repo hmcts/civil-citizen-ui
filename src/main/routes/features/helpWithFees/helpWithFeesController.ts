@@ -14,6 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {t} from 'i18next';
 
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
@@ -22,8 +23,9 @@ const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
 applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
-    const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', {lng})));
     let backUrl;
     if(claim.feeTypeHelpRequested === FeeType.HEARING){
       backUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
@@ -39,8 +41,9 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: any, res: Re
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const option = req.body.option;
-    const form = new GenericForm(new GenericYesNo(option, 'ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+    const form = new GenericForm(new GenericYesNo(option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim)});
