@@ -78,56 +78,56 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
         return claim;
       });
+    });
 
-      it('should redirect to task list with single date', async () => {
-        //given
-        getUnavailableDatesMediationFormMock.mockImplementation(() => {
-          const mockRequest: Record<string, any[]> = {
-            'items': [{
-              'type': UnavailableDateType.SINGLE_DATE,
-              'single': {
-                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              },
-            }],
-          };
-          const mockItem = mockRequest['items'][0];
-          return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
-        });
-
-        await request(app)
-          .post(CONTROLLER_URL)
-          .send()
-          .expect((res) => {
-            // expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-          });
+    it('should redirect to task list with single date', async () => {
+      //given
+      getUnavailableDatesMediationFormMock.mockImplementation(() => {
+        const mockRequest: Record<string, any[]> = {
+          'items': [{
+            'type': UnavailableDateType.SINGLE_DATE,
+            'single': {
+              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+            },
+          }],
+        };
+        const mockItem = mockRequest['items'][0];
+        return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
       });
 
-      it('should redirect to task list with Long period date', async () => {
-        //given
-        const currentDatePlusOne = new Date();
-        currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
-        getUnavailableDatesMediationFormMock.mockImplementation(() => {
-          const mockRequest: Record<string, any[]> = {
-            'items': [{
-              'type': UnavailableDateType.LONGER_PERIOD,
-              'period': {
-                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-                'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
-              },
-            }],
-          };
-          const mockItem = mockRequest['items'][0];
-          return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send()
+        .expect((res) => {
+          // expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
         });
-        await request(app)
-          .post(CONTROLLER_URL)
-          .send({option: 'yes'})
-          .expect((res) => {
-            // expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-          });
+    });
+
+    it('should redirect to task list with Long period date', async () => {
+      //given
+      const currentDatePlusOne = new Date();
+      currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
+      getUnavailableDatesMediationFormMock.mockImplementation(() => {
+        const mockRequest: Record<string, any[]> = {
+          'items': [{
+            'type': UnavailableDateType.LONGER_PERIOD,
+            'period': {
+              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+              'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
+            },
+          }],
+        };
+        const mockItem = mockRequest['items'][0];
+        return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
       });
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({option: 'yes'})
+        .expect((res) => {
+          // expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+        });
     });
   });
 
