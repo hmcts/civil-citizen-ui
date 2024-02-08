@@ -30,7 +30,7 @@ describe('Mediation Unavailability Next Three Months Confirmation Controller', (
 
   beforeEach(() => {
     mockGetCaseData.mockImplementation(async () => {
-      let claim = new Claim();
+      const claim = new Claim();
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       return claim;
     });
@@ -75,7 +75,7 @@ describe('Mediation Unavailability Next Three Months Confirmation Controller', (
     describe('claimant response', () => {
       beforeEach(() => {
         mockGetCaseData.mockImplementation(async () => {
-          let claim = new Claim();
+          const claim = new Claim();
           claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
           return claim;
         });
