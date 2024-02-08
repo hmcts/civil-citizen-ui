@@ -26,7 +26,7 @@ export const getCaseProgressionLatestUpdates = (claim: Claim, lng: string) : Cla
   }
 
   if (checkClaimDismissedHearingDueDate(claim)) {
-    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lng, false));
+    sectionContent.push(getClaimDismissedHearingDueDateUpdateContent(claim, lng));
     return getClaimSummaryContent(sectionContent.flat());
   }
   if(checkEvidenceUploaded(claim, false)){
