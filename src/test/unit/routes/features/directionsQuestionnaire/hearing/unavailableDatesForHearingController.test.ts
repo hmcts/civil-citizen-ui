@@ -545,9 +545,9 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
-                day: 7,
-                month: 2,
-                year: 2024,
+                day: today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
               },
             },
           }],
