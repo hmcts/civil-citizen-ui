@@ -11,7 +11,7 @@ import {t} from 'i18next';
 
 const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boolean): boolean => {
   if (claimantResponse) {
-    return caseData.claimantResponse?.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediation.hasAvailabilityMediationFinished;
+    return caseData.claimantResponse?.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediationCarm.hasAvailabilityMediationFinished;
   }
   return caseData.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediationCarm.hasAvailabilityMediationFinished;
 };

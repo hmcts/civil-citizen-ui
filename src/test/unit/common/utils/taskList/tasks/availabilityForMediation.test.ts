@@ -86,8 +86,8 @@ describe('Availability for mediation', () => {
     it('should return complete when claimant is company', () => {
       claim.applicant1.type = PartyType.COMPANY;
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasAvailabilityMediationFinished = true;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = true;
       const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, true);
       expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyYes.url);
       expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyYes.description);
@@ -97,8 +97,8 @@ describe('Availability for mediation', () => {
     it('should return complete when claimant is not company', () => {
       claim.applicant1.type = PartyType.INDIVIDUAL;
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasAvailabilityMediationFinished = true;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = true;
       const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, true);
       expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
       expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
@@ -108,8 +108,8 @@ describe('Availability for mediation', () => {
     it('should return incomplete when claimant is company', () => {
       claim.applicant1.type = PartyType.COMPANY;
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasAvailabilityMediationFinished = false;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = false;
       const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, true);
       expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyYes.url);
       expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyYes.description);
@@ -119,8 +119,8 @@ describe('Availability for mediation', () => {
     it('should return incomplete when claimant is not company', () => {
       claim.applicant1.type = PartyType.INDIVIDUAL;
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasAvailabilityMediationFinished = false;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = false;
       const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, true);
       expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
       expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);

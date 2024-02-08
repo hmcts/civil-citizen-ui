@@ -53,8 +53,8 @@ describe('Telephone mediation', () => {
 
     it('should return complete - claimant response', () => {
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasTelephoneMeditationAccessed = true;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasTelephoneMeditationAccessed = true;
       const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang, true);
       expect(telephoneMediationTask.url).toEqual(resultComplete.url);
       expect(telephoneMediationTask.description).toEqual(resultComplete.description);
@@ -63,8 +63,8 @@ describe('Telephone mediation', () => {
 
     it('should return incomplete - claimant response', () => {
       claim.claimantResponse = new ClaimantResponse();
-      claim.claimantResponse.mediation = new Mediation();
-      claim.claimantResponse.mediation.hasTelephoneMeditationAccessed = false;
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasTelephoneMeditationAccessed = false;
       const telephoneMediationTask = getTelephoneMediationTask(claim, claimId, lang, true);
       expect(telephoneMediationTask.url).toEqual(resultComplete.url);
       expect(telephoneMediationTask.description).toEqual(resultComplete.description);

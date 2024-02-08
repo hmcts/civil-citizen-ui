@@ -8,7 +8,7 @@ import {t} from 'i18next';
 
 const hasTelephoneMeditationCompleted = (claim: Claim, isClaimantResponse: boolean): boolean => {
   if (isClaimantResponse) {
-    return claim.claimantResponse?.mediation?.hasTelephoneMeditationAccessed === undefined ? false : claim.claimantResponse.mediation.hasTelephoneMeditationAccessed;
+    return claim.claimantResponse?.mediationCarm?.hasTelephoneMeditationAccessed === undefined ? false : claim.claimantResponse.mediationCarm.hasTelephoneMeditationAccessed;
   }
   return claim.mediationCarm?.hasTelephoneMeditationAccessed === undefined ? false : claim.mediationCarm.hasTelephoneMeditationAccessed;
 };
