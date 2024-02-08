@@ -59,4 +59,5 @@ export enum ClaimSummaryType {
   NEW_TAB_BUTTON = 'newTabButton',
   MICRO_TEXT = 'microText',
   SPAN = 'span',
+  REMOVE_BUTTON = 'removeButton',
 }
