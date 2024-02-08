@@ -82,7 +82,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   }
 
   if (hasClaimantRejectedDefendantResponse(claim)) {
-    if(hasEitherPartyNotAgreedToMediation(claim)) {
+    if(hasEitherPartyNotAgreedToMediation(claim) || claim.isFastTrackClaim) {
       return RejectedResponseNoMediationNextSteps;
     }
     else if(claimantResponse.hasClaimantAgreedToMediation()) {
@@ -96,7 +96,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
   const isFullDefenceWithClaimantRejected =
-    claim.isFullDefence() && claim.hasClaimantRejectedDefendantPaid();
+    claim.isFullDefence() && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedDefendantResponse());
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,
