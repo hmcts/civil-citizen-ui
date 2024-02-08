@@ -122,8 +122,10 @@ export class ClaimantResponse {
     || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined);
   }
 
-  isRejectionReasonCompleted(): boolean {
-    return this.hasPartPaymentBeenAccepted?.option === YesNo.NO && !!this.rejectionReason?.text;
+  isRejectionReasonCompleted(): boolean {	
+    return (this.hasPartPaymentBeenAccepted?.option === YesNo.NO	
+        || this.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)	
+      && !!this.rejectionReason?.text;	
   }
 
   get isClaimantRejectedCourtDecision(): boolean {
