@@ -8,7 +8,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: false,
+      show: true,
       browser: 'chromium',
       waitForTimeout: 20000,
       windowSize: '1920x1080',
@@ -16,6 +16,7 @@ exports.config = {
       waitForAction: 500,
       waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
+
     },
   },
   include: {
@@ -35,7 +36,7 @@ exports.config = {
       ],
     },
     retryFailedStep: {
-      enabled: true,
+      enabled: false,
     },
     screenshotOnFail: {
       enabled: true,

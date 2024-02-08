@@ -1,12 +1,13 @@
 const EligibilityCheck = require('../pages/eligibilityCheck');
+const CreateClaim = require('../pages/createClaim');
 
 const eligibilityCheck = new EligibilityCheck();
+const createClaim = new CreateClaim();
 
 class CreateClaimSteps {
 
   async EligibilityCheckSteps() {
     await eligibilityCheck.open();
-    await eligibilityCheck.eligibilityClaimValueValidations();
     await eligibilityCheck.eligibilityClaimValue();
     await eligibilityCheck.eligibilitySingleDefendantValidations();
     await eligibilityCheck.eligibilitySingleDefendant();
@@ -27,6 +28,25 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReferenceValidations();
     await eligibilityCheck.eligibilityHWFReference();
+  }
+
+  async EligibilityCheckStepsForClaimCreation() {
+    await eligibilityCheck.open();
+    await eligibilityCheck.eligibilityClaimValue();
+    await eligibilityCheck.eligibilitySingleDefendant();
+    await eligibilityCheck.eligibilityDefendantAddress();
+    await eligibilityCheck.eligibilityClaimType();
+    await eligibilityCheck.eligibilityClaimantAddress();
+    await eligibilityCheck.eligibilityTenancyDeposit();
+    await eligibilityCheck.eligibilityGovtDept();
+    await eligibilityCheck.eligibilityDefendantAge();
+    await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityApplyForHWF();
+    await eligibilityCheck.eligibilityHWFReference();
+  }
+
+  async CreateClaimCreation() {
+    await createClaim.verifyLanguage();
   }
 }
 
