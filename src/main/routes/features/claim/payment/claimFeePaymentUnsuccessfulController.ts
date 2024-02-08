@@ -14,13 +14,14 @@ paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: A
   try {
     const claimId = req.params.id;
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
+    const paymentRedirectNextUrl = paymentRedirectInformation.nextUrl;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
-      paymentRedirectInformation,
+      paymentRedirectNextUrl,
     });
   } catch (error) {
     next(error);
