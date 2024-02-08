@@ -69,6 +69,68 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
     });
   });
 
+  describe('on POST - claimant response', () => {
+    beforeEach(() => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.partyPhone = {phone: '111111'};
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
+
+      it('should redirect to task list with single date', async () => {
+        //given
+        getUnavailableDatesMediationFormMock.mockImplementation(() => {
+          const mockRequest: Record<string, any[]> = {
+            'items': [{
+              'type': UnavailableDateType.SINGLE_DATE,
+              'single': {
+                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+              },
+            }],
+          };
+          const mockItem = mockRequest['items'][0];
+          return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
+        });
+
+        await request(app)
+          .post(CONTROLLER_URL)
+          .send()
+          .expect((res) => {
+            // expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          });
+      });
+
+      it('should redirect to task list with Long period date', async () => {
+        //given
+        const currentDatePlusOne = new Date();
+        currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
+        getUnavailableDatesMediationFormMock.mockImplementation(() => {
+          const mockRequest: Record<string, any[]> = {
+            'items': [{
+              'type': UnavailableDateType.LONGER_PERIOD,
+              'period': {
+                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
+                'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
+              },
+            }],
+          };
+          const mockItem = mockRequest['items'][0];
+          return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
+        });
+        await request(app)
+          .post(CONTROLLER_URL)
+          .send({option: 'yes'})
+          .expect((res) => {
+            // expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          });
+      });
+    });
+  });
+
   describe('on POST - defendant response', () => {
     it('should redirect to task list with single date', async () => {
       //given
@@ -132,81 +194,6 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
-    });
-  });
-  describe('on POST - claimant response', () => {
-    beforeEach(() => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.partyPhone = {phone: '111111'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        return claim;
-      });
-
-      it('should redirect to task list with single date', async () => {
-        //given
-        getUnavailableDatesMediationFormMock.mockImplementation(() => {
-          const mockRequest: Record<string, any[]> = {
-            'items': [{
-              'type': UnavailableDateType.SINGLE_DATE,
-              'single': {
-                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              },
-            }],
-          };
-          const mockItem = mockRequest['items'][0];
-          return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
-        });
-
-        await request(app)
-          .post(CONTROLLER_URL)
-          .send()
-          .expect((res) => {
-            // expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-          });
-      });
-
-      it('should redirect to task list with Long period date', async () => {
-        //given
-        const currentDatePlusOne = new Date();
-        currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
-        getUnavailableDatesMediationFormMock.mockImplementation(() => {
-          const mockRequest: Record<string, any[]> = {
-            'items': [{
-              'type': UnavailableDateType.LONGER_PERIOD,
-              'period': {
-                'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-                'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
-              },
-            }],
-          };
-          const mockItem = mockRequest['items'][0];
-          return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
-        });
-        await request(app)
-          .post(CONTROLLER_URL)
-          .send({option: 'yes'})
-          .expect((res) => {
-            // expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-          });
-      });
-
-      it('should return http 500 when has error', async () => {
-        const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app)
-          .post(CONTROLLER_URL)
-          .send({option: 'no'})
-          .expect((res) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
-      });
     });
   });
 });
