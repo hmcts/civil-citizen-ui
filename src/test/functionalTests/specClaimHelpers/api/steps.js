@@ -39,7 +39,7 @@ const data = {
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
-  CREATE_LIP_CLAIM:(userId)  => createLiPClaim.createClaim(userId),
+  CREATE_LIP_CLAIM:(user, userId)  => createLiPClaim.createClaim(user, userId),
 };
 
 let caseId, eventName;
@@ -197,7 +197,7 @@ module.exports = {
     let userId = await idamHelper.userId(userAuth);
 
     await apiRequest.setupTokens(user);
-    let payload = data.CREATE_LIP_CLAIM(userId);
+    let payload = data.CREATE_LIP_CLAIM(user, userId);
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
@@ -207,6 +207,8 @@ module.exports = {
       },
     };
     await apiRequest.startEventForCitizen(caseId, newPayload);
+    await waitForFinishedBusinessProcess(caseId);
+    await assignSpecCase(caseId, null);
     return caseId;
   },
 

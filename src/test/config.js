@@ -50,9 +50,14 @@ module.exports = {
     email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
   },
+  claimantCitizenUser: {
+    password: defaultPassword,
+    email: `claimantLip.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    type: 'defendant',
+  },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    email: `defendantLip.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{

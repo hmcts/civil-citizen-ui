@@ -1,24 +1,20 @@
 const config = require('../../config');
 
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
+// eslint-disable-next-line no-unused-vars
 let claimRef;
 let claimNumber;
-let securityCode;
 
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createLiPClaim(config.defendantCitizenUser, 'pinInPost');
-  let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });

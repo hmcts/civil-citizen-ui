@@ -1,5 +1,5 @@
 module.exports = {
-  createClaim: (userId) => {
+  createClaim: (user, userId) => {
     const eventDto = {
       event: 'CREATE_LIP_CLAIM',
       caseDataUpdate: {
@@ -71,7 +71,7 @@ module.exports = {
         interestFromSpecificDateDescription: undefined,
         interestClaimUntil: undefined,
         claimantUserDetails: {
-          email: 'civilmoneyclaimsdemo@gmail.com',
+          email: user,
           id: userId,
         },
         respondent1LiPResponse: {
