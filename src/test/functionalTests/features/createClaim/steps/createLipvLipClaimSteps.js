@@ -47,6 +47,13 @@ class CreateClaimSteps {
 
   async CreateClaimCreation() {
     await createClaim.verifyLanguage();
+    await createClaim.verifyDashboard();
+    await createClaim.verifyTryToResolveTheDispute();
+    await createClaim.verifyCompletingYourClaim();
+    await createClaim.verifyAboutYouAndThisClaim();
+    await createClaim.verifyEnterYourDetails();
+    await createClaim.inputEnterYourDetails();
+
   }
 }
 
