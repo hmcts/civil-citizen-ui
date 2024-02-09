@@ -1,4 +1,7 @@
-import {TypeOfDocuments, TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {
+  TypeOfDocuments,
+  TypeOfMediationDocuments,
+} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -67,4 +70,23 @@ export const getNonAttendanceDocumentsCCD = () => {
 
 export const getTypeOfDocuments = () => {
   return TYPE_OF_DOCUMENTS;
+};
+
+export const getTypeOfDocumentsWithYourStatement = () => {
+  return Array.of(new TypeOfDocuments(
+    1,
+    TypeOfMediationDocuments.YOUR_STATEMENT,
+    true,
+    Array.of(TYPE_OF_DOCUMENT_YOUR_NAME_SECTION),
+  ));
+};
+
+export const getTypeOfDocumentsWithReferredDocuments = () => {
+  return Array.of(new TypeOfDocuments(
+    2,
+    TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT,
+    true,
+    Array.of(TYPE_OF_DOCUMENT),
+  ),
+  );
 };

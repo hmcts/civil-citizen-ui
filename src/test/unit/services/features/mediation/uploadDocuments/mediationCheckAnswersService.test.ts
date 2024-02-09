@@ -7,7 +7,7 @@ import {saveMediationUploadedDocuments} from 'services/features/mediation/upload
 import {
   getNonAttendanceDocumentsCCD,
   getReferredDocumentCCD,
-  getTypeOfDocuments,
+  getTypeOfDocuments, getTypeOfDocumentsWithReferredDocuments, getTypeOfDocumentsWithYourStatement,
 } from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
 import {CaseEvent} from 'models/events/caseEvent';
 import config from 'config';
@@ -25,6 +25,10 @@ mockSubmitEvent.mockImplementation((eventName, claimId, updatedCcdClaim, req) =>
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Check answers service For Mediation', () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   describe('save Mediation Uploaded Documents method', () => {
     it('should save the document with both documents', async () => {
@@ -54,5 +58,59 @@ describe('Check answers service For Mediation', () => {
       expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim, null);
 
     });
+
+    it('should save the document with res1MediationNonAttendance Documents', async () => {
+      //given
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(new Claim()),
+          ),
+        );
+      jest.useFakeTimers().setSystemTime(new Date('2022-12-12T00:00:00.000Z'));
+
+      const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+
+      const uploadDocuments = new UploadDocuments(getTypeOfDocumentsWithYourStatement());
+
+      const claim = new Claim();
+
+      claim.res1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD();
+
+      //When
+      await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
+
+      //Then
+      expect(mockSubmitEvent).toHaveBeenCalledTimes(1);
+      expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim, null);
+
+    });
+  });
+
+  it('should save the document with res1MediationDocumentsReferred Documents', async () => {
+    //given
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(new Claim()),
+        ),
+      );
+    jest.useFakeTimers().setSystemTime(new Date('2022-12-12T00:00:00.000Z'));
+
+    const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+
+    const uploadDocuments = new UploadDocuments(getTypeOfDocumentsWithReferredDocuments());
+
+    const claim = new Claim();
+
+    claim.res1MediationDocumentsReferred = getReferredDocumentCCD();
+
+    //When
+    await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
+
+    //Then
+    expect(mockSubmitEvent).toHaveBeenCalledTimes(1);
+    expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim, null);
+
   });
 });
