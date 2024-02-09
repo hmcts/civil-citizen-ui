@@ -24,4 +24,4 @@ const toCCDHelpWithFeeHearing = (referenceNumber: string): CCDHelpWithFeeDetails
   if (referenceNumber) {
     return { hwfFeeType: FeeType.HEARING };
   }
-}
+};

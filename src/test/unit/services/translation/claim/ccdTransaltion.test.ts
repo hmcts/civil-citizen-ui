@@ -70,4 +70,16 @@ describe('translate draft claim to ccd version', () => {
     expect(ccdClaim.claimantBilingualLanguagePreference).toBe(CCDLanguage.ENGLISH);
   });
 
+  it('should contain fee type details in ccd translations', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.helpWithFees = {
+      referenceNumber: '123',
+    };
+    //When
+    const ccdClaim = translateDraftClaimToCCDR2(claim, req as AppRequest);
+    //Then
+    expect(ccdClaim.hwFeesDetails).toEqual({ 'hwfFeeType': 'CLAIMISSUED' });
+  });
 });

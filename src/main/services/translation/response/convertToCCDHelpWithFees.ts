@@ -12,8 +12,9 @@ export const toCCDHelpWithFees = (helpWithFees: HelpWithFees | undefined): CCDHe
 };
 
 export const toCCDHelpWithClaimFee = (helpWithFees: HelpWithFees | undefined): CCDHelpWithFeeDetails => {
-  if (!helpWithFees) return undefined;
-  return {
-    hwfFeeType: helpWithFees.referenceNumber ? FeeType.CLAIMISSUED : undefined
-  };
+  if (helpWithFees?.referenceNumber) {
+    return {
+      hwfFeeType: FeeType.CLAIMISSUED,
+    };
+  }
 };
