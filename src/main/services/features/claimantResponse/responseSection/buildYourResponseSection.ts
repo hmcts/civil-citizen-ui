@@ -130,7 +130,10 @@ export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: s
 
 export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
-  const option = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount()
+  const claimantOption = claim.isFullDefence() ?
+    claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option : claim.claimantResponse?.hasPartPaymentBeenAccepted?.option;
+
+  const option = claimantOption === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -179,7 +182,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
   }
 
-  if (claimantResponse.hasPartPaymentBeenAccepted?.option) {
+  if (claimantResponse.hasPartPaymentBeenAccepted?.option || claimantResponse.hasFullDefenceStatesPaidClaimSettled?.option) {
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
 
