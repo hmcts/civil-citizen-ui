@@ -27,18 +27,14 @@ export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Das
   }
 };
 
-export const getNotifications = async (claimId: string, claim: Claim) => {
+export const getNotifications = async (claimId: string, claim: Claim):Promise<DashboardNotificationList> => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-    const cachedDashboardNotifications: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
-    let dashboardNotificationsList;
-    if (cachedDashboardNotifications){
-      dashboardNotificationsList = cachedDashboardNotifications.items;
-    }
-    else{
-      const dashboardNotifications: DashboardNotificationList = await getNotificationById(claimId);
-      dashboardNotificationsList = dashboardNotifications.items;
-      await saveNotificationToCache(dashboardNotifications,caseRole, claimId);
+    let dashboardNotificationsList: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
+
+    if (!dashboardNotificationsList){
+      dashboardNotificationsList = await getNotificationById(claimId);
+      await saveNotificationToCache(dashboardNotificationsList,caseRole, claimId);
     }
     return dashboardNotificationsList;
   } catch (error) {

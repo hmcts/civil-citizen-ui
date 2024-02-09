@@ -1,7 +1,7 @@
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CivilServiceClient} from 'app/client/civilServiceClient';
+import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
 
