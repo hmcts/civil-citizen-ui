@@ -28,7 +28,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }) }}
 {% endblock %}
 {% block header %}
-  {{ headerComponent(t, hideLogout) }}
+  {{ headerComponent(t, user) }}
 {% endblock %}
 
 {% block beforeContent %}
