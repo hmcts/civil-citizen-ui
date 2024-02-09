@@ -4,7 +4,6 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
@@ -47,5 +46,4 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smo
 
 AfterSuite(async () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });

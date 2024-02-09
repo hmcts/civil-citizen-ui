@@ -1,10 +1,20 @@
 const testConfig = require('../config.js');
+const {createAccount, deleteAccount} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 exports.config = {
   tests: '../functionalTests/tests/**/*_tests.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
+
+  async bootstrapAll() {
+    await createAccount(testConfig.defendantCitizenUser.email, testConfig.defendantCitizenUser.password);
+  },
+
+  async teardownAll() {
+    await deleteAccount(testConfig.defendantCitizenUser.email);
+  },
+
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,

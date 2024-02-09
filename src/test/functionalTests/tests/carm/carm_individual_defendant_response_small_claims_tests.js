@@ -18,7 +18,6 @@ Feature('CARM - LiP Defendant Journey - Small claims track - Individual');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType, carmEnabled, 'Individual');
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -52,5 +51,4 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });

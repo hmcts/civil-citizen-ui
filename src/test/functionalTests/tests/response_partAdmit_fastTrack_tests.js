@@ -3,7 +3,6 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -44,5 +43,4 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @re
 
 AfterSuite(async () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });

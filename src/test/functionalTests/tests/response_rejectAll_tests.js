@@ -3,7 +3,6 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -69,5 +68,4 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
 
 AfterSuite(async () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });
