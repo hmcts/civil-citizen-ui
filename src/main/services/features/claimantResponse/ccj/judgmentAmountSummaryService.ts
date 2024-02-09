@@ -6,9 +6,10 @@ export const getJudgmentAmountSummary = (claim: Claim, claimFee: number, lang: s
   const alreadyPaidAmount = hasDefendantAlreadyPaid ? claim.getDefendantPaidAmount() : 0;
   const claimHasInterest = claim.hasInterest();
   const interestDetails = claimHasInterest ? getInterestData(claim, lang) : undefined;
-  const subTotal = claim.totalClaimAmount + claimFee + (interestDetails ? interestDetails.interestToDate : 0);
-  const total = Number(subTotal - alreadyPaidAmount).toFixed(2);
-
+  const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+  const claimSubTotal = claimAmountAccepted + claimFee + (interestDetails ? Number(interestDetails.interestToDate) : 0);
+  const total = Number(claimSubTotal - alreadyPaidAmount).toFixed(2);
+  const subTotal = claimSubTotal.toFixed(2);
   return {
     hasDefendantAlreadyPaid,
     alreadyPaidAmount,
