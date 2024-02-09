@@ -11,7 +11,7 @@ const invalidDateErrors:any = {
   invalidDateError : undefined,
   invalidFileError: undefined,
 };
-describe('build Your Statement summaryRows service For Mediation', () => {
+describe('Your Statement content builder service For Mediation', () => {
 
   it('should create ClaimSummarySection without remove button', async () => {
     //given
