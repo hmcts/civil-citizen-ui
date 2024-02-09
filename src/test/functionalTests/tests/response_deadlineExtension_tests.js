@@ -15,7 +15,6 @@ let securityCode;
 Feature('Extended Response Time');
 
 Before(async ({api}) => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);

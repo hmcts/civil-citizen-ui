@@ -2,7 +2,6 @@ const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
 const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';

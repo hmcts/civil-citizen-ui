@@ -15,7 +15,6 @@ let securityCode;
 Feature('Response with PartAdmit - FastTrack');
 
 Before(async ({api}) => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
