@@ -51,6 +51,18 @@ describe('Mediation Type Of Document Controller', () => {
         });
     });
 
+    it('should open Mediation type of document page when uploadDocument is missing', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      await request(app)
+        .get(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
+        });
+    });
+
     it('should return http 500 when has error', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);

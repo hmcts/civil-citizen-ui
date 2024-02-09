@@ -26,7 +26,7 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Check answers service For Mediation', () => {
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -111,6 +111,41 @@ describe('Check answers service For Mediation', () => {
     //Then
     expect(mockSubmitEvent).toHaveBeenCalledTimes(1);
     expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim, null);
+
+  });
+
+  it('should add new documents on oldRes1MediationDocumentsReferred and oldRes1MediationNonAttendanceDocs', async () => {
+    //given
+    const oldClaimWithDocuments = new Claim();
+    oldClaimWithDocuments.res1MediationDocumentsReferred = getReferredDocumentCCD();
+    oldClaimWithDocuments.res1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD();
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(oldClaimWithDocuments),
+        ),
+      );
+    jest.useFakeTimers().setSystemTime(new Date('2022-12-12T00:00:00.000Z'));
+
+    const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+
+    const uploadDocuments = new UploadDocuments(getTypeOfDocuments());
+
+    const expectedOldClaim = new Claim();
+    const referredDocumentCCD = getReferredDocumentCCD();
+    referredDocumentCCD.push(referredDocumentCCD[0]);
+    const nonAttendanceDocumentsCCD = getNonAttendanceDocumentsCCD();
+    nonAttendanceDocumentsCCD.push(nonAttendanceDocumentsCCD[0]);
+
+    expectedOldClaim.res1MediationDocumentsReferred = referredDocumentCCD;
+    expectedOldClaim.res1MediationNonAttendanceDocs = nonAttendanceDocumentsCCD;
+
+    //When
+    await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
+
+    //Then
+    expect(mockSubmitEvent).toHaveBeenCalledTimes(1);
+    expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', expectedOldClaim, null);
 
   });
 });
