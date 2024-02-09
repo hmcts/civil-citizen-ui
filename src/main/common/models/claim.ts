@@ -23,7 +23,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -210,7 +210,7 @@ export class Claim {
       return ClaimResponseStatus.PA_FA_CLAIMANT_REJECT_REPAYMENT_PLAN;
     }
 
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid() && !this.hasClaimantAcceptedToSettleClaim()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
@@ -387,12 +387,6 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
-  isRejectionReasonCompleted(): boolean {
-    return (this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO
-        || this.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)
-      && !!this.claimantResponse?.rejectionReason?.text;
-  }
-
   getPaidAmount(): number {
     if (this.hasConfirmedAlreadyPaid()) {
       return this.isRejectAllOfClaimAlreadyPaid();
@@ -404,14 +398,6 @@ export class Claim {
 
   isRejectAllOfClaimDispute(): boolean {
     return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
-  }
-
-  isSignASettlementAgreement(): boolean {
-    return this.getHowToProceed() === ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
-  }
-
-  isRequestACCJ(): boolean {
-    return this.getHowToProceed() === ChooseHowProceed.REQUEST_A_CCJ;
   }
 
   hasConfirmedAlreadyPaid(): boolean {
@@ -593,33 +579,8 @@ export class Claim {
     }
   }
 
-  get canWeUseFromClaimantResponse(): YesNoUpperCase {
-    if (this.claimantResponse.mediation?.canWeUse?.option) {
-      return YesNoUpperCase.YES;
-    } else {
-      if (this.claimantResponse.mediation?.mediationDisagreement?.option) {
-        return YesNoUpperCase.NO;
-      } else if (this.claimantResponse.mediation?.companyTelephoneNumber) {
-        return YesNoUpperCase.YES;
-      }
-    }
-    return YesNoUpperCase.NO;
-  }
-
-  get isSupportRequiredYes(): boolean {
-    return this.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
-  get isClaimantResponseSupportRequiredYes(): boolean {
-    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.option === YesNo.YES;
-  }
-
   get isSupportRequiredDetailsAvailable(): boolean {
     return this.isClaimantIntentionPending() ? this.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0 : this.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
-  }
-
-  get isClaimantResponseSupportRequiredDetailsAvailable(): boolean {
-    return this.claimantResponse.directionQuestionnaire?.hearing?.supportRequiredList?.items?.length > 0;
   }
 
   hasExpertReportDetails(): boolean {
@@ -952,6 +913,10 @@ export class Claim {
 
   hasCourtAcceptedClaimantsPlan() {
     return this.claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+  }
+
+  hasClaimantAcceptedToSettleClaim(): boolean {
+    return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
   }
 
   getPaymentDate() {
