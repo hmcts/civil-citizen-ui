@@ -27,7 +27,7 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

@@ -24,7 +24,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

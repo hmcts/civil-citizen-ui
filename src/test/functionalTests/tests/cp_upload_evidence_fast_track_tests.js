@@ -23,7 +23,7 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

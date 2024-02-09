@@ -22,9 +22,10 @@ Before(async ({api}) => {
 
 Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    //Citizen uploads docs
     CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

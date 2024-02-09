@@ -24,9 +24,9 @@ Before(async ({api}) => {
   console.log('Security code', securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @regression', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -38,7 +38,7 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @re
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForFastTrack(claimRef, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
-});
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();

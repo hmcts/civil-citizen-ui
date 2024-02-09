@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression @nightly', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -43,9 +43,9 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @nightly', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -63,7 +63,7 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-});
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();

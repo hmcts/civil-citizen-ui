@@ -23,7 +23,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page Fo
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

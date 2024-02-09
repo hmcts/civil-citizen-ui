@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regression @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -42,9 +42,9 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @regress
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regression @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -57,7 +57,7 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @regres
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-});
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();

@@ -25,9 +25,10 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    //Lip verifies documents
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
