@@ -13,7 +13,6 @@ import {getUnavailableDatesMediationForm} from 'services/features/mediation/unav
 import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
-
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
