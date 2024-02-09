@@ -27,9 +27,9 @@ function getBundles(claim: Claim, lang: string): ClaimSummaryContent {
   const tableRows = getBundleTableRows(claim);
 
   const bundlesSection = new TabSectionBuilder()
-    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW')
-    .addLink('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_LINK', MAKE_APPLICATION_TO_COURT, 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_BEFORE', 'PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_AFTER', null, true)
-    .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.NEW_DOCUMENT_NOT_INCLUDED')
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.BUNDLES.FIND_BUNDLE_BELOW', {lng: lang}))
+    .addLink(t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_LINK', {lng: lang}), MAKE_APPLICATION_TO_COURT, t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_BEFORE', {lng: lang}), t('PAGES.CLAIM_SUMMARY.BUNDLES.APPLY_TO_COURT_AFTER', {lng: lang}), null, true)
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.BUNDLES.NEW_DOCUMENT_NOT_INCLUDED', {lng: lang}))
     .addTable(tableHeaders, tableRows, 'tableWrap')
     .build();
 
@@ -47,10 +47,12 @@ function getUploadedAfterBundle(claim: Claim, lang: string, isClaimant: boolean)
     return undefined;
   }
 
-  const documentUploadedBy = isClaimant ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
+  const documentUploadedBy = isClaimant
+    ? t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT', {lng: lang})
+    : t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT', {lng: lang});
 
   const uploadedAfterBundlesSection = new TabSectionBuilder()
-    .addTitle(documentUploadedBy+t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS', {lng: lang}))
+    .addTitle(documentUploadedBy)
     .addParagraph('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW')
     .addTable(getUploadedAfterTableHeaders(lang), getUploadedAfterTableRows(claim, isClaimant, lang), 'tableWrap')
     .build();

@@ -6,7 +6,9 @@ import {Claim} from 'models/claim';
 import {translateClaimantResponseDJToCCD} from 'services/translation/claimantResponse/ccdTranslation';
 import {YesNo} from 'form/models/yesNo';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
-import { translateClaimantResponseRequestDefaultJudgementToCCD } from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {
+  translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD,
+} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -21,8 +23,8 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     setRespondentDateOfBirth(claim);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-    if (claim.isClaimantIntentionPending()) {
-      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementToCCD(claim, claimFee);
+    if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
+      const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
     const ccdResponse = translateClaimantResponseDJToCCD(claim);
