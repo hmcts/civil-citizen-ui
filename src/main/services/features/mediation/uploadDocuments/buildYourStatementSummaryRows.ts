@@ -4,16 +4,16 @@ import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
-import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
 import {formatStringDateSlash} from 'common/utils/dateUtils';
 import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
-import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {
+  MediationTypeOfDocumentSection,
+  TypeOfDocumentYourNameSection,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
@@ -37,7 +37,7 @@ export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, c
   const documentsReferred = uploadedDocuments.typeOfDocuments.find(document => document.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
   if(documentsReferred)
   {
-    getMediationDocumentReferredSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,documentsReferred.uploadDocuments as TypeOfDocumentSection[], mediationSummarySection.summaryList, claimId, lang);
+    getMediationDocumentReferredSummaryRows(`${MEDIATION_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, `${MEDIATION_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,`${MEDIATION_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`,documentsReferred.uploadDocuments as MediationTypeOfDocumentSection[], mediationSummarySection.summaryList, claimId, lang);
   }
 
   if(mediationSummarySection.summaryList.rows.length > 0)
@@ -48,7 +48,7 @@ export const getMediationSummarySection = (uploadedDocuments: UploadDocuments, c
   return mediationSection;
 };
 
-const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: string, dateTitle: string,  documents: TypeOfDocumentSection[] , summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: string, dateTitle: string,  documents: MediationTypeOfDocumentSection[] , summaryList: SummaryList, claimId: string, lang: string | unknown) => {
 
   let index = 1;
   for(const document of documents) {

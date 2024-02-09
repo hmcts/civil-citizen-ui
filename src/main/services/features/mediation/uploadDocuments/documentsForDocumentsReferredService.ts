@@ -1,11 +1,9 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
-
 import {GenericForm} from 'form/models/genericForm';
 import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
-
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+  MediationTypeOfDocumentSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {
   buildDocumentsReferredSection,
@@ -27,8 +25,8 @@ const documentsForDocumentsReferred = (form: GenericForm<UploadDocumentsForm>): 
   const sectionContent = [];
 
   if (form && form.model.documentsForDocumentsReferred.length != 0) {
-    form.model.documentsForDocumentsReferred?.forEach(function (documentsForDisclosure: TypeOfDocumentSection, index: number) {
-      sectionContent.push([buildDocumentsReferredSection(documentsForDisclosure, index, form)]);
+    form.model.documentsForDocumentsReferred?.forEach(function (documentsForDocumentsReferred: MediationTypeOfDocumentSection, index: number) {
+      sectionContent.push([buildDocumentsReferredSection(documentsForDocumentsReferred, index, form)]);
     });
   } else {
     sectionContent.push([buildDocumentsReferredSection()]);

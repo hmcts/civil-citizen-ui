@@ -14,6 +14,7 @@ import {Claim} from 'models/claim';
 
 import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
 import {
+  MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
@@ -29,7 +30,6 @@ import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -90,7 +90,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
   if(!form ){
     const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments || [];
     const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments || [];
-    form = new GenericForm(new UploadDocumentsForm(typeOfDocuments as TypeOfDocumentYourNameSection[], documentsForDocumentsReferred as TypeOfDocumentSection[]));
+    form = new GenericForm(new UploadDocumentsForm(typeOfDocuments as TypeOfDocumentYourNameSection[], documentsForDocumentsReferred as MediationTypeOfDocumentSection[]));
   }
   const yourStatementContent = getYourStatementContent(uploadDocuments, form);
   const documentsReferredContent = getDocumentsForDocumentsReferred(uploadDocuments, form);

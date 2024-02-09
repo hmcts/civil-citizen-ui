@@ -1,5 +1,5 @@
 import {IsDate, IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
-import {FileUpload, TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
 import {DateDayValidator} from 'form/validators/dateDayValidator';
@@ -11,12 +11,29 @@ export class UploadDocumentsForm {
   @ValidateNested()
     documentsForYourStatement?: TypeOfDocumentYourNameSection[];
   @ValidateNested()
-    documentsForDocumentsReferred?: TypeOfDocumentSection[];
+    documentsForDocumentsReferred?: MediationTypeOfDocumentSection[];
 
-  constructor(documentsForYourStatement?: TypeOfDocumentYourNameSection[], documentsForDocumentsReferred?: TypeOfDocumentSection[]) {
+  constructor(documentsForYourStatement?: TypeOfDocumentYourNameSection[], documentsForDocumentsReferred?: MediationTypeOfDocumentSection[]) {
     this.documentsForYourStatement = documentsForYourStatement;
     this.documentsForDocumentsReferred = documentsForDocumentsReferred;
   }
+}
+
+export class MediationTypeOfDocumentSection {
+  @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
+    typeOfDocument: string;
+  @ValidateNested()
+    dateInputFields: MediationDateInputFields;
+  @ValidateNested()
+  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+    fileUpload: FileUpload;
+  caseDocument: CaseDocument;
+
+  constructor(day?: string, month?: string, year?: string) {
+    this.dateInputFields = new MediationDateInputFields(day, month, year);
+  }
+
 }
 
 export class TypeOfDocumentYourNameSection {

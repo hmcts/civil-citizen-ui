@@ -9,16 +9,18 @@ import {
   MediationDocumentsReferred, MediationMediationNonAttendanceDocs,
   MediationUploadDocumentsCCD,
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
-import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {v4 as uuidv4} from 'uuid';
 import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
-import {TypeOfDocumentYourNameSection} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {
+  MediationTypeOfDocumentSection,
+  TypeOfDocumentYourNameSection,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const getMediationDocumentsReferredDocuments = (newMediationUploadDocuments: UploadDocuments, mediationUploadDocuments:MediationUploadDocumentsCCD[]) => {
-  const newDocumentsReferred: TypeOfDocumentSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments as TypeOfDocumentSection[];
+  const newDocumentsReferred: MediationTypeOfDocumentSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments as MediationTypeOfDocumentSection[];
   const newDocs =  newDocumentsReferred.map((newDoc) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
     mediationUploadDocumentsCCD.id = uuidv4();
