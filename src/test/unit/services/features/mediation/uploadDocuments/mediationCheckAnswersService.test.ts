@@ -8,17 +8,9 @@ import {
   getNonAttendanceDocumentsCCD,
   getReferredDocumentCCD,
   getTypeOfDocuments,
-  getYourStatement,
 } from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
-import {createCCDClaimForUploadedDocuments} from '../../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {CaseEvent} from 'models/events/caseEvent';
 import config from 'config';
-import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
-import {
-  MediationDocumentsReferred, MediationMediationNonAttendanceDocs,
-  MediationUploadDocumentsCCD,
-} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
-import {v4 as uuidv4} from 'uuid';
 
 jest.mock('client/civilServiceClient');
 jest.mock('uuid', () => ({ v4: () => '1221' }));
@@ -33,10 +25,6 @@ mockSubmitEvent.mockImplementation((eventName, claimId, updatedCcdClaim, req) =>
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Check answers service For Mediation', () => {
-
-  beforeEach(() => {
-
-  });
 
   describe('save Mediation Uploaded Documents method', () => {
     it('should save the document with both documents', async () => {
@@ -55,13 +43,15 @@ describe('Check answers service For Mediation', () => {
 
       const claim = new Claim();
 
-      claim.res1MediationDocumentsReferred = getReferredDocumentCCD();
       claim.res1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD();
+      claim.res1MediationDocumentsReferred = getReferredDocumentCCD();
+
       //When
       await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
       //Then
-      expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim);
+      expect(mockSubmitEvent).toHaveBeenCalledTimes(1);
+      expect(mockSubmitEvent).toHaveBeenCalledWith(CaseEvent.CUI_UPLOAD_MEDIATION_DOCUMENTS, '1111', claim, null);
 
     });
   });
