@@ -7,17 +7,24 @@ const fields = {
   year: 'input[id="year"]',
 };
 
-const buttons = {
-  saveAndContinue: 'Save and continue',
+const pageContent = {
+  dateOfBirthDeatilsHeading: {
+    en: 'Enter your date of birth',
+    cy: 'Rhowch eich dyddiad geni'
+  },
+  saveAndContinueButtonText: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau' 
+  }
 };
 
 class DateOfBirthDetailsPage {
-  async enterDateOfBirth ()  {
-    await I.waitForText('Enter your date of birth', config.WaitForText);
+  async enterDateOfBirth (claimRef, language = 'en')  {
+    await I.waitForText(pageContent.dateOfBirthDeatilsHeading[language], config.WaitForText);
     await I.fillField(fields.day, '11');
     await I.fillField(fields.month, '11');
     await I.fillField(fields.year, '1987');
-    await I.click(buttons.saveAndContinue);
+    await I.click(pageContent.saveAndContinueButtonText[language]);
   }
 }
 

@@ -155,9 +155,9 @@ class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode){
     await assignCaseToLip.open(claimNumber, securityCode);
   }
-  async RespondToClaim(claimRef){
+  async RespondToClaim(claimRef, language = 'en'){
     await defendantLatestUpdate.open(claimRef);
-    await bilingualLanguagePreference.verifyContent();
+    await bilingualLanguagePreference.verifyContent(language);
   }
 
   async RespondToClaimError(claimRef){
@@ -169,11 +169,11 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef, carmEnabled) {
-    await taskListPage.verifyResponsePageContent();
-    await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
-    await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+  async EnterPersonalDetails(claimRef, carmEnabled, language = 'en') {
+    await taskListPage.verifyResponsePageContent(language);
+    await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef, language);
+    await dateOfBirthDetailsPage.enterDateOfBirth(claimRef, language);
+    await contactNumberDetailsPage.enterContactNumber(carmEnabled, language);
   }
 
   async EnterCompDetails(carmEnabled) {
