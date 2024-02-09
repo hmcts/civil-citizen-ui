@@ -3,7 +3,7 @@ import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocume
 import {GenericForm} from 'form/models/genericForm';
 import {
   TypeOfDocumentYourNameSection,
-  UploadDocumentsForm
+  UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 

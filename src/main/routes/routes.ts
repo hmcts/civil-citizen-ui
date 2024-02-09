@@ -276,7 +276,7 @@ import claimIssuePaymentUnsuccessfulController
 import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
-import mediationConfirmationController from "routes/features/mediation/uploadDocuments/confirmationController";
+import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
 
 export default [
   homeController,

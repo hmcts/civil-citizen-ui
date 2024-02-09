@@ -78,7 +78,7 @@ import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOpt
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
-import {MediationUploadDocumentsCCD} from "models/mediation/uploadDocuments/uploadDocumentsCCD";
+import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 
 export class CivilClaimResponse {
   id: string;
