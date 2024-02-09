@@ -5,14 +5,13 @@ const LoginSteps = require('../features/home/steps/login');
 
 Feature('Create Lip v Lip claim');
 
-/*Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
+Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   await CreateLipvLipClaimSteps.EligibilityCheckSteps();
-});*/
+});
 
-Scenario.only('Create Claim For Under 25000', async () => {
+Scenario('Create Claim For Under 25000', async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
   await CreateLipvLipClaimSteps.CreateClaimCreation();
-  pause();
 }).tag('@regression');

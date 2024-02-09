@@ -1,9 +1,19 @@
+const I = actor();
 const EligibilityCheck = require('../pages/eligibilityCheck');
 const CreateClaim = require('../pages/createClaim');
 
 const eligibilityCheck = new EligibilityCheck();
 const createClaim = new CreateClaim();
 
+const paths = {
+  links: {
+    resolving_this_dispute: '//a[.=\'Resolving this dispute\']',
+    confirming_your_claim: '//a[.=\'Completing your claim\']',
+    your_details: '//a[.=\'Your details\']',
+    their_details: '//a[.=\'Their details\']',
+    claim_amount : '//a[.=\'Claim amount\']',
+  },
+};
 class CreateClaimSteps {
 
   async EligibilityCheckSteps() {
@@ -48,12 +58,43 @@ class CreateClaimSteps {
   async CreateClaimCreation() {
     await createClaim.verifyLanguage();
     await createClaim.verifyDashboard();
+    I.click(paths.links.resolving_this_dispute);
     await createClaim.verifyTryToResolveTheDispute();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.confirming_your_claim);
     await createClaim.verifyCompletingYourClaim();
-    await createClaim.verifyAboutYouAndThisClaim();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.your_details);
+    await createClaim.verifyAboutYouAndThisClaimForClaimant();
     await createClaim.verifyEnterYourDetails();
-    await createClaim.inputEnterYourDetails();
+    await createClaim.inputEnterYourDetails(true);
+    await createClaim.verifyDateOfBirth();
+    await createClaim.inputDateOfBirth();
+    await createClaim.verifyAndInputPhoneNumber();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.their_details);
+    await createClaim.verifyAboutYouAndThisClaimForDefendant();
+    await createClaim.verifyEnterDefendantsDetails();
+    await createClaim.inputEnterYourDetails(false);
+    await createClaim.verifyTheirEmailAddress();
+    await createClaim.verifyTheirPhoneNumber();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.claim_amount);
+    await createClaim.verifyClaimAmount();
+    await createClaim.inputClaimAmount();
+    await createClaim.verifyAndInputDoYouWantToClaimInterest();
+    await createClaim.verifyAndInputHowDoYouWantToClaimInterest();
+    await createClaim.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
+    await createClaim.verifyAndInputWhenWillYouClaimInterestFrom();
+    await createClaim.verifyAndInputHelpWithFees();
+    await createClaim.verifyClaimAmountSummary();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.claim_amount);
+  }
 
+  async verifyDashboardLoaded() {
+    I.waitForText('Submit', 3);
+    I.see('Application complete', 'h2');
   }
 }
 
