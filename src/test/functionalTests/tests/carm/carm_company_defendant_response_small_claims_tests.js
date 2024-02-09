@@ -46,7 +46,7 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   await ResponseSteps.ConfirmPhoneDetails();
   await ResponseSteps.ConfirmEmailDetails();
   await ResponseSteps.EnterUnavailableDates();
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, false);
   await ResponseSteps.verifyMediationDetailsInCYA(claimRef);
   await ResponseSteps.clickEmailChangeLink();
   await ResponseSteps.ConfirmAltEmailDetails();

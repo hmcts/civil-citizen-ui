@@ -85,7 +85,7 @@ module.exports = {
           paymentSetDate: '2027-09-09',
         },
       },
-    };  
+    };
   },
   doNotAcceptAskToPayByInstallment: () => {
     return {
@@ -170,11 +170,11 @@ module.exports = {
         showResponseOneVOneFlag: 'ONE_V_ONE_FULL_ADMIT_PAY_INSTALMENT',
         applicant1RepaymentOptionForDefendantSpec: 'REPAYMENT_PLAN',
         currentDateboxDefendantSpec: null,
-        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: '900',
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 900,
         applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: 'ONCE_ONE_WEEK',
         applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2027-09-09',
       },
-    };  
+    };
   },
   doNotAcceptAskToPayImmediately: () => {
     return {

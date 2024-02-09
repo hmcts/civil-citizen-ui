@@ -3,6 +3,19 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
+  addStartButton(title: string, href: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        //TODO: (href) in the future we should add in here the document url (it is in development)
+        href: href,
+        isStartButton: true,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,

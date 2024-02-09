@@ -3,14 +3,15 @@ import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
-  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
-  CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
-  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
-  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CCJ_EXTENDED_PAID_AMOUNT_URL,
-  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
+  CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
+  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
@@ -55,7 +56,7 @@ export function getFullDefenceTask(claim: Claim, claimId: string, lang: string):
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (claim?.claimantResponse?.intentionToProceed?.option) {
+  if (claim?.getIntentionToProceed()) {
     decideWetherToProceed.status = TaskStatus.COMPLETE;
   }
   return decideWetherToProceed;
@@ -107,7 +108,7 @@ export function getChooseHowFormaliseTask(claim: Claim, claimId: string, lang: s
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.chooseHowToProceed?.option) {
+  if (claim.getHowToProceed()) {
     chooseHowFormaliseTask.status = TaskStatus.COMPLETE;
   }
   return chooseHowFormaliseTask;
@@ -138,7 +139,7 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
 
   if ((claim.isPAPaymentOptionPayImmediately() && claim.claimantResponse?.courtProposedDate?.decision)
     || (claim.isPAPaymentOptionByDate() && claim.claimantResponse?.suggestedPaymentIntention)
-    || (claim.claimantResponse?.suggestedPaymentIntention?.paymentOption)) {
+    || (claim.getSuggestedPaymentIntentionOptionFromClaimant())) {
     proposeAlternativeRepaymentTask.status = TaskStatus.COMPLETE;
   }
   return proposeAlternativeRepaymentTask;
@@ -152,7 +153,7 @@ export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: 
     url: constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.ccjRequest?.paidAmount?.option) {
+  if (claim.getHasDefendantPaid()) {
     countyCourtJudgmentTask.status = TaskStatus.COMPLETE;
   }
   return countyCourtJudgmentTask;

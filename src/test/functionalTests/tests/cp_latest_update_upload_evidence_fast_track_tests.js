@@ -1,5 +1,5 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
@@ -7,7 +7,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Verify latest Update page - Upload Evidence');
+Feature('Case progression journey - Verify latest Update page - Upload Evidence - Fast Track ');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -23,7 +23,7 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Fast Track - Verify latest Update page for Upload Evidence', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
+    CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
 }).tag('@regression');
 

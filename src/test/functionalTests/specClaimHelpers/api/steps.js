@@ -16,7 +16,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid,
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -45,6 +45,12 @@ const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
+  performBundleGeneration: async (user, caseId) => {
+    console.log('This is inside performBundleGeneration() : ' + caseId);
+    await bundleGeneration(caseId);
+    console.log('End of performBundleGeneration()');
+  },
+
   performCaseHearingFeeUnpaid: async (user, caseId) => {
     console.log('This is inside performCaseHearingFeeUnpaid() : ' + caseId);
     await hearingFeeUnpaid(caseId);
@@ -54,11 +60,12 @@ module.exports = {
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
     eventName = 'EVIDENCE_UPLOAD_APPLICANT';
+    const document = await uploadDocument();
     let payload;
     if (claimType === 'FastTrack') {
-      payload = evidenceUpload.evidenceUploadFastTrack();
+      payload = evidenceUpload.evidenceUploadFastTrack(document);
     } else if (claimType === 'SmallClaims') {
-      payload = evidenceUpload.evidenceUploadSmallClaims();
+      payload = evidenceUpload.evidenceUploadSmallClaims(document);
     }
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
@@ -79,7 +86,7 @@ module.exports = {
   performAnAssistedOrder: async (user, caseId) => {
     console.log('This is inside performAnAssistedOrder() : ' + caseId);
     eventName = 'GENERATE_DIRECTIONS_ORDER';
-    const document = await apiRequest.uploadDocument();
+    const document = await uploadDocument();
     const payload = createAnAssistedOrder.createAnAssistedOrder(document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
@@ -100,7 +107,8 @@ module.exports = {
   performCaseProgressedToSDO: async (user, caseId, claimType) => {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType);
+    const document = await uploadDocument();
+    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
