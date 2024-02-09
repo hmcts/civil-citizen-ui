@@ -11,6 +11,7 @@ import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementCont
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
+import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -23,7 +24,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   } else if (claimantResponse.isClaimantNotIntendedToProceed) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM';
   } else if (claimantResponse.isClaimantAcceptedPartAdmittedAmount && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    !claimantResponse.isClaimantRejectedCourtDecision) {
+    !claimantResponse.isClaimantRejectedCourtDecision || claim.hasClaimantAcceptedToSettleClaim()) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE';
   } else if (hasCCJRequested(claimantResponse)) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED';
@@ -45,6 +46,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const rejectedRepaymentPlaneNextSteps = getCCJNextStepsForRejectedRepaymentPlan(claim, lang);
   const rejectedAndJudgeDecideRepaymentPlan = getCCJNextStepsForJudgeDecideRepaymentPlan(claim, lang);
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
+  const acceptedResponseToSettle = getClaimSettleNextSteps(claim, lang);
 
   if (claim.isBusiness() &&
     (claim.isFAPaymentOptionInstallments() ||
@@ -62,7 +64,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return RCDisputeNotContinueNextSteps;
   }
 
-  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
+  if (claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY_ACCEPTED && claimantResponse.isClaimantAcceptedPartAdmittedAmount) {
     return PAPayImmediatelyAcceptedNextSteps;
   }
   if (claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isCCJRequested) {
@@ -79,6 +81,10 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 
   if (claimantResponse.isClaimantRejectedCourtDecision) {
     return rejectedAndJudgeDecideRepaymentPlan;
+  }
+
+  if(claim.hasClaimantAcceptedToSettleClaim()) {
+    return acceptedResponseToSettle;
   }
 
   if (hasClaimantRejectedDefendantResponse(claim)) {
