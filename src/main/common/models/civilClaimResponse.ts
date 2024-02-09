@@ -1,6 +1,7 @@
 import {StatementOfTruth} from './claim';
 import {
   CaseState,
+  CCDHelpWithFeeDetails,
   CCDHelpWithFees,
   ClaimAmountBreakup,
   InterestClaimFromType,
@@ -109,6 +110,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
+  hwFeesDetails?: CCDHelpWithFeeDetails;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
   paymentOption?: PaymentOptionType;

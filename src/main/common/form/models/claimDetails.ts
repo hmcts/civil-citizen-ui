@@ -1,4 +1,5 @@
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import { FeeType } from './helpWithFees/feeType';
 
 export enum InterestClaimFromType {
   FROM_CLAIM_SUBMIT_DATE = 'FROM_CLAIM_SUBMIT_DATE',
@@ -57,4 +58,8 @@ export interface ClaimantMediationLip {
 export interface CCDHelpWithFees {
   helpWithFee: YesNoUpperCamelCase,
   helpWithFeesReferenceNumber: string
+}
+
+export interface CCDHelpWithFeeDetails {
+  hwfFeeType: FeeType
 }
