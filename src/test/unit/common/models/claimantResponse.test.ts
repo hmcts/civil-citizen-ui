@@ -3,7 +3,9 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {Mediation} from 'models/mediation/mediation';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
+import { CompanyTelephoneNumber } from 'common/form/models/mediation/companyTelephoneNumber';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
 
 describe('ClaimantResponse model', () => {
   describe('isClaimantSuggestedPayImmediately', () => {
@@ -95,6 +97,35 @@ describe('ClaimantResponse model', () => {
       const result = claimantResponse.isClaimantSuggestedPayByDate;
       //Then
       expect(result).toBe(true);
+    });
+  });
+
+  describe('canWeUseFromClaimantResponse', () => {
+    const claimantResponse = new ClaimantResponse();
+    claimantResponse.mediation = new Mediation();
+    it('should return NO if mediationDisagreement', () => {
+      //Given
+      claimantResponse.mediation.mediationDisagreement = new GenericYesNo();
+      //When
+      const result = claimantResponse.canWeUseFromClaimantResponse;
+      //Then
+      expect(result).toBe(YesNoUpperCase.NO);
+    });
+    it('should return NO if mediationDisagreement', () => {
+      //Given
+      claimantResponse.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      //When
+      const result = claimantResponse.canWeUseFromClaimantResponse;
+      //Then
+      expect(result).toBe(YesNoUpperCase.YES);
+    });
+    it('should return YES if mediation canweuse', () => {
+      //Given
+      claimantResponse.mediation.canWeUse = { option: YesNo.NO, mediationPhoneNumber: '123' };
+      //When
+      const result = claimantResponse.canWeUseFromClaimantResponse;
+      //Then
+      expect(result).toBe(YesNoUpperCase.YES);
     });
   });
 
