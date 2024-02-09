@@ -10,7 +10,7 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
@@ -97,6 +97,19 @@ export class ClaimantResponse {
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
   }
 
+  get canWeUseFromClaimantResponse(): YesNoUpperCase {
+    if (this.mediation?.canWeUse?.option) {
+      return YesNoUpperCase.YES;
+    } else {
+      if (this.mediation?.mediationDisagreement?.option) {
+        return YesNoUpperCase.NO;
+      } else if (this.mediation?.companyTelephoneNumber) {
+        return YesNoUpperCase.YES;
+      }
+    }
+    return YesNoUpperCase.NO;
+  }
+
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
@@ -109,6 +122,12 @@ export class ClaimantResponse {
     return (this.mediation?.canWeUse?.option === YesNo.YES || !!this.mediation?.canWeUse?.mediationPhoneNumber)
     || (this.mediation?.companyTelephoneNumber?.option === YesNo.NO)
     || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined);
+  }
+
+  isRejectionReasonCompleted(): boolean {	
+    return (this.hasPartPaymentBeenAccepted?.option === YesNo.NO	
+        || this.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)	
+      && !!this.rejectionReason?.text;	
   }
 
   get isClaimantRejectedCourtDecision(): boolean {
