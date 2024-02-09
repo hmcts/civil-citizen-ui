@@ -2651,14 +2651,14 @@
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}}. Dywedodd mai dyma'r cyfan sydd arno, nid y swm rydych chi'n ei hawlio."
     },
     "SELF_EMPLOYED": {
-      "ANNUAL_TURNOVER_IN_POUNDS": "Annual Turnover, in pounds",
+      "ANNUAL_TURNOVER_IN_POUNDS": "Trosiant blynyddol, mewn punnoedd",
       "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",
-      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
-      "PAGE_TITLE": "Behind on tax payments?",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Y swm sy'n ddyledus gennych, mewn punnoedd",
+      "PAGE_TITLE": "Ar ei hôl hi yn talu’r dreth?",
       "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
@@ -2713,10 +2713,10 @@
       "TITLE": "Ydych chi wedi anfon adroddiadau arbenigwyr at y partïon eraill yn barod?"
     },
     "SERVICE_UNAVAILABLE": {
-      "SERVICE_NAME": "Money Claims",
-      "SORRY": "Sorry, the service is unavailable",
-      "TITLE": "Money Claims – GOV.UK",
-      "YOU_WILL_BE_ABLE_LATER": "You will be able to use the service later."
+      "SERVICE_NAME": "Hawliadau am Arian",
+      "SORRY": "Yn anffodus, nid yw’r gwasanaeth ar gael",
+      "TITLE": "Hawliadau am Arian – GOV.UK",
+      "YOU_WILL_BE_ABLE_LATER": "Byddwch yn gallu defnyddio’r gwasanaeth hwn yn nes ymlaen. "
     },
     "SETTLE_CLAIM_PART_PAYMENT_RECEIVED": {
       "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?",
@@ -2815,7 +2815,7 @@
       },
       "ASK_SIGN_SETTLEMENT": "gofyn i chi arwyddo cytundeb setlo i ffurfioli'r cynllun ad-dalu",
       "BECAUSE_YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai:",
-      "CLAIM_NOT_BE_ISSUED_UNTIL_PAID": "Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
+      "CLAIM_NOT_BE_ISSUED_UNTIL_PAID": "Ni fydd eich hawliad yn cael ei gyhoeddi a’i anfon at y partïon eraill nes eich bod wedi talu ffi’r hawliad.",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "Bydd y llys yn penderfynu sut mae'n rhaid i chi dalu.",
@@ -2830,7 +2830,7 @@
       "IF_NEED_PAYMENT_DETAILS": " os oes angen ei fanylion talu arnoch.",
       "IF_CLAIMANT_REJECTS_RESPONSE": "Os yw {{ claimantName }} yn gwrthod eich ymateb",
       "PAGE_TITLE": "Cyflwyno cadarnhad",
-      "PAY_CLAIM_FEE": "Pay claim fee",
+      "PAY_CLAIM_FEE": "Talu ffi’r hawliad",
       "RECEIPT_FOR_PAYMENTS": "Sicrhewch eich bod yn cael derbynneb ar gyfer pob taliad",
       "REQUEST_CCJ_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn",
       "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }}",
@@ -2848,7 +2848,7 @@
       "WE_WILL_MEDIATION2": "If you cannot reach an agreement at mediation, the court will review the case.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "Byddwn yn cysylltu â chi i ddweud wrthych beth i'w wneud nesaf",
       "WHAT_HAPPENS_NEXT": "Beth sy'n digwydd nesaf",
-      "YOU_SETTLED_CLAIM": "This claim is now settled",
+      "YOU_SETTLED_CLAIM": "Mae’r hawliad bellach wedi’i setlo",
       "YOU_SHOULD": "Dylech:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "Rydych wedi cyflwyno eich ymateb",
       "YOU_WONT_PAY_IMMEDIATELY": "Oherwydd eich bod wedi dweud na fyddwch yn talu'n syth, gall {{ claimantName }} naill ai",
@@ -2878,23 +2878,23 @@
       "FIND_OUT_MORE": "Mwy o wybodaeth am ffioedd llys (Agor mewn tab newydd)",
       "HEARING_FEE": "Ffi gwrandawiad",
       "HOW_INTEREST_IS_CALCULATED": "Sut y cyfrifir llog hyd yma?",
-      "IF_SUCCESSFUL": "Os yw'n llwyddiannus, efallai na fydd yn rhaid i chi dalu ffi’r hawliad neu na fydd raid ichi dalu ond rhan o’r ffi.",
+      "IF_SUCCESSFUL": "Os yw'n llwyddiannus, efallai na fydd yn rhaid i chi dalu  ffi’r hawliad neu na fydd raid ichi dalu ond rhan o’r ffi.",
       "IF_UNSUCCESSFUL": "Os yw'n aflwyddiannus, byddwn yn gofyn i chi dalu ffi’r hawliad a ddangosir ar y dudalen hon yn llawn.",
       "IF_YOU_SETTLE": "Os ydych yn setlo y tu allan i’r llys",
-      "INTEREST_TO_DATE": "Interest to date",
+      "INTEREST_TO_DATE": "Llog hyd yma",
       "OTHER_FEES": "Ffioedd eraill",
-      "PAGE_TITLE": "Total amount you’re claiming",
+      "PAGE_TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad",
       "TOTAL_WOULD_BE_LOWER": "Byddai hynny'n golygu y byddai cyfanswm yr hawliad yn is na'r swm sy'n cael ei ddangos ar y dudalen hon.",
-      "WE_WILL_REVIEW": "Byddwn yn adolygu eich cais am Help i Dalu Ffioedd ar ôl i chi gyflwyno'r hawliad",
+      "WE_WILL_REVIEW": "Byddwn yn adolygu eich cais am Help Gyda Ffioedd ar ôl i chi gyflwyno'r cais",
       "WE_WONT_REFOUND": "Ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
       "YOU_DONT_HAVE_TO_PAY": "Does dim rhaid i chi dalu ffi’r gwrandawiad oni bai bod yr hawliad yn mynd i wrandawiad."
     },
     "FEE_AMOUNT": {
       "TITLE": "Talu eich ffi hawlio",
-      "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
-      "CONTINUE_TO_PAYMENT": "continue to payment"
+      "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
+      "CONTINUE_TO_PAYMENT": "parhau i dalu"
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
