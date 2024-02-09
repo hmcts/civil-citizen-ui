@@ -25,7 +25,7 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Small Claims - Verify uploaded documents by LR in the Documents tab', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-      //Lip verifies documents
+    //Lip verifies documents
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 }).tag('@regression-cp');
