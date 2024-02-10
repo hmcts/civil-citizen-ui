@@ -5,6 +5,7 @@
 {% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% block content %}
 
@@ -28,18 +29,25 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-          {# Notifications #}
-          {{ notifications(dashboardNotifications, t) }}
-          {# TaskList #}
-          {# taskListComponent(dashboardTaskList, t) #}
+          {# Notifications Example #}
+          {{ govukNotificationBanner({
+                   titleText:"English Title",
+                   html: "English text"
+                 })  }}
 
-            {% for taskList in dashboardTaskList %}
+
+{% for notifications in dashboardNotifications.items.items %}
+{{ notifications.descriptionEn }}
+<br/>
+{% endfor %}
+
+            {% for taskList in dashboardTaskList.items.items %}
               <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
                 <h2 class="app-task-list__section">
                   {{ t(taskList.title) }}
                 </h2>
                 <ol class="app-task-list app-task-list__items">
-                  {% for task in taskList.tasks %}
+                  {% for task in taskList.task %}
                     <li class="app-task-list__item">
                       <div class="row">
                         <div class="column">

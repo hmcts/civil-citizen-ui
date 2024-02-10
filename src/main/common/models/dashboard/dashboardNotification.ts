@@ -1,7 +1,9 @@
 export class DashboardNotification {
-  description: string;
+  descriptionEn: string;
+  descriptionCy: string;
 
-  constructor(description: string) {
-    this.description = description;
+  constructor(descriptionEn: string,descriptionCy: string) {
+    this.descriptionEn = descriptionEn;
+    this.descriptionCy = descriptionCy;
   }
 }

@@ -28,10 +28,14 @@ export const getDashboardContentTypeFromCache = async (caseRole:ClaimantOrDefend
       const jsonData = JSON.parse(data);
       if (dashboardContentType == DashboardContentType.DASHBOARD) {
         const dashboardItems= plainToInstance(DashboardTaskList, jsonData as object[]);
-        return new Dashboard(dashboardItems);
+        const dashboard =new Dashboard();
+        dashboard.items = dashboardItems;
+        return dashboard;
       } else {
         const notificationItems = plainToInstance(DashboardNotification, jsonData as object[]);
-        return new DashboardNotificationList(notificationItems);
+        const dashboardNotificationList = new DashboardNotificationList();
+        dashboardNotificationList.items=notificationItems;
+        return dashboardNotificationList;
       }
     }
   }catch(error){

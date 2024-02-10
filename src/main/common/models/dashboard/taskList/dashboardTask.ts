@@ -1,11 +1,6 @@
-export interface DashboardTask {
-  description: string
-}
-
-export class TaskItem implements DashboardTask {
+export class DashboardTask {
   description: string;
-
-  constructor(description: string) {
-    this.description = description;
-  }
+  status: string;
+  helpText:string;
 }
+

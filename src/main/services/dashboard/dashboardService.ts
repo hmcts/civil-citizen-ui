@@ -62,7 +62,7 @@ export const generateNewDashboard = (claim: Claim): Dashboard => {
     //   .addTask(new TaskItem(t('PAGES.DASHBOARD.ORDERS_NOTICE.VIEW'), '#', TaskStatus.NOT_AVAILABLE_YET, false, TaskStatusColor[TaskStatus.NOT_AVAILABLE_YET]))
     //   .build();
   }
-  return new Dashboard([]);
+  return new Dashboard();
 };
 
 // const checkHearingPaymentStatus = (claim: Claim): TaskItem => {

@@ -11,10 +11,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: Request, re
   try {
     const claimId = req.params.id;
     const caseData: Claim = await getClaimById(claimId, req, true);
-
     const dashboardNotifications = await getNotifications(claimId, caseData);
     const dashboardTaskList = await getDashboardForm(caseData,claimId);
-    res.render(claimantDashboardViewPath, {caseData, claimId, dashboardTaskList, dashboardNotifications});
+    res.render(claimantDashboardViewPath, {claim:caseData, claimId, dashboardTaskList, dashboardNotifications});
   } catch (error) {
     next(error);
   }

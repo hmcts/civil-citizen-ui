@@ -421,11 +421,33 @@ export class CivilServiceClient {
   }
 
   async retrieveNotificationDetails(claimId: string): Promise<DashboardNotificationList>  {
-
-    return new DashboardNotificationList([]);
+    const jsonNotificationList= {items :[{descriptionEn:'govukNotificationBanner({\n' +
+            '      titleText: "English Title 1",\n' +
+            '      html: "English text 1"\n' +
+            '    })',descriptionCy:'1cy'},
+    {descriptionEn:'govukNotificationBanner({\n' +
+            '      titleText: "English Title 2",\n' +
+            '      html: "English text 2"\n' +
+            '    })',descriptionCy:'2cy'},
+    {descriptionEn:' govukNotificationBanner({\n' +
+            '      titleText: "English Title 3",\n' +
+            '      html: "English text 3"\n' +
+            '    })',descriptionCy:'3cy'},
+    ],
+    };
+    const dashboardNotificationList = Object.assign(new DashboardNotificationList(), jsonNotificationList);
+    return dashboardNotificationList;
   }
 
   async retrieveDashboardDetails(claimId: string): Promise<Dashboard>  {
-    return new Dashboard([]);
+    const jsonTaskList={items:[
+      {title:'Task Title',
+        task:[{description:'Description',status:'DONE',helpText:'help'},
+          {description:'Description 2',status:'DONE',helpText:'help 2'},
+        ],
+      }],
+    };
+    const dashboard = Object.assign(new Dashboard(), jsonTaskList);
+    return dashboard;
   }
 }
