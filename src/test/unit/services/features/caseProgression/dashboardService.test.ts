@@ -3,9 +3,8 @@ import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
-import {generateNewDashboard, getNotifications} from 'services/dashboard/dashboardService';
+import {generateNewDashboard, getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {CaseRole} from 'form/models/caseRoles';
-import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 
 describe('dashboardService', () => {
@@ -23,7 +22,7 @@ describe('dashboardService', () => {
         claim.totalClaimAmount = 12345;
         //When
         const claimantNotifications = generateNewDashboard(claim);
-        const notifications =new DashboardNotificationList([]);
+        const notifications =new DashboardNotificationList();
         //Then
         expect(claimantNotifications).toEqual(notifications);
 
@@ -52,7 +51,7 @@ describe('dashboardService', () => {
       };
       //when
       const taskList = generateNewDashboard(claimWithPaymentStatus.case_data);
-      const notifications =new DashboardNotificationList([]);
+      const notifications =new DashboardNotificationList();
       //Then
       expect(taskList).toEqual(notifications);
 
@@ -69,7 +68,12 @@ describe('dashboardService', () => {
         claim.totalClaimAmount = 12345;
         //When
         const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim);
-        const notifications: DashboardNotificationList = new DashboardNotificationList([]);
+        const notifications = {items :[
+          {titleEn:'English Title 1',titleCy:'Welsh Title 1',descriptionEn:'English Description 1',descriptionCy:'Welsh Description 1'},
+          {titleEn:'English Title 2',titleCy:'Welsh Title 2',descriptionEn:'English Description 2',descriptionCy:'Welsh Description 2'},
+          {titleEn:'English Title 3',titleCy:'Welsh Title 3',descriptionEn:'English Description 3',descriptionCy:'Welsh Description 3'},
+        ],
+        };
         //Then
         expect(claimantNotifications).toEqual(notifications);
 
@@ -83,10 +87,16 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         //When
-        const claimantNotifications = generateNewDashboard(claim);
-        const dashboard =new Dashboard([]);
+        const claimantDashboard = await getDashboardForm(claim,'1234567890' );
+        const dashboard ={items:[
+          {title:'Task Title',
+            task:[{description:'Description',status:'DONE',helpText:'help'},
+              {description:'Description 2',status:'DONE',helpText:'help 2'},
+            ],
+          }],
+        };
         //Then
-        expect(claimantNotifications).toEqual(dashboard);
+        expect(claimantDashboard).toEqual(dashboard);
 
       });
     });

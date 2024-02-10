@@ -23,24 +23,16 @@
           </p>
         </div>
       </div>
-
       <div class="govuk-grid-row">
-
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-          {# Notifications Example #}
-          {{ govukNotificationBanner({
-                   titleText:"English Title",
-                   html: "English text"
+            {% for notifications in dashboardNotifications.items.items %}
+                {{ govukNotificationBanner({
+                   titleText:notifications.titleEn,
+                   html: notifications.descriptionEn
                  })  }}
-
-
-{% for notifications in dashboardNotifications.items.items %}
-{{ notifications.descriptionEn }}
-<br/>
-{% endfor %}
-
+            {% endfor %}
             {% for taskList in dashboardTaskList.items.items %}
               <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
                 <h2 class="app-task-list__section">

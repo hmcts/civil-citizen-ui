@@ -421,18 +421,10 @@ export class CivilServiceClient {
   }
 
   async retrieveNotificationDetails(claimId: string): Promise<DashboardNotificationList>  {
-    const jsonNotificationList= {items :[{descriptionEn:'govukNotificationBanner({\n' +
-            '      titleText: "English Title 1",\n' +
-            '      html: "English text 1"\n' +
-            '    })',descriptionCy:'1cy'},
-    {descriptionEn:'govukNotificationBanner({\n' +
-            '      titleText: "English Title 2",\n' +
-            '      html: "English text 2"\n' +
-            '    })',descriptionCy:'2cy'},
-    {descriptionEn:' govukNotificationBanner({\n' +
-            '      titleText: "English Title 3",\n' +
-            '      html: "English text 3"\n' +
-            '    })',descriptionCy:'3cy'},
+    const jsonNotificationList= {items :[
+      {titleEn:'English Title 1',titleCy:'Welsh Title 1',descriptionEn:'English Description 1',descriptionCy:'Welsh Description 1'},
+      {titleEn:'English Title 2',titleCy:'Welsh Title 2',descriptionEn:'English Description 2',descriptionCy:'Welsh Description 2'},
+      {titleEn:'English Title 3',titleCy:'Welsh Title 3',descriptionEn:'English Description 3',descriptionCy:'Welsh Description 3'},
     ],
     };
     const dashboardNotificationList = Object.assign(new DashboardNotificationList(), jsonNotificationList);

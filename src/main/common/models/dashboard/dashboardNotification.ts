@@ -1,4 +1,6 @@
 export class DashboardNotification {
+  titleEn: string;
+  titleCy: string;
   descriptionEn: string;
   descriptionCy: string;
 

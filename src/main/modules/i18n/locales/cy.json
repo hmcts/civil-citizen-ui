@@ -1975,6 +1975,7 @@
       "DEFAULT_JUDGMENT_MSG1": "Mae {{claimantName}} wedi gofyn am CCJ yn eich erbyn oherwydd bod y dyddiad cau ar gyfer eich ymateb wedi mynd heibio.",
       "DEFAULT_JUDGMENT_MSG2": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru gyda chynnydd yr hawliad hwn - bydd unrhyw ddiweddariadau pellach yn dod drwy'r post.",
       "DEFAULT_JUDGMENT_MSG3": "Os yw'ch dyddiad cau wedi mynd heibio, ond nad yw'r CCJ wedi'i gyhoeddi, gallwch chi ymateb o hyd. Cysylltwch â ni am fwy o wybodaeth:",
+      "DEFENDANT_HAS_UNTIL_TO_RESPOND": "{{ defendantName }} has until {{ responseDeadline }} to respond. They can request up to an extra 28 days if they need it.",
       "EMAIL": "Email :",
       "EMAIL_ID": "contactocmc@justice.gov.uk",
       "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
