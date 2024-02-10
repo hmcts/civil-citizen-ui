@@ -13,15 +13,14 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 import {toCCDRejectAllOfClaimType} from 'services/translation/response/convertToCCDRejectAllOfClaimType';
 import {toCCDRespondToClaim} from 'services/translation/response/convertToCCDRespondToClaim';
-import {
-  toAdditionalPartyDetails,
-} from 'models/ccdResponse/ccdAdditionalPartyDetails';
+import {toAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
 import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPResponse';
 import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
-import { toCCDHelpWithClaimFee, toCCDHelpWithFees } from 'services/translation/response/convertToCCDHelpWithFees';
+import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
 import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -50,7 +49,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
     helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
-    hwFeesDetails: toCCDHelpWithClaimFee(claim?.claimDetails?.helpWithFees),
+    hwfFeeType: claim?.claimDetails?.helpWithFees?.referenceNumber ? FeeType.CLAIMISSUED : undefined,
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
