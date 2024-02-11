@@ -6,6 +6,7 @@ import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySec
 import {CaseRole} from 'form/models/caseRoles';
 import {getLatestUpdateContentForClaimant} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import { CaseState } from 'common/form/models/claimDetails';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -67,6 +68,7 @@ describe('Claim Summary Controller Claimant', () => {
     it('should show latest Update claimant', async () => {
       //given
       getLatestUpdateContentForClaimantMock.mockReturnValue(mockClaimSummaryContent);
+      app.locals.draftStoreClient = mockCivilClaim;
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)

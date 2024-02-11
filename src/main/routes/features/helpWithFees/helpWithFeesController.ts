@@ -19,8 +19,6 @@ import {t} from 'i18next';
 const applyHelpWithFeesController = Router();
 const applyHelpWithFeesViewPath  = 'features/helpWithFees/help-fees-start';
 const hearingFeeBackUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
-const hearing = 'hearing';
-const helpWithFeesRequested = 'helpWithFeesRequested';
 
 applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res: Response, next: NextFunction) => {
   try {
