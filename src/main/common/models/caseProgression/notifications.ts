@@ -1,4 +1,4 @@
-import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 export class Notifications {
   items: DashboardNotification[];
