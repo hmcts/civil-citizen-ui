@@ -60,6 +60,7 @@ describe('Claimant Response Confirmation service', () => {
 
   it('Claimant accepted defendant`s response as part admit pay immediately', () => {
     // Given
+    claim.applicant1AcceptAdmitAmountPaidSpec = 'Yes';
     claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.partialAdmission = {
@@ -560,6 +561,21 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
 
+  });
+
+  it('Claimant accepted defendant`s response to settle the claim', () => {
+    // Given
+    claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE.CLAIM_SETTLE');
   });
 });
 
