@@ -12,6 +12,9 @@ const paths = {
     your_details: '//a[.=\'Your details\']',
     their_details: '//a[.=\'Their details\']',
     claim_amount : '//a[.=\'Claim amount\']',
+    claim_details : '//a[.=\'Claim details\']',
+    check_and_submit_your_claim : '//a[.=\'Check and submit your claim\']',
+    opt_out_button : '//button[@name=\'opt-out-button\']',
   },
 };
 class CreateClaimSteps {
@@ -89,7 +92,19 @@ class CreateClaimSteps {
     await createClaim.verifyAndInputHelpWithFees();
     await createClaim.verifyClaimAmountSummary();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_amount);
+    I.click(paths.links.claim_details);
+    await createClaim.verifyAndInputClaimDetails();
+    await createClaim.inputClaimDetailsTimeline();
+    await createClaim.inputEvidenceList();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_claim);
+    I.wait(3);
+    await createClaim.verifyEqualityAndDiversity();
+    I.click(paths.links.opt_out_button);
+    await createClaim.verifyCheckYourAnswers();
+    const caseReference = createClaim.verifyClaimSubmitted();
+    console.log(caseReference);
+
   }
 
   async verifyDashboardLoaded() {

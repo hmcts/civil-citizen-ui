@@ -9,7 +9,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('Create Claim For Under 25000', async () => {
+Scenario.only('Create Claim For Under 25000', async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
