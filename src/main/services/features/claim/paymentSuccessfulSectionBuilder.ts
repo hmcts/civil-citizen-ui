@@ -8,8 +8,8 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
     const section = ({
       type: ClaimSummaryType.PANEL,
       data: {
-        title: `<span class='govuk-!-font-size-50'>${t('PAGES.PAYMENT_CONFIRMATION.PAYMENT.SUCCESSFUL.PAGE_TITLE')}<br>${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAGE_TITLE2')}</span>`,
-        html: `<span class='govuk-!-font-size-41'>${t('PAGES.PAYMENT_CONFIRMATION.PAYMENT.SUCCESSFUL.PAYMENT_IS')}</span>
+        title: `<span class='govuk-!-font-size-50'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE')}<br>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE2')}</span>`,
+        html: `<span class='govuk-!-font-size-41'>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS')}</span>
               <br><strong>${paymentReferenceNumber}</strong><br>`,
       },
     });
@@ -23,10 +23,10 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
       data: {
         html: `<dl class="govuk-summary-list">
                  <div class="govuk-summary-list__row">
-                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.PAYMENT_CONFIRMATION.PAYMENT.SUCCESSFUL.PAYMENT_FOR')}</strong></dt>
+                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_FOR')}</strong></dt>
                  <dd class="govuk-summary-list__value">${t(microText)}</dd></div>
                  <div class="govuk-summary-list__row">
-                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.PAYMENT_CONFIRMATION.PAYMENT.SUCCESSFUL.TOTAL_AMOUNT')}</strong></dt>
+                 <dt class="govuk-summary-list__key"><strong>${t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.TOTAL_AMOUNT')}</strong></dt>
                  <dd class="govuk-summary-list__value">${totalAmount}</dd></div>
                </dl>`,
       },

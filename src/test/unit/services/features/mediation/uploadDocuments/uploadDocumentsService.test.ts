@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {
-  getUploadDocuments,
+  getUploadDocuments, removeItem,
   saveUploadDocument,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {
@@ -10,6 +10,11 @@ import {
 } from 'models/mediation/uploadDocuments/uploadDocuments';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {
+  TypeOfDocumentYourNameSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
@@ -75,5 +80,42 @@ describe('upload document service For Mediation', () => {
       expect(spySave).toBeCalledWith('1',claim);
 
     });
+
+    it('should upload file', async () => {
+      //Given
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const uploadDocument = new UploadDocuments(TYPE_OF_DOCUMENTS_DATA);
+      //claim.mediationUploadDocuments = uploadDocument;
+
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //when
+      await saveUploadDocument('1', uploadDocument.typeOfDocuments, 'typeOfDocuments');
+      //then
+      expect(spySave).toBeCalledWith('1',claim);
+
+    });
+  });
+
+  it('should remove item documentsForYourStatement', async () => {
+    //Given
+    const uploadDocumentsForm = new UploadDocumentsForm([new TypeOfDocumentYourNameSection('01','01','2024'),
+      new TypeOfDocumentYourNameSection('01','01','2024')],[]);
+    //when
+    removeItem(uploadDocumentsForm, 'documentsForYourStatement');
+    //then
+    expect(uploadDocumentsForm.documentsForYourStatement).toHaveLength(1);
+
+  });
+
+  it('should remove item documentsForDocumentsReferred', async () => {
+    //Given
+    const uploadDocumentsForm = new UploadDocumentsForm([],[new TypeOfDocumentSection('01','01','2024'), new TypeOfDocumentSection('01','01','2024')]);
+    //when
+    removeItem(uploadDocumentsForm, 'documentsForDocumentsReferred');
+    //then
+    expect(uploadDocumentsForm.documentsForDocumentsReferred).toHaveLength(1);
+
   });
 });
