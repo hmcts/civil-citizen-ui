@@ -149,5 +149,5 @@ class DateUtilsComponent {
 }
 
 const fourWeeksFroToday = DateUtilsComponent.rollDateToCertainWeeks(4);
-console.log('There are 4 weeks fro Today : ' + DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFroToday));
+console.log('There are 4 weeks from Today : ' + DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFroToday));
 module.exports = {DateUtilsComponent};

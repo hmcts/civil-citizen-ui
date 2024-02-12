@@ -31,19 +31,6 @@ module.exports = {
       waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
       retries: 3,
-      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
-        timeout: waitForTime,
-        headers: {
-          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
-        },
-        exposeNetwork: testUrl ? '*.platform.hmcts.net' : '<loopback>',
-        browserWSEndpoint: {
-          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
-            os: 'linux',
-            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
-          })}`,
-        },
-      },
     },
   },
   idamStub: {
