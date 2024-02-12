@@ -33,6 +33,7 @@
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
     "TELEPHONE_MEDIATION": "Telephone mediation",
     "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -502,12 +503,12 @@
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
       "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
       "ENGLISH": "English",
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "WELSH_AND_ENGLISH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -1095,7 +1096,10 @@
         "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
-      "RC_DISPUTE": {
+      "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
+        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+      },
+     "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       },
