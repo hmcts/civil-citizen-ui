@@ -10,19 +10,12 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-const getDefendantFullName = (claim: Claim): string => {
-  if (claim.respondent1?.type === PartyType.ORGANISATION || claim.respondent1?.type === PartyType.COMPANY) {
-    return claim.respondent1?.partyDetails.partyName;
-  }
-  return `${claim.respondent1?.partyDetails.individualTitle} ${claim.respondent1?.partyDetails.individualFirstName} ${claim.respondent1?.partyDetails.individualLastName}`;
-};
-
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT', {lng}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng}), getDefendantFullName(claim)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng}), claim.getDefendantFullName()),
     ],
   });
   if (claim.respondent1?.type === PartyType.SOLE_TRADER && claim.respondent1?.partyDetails.soleTraderTradingAs) {
