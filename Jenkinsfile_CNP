@@ -142,6 +142,9 @@ withPipeline(type, product, component) {
         reportName           : 'Preview Accessibility results'
       ])
     }
+    stage('Crossbrowser') {
+      yarnBuilder.yarn('test:crossbrowser')
+    }
   }
 
   before('smoketest:aat') {
