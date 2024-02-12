@@ -123,7 +123,7 @@ app.use(async (req, res, next) => {
     res.locals.ocmcEligibilityUrl = `${ocmcBaseUrl}/eligibility`;
   }
   next();
-})
+});
 
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
