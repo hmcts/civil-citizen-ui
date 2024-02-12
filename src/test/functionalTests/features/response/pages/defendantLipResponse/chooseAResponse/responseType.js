@@ -12,10 +12,17 @@ const buttons = {
   saveAndContinue: '#main-content button.govuk-button',
 };
 
-class RespondTypePage {
-  async enterResponseToClaim(claimRef, responseType){
+const content = {
+  heading: {
+    en: 'How do you respond to the claim?',
+    cy: 'Sut ydych chi\'n ymateb i\'r hawliad?'
+  }
+}
+
+class ResponseTypePage {
+  async enterResponseToClaim(claimRef, responseType, language = 'en'){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.waitForText('How do you respond to the claim?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     switch (responseType){
       case 'full-admission':{
         await I.click(fields.responseAdmitAll);
@@ -65,4 +72,4 @@ class RespondTypePage {
   }
 }
 
-module.exports = RespondTypePage;
+module.exports = ResponseTypePage;

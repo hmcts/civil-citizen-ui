@@ -4,7 +4,7 @@ const BilingualLanguagePreference = require('../pages/defendantLipResponse/bilin
 const NameAndAddressDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterNameAndAddressDetails');
 const DateOfBirthDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterDateOfBirthDetails');
 const ContactNumberDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterContactNumberDetails');
-const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/respondType');
+const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/responseType');
 const PaymentOptionPage = require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
 const CheckYourAnswersPage = require('../pages/defendantLipResponse/checkYourAnswers');
 const ConfirmationPage = require('../pages/defendantLipResponse/confirmation');
@@ -188,8 +188,8 @@ class ResponseSteps {
     await nameAndAddressDetailsPage.enterWrongPostcode();
   }
 
-  async EnterYourOptionsForDeadline(claimRef, deadlineOption) {
-    await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
+  async EnterYourOptionsForDeadline(claimRef, deadlineOption, language = 'en') {
+    await viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption, language);
   }
 
   async EnterYourOptionsForDeadlineError(claimRef, deadlineOption) {
@@ -225,8 +225,8 @@ class ResponseSteps {
     await addYourTimeLine.addTimeLineOfEvents();
   }
 
-  async EnterResponseToClaim(claimRef, responseType) {
-    await respondTypePage.enterResponseToClaim(claimRef, responseType);
+  async EnterResponseToClaim(claimRef, responseType, language = 'en') {
+    await respondTypePage.enterResponseToClaim(claimRef, responseType, language);
   }
   async EnterResponseToClaimError(claimRef, responseType) {
     await respondTypePage.enterResponseToClaimError(claimRef, responseType);
@@ -398,8 +398,8 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
   }
 
-  async EnterHowMuchMoneyYouOwe(claimRef, amount) {
-    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  async EnterHowMuchMoneyYouOwe(claimRef, amount, partAdmit, language = 'en') {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount, language);
   }
 
   async EnterHowMuchMoneyYouOweError(claimRef) {
@@ -459,15 +459,15 @@ class ResponseSteps {
     await repaymentPlan.enterRepaymentPlanError(claimRef);
   }
 
-  async SelectPartAdmitAlreadyPaid(option) {
-    await partAdmitAlreadyPaid.selectAlreadyPaid(option);
+  async SelectPartAdmitAlreadyPaid(option, language = 'en') {
+    await partAdmitAlreadyPaid.selectAlreadyPaid(option, language);
   }
 
   async SelectOptionInRejectAllClaim(reason) {
     await rejectAllOfClaim.selectRejectAllReason(reason);
   }
 
-  async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
+  async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType, language = 'en') {
     await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
   }
 

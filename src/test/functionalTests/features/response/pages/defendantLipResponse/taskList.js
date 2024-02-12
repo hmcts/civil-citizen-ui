@@ -1,8 +1,8 @@
 const I = actor();
 const config = require('../../../../../config');
 
-const pageContent = {
-  responsePageHeading: {
+const content = {
+  heading: {
     en: 'Respond to a money claim',
     cy: 'Ymateb i hawliad ariannol'
   }
@@ -10,7 +10,7 @@ const pageContent = {
 
 class TaskListPage {
   verifyResponsePageContent(language = 'en') {
-    I.waitForText(responsePageHeading, pageContent.responsePageHeading[language]);
+    I.waitForText(responsePageHeading, content.heading[language]);
   }
 }
 

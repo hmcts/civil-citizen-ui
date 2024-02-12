@@ -6,16 +6,19 @@ const fields = {
   cy: 'input[id="option-2"]',
 };
 
-const pageContent = {
-  languagePreferenceHeading: {
+const content = {
+  heading: {
     en: 'Language',
     cy: 'Iaith'
   },
-  languagePreferenceText: {
+  descriptionText: {
     en: 'You must choose which language to use to respond to this claim',
     cy: 'Mae\'n rhaid ichi ddewis pa iaith yr hoffech ei defnyddio i ymateb i\'r hawliad hwn.'
   },
-  saveAndContinueButtonText: {
+}
+
+const buttons = {
+  saveAndContinueText: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau'
   }
@@ -24,10 +27,10 @@ const pageContent = {
 class BilingualLanguagePreference {
 
   async verifyContent(language = 'en') {
-    await I.waitForText(pageContent.languagePreferenceHeading[language], config.WaitForText);
-    await I.see(pageContent.languagePreferenceText[language]);
+    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.see(content.descriptionText[language]);
     I.click(fields[language]);
-    await I.click(pageContent.saveAndContinueButtonText[language]);
+    await I.click(buttons.saveAndContinueText[language]);
   }
 
   async verifyContentError() {

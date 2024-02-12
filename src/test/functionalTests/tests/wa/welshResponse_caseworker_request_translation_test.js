@@ -7,6 +7,7 @@ const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamH
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
+const partAdmit = 'partial-admission';
 
 Feature('Response with PartAdmit - Small Claims');
 
@@ -25,8 +26,12 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
     await ResponseSteps.RespondToClaim(claimRef, 'cy');
-    await ResponseSteps.EnterPersonalDetails(claimRef, false, 'cy');
-    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterPersonalDetails(claimRef, false, 'cy'); //Two pages TODO 
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime, 'cy'); //Two pages TODO
+    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit, 'cy');
+    await ResponseSteps.SelectPartAdmitAlreadyPaid('no', 'cy');
+    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, 'cy');
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, 'cy');
 });
 
 AfterSuite(async () => {

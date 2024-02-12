@@ -25,18 +25,21 @@ const fields = {
   contactPerson: 'input[id="contactPerson"]',
 };
 
-const pageContent = {
+const content = {
   confirmYourDetailsLink: {
     en: 'Confirm your details',
     cy: 'Cadarnhau eich manylion'
   },
-  saveAndContinueButtonText: {
+};
+
+const buttons = {
+  saveAndContinueText: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau'
   }
-};
+}
 
-const pageInputs = {
+const inputs = {
   addressLine1: {
     en: 'Test AddressLine1',
     cy: 'Cyfeiriad Prawf Llinell1'
@@ -61,14 +64,14 @@ const pageInputs = {
 
 class NameAndAddressDetailsPage {
   async enterNameAndAddressDetails (claimRef, language = 'en') {
-    await I.click(pageContent.confirmYourDetailsLink[language]);
+    await I.click(content.confirmYourDetailsLink[language]);
     await I.waitForElement(fields.addressLine1, config.WaitForText);
-    await I.fillField(fields.addressLine1, pageInputs.addressLine1[language]);
-    await I.fillField(fields.addressLine2, pageInputs.addressLine2[language]);
-    await I.fillField(fields.addressLine3, pageInputs.addressLine3[language]);
-    await I.fillField(fields.city, pageInputs.city[language]);
-    await I.fillField(fields.postcode, pageInputs.postcode[language]);
-    await I.click(pageContent.saveAndContinueButtonText[language]);
+    await I.fillField(fields.addressLine1, inputs.addressLine1[language]);
+    await I.fillField(fields.addressLine2, inputs.addressLine2[language]);
+    await I.fillField(fields.addressLine3, inputs.addressLine3[language]);
+    await I.fillField(fields.city, inputs.city[language]);
+    await I.fillField(fields.postcode, inputs.postcode[language]);
+    await I.click(buttons.saveAndContinueText[language]);
   }
 
   async enterCompanyContactDetails () {
