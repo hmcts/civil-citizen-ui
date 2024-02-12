@@ -11,12 +11,12 @@ import {PropertiesVolume} from 'modules/properties-volume';
 import {AppInsights} from 'modules/appinsights';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
-import {OidcMiddleware} from 'modules/oidc';
+import { OidcMiddleware, isEligibilityPage } from 'modules/oidc';
 import {DraftStoreClient} from 'modules/draft-store';
 import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
-import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import { isCUIReleaseTwoEnabled, isServiceShuttered } from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import session from 'express-session';
 import {
@@ -114,6 +114,16 @@ const checkServiceAvailability = async (_req: express.Request, res: express.Resp
     next();
   }
 };
+
+app.use(async (req, res, next) => {
+  const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+  if (isEligibilityPage(req.originalUrl) && !isCUIR2Enabled) {
+    const ocmcBaseUrl = config.get<string>('services.cmc.url');
+    res.locals.isOCMCEligibilityEnabled = true;
+    res.locals.ocmcEligibilityUrl = `${ocmcBaseUrl}/eligibility`;
+  }
+  next();
+})
 
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
