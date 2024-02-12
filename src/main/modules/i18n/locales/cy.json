@@ -366,22 +366,22 @@
         "SECTION_TITLE": "Mediation non-attendance",
 
         "TITLE": {
-          "YOUR_STATEMENT": "Your statement",
+          "YOUR_STATEMENT": "Eich datganiad",
           "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
         },
         "YOUR_NAME": {
-          "YOUR_STATEMENT": "Your name",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Type of document"
+          "YOUR_STATEMENT": "Eich enw",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Math o ddogfen"
         },
         "DATE_INPUT": {
-          "YOUR_STATEMENT" : "Date statement was written",
+          "YOUR_STATEMENT" : "Y dyddiad yr ysgrifenwyd y datganiad",
           "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
         }
       },
       "TYPE_OF_DOCUMENTS": {
         "CHECKBOX_TITLE": "Mediation non-attendance",
         "CHECKBOX_HINT": "Select all that apply",
-        "YOUR_STATEMENT": "Your statement",
+        "YOUR_STATEMENT": "Eich datganiad",
         "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
         "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
         "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
@@ -2066,7 +2066,7 @@
         "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
         "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'.",
         "SDO": "standard directions order ",
-        "TITLE": "Upload documents",
+        "TITLE": "Llwytho dogfennau",
         "YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS": "You can upload and submit any documents which support your claim. These can include any communications, paperwork and statements from expert and witnesses."
       },
       "GET_CONTACT_DETAILS": "Cael manylion cyswllt {{ claimantName }}.",
@@ -2900,19 +2900,19 @@
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
       "CALCULATE_INTEREST": "Mae angen i chi gyfrifo llog ar gyfer y gwahanol gyfnodau neu eitemau amser a rhoi gwybod i ni am y cyfanswm.",
       "CALCULATION_PROOF": "Dangos sut y gwnaethoch gyfrifo’r swm",
-      "PAGE_TITLE": "Claim total interest",
+      "PAGE_TITLE": "Hawlio’r  llog cyfan",
       "TITLE": "Beth yw'r llog cyfan ar gyfer eich cais?",
       "TOTAL_AMOUNT": "Cyfanswm swm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Finalise your trial arrangements",
-      "TRIAL_DURATION_TITLE": "Trial duration",
-      "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
-      "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
-      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">If you think you will need more time for the trial, you will need to liaise with the other party and make an application to the court.</span> </br> </br> The time allocated for the trial will not be increased until an application is received, the fee paid, and an order made.",
-      "OTHER_INFORMATION_TITLE": "Other information",
-      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Is there anything else the court needs to know (optional)?</span>",
-      "OTHER_INFORMATION_INPUT_HINT": "For example, a witness needs to leave the court by 3pm due to caring responsibilities."
+      "TITLE": "Cadarnhau trefniadau eich treial",
+      "TRIAL_DURATION_TITLE": "Hyd y treial",
+      "TRIAL_DURATION_PARAGRAPH": "Hyd y treial a ddyrannwyd yn wreiddiol yw <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
+      "REQUIRE_LESS_TIME": "Os oes angen llai o amser arnoch, nodwch eich rhesymau yn y blwch 'Gwybodaeth Arall' isod.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.</span> </br> </br> Ni chynyddir yr amser a ddyrennir ar gyfer y treial nes derbynnir cais, bod y ffi wedi ei thalu a bod gorchymyn wedi ei wneud.",
+      "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
+      "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">A oes unrhyw beth arall y mae angen i’r llys ei wybod (dewisol)?</span>",
+      "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae angen i dyst adael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
     },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
@@ -2982,23 +2982,23 @@
       "UNEMPLOYED": "Di-waith"
     },
     "UPLOAD_DOCUMENTS": {
-      "ADD": "Add another",
-      "DATE": "Date statement was written",
-      "DATE_EXAMPLE": "For example, 27 9 2022",
-      "DAY": "Day",
-      "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
-      "NAME": "Your name",
-      "MONTH": "Month",
-      "NO_UPLOAD": "No files uploaded",
-      "PAGE_TITLE": "Upload documents",
-      "REMOVE_SECTION": "Remove section",
-      "STATEMENT": "Your statement",
-      "SUBTITLE": "Acceptable documents formats",
-      "TITLE": "Upload documents",
-      "TYPE_OF_DOCUMENT": "Type of document",
-      "UPLOAD": "Upload a file",
-      "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
-      "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
+      "ADD": "Ychwanegu un arall",
+      "DATE": "Y dyddiad yr ysgrifenwyd y datganiad",
+      "DATE_EXAMPLE": "Er enghraifft, 27 9 2022",
+      "DAY": "Diwrnod",
+      "FORMAT": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "NAME": "Eich enw",
+      "MONTH": "Mis",
+      "NO_UPLOAD": "Nid oes ffeiliau wedi cael eu llwytho",
+      "PAGE_TITLE": "Llwytho dogfennau",
+      "REMOVE_SECTION": "Dileu’r adran",
+      "STATEMENT": "Eich datganiad",
+      "SUBTITLE": "Fformatau derbyniol ar gyfer cyflwyno dogfennau",
+      "TITLE": "Llwytho dogfennau",
+      "TYPE_OF_DOCUMENT": "Math o ddogfen",
+      "UPLOAD": "Llwytho ffeil",
+      "TYPE_OF_DOCUMENT_EXAMPLE": "Er enghraifft, contract, anfoneb, derbyneb, e-bost, neges destun, llun, neges ar y cyfryngau cymdeithasol",
+      "DOCUMENT_ISSUE_DATE": "Dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
       "TRIAL": {
         "TITLE": "Dogfennau’r treial",
         "CASE_SUMMARY": "Case summary",
@@ -3013,17 +3013,17 @@
         "DISCLOSURE_LIST": "Disclosure list"
       },
       "WITNESS": {
-        "DATE_STATEMENT": "Date statement was written",
+        "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
         "DATE_SUMMARY": "Date summary was written",
         "DOCUMENT": "Documents referred to in the statement",
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
         "TITLE": "Tystiolaeth tystion",
-        "TYPE_OF_DOCUMENT": "Type of document",
-        "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice, receipt, email, text message, photo, social media message",
-        "YOUR_STATEMENT": "Your statement",
-        "YOUR_NAME": "Your name",
+        "TYPE_OF_DOCUMENT": "Math o ddogfen",
+        "TYPE_OF_DOCUMENT_HINT": "Er enghraifft, contract, anfoneb, derbyneb, e-bost, neges destun, llun, neges ar y cyfryngau cymdeithasol",
+        "YOUR_STATEMENT": "Eich datganiad",
+        "YOUR_NAME": "Eich enw",
         "WITNESS_NAME": "Witness's name"
       },
       "EXPERT": {
@@ -3048,7 +3048,7 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Finalise your trial arrangements",
+      "PAGE_TITLE": "Cadarnhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "IS_CASE_READY": "Is the case ready for trial?",
@@ -3059,7 +3059,7 @@
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial arrangements",
+      "FINALISE": "Cadarnhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
@@ -3145,7 +3145,7 @@
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalise your trial arrangements",
+      "TITLE": "Cadarnhau trefniadau eich treial",
       "CASE_REFERENCE": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
@@ -3165,7 +3165,7 @@
       "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial. If you feel less time is needed, you can specify why in the 'other information' box.",
       "IF_YOU_FEEL_THAT": "If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.",
       "YOU_SHOULD_ONLY_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first. You should only make an application once this has been completed.",
-      "OTHER_INFORMATION_TITLE": "Other information",
+      "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
       "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
       "START_NOW": "Start now",
       "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
