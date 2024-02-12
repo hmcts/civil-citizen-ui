@@ -1,6 +1,7 @@
 export class DashboardTask {
-  description: string;
+  name: string;
   status: string;
-  helpText:string;
+  hintText:string;
+  url:string;
 }
 

@@ -43,7 +43,7 @@ export const getRedisStoreForSession = () => {
 };
 
 export const getNotificationById = async (claimId: string): Promise<DashboardNotificationList> => {
-  const dashboardNotifications = await civilServiceClient.retrieveNotificationDetails(claimId);
+  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId);
   if (dashboardNotifications) {
     return dashboardNotifications;
   } else {
@@ -52,7 +52,7 @@ export const getNotificationById = async (claimId: string): Promise<DashboardNot
 };
 
 export const getDashboardById = async (claimId: string): Promise<Dashboard> => {
-  const dashboard = await civilServiceClient.retrieveDashboardDetails(claimId);
+  const dashboard = await civilServiceClient.retrieveDashboard(claimId);
   if (dashboard) {
     return dashboard;
   } else {

@@ -420,7 +420,7 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveNotificationDetails(claimId: string): Promise<DashboardNotificationList>  {
+  async retrieveNotification(claimId: string): Promise<DashboardNotificationList>  {
     const jsonNotificationList= {items :[
       {titleEn:'English Title 1',titleCy:'Welsh Title 1',descriptionEn:'English Description 1',descriptionCy:'Welsh Description 1'},
       {titleEn:'English Title 2',titleCy:'Welsh Title 2',descriptionEn:'English Description 2',descriptionCy:'Welsh Description 2'},
@@ -431,11 +431,11 @@ export class CivilServiceClient {
     return dashboardNotificationList;
   }
 
-  async retrieveDashboardDetails(claimId: string): Promise<Dashboard>  {
+  async retrieveDashboard(claimId: string): Promise<Dashboard>  {
     const jsonTaskList={items:[
-      {title:'Task Title',
-        task:[{description:'Description',status:'DONE',helpText:'help'},
-          {description:'Description 2',status:'DONE',helpText:'help 2'},
+      {category:'Task Title',
+        task:[{name:'Description',status:'DONE',hintText:'help'},
+          {name:'Description 2',status:'DONE',hintText:'help 2'},
         ],
       }],
     };
