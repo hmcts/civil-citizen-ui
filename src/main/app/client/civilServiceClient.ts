@@ -433,9 +433,10 @@ export class CivilServiceClient {
 
   async retrieveDashboard(claimId: string): Promise<Dashboard>  {
     const jsonTaskList={items:[
-      {category:'Task Title',
-        task:[{name:'Description',status:'DONE',hintText:'help'},
-          {name:'Description 2',status:'DONE',hintText:'help 2'},
+      {categoryEn:'Task Title',
+        categoryCy:'Task Title Welsh',
+        task:[{TaskNameEn:'Description',TaskNameCy:'Description Welsh',hintTextEn:'help',hintTextCy:'help welsh',status:'DONE'},
+          {TaskNameEn:'Description 2',TaskNameCy:'Description Welsh2',hintTextEn:'help 2',hintTextCy:'help welsh 2',status:'DONE'},
         ],
       }],
     };

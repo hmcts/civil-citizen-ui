@@ -89,9 +89,10 @@ describe('dashboardService', () => {
         //When
         const claimantDashboard = await getDashboardForm(claim,'1234567890' );
         const dashboard ={items:[
-          {title:'Task Title',
-            task:[{description:'Description',status:'DONE',helpText:'help'},
-              {description:'Description 2',status:'DONE',helpText:'help 2'},
+          {categoryEn:'Task Title',
+            categoryCy:'Task Title Welsh',
+            task:[{TaskNameEn:'Description',TaskNameCy:'Description Welsh',hintTextEn:'help',hintTextCy:'help welsh',status:'DONE'},
+              {TaskNameEn:'Description 2',TaskNameCy:'Description Welsh2',hintTextEn:'help 2',hintTextCy:'help welsh 2',status:'DONE'},
             ],
           }],
         };
