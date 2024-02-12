@@ -24,7 +24,7 @@ Before(async ({api}) => {
   console.log('Security code', securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-}).tag('@regression-cui-r1');
+});
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
