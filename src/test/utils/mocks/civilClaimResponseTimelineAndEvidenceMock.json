@@ -34,10 +34,12 @@
     },
     "respondent1": {
       "type": "SOLE_TRADER",
-      "title": "Mr.",
-      "firstName": "Jan",
-      "lastName": "Clark",
-      "partyName": "Mr. Jan Clark",
+      "partyDetails": {
+        "title": "Mr.",
+        "firstName": "Jan",
+        "lastName": "Clark",
+        "partyName": "Mr. Jan Clark"
+      },
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",
