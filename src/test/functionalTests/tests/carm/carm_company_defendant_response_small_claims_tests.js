@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
@@ -58,6 +60,6 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
 }).tag('@carm');
 
 AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
+  // await unAssignAllUsers();
+  // await deleteAccount(config.defendantCitizenUser.email);
 });
