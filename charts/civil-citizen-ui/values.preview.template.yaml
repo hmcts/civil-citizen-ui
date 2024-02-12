@@ -168,6 +168,7 @@ civil-service:
 aac-manage-case-assignment:
   enabled: true
   java:
+    ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
     image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
