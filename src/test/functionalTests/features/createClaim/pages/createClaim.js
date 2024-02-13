@@ -2,10 +2,10 @@ const I = actor();
 /*const config = require('../../../../config');*/
 
 const paths = {
-  links : {
+  links: {
     how_is_interest_calculated: '//span[contains(.,\'How interest to date is calculated?\')]',
-    find_out_more_about_court_fees : '//a[.=\'Find out more about court fees (opens in a new tab)\']',
-    privacy_policy : '//a[.=\'privacy policy\']',
+    find_out_more_about_court_fees: '//a[.=\'Find out more about court fees (opens in a new tab)\']',
+    privacy_policy: '//a[.=\'privacy policy\']',
   },
   buttons: {
     i_have_confirmed_i_have_read_this: 'I confirm I\'ve read this',
@@ -17,6 +17,7 @@ const paths = {
     individual_claimant: '#claimantPartyType',
     individual_defendant: '#defendantPartyType',
     yes: '#option',
+    no: '//input[@value=\'no\']',
     same_rate_for_the_whole_period: '#interestType',
     same_interest_rate_type: '#sameRateInterestType',
     date_that_you_submit_claim: '#sameRateInterestType',
@@ -39,32 +40,33 @@ const paths = {
     help_with_fees_reference_number: '#referenceNumber',
     claim_details_text: '#text',
 
-    timeline_row_0_day : '(//input[@name=\'rows[0][day]\'])[1]',
-    timeline_row_0_month : '(//input[@name=\'rows[0][month]\'])[1]',
-    timeline_row_0_year : '(//input[@name=\'rows[0][year]\'])[1]',
-    timeline_row_0_description : '(//textarea[@name=\'rows[0][description]\'])[1]',
-    timeline_row_1_day : '(//input[@name=\'rows[1][day]\'])[1]',
-    timeline_row_1_month : '(//input[@name=\'rows[1][month]\'])[1]',
-    timeline_row_1_year : '(//input[@name=\'rows[1][year]\'])[1]',
-    timeline_row_1_description : '(//textarea[@name=\'rows[1][description]\'])[1]',
-    timeline_row_2_day : '(//input[@name=\'rows[2][day]\'])[1]',
-    timeline_row_2_month : '(//input[@name=\'rows[2][month]\'])[1]',
-    timeline_row_2_year : '(//input[@name=\'rows[2][year]\'])[1]',
-    timeline_row_2_description : '(//textarea[@name=\'rows[2][description]\'])[1]',
-    timeline_row_3_day : '(//input[@name=\'rows[3][day]\'])[1]',
-    timeline_row_3_month : '(//input[@name=\'rows[3][month]\'])[1]',
-    timeline_row_3_year : '(//input[@name=\'rows[3][year]\'])[1]',
-    timeline_row_3_description : '(//textarea[@name=\'rows[3][description]\'])[1]',
-    timeline_row_4_day : '(//input[@name=\'rows[4][day]\'])[1]',
-    timeline_row_4_month : '(//input[@name=\'rows[4][month]\'])[1]',
-    timeline_row_4_year : '(//input[@name=\'rows[4][year]\'])[1]',
-    timeline_row_4_description : '(//textarea[@name=\'rows[4][description]\'])[1]',
+    timeline_row_0_day: '(//input[@name=\'rows[0][day]\'])[1]',
+    timeline_row_0_month: '(//input[@name=\'rows[0][month]\'])[1]',
+    timeline_row_0_year: '(//input[@name=\'rows[0][year]\'])[1]',
+    timeline_row_0_description: '(//textarea[@name=\'rows[0][description]\'])[1]',
+    timeline_row_1_day: '(//input[@name=\'rows[1][day]\'])[1]',
+    timeline_row_1_month: '(//input[@name=\'rows[1][month]\'])[1]',
+    timeline_row_1_year: '(//input[@name=\'rows[1][year]\'])[1]',
+    timeline_row_1_description: '(//textarea[@name=\'rows[1][description]\'])[1]',
+    timeline_row_2_day: '(//input[@name=\'rows[2][day]\'])[1]',
+    timeline_row_2_month: '(//input[@name=\'rows[2][month]\'])[1]',
+    timeline_row_2_year: '(//input[@name=\'rows[2][year]\'])[1]',
+    timeline_row_2_description: '(//textarea[@name=\'rows[2][description]\'])[1]',
+    timeline_row_3_day: '(//input[@name=\'rows[3][day]\'])[1]',
+    timeline_row_3_month: '(//input[@name=\'rows[3][month]\'])[1]',
+    timeline_row_3_year: '(//input[@name=\'rows[3][year]\'])[1]',
+    timeline_row_3_description: '(//textarea[@name=\'rows[3][description]\'])[1]',
+    timeline_row_4_day: '(//input[@name=\'rows[4][day]\'])[1]',
+    timeline_row_4_month: '(//input[@name=\'rows[4][month]\'])[1]',
+    timeline_row_4_year: '(//input[@name=\'rows[4][year]\'])[1]',
+    timeline_row_4_description: '(//textarea[@name=\'rows[4][description]\'])[1]',
 
-    evidence_list_1 : '//fieldset[1]//select[@class=\'govuk-select\']',
-    evidence_list_description_1 : '//fieldset[1]//textarea[@class=\'govuk-textarea\']',
-    evidence_list_2 : '//fieldset[2]//select[@class=\'govuk-select\']',
-    evidence_list_description_2 : '//fieldset[2]//textarea[@class=\'govuk-textarea\']',
-    statement_of_truth : '#signed',
+    evidence_list_1: '//fieldset[1]//select[@class=\'govuk-select\']',
+    evidence_list_description_1: '//fieldset[1]//textarea[@class=\'govuk-textarea\']',
+    evidence_list_2: '//fieldset[2]//select[@class=\'govuk-select\']',
+    evidence_list_description_2: '//fieldset[2]//textarea[@class=\'govuk-textarea\']',
+    statement_of_truth: '#signed',
+    no_changes_allowed_declaration: '#acceptNoChangesAllowed',
 
   },
 };
@@ -199,7 +201,6 @@ class CreateClaim {
 
   verifyDateOfBirth() {
     I.see('What is your date of birth?', 'h1');
-    I.see('For example, 12 2 2006');
     I.see('Day');
     I.see('Month');
     I.see('Year');
@@ -286,9 +287,7 @@ class CreateClaim {
     I.see('Do you have a Help With Fees reference number?', 'h1');
     I.see('You\'ll only have one if you applied for Help With Fees.');
     I.see('Yes');
-    I.click(paths.options.yes);
-    I.see('Enter the Help With Fees number');
-    I.fillField(paths.fields.help_with_fees_reference_number, 'HWF-A1B-23C');
+    I.click(paths.options.no);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -319,10 +318,6 @@ class CreateClaim {
     I.see('£115');
     I.see('Total claim amount');
     I.see('£1635.00');
-    I.see('We’ll review your Help With Fees application after you submit the claim', 'h3');
-    I.see('If it’s successful, you may not have to pay any or all of the claim fee.');
-    I.see('That would mean the total claim amount would be lower than the amount shown on this page.');
-    I.see('If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.');
     I.seeElement(paths.links.how_is_interest_calculated);
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
@@ -348,7 +343,7 @@ class CreateClaim {
   async verifyClaimDetailsTimeline() {
     I.see('Timeline of events', 'h1');
     I.see('If you don’t know exact date, tell us the month and year');
-    I.see('Example timeline','h2');
+    I.see('Example timeline', 'h2');
     I.see('12 November 2023 - John Smith gave me a quote to replace the roof.');
     I.see('14 November 2023 - We agreed and signed a contract for the work.');
     I.see('12 December 2023 - I noticed a leak on the landing and told Mr Smith about this.');
@@ -361,25 +356,25 @@ class CreateClaim {
   }
 
   async inputClaimDetailsTimeline() {
-    I.fillField(paths.fields.timeline_row_0_day,'01');
-    I.fillField(paths.fields.timeline_row_0_month,'06');
-    I.fillField(paths.fields.timeline_row_0_year,'1975');
-    I.fillField(paths.fields.timeline_row_0_description,'Drafting of Contracts');
+    I.fillField(paths.fields.timeline_row_0_day, '01');
+    I.fillField(paths.fields.timeline_row_0_month, '06');
+    I.fillField(paths.fields.timeline_row_0_year, '1975');
+    I.fillField(paths.fields.timeline_row_0_description, 'Drafting of Contracts');
 
-    I.fillField(paths.fields.timeline_row_1_day,'10');
-    I.fillField(paths.fields.timeline_row_1_month,'06');
-    I.fillField(paths.fields.timeline_row_1_year,'1975');
-    I.fillField(paths.fields.timeline_row_1_description,'Work Begins');
+    I.fillField(paths.fields.timeline_row_1_day, '10');
+    I.fillField(paths.fields.timeline_row_1_month, '06');
+    I.fillField(paths.fields.timeline_row_1_year, '1975');
+    I.fillField(paths.fields.timeline_row_1_description, 'Work Begins');
 
-    I.fillField(paths.fields.timeline_row_2_day,'15');
-    I.fillField(paths.fields.timeline_row_2_month,'06');
-    I.fillField(paths.fields.timeline_row_2_year,'1975');
-    I.fillField(paths.fields.timeline_row_2_description,'Loss of the tap');
+    I.fillField(paths.fields.timeline_row_2_day, '15');
+    I.fillField(paths.fields.timeline_row_2_month, '06');
+    I.fillField(paths.fields.timeline_row_2_year, '1975');
+    I.fillField(paths.fields.timeline_row_2_description, 'Loss of the tap');
 
-    I.fillField(paths.fields.timeline_row_3_day,'20');
-    I.fillField(paths.fields.timeline_row_3_month,'06');
-    I.fillField(paths.fields.timeline_row_3_year,'1975');
-    I.fillField(paths.fields.timeline_row_3_description,'Work not delivered and bathroom broken.Dispute with the Builder');
+    I.fillField(paths.fields.timeline_row_3_day, '20');
+    I.fillField(paths.fields.timeline_row_3_month, '06');
+    I.fillField(paths.fields.timeline_row_3_year, '1975');
+    I.fillField(paths.fields.timeline_row_3_description, 'Work not delivered and bathroom broken.Dispute with the Builder');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -388,10 +383,10 @@ class CreateClaim {
     I.see('List your evidence (optional)');
     I.see('Tell us about any evidence you wish to provide.');
     I.see('You do not need to send us any evidence now.');
-    I.see('f your case goes to a court hearing, and is not settled, you will need to provide evidence.');
+    I.see('If your case goes to a court hearing, and is not settled, you will need to provide evidence.');
   }
 
-  async inputEvidenceList () {
+  async inputEvidenceList() {
     I.selectOption(paths.fields.evidence_list_1,
       'Contracts and agreements');
     I.fillField(paths.fields.evidence_list_description_1, 'Signed Contract');
@@ -401,19 +396,19 @@ class CreateClaim {
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
-  async verifyEqualityAndDiversity() {
-    I.waitForText('Find out how we use this information in our',5);
-    I.see('Equality and diversity questions','h1');
-    I.see('These are optional questions about you.');
-    I.see('Your answers will not affect your case or be shared with anyone involved in your case.');
-    I.see('Your answers will help us check we are treating people fairly and equally.');
-    I.seeElement(paths.links.privacy_policy);
+  async rerouteFromEqualityAndDiversity(checkAndSubmitClaim) {
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if (url.includes('pcq')) {
+      I.amOnPage('/claim/task-list');
+      I.click(checkAndSubmitClaim);
+    }
   }
 
   async verifyCheckYourAnswers() {
     I.see('Check your answers', 'h1');
 
-    I.see('Your details (claimant)','h2');
+    I.see('Your details (claimant)', 'h2');
 
     I.see('Full name');
     I.see('Mr Joe Bloggs');
@@ -446,7 +441,7 @@ class CreateClaim {
 
     I.see('07818731015');
 
-    I.see('Claim amount','h2');
+    I.see('Claim amount', 'h2');
 
     I.see('Broken bathroom');
     I.see('£1,000');
@@ -456,7 +451,7 @@ class CreateClaim {
     I.see('£400');
 
     I.see('Claim Interest');
-    I.see( 'yes');
+    I.see('yes');
 
     I.see('How do you want to claim interest?');
     I.see('Same rate for the whole period');
@@ -466,9 +461,6 @@ class CreateClaim {
 
     I.see('When are you claiming interest from?');
     I.see('The date you submit the claim');
-
-    I.see('Help with fees reference number');
-    I.see('HWF-A1B-23C');
 
     I.see('Claim Details');
     I.see('Unprofessional Builder');
@@ -498,25 +490,21 @@ class CreateClaim {
     I.see('or causes to be made,');
     I.see('a false statement in a document verified by a statement of truth without an honest belief in its truth.');
 
+    I.click(paths.fields.no_changes_allowed_declaration);
     I.click(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
   }
 
   async verifyClaimSubmitted() {
-    I.see('Claim submitted','h1');
-    I.see('Claim number:','h1');
-    const claimReference = I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
-    console.log('The created claim reference : '+claimReference);
-    I.see('What happens next','h2');
-    I.see('Your claim will be issued once your Help With Fees application has been confirmed.');
-    I.see('We\'ll email you within 5 days to confirm this.');
-    I.see('Once the claim is issued, Mrs Jane Doe will have 28 days to respond to your claim.');
-    I.see('They can request up to an extra 28 days if they need it.');
-    I.see('You can request a County Court Judgment against them if they don\'t respond by the deadline.');
+    I.see('Claim submitted', 'h1');
+    I.see('Claim number:');
+    const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
+    I.see('What happens next', 'h2');
+    I.see('Your claim will not be issued and sent to the other parties until you have paid the claim fee.');
     I.see('If the defendant pays you');
     I.see('You need to sign in to your account to tell us you\'ve been paid.');
     I.seeElement('//a[contains(text(),\'What did you think of this service?\')]');
-    I.see('Email','h3');
+    I.see('Email', 'h3');
     I.see('Telephone');
     I.see('0300 123 7050');
     I.see('Monday to Friday, 8.30am to 5pm.');
@@ -524,6 +512,59 @@ class CreateClaim {
     return claimReference;
   }
 
+  async verifyAndInputPayYourClaimFee() {
+    I.see('Pay your claim fee', 'h1');
+    I.see('Claim amount');
+    I.see('£1520');
+    I.see('Claim fee');
+    I.see('£1635');
+    I.see('If you settle out of court we won\'t refund your claim fee.');
+    I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
+    I.click('continue to payment(£115)');
+  }
+
+  async verifyAndInputCardDetails() {
+    I.see('Enter card details', 'h1');
+    I.see('Payment summary','h2');
+    I.see('card payment');
+    I.see('Total amount:');
+    I.see('£115.00');
+    I.fillField('#card-no' ,'4444333322221111');
+    I.fillField('#expiry-month' ,new Date().getMonth());
+    I.fillField('#expiry-year' ,new Date().getFullYear()+1);
+    I.fillField('#cardholder-name','Test Name');
+    I.fillField('#cvc', '444');
+    I.fillField('[autocomplete=\'billing address-line1\']', '220 Helena House');
+    I.fillField('#address-city','Swansea');
+    I.fillField('#address-postcode','SA1 1XW');
+    I.fillField('#email','testxxx@hmcts.net');
+    I.click('Continue');
+  }
+  async verifyConfirmYourPayment() {
+
+    I.see('Confirm your payment','h1');
+    I.see('Payment summary','h2');
+    I.see('card payment');
+    I.see('Total amount:');
+    I.see('£115.00');
+    I.click('Confirm payment');
+
+  }
+
+  async verifyYourPaymentWasSuccessfull() {
+
+    I.see('Your payment was');
+    I.see('successful');
+    I.see('Your payment reference number is');
+    I.see('You\'ll receive a confirmation email in the next hour.');
+    I.see('Payment summary','h3');
+    I.see('Payment for');
+    I.see('Claim fee');
+    I.see('Total amount');
+    I.see('£115');
+    I.click('Go to your account');
+
+  }
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 'h2');
     I.see('Application complete', 'h2');

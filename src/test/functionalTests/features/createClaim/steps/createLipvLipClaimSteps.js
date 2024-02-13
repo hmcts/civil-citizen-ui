@@ -15,6 +15,7 @@ const paths = {
     claim_details : '//a[.=\'Claim details\']',
     check_and_submit_your_claim : '//a[.=\'Check and submit your claim\']',
     opt_out_button : '//button[@name=\'opt-out-button\']',
+    pay_claim_fee : 'Pay claim fee',
   },
 };
 class CreateClaimSteps {
@@ -59,6 +60,7 @@ class CreateClaimSteps {
   }
 
   async CreateClaimCreation() {
+    //I.click('//a[contains(.,\'Make a new money claim\')]');
     await createClaim.verifyLanguage();
     await createClaim.verifyDashboard();
     I.click(paths.links.resolving_this_dispute);
@@ -98,13 +100,17 @@ class CreateClaimSteps {
     await createClaim.inputEvidenceList();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_claim);
-    I.wait(3);
-    await createClaim.verifyEqualityAndDiversity();
-    I.click(paths.links.opt_out_button);
+    await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
     await createClaim.verifyCheckYourAnswers();
-    const caseReference = createClaim.verifyClaimSubmitted();
-    console.log(caseReference);
-
+    const caseReference = await createClaim.verifyClaimSubmitted();
+    console.log('The created Case Reference : '+caseReference);
+    I.wait(5); //Just to make sure that the backend processed have completed fully
+    I.click(paths.links.pay_claim_fee);
+    await createClaim.verifyAndInputPayYourClaimFee();
+    await createClaim.verifyAndInputCardDetails();
+    await createClaim.verifyConfirmYourPayment();
+    await createClaim.verifyYourPaymentWasSuccessfull();
+    return caseReference;
   }
 
   async verifyDashboardLoaded() {
