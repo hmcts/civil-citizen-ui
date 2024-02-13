@@ -36,7 +36,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   const getMediationSection = () => {
     if (carmApplicable) {
       const mediationSection = buildMediationSection(claim, claimId, lang, true);
-      return claim.isClaimantNotSettling() ? mediationSection : null;
+      return claim.hasClaimantNotSettled() ? mediationSection : null;
     } else {
       return null;
     }

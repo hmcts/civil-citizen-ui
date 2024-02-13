@@ -2104,12 +2104,12 @@ describe('Documents', () => {
     });
   });
 
-  describe('isClaimantNotSettling', () => {
+  describe('hasClaimantNotSettled', () => {
     const claim = new Claim();
     claim.claimantResponse = new ClaimantResponse();
     it('should return false with empty claim', () => {
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(false);
     });
@@ -2123,7 +2123,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.YES},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(true);
     });
@@ -2137,7 +2137,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.YES},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(true);
     });
@@ -2151,7 +2151,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.YES},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(true);
     });
@@ -2165,7 +2165,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.YES},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(true);
     });
@@ -2179,7 +2179,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.NO},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(true);
     });
@@ -2193,7 +2193,7 @@ describe('Documents', () => {
         hasPartPaymentBeenAccepted: {option: YesNo.YES},
       };
       //When
-      const result = claim.isClaimantNotSettling();
+      const result = claim.hasClaimantNotSettled();
       //Then
       expect(result).toBe(false);
     });

@@ -919,7 +919,7 @@ export class Claim {
     return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
   }
 
-  isClaimantNotSettling(): boolean {
+  hasClaimantNotSettled(): boolean {
     return this.hasClaimantIntentToProceedResponse() || this.hasClaimantRejectedDefendantResponse() || this.hasClaimantRejectedDefendantPaid()
       || this.hasClaimantRejectedDefendantAdmittedAmount()
       || this.hasClaimantRejectedPartAdmitPayment();
