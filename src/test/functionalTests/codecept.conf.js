@@ -4,6 +4,7 @@ const {createAccount, deleteAccount} = require('./specClaimHelpers/api/idamHelpe
 const defendantCitizenUserEmail = `defendantcitizen-${Math.random().toString(36).slice(2, 7).toLowerCase()}@gmail.com`;
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 exports.config = {
   tests: '../functionalTests/tests/**/*_tests.js',
@@ -18,7 +19,33 @@ exports.config = {
   },
 
   output: process.env.REPORT_DIR || 'test-results/functional',
-  helpers: testConfig.helpers,
+  helpers: {
+    Playwright: {
+      url: testConfig.TestUrl,
+      browser: 'chromium',
+      show: false,
+      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
+      windowSize: '1280x960',
+      timeout: 20000,
+      waitForAction: 500,
+      bypassCSP: true,
+      ignoreHTTPSErrors: true,
+      retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: 30000,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testConfig.TestUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
+    },
+  },
   include: {
     api: './specClaimHelpers/api/steps.js',
   },

@@ -11,7 +11,6 @@ const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
 }
-process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 module.exports = {
   TestUrl: testUrl,
@@ -23,28 +22,13 @@ module.exports = {
   helpers: {
     Playwright: {
       url: testUrl,
+      show: true,
       browser: 'chromium',
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
-      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
-      windowSize: '1280x960',
+      waitForTimeout: 30000,
       timeout: 30000,
       waitForAction: 10000,
-      bypassCSP: true,
+      waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
-      retries: 3,
-      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
-        timeout: 30000,
-        headers: {
-          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
-        },
-        exposeNetwork: testUrl ? '*.platform.hmcts.net' : '<loopback>',
-        browserWSEndpoint: {
-          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
-            os: 'linux',
-            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
-          })}`,
-        },
-      },
     },
   },
   idamStub: {
