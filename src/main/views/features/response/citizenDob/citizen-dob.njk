@@ -9,9 +9,9 @@
 
 {% block pageTitle %}
   {% if claimantView %}
-    {{ setPageTitle('PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
+    {{ setPageTitle(t, 'PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
   {% else %}
-    {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+    {{ setPageTitle(t, 'PAGES.CITIZEN_DOB.PAGE_TITLE') }}
   {% endif %}
 {% endblock %}
 
