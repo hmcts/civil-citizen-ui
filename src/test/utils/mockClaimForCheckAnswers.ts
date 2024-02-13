@@ -93,9 +93,9 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
@@ -123,9 +123,9 @@ export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim 
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -145,9 +145,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1 = {
@@ -158,9 +158,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -181,9 +181,9 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       contactPerson: contactPerson,
     },
   };
@@ -220,9 +220,9 @@ export const createClaimWithIndividualDetails = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -237,9 +237,9 @@ export const createClaimWithIndividualDetailsWithCcdPhoneExist = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER, ccdPhoneExist: true},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -254,9 +254,9 @@ export const createClaimWithIndividualDetailsWithPartyPhoneNotExist = (): Claim 
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -272,9 +272,9 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
     partyPhone: {phone: CONTACT_NUMBER},
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
