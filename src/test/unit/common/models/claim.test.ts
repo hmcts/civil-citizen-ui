@@ -2103,4 +2103,99 @@ describe('Documents', () => {
       expect(result).toBe(false);
     });
   });
+
+  describe('isClaimantNotSettling', () => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when claimant intends to proceed', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.YES},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant response', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.NO},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.NO},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant part admit amount', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.NO},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant part admit payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.NO},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false when claimant rejects defendant part admit payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.isClaimantNotSettling();
+      //Then
+      expect(result).toBe(false);
+    });
+  });
 });
