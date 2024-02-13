@@ -9,6 +9,11 @@
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+
+{% if isOCMCEligibilityEnabled %}
+<meta http-equiv="refresh" content="0; URL={{ ocmcEligibilityUrl | safe}}">
+{% endif %}
+
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

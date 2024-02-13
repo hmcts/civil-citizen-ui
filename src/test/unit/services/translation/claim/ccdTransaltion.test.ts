@@ -9,6 +9,7 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
@@ -80,6 +81,6 @@ describe('translate draft claim to ccd version', () => {
     //When
     const ccdClaim = translateDraftClaimToCCDR2(claim, req as AppRequest);
     //Then
-    expect(ccdClaim.hwfFeeType).toEqual('CLAIMISSUED');
+    expect(ccdClaim.hwfFeeType).toEqual(FeeType.CLAIMISSUED);
   });
 });
