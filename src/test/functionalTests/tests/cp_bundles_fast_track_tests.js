@@ -3,7 +3,6 @@ const CaseProgressionSteps = require('../features/caseProgression/steps/caseProg
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -12,7 +11,6 @@ Feature('Case progression journey - Verify Bundle - Fast Track ');
 
 Before(async ({api}) => {
   if (['demo'].includes(config.runningEnv)) {
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,9 +27,8 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });
