@@ -10,7 +10,7 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t(pageTitle)) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
 <div class="govuk-width-container caseProgression">

@@ -1,5 +1,5 @@
-{% macro setPageTitle(title)%}
-  {% set dynamicTitle = t('Your money claims account') + ' - ' + t(title) if title else t('Your money claims account - Money Claims') %}
+{% macro setPageTitle(t, title) %}
+  {% set dynamicTitle = t('COMMON.PAGE_TITLE_PART1') + ' - ' + t(title) if title else t('COMMON.PAGE_TITLE_PART1') + " - " + t('COMMON.PAGE_TITLE_PART2') %}
   {% block pageTitle %}
     {{ dynamicTitle }}
   {% endblock %}
