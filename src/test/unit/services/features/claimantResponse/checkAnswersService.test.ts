@@ -12,6 +12,7 @@ import {CCJRequest} from 'common/models/claimantResponse/ccj/ccjRequest';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {YesNo} from 'common/form/models/yesNo';
+import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -56,13 +57,10 @@ describe('Check Answers service', () => {
       claim.totalClaimAmount = 500;
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE}};
-      claim.claimantResponse = {
-        chooseHowToProceed: { option: ChooseHowProceed.REQUEST_A_CCJ },
-        ccjRequest: new CCJRequest(),
-        fullAdmitSetDateAcceptPayment: {
-          option: 'yes',
-        },
-      } as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+      claim.claimantResponse.ccjRequest = new CCJRequest();
+      claim.claimantResponse.fullAdmitSetDateAcceptPayment = {option: 'yes'};
     });
 
     it('should check answers for defendant paid some of the money', () => {
