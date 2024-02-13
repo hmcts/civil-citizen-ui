@@ -186,9 +186,9 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
 
-  if (claimantResponse.isRejectionReasonCompleted()) {
-    yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
-  }
+  // if (claimantResponse.isRejectionReasonCompleted()) {
+  //   yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
+  // }
 
   if (claim.isRejectAllOfClaimDispute()) {
     yourResponse.summaryList.rows.push(buildFDDisputeTheClaimSummaryRows(claim, claimId, lng));
