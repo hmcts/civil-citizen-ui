@@ -33,6 +33,7 @@
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
     "TELEPHONE_MEDIATION": "Telephone mediation",
     "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -264,6 +265,8 @@
       "TITLE": "Statement of truth",
       "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
     },
+    "PAGE_TITLE_PART1": "Your money claims account",
+    "PAGE_TITLE_PART2": "Money Claims",
     "TIMELINE": {
       "EXAMPLE_EVENT": "For example, you might have signed a contract",
       "WHAT_HAPPENED": "What happened"

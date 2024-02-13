@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {YesNo, YesNoNotReceived} from 'common/form/models/yesNo';
 import {
-  buildClaimantHearingRequirementsSection,
+  buildClaimantHearingRequirementsSection, buildClaimantResponseMediationSection,
   buildClaimantResponseSubmitSection,
   buildHowDefendantRespondSection,
   buildWhatToDoNextSection,
@@ -956,7 +956,7 @@ describe('Claimant Response Task List builder', () => {
     it('should display Your Response section and haveYouBeenPaidTask for full defense states paid (amount was LESS THAN full amount)', () => {
       //Given
       //When
-      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(1);
@@ -971,7 +971,7 @@ describe('Claimant Response Task List builder', () => {
         hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
       } as ClaimantResponse;
       //When
-      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(2);
@@ -987,7 +987,7 @@ describe('Claimant Response Task List builder', () => {
         hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
       } as ClaimantResponse;
       //When
-      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(2);
@@ -1007,7 +1007,7 @@ describe('Claimant Response Task List builder', () => {
         },
       } as ClaimantResponse;
       //When
-      const yourResponse = buildYourResponseSection(claim, claimId, lang);
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
       expect(yourResponse.tasks.length).toBe(3);
@@ -1027,10 +1027,23 @@ describe('Claimant Response Task List builder', () => {
       claim.partialAdmission = {
         alreadyPaid: {option: YesNo.YES},
       };
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+    it('should not display free telephone mediation when carm applicable', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.PART_ADMISSION };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, true);
+      //Then
+      expect(whatToDoNext.tasks.length).toEqual(1);
+      expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
+      expect(whatToDoNext.tasks[0].description).not.toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
     it('should display free telephone mediation task as incomplete', () => {
       //Given
@@ -1038,7 +1051,7 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
       claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
       //When
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
@@ -1049,7 +1062,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}};
       //When
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
@@ -1060,7 +1073,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasDefendantPaidYou: {option: YesNo.YES}, hasPartPaymentBeenAccepted: {option: YesNo.YES}};
       //When
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.HAVE_BEEN_PAID');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
@@ -1073,7 +1086,7 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.YES } };
       //When
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
@@ -1084,12 +1097,40 @@ describe('Claimant Response Task List builder', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{ hasFullDefenceStatesPaidClaimSettled: { option: YesNo.NO } };
       //When
-      const whatToDoNext = buildYourResponseSection(claim, claimId, lang);
+      const whatToDoNext = buildYourResponseSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR');
       expect(whatToDoNext.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(whatToDoNext.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+  });
+
+  describe('Mediation section', () => {
+    it('should display mediation when carm applicable', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const mediation = buildClaimantResponseMediationSection(claim, claimId, lang, true);
+      //Then
+      expect(mediation.tasks.length).toEqual(2);
+      expect(mediation.tasks[0].description).toEqual('COMMON.TELEPHONE_MEDIATION');
+      expect(mediation.tasks[1].description).toEqual('COMMON.AVAILABILITY_FOR_MEDIATION');
+      expect(mediation.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(mediation.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+
+    it('should not display mediation when carm not applicable', () => {
+      //Given
+      claim.respondent1 = { responseType: ResponseType.FULL_DEFENCE };
+      claim.claimantResponse = <ClaimantResponse>{ hasDefendantPaidYou: { option: YesNo.NO } };
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const mediation = buildClaimantResponseMediationSection(claim, claimId, lang, false);
+      //Then
+      expect(mediation).toEqual(undefined);
     });
   });
 

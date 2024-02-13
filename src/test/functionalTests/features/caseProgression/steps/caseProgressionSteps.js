@@ -49,8 +49,8 @@ class CaseProgressionSteps {
     latestUpdateTab.nextAction('View hearing notice');
   }
 
-  verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType)  {
-    latestUpdateTab.open(claimRef, claimType,false);
+  verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, hearingInitiated = false)  {
+    latestUpdateTab.open(claimRef, claimType, hearingInitiated);
   }
 
   verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType)  {
