@@ -520,7 +520,7 @@ class CreateClaim {
     I.see('£1635');
     I.see('If you settle out of court we won\'t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
-    I.click('continue to payment(£115)');
+    await I.click('continue to payment(£115)');
   }
 
   async verifyAndInputCardDetails() {
@@ -538,21 +538,18 @@ class CreateClaim {
     I.fillField('#address-city','Swansea');
     I.fillField('#address-postcode','SA1 1XW');
     I.fillField('#email','testxxx@hmcts.net');
-    I.click('Continue');
+    await I.click('Continue');
   }
   async verifyConfirmYourPayment() {
-
     I.see('Confirm your payment','h1');
     I.see('Payment summary','h2');
     I.see('card payment');
     I.see('Total amount:');
     I.see('£115.00');
-    I.click('Confirm payment');
-
+    await I.click('Confirm payment');
   }
 
   async verifyYourPaymentWasSuccessfull() {
-
     I.see('Your payment was');
     I.see('successful');
     I.see('Your payment reference number is');
@@ -562,9 +559,9 @@ class CreateClaim {
     I.see('Claim fee');
     I.see('Total amount');
     I.see('£115');
-    I.click('Go to your account');
-
+    await I.click('Go to your account');
   }
+
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 'h2');
     I.see('Application complete', 'h2');

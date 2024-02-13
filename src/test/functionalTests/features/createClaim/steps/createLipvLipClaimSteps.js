@@ -103,14 +103,14 @@ class CreateClaimSteps {
     await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
     await createClaim.verifyCheckYourAnswers();
     const caseReference = await createClaim.verifyClaimSubmitted();
-    console.log('The created Case Reference : '+caseReference);
+    console.log('The created Case Reference : ', caseReference);
     I.wait(4); //Just to make sure that the backend processed have completed fully
-    I.click(paths.links.pay_claim_fee);
+    await I.click(paths.links.pay_claim_fee);
     await createClaim.verifyAndInputPayYourClaimFee();
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();
-    I.wait(10); //Just to make sure that the backend processed have completed fully
+    await I.wait(10); //Just to make sure that the backend processed have completed fully
     return caseReference;
   }
 
