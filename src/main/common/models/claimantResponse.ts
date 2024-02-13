@@ -2,7 +2,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
-import { CourtProposedDate, CourtProposedDateOptions } from 'form/models/claimantResponse/courtProposedDate';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from 'models/mediation/mediation';
@@ -13,7 +13,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {YesNo, YesNoUpperCase} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
+import {RepaymentDecisionType} from './claimantResponse/RepaymentDecisionType';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 
 export class ClaimantResponse {
@@ -124,10 +124,10 @@ export class ClaimantResponse {
     || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined);
   }
 
-  isRejectionReasonCompleted(): boolean {	
-    return (this.hasPartPaymentBeenAccepted?.option === YesNo.NO	
-        || this.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)	
-      && !!this.rejectionReason?.text;	
+  get isRejectionReasonCompleted(): boolean {
+    return (this.hasPartPaymentBeenAccepted?.option === YesNo.NO
+        || this.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)
+      && !!this.rejectionReason?.text;
   }
 
   get isClaimantRejectedCourtDecision(): boolean {
