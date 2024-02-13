@@ -226,7 +226,7 @@ class CreateClaim {
     I.see('Their email address (optional)', 'h1');
     I.see('We\'ll use this to tell them you\'ve made a claim, as well as notifying them by post.');
     I.see('This must be their personal email address');
-    I.fillField(paths.fields.email_address, 'automationtest@hmcts.net');
+    I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -437,7 +437,7 @@ class CreateClaim {
     I.see('Same as address');
 
     I.see('Email');
-    I.see('automationtest@hmcts.net');
+    I.see('civilmoneyclaimsdemo@gmail.com');
 
     I.see('07818731015');
 
