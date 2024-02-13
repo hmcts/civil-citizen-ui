@@ -146,8 +146,18 @@ class DateUtilsComponent {
     return weekend;
   }
 
+  static getPastDateInFormat() {
+    let currentDate = new Date();
+    let fourWeeksFromToday = new Date(currentDate.setDate(currentDate.getDate() + 28));
+    let pastDate = new Date(fourWeeksFromToday.setDate(fourWeeksFromToday.getDate() - 28));
+    return this.formatDateToSpecifiedDateFormat(pastDate);
+  }
 }
 
 const fourWeeksFroToday = DateUtilsComponent.rollDateToCertainWeeks(4);
 console.log('There are 4 weeks fro Today : ' + DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFroToday));
+
+const pastDateInFormat = DateUtilsComponent.getPastDateInFormat();
+console.log('Date 28 days before fourWeeksFromToday: ' + pastDateInFormat);
+
 module.exports = {DateUtilsComponent};
