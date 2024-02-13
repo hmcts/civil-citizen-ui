@@ -53,17 +53,7 @@ describe('claimant Dashboard Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Add the trial arrangements');
-        expect(res.text).toContain('Pay the hearing fee');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
       });
     });
     it('should return defendant dashboard page with claimant and small claims', async () => {
@@ -87,16 +77,7 @@ describe('claimant Dashboard Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Pay the hearing fee');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
       });
     });
     it('should return defendant dashboard page with defendant and fast track', async () => {
@@ -121,16 +102,7 @@ describe('claimant Dashboard Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('Add the trial arrangements');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
       });
     });
     it('should return defendant dashboard page with defendant and small claims', async () => {
@@ -154,15 +126,7 @@ describe('claimant Dashboard Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Hearings');
-        expect(res.text).toContain('View hearings');
-        expect(res.text).toContain('Upload hearing documents');
-        expect(res.text).toContain('View documents');
-        expect(res.text).toContain('View the bundle');
-
-        expect(res.text).toContain('Orders and notices from the court');
-        expect(res.text).toContain('View orders and notices');
-
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
       });
     });
 

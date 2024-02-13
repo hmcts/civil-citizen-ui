@@ -1,16 +1,14 @@
-import {DashboardNotification} from 'common/utils/dashboard/dashboardNotification';
-import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
-
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 describe('Notifications constructor', () => {
   it('should create a new instance of Notifications', async () => {
     //Given
     const title = 'test';
-    const content: ClaimSummarySection[] = [];
+    const content = 'test';
     //When
-    const howMuchContinueClaiming = {title:title, content: content} as DashboardNotification;
+    const howMuchContinueClaiming = {titleEn:title, titleCy: title,descriptionEn: content,descriptionCy: content} as DashboardNotification;
     //Then
     expect(howMuchContinueClaiming).toBeDefined();
-    expect(howMuchContinueClaiming.title).toEqual(title);
-    expect(howMuchContinueClaiming.content).toEqual(content);
+    expect(howMuchContinueClaiming.titleEn).toEqual(title);
+    expect(howMuchContinueClaiming.descriptionEn).toEqual(content);
   });
 });

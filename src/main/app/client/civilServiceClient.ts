@@ -42,6 +42,8 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {Dashboard} from 'models/dashboard/dashboard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -416,5 +418,29 @@ export class CivilServiceClient {
       logger.error(err);
       throw err;
     }
+  }
+
+  async retrieveNotification(claimId: string): Promise<DashboardNotificationList>  {
+    const jsonNotificationList= {items :[
+      {titleEn:'English Title 1',titleCy:'Welsh Title 1',descriptionEn:'English Description 1',descriptionCy:'Welsh Description 1'},
+      {titleEn:'English Title 2',titleCy:'Welsh Title 2',descriptionEn:'English Description 2',descriptionCy:'Welsh Description 2'},
+      {titleEn:'English Title 3',titleCy:'Welsh Title 3',descriptionEn:'English Description 3',descriptionCy:'Welsh Description 3'},
+    ],
+    };
+    const dashboardNotificationList = Object.assign(new DashboardNotificationList(), jsonNotificationList);
+    return dashboardNotificationList;
+  }
+
+  async retrieveDashboard(claimId: string): Promise<Dashboard>  {
+    const jsonTaskList={items:[
+      {categoryEn:'Task Title',
+        categoryCy:'Task Title Welsh',
+        task:[{TaskNameEn:'Description',TaskNameCy:'Description Welsh',hintTextEn:'help',hintTextCy:'help welsh',status:'DONE'},
+          {TaskNameEn:'Description 2',TaskNameCy:'Description Welsh2',hintTextEn:'help 2',hintTextCy:'help welsh 2',status:'DONE'},
+        ],
+      }],
+    };
+    const dashboard = Object.assign(new Dashboard(), jsonTaskList);
+    return dashboard;
   }
 }
