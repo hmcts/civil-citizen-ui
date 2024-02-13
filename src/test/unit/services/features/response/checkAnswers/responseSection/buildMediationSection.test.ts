@@ -119,7 +119,7 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
     const contactPersonOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationContactNameCorrect.option : claim.mediationCarm.isMediationContactNameCorrect.option;
     mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT', {
       lng: getLng(lang),
-        partyContactPerson: isClaimantResponse ? claim.applicant1AdditionalLipPartyDetails.contactPerson : claim.respondent1.partyDetails.contactPerson,
+      partyContactPerson: isClaimantResponse ? claim.applicant1AdditionalLipPartyDetails.contactPerson : claim.respondent1.partyDetails.contactPerson,
     }),
     t(`COMMON.VARIATION_2.${contactPersonOption.toUpperCase()}`, {lng: getLng(lang)}),
     constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
@@ -130,10 +130,10 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
     }
   }
   //PHONE SECTION
-  const phoneOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationPhoneCorrect.option : claim.mediationCarm.isMediationPhoneCorrect.option
+  const phoneOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationPhoneCorrect.option : claim.mediationCarm.isMediationPhoneCorrect.option;
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT', {
     lng: getLng(lang),
-      partyPhone: isClaimantResponse ? claim.applicant1.partyPhone.phone : claim.respondent1.partyPhone.phone,
+    partyPhone: isClaimantResponse ? claim.applicant1.partyPhone.phone : claim.respondent1.partyPhone.phone,
   }),
   t(`COMMON.VARIATION_2.${phoneOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL), changeLabel(lang)));
@@ -146,7 +146,7 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
   const emailOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationEmailCorrect.option : claim.mediationCarm.isMediationEmailCorrect.option;
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT', {
     lng: getLng(lang),
-      partyEmail: isClaimantResponse ? claim.applicant1.emailAddress.emailAddress : claim.respondent1.emailAddress.emailAddress,
+    partyEmail: isClaimantResponse ? claim.applicant1.emailAddress.emailAddress : claim.respondent1.emailAddress.emailAddress,
   }),
   t(`COMMON.VARIATION_2.${emailOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL), changeLabel(lang)));

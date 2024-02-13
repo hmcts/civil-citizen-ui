@@ -1095,7 +1095,7 @@ export const createClaimWithMediationSectionWithOption = (option: YesNo, isCompa
 export const createClaimWithMediationSectionWithOptionClaimantResponse = (option: YesNo, isCompany = false): Claim => {
   const claim = createClaimWithBasicApplicantDetails('contactTest');
 
-  claim.applicant1.emailAddress.emailAddress = 'em@ail.com'
+  claim.applicant1.emailAddress.emailAddress = 'em@ail.com';
 
   claim.applicant1AdditionalLipPartyDetails = {contactPerson: 'oldContact'};
 

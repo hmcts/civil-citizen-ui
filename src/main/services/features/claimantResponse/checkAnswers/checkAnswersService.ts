@@ -43,7 +43,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     return null;
   };
 
-
   const getFreeTelephoneMediationSection = () => {
     if (carmApplicable) {
       return null;
