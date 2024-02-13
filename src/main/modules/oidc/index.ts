@@ -30,7 +30,7 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
   return req.originalUrl.includes('/documents/');
 };
 
-const isEligibilityPage = (requestUrl: string): boolean => {
+export const isEligibilityPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
 };
 
