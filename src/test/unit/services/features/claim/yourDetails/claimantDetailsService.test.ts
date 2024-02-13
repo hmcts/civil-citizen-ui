@@ -19,9 +19,9 @@ const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 const claimData = new Claim();
 const claimantDetails = new PartyDetails({
-  individualTitle: 'Mr.',
-  individualFirstName: 'John',
-  individualLastName: 'Doe',
+  title: 'Mr.',
+  firstName: 'John',
+  lastName: 'Doe',
 });
 
 describe('Citizen details service', () => {
@@ -97,9 +97,9 @@ describe('Citizen details service', () => {
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
       claimData.applicant1.partyDetails = new PartyDetails({});
-      claimData.applicant1.partyDetails.individualTitle = 'Mr.';
-      claimData.applicant1.partyDetails.individualFirstName = 'John';
-      claimData.applicant1.partyDetails.individualLastName = 'Doe';
+      claimData.applicant1.partyDetails.title = 'Mr.';
+      claimData.applicant1.partyDetails.firstName = 'John';
+      claimData.applicant1.partyDetails.lastName = 'Doe';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
       claimData.applicant1.partyDetails.correspondenceAddress = buildCitizenAddress().model;
@@ -122,9 +122,9 @@ describe('Citizen details service', () => {
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       claimData.applicant1 = new Party();
       claimData.applicant1.partyDetails = new PartyDetails({});
-      claimData.applicant1.partyDetails.individualTitle = 'Mr.';
-      claimData.applicant1.partyDetails.individualFirstName = 'John';
-      claimData.applicant1.partyDetails.individualLastName = 'Doe';
+      claimData.applicant1.partyDetails.title = 'Mr.';
+      claimData.applicant1.partyDetails.firstName = 'John';
+      claimData.applicant1.partyDetails.lastName = 'Doe';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
       //When
@@ -146,9 +146,9 @@ describe('Citizen details service', () => {
       claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.partyName = 'PartyName';
       claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
-      claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
-      claimData.applicant1.partyDetails.individualFirstName = 'individualFirstName';
-      claimData.applicant1.partyDetails.individualLastName = 'individualLastName';
+      claimData.applicant1.partyDetails.title = 'title';
+      claimData.applicant1.partyDetails.firstName = 'firstName';
+      claimData.applicant1.partyDetails.lastName = 'lastName';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
 
@@ -196,9 +196,9 @@ describe('Citizen details service', () => {
       claimData.applicant1.partyDetails = new PartyDetails({});
       claimData.applicant1.partyDetails.partyName = 'PartyName';
       claimData.applicant1.partyDetails.contactPerson = 'Contact Person';
-      claimData.applicant1.partyDetails.individualTitle = 'individualTitle';
-      claimData.applicant1.partyDetails.individualFirstName = 'individualFirstName';
-      claimData.applicant1.partyDetails.individualLastName = 'individualLastName';
+      claimData.applicant1.partyDetails.title = 'title';
+      claimData.applicant1.partyDetails.firstName = 'firstName';
+      claimData.applicant1.partyDetails.lastName = 'lastName';
       claimData.applicant1.partyDetails.primaryAddress = buildAddress();
       claimData.applicant1.partyDetails.provideCorrespondenceAddress = YesNo.NO;
 

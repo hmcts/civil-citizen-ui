@@ -39,30 +39,30 @@
                 text: t('COMMON.INPUT_LABELS.TITLE')
               },
               classes: 'govuk-!-width-one-half',
-              id: 'individualTitle',
-              name: 'individualTitle',
-              value: form.model.individualTitle,
-              errorMessage: { text: t(form.errorFor('individualTitle')) } if form.errorFor('individualTitle')
+              id: 'title',
+              name: 'title',
+              value: form.model.title,
+              errorMessage: { text: t(form.errorFor('title')) } if form.errorFor('title')
             }) }}
             {{ govukInput({
               label: {
                 text: t('COMMON.INPUT_LABELS.FIRST_NAME')
               },
               classes: 'govuk-!-width-one-half',
-              id: 'individualFirstName',
-              name: 'individualFirstName',
-              value: form.model.individualFirstName,
-              errorMessage: { text: t(form.errorFor('individualFirstName')) } if form.errorFor('individualFirstName')
+              id: 'firstName',
+              name: 'firstName',
+              value: form.model.firstName,
+              errorMessage: { text: t(form.errorFor('firstName')) } if form.errorFor('firstName')
             }) }}
             {{ govukInput({
               label: {
                 text: t('COMMON.INPUT_LABELS.LAST_NAME')
               },
               classes: 'govuk-!-width-one-half',
-              id: 'individualLastName',
-              name: 'individualLastName',
-              value: form.model.individualLastName,
-              errorMessage: { text: t(form.errorFor('individualLastName')) } if form.errorFor('individualLastName')
+              id: 'lastName',
+              name: 'lastName',
+              value: form.model.lastName,
+              errorMessage: { text: t(form.errorFor('lastName')) } if form.errorFor('lastName')
             }) }}
             {% if defendantType === partyType.SOLE_TRADER %}
               {{  govukInput({
