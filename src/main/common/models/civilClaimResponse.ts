@@ -1,7 +1,6 @@
 import {StatementOfTruth} from './claim';
 import {
   CaseState,
-  CCDHelpWithFeeDetails,
   CCDHelpWithFees,
   ClaimAmountBreakup,
   InterestClaimFromType,
@@ -80,6 +79,7 @@ import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments'
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 export class CivilClaimResponse {
   id: string;
@@ -110,7 +110,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
-  hwFeesDetails?: CCDHelpWithFeeDetails;
+  hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
   paymentOption?: PaymentOptionType;

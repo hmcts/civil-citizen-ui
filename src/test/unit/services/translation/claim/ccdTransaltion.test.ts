@@ -80,6 +80,6 @@ describe('translate draft claim to ccd version', () => {
     //When
     const ccdClaim = translateDraftClaimToCCDR2(claim, req as AppRequest);
     //Then
-    expect(ccdClaim.hwFeesDetails).toEqual({ 'hwfFeeType': 'CLAIMISSUED' });
+    expect(ccdClaim.hwfFeeType).toEqual('CLAIMISSUED');
   });
 });
