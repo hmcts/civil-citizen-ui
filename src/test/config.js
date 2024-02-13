@@ -6,11 +6,11 @@ const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
 }
-const waitForTime = 20000;
 process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 module.exports = {
@@ -18,21 +18,22 @@ module.exports = {
   env: process.env.ENVIRONMENT_NAME || 'local',
   TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
-  WaitForTimeout: waitForTime,
+  WaitForTimeout: 20000,
   WaitForText: 60,
   helpers: {
     Playwright: {
       url: testUrl,
-      show: false,
       browser: 'chromium',
-      waitForTimeout: waitForTime,
-      timeout: waitForTime,
-      waitForAction: 1000,
-      waitForNavigation: 'networkidle0',
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
+      windowSize: '1280x960',
+      timeout: 30000,
+      waitForAction: 10000,
+      bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,
       chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
-        timeout: waitForTime,
+        timeout: 30000,
         headers: {
           'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
         },
@@ -69,7 +70,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    email: defendantCitizenUserEmail,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
@@ -122,8 +123,8 @@ module.exports = {
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
-  defendantSelectedCourt: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-  claimantLRSelectedCourt: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+  defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',
     admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',
