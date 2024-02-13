@@ -61,9 +61,9 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     responseType: responseType,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: 'Mr.',
-      individualFirstName: 'TestName',
-      individualLastName: 'TestLastName',
+      title: 'Mr.',
+      firstName: 'TestName',
+      lastName: 'TestLastName',
     },
   };
   claim.fullAdmission = new FullAdmission();
