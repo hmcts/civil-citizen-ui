@@ -16,10 +16,10 @@ export const buildClaimSection = (claim: Claim, claimId: string, lang: string | 
     summaryRows: [],
   });
   claimSection.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REASON_TITLE', {lang}), claim.claimDetails?.reason?.text, CLAIM_REASON_URL, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REASON_TITLE', {lng}), claim.claimDetails?.reason?.text, CLAIM_REASON_URL, changeLabel(lang)),
   );
-  addTimeLine(claim, claimSection, claimId, lang);
-  addEvidence(claim, claimSection, claimId, lang);
+  addTimeLine(claim, claimSection, claimId, lng);
+  addEvidence(claim, claimSection, claimId, lng);
 
   return claimSection;
 };

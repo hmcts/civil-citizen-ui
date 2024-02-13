@@ -13,7 +13,7 @@ import {
   isPaymentOptionMissing,
   isRepaymentPlanMissing,
   isStatementOfMeansComplete,
-  isPaymentOptionExisting,
+  isPaymentOptionExisting, hasAllCarmRequiredFields,
 } from 'common/utils/taskList/tasks/taskListHelpers';
 import {PartyType} from 'common/models/partyType';
 import {Party} from 'common/models/party';
@@ -53,6 +53,22 @@ describe('Task List Helpers', () => {
 
   beforeEach(() => {
     caseData = new Claim();
+  });
+
+  describe('hasAllCarmRequiredFields Method', () => {
+    it('should return false if respondent is organisation without contact Person', () => {
+      mockRespondent.type = PartyType.ORGANISATION;
+      expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(false);
+    });
+    it('should return true if respondent is organisation without contact Person', () => {
+      mockRespondent.type = PartyType.ORGANISATION;
+      mockRespondent.partyDetails.contactPerson = 'test';
+      expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(true);
+    });
+    it('should return true if respondent is different of organisation', () => {
+      mockRespondent.type = PartyType.INDIVIDUAL;
+      expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(true);
+    });
   });
 
   describe('isCounterpartyCompany helper', () => {

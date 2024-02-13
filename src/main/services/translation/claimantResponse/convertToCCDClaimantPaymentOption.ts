@@ -4,12 +4,14 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
-  switch(paymentOptionType) {
+  switch (paymentOptionType) {
     case PaymentOptionType.INSTALMENTS:
       return CCDClaimantPaymentOption.REPAYMENT_PLAN;
     case PaymentOptionType.BY_SET_DATE:
       return CCDClaimantPaymentOption.SET_DATE;
-    default: return CCDClaimantPaymentOption.IMMEDIATELY;
+    case PaymentOptionType.IMMEDIATELY:
+      return CCDClaimantPaymentOption.IMMEDIATELY;
+    default: return undefined;
   }
 };
 
@@ -26,7 +28,7 @@ export const toCCDClaimantSuggestedFirstRepaymentDate = (claimantResponse?: Clai
 
   if(toCCDClaimantSuggestedPayByInstalments(claimantResponse) && (firstRepaymentDate)) {
     return convertDateToStringFormat(firstRepaymentDate);
-  } 
+  }
 
   return undefined;
 };

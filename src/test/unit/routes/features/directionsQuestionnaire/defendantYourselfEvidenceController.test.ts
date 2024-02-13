@@ -3,7 +3,11 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../../main/routes/urls';
+import {
+  DQ_CONFIRM_YOUR_DETAILS_URL,
+  DQ_DEFENDANT_WITNESSES_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
+} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -51,12 +55,12 @@ describe('Defendant yourself evidence Controller', () => {
       });
     });
 
-    it('should redirect to the defendant witnesses page if option yes is selected', async () => {
+    it('should redirect to the confirm your details evidence page if option yes is selected', async () => {
       await request(app).post(DQ_GIVE_EVIDENCE_YOURSELF_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DEFENDANT_WITNESSES_URL);
+          expect(res.get('location')).toBe(DQ_CONFIRM_YOUR_DETAILS_URL);
         });
     });
 

@@ -176,7 +176,7 @@ describe('getBundlesContent', () =>{
 
       //then
       checkForNonTableBundleData(bundleTabActual);
-      expect(bundleTabActual[1].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.CLAIMANTPAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS');
+      expect(bundleTabActual[1].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT');
       expect(bundleTabActual[1].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadDisclosure.DISCLOSURE_LIST);
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedDisclosureEvidence.createdDateTimeFormatted);
@@ -211,7 +211,7 @@ describe('getBundlesContent', () =>{
       //then
       checkForNonTableBundleData(bundleTabActual);
       expect(bundleTabActual[1]).toBeUndefined();
-      expect(bundleTabActual[2].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.DEFENDANTPAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS');
+      expect(bundleTabActual[2].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT');
       expect(bundleTabActual[2].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadExpert.STATEMENT);
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedExpertEvidence.createdDateTimeFormatted);
