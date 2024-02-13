@@ -1,6 +1,6 @@
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {BASE_ELIGIBILITY_URL} from 'routes/urls';
+import { BASE_ELIGIBILITY_URL, MAKE_CLAIM } from 'routes/urls';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
@@ -24,6 +24,14 @@ describe('Try the new online service', () => {
           expect(res.status).toBe(302);
         });
     });
+    it('should return Try the new online service page', async () => {
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(false);
+      await request(app)
+        .get(MAKE_CLAIM)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(BASE_ELIGIBILITY_URL);
+        });
+    });
   });
-
 });
