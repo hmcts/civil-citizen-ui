@@ -424,7 +424,7 @@
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
-      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+      "PAGE_TEXT": "Can the mediator use {{ partyPhone }} to call you for your mediation appointment?"
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Telephone mediation",
@@ -2215,7 +2215,7 @@
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+      "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
@@ -2223,7 +2223,7 @@
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+      "PAGE_TEXT": "Can the mediation team use {{ partyEmail }} to contact you about your mediation appointment?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
