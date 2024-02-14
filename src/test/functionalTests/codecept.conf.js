@@ -26,7 +26,7 @@ exports.config = {
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,
-      waitForAction: 1000,
+      waitForAction: 500,
       bypassCSP: true,
       ignoreHTTPSErrors: true,
     },
