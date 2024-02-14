@@ -180,11 +180,15 @@
         {% if removeButton.hidden %}
           {{ govukButton({
             text: t('COMMON.REMOVE'),
+            name: 'action',
+            value: 'items[' +index+ '][removeButton]',
             classes: "govuk-button--secondary remove-row govuk-visually-hidden"
           }) }}
         {% else %}
           {{ govukButton({
             text: t('COMMON.REMOVE'),
+            name: 'action',
+            value: 'items[' +index+ '][removeButton]',
             classes: "govuk-button--secondary remove-row"
           }) }}
         {% endif %}

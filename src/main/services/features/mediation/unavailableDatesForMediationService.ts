@@ -13,3 +13,12 @@ export const getUnavailableDatesMediationForm = (reqBody: Record<string, []>): U
   });
   return new UnavailableDatesMediation(unavailableDatePeriodMediation);
 };
+
+export const addAnother = (unavailableDatesForMediation: UnavailableDatesMediation): void => {
+  unavailableDatesForMediation.items.push(new UnavailableDatePeriodMediation());
+};
+
+export const removeItem = (unavailableDatesForMediation: UnavailableDatesMediation, action: string  ): void => {
+  const [index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+  unavailableDatesForMediation.items.splice(Number(index),1);
+};

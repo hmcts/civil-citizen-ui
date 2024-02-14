@@ -12,7 +12,11 @@ import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {UnavailableDates} from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {getUnavailableDatesMediationForm} from 'services/features/mediation/unavailableDatesForMediationService';
+import {
+  addAnother,
+  getUnavailableDatesMediationForm, removeItem
+} from 'services/features/mediation/unavailableDatesForMediationService';
+
 
 const emailMediationConfirmationViewPath = 'features/mediation/unavailable-dates-mediation';
 const mediationUnavailabilitySelectDatesController = Router();
@@ -42,8 +46,16 @@ mediationUnavailabilitySelectDatesController.get(MEDIATION_UNAVAILABLE_SELECT_DA
 
 mediationUnavailabilitySelectDatesController.post(MEDIATION_UNAVAILABLE_SELECT_DATES_URL, (async (req, res, next: NextFunction) => {
   try {
+    const action = req.body.action;
     const unavailableDatesForMediation = getUnavailableDatesMediationForm(req.body);
     const form = new GenericForm(unavailableDatesForMediation);
+    if (action === 'add_another_date') {
+      addAnother(unavailableDatesForMediation);
+      return renderView(form, res, req);
+    } else if (action?.includes('[removeButton]')) {
+      removeItem(unavailableDatesForMediation, action);
+      return renderView(form, res, req);
+    }
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
