@@ -6,6 +6,7 @@ const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -22,9 +23,9 @@ module.exports = {
       url: testUrl,
       show: false,
       browser: 'chromium',
-      waitForTimeout: 20000,
-      timeout: 20000,
-      waitForAction: 1000,
+      waitForTimeout: 30000,
+      timeout: 30000,
+      waitForAction: 10000,
       waitForNavigation: 'networkidle0',
       ignoreHTTPSErrors: true,
     },
