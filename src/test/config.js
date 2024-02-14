@@ -22,7 +22,7 @@ module.exports = {
   helpers: {
     Playwright: {
       url: testUrl,
-      show: true,
+      show: false,
       browser: 'chromium',
       waitForTimeout: 30000,
       timeout: 30000,
