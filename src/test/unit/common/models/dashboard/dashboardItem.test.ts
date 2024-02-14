@@ -181,6 +181,16 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
     });
 
+    it('should return translated status for claim MORE_INFORMATION_REQUIRED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='MORE_INFORMATION_REQUIRED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.MORE_INFORMATION_REQUIRED');
+    });
+
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
       const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
