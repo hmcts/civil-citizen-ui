@@ -36,7 +36,7 @@ describe('Mediation Type Of Document Controller', () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
-      claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+      claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
       return claim;
     });
   });
