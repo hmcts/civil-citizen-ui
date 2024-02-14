@@ -11,7 +11,7 @@ import {t} from "i18next";
 {% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
    {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
