@@ -47,12 +47,12 @@ class LatestUpdate {
     I.see('Documents');
   }
   verifyTrialArrangementsFinalisedTile() {
-    I.see('You have finalised your trial arrangements','h3');
+    I.waitForText('You have finalised your trial arrangements', 60, 'h3');
     I.see('You can view your trial arrangements under \'Notices and orders\'.');
   }
 
   verifyCaseStruckOutTile() {
-    I.see('Claim has been struck out','h3');
+    I.waitForText('Claim has been struck out', 60, 'h3');
     I.see('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice. As a result, the hearing scheduled for 10 November 2023 at 09:30 will no longer take place.');
     I.see('If the claimant wants to reinstate this claim, they will need to make an application to the court.');
   }
