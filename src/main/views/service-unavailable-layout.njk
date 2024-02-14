@@ -13,7 +13,7 @@
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle()}}
+  {{setPageTitle(t)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({
