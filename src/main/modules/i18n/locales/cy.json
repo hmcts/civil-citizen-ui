@@ -3001,16 +3001,16 @@
       "DOCUMENT_ISSUE_DATE": "Dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
       "TRIAL": {
         "TITLE": "Dogfennau’r treial",
-        "CASE_SUMMARY": "Case summary",
-        "SKELETON": "Skeleton argument",
-        "LEGAL": "Legal authorities",
-        "COSTS": "Costs",
-        "DOCUMENTARY": "Documentary evidence for trial"
+        "CASE_SUMMARY": "Crynodeb o’r achos",
+        "SKELETON": "Dadleuon fframwaith",
+        "LEGAL": "Awdurdodau cyfreithiol",
+        "COSTS": "Costau",
+        "DOCUMENTARY": "Tystiolaeth ddogfennol ar gyfer y treial"
       },
       "DISCLOSURE": {
         "TITLE": "Datgeliad",
-        "DISCLOSURE_DOCUMENTS": "Documents for disclosure",
-        "DISCLOSURE_LIST": "Disclosure list"
+        "DISCLOSURE_DOCUMENTS": "Dogfennau i'w datgelu",
+        "DISCLOSURE_LIST": "Rhestr ddatgelu"
       },
       "WITNESS": {
         "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
