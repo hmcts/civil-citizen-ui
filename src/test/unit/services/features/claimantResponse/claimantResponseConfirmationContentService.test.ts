@@ -47,7 +47,7 @@ describe('Claimant Response Confirmation service', () => {
       RejectAllOfClaimType.DISPUTE,
     );
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.RC_DISPUTE.NOT_PROCEED_WITH_CLAIM');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -67,7 +67,7 @@ describe('Claimant Response Confirmation service', () => {
       paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
     };
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -86,7 +86,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
     claim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -123,7 +123,7 @@ describe('Claimant Response Confirmation service', () => {
     };
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -146,7 +146,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.fullAdmitSetDateAcceptPayment = {option: YesNo.NO};
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
@@ -173,7 +173,7 @@ describe('Claimant Response Confirmation service', () => {
     };
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -200,7 +200,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -223,7 +223,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -252,7 +252,7 @@ describe('Claimant Response Confirmation service', () => {
     };
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -285,7 +285,7 @@ describe('Claimant Response Confirmation service', () => {
     };
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -314,7 +314,7 @@ describe('Claimant Response Confirmation service', () => {
     };
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -342,7 +342,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.ccdState = CaseState.JUDICIAL_REFERRAL;
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -381,7 +381,7 @@ describe('Claimant Response Confirmation service', () => {
     );
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
 
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
@@ -394,6 +394,47 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[4]).toBeUndefined();
   });
 
+  it('Claimant rejected defendant`s response as full defence states paid and says not settle - carm enabled', () => {
+
+    // Given
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+    const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
+      amount: 120,
+      totalClaimAmount: 1000,
+      year: '2022',
+      month: '2',
+      day: '14',
+      text: 'Some text here...',
+    };
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.ALREADY_PAID,
+      new HowMuchHaveYouPaid(howMuchHaveYouPaidParams),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, true);
+
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[3].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
+    expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_3');
+    expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_4');
+    expect(claimantResponseConfirmationContent[6]).toBeUndefined();
+  });
+
   it('Claimant accepted defendant`s repayment plan and ask for CCJ', () => {
     // Given
     claim.respondent1 = new Party();
@@ -402,7 +443,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -423,7 +464,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -443,7 +484,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -463,7 +504,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
 
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -482,7 +523,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.courtProposedDate = new CourtProposedDate(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -504,7 +545,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
     claim.claimantResponse.courtProposedPlan = new CourtProposedPlan(CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN);
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CCJ.CCJ_REQUESTED');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
@@ -545,7 +586,7 @@ describe('Claimant Response Confirmation service', () => {
     const mediation = new Mediation({ option: YesNo.YES, mediationPhoneNumber: '01234' });
     claim.claimantResponse.mediation = mediation;
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     //Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
@@ -556,7 +597,7 @@ describe('Claimant Response Confirmation service', () => {
     // Given
     claim.ccdState = CaseState.IN_MEDIATION;
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     //Then
     expect(claimantResponseConfirmationContent[2].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_1');
     expect(claimantResponseConfirmationContent[3].data?.text).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.YES_MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_2');
@@ -568,7 +609,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.ACCEPTED_DEFENDANT_RESPONSE');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');

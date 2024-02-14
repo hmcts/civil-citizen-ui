@@ -12,6 +12,9 @@ import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
 import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
+import {
+  getMediationCarmNextSteps
+} from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/mediationConfirmationContentBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -35,7 +38,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
-export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {
+export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
@@ -43,6 +46,7 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
+  const RejectedResponseCarmMediationNextSteps = getMediationCarmNextSteps(lang);
   const rejectedRepaymentPlaneNextSteps = getCCJNextStepsForRejectedRepaymentPlan(claim, lang);
   const rejectedAndJudgeDecideRepaymentPlan = getCCJNextStepsForJudgeDecideRepaymentPlan(claim, lang);
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
@@ -87,12 +91,18 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
     return acceptedResponseToSettle;
   }
 
-  if (hasClaimantRejectedDefendantResponse(claim)) {
-    if(hasEitherPartyNotAgreedToMediation(claim) || claim.isFastTrackClaim) {
-      return RejectedResponseNoMediationNextSteps;
+  if (carmApplicable) {
+    if (claim.hasClaimantNotSettled) {
+      return RejectedResponseCarmMediationNextSteps;
     }
-    else if(claimantResponse.hasClaimantAgreedToMediation()) {
-      return RejectedResponseYesMediationNextSteps;
+  } else {
+    if (hasClaimantRejectedDefendantResponse(claim)) {
+      if(hasEitherPartyNotAgreedToMediation(claim) || claim.isFastTrackClaim) {
+        return RejectedResponseNoMediationNextSteps;
+      }
+      else if(claimantResponse.hasClaimantAgreedToMediation()) {
+        return RejectedResponseYesMediationNextSteps;
+      }
     }
   }
   if (claim.ccdState === CaseState.IN_MEDIATION) {

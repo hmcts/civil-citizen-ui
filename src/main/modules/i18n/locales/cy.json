@@ -1133,6 +1133,12 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
         }
       },
+      "MEDIATION": {
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "A mediation appointment will now be arranged by the Small Claims Mediation Service. We will email you the date of your mediation appointment within the next 28 days.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "If a settlement is agreed at mediation, you will not need to go to court.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "If you do not attend your mediation appointment, you may be subject to penalties. You may be ordered to pay costs, or the Judge may automatically rule in the defendant's favour."
+      },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
       },
@@ -1639,7 +1645,7 @@
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
       "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
-      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",      
+      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
       "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw hwnnw.",
       "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
