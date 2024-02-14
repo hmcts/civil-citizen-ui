@@ -40,16 +40,16 @@ function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object,
 
 courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claimantResponse = await getClaimantResponse(redisKey);
     const claim: Claim = await getCaseDataFromStore(redisKey);
 
     repaymentPlan = {
       paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim))),
-      finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim))),
+      repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
+      firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim)), lng),
+      finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim)), lng),
       repaymentLength: getNumberOfInstalments(claim),
     };
 
