@@ -12,8 +12,6 @@ let claimNumber;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
@@ -25,5 +23,4 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @lip
 
 AfterSuite(async () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });
