@@ -167,12 +167,21 @@ class ReponseToDefence {
     I.click(paths.buttons.continue);
   }
 
-  async verifyHowTheyWantToPay() {
+  async verifyHowTheyWantToPay(claimReference) {
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you £500 by 14 February 2025.');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
     I.see('Test reason');
+    I.click(paths.links.see_their_financial_details);
+    I.see('Where are they living?');
+    I.see('Home you own yourself (or pay a mortgage on)');
+    I.see('Balance');
+    I.see('£2,000');
+    I.see('Claim number');
+    I.see(`${claimReference}`);
+    I.see('Student loan');
+    I.see('£8,000');
     I.click(paths.buttons.continue);
   }
 

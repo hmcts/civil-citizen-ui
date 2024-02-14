@@ -21,7 +21,7 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyDashboard();
     I.click(paths.links.view_defendants_response);
     await responseToDefence.verifyDefendantsResponse(caseReference);
-    await responseToDefence.verifyHowTheyWantToPay();
+    await responseToDefence.verifyHowTheyWantToPay(caseReference);
     await this.verifyDashboardLoaded();
     I.click(paths.links.accept_or_reject);
     await responseToDefence.verifyDoYouWantToSettleTheClaim();

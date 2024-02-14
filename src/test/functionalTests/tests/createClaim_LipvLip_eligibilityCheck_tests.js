@@ -17,7 +17,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario.only('Create Claim For Under 25000', async ({api}) => {
+Scenario.only('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By Claimant', async ({api}) => {
   //await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterUserCredentials('civilmoneyclaimsdemo@gmail.com', 'Password12!');
   await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
@@ -53,4 +53,22 @@ Scenario.only('Create Claim For Under 25000', async ({api}) => {
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceSteps(claimRef,claimNumber);
 
   pause();
+}).tag('@regression');
+
+Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', async ({api}) => {
+  //await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await LoginSteps.EnterUserCredentials('civilmoneyclaimsdemo@gmail.com', 'Password12!');
+  await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
+  let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation();
+  claimRef = claimRef.replace(/-/g, '');
+  console.log('The value of the claim reference : ' + claimRef);
+  let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  let claimNumber = await caseData.legacyCaseReference;
+  let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('The value of the Claim Number :' + claimNumber);
+  console.log('The value of the Security Code :' + securityCode);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await api.assignToLipDefendant(claimRef);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 }).tag('@regression');
