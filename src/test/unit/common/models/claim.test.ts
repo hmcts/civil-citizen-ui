@@ -2027,7 +2027,7 @@ describe('Documents', () => {
 
     it('should return false if no claimantResponse object', () => {
       //When
-      const result = claim.claimantResponse.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
     });
@@ -2036,7 +2036,7 @@ describe('Documents', () => {
       //Given
       claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
       //When
-      const result = claim.claimantResponse.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
     });
@@ -2050,7 +2050,7 @@ describe('Documents', () => {
         text: 'test',
       };
       //When
-      const result = claim.claimantResponse.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(true);
     });
@@ -2064,7 +2064,7 @@ describe('Documents', () => {
         text: 'test',
       };
       //When
-      const result = claim.claimantResponse.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(true);
     });
@@ -2078,7 +2078,7 @@ describe('Documents', () => {
         text: undefined,
       };
       //When
-      const result = claim.claimantResponse.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
     });
