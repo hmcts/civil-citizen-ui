@@ -184,11 +184,11 @@ describe('Claim Task List service', () => {
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.claimInterest = YesNo.YES;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();
@@ -233,11 +233,11 @@ describe('Claim Task List service', () => {
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();
@@ -286,11 +286,11 @@ describe('Claim Task List service', () => {
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();

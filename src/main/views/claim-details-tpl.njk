@@ -9,6 +9,7 @@
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,7 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle()}}
+  {{setPageTitle(t)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({

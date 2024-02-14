@@ -31,7 +31,7 @@ describe('Mediation Start Upload Documents Controller', () => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
+      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
       return claim;
     });
   });
