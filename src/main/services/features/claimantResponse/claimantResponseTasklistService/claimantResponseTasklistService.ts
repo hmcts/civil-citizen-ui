@@ -24,7 +24,9 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   }
 
   if (carmApplicable &&
-    (claim.hasClaimantIntentToProceedResponse() || claim.hasClaimantRejectedDefendantResponse() || claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) {
+    (claim.hasClaimantIntentToProceedResponse() || claim.hasClaimantRejectedDefendantResponse() || claim.hasClaimantRejectedDefendantPaid()
+      || claim.hasClaimantRejectedDefendantAdmittedAmount()
+      || claim.hasClaimantRejectedPartAdmitPayment())) {
     taskGroups.push(buildClaimantResponseMediationSection(claim, claimId, lang, carmApplicable));
   }
 
