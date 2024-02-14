@@ -13,6 +13,8 @@ const paths = {
     save_and_continue: 'Save and continue',
     find_address_field: '//input[@name=\'primaryAddressPostcode\']',
     submit_claim: 'Submit claim',
+    submit_response: 'Submit Response',
+    go_to_your_account: 'Go to your account',
   },
   options: {
     sign_a_settlements_agreement: '#option',
@@ -74,7 +76,7 @@ const paths = {
   },
 };
 
-class CreateClaim {
+class ReponseToDefence {
 
   async open(caseReference) {
     I.amOnPage(`/case/${caseReference}/claimant-response/task-list`);
@@ -82,7 +84,7 @@ class CreateClaim {
 
   async verifyDashboard() {
     I.see('Your response', 'h1');
-    I.see('Your response','h2');
+    I.see('Application incomplete','h2');
     I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     I.see('How they responded', 'h2');
     I.see('Choose what to do next', 'h2');
@@ -162,7 +164,7 @@ class CreateClaim {
     I.see('Student loan');
     I.see('£8,000');
     I.see('£400');
-    this.click(paths.buttons.continue);
+    I.click(paths.buttons.continue);
   }
 
   async verifyHowTheyWantToPay() {
@@ -171,7 +173,7 @@ class CreateClaim {
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
     I.see('Test reason');
-    this.click(paths.buttons.continue);
+    I.click(paths.buttons.continue);
   }
 
   async verifyDoYouWantToSettleTheClaim() {
@@ -182,7 +184,8 @@ class CreateClaim {
     I.see('You can agree to their repayment plan or suggest your own');
     I.see('No');
     I.see('The claim will continue for the total amount you claimed: £1,520');
-    this.click(paths.buttons.save_and_continue);
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
   }
 
   verifyAboutTheRepaymentPlan() {
@@ -192,7 +195,7 @@ class CreateClaim {
     I.see('Yes');
     I.see('No - I\'ll suggest my own');
     I.click(paths.options.yes);
-    this.click(paths.buttons.save_and_continue);
+    I.click(paths.buttons.save_and_continue);
   }
 
   verifyHowToFormaliseARepayment() {
@@ -206,7 +209,7 @@ class CreateClaim {
     I.see('This adds the defendant to the CCJ register,');
     I.see('which may make it more difficult for them to borrow money to repay you.');
     I.click(paths.options.sign_a_settlements_agreement);
-    this.click(paths.buttons.save_and_continue);
+    I.click(paths.buttons.save_and_continue);
   }
 
   verifySignTheSettlementAgreement() {
@@ -226,9 +229,28 @@ class CreateClaim {
     I.see('Make sure this agreement includes everything you’ve agreed with Mrs Jane Doe before signing.');
     I.see('You won’t be able to change this later.');
     I.see('I confirm I’ve read and accept the terms of the agreement.');
-    I.click(paths.options.sign_a_settlements_agreement);
-    this.click(paths.buttons.save_and_continue);
+    I.click(paths.options.confirm_and_sign);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  verifyCheckYourAnswers() {
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept or reject the defendant\'s admission?');
+    I.see('I accept this amount');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I accept this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.see('Sign a settlement agreement');
+    I.click(paths.buttons.submit_response);
+  }
+
+  verifyConfirmationScreen(claimNumber) {
+    I.see('You\'ve signed a settlement agreement', 'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
   }
 }
 
-module.exports = CreateClaim;
+module.exports = ReponseToDefence;

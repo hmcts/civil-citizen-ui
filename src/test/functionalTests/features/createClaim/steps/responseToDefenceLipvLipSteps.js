@@ -1,7 +1,7 @@
 const I = actor();
 const ResponseToDefence = require('../pages/responseToDefence');
-
 const responseToDefence = new ResponseToDefence();
+
 const paths = {
   links: {
     view_defendants_response: '//a[.="View the defendant\'s response"]',
@@ -15,25 +15,35 @@ const paths = {
 
 class ResponseToDefenceLipVLipSteps {
 
-  async ResponseToDefenceSteps()
+  async ResponseToDefenceSteps(caseReference, claimNumber)
   {
-    await responseToDefence.open();
+    await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
-    await responseToDefence.verifyDefendantsResponse();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponse(caseReference);
     await responseToDefence.verifyHowTheyWantToPay();
-    this.verifyDashboardLoaded();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject);
     await responseToDefence.verifyDoYouWantToSettleTheClaim();
-    this.verifyDashboardLoaded();
+    await this.verifyDashboardLoaded();
     I.click(paths.links.accept_or_reject_the_payment_plan);
     await responseToDefence.verifyAboutTheRepaymentPlan();
-    this.verifyDashboardLoaded();
+    await this.verifyDashboardLoaded();
     I.click(paths.links.how_to_formalise_repayment);
     await responseToDefence.verifyHowToFormaliseARepayment();
-    this.verifyDashboardLoaded();
+    await this.verifyDashboardLoaded();
     I.click(paths.links.sign_a_settlements_agreement);
     await responseToDefence.verifySignTheSettlementAgreement();
-    this.verifyDashboardLoaded();
+    await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswers();
+    responseToDefence.verifyConfirmationScreen(claimNumber);
   }
+
+  async verifyDashboardLoaded() {
+    I.waitForText('Submit', 3);
+    I.see('Your response', 'h1');
+  }
+
 }
 module.exports = new ResponseToDefenceLipVLipSteps();

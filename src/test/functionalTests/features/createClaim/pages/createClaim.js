@@ -24,9 +24,9 @@ const paths = {
     when_will_you_claim_interest_from: '#interestClaimFrom',
   },
   fields: {
-    individual_title: '#individualTitle',
-    individual_first_name: '#individualFirstName',
-    individual_last_name: '#individualLastName',
+    individual_title: '#title',
+    individual_first_name: '#firstName',
+    individual_last_name: '#lastName',
     telephone_number: '#telephoneNumber',
     email_address: '#emailAddress',
     claim_amount_reason_1: '(//input[@id=\'claimAmountRows[0][reason]\'])[1]',

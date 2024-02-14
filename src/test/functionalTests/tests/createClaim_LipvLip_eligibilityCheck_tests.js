@@ -1,10 +1,10 @@
 const CreateLipvLipClaimSteps  =  require('../features/createClaim/steps/createLipvLipClaimSteps');
-const ResponseToDefenceSteps  =  require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps  =  require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
 /*const {unAssignAllUsers} = require('../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAccount} = require('../specClaimHelpers/api/idamHelper');*/
 const partAdmit = 'partial-admission';
@@ -50,7 +50,7 @@ Scenario.only('Create Claim For Under 25000', async ({api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   await ResponseSteps.SignOut();
   await LoginSteps.EnterUserCredentials('civilmoneyclaimsdemo@gmail.com', 'Password12!');
-  ResponseToDefenceSteps.ResponseToDefenceSteps();
+  await ResponseToDefenceLipVsLipSteps.ResponseToDefenceSteps(claimRef,claimNumber);
 
   pause();
 }).tag('@regression');
