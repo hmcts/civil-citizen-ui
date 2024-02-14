@@ -55,7 +55,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
   }
 
   const taskList: TaskList = {
-    title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS'),
+    title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS', { lng: getLng(lang) }),
     tasks: [considerOtherOptionsTask],
   };
 
@@ -118,7 +118,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const taskList: TaskList = {
-    title: t('PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM'),
+    title: t('PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM', { lng: getLng(lang)}),
     tasks: [
       completingYourClaimTask,
       yourDetailsTask,

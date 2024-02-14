@@ -145,7 +145,7 @@ function addEventListenerWhenDomIsLoaded() {
   });
 }
 
-if (window.location.href.includes('upload-documents')) {
+if (window.location.href.includes('case-progression/upload-documents')) {
   const {observer, observerConfig} = createObservable();
   observer.observe(document, observerConfig);
   addEventListenerWhenDomIsLoaded();

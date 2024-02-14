@@ -9,9 +9,9 @@
 
 {% block pageTitle %}
   {% if claimantView %}
-    {{ setPageTitle('PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
+    {{ setPageTitle(t, 'PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
   {% else %}
-    {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+    {{ setPageTitle(t, 'PAGES.CITIZEN_DOB.PAGE_TITLE') }}
   {% endif %}
 {% endblock %}
 
@@ -51,7 +51,7 @@
                 name: "date",
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
-                    date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
+                    date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 18)
                   })
                 },
                 items: [

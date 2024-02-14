@@ -23,3 +23,4 @@ export const getPaymentSuccessfulButtonContent = (redirectUrl : string) => {
     .addButton('COMMON.BUTTONS.GO_TO_ACCOUNT', redirectUrl)
     .build();
 };
+

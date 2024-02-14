@@ -3,7 +3,6 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
@@ -20,7 +19,6 @@ let securityCode;
 Feature('Response with PartAdmit - Small Claims');
 
 Before(async ({api}) => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -32,7 +30,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -50,9 +48,9 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression 
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @regression @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -71,9 +69,9 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regression @nightly', async ({api}) => {
+Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -93,9 +91,9 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @regre
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-});
+}).tag('@regression-cui-r1');
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly @regression', async () => {
+Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -111,9 +109,8 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-});
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });
