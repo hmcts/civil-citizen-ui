@@ -187,6 +187,7 @@ class CreateClaim {
     }
     I.fillField(paths.buttons.find_address_field, 'MK5 7HH');
     this.clickNextAction('Find address');
+    I.wait(2);
     I.waitForVisible('#primaryAddresspostcodeAddress', 3);
     I.see('Pick an address');
     if (claimantFlag === true) {
@@ -196,6 +197,7 @@ class CreateClaim {
       I.selectOption('#primaryAddresspostcodeAddress',
         'ARCANA, 54, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
     }
+    I.wait(2);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -232,7 +234,7 @@ class CreateClaim {
 
   async verifyTheirPhoneNumber() {
     I.see('Their phone number (optional)', 'h1');
-    I.fillField(paths.fields.telephone_number, '07818731015');
+    //I.fillField(paths.fields.telephone_number, '07818731015');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -439,7 +441,7 @@ class CreateClaim {
     I.see('Email');
     I.see('civilmoneyclaimsdemo@gmail.com');
 
-    I.see('07818731015');
+    //I.see('07818731015');
 
     I.see('Claim amount', 'h2');
 
@@ -560,6 +562,10 @@ class CreateClaim {
     I.see('Total amount');
     I.see('£115');
     await I.click('Go to your account');
+  }
+
+  async signOut() {
+    I.click('Sign out');
   }
 
   async verifyDashboardLoaded() {

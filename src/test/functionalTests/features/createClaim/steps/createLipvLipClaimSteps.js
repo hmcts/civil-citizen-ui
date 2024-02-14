@@ -110,7 +110,8 @@ class CreateClaimSteps {
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();
-    await I.wait(10); //Just to make sure that the backend processed have completed fully
+    await createClaim.signOut();
+    //await I.wait(10); //Just to make sure that the backend processed have completed fully
     return caseReference;
   }
 

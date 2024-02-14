@@ -325,6 +325,11 @@ module.exports = {
   cleanUp: async () => {
     await unAssignAllUsers();
   },
+
+  assignToLipDefendant: async (caseId) => {
+    await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
+  },
 };
 
 // Functions
