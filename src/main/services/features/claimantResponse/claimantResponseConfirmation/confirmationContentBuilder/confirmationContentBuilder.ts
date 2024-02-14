@@ -13,7 +13,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {CaseState} from 'common/form/models/claimDetails';
 import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
 import {
-  getMediationCarmNextSteps
+  getMediationCarmNextSteps,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/mediationConfirmationContentBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
