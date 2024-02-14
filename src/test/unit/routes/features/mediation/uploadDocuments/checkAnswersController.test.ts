@@ -25,7 +25,7 @@ const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND;
 
 const civilServiceClaim = new Claim();
 civilServiceClaim.respondent1 = new Party();
-civilServiceClaim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
+civilServiceClaim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
 civilServiceClaim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
 civilServiceClaim.res1MediationDocumentsReferred = [];
 civilServiceClaim.res1MediationNonAttendanceDocs = [];
@@ -46,7 +46,7 @@ describe('Mediation check and send Controller', () => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
+      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
       claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
       return claim;
     });
