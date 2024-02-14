@@ -11,7 +11,6 @@ const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
 }
-
 module.exports = {
   TestUrl: testUrl,
   env: process.env.ENVIRONMENT_NAME || 'local',
