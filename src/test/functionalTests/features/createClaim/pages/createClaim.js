@@ -1,5 +1,4 @@
 const I = actor();
-/*const config = require('../../../../config');*/
 
 const paths = {
   links: {
@@ -234,7 +233,7 @@ class CreateClaim {
 
   async verifyTheirPhoneNumber() {
     I.see('Their phone number (optional)', 'h1');
-    //I.fillField(paths.fields.telephone_number, '07818731015');
+    //No Input here as this field is Optional and it will be entered by the Defendant
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -249,13 +248,17 @@ class CreateClaim {
     I.see('Amount');
   }
 
-  async verifyAndInputDoYouWantToClaimInterest() {
+  async verifyAndInputDoYouWantToClaimInterest(claimInterestFlag) {
     I.see('Do you want to claim interest?', 'h1');
     I.see('You can claim interest on the money you say you\'re owed.');
     I.see('The court will decide if you\'re entitled to it.');
     I.see('Yes');
     I.see('No');
-    I.click(paths.options.yes);
+    if (claimInterestFlag === true) {
+      I.click(paths.options.yes);
+    } else {
+      I.click(paths.options.no);
+    }
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -305,22 +308,25 @@ class CreateClaim {
 
     I.fillField(paths.fields.claim_amount_reason_4, 'Temporary Entry for Automation Blur');
     I.fillField(paths.fields.claim_amount_amount_4, '20.00');
+    I.click('Add another row');
 
-    I.see('£ 1500.00');
+    I.waitForText('£ 1520.00',3);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
-  async verifyClaimAmountSummary() {
+  async verifyClaimAmountSummary(claimInterestFlag) {
     I.see('Total amount you’re claiming', 'h1');
     I.see('Claim amount');
     I.see('£1520.00');
-    I.see('Interest to date');
-    I.see('£0');
+    if (claimInterestFlag === true) {
+      I.see('Interest to date');
+      I.see('£0');
+      I.seeElement(paths.links.how_is_interest_calculated);
+    }
     I.see('Claim fee');
     I.see('£115');
     I.see('Total claim amount');
     I.see('£1635.00');
-    I.seeElement(paths.links.how_is_interest_calculated);
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
@@ -407,7 +413,7 @@ class CreateClaim {
     }
   }
 
-  async verifyCheckYourAnswers() {
+  async verifyCheckYourAnswers(claimInterestFlag) {
     I.see('Check your answers', 'h1');
 
     I.see('Your details (claimant)', 'h2');
@@ -441,8 +447,6 @@ class CreateClaim {
     I.see('Email');
     I.see('civilmoneyclaimsdemo@gmail.com');
 
-    //I.see('07818731015');
-
     I.see('Claim amount', 'h2');
 
     I.see('Broken bathroom');
@@ -452,17 +456,20 @@ class CreateClaim {
     I.see('Late Delivery');
     I.see('£400');
 
-    I.see('Claim Interest');
-    I.see('yes');
+    if (claimInterestFlag === true) {
+      I.see('Claim Interest');
+      I.see('yes');
 
-    I.see('How do you want to claim interest?');
-    I.see('Same rate for the whole period');
+      I.see('How do you want to claim interest?');
+      I.see('Same rate for the whole period');
 
-    I.see('What annual rate of interest do you want to claim?');
-    I.see('8.00%');
+      I.see('What annual rate of interest do you want to claim?');
+      I.see('8.00%');
 
-    I.see('When are you claiming interest from?');
-    I.see('The date you submit the claim');
+      I.see('When are you claiming interest from?');
+      I.see('The date you submit the claim');
+
+    }
 
     I.see('Claim Details');
     I.see('Unprofessional Builder');
@@ -566,11 +573,6 @@ class CreateClaim {
 
   async signOut() {
     I.click('Sign out');
-  }
-
-  async verifyDashboardLoaded() {
-    I.waitForText('Submit', 'h2');
-    I.see('Application complete', 'h2');
   }
 
   clickNextAction(action) {

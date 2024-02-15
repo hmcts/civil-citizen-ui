@@ -3,76 +3,25 @@ const I = actor();
 
 const paths = {
   links: {
-    view_defendants_response: '//a[.="View the defendant\'s response"]',
     see_their_financial_details: '//span[contains(.,\'See their financial details\')]',
     privacy_policy: '//a[.=\'privacy policy\']',
+    full_response_pdf_link :'//a[.=\'Download their full response (PDF)\']',
+    do_not_agree_to_free_mediation : '//a[contains(.,\'I do not agree to free mediation\')]',
+    skip_this_section : '//a[contains(.,\'Skip this section\')]',
   },
   buttons: {
-    i_have_confirmed_i_have_read_this: 'I confirm I\'ve read this',
     continue: 'Continue',
     save_and_continue: 'Save and continue',
-    find_address_field: '//input[@name=\'primaryAddressPostcode\']',
-    submit_claim: 'Submit claim',
+    continue_without_an_expert : 'Continue without an expert',
     submit_response: 'Submit Response',
-    go_to_your_account: 'Go to your account',
   },
   options: {
     sign_a_settlements_agreement: '#option',
     confirm_and_sign : '#signed',
-    individual_claimant: '#claimantPartyType',
-    individual_defendant: '#defendantPartyType',
     yes: '#option',
     no: '//input[@value=\'no\']',
-    same_rate_for_the_whole_period: '#interestType',
-    same_interest_rate_type: '#sameRateInterestType',
-    date_that_you_submit_claim: '#sameRateInterestType',
-    when_will_you_claim_interest_from: '#interestClaimFrom',
-  },
-  fields: {
-    individual_title: '#individualTitle',
-    individual_first_name: '#individualFirstName',
-    individual_last_name: '#individualLastName',
-    telephone_number: '#telephoneNumber',
-    email_address: '#emailAddress',
-    claim_amount_reason_1: '(//input[@id=\'claimAmountRows[0][reason]\'])[1]',
-    claim_amount_amount_1: '(//input[@id=\'claimAmountRows[0][amount]\'])[1]',
-    claim_amount_reason_2: '(//input[@id=\'claimAmountRows[1][reason]\'])[1]',
-    claim_amount_amount_2: '(//input[@id=\'claimAmountRows[1][amount]\'])[1]',
-    claim_amount_reason_3: '(//input[@id=\'claimAmountRows[2][reason]\'])[1]',
-    claim_amount_amount_3: '(//input[@id=\'claimAmountRows[2][amount]\'])[1]',
-    claim_amount_reason_4: '(//input[@id=\'claimAmountRows[3][reason]\'])[1]',
-    claim_amount_amount_4: '(//input[@id=\'claimAmountRows[3][amount]\'])[1]',
-    help_with_fees_reference_number: '#referenceNumber',
-    claim_details_text: '#text',
-
-    timeline_row_0_day: '(//input[@name=\'rows[0][day]\'])[1]',
-    timeline_row_0_month: '(//input[@name=\'rows[0][month]\'])[1]',
-    timeline_row_0_year: '(//input[@name=\'rows[0][year]\'])[1]',
-    timeline_row_0_description: '(//textarea[@name=\'rows[0][description]\'])[1]',
-    timeline_row_1_day: '(//input[@name=\'rows[1][day]\'])[1]',
-    timeline_row_1_month: '(//input[@name=\'rows[1][month]\'])[1]',
-    timeline_row_1_year: '(//input[@name=\'rows[1][year]\'])[1]',
-    timeline_row_1_description: '(//textarea[@name=\'rows[1][description]\'])[1]',
-    timeline_row_2_day: '(//input[@name=\'rows[2][day]\'])[1]',
-    timeline_row_2_month: '(//input[@name=\'rows[2][month]\'])[1]',
-    timeline_row_2_year: '(//input[@name=\'rows[2][year]\'])[1]',
-    timeline_row_2_description: '(//textarea[@name=\'rows[2][description]\'])[1]',
-    timeline_row_3_day: '(//input[@name=\'rows[3][day]\'])[1]',
-    timeline_row_3_month: '(//input[@name=\'rows[3][month]\'])[1]',
-    timeline_row_3_year: '(//input[@name=\'rows[3][year]\'])[1]',
-    timeline_row_3_description: '(//textarea[@name=\'rows[3][description]\'])[1]',
-    timeline_row_4_day: '(//input[@name=\'rows[4][day]\'])[1]',
-    timeline_row_4_month: '(//input[@name=\'rows[4][month]\'])[1]',
-    timeline_row_4_year: '(//input[@name=\'rows[4][year]\'])[1]',
-    timeline_row_4_description: '(//textarea[@name=\'rows[4][description]\'])[1]',
-
-    evidence_list_1: '//fieldset[1]//select[@class=\'govuk-select\']',
-    evidence_list_description_1: '//fieldset[1]//textarea[@class=\'govuk-textarea\']',
-    evidence_list_2: '//fieldset[2]//select[@class=\'govuk-select\']',
-    evidence_list_description_2: '//fieldset[2]//textarea[@class=\'govuk-textarea\']',
-    statement_of_truth: '#signed',
-    no_changes_allowed_declaration: '#acceptNoChangesAllowed',
-
+    english_language : '#speakLanguage',
+    document_language : '#documentsLanguage',
   },
 };
 
@@ -257,6 +206,200 @@ class ReponseToDefence {
 
   verifyConfirmationScreen(claimNumber) {
     I.see('You\'ve signed a settlement agreement', 'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+  }
+
+  async verifyDefendantsResponseForRejection() {
+    I.see('The defendant’s response','h1');
+    I.see('Mrs Jane Doe has rejected the claim.');
+    I.see('Their defence','h3');
+    I.see('Why they disagree with the claim?','h3');
+    I.see('Test reason');
+    I.see('Their evidence','h3');
+    I.see('Type');
+    I.see('Description');
+    I.see('Contracts and agreements');
+    I.see('TestEvidence');
+    I.see('Full response','h3');
+    I.seeElement(paths.links.full_response_pdf_link);
+    I.click(paths.links.full_response_pdf_link);
+    I.click(paths.buttons.continue);
+  }
+
+  async inputProceedWithTheClaim() {
+    I.see('Do you want to proceed with claim?','h1');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyFreeMediation() {
+    I.see('Free telephone mediation','h1');
+    I.see('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.');
+    I.see('How free mediation works','h2');
+    I.see('A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.');
+    I.see('Mediation can be quicker, cheaper and less stressful than going to court.');
+    I.see('Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled.');
+    I.see('The mediator speaks to each party separately, this is not a conference call.');
+    I.see('The claimant must agree to mediation.');
+    I.see('We\'ll contact you within 28 days after the claimant\'s confirmation, to arrange a free appointment.');
+    I.see('Your mediation appointment will last for no more than an hour.');
+    I.see('Find out more about');
+    I.seeElement('//a[contains(.,\'free telephone mediation (opens in new tab).\')]');
+    I.see('Reaching a settlement','h2');
+    I.see('If mediation is successful, you\'ll make a verbal agreement over the phone.');
+    I.see('This is legally binding which means that you must comply with it.');
+    I.see('You will be given the terms of the agreement in a document – this is called a settlement agreement.');
+    I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.');
+    I.see('You will not have to wait longer for a court hearing if you choose mediation.');
+    I.see('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.');
+    I.click(paths.links.do_not_agree_to_free_mediation);
+  }
+
+  async verifyChoseNoFreeMediation() {
+    I.see('You chose not to try free mediation','h1');
+    I.see('The claim will continue and you may have to go to a hearing.');
+    I.see('Advantages of free mediation','h2');
+    I.see('There are many advantages to free mediation, including:');
+    I.see('mediation can be quicker and cheaper than going to court');
+    I.see('the mediator speaks to each side separately, you do not speak to the other party during mediation');
+    I.see('it gives you control over how your dispute is settled, which is not possible by going to court');
+    I.see('it\'s confidential and nothing said or done during mediation can be used in court');
+    I.see('mediation can avoid a');
+    I.seeElement('//a[contains(.,\'County Court Judgment (opens in a new tab)\')]');
+    I.see('being made against you');
+    I.see('Will you change your decision and try free mediation?','h2');
+    I.see('If you choose not to try mediation this cannot be changed once your response is submitted.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyChoseNoFreeMediationReasons() {
+    I.see('I do not agree to free mediation','h1');
+    I.see('You have chosen not to try free mediation. Please tell us why:');
+    I.see('I have already tried to resolve the dispute with the other party, with no success');
+    I.see('I am not sure what would happen in mediation');
+    I.see('I do not think mediation would solve the dispute');
+    I.see('I do not want to delay getting a hearing');
+    I.see('I want a judge to make a decision on the dispute');
+    I.see('Another reason (please specify)');
+    I.see('Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. ');
+    I.see(  'Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.');
+    I.click(paths.links.skip_this_section);
+  }
+
+  async verifyDeterminationWithoutHearingQuestions() {
+    I.see('Determination without Hearing Questions', 'h1');
+    I.see('Do you consider that this claim is suitable for determination without a hearing,');
+    I.see('i.e. by a judge reading and considering the case papers,');
+    I.see('witness statements and other documents filled by the parties, making a decision,');
+    I.see('and giving a note of reason for that decision?');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyUsingAnExpertQuestion() {
+    I.see('Using an expert', 'h1');
+    I.see('It\'s rare for a judge to allow you to use an expert in a small claim.');
+    I.see('Most small claims don\'t need an expert.');
+    I.see('An expert is not a legal representative.');
+    I.click(paths.buttons.continue_without_an_expert);
+  }
+
+  async verifyDoYouWantToGiveEvidenceYourself() {
+    I.see('Do you want to give evidence yourself?', 'h1');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyDoYouHaveOtherWitness() {
+    I.see('Do you have other witnesses?', 'h1');
+    I.see('This is someone who can confirm your version of events.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyAnyDatesInTheNext12Months(){
+    I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 'h1');
+    I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyDoYouWantToAskForATelephone(){
+    I.see('Do you want to ask for a telephone or video hearing?', 'h1');
+    I.see('The judge will decide if the hearing can be held by telephone or video.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyAreYourExpertsVulnerable(){
+    I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1');
+    I.see('This is someone who has been the victim of domestic or other abuse,');
+    I.see('has a learning disability, physical or mental illness or reduced mental capacity.');
+    I.see('The court will look at what adjustments or support the person needs.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyDoYouOrExpertsNeedToAttendHearing(){
+    I.see('Do you, your experts or witnesses need support to attend a hearing?', 'h1');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyHearingAtSpecificCourt(){
+    I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1');
+    I.see('You can ask for the hearing to be held at a specific court,');
+    I.see('for example, if you spend weekdays a long distance from your home.');
+    I.see('The court will consider both parties\' circumstances when deciding where to hold the hearing.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyWelshLanguage(){
+    I.see('Welsh language', 'h1');
+    I.see('Welsh is an official language of Wales.');
+    I.see('You can use Welsh in court hearings.');
+    I.see('Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?');
+    I.see('What languages will the documents be provided in?');
+    I.see('English');
+    I.see('Welsh');
+    I.see('Welsh and English');
+    I.click(paths.options.english_language);
+    I.click(paths.options.document_language);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyCheckYourAnswersForMediationHearingExpertsAndLanguage() {
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you want to proceed with the claim?');
+    I.see('Yes');
+    I.see('Free telephone mediation','h2');
+    I.see('Will you try free mediation?');
+    I.see('No');
+    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?\tNo');
+    I.see('Have you already got a report written by an expert?');
+    I.see('Do you want to ask for the court’s permission to use an expert?');
+    I.see('Does the claim involve something an expert can still examine?');
+    I.see('Do you want to give evidence yourself?');
+    I.see('Do you have other witnesses?');
+    I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?');
+    I.see('Do you want to ask for a telephone or video hearing?');
+    I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?')
+    I.see('Do you, your experts or witnesses need support to attend a hearing?');
+    I.see('Do you want to ask for the hearing to be held at a specific court?');
+    I.see('Welsh language');
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?');
+    I.see('English');
+    I.see('What languages will the documents be provided in?');
+    I.click(paths.buttons.submit_response);
+  }
+
+  verifyConfirmationScreenForRejection(claimNumber) {
+    I.see('You\'ve rejected their response', 'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }

@@ -59,8 +59,7 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityHWFReference();
   }
 
-  async CreateClaimCreation() {
-    //I.click('//a[contains(.,\'Make a new money claim\')]');
+  async CreateClaimCreation(claimInterestFlag) {
     await createClaim.verifyLanguage();
     await createClaim.verifyDashboard();
     I.click(paths.links.resolving_this_dispute);
@@ -87,12 +86,14 @@ class CreateClaimSteps {
     I.click(paths.links.claim_amount);
     await createClaim.verifyClaimAmount();
     await createClaim.inputClaimAmount();
-    await createClaim.verifyAndInputDoYouWantToClaimInterest();
-    await createClaim.verifyAndInputHowDoYouWantToClaimInterest();
-    await createClaim.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
-    await createClaim.verifyAndInputWhenWillYouClaimInterestFrom();
+    await createClaim.verifyAndInputDoYouWantToClaimInterest(claimInterestFlag);
+    if (claimInterestFlag === true) {
+      await createClaim.verifyAndInputHowDoYouWantToClaimInterest();
+      await createClaim.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
+      await createClaim.verifyAndInputWhenWillYouClaimInterestFrom();
+    }
     await createClaim.verifyAndInputHelpWithFees();
-    await createClaim.verifyClaimAmountSummary();
+    await createClaim.verifyClaimAmountSummary(claimInterestFlag);
     await this.verifyDashboardLoaded();
     I.click(paths.links.claim_details);
     await createClaim.verifyAndInputClaimDetails();
@@ -101,7 +102,7 @@ class CreateClaimSteps {
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_claim);
     await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
-    await createClaim.verifyCheckYourAnswers();
+    await createClaim.verifyCheckYourAnswers(claimInterestFlag);
     const caseReference = await createClaim.verifyClaimSubmitted();
     console.log('The created Case Reference : ', caseReference);
     I.wait(4); //Just to make sure that the backend processed have completed fully
