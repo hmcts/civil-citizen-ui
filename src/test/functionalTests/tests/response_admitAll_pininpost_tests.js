@@ -17,7 +17,7 @@ let securityCode;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', 'pinInPost');
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, 'pinInPost');
   console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
