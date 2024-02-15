@@ -277,6 +277,7 @@ module.exports = {
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(expectedState);
     console.log('End of viewAndRespondToDefence()');
   },

@@ -28,8 +28,8 @@
     "respondent1": {
       "type": "INDIVIDUAL",
       "partyDetails": {
-        "individualFirstName": "Jane",
-        "individualLastName": "Doe",
+        "firstName": "Jane",
+        "lastName": "Doe",
         "partyName": "Jane Doe",
         "primaryAddress": {
           "postCode": "CB1 3AX",
@@ -64,8 +64,8 @@
     "applicant1": {
       "type": "INDIVIDUAL",
       "partyDetails": {
-        "individualFirstName": "John",
-        "individualLastName": "Doe",
+        "firstName": "John",
+        "lastName": "Doe",
         "primaryAddress": {
           "postCode": "CB1 3AX",
           "addressLine1": "22 Thoday Street"
