@@ -41,7 +41,7 @@ class ReponseToDefence {
   }
 
   async verifyDefendantsResponse(claimReference) {
-    I.waitForText('£400',60);
+    I.waitForText('Why they can’t pay the full amount now?',60,'h2');
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe admits they owe you £500.');
     I.see('They don’t believe they owe the full amount claimed.');
@@ -113,16 +113,16 @@ class ReponseToDefence {
     I.see('£220');
     I.see('Student loan');
     I.see('£8,000');
+    I.see('£400');
     I.click(paths.buttons.continue);
   }
 
   async verifyHowTheyWantToPay(claimReference) {
-    I.waitForText('£8,000',60);
+    I.waitForText('Test reason',60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
-    I.see('Test reason');
     I.click(paths.links.see_their_financial_details);
     I.see('Where are they living?');
     I.see('Home you own yourself (or pay a mortgage on)');
@@ -131,6 +131,7 @@ class ReponseToDefence {
     I.see('Claim number');
     I.see(`${claimReference}`);
     I.see('Student loan');
+    I.see('£8,000');
     I.click(paths.buttons.continue);
   }
 
@@ -300,7 +301,7 @@ class ReponseToDefence {
   }
 
   async verifyUsingAnExpertQuestion() {
-    I.waitForElement('An expert is not a legal representative.', 60);
+    I.waitForText('An expert is not a legal representative.', 60);
     I.see('Using an expert', 'h1');
     I.see('It\'s rare for a judge to allow you to use an expert in a small claim.');
     I.see('Most small claims don\'t need an expert.');
