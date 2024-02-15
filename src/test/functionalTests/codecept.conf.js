@@ -27,7 +27,7 @@ exports.config = {
       windowSize: '1280x960',
       timeout: 30000,
       waitForAction: 500,
-      waitForNavigation: 'networkidle0',
+      waitForNavigation: 'domcontentloaded',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
     },
