@@ -14,9 +14,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {UnavailableDates} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {
   addAnother,
-  getUnavailableDatesMediationForm, removeItem
+  getUnavailableDatesMediationForm, removeItem,
 } from 'services/features/mediation/unavailableDatesForMediationService';
-
 
 const emailMediationConfirmationViewPath = 'features/mediation/unavailable-dates-mediation';
 const mediationUnavailabilitySelectDatesController = Router();
@@ -49,15 +48,14 @@ mediationUnavailabilitySelectDatesController.post(MEDIATION_UNAVAILABLE_SELECT_D
     const action = req.body.action;
     const unavailableDatesForMediation = getUnavailableDatesMediationForm(req.body);
     const form = new GenericForm(unavailableDatesForMediation);
+    await form.validate();
     if (action === 'add_another_date') {
       addAnother(unavailableDatesForMediation);
       return renderView(form, res, req);
-    } else if (action?.includes('[removeButton]')) {
+    } else if (action?.includes('[removeButton]') && !form.hasErrors()) {
       removeItem(unavailableDatesForMediation, action);
       return renderView(form, res, req);
-    }
-    await form.validate();
-    if (form.hasErrors()) {
+    } else if (form.hasErrors()) {
       renderView(form, res, req);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);

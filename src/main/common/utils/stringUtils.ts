@@ -25,3 +25,7 @@ export function convertToArrayOfStrings(data: string | string[]): string[] {
     return data;
   }
 }
+
+export const extractIndexFromAction = (action: string): string => {
+  return action.split(/[[\]]/).filter((word: string) => word !== '')[1];
+};

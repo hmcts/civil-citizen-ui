@@ -1,5 +1,6 @@
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {UnavailableDatePeriodMediation, UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
+import {extractIndexFromAction} from 'common/utils/stringUtils';
 
 export const getUnavailableDatesMediationForm = (reqBody: Record<string, []>): UnavailableDatesMediation => {
   const unavailableDatePeriodMediation  = reqBody.items.map((item: any): UnavailableDatePeriodMediation => {
@@ -19,6 +20,6 @@ export const addAnother = (unavailableDatesForMediation: UnavailableDatesMediati
 };
 
 export const removeItem = (unavailableDatesForMediation: UnavailableDatesMediation, action: string  ): void => {
-  const [index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+  const index = extractIndexFromAction(action);
   unavailableDatesForMediation.items.splice(Number(index),1);
 };
