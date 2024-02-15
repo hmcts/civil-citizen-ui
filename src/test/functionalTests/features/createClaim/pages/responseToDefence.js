@@ -388,7 +388,7 @@ class ReponseToDefence {
     I.see('Do you have other witnesses?');
     I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?');
     I.see('Do you want to ask for a telephone or video hearing?');
-    I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?')
+    I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?');
     I.see('Do you, your experts or witnesses need support to attend a hearing?');
     I.see('Do you want to ask for the hearing to be held at a specific court?');
     I.see('Welsh language');
