@@ -12,7 +12,7 @@ import {
 export const getDocumentsForDocumentsReferred = (uploadDocuments: UploadDocuments, form: GenericForm<UploadDocumentsForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  const documentsReferred = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+  const documentsReferred = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT && typeOfDocument.checked === true);
 
   if(documentsReferred){
     sectionContent.push(documentsForDocumentsReferred(form));
