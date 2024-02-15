@@ -80,6 +80,7 @@ import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 export class CivilClaimResponse {
   id: string;
@@ -110,6 +111,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
+  hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
   paymentOption?: PaymentOptionType;
