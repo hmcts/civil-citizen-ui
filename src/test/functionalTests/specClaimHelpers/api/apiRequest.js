@@ -72,20 +72,23 @@ module.exports = {
     url += `/citizen/${userId}/event`;
 
     let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
-    response.json();
-    tokens.ccdEvent = response.token;
+    const data = await response.json();
+    if (data?.token) {
+      tokens.ccdEvent = data.token;
+    }
   },
 
-  startEventForLiPCitizen: async (eventName, payload) => {
+  startEventForLiPCitizen: async (payload) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
-    
     url += `/cases/draft/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
-    response.json();
-    return response.id;
-  },
+    const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    const data = await response.json();
+    console.log('***************** case id *****************' + data.id);
+    console.log('***************** case reference *****************' + data.case_data.legacyCaseReferenc);
+    return { caseId: data.id, claimRef: data.case_data.legacyCaseReference };
+  },  
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),

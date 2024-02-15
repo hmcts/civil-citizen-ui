@@ -6,17 +6,16 @@ const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 // eslint-disable-next-line no-unused-vars
 let claimRef;
-let claimNumber;
 
-Feature('Response with AdmitAll');
+Feature('Create LiP claim');
 
 Before(async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await DashboardSteps.VerifyClaimOnDashboard(claimRef);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @liptest @nightly @test', async () => {
+Scenario('create lip claim @citizenUI @liptest @nightly @test', async () => {
 //TBA
 });
 
