@@ -518,5 +518,4 @@ export default [
   claimIssuePaymentSuccessfulController,
   claimIssuePaymentUnsuccessfulController,
   mediationUploadDocumentsController,
-
 ];
