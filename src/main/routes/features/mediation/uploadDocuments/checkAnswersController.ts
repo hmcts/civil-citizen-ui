@@ -4,7 +4,7 @@ import {
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
 } from 'routes/urls';
 
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -76,7 +76,7 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
       renderView(uploadDocuments, res, form, claim, claimId, lang);
     } else {
       await saveMediationUploadedDocuments(claimId, uploadDocuments, <AppRequest>req);
-      await deleteDraftClaimFromStore(redisKey);
+      //await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION));
     }
   } catch (error) {
