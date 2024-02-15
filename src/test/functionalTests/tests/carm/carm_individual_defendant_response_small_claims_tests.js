@@ -29,24 +29,26 @@ Before(async ({api}) => {
 });
 
 Scenario('LiP Defendant Response with Part Admit', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
-  await ResponseSteps.EnterTelephoneMediationDetails();
-  await ResponseSteps.ConfirmAltPhoneDetails();
-  await ResponseSteps.ConfirmAltEmailDetails();
-  await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
-}).tag('@carm');
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+    await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+    await ResponseSteps.AddYourTimeLineEvents();
+    await ResponseSteps.EnterYourEvidenceDetails();
+    await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
+    await ResponseSteps.EnterTelephoneMediationDetails();
+    await ResponseSteps.ConfirmAltPhoneDetails();
+    await ResponseSteps.ConfirmAltEmailDetails();
+    await ResponseSteps.EnterUnavailableDates(claimRef);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+    await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
+  }
+}).tag('@regression-carm');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
