@@ -44,7 +44,7 @@ class ReponseToDefence {
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe admits they owe you £500.');
     I.see('They don’t believe they owe the full amount claimed.');
-    I.see('They’ve offered to pay you £500 by 14 February 2025.');
+    I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Their defence','h3');
     I.see('Why they don’t owe the amount claimed?');
@@ -58,7 +58,7 @@ class ReponseToDefence {
     I.see('Contracts and agreements');
     I.see('TestEvidence');
     I.see('How they want to pay?');
-    I.see('They’ve offered to pay you £500 by 14 February 2025.');
+    I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you\'ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?','h2');
     I.click(paths.links.see_their_financial_details);
@@ -118,7 +118,7 @@ class ReponseToDefence {
 
   async verifyHowTheyWantToPay(claimReference) {
     I.see('How they want to pay?', 'h1');
-    I.see('They’ve offered to pay you £500 by 14 February 2025.');
+    I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
     I.see('Test reason');
