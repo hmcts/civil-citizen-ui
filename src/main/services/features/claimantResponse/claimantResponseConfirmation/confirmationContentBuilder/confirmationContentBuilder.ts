@@ -52,7 +52,7 @@ export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
   const acceptedResponseToSettle = getClaimSettleNextSteps(claim, lang);
 
-  if (carmApplicable && claim.hasClaimantNotSettled) {
+  if (carmApplicable && claim.hasClaimantNotSettled()) {
     return RejectedResponseCarmMediationNextSteps;
   }
 
