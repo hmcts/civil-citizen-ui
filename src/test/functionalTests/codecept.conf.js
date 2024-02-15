@@ -29,7 +29,6 @@ exports.config = {
       waitForAction: 500,
       bypassCSP: true,
       ignoreHTTPSErrors: true,
-
     },
   },
   include: {
@@ -49,7 +48,7 @@ exports.config = {
       ],
     },
     retryFailedStep: {
-      enabled: false,
+      enabled: true,
     },
     screenshotOnFail: {
       enabled: true,

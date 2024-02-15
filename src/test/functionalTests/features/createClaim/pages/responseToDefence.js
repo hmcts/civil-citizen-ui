@@ -32,15 +32,16 @@ class ReponseToDefence {
   }
 
   async verifyDashboard() {
+    I.waitForText('Submit',60, 'h2');
     I.see('Your response', 'h1');
     I.see('Application incomplete','h2');
     I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     I.see('How they responded', 'h2');
     I.see('Choose what to do next', 'h2');
-    I.see('Submit','h2');
   }
 
   async verifyDefendantsResponse(claimReference) {
+    I.waitForText('£400',60);
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe admits they owe you £500.');
     I.see('They don’t believe they owe the full amount claimed.');
@@ -112,11 +113,11 @@ class ReponseToDefence {
     I.see('£220');
     I.see('Student loan');
     I.see('£8,000');
-    I.see('£400');
     I.click(paths.buttons.continue);
   }
 
   async verifyHowTheyWantToPay(claimReference) {
+    I.waitForText('£8,000',60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
@@ -130,33 +131,33 @@ class ReponseToDefence {
     I.see('Claim number');
     I.see(`${claimReference}`);
     I.see('Student loan');
-    I.see('£8,000');
     I.click(paths.buttons.continue);
   }
 
   async verifyDoYouWantToSettleTheClaim() {
 
+    I.waitForText('The claim will continue for the total amount you claimed: £1,520',60);
     I.see('Do you want to settle the claim for the £500 the defendant admitted?', 'h1');
     I.see('This is the total amount you\'ll be paid, including the claim fee and interest if applicable');
     I.see('Yes');
     I.see('You can agree to their repayment plan or suggest your own');
     I.see('No');
-    I.see('The claim will continue for the total amount you claimed: £1,520');
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
   verifyAboutTheRepaymentPlan() {
+    I.waitForText('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
     I.see('Mrs Jane Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
-    I.see('No - I\'ll suggest my own');
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
   verifyHowToFormaliseARepayment() {
+    I.waitForText('which may make it more difficult for them to borrow money to repay you.', 60);
     I.see('Choose how to formalise repayment', 'h1');
     I.see('Sign a settlement agreement');
     I.see('This is a legal agreement between you and the defendant agreeing to the repayment plan.');
@@ -165,12 +166,12 @@ class ReponseToDefence {
     I.see('Request a CCJ');
     I.see('You can ask the court to make a formal order binding the defendant to the repayment plan.');
     I.see('This adds the defendant to the CCJ register,');
-    I.see('which may make it more difficult for them to borrow money to repay you.');
     I.click(paths.options.sign_a_settlements_agreement);
     I.click(paths.buttons.save_and_continue);
   }
 
   verifySignTheSettlementAgreement() {
+    I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
     I.see('Mrs Jane Doe will pay £500, no later than');
@@ -192,6 +193,7 @@ class ReponseToDefence {
   }
 
   verifyCheckYourAnswers() {
+    I.waitForText('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you accept or reject the defendant\'s admission?');
@@ -200,17 +202,17 @@ class ReponseToDefence {
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.see('Sign a settlement agreement');
     I.click(paths.buttons.submit_response);
   }
 
   verifyConfirmationScreen(claimNumber) {
-    I.see('You\'ve signed a settlement agreement', 'h1');
+    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
 
   async verifyDefendantsResponseForRejection() {
+    I.waitForText('Full response',60,'h3');
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe has rejected the claim.');
     I.see('Their defence','h3');
@@ -221,19 +223,19 @@ class ReponseToDefence {
     I.see('Description');
     I.see('Contracts and agreements');
     I.see('TestEvidence');
-    I.see('Full response','h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
   }
 
   async inputProceedWithTheClaim() {
-    I.see('Do you want to proceed with claim?','h1');
+    I.waitForText('Do you want to proceed with claim?',60, 'h1');
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyFreeMediation() {
+    I.waitForText('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.', 60);
     I.see('Free telephone mediation','h1');
     I.see('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.');
     I.see('How free mediation works','h2');
@@ -252,11 +254,11 @@ class ReponseToDefence {
     I.see('You will be given the terms of the agreement in a document – this is called a settlement agreement.');
     I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.');
     I.see('You will not have to wait longer for a court hearing if you choose mediation.');
-    I.see('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.');
     I.click(paths.links.do_not_agree_to_free_mediation);
   }
 
   async verifyChoseNoFreeMediation() {
+    I.waitForText('If you choose not to try mediation this cannot be changed once your response is submitted.', 60);
     I.see('You chose not to try free mediation','h1');
     I.see('The claim will continue and you may have to go to a hearing.');
     I.see('Advantages of free mediation','h2');
@@ -269,12 +271,12 @@ class ReponseToDefence {
     I.seeElement('//a[contains(.,\'County Court Judgment (opens in a new tab)\')]');
     I.see('being made against you');
     I.see('Will you change your decision and try free mediation?','h2');
-    I.see('If you choose not to try mediation this cannot be changed once your response is submitted.');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyChoseNoFreeMediationReasons() {
+    I.waitForText(  'Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.', 60);
     I.see('I do not agree to free mediation','h1');
     I.see('You have chosen not to try free mediation. Please tell us why:');
     I.see('I have already tried to resolve the dispute with the other party, with no success');
@@ -284,80 +286,80 @@ class ReponseToDefence {
     I.see('I want a judge to make a decision on the dispute');
     I.see('Another reason (please specify)');
     I.see('Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. ');
-    I.see(  'Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.');
     I.click(paths.links.skip_this_section);
   }
 
   async verifyDeterminationWithoutHearingQuestions() {
+    I.waitForText('and giving a note of reason for that decision?', 60);
     I.see('Determination without Hearing Questions', 'h1');
     I.see('Do you consider that this claim is suitable for determination without a hearing,');
     I.see('i.e. by a judge reading and considering the case papers,');
     I.see('witness statements and other documents filled by the parties, making a decision,');
-    I.see('and giving a note of reason for that decision?');
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyUsingAnExpertQuestion() {
+    I.waitForElement('An expert is not a legal representative.', 60);
     I.see('Using an expert', 'h1');
     I.see('It\'s rare for a judge to allow you to use an expert in a small claim.');
     I.see('Most small claims don\'t need an expert.');
-    I.see('An expert is not a legal representative.');
     I.click(paths.buttons.continue_without_an_expert);
   }
 
   async verifyDoYouWantToGiveEvidenceYourself() {
-    I.see('Do you want to give evidence yourself?', 'h1');
+    I.waitForText('Do you want to give evidence yourself?', 60,'h1');
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouHaveOtherWitness() {
-    I.see('Do you have other witnesses?', 'h1');
+    I.waitForText('Do you have other witnesses?', 60,'h1');
     I.see('This is someone who can confirm your version of events.');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAnyDatesInTheNext12Months(){
-    I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 'h1');
+    I.waitForText('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 60,'h1');
     I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouWantToAskForATelephone(){
-    I.see('Do you want to ask for a telephone or video hearing?', 'h1');
+    I.waitForText('Do you want to ask for a telephone or video hearing?', 60,'h1');
     I.see('The judge will decide if the hearing can be held by telephone or video.');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAreYourExpertsVulnerable(){
+    I.waitForText('The court will look at what adjustments or support the person needs.',60);
     I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1');
     I.see('This is someone who has been the victim of domestic or other abuse,');
     I.see('has a learning disability, physical or mental illness or reduced mental capacity.');
-    I.see('The court will look at what adjustments or support the person needs.');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouOrExpertsNeedToAttendHearing(){
-    I.see('Do you, your experts or witnesses need support to attend a hearing?', 'h1');
+    I.waitForText('Do you, your experts or witnesses need support to attend a hearing?', 60,'h1');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyHearingAtSpecificCourt(){
+    I.waitForText('The court will consider both parties\' circumstances when deciding where to hold the hearing.',60);
     I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1');
     I.see('You can ask for the hearing to be held at a specific court,');
     I.see('for example, if you spend weekdays a long distance from your home.');
-    I.see('The court will consider both parties\' circumstances when deciding where to hold the hearing.');
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyWelshLanguage(){
+    I.waitForText('Welsh and English',60);
     I.see('Welsh language', 'h1');
     I.see('Welsh is an official language of Wales.');
     I.see('You can use Welsh in court hearings.');
@@ -366,13 +368,13 @@ class ReponseToDefence {
     I.see('What languages will the documents be provided in?');
     I.see('English');
     I.see('Welsh');
-    I.see('Welsh and English');
     I.click(paths.options.english_language);
     I.click(paths.options.document_language);
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyCheckYourAnswersForMediationHearingExpertsAndLanguage() {
+    I.waitForText('What languages will the documents be provided in?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you want to proceed with the claim?');
@@ -394,12 +396,11 @@ class ReponseToDefence {
     I.see('Welsh language');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.see('English');
-    I.see('What languages will the documents be provided in?');
     I.click(paths.buttons.submit_response);
   }
 
   verifyConfirmationScreenForRejection(claimNumber) {
-    I.see('You\'ve rejected their response', 'h1');
+    I.waitForText('You\'ve rejected their response', 60, 'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }

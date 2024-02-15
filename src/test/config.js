@@ -87,6 +87,11 @@ module.exports = {
     roleCategory: 'ADMIN',
     regionId: '1',
   },
+  claimantCitizenUser :{
+    password: defaultPassword,
+    email: 'civilmoneyclaimsdemo@gmail.com',
+    type: 'claimant',
+  },
   definition: {
     jurisdiction: 'CIVIL',
     caseType: 'CIVIL',
