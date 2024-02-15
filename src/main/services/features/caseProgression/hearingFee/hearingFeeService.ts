@@ -3,6 +3,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CCDClaim} from 'models/civilClaimResponse';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -13,6 +14,7 @@ export const triggerNotifyEvent = async (claimId: string, req:any, claim: Claim)
 
 const translateReferenceNumberToCCD = (claim: Claim): CCDClaim => {
   return {
+    hwfFeeType: claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber ? FeeType.HEARING : undefined,
     hearingHelpFeesReferenceNumber : claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber,
   };
 };

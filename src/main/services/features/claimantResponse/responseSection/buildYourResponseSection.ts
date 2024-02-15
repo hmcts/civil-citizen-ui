@@ -13,7 +13,7 @@ import {
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {
   RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
@@ -186,7 +186,7 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
 
-  if (claim.isRejectionReasonCompleted()) {
+  if (claimantResponse.isRejectionReasonCompleted) {
     yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 

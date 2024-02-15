@@ -5,6 +5,7 @@ import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls'
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {YesNo} from 'form/models/yesNo';
+import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
   if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
@@ -56,7 +57,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
       {
         type: ClaimSummaryType.PARAGRAPH,
         data: {
-          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lgn: lang}),
+          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lng: lang}),
         },
       },
     );
@@ -65,7 +66,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CANT_REQUEST_CCJ', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CANT_REQUEST_CCJ', {lng: lang}),
       },
     },
     {
@@ -85,7 +86,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.GET_RECEIPTS', {lgn: lang}),
+        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.GET_RECEIPTS', {lng: lang}),
       },
     },
   ]);
@@ -93,36 +94,11 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
 };
 
 const getRejectSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
-  return [
-    {
-      type: ClaimSummaryType.TITLE,
-      data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CAN_REQUEST_CCJ', {lgn: lang}),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.REQUEST_CCJ', {lgn: lang}),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.COURT_REVIEWED_PLAN', {lgn: lang}),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.EMAIL_YOU', {lgn: lang}),
-      },
-    },
-  ];
+  return new PageSectionBuilder()
+    .addTitle(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}))
+    .addParagraph(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.CAN_REQUEST_CCJ', {lng: lang}))
+    .addParagraph(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.REQUEST_CCJ', {lng: lang}))
+    .addParagraph(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.COURT_REVIEWED_PLAN', {lng: lang}))
+    .addParagraph(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.EMAIL_YOU', {lng: lang}))
+    .build();
 };
