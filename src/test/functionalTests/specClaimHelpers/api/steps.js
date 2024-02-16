@@ -57,7 +57,7 @@ module.exports = {
     console.log('End of performCaseHearingFeeUnpaid()');
   },
 
-  waitForFinishedBusinessProcess: async () {
+  waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
   },
 
