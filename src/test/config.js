@@ -18,18 +18,6 @@ module.exports = {
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   WaitForText: 60,
-  helpers: {
-    Playwright: {
-      url: testUrl,
-      show: false,
-      browser: 'chromium',
-      waitForTimeout: 30000,
-      timeout: 30000,
-      waitForAction: 10000,
-      waitForNavigation: 'networkidle0',
-      ignoreHTTPSErrors: true,
-    },
-  },
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',
