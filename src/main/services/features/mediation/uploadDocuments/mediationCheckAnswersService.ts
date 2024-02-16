@@ -63,7 +63,6 @@ export const saveMediationUploadedDocuments = async (claimId: string,uploadDocum
     if (oldClaim.isClaimant()){
       const oldApp1MediationDocumentsReferred = oldClaim?.app1MediationDocumentsReferred || [];
       updatedCcdClaim.app1MediationDocumentsReferred = getMediationDocumentsReferredDocuments(uploadDocuments, oldApp1MediationDocumentsReferred, CLAIMANT_ONE_MEDIATION_DOCS);
-
     } else {
       const oldRes1MediationDocumentsReferred = oldClaim?.res1MediationDocumentsReferred || [];
       updatedCcdClaim.res1MediationDocumentsReferred = getMediationDocumentsReferredDocuments(uploadDocuments, oldRes1MediationDocumentsReferred, DEFENDANT_ONE_MEDIATION_DOCS);
