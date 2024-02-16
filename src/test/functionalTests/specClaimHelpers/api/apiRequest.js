@@ -86,9 +86,8 @@ module.exports = {
     const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
     const data = await response.json();
     console.log('***************** case id *****************' + data.id);
-    console.log('***************** case reference *****************' + data.case_data.legacyCaseReferenc);
-    return { caseId: data.id, claimRef: data.case_data.legacyCaseReference };
-  },  
+    return data.id;
+  },
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
     return restHelper.retriedRequest(`${getCcdDataStoreBaseUrl()}/validate?pageId=${eventName}${pageId}`, getRequestHeaders(tokens.userAuth),

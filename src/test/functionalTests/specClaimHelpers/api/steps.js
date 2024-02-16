@@ -207,7 +207,7 @@ module.exports = {
 
     await apiRequest.setupTokens(user);
     let payload = data.CREATE_LIP_CLAIM(user, userId);
-    const { caseId, claimRef } = await apiRequest.startEventForLiPCitizen(payload);
+    const caseId = await apiRequest.startEventForLiPCitizen(payload);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -218,7 +218,7 @@ module.exports = {
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForFinishedBusinessProcess(caseId, user);
     await assignSpecCase(caseId, null);
-    return claimRef;
+    return caseId;
   },
 
   createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType) => {
