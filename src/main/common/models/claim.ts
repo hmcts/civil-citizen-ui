@@ -153,6 +153,8 @@ export class Claim {
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
+  app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

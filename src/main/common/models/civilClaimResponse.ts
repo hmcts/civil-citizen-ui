@@ -281,6 +281,8 @@ export interface CCDClaim extends ClaimUpdate {
   mediationUploadDocuments?: UploadDocuments;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
+  app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
+  app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
 }
