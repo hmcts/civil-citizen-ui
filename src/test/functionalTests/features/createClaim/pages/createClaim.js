@@ -73,24 +73,25 @@ const paths = {
 class CreateClaim {
 
   async verifyLanguage() {
+    I.waitForText('In what language do you want to make your claim?', 60, 'h4');
     I.see('Language', 'h1');
     I.see('You must choose which language you want to use to make this claim.');
     I.see('If you select \'Welsh\', information and documents will be presented in Welsh.');
     I.see('But some notifications about your claim will still be in English.');
-    I.see('In what language do you want to make your claim?', 'h4');
     I.click('#option'); //English
     I.click('Save and continue');
   }
 
   async verifyDashboard() {
+    I.waitForText('Submit', 60, 'h2');
     I.see('Application complete', 'h2');
     I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     I.see('Consider other options', 'h2');
     I.see('Prepare your claim', 'h2');
-    I.see('Submit', 'h2');
   }
 
   async verifyTryToResolveTheDispute() {
+    I.waitForText('explaining you\'ll make a claim against them if they don\'t follow your timetable',60);
     I.see('Try to resolve the dispute', 'h1');
     I.see('Before you claim you should:');
     I.see('talk to the person or organisation you want to claim against');
@@ -99,21 +100,20 @@ class CreateClaim {
     I.see('Try to resolve the dispute by:');
     I.see('telling them why you intend to make a claim against them');
     I.see('suggesting timetable with actions you want them to take');
-    I.see('explaining you\'ll make a claim against them if they don\'t follow your timetable');
     this.clickNextAction(paths.buttons.i_have_confirmed_i_have_read_this);
   }
 
   async verifyCompletingYourClaim() {
-
+    I.waitForText('add information that significantly change your claim',60);
     I.see('Get the details right', 'h1');
     I.see('You\'ll have to pay an additional fee if you want you:');
     I.see('change the name of anyone involved with the claim');
     I.see('change the basis of your claim - for example, saying goods were undelivered instead of faulty');
-    I.see('add information that significantly change your claim');
     this.clickNextAction(paths.buttons.i_have_confirmed_i_have_read_this);
   }
 
   verifyAboutYouAndThisClaimForClaimant() {
+    I.waitForText('For example a partnership, trust, charity, club or association',60);
     I.see('About you and this claim', 'h1');
     I.see('I\'m claiming as:');
     I.see('An individual');
@@ -123,12 +123,12 @@ class CreateClaim {
     I.see('A limited company');
     I.see('For example a company that sells goods or services');
     I.see('Another type of organisation');
-    I.see('For example a partnership, trust, charity, club or association');
     I.click(paths.options.individual_claimant);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   verifyAboutYouAndThisClaimForDefendant() {
+    I.waitForText('For example a partnership, trust, charity, club or association', 60);
     I.see('Who are you making the claim against?', 'h1');
     I.see('An individual');
     I.see('For example someone you lent money to');
@@ -137,12 +137,12 @@ class CreateClaim {
     I.see('A limited company');
     I.see('For example a company that sold you goods or services');
     I.see('Another type of organisation');
-    I.see('For example a partnership, trust, charity, club or association');
     I.click(paths.options.individual_defendant);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   verifyEnterYourDetails() {
+    I.waitForText('Yes, add a correspondence address', 60);
     I.see('Enter your details', 'h1');
     I.see('These details are shared with the person, business or organisation you are claiming from (the defendant).');
     I.see('Title');
@@ -155,10 +155,10 @@ class CreateClaim {
     I.see('Correspondence address', 'h2');
     I.see('Would you like correspondence sent to a different address?');
     I.see('No');
-    I.see('Yes, add a correspondence address');
   }
 
   verifyEnterDefendantsDetails() {
+    I.waitForText('Enter a UK postcode', 60);
     I.see('Enter the defendant’s details', 'h1');
     I.see('You’ll have to pay extra fee if you later want to change the name of anyone involved with the claim.');
     I.see('Title');
@@ -171,7 +171,6 @@ class CreateClaim {
     I.see('Your claim may be invalid if you use the wrong address.');
     I.see('You must enter their usual or last known home address.');
     I.see('You cannot use their work address.');
-    I.see('Enter a UK postcode');
   }
 
   inputEnterYourDetails(claimantFlag) {
@@ -201,10 +200,10 @@ class CreateClaim {
   }
 
   verifyDateOfBirth() {
+    I.waitForText('Year', 60);
     I.see('What is your date of birth?', 'h1');
     I.see('Day');
     I.see('Month');
-    I.see('Year');
   }
 
   inputDateOfBirth() {
@@ -215,29 +214,30 @@ class CreateClaim {
   }
 
   async verifyAndInputPhoneNumber() {
+    I.waitForText('We\'ll also give your number to the person, business, or organisation you are claiming from.', 60);
     I.see('Enter a phone number (optional)', 'h1');
     I.see('We might need to speak to you about this claim.');
     I.see('We’ll only call on weekdays between 9am and 5pm.');
-    I.see('We\'ll also give your number to the person, business, or organisation you are claiming from.');
     I.fillField(paths.fields.telephone_number, '07818731017');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyTheirEmailAddress() {
+    I.waitForText('This must be their personal email address', 60);
     I.see('Their email address (optional)', 'h1');
     I.see('We\'ll use this to tell them you\'ve made a claim, as well as notifying them by post.');
-    I.see('This must be their personal email address');
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyTheirPhoneNumber() {
-    I.see('Their phone number (optional)', 'h1');
+    I.waitForText('Their phone number (optional)', 60,'h1');
     //No Input here as this field is Optional and it will be entered by the Defendant
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyClaimAmount() {
+    I.waitForText('Amount',60);
     I.see('Claim amount', 'h1');
     I.see('Your claim could be for a single amount or made up of multiple items.');
     I.see('Don’t include:');
@@ -245,15 +245,14 @@ class CreateClaim {
     I.see('your claim fee - we’ll add this for you');
     I.see('What you’re claiming for?');
     I.see('Briefly explain each item - for example, "broken tiles", "roof damage"');
-    I.see('Amount');
   }
 
   async verifyAndInputDoYouWantToClaimInterest(claimInterestFlag) {
+    I.waitForText('No', 60);
     I.see('Do you want to claim interest?', 'h1');
     I.see('You can claim interest on the money you say you\'re owed.');
     I.see('The court will decide if you\'re entitled to it.');
     I.see('Yes');
-    I.see('No');
     if (claimInterestFlag === true) {
       I.click(paths.options.yes);
     } else {
@@ -263,35 +262,35 @@ class CreateClaim {
   }
 
   async verifyAndInputHowDoYouWantToClaimInterest() {
+    I.waitForText('Break down interest for different time periods or items',60);
     I.see('How do you want to claim interest?', 'h1');
     I.see('Same rate for the whole period');
-    I.see('Break down interest for different time periods or items');
     I.click(paths.options.same_rate_for_the_whole_period);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim() {
+    I.waitForText('A different rate', 60);
     I.see('What annual rate of interest do you want to claim?', 'h1');
     I.see('You can claim 8% per year unless you know that a different rate applies.:');
-    I.see('A different rate');
     I.click(paths.options.date_that_you_submit_claim);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyAndInputWhenWillYouClaimInterestFrom() {
+    I.waitForText('For example the date an invoice was overdue or that you told someone they owed you the money.',60);
     I.see('When are you claiming interest from?', 'h1');
     I.see('The date you submit the claim');
     I.see('If you submit after 4pm it will be the next working day.');
     I.see('A particular date');
-    I.see('For example the date an invoice was overdue or that you told someone they owed you the money.');
     I.click(paths.options.when_will_you_claim_interest_from);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyAndInputHelpWithFees() {
+    I.waitForText('Yes', 60);
     I.see('Do you have a Help With Fees reference number?', 'h1');
     I.see('You\'ll only have one if you applied for Help With Fees.');
-    I.see('Yes');
     I.click(paths.options.no);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
@@ -315,6 +314,7 @@ class CreateClaim {
   }
 
   async verifyClaimAmountSummary(claimInterestFlag) {
+    I.waitForText('There may be additional fees as your case progresses.',60);
     I.see('Total amount you’re claiming', 'h1');
     I.see('Claim amount');
     I.see('£1520.00');
@@ -334,21 +334,21 @@ class CreateClaim {
     I.see('Hearing fee');
     I.see('£181');
     I.see('You don’t have to pay a hearing fee unless the claim goes to a hearing.');
-    I.see('There may be additional fees as your case progresses.');
     I.seeElement(paths.links.find_out_more_about_court_fees);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyAndInputClaimDetails() {
+    I.see('You\'ll have to pay an extra fee if you want to change the details of the claim later.', 60);
     I.see('Briefly explain your claim', 'h1');
     I.see('Tell us why you believe the defendant owes you money.');
     I.see('Don\'t give us a detailed timeline - we\'ll ask for that separately.');
-    I.see('You\'ll have to pay an extra fee if you want to change the details of the claim later.');
     I.fillField(paths.fields.claim_details_text, 'Unprofessional Builder');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   async verifyClaimDetailsTimeline() {
+    I.waitForText('Year',60);
     I.see('Timeline of events', 'h1');
     I.see('If you don’t know exact date, tell us the month and year');
     I.see('Example timeline', 'h2');
@@ -360,7 +360,6 @@ class CreateClaim {
     I.see('For example, you might have signed a contract');
     I.see('Day');
     I.see('Month');
-    I.see('Year');
   }
 
   async inputClaimDetailsTimeline() {
@@ -387,11 +386,11 @@ class CreateClaim {
   }
 
   async verifyListEvidence() {
+    I.waitForText('If your case goes to a court hearing, and is not settled, you will need to provide evidence.', 60);
     I.see('List your evidence', 'h1');
     I.see('List your evidence (optional)');
     I.see('Tell us about any evidence you wish to provide.');
     I.see('You do not need to send us any evidence now.');
-    I.see('If your case goes to a court hearing, and is not settled, you will need to provide evidence.');
   }
 
   async inputEvidenceList() {
@@ -414,6 +413,7 @@ class CreateClaim {
   }
 
   async verifyCheckYourAnswers(claimInterestFlag) {
+    I.waitForText('a false statement in a document verified by a statement of truth without an honest belief in its truth.', 60);
     I.see('Check your answers', 'h1');
 
     I.see('Your details (claimant)', 'h2');
@@ -497,7 +497,6 @@ class CreateClaim {
     I.see('I believe that the facts stated in this claim are true.');
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes,');
     I.see('or causes to be made,');
-    I.see('a false statement in a document verified by a statement of truth without an honest belief in its truth.');
 
     I.click(paths.fields.no_changes_allowed_declaration);
     I.click(paths.fields.statement_of_truth);
@@ -505,6 +504,7 @@ class CreateClaim {
   }
 
   async verifyClaimSubmitted() {
+    I.waitForText('Monday to Friday, 8.30am to 5pm.', 60);
     I.see('Claim submitted', 'h1');
     I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
@@ -516,28 +516,27 @@ class CreateClaim {
     I.see('Email', 'h3');
     I.see('Telephone');
     I.see('0300 123 7050');
-    I.see('Monday to Friday, 8.30am to 5pm.');
     I.seeElement('//a[.=\'Find out about call charges (opens in a new window)\']');
     return claimReference;
   }
 
   async verifyAndInputPayYourClaimFee() {
+    I.waitForText('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     I.see('Pay your claim fee', 'h1');
     I.see('Claim amount');
     I.see('£1520');
     I.see('Claim fee');
     I.see('£1635');
     I.see('If you settle out of court we won\'t refund your claim fee.');
-    I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
     await I.click('continue to payment(£115)');
   }
 
   async verifyAndInputCardDetails() {
+    I.waitForText('£115.00', 60);
     I.see('Enter card details', 'h1');
     I.see('Payment summary','h2');
     I.see('card payment');
     I.see('Total amount:');
-    I.see('£115.00');
     I.fillField('#card-no' ,'4444333322221111');
     I.fillField('#expiry-month' ,new Date().getMonth());
     I.fillField('#expiry-year' ,new Date().getFullYear()+1);
@@ -550,15 +549,16 @@ class CreateClaim {
     await I.click('Continue');
   }
   async verifyConfirmYourPayment() {
+    I.waitForText('£115.00', 60);
     I.see('Confirm your payment','h1');
     I.see('Payment summary','h2');
     I.see('card payment');
     I.see('Total amount:');
-    I.see('£115.00');
     await I.click('Confirm payment');
   }
 
   async verifyYourPaymentWasSuccessfull() {
+    I.waitForText('£115.00', 60);
     I.see('Your payment was');
     I.see('successful');
     I.see('Your payment reference number is');
@@ -567,7 +567,6 @@ class CreateClaim {
     I.see('Payment for');
     I.see('Claim fee');
     I.see('Total amount');
-    I.see('£115');
     await I.click('Go to your account');
   }
 
