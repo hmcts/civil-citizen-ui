@@ -19,9 +19,9 @@ const case_data = {
   applicant1: {
     type: 'INDIVIDUAL',
     partyDetails: {
-      individualTitle: 'Mr',
-      individualLastName: 'Claim',
-      individualFirstName: 'Claimant',
+      title: 'Mr',
+      lastName: 'person',
+      firstName: 'Claimant',
       provideCorrespondenceAddress: 'no',
       primaryAddress: {
         addressLine1: '123',
@@ -40,10 +40,10 @@ const case_data = {
       carmEnabled: false,
     },
     dateOfBirth: {
-      date: '1995-01-01T00:00:00.000Z',
-      year: 1995,
-      month: 1,
-      day: 1,
+      date: '1993-08-27T23:00:00.000Z',
+      year: 1993,
+      month: 8,
+      day: 28,
     },
     partyPhone: {},
     emailAddress: {
@@ -53,9 +53,9 @@ const case_data = {
   respondent1: {
     type: 'INDIVIDUAL',
     partyDetails: {
-      individualTitle: 'Mr',
-      individualLastName: 'Defend',
-      individualFirstName: 'Defendant',
+      title: 'mr',
+      lastName: 'person',
+      firstName: 'defendant',
       primaryAddress: {
         addressLine1: '123',
         addressLine2: 'Claim Road',
