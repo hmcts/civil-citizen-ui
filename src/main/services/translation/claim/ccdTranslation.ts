@@ -26,6 +26,7 @@ import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
+
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
     defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
@@ -55,6 +56,8 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
+    res1MediationDocumentsReferred: [],
+    res1MediationNonAttendanceDocs: [],
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
