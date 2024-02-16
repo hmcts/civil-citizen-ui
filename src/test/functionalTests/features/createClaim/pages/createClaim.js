@@ -339,7 +339,7 @@ class CreateClaim {
   }
 
   async verifyAndInputClaimDetails() {
-    I.see('You\'ll have to pay an extra fee if you want to change the details of the claim later.', 60);
+    I.waitForText('You\'ll have to pay an extra fee if you want to change the details of the claim later.', 60);
     I.see('Briefly explain your claim', 'h1');
     I.see('Tell us why you believe the defendant owes you money.');
     I.see('Don\'t give us a detailed timeline - we\'ll ask for that separately.');
@@ -558,7 +558,7 @@ class CreateClaim {
   }
 
   async verifyYourPaymentWasSuccessfull() {
-    I.waitForText('£115.00', 60);
+    I.waitForText('£115', 60);
     I.see('Your payment was');
     I.see('successful');
     I.see('Your payment reference number is');
