@@ -57,6 +57,10 @@ module.exports = {
     console.log('End of performCaseHearingFeeUnpaid()');
   },
 
+  waitForFinishedBusinessProcess: async () {
+    await waitForFinishedBusinessProcess(caseId);
+  },
+
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
     eventName = 'EVIDENCE_UPLOAD_APPLICANT';
