@@ -233,7 +233,7 @@ class CheckYourAnswers {
   verifyConfirmationStatements() {
     I.see('Confirmation', 'h1');
     I.see('You cannot withdraw a document once you have submitted it.');
-    I.see('I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.');
+    I.see('I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.');
 
   }
 
