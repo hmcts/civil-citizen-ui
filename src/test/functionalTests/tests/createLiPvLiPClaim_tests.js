@@ -6,14 +6,13 @@ const DashboardSteps = require('../features/dashboard/steps/dashboard');
 
 // eslint-disable-next-line no-unused-vars
 let claimRef;
-let claimNumber;
 
 Feature('Create LipvLip claim using API');
 
 Before(async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await DashboardSteps.VerifyClaimOnDashboard(claimRef);
 });
 
 Scenario('Create LipvLip claim using API @test', async () => {
