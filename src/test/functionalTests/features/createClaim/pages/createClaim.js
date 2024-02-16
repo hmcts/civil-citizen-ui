@@ -233,6 +233,7 @@ class CreateClaim {
   async verifyTheirPhoneNumber() {
     I.waitForText('Their phone number (optional)', 60,'h1');
     //No Input here as this field is Optional and it will be entered by the Defendant
+    I.clearField(paths.fields.telephone_number,{ force: true });
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -498,8 +499,10 @@ class CreateClaim {
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes,');
     I.see('or causes to be made,');
 
-    I.seeCheckboxIsChecked(paths.fields.no_changes_allowed_declaration);
-    I.seeCheckboxIsChecked(paths.fields.statement_of_truth);
+    I.uncheckOption(paths.fields.no_changes_allowed_declaration);
+    I.uncheckOption(paths.fields.statement_of_truth);
+    I.checkOption(paths.fields.no_changes_allowed_declaration);
+    I.checkOption(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
   }
 

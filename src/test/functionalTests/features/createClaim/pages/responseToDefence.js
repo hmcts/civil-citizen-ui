@@ -189,7 +189,8 @@ class ReponseToDefence {
     I.see('Make sure this agreement includes everything you’ve agreed with Mrs Jane Doe before signing.');
     I.see('You won’t be able to change this later.');
     I.see('I confirm I’ve read and accept the terms of the agreement.');
-    I.click(paths.options.confirm_and_sign);
+    I.uncheckOption(paths.options.confirm_and_sign);
+    I.checkOption(paths.options.confirm_and_sign);
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -203,7 +204,7 @@ class ReponseToDefence {
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.seeCheckboxIsChecked(paths.buttons.submit_response);
+    I.click(paths.buttons.submit_response);
   }
 
   verifyConfirmationScreen(claimNumber) {
