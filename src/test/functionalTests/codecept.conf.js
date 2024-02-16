@@ -31,7 +31,7 @@ exports.config = {
       trace: true,
       contextOptions : {
         recordVideo:{
-          dir:'test-results/functional',
+          dir:'failed-videos',
         },
       },
       waitForNavigation: 'networkidle',
