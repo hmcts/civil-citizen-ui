@@ -38,7 +38,7 @@ export class MediationTypeOfDocumentSection {
 
 export class TypeOfDocumentYourNameSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_YOUR_NAME'})
-    typeOfDocument: string;
+    yourName: string;
   @ValidateNested()
     dateInputFields: MediationDateInputFields;
   @ValidateNested()

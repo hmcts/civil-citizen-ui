@@ -1,6 +1,9 @@
 {
   "COMMON": {
     "UPLOAD_FILE": "Upload file",
+    "VIEW_DOCUMENTS": "Gweld y dogfennau",
+    "DOCUMENTS_UPLOADED": "Documents uploaded",
+    "CASE_REFERENCE_NUMBER": "Your case reference number",
     "CONTACT_NAME": "Enw cyswllt",
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Contact email",
@@ -365,6 +368,12 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "CONFIRMATION_PAGE": {
+        "PAGE_TITLE": "Mediation upload documents confirmation",
+        "TEXT_BEFORE": "You can",
+        "LINK_TEXT": "upload more documents",
+        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+      },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
 
@@ -402,7 +411,7 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
         "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -1639,7 +1648,7 @@
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
       "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
-      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",      
+      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
       "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw hwnnw.",
       "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
@@ -2140,7 +2149,7 @@
       "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Rhybudd</span> </br> Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno.",
       "CHECK_YOUR_ANSWERS_WARNING_SHORT": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno.",
       "CHECK_YOUR_ANSWERS_CONFIRMATION": "Cadarnhad",
-      "CHECK_YOUR_ANSWERS_CORRECT": "Rwy’n cadarnhau bod y dogfennau’n gywir, ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno.",
+      "CHECK_YOUR_ANSWERS_CORRECT": "Rwy’n cadarnhau bod y dogfennau’n gywir ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Dywedwch wrthym os ydych chi’n cadarnhau bod y dogfennau’n gywir.",
       "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Dogfen wedi’i llwytho",
       "COSTS": "Costau",
