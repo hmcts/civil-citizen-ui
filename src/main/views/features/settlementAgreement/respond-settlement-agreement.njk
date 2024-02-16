@@ -8,7 +8,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.PAGE_TITLE') }}
 {% endblock %}
 {% set yesHtml %}
   <p class="govuk-body">{{ t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.ON_HOLD') }}</p>

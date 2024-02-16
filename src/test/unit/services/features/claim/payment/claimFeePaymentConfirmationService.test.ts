@@ -5,7 +5,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
+import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
 import {Claim} from 'common/models/claim';
 
 jest.mock('modules/draft-store');
@@ -30,7 +30,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     const submitClaimAfterPaymentEvent = jest.spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment').mockResolvedValueOnce({} as Claim);
-  
+
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
@@ -68,7 +68,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(CLAIM_CONFIRMATION_URL);
+    expect(actualPaymentRedirectUrl).toBe(DASHBOARD_URL);
   });
 
   it('should return 500 error page for any service error', async () => {

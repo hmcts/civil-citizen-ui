@@ -275,9 +275,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', '1')
         .replace(':caseId', '123'));
-      expect(claim.applicant1.partyDetails.individualTitle).toEqual(mockClaim.applicant1.partyDetails.individualTitle);
-      expect(claim.applicant1.partyDetails.individualFirstName).toEqual(mockClaim.applicant1.partyDetails.individualFirstName);
-      expect(claim.applicant1.partyDetails.individualLastName).toEqual(mockClaim.applicant1.partyDetails.individualLastName);
+      expect(claim.applicant1.partyDetails.title).toEqual(mockClaim.applicant1.partyDetails.title);
+      expect(claim.applicant1.partyDetails.firstName).toEqual(mockClaim.applicant1.partyDetails.firstName);
+      expect(claim.applicant1.partyDetails.lastName).toEqual(mockClaim.applicant1.partyDetails.lastName);
     });
     it('should throw error when there is an error with api', async () => {
       //Given
