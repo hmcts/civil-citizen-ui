@@ -4,19 +4,19 @@ import {GenericForm} from 'form/models/genericForm';
 
 export class PartyDetails {
 
-  @ValidateIf(o => o.individualTitle !== undefined)
+  @ValidateIf(o => o.title !== undefined)
   @MaxLength(35, {message: 'ERRORS.ENTER_VALID_TITLE'})
-    individualTitle?: string;
-  @ValidateIf(o => o.individualFirstName !== undefined)
+    title?: string;
+  @ValidateIf(o => o.firstName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_FIRST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    individualFirstName?: string;
-  @ValidateIf(o => o.individualLastName !== undefined)
+    firstName?: string;
+  @ValidateIf(o => o.lastName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_LAST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    individualLastName?: string;
+    lastName?: string;
   @ValidateIf(o => o.soleTraderTradingAs !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     soleTraderTradingAs?: string;
@@ -36,9 +36,9 @@ export class PartyDetails {
   carmEnabled?: boolean;
 
   constructor(value: Record<string, string>, carmEnabled?: boolean) {
-    this.individualTitle = value?.individualTitle;
-    this.individualLastName = value?.individualLastName;
-    this.individualFirstName = value?.individualFirstName;
+    this.title = value?.title;
+    this.lastName = value?.lastName;
+    this.firstName = value?.firstName;
     this.soleTraderTradingAs = value?.soleTraderTradingAs;
     this.partyName = value?.partyName;
     this.contactPerson = value?.contactPerson;

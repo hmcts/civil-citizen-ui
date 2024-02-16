@@ -26,18 +26,23 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
   res.render(contactNameMediationConfirmationViewPath, { form, pageTitle, pageText });
 };
 
-const getDefendantContactPerson = async (redisKey: string): Promise<string> => {
+const getPartyContactPerson = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
   const claim = await getCaseDataFromStore(redisKey);
+  if (isClaimantResponse) {
+    return claim.applicant1AdditionalLipPartyDetails.contactPerson;
+  }
   return claim.respondent1.partyDetails.contactPerson;
 };
 
 contactNameMediationConfirmationController.get(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const defendantContactPerson = await getDefendantContactPerson(redisKey);
+    const claim = await getCaseDataFromStore(redisKey);
+    const isClaimantResponse = claim.isClaimantIntentionPending();
+    const contactPerson = await getPartyContactPerson(redisKey, isClaimantResponse);
     const mediationCarm = await getMediationCarm(redisKey);
     const form = new GenericForm(new GenericYesNo(mediationCarm.isMediationContactNameCorrect?.option));
-    renderView(form, res,req, defendantContactPerson);
+    renderView(form, res,req, contactPerson);
   } catch (error) {
     next(error);
   }
@@ -47,11 +52,13 @@ contactNameMediationConfirmationController.post(MEDIATION_CONTACT_PERSON_CONFIRM
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claimId = req.params.id;
+    const claim = await getCaseDataFromStore(redisKey);
+    const isClaimantResponse = claim.isClaimantIntentionPending();
     const form = new GenericForm(new GenericYesNo(req.body.option));
     await form.validate();
     if (form.hasErrors()) {
-      const defendantContactPerson = await getDefendantContactPerson(redisKey);
-      renderView(form, res, req, defendantContactPerson);
+      const contactPerson = await getPartyContactPerson(redisKey, isClaimantResponse);
+      renderView(form, res, req, contactPerson);
     } else {
       await saveMediationCarm(redisKey, form.model, 'isMediationContactNameCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL))

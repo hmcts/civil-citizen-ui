@@ -18,7 +18,7 @@ const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boo
 
 export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string, claimantResponse: boolean): Task => {
   const availabilityMediationStatus = hasAvailabilityMediationFinished(caseData, claimantResponse);
-  const url = (claimantResponse && caseData.isClaimantBusiness()) || caseData.isBusiness() ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
+  const url = (claimantResponse && caseData.isClaimantBusiness()) || (!claimantResponse && caseData.isBusiness()) ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
     constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL);
   return {
     description: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),
