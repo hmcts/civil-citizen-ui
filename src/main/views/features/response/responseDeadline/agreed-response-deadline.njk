@@ -8,7 +8,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.AGREED_RESPONSE_DEADLINE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.AGREED_RESPONSE_DEADLINE.PAGE_TITLE') }}
 {% endblock %}
 {% set hint = t('PAGES.ADMISSION_PAYMENT_DATE.FOR_EXAMPLE', {
   nextDate: today.getDate(),
