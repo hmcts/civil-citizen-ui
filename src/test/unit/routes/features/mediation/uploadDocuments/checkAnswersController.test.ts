@@ -2,24 +2,35 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {
+
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {
-  TypeOfMediationDocuments,
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {getTypeOfDocuments} from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/mediation/uploadDocuments/mediationCheckAnswersService');
 
-const CONTROLLER_URL = MEDIATION_TYPE_OF_DOCUMENTS;
+const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND;
 
-describe('Mediation Type Of Document Controller', () => {
+const civilServiceClaim = new Claim();
+civilServiceClaim.respondent1 = new Party();
+civilServiceClaim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
+civilServiceClaim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
+civilServiceClaim.res1MediationDocumentsReferred = [];
+civilServiceClaim.res1MediationNonAttendanceDocs = [];
+
+describe('Mediation check and send Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -39,27 +50,22 @@ describe('Mediation Type Of Document Controller', () => {
       claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
       return claim;
     });
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(civilServiceClaim),
+        ),
+      );
   });
 
   describe('on GET', () => {
-    it('should open Mediation type of document page', async () => {
+    it('should open Mediation check your answers page', async () => {
       await request(app)
         .get(CONTROLLER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
-        });
-    });
-
-    it('should open Mediation type of document page when uploadDocument is missing', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
+          expect(res.text).toContain(TestMessages.MEDIATION_CHECK_YOUR_ANSWERS);
         });
     });
 
@@ -76,22 +82,22 @@ describe('Mediation Type Of Document Controller', () => {
     });
   });
   describe('on POST', () => {
-    it('should redirect to the mediation Upload documents page ', async () => {
+    it('should redirect to the confirmation page ', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({typeOfDocuments: TypeOfMediationDocuments.YOUR_STATEMENT})
+        .send({signed: true})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_UPLOAD_DOCUMENTS);
+          expect(res.header.location).toEqual(MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION);
         });
     });
-    it('should Valid checkbox when they are not checked', async () => {
+    it('should Valid signed is false', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({typeOfDocuments: ''})
+        .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
+          expect(res.text).toContain(TestMessages.MEDIATION_CHECK_YOUR_ANSWERS);
         });
     });
 
@@ -101,7 +107,7 @@ describe('Mediation Type Of Document Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'Joe Bloggs'})
+        .send({signed: true})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
