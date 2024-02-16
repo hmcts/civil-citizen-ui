@@ -4,7 +4,7 @@ import {
   DashboardStatusTranslationParam,
   toDraftClaimDashboardItem,
 } from 'common/models/dashboard/dashboardItem';
-import { translate } from 'common/models/dashboard/dashboardItem';
+import {translate} from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
 import {Claim} from 'models/claim';
@@ -12,7 +12,7 @@ import {Claim} from 'models/claim';
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 jest.mock('../../../../../main/modules/i18n');
-jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
+jest.mock('../../../../../main/modules/i18n/languageService', () => ({
   setLanguage: jest.fn(),
   getLanguage: jest.fn(),
 }));
@@ -21,8 +21,8 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-describe('Dashboard Items', ()=> {
-  describe('Dashboard claimant item', ()=>{
+describe('Dashboard Items', () => {
+  describe('Dashboard claimant item', () => {
     const ocmcClaimantClaim = new DashboardClaimantItem();
     ocmcClaimantClaim.claimId = '1';
     ocmcClaimantClaim.ocmc = true;
@@ -31,24 +31,24 @@ describe('Dashboard Items', ()=> {
     ccdClaimantClaim.claimId = '1';
     ccdClaimantClaim.ocmc = false;
 
-    it('should return correct url for ocmc claim', ()=> {
+    it('should return correct url for ocmc claim', () => {
       //When
       const href = ocmcClaimantClaim.getHref();
       //Then
       expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
     });
 
-    it('should return correct url for ccd claims', ()=> {
+    it('should return correct url for ccd claims', () => {
       //When
       const href = ccdClaimantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual('/dashboard/1/claimant');
     });
 
     it('should translate claim to dashboard item when claim is not empty', () => {
       //Given
       const claim = new Claim();
-      claim.draftClaimCreatedAt= new Date();
+      claim.draftClaimCreatedAt = new Date();
       //When
       const item = toDraftClaimDashboardItem(claim);
       //Then
@@ -90,7 +90,7 @@ describe('Dashboard Items', ()=> {
     });
   });
 
-  describe('Dashboard defendant item', ()=>{
+  describe('Dashboard defendant item', () => {
     const ocmcDefendantClaim = new DashboardDefendantItem();
     ocmcDefendantClaim.claimId = '1';
     ocmcDefendantClaim.ocmc = true;
@@ -98,25 +98,25 @@ describe('Dashboard Items', ()=> {
     const ccdDefendantClaim = new DashboardDefendantItem();
     ccdDefendantClaim.claimId = '1';
     ccdDefendantClaim.ocmc = false;
-    it('should return correct url for ocmc claim', ()=> {
+    it('should return correct url for ocmc claim', () => {
       //When
       const href = ocmcDefendantClaim.getHref();
       //Then
       expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/defendant');
     });
 
-    it('should return correct url for ccd claims', ()=> {
+    it('should return correct url for ccd claims', () => {
       //When
       const href = ccdDefendantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/defendant');
+      expect(href).toEqual('/dashboard/1/defendant');
     });
 
     it('should return translated status for claim', () => {
       //Given
       const dashboardClaim = new DashboardDefendantItem();
       dashboardClaim.numberOfDays = '10';
-      dashboardClaim.status ='NO_RESPONSE';
+      dashboardClaim.status = 'NO_RESPONSE';
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
@@ -138,7 +138,7 @@ describe('Dashboard Items', ()=> {
     });
   });
 
-  describe('Dashboard claimant item', ()=>{
+  describe('Dashboard claimant item', () => {
     const ocmcDefendantClaim = new DashboardClaimantItem();
     ocmcDefendantClaim.claimId = '1';
     ocmcDefendantClaim.ocmc = true;
@@ -147,24 +147,24 @@ describe('Dashboard Items', ()=> {
     ccdDefendantClaim.claimId = '1';
     ccdDefendantClaim.ocmc = false;
 
-    it('should return correct url for ocmc claim', ()=> {
+    it('should return correct url for ocmc claim', () => {
       //When
       const href = ocmcDefendantClaim.getHref();
       //Then
       expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
     });
 
-    it('should return correct url for ccd claims', ()=> {
+    it('should return correct url for ccd claims', () => {
       //When
       const href = ccdDefendantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual('/dashboard/1/claimant');
     });
 
     it('should return translated status for claim', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
-      dashboardClaim.status ='NO_RESPONSE';
+      dashboardClaim.status = 'NO_RESPONSE';
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
@@ -174,11 +174,21 @@ describe('Dashboard Items', ()=> {
     it('should return translated status for claim CLAIMANT_REJECTED_PAYMENT_PLAN', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
-      dashboardClaim.status ='CLAIMANT_REJECTED_PAYMENT_PLAN';
+      dashboardClaim.status = 'CLAIMANT_REJECTED_PAYMENT_PLAN';
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
+    });
+
+    it('should return translated status for claim INVALID_HWF_NUMBER', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'INVALID_HWF_NUMBER';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.INVALID_HWF_NUMBER');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
