@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   amount: 'input[id="amount"]',
@@ -17,7 +18,7 @@ const content = {
 }
 
 const buttons = {
-  saveAndContinueText: {
+  saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau'
   }
@@ -25,12 +26,12 @@ const buttons = {
 
 class HowMuchDoYouOwe {
 
-  async enterHowMuchMoneyDoYouOwe(claimRef, amount, language= 'en') {
+  async enterHowMuchMoneyDoYouOwe(claimRef, amount) {
     await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-do-you-owe');
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.hintText[language]);
     await I.fillField(fields.amount, amount);
-    await I.click(buttons.saveAndContinueText[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 
   async enterHowMuchMoneyDoYouOweError(claimRef) {

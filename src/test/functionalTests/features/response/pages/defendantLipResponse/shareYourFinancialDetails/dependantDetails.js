@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="declared"]',
@@ -9,24 +10,31 @@ const fields ={
   between16and19: 'input[id="between16and19"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  saveAndContinue: 'button.govuk-button',
 };
+
+const content = {
+  heading: {
+    en: 'Do any children live with you?',
+    cy: 'A oes unrhyw blant yn byw gyda chi?'
+  }
+}
 
 class DependantDetails {
 
   async clickYesButton() {
-    await I.waitForText('Do any children live with you?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.under11, '1');
     await I.fillField(fields.between11and15, '1');
     await I.fillField(fields.between16and19, '0');
-    await I.click(buttons.continue);
+    await I.click(buttons.saveAndContinue);
   }
 
   async clickNoButton() {
-    await I.waitForText('Do any children live with you?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.continue);
+    await I.click(buttons.saveAndContinue);
   }
 }
 

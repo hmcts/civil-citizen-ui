@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const {language} = require('../../../../sharedData');
 
 const fields = {
   addressLine1: 'input[id="primaryAddress[addressLine1]"]',
@@ -33,45 +34,22 @@ const content = {
 };
 
 const buttons = {
-  saveAndContinueText: {
+  saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau'
   }
 }
 
-const inputs = {
-  addressLine1: {
-    en: 'Test AddressLine1',
-    cy: 'Cyfeiriad Prawf Llinell1'
-  },
-  addressLine2: {
-    en: 'Test AddressLine2',
-    cy: 'Cyfeiriad Prawf Llinell2'
-  },
-  addressLine3: {
-    en: 'Test AddressLine3',
-    cy: 'Cyfeiriad Prawf Llinell3'
-  },
-  city: {
-    en: 'Test City',
-    cy: 'Dinas Prawf'
-  },
-  postcode: {
-    en: 'IG6 1JD',
-    cy: 'CF10 1AE'  
-  },
-}
-
 class NameAndAddressDetailsPage {
-  async enterNameAndAddressDetails (claimRef, language = 'en') {
+  async enterNameAndAddressDetails (claimRef) {
     await I.click(content.confirmYourDetailsLink[language]);
     await I.waitForElement(fields.addressLine1, config.WaitForText);
-    await I.fillField(fields.addressLine1, inputs.addressLine1[language]);
-    await I.fillField(fields.addressLine2, inputs.addressLine2[language]);
-    await I.fillField(fields.addressLine3, inputs.addressLine3[language]);
-    await I.fillField(fields.city, inputs.city[language]);
-    await I.fillField(fields.postcode, inputs.postcode[language]);
-    await I.click(buttons.saveAndContinueText[language]);
+    await I.fillField(fields.addressLine1, 'Test AddressLine1');
+    await I.fillField(fields.addressLine2, 'Test AddressLine2');
+    await I.fillField(fields.addressLine3, 'Test AddressLine3');
+    await I.fillField(fields.city, 'Test City');
+    await I.fillField(fields.postcode, 'IG6 1JD');
+    await I.click(buttons.saveAndContinue[language]);
   }
 
   async enterCompanyContactDetails () {

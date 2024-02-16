@@ -8,8 +8,14 @@ const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamH
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const partAdmit = 'partial-admission';
+const welsh = 'cy';
 
-Feature('Response with PartAdmit - Small Claims');
+let claimRef;
+let caseData;
+let claimNumber;
+let securityCode;
+
+Feature('Response with PartAdmit - Small Claims @kiyron');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -26,12 +32,20 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async ({api}) => {
     await ResponseSteps.RespondToClaim(claimRef, 'cy');
-    await ResponseSteps.EnterPersonalDetails(claimRef, false, 'cy'); //Two pages TODO 
-    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime, 'cy'); //Two pages TODO
-    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit, 'cy');
-    await ResponseSteps.SelectPartAdmitAlreadyPaid('no', 'cy');
-    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, 'cy');
-    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, 'cy');
+    await ResponseSteps.EnterPersonalDetails(claimRef, false);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+    await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+    await ResponseSteps.AddYourTimeLineEvents();
+    await ResponseSteps.EnterYourEvidenceDetails();
+    await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
+    await ResponseSteps.EnterDateToPayOn();
+    await ResponseSteps.EnterFinancialDetails(claimRef);
+    await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 AfterSuite(async () => {

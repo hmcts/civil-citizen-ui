@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   responseAdmitAll: 'input[id="responseType"]',
@@ -20,7 +21,7 @@ const content = {
 }
 
 class ResponseTypePage {
-  async enterResponseToClaim(claimRef, responseType, language = 'en'){
+  async enterResponseToClaim(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
     await I.waitForText(content.heading[language], config.WaitForText);
     switch (responseType){

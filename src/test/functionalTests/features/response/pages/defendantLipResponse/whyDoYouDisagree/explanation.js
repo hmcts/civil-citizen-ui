@@ -1,19 +1,34 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   reason: 'textarea[id="text"]',
 };
 const buttons = {
-  continue: '#main-content button.govuk-button',
+  saveAndContinue: '#main-content button.govuk-button',
 };
 
-class Explanation {
+const content = {
+  heading: {
+    en: 'Briefly explain why you can\'t pay immediately',
+    cy: 'Esboniwch yn fras pam na allwch dalu ar unwaith'
+  }
+}
 
+const inputs = {
+  reason: {
+    en: 'Test reason',
+    cy: 'Rheswm Prawf'
+  }
+}
+
+class Explanation {
   async enterExplanation() {
     await I.waitForElement(fields.reason, config.WaitForText);
-    await I.fillField(fields.reason, 'Test reason');
-    await I.click(buttons.continue);
+    await I.see(content.heading[language])
+    await I.fillField(fields.reason, inputs.reason[language]);
+    await I.click(buttons.saveAndContinue);
   }
 }
 

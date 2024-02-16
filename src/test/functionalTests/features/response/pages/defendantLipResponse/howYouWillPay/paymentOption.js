@@ -1,11 +1,19 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   responseAdmitAllImmediate: 'input[id="paymentType"]',
   responseAdmitAllBySetDate: 'input[id="paymentType-2"]',
   responseAdmitAllRepayment: 'input[id="paymentType-3"]',
 };
+
+const content = {
+  heading: {
+    en: 'When do you want to pay',
+    cy: 'Pryd ydych chi eisiau talu'
+  }
+}
 
 const buttons = {
   saveAndContinue: '#main-content button.govuk-button',
@@ -14,7 +22,7 @@ const buttons = {
 class PaymentOptionPage {
   async enterPaymentOption(claimRef, responseType, paymentType) {
     await I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
-    await I.waitForText('When do you want to pay', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     switch (paymentType){
       case 'immediate':{
         await I.click(fields.responseAdmitAllImmediate);
@@ -33,7 +41,7 @@ class PaymentOptionPage {
         break;
       }
     }
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

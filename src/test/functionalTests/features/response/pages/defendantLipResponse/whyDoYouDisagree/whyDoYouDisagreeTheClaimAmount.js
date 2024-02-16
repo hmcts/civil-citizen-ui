@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   text: 'textarea[id="text"]',
@@ -24,8 +25,15 @@ const content = {
   }
 }
 
+const inputs = {
+  whyYouDisagree: {
+    en: 'Test reason',
+    cy: 'Rheswm Prawf'
+  }
+}
+
 class WhyDoYouDisagreeTheClaimAmount {
-  async enterReason (claimRef, responseType, language = 'en') {
+  async enterReason (claimRef, responseType) {
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/why-do-you-disagree');
     }else{
@@ -34,7 +42,7 @@ class WhyDoYouDisagreeTheClaimAmount {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.hintText1[language]);
     await I.see(content.hintText2[language]);
-    await I.fillField(fields.text, 'Test reason');
+    await I.fillField(fields.text, inputs.whyYouDisagree[language]);
     await I.click(buttons.saveAndContinue);
   }
 

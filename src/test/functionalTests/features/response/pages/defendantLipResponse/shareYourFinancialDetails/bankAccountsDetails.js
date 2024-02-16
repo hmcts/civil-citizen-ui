@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   accounts1: 'accounts[0][typeOfAccount]',
@@ -13,16 +14,40 @@ const fields = {
   account3Balance: 'input[id="accounts[2][balance]"]',
 };
 
+const content = {
+  heading: {
+    en: 'List your bank and savings accounts',
+    cy: 'Rhestrwch eich cyfrifon banc a chyfrifon cynilo'
+  },
+}
+
+const dropdownOptions = {
+  accounts1:  {
+    en: 'Current account',
+    cy: 'Cyfrif cyfredol'
+  },
+  jointAccount1: {
+    en: 'Yes',
+    cy: 'le'
+  }
+}
+
 const buttons = {
-  addAnotherAccount: 'Add another account',
-  saveAndContinue: 'Save and continue',
+  addAnotherAccount: {
+    en: 'Add another account',
+    cy: 'Ychwanegu cyfrif arall'
+  },
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau'
+  }
 };
 
 class BankAccountsDetails {
   async enterBankAccountDetails() {
-    await I.waitForText('List your bank and savings accounts', config.WaitForText);
-    await I.selectOption(fields.accounts1, 'Current account');
-    await I.selectOption(fields.jointAccount1, 'Yes');
+    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.selectOption(fields.accounts1, dropdownOptions.accounts1[language]);
+    await I.selectOption(fields.jointAccount1, dropdownOptions.jointAccount1[language]);
     await I.fillField(fields.account1Balance, '2000');
   }
 
@@ -34,7 +59,7 @@ class BankAccountsDetails {
   }
 
   async clickContinue(){
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

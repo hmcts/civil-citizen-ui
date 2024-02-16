@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   mortgage: 'Mortgage',
@@ -16,13 +17,23 @@ const fields ={
   electricityPaymentScheduleFortnightly: 'input[id="model[electricity][transactionSource][schedule]-2"]',
 };
 const buttons = {
-  saveAndContinue: 'Save and continue',
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau'
+  }
 };
+
+const content = {
+  heading: {
+    en: 'Debts you\'re behind on',
+    cy: 'Dyledion rydych ar ei hôl hi yn eu talu'
+  }
+}
 
 class PriorityDebtsDetails {
 
   async selectMortgage(mortgageAmount) {
-    await I.waitForText('Debts you\'re behind on', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.checkOption(fields.mortgage);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
     await I.click(fields.mortgagePaymentScheduleMonthly);
@@ -47,7 +58,7 @@ class PriorityDebtsDetails {
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

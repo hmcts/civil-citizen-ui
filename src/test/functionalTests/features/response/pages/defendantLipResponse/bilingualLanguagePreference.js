@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../config');
+const {language} = require('../../../../sharedData')
 
 const fields = {
   en: 'input[id="option"]',
@@ -18,7 +19,7 @@ const content = {
 }
 
 const buttons = {
-  saveAndContinueText: {
+  saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau'
   }
@@ -26,11 +27,12 @@ const buttons = {
 
 class BilingualLanguagePreference {
 
-  async verifyContent(language = 'en') {
+  async verifyContent(languageOption = 'en') {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
-    I.click(fields[language]);
-    await I.click(buttons.saveAndContinueText[language]);
+    I.click(fields[languageOption]);
+    await I.click(buttons.saveAndContinue[language]);
+    sharedData.updateLanguage(languageOption);
   }
 
   async verifyContentError() {
