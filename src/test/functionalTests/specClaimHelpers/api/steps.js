@@ -69,6 +69,7 @@ module.exports = {
     }
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performEvidenceUpload()');
   },
@@ -79,6 +80,7 @@ module.exports = {
     const payload = createATrialArrangement.createATrialArrangement();
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performTrialArrangements()');
   },
@@ -90,6 +92,7 @@ module.exports = {
     const payload = createAnAssistedOrder.createAnAssistedOrder(document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of performAnAssistedOrder()');
   },
@@ -100,6 +103,7 @@ module.exports = {
     const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated(hearingDate);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
@@ -111,6 +115,7 @@ module.exports = {
     const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of performCaseProgressedToSDO()');
   },
