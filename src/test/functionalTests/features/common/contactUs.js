@@ -4,7 +4,7 @@ let verified = false;
 class ContactUs {
 
   verifyContactUs() {
-    if (!verified)
+    if (!verified) {
       I.click('//span[contains(text(),\'Contact us for help\')]');
       I.waitForText('Email', 60, 'h3');
       I.seeElement('//a[.=\'contactocmc@justice.gov.uk\']');
