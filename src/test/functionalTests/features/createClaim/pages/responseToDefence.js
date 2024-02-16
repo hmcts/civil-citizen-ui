@@ -204,7 +204,7 @@ class ReponseToDefence {
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.click(paths.buttons.submit_response);
+    I.seeCheckboxIsChecked(paths.buttons.submit_response);
   }
 
   verifyConfirmationScreen(claimNumber) {

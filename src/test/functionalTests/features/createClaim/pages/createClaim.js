@@ -498,8 +498,8 @@ class CreateClaim {
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes,');
     I.see('or causes to be made,');
 
-    I.click(paths.fields.no_changes_allowed_declaration);
-    I.click(paths.fields.statement_of_truth);
+    I.seeCheckboxIsChecked(paths.fields.no_changes_allowed_declaration);
+    I.seeCheckboxIsChecked(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
   }
 
