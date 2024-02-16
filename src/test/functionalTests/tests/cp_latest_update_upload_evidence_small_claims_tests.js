@@ -15,12 +15,13 @@ Before(async ({api}) => {
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
 //Covered in cp_upload_evidence_small_claims_tests
-Scenario('Case progression journey - Small Claims - Verify latest Update page For Evidence Upload', () => {
+Scenario('Case progression journey - Small Claims - Verify latest Update page For Evidence Upload', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
