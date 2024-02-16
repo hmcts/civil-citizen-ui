@@ -1,7 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 
-const fields ={
+const fields = {
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
   phoneNumberID: 'input[id="mediationPhoneNumber"]',

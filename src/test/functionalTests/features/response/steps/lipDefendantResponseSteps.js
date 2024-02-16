@@ -483,8 +483,9 @@ class ResponseSteps {
     await listYourEvidence.selectEvidenceFromDropDown();
   }
 
-  async EnterFreeTelephoneMediationDetails(claimRef) {
-    await freeTelephoneMediation.selectMediation(claimRef);
+  async EnterFreeTelephoneMediationDetails(claimRef, language) {
+    console.log('The value of the language : '+language);
+    await freeTelephoneMediation.selectMediation(claimRef, language);
     await mediationCanWeUse.selectOptionForMediation(claimRef);
   }
 
