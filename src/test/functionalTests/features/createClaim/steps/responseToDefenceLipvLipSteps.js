@@ -76,6 +76,29 @@ class ResponseToDefenceLipVLipSteps {
 
   }
 
+  async ResponseToDefenceStepsRejectPaymentPlanAndProposeNewPlan(caseReference, claimNumber){
+
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForRejection();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.verifyHowTheyWantToPayAcceptRepaymentPlan();
+    await responseToDefence.verifyHowDoYouWantTheDefendantToPay();
+    await responseToDefence.verifyRepaymentPlanAccepted();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.how_to_formalise_repayment);
+    await responseToDefence.verifyHowToFormaliseARepayment();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.sign_a_settlements_agreement);
+    await responseToDefence.verifySignTheSettlementAgreement();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswers();
+    responseToDefence.verifyConfirmationScreen(claimNumber);
+  }
+
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 3);
     I.see('Your response', 'h1');

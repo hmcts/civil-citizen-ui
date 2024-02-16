@@ -22,6 +22,7 @@ const paths = {
     no: '//input[@value=\'no\']',
     english_language : '#speakLanguage',
     document_language : '#documentsLanguage',
+    immediate_payment_type: '#paymentType',
   },
 };
 
@@ -405,6 +406,37 @@ class ReponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
+
+  async verifyHowTheyWantToPayAcceptRepaymentPlan() {
+    I.waitForText('No - I\'ll suggest my own',60);
+    I.see('No - I\'ll suggest my own', 'h1');
+    I.see('Regular payments of');
+    I.see('£100');
+    I.see('Frequency of payments');
+    I.see('Monthly');
+    I.see('First payment date');
+    I.see('Final payment date');
+    I.see('Length of repayment plan');
+    I.see('Do you accept the repayment plan?');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyHowDoYouWantTheDefendantToPay() {
+    I.waitForText('By instalments',60);
+    I.see('How do you want the defendant to pay?', 'h1');
+    I.see('Immediately');
+    I.see('By a set date');
+    I.click(paths.options.immediate_payment_type);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyRepaymentPlanAccepted() {
+    I.waitForText('The court has accepted your repayment plan',60);
+    I.see('Repayment plan accepted', 'h1');
+    I.click(paths.buttons.continue);
+  }
+
 }
 
 module.exports = ReponseToDefence;

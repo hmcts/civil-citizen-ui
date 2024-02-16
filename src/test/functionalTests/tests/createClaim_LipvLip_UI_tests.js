@@ -8,6 +8,8 @@ const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const rejectAll = 'rejectAll';
+const admitAll = 'full-admission';
+const repaymentPlan = 'repaymentPlan';
 
 Feature('Create Lip v Lip claim');
 
@@ -81,5 +83,62 @@ Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', as
     await ResponseSteps.SignOut();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
+  }
+}).tag('@regression');
+
+
+Scenario.only('Create Claim - Admit All By Defendant', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
+    let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(false);
+    claimRef = claimRef.replace(/-/g, '');
+    console.log('The value of the claim reference : ' + claimRef);
+    let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    let claimNumber = await caseData.legacyCaseReference;
+    let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('The value of the Claim Number :' + claimNumber);
+    console.log('The value of the Security Code :' + securityCode);
+    await api.assignToLipDefendant(claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterPersonalDetails(claimRef);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
+    await ResponseSteps.EnterPaymentOption(claimRef, admitAll, repaymentPlan);
+    await ResponseSteps.EnterFinancialDetails(claimRef);
+    await ResponseSteps.EnterRepaymentPlan(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+    await ResponseSteps.SignOut();
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  }
+}).tag('@regression');
+
+Scenario.only('Create Claim - Admit All By Defendant', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
+    let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(false);
+    claimRef = claimRef.replace(/-/g, '');
+    console.log('The value of the claim reference : ' + claimRef);
+    let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    let claimNumber = await caseData.legacyCaseReference;
+    let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('The value of the Claim Number :' + claimNumber);
+    console.log('The value of the Security Code :' + securityCode);
+    await api.assignToLipDefendant(claimRef);
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterPersonalDetails(claimRef);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterResponseToClaim(claimRef, admitAll);
+    await ResponseSteps.EnterPaymentOption(claimRef, admitAll, repaymentPlan);
+    await ResponseSteps.EnterFinancialDetails(claimRef);
+    await ResponseSteps.EnterRepaymentPlan(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, admitAll);
+    await ResponseSteps.SignOut();
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   }
 }).tag('@regression');
