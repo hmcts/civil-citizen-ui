@@ -23,6 +23,13 @@ const paths = {
     english_language : '#speakLanguage',
     document_language : '#documentsLanguage',
     immediate_payment_type: '#paymentType',
+    by_a_set_date_payment_type : '[value=\'BY_SET_DATE\']',
+    request_a_ccj: '[value=\'REQUEST_A_CCJ\']',
+  },
+  fields : {
+    day : '#day',
+    month : '#month',
+    year : '#year',
   },
 };
 
@@ -172,11 +179,13 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifySignTheSettlementAgreement() {
+  verifySignTheSettlementAgreement(settlementType) {
     I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
-    I.see('Mrs Jane Doe will pay £500, no later than');
+    if (settlementType === 'partAdmit') {
+      I.see('Mrs Jane Doe will pay £500, no later than');
+    }
     I.see('Completion date');
 
     I.see('This agreement settles the claim made by Mr Joe Bloggs against Mrs Jane Doe.');
@@ -195,14 +204,18 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifyCheckYourAnswers() {
-    I.waitForText('Sign a settlement agreement',60);
+  verifyCheckYourAnswers(settlementType, repaymentTypeAcceptanceText, settlementAgreedFlag) {
+    if (settlementAgreedFlag) {
+      I.waitForText('Sign a settlement agreement', 60);
+    }
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.see('Do you accept or reject the defendant\'s admission?');
-    I.see('I accept this amount');
+    if (settlementType === 'partAdmit')  {
+      I.see('Do you accept or reject the defendant\'s admission?');
+      I.see('I accept this amount');
+    }
     I.see('Do you accept the defendant repayment plan?');
-    I.see('I accept this repayment plan');
+    I.see(`${repaymentTypeAcceptanceText}`);
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
     I.click(paths.buttons.submit_response);
@@ -408,9 +421,84 @@ class ReponseToDefence {
     I.see(`${claimNumber}`);
   }
 
+  async verifyDefendantsResponseForAcceptance(claimReference) {
+    I.waitForText('Test reason',60);
+    I.see('The defendant’s response','h1');
+    I.see('Mrs Jane Doe admits they owe you all the money you\'ve claimed.');
+    I.see('This is the total amount you\'ll be paid,');
+    I.see('including the claim fee and interest if applicable.');
+    I.see('They\'ve offered to pay you this in instalments.');
+    I.see('How they want to pay?','h2');
+    I.see('The defendant suggested this repayment plan:');
+    I.see('Regular payments of');
+    I.see('£100');
+    I.see('Frequency of payments');
+    I.see('First payment date');
+    I.see('Final payment date');
+    I.see('Length of repayment plan');
+    I.see('16 months');
+    I.see('Why they can’t pay the full amount now?','h2');
+    I.click(paths.links.see_their_financial_details);
+    I.see('Bank and savings accounts');
+    I.see('Type of account');
+    I.see('Current account');
+    I.see('Balance');
+    I.see('£2,000');
+    I.see('Joint account');
+    I.see('No');
+    I.see('Where are they living?');
+    I.see('Home you own yourself (or pay a mortgage on)');
+    I.see('Children');
+    I.see('Do any children live with them?');
+    I.see('Yes');
+    I.see('How many are aged under 11?');
+    I.see('1');
+    I.see('How many are aged 16 to 19?');
+    I.see('0');
+    I.see('Financial support');
+    I.see('Number of people');
+    I.see('2');
+    I.see('Give details');
+    I.see('Parents');
+    I.see('Employment details');
+    I.see('Employed');
+    I.see('Self-employed');
+    I.see('Self-employed');
+    I.see('ABC Ltd');
+    I.see('Builder');
+    I.see('Claim number');
+    I.see(`${claimReference}`);
+    I.see('Amount they owe');
+    I.see('£1,000');
+    I.see('Debts');
+    I.see('Debt');
+    I.see('Mortgage');
+    I.see('Monthly Payments');
+    I.see('£120');
+    I.see('Gas');
+    I.see('£10');
+    I.see('Council Tax or Community Charge');
+    I.see('£20');
+    I.see('Electricity');
+    I.see('£5');
+    I.see('HSBC Credit card');
+    I.see('Total owed');
+    I.see('£1,200');
+    I.see('Motor vehicle loan');
+    I.see('£14,000');
+    I.see('£220');
+    I.see('Student loan');
+    I.see('£8,000');
+    I.see('£400');
+    I.see('Full response','h3');
+    I.seeElement(paths.links.full_response_pdf_link);
+    I.click(paths.links.full_response_pdf_link);
+    I.click(paths.buttons.continue);
+  }
+
   async verifyHowTheyWantToPayAcceptRepaymentPlan() {
     I.waitForText('No - I\'ll suggest my own',60);
-    I.see('No - I\'ll suggest my own', 'h1');
+    I.see('How they want to pay?', 'h1');
     I.see('Regular payments of');
     I.see('£100');
     I.see('Frequency of payments');
@@ -423,18 +511,36 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  async verifyHowDoYouWantTheDefendantToPay() {
+  async verifyHowDoYouWantTheDefendantToPay(paymentType) {
     I.waitForText('By instalments',60);
     I.see('How do you want the defendant to pay?', 'h1');
     I.see('Immediately');
     I.see('By a set date');
-    I.click(paths.options.immediate_payment_type);
+    if (paymentType === 'immediate') {
+      I.click(paths.options.immediate_payment_type);
+    } else if (paymentType === 'by set date') {
+      I.click(paths.options.by_a_set_date_payment_type);
+    }
     I.click(paths.buttons.save_and_continue);
   }
 
   async verifyRepaymentPlanAccepted() {
     I.waitForText('The court has accepted your repayment plan',60);
     I.see('Repayment plan accepted', 'h1');
+    I.click(paths.buttons.continue);
+  }
+
+  async verifyWhenDoYouWantTheDefendantToPayPayByDate() {
+    I.waitForText('Year',60);
+    I.see('When do you want the defendant to pay?', 'h1');
+    I.see('The court will review your suggestion and may reject it if it\'s sooner than the defendant can afford to repay the money.');
+    I.see('For example, 16 3 2024');
+    I.see('Day');
+    I.see('Month');
+
+    I.fillField(paths.fields.day, '1');
+    I.fillField(paths.fields.month, new Date().getMonth());
+    I.fillField(paths.fields.year, new Date().getFullYear()+1);
     I.click(paths.buttons.continue);
   }
 
