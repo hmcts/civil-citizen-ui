@@ -1,6 +1,9 @@
 {
   "COMMON": {
     "UPLOAD_FILE": "Upload file",
+    "VIEW_DOCUMENTS": "Gweld y dogfennau",
+    "DOCUMENTS_UPLOADED": "Documents uploaded",
+    "CASE_REFERENCE_NUMBER": "Your case reference number",
     "CONTACT_NAME": "Enw cyswllt",
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Contact email",
@@ -265,6 +268,8 @@
       "TITLE": "Datganiad Gwirionedd",
       "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
     },
+    "PAGE_TITLE_PART1": "Eich cyfrif hawliadau am arian",
+    "PAGE_TITLE_PART2": "Hawliadau am Arian",
     "TIMELINE": {
       "EXAMPLE_EVENT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
       "WHAT_HAPPENED": "Beth ddigwyddodd"
@@ -363,6 +368,12 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "CONFIRMATION_PAGE": {
+        "PAGE_TITLE": "Mediation upload documents confirmation",
+        "TEXT_BEFORE": "You can",
+        "LINK_TEXT": "upload more documents",
+        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+      },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
 
@@ -400,7 +411,7 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
         "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -1063,20 +1074,20 @@
         "TITLE": "Ni all y diffynnydd dalu erbyn y dyddiad a roddwyd gennych"
       },
       "COURT_PROPOSED_PLAN": {
-        "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
-        "COURT_AFFORDABILITY": "The court affordability calculator has determined a new repayment plan as the most the defendant can repay.",
-        "COURT_PROPOSED_PLAN": "The court’s proposed repayment plan",
-        "DO_YOU_ACCEPT": "Do you accept the court’s proposed repayment plan?",
+        "BASED_ON": "Ar sail y manylion ariannol a ddarparwyd gan y diffynnydd, nid ydym yn credu y bydd yn gallu gwneud yr ad-daliadau hyn.",
+        "COURT_AFFORDABILITY": "Mae cyfrifiannell fforddiadwyedd y llys wedi penderfynu ar gynllun ad-dalu newydd fel y mwyaf y gall y diffynnydd ei ad-dalu.",
+        "COURT_PROPOSED_PLAN": "Cynllun ad-dalu arfaethedig y llys",
+        "DO_YOU_ACCEPT": "Ydych chi'n derbyn cynllun ad-dalu arfaethedig y llys?",
         "FIRST_PAYMENT_DATE": "Dyddiad talu cyntaf",
         "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
-        "IF_YOU_WANT_JUDGE": "Os ydych chi eisiau i farnwr wneud cynllun ad-dalu, mae'n rhaid i chi ofyn am ddyfarniad ar gyfer cynllun arfaethedig y llys ar y sgrin nesaf.",
-        "I_WANT_ACCEPT": "I want to accept this repayment plan",
-        "I_WANT_JUDGE": "I want a judge to make a repayment plan",
+        "IF_YOU_WANT_JUDGE": "Os ydych chi am i farnwr wneud cynllun ad-dalu, mae’n rhaid i chi dal ofyn am ddyfarniad ar gyfer cynllun arfaethedig y llys yn y sgrin nesaf.",
+        "I_WANT_ACCEPT": "Rwyf am dderbyn y cynllun ad-dalu hwn",
+        "I_WANT_JUDGE": "Rwyf am i farnwr wneud cynllun ad-dalu",
         "LAST_PAYMENT_DATE": "Dyddiad talu diwethaf",
         "LENGTH_OF_REPAYMENT": "Hyd y cynllun ad-dalu",
-        "PAGE_TITLE": "The defendant can’t afford your plan",
+        "PAGE_TITLE": "Ni all y diffynnydd fforddio eich cynllun",
         "REGULAR_PAYMENTS_OF": "Taliadau rheolaidd",
-        "TITLE": "The defendant can’t afford your plan"
+        "TITLE": "Ni all y diffynnydd fforddio eich cynllun"
       }
     },
     "CLAIMANT_RESPONSE_CONFIRMATION": {
@@ -1089,19 +1100,19 @@
         "TITLE": "If the court believes the defendant can not afford your plan",
         "COURT_WILL_SET": "The court will set its own repayment terms and issue a CCJ."
       },
-      "PAGE_TITLE": "Claimant Intention Confirmation",
+      "PAGE_TITLE": "Cadarnhad o fwriad hawlydd",
       "PA_PAY_IMMEDIATELY": {
-        "ACCEPTED_DEFENDANT_RESPONSE": "You've accepted their response",
-        "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "The defendant said they'll pay you £{{ admittedAmount }} immediately.",
-        "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
-        "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
+        "ACCEPTED_DEFENDANT_RESPONSE": "Rydych wedi derbyn eu hymateb",
+        "DEFENDANT_TO_PAY_YOU_IMMEDIATELY": "Dywedodd y diffynnydd y byddant yn talu £{{ admittedAmount }} i chi ar unwaith.",
+        "PAYMENT_BY": "Rhaid iddynt sicrhau bod yr arian gennych erbyn {{ paymentDate }}. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi’u clirio yn eich cyfrif.",
+        "TELL_US_SETTLEMENT": "Mae angen i chi ddweud wrthym os ydych wedi setlo’r hawliad, er enghraifft oherwydd bod y diffynnydd wedi eich talu."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
         "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
       },
       "RC_DISPUTE": {
-        "NOT_PROCEED_WITH_CLAIM": "Wnaethoch chi ddim bwrw ymlaen â'r hawliad",
-        "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrtho."
+        "NOT_PROCEED_WITH_CLAIM": "Ni wnaethoch fwrw ymlaen â'r hawliad",
+        "CLAIM_ENDED": "Mae'r hawliad bellach wedi dod i ben. Rydym wedi e-bostio {{ defendantName }} i ddweud wrthynt."
       },
       "SEND_FINANCIAL_DETAILS": {
         "MAKE_SURE": "Make sure you include your claim number: {{ caseNumber }}.",
@@ -1110,25 +1121,25 @@
         "YOU_NEED_TO_SEND": "You need to send the defendant's financial details to the court."
       },
       "SIGN_SETTLEMENT_AGREEMENT": {
-        "AFTER_REQUESTED": "After you've requested a CCJ you can ask the court to enforce payment.",
-        "IF_CANT_AFFORD": "If they don't think they can afford the plan, they can ask for a judge to make a different plan.",
-        "IF_DONT_SIGN": "If they don't sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.",
-        "IF_NOT_PAID": "If you don't get paid",
-        "IF_SIGNS": "If {{ defendantName }} signs the settlement agreement but breaks the terms, you can request a County Court Judgment (CCJ) by signing in to your account.",
-        "IF_THEY_SIGN": "If they sign the agreement, this claim is put on hold.",
-        "THEY_MUST_RESPOND_BEFORE": "They must respond before 4pm on {{ respondByDate }}. We'll email you when they respond.",
-        "TITLE": "You've signed a settlement agreement",
-        "WE_EMAILED": "We've emailed {{ defendantName }} your proposed repayment plan and settlement agreement for them to sign.",
+        "AFTER_REQUESTED": "Ar ôl i chi ofyn am CCJ gallwch ofyn i'r llys orfodi taliad.",
+        "IF_CANT_AFFORD": "Os nad ydyn nhw'n credu y gallant fforddio'r cynllun, gallant ofyn i farnwr wneud cynllun gwahanol.",
+        "IF_DONT_SIGN": "Os nad ydynt yn llofnodi’r cytundeb neu’n ei wrthod, gallwch ofyn am CCJ yn eu herbyn sy’n gorchymyn iddynt dalu yn unol â thelerau’r cynllun ad-dalu.",
+        "IF_NOT_PAID": "Os nad ydych yn cael eich talu",
+        "IF_SIGNS": "Os bydd {{ defendantName }} yn arwyddo’r cytundeb setlo ond yn torri'r telerau, gallwch ofyn am Ddyfarniad Llys Sirol (CCJ) drwy fewngofnodi i'ch cyfrif.",
+        "IF_THEY_SIGN": "Os byddant yn llofnodi'r cytundeb, caiff yr hawliad hwn ei ohirio.",
+        "THEY_MUST_RESPOND_BEFORE": "Rhaid iddynt ymateb cyn 4pm ar {{ respondByDate }}. Byddwn yn anfon e-bost atoch pan fyddant yn ymateb.",
+        "TITLE": "Rydych wedi llofnodi cytundeb setlo.",
+        "WE_EMAILED": "Rydym wedi anfon y cynllun ad-dalu a’r cytundeb setlo drwy e-bost at {{ defendantName }} iddynt ei lofnodi.",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "REJECTED_DEFENDANT_RESPONSE": {
-        "MESSAGE": "You've rejected their response",
+        "MESSAGE": "Rydych wedi gwrthod eu hymateb",
         "NO_MEDIATION": {
-          "WHAT_HAPPENS_NEXT_TEXT": "We'll review the case. We'll contact you to tell you what to do next."
+          "WHAT_HAPPENS_NEXT_TEXT": "Byddwn yn adolygu’r achos. Mi wnawn gysylltu â chi i ddweud wrthych beth i’w wneud nesaf."
         },
         "YES_MEDIATION": {
-          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
-          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi cytuno i roi cynnig ar gyfryngu am ddim.",
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
         }
       },
       "REJECTED_PAYMENT_PLAN": {
@@ -1140,9 +1151,9 @@
         "OR_EMAIL": "Or email them to:"
       },
       "CCJ": {
-        "CCJ_REQUESTED": "County Court Judgment requested",
-        "CCJ_NEXT_STEP_MSG1": "You've requested a County Court Judgment against the defendant.",
-        "CCJ_NEXT_STEP_MSG2": "When we've processed your request we'll post a copy of judgment to you and to {{ defendantName }}.",
+        "CCJ_REQUESTED": "Gofynnwyd am ddyfarniad Llys Sirol",
+        "CCJ_NEXT_STEP_MSG1": "Rydych wedi gofyn am Ddyfarniad Llys Sirol yn erbyn y diffynnydd.",
+        "CCJ_NEXT_STEP_MSG2": "Pan fyddwn wedi prosesu eich cais, byddwn yn postio copi o’r dyfarniad atoch chi ac at {{ defendantName }}.",
         "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
         "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
         "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
@@ -1167,7 +1178,7 @@
       "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "Er enghraifft crefftwr",
       "CLAIMING_FOR_EXAMPLE_COMPANY": "Er enghraifft cwmni sy'n gwerthu nwyddau neu wasanaethau",
       "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "Er enghraifft partneriaeth, ymddiriedaeth, elusen, clwb neu gymdeithas",
-      "PAGE_TITLE": "About you and this claim",
+      "PAGE_TITLE": "Amdanoch chi a'r hawliad hwn",
       "TITLE": "Amdanoch chi a'r hawliad hwn"
     },
     "CLAIMANT_PHONE": {
@@ -1178,46 +1189,46 @@
       "TITLE_MANDATORY": "Rhowch rif ffôn "
     },
     "CLAIMANT_SETTLE_DATE": {
-      "PAGE_TITLE": "When did you settle with the defendant?",
-      "TITLE": "When did you settle with the defendant?"
+      "PAGE_TITLE": "Pryd wnaethoch chi setlo gyda'r diffynnydd?",
+      "TITLE": "Pryd wnaethoch chi setlo gyda'r diffynnydd?"
     },
     "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
+      "DATE_START_OPTIONAL": "Dyma'r dyddiad y dechreuodd, nid y dyddiad y cawsoch hysbysiad amdano (dewisol).",
+      "PAGE_TITLE": "Pryd ddechreuodd o?",
+      "TITLE": "Pryd ddechreuodd o?"
     },
     "CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED": {
-      "PAGE_TITLE": "Has the defendant paid you £{{ paidAmount }}?",
-      "TITLE": "Has the defendant paid you £{{ paidAmount }}?"
+      "PAGE_TITLE": "A yw'r diffynnydd wedi talu £{{ paidAmount }} i chi?",
+      "TITLE": "A yw'r diffynnydd wedi talu £{{ paidAmount }} i chi?"
     },
     "CLAIMANT_RESPONSE_FOR_FULL_DEFENCE_STATUS_PAID": {
-      "PAGE_TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
-      "TITLE_LESS_THAN_FULL": "Do you want to settle the claim for the £{{ paidAmount }} the defendant has paid?",
-      "PAGE_TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
-      "TITLE_IN_FULL": "Do you agree the defendant has paid the £{{ paidAmount }} in full?",
-      "YES_HINT": "Settle the claim",
-      "NO_HINT": "Proceed with the claim"
+      "PAGE_TITLE_LESS_THAN_FULL": "Ydych chi eisiau setlo'r hawliad am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?",
+      "TITLE_LESS_THAN_FULL": "Ydych chi eisiau setlo'r hawliad am y £{{ paidAmount }} mae'r diffynnydd wedi ei dalu?",
+      "PAGE_TITLE_IN_FULL": "Ydych chi’n cytuno bod y diffynnydd wedi talu’r £{{ paidAmount }} yn llawn?",
+      "TITLE_IN_FULL": "Ydych chi’n cytuno bod y diffynnydd wedi talu’r £{{ paidAmount }} yn llawn?",
+      "YES_HINT": "Setlo'r hawliad",
+      "NO_HINT": "Parhau â'r hawliad"
     },
     "CLAIMANT_REPAYMNET_PLAN_REJECT_REASON": {
-      "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Explain why you believe the defendant can afford to pay more or to pay sooner.",
-      "PAGE_TITLE": "Why did you reject the repayment plan?",
-      "TITLE": "Why did you reject the repayment plan?"
+      "EXPLAIN_WHY_DEFENDANT_CAN_AFFORD": "Esboniwch pam rydych yn credu gall y diffynnydd fforddio talu mwy neu dalu'n gynt.",
+      "PAGE_TITLE": "Pam wnaethoch chi wrthod y cynllun ad-dalu?",
+      "TITLE": "Pam wnaethoch chi wrthod y cynllun ad-dalu?"
     },
     "CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED": {
-      "PAGE_TITLE": "Repayment plan accepted",
-      "TITLE": "Repayment plan accepted",
-      "THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court has accepted your repayment plan"
+      "PAGE_TITLE": "Cynllun ad-dalu wedi'i dderbyn",
+      "TITLE": "Cynllun ad-dalu wedi'i dderbyn",
+      "THE_COURT_HAS_ACCEPTED_YOUR_REPAYMENT_PLAN": "Mae'r llys wedi derbyn eich cynllun ad-dalu"
     },
     "CLAIMANT_RESPONSE_REJECTION_REASON": {
-      "PAGE_TITLE": "Rejection reason",
+      "PAGE_TITLE": "Rheswm dros wrthod",
       "TITLE": "Pam wnaethoch chi wrthod yr ymateb?"
     },
     "CLAIMANT_RESPONSE_TASK_LIST": {
-      "PAGE_TITLE": "Claimant response task list",
+      "PAGE_TITLE": "Rhestr tasgau ymateb yr hawlydd",
       "HEADER": "Eich ymateb"
     },
     "CLAIMANT_TERMS_OF_AGREEMENT": {
-      "PAGE_TITLE": "Terms of the agreement",
+      "PAGE_TITLE": "Telerau'r cytundeb",
       "TITLE": "Telerau'r cytundeb",
       "DETAILS": {
         "THE_AGREEMENT": {
@@ -1236,7 +1247,7 @@
         "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
         "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd ofyn am Ddyfarniad Llys Sirol (CCJ) am unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
         "SIGN_THE_AGREEMENT": "Arwyddo'r cytundeb",
-        "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych chi wedi ei gytuno â {{ defendant }} cyn arwyddo. Ni fyddwch yn gallu ei newid yn nes ymlaen.",
+        "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych chi wedi ei gytuno â {{ defendant }} cyn arwyddo. Ni fyddwch yn gallu newid hyn yn nes ymlaen.",
         "CONFIRMATION": "Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."
       }
     },
@@ -1245,8 +1256,8 @@
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
       "ALL_CORRESPONDENCE": "Anfonir pob gohebiaeth i’r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
-      "CLAIMANT_PAGE_TITLE": "Enter company details",
-      "CLAIMANT_TITLE": "Enter company details",
+      "CLAIMANT_PAGE_TITLE": "Rhowch fanylion y cwmni",
+      "CLAIMANT_TITLE": "Rhowch fanylion y cwmni",
       "COMPANY_ADDRESS": "Cyfeiriad y cwmni",
       "COMPANY_REGISTERED_OFFICE": "Rhowch swyddfa gofrestredig y cwmni neu gyfeiriad cwmni sydd â chysylltiad â'r hawliad.",
       "COMPANY_NAME": "Enw'r cwmni",
@@ -1378,11 +1389,11 @@
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
-      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Y swm sy'n ddyledus gennych, mewn punnoedd",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "COURT_ORDER": "Gorchymyn llys",
       "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
-      "MONTHLY_INSTALMENT_IN_POUNDS": "Monthly instalment amount, in pounds",
+      "MONTHLY_INSTALMENT_IN_POUNDS": "Swm rhandaliadau misol, mewn punnoedd",
       "OWED_AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Unrhyw orchmynion llys?",
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
@@ -1421,9 +1432,9 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
-        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
-        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
-        "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful"
+        "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
+        "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu",
+        "MEDIATION_UNSUCCESSFUL":"Nid oedd y cyfryngu yn llwyddiannus"
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1433,20 +1444,20 @@
         "CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE": "Achos wedi ei basio i Ganolfan Fusnes y Llys Sirol",
         "CASE_SENT_TO_COURT": "Achos wedi ei anfon i'r llys",
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben",
-        "CLAIM_SENT_TO_CLAIMANT": "We've sent your offer to the claimant. You have rejected the claim.",
+        "CLAIM_SENT_TO_CLAIMANT": "Rydym wedi anfon eich cynnig at yr hawlydd. Rydych wedi gwrthod yr hawliad",
         "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
         "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Mae {{ claimantName }}  yn derbyn eich cynnig o £{{ amount }}",
-        "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
+        "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "Mae’r hawlydd wedi derbyn eich cynnig. Mae angen i chi lofnodi cytundeb cyfreithiol i setlo y tu allan i'r llys. Rydych wedi gwrthod yr hawliad",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "Mae {{ claimantName }} yn gofyn i chi lofnodi cytundeb setlo.",
         "CLAIMANT_CONFIRMED_PAYMENT": "Mae {{ claimantName }} wedi cadarnhau eich bod wedi talu",
-        "CLAIMANT_REJECT_OFFER": "The claimant has rejected you offer. You have rejected the claim.",
-        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}",
+        "CLAIMANT_REJECT_OFFER": "Mae’r hawlydd wedi gwrthod eich cynnig. Rydych wedi gwrthod yr hawliad",
+        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "Mae {{ claimantName }} wedi gwrthod eich addefiad o £{{ amount }}",
         "CLAIMANT_REQUESTED_CCJ": "Gofynnodd {{ claimantName }}  am Ddyfarniad Llys Sirol yn eich erbyn ar {{ccjRequestedDate}}",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich erbyn",
-        "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days",
-        "MORE_DETAILS_REQUIRED": "Send us more details before the hearing",
-        "MEDIATION_UNSUCCESSFUL": "Roedd cyfryngu yn aflwyddiannus",
-        "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation",
+        "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
+        "MORE_DETAILS_REQUIRED": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
+        "MEDIATION_UNSUCCESSFUL": "Nid oedd y cyfryngu yn llwyddiannus",
+        "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu",
         "NO_RESPONSE_ON_TIME": "Ymateb i hawliad: {{ numberOfDays }} diwrnod yn weddill",
         "NO_RESPONSE_OVERDUE": "Ymateb i hawliad: {{ numberOfDays }} yn hwyr",
         "NO_RESPONSE_DUE_TODAY": "Ymateb i hawliad: yn ddyledus heddiw",
@@ -1467,24 +1478,24 @@
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
-      "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
+      "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
       "PAGE_TITLE": "Unrhyw ddyledion?",
-      "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
+      "MONTHLY_PAYMENTS_IN_POUNDS": "Taliadau misol, mewn punnoedd",
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
-      "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
+      "TOTAL_OWED_IN_POUNDS": "Y cyfanswm sy’n ddyledus, mewn punnoedd"
     },
     "DEBT_RESPITE_REF_NUMBER": {
       "ENTER_REFERENCE": "Rhowch y cyfeirnod (dewisol):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
+      "PAGE_TITLE": "Cyfeirnod Cynllun Seibiant Dyled",
       "TITLE": "Oes gennych chi rif cyfeirnod Cynllun Seibiant Dyled?"
     },
     "DEBT_RESPITE_END_DATE": {
       "PAGE_TITLE": "Dyddiad gorffen disgwyliedig",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
+      "THIS_IS_THE": "Dyma'r dyddiad gorffen y disgwylir iddo orffen (dewisol)",
       "TITLE": "Dyddiad gorffen disgwyliedig"
     },
     "DEFENDANT_DETAILS": {
@@ -1495,7 +1506,7 @@
       "CONTACT_PERSON": "Enw'r person cyswllt (dewisol)",
       "CONTACT_PERSON_HINT": "Efallai bod hwn yn rhywun rydych wedi trafod yr hawliad gydag ef.",
       "ENGLAND_OR_WALES_ADDRESS": "Rhaid i'r cyfeiriad fod yng Nghymru neu yn Lloegr.",
-      "INVALID_CLAIM": "Your claim may be invalid if you use the wrong address.",
+      "INVALID_CLAIM": "Gall eich cais fod yn annilys os byddwch chi'n defnyddio'r cyfeiriad anghywir.",
       "NO_WORK_ADDRESS": "Ni allwch ddefnyddio ei gyfeiriad gwaith.",
       "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
       "ORGANISATION_MAIN_OFFICE": "Nodwch brif swyddfa neu gyfeiriad y sefydliad sydd â chysylltiad â'r hawliad.",
@@ -1527,24 +1538,24 @@
       "DETAILS": {
         "AGREEMENT_NOTE": "Make sure this agreement includes everything you’ve agreed with {{ claimant }} before signing. You won’t be able to change this later.",
         "CHOOSE_NOT_TO_SIGN": "You can choose not to sign the settlement agreement, for example if you think you can't afford it.",
-        "CLAIMANT_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.",
+        "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd ofyn am Ddyfarniad Llys Sirol (CCJ) am unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
         "COMPLETION_DATE": {
           "DATE": "{{ finalRepaymentDate }}",
           "LABEL": "Dyddiad cwblhau"
         },
-        "FIRST_PARAGRAPH": "This agreement settles the claim made by {{ claimant }} against {{ defendant }}. This includes all money owed in the claim, for example court fees, expenses or interest.",
-        "IF_THE_AGREEMENT_IS_BROKEN": "If the agreement is broken",
+        "FIRST_PARAGRAPH": "Mae'r cytundeb hwn yn setlo'r hawliad a wnaed gan {{ claimant }}  yn erbyn {{ defendant }}. Mae hyn yn cynnwys yr holl arian sy'n ddyledus yn yr hawliad, er enghraifft ffioedd llys, treuliau neu log.",
+        "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
         "NO": "No - I reject the terms of the agreement.",
         "ON_HOLD": "The claim will be put on hold and the claimant can't request a CCJ against you.",
         "REQUEST_CCJ": "The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement. You can ask a judge to change the plan based on your financial details. The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
-        "SECOND_PARAGRAPH": "Neither party can make any further claims relating to this case, other than to enforce it.",
+        "SECOND_PARAGRAPH": "Ni all yr un o'r partïon wneud unrhyw hawliadau pellach fel rhan o'r achos hwn, heblaw ei orfodi.",
         "SIGN_THE_AGREEMENT": "Do you want to sign the settlement agreement?",
         "THE_AGREEMENT": {
           "LABEL": "Y cytundeb",
           "PAY_BY_SET_DATE": "Bydd {{fullName }} yn talu £{{ amount }}, erbyn dim hwyrach na {{ paymentDate }}.",
           "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ theAgreementRepaymentFrequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
-        "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
+        "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a llwytho'r cytundeb hwn o'u cyfrif Hawliadau Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
         "YES": "Yes - I confirm I've read and accept the terms of the agreement."
       },
@@ -1636,8 +1647,8 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
-      "PARAGRAPH1_2": "efallai bod gennych rif cyfeirnod yn barod. Os felly, gallwch arbed eich cais a pharhau a'i nodi pan ofynnir i chi. Peidiwch â defnyddio cyfeirnod Help Gyda Ffioedd sy'n ymwneud â chais gwahanol nac i unrhyw ffioedd ymgeisio. Bydd yn annilys gan na allwch ddefnyddio'r un rhif cyfeirnod Help gyda Ffioedd ddwywaith.",
-      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help gyda Ffioedd ar gyfer y cais hwn, dylech wneud cais Help gyda Ffioedd a fydd yn rhoi rhif cyfeirnod i chi.",
+      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
+      "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
       "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw hwnnw.",
       "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
@@ -1957,7 +1968,7 @@
       "EMAIL": "Email :",
       "EMAIL_ID": "contactocmc@justice.gov.uk",
       "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
-      "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Derbyniodd {{claimantName}}} eich addefiad o £{{amount}}.",
+      "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Derbyniodd {{claimantName}} eich addefiad o £{{amount}}.",
       "CLAIMANT_CONFIRMED_YOU_PAID": "Cadarnhaodd {{claimantName}} eich bod wedi talu £{{amount}} ar {{moneyReceivedOn}}.",
       "CONTACT": "Cysylltu â {{ claimantName }}",
       "CASE_PROGRESSION": {
@@ -2138,7 +2149,7 @@
       "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Rhybudd</span> </br> Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno.",
       "CHECK_YOUR_ANSWERS_WARNING_SHORT": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno.",
       "CHECK_YOUR_ANSWERS_CONFIRMATION": "Cadarnhad",
-      "CHECK_YOUR_ANSWERS_CORRECT": "Rwy’n cadarnhau bod y dogfennau’n gywir, ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno.",
+      "CHECK_YOUR_ANSWERS_CORRECT": "Rwy’n cadarnhau bod y dogfennau’n gywir ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Dywedwch wrthym os ydych chi’n cadarnhau bod y dogfennau’n gywir.",
       "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Dogfen wedi’i llwytho",
       "COSTS": "Costau",
@@ -2658,7 +2669,7 @@
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",
-      "AMOUNT_YOU_OWE_IN_POUNDS": "Amount you owe, in pounds",
+      "AMOUNT_YOU_OWE_IN_POUNDS": "Y swm sy'n ddyledus gennych, mewn punnoedd",
       "PAGE_TITLE": "Behind on tax payments?",
       "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
       "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."

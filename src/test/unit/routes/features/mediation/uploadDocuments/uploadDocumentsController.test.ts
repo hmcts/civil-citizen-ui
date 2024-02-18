@@ -18,6 +18,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import express from 'express';
 import {CaseDocument} from 'models/document/caseDocument';
 import {DateInputFields} from 'models/caseProgression/uploadDocumentsUserForm';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -52,7 +53,7 @@ describe('Mediation upload your documents Controller', () => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {individualFirstName: 'John', individualLastName: 'Smith'};
+      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
       claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
       return claim;
     });
@@ -85,7 +86,7 @@ describe('Mediation upload your documents Controller', () => {
 
       const documentsForYourStatement = {
         'documentsForYourStatement': [{
-          'typeOfDocument': '',
+          'yourName': '',
           'dateInputFields': {
             'dateDay': '',
             'dateMonth': '',
@@ -107,12 +108,19 @@ describe('Mediation upload your documents Controller', () => {
 
       const documentsForYourStatement = {
         'documentsForYourStatement': [{
-          'typeOfDocument': 'Word',
+          'yourName': 'Word',
           'dateInputFields': {
             'dateDay': '14',
             'dateMonth': '10',
             'dateYear': '2020',
           },
+          fileUpload:
+              {
+                fieldname: 'field name',
+                mimetype: 'application/pdf',
+                originalname: 'original name',
+                size: 1234,
+              } as FileUpload,
           caseDocument: caseDoc,
         }],
       };
@@ -158,12 +166,19 @@ describe('Mediation upload your documents Controller', () => {
       const documentsForYourStatement = {
         action: 'add_another-yourStatement',
         'documentsForYourStatement': [{
-          'typeOfDocument': 'Word',
+          'yourName': 'Word',
           'dateInputFields': {
             'dateDay': '14',
             'dateMonth': '10',
             'dateYear': '2020',
           },
+          fileUpload:
+              {
+                fieldname: 'field name',
+                mimetype: 'application/pdf',
+                originalname: 'original name',
+                size: 1234,
+              } as FileUpload,
           caseDocument: caseDoc,
         }],
       };
@@ -183,7 +198,7 @@ describe('Mediation upload your documents Controller', () => {
       const documentsForYourStatement = {
         action: 'add_another-documentsReferred',
         'documentsForYourStatement': [{
-          'typeOfDocument': 'Word',
+          'yourName': 'Word',
           'dateInputFields': {
             'dateDay': '14',
             'dateMonth': '10',
@@ -221,7 +236,7 @@ describe('Mediation upload your documents Controller', () => {
         .post(CONTROLLER_URL)
         .field('action', 'documentsForYourStatement[0][uploadButton]')
         .field('documentsForYourStatement[0][dateInputFields]', JSON.stringify(validDate))
-        .field('documentsForYourStatement[0][typeOfDocument]', 'test document')
+        .field('documentsForYourStatement[0][yourName]', 'test document')
         .attach('documentsForYourStatement[0][fileUpload]', file.buffer, {
           filename: file.originalname,
           contentType: file.mimetype,
@@ -289,7 +304,7 @@ describe('Mediation upload your documents Controller', () => {
       const documentsForYourStatement = {
         action: 'add_another-documentsForYourStatement[removeButton]',
         'documentsForYourStatement': [{
-          'typeOfDocument': 'Word',
+          'yourName': 'Word',
           'dateInputFields': {
             'dateDay': '14',
             'dateMonth': '10',
