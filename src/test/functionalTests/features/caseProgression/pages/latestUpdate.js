@@ -40,7 +40,7 @@ class LatestUpdate {
   }
 
   verifyHeadingDetails() {
-    I.see('Test Inc v Sir John Doe', 'h1');
+    I.waitForText('Test Inc v Sir John Doe', 60, 'h1');
     I.see('Claim number: ');
     I.see('Updates');
     I.see('Notices and orders');
