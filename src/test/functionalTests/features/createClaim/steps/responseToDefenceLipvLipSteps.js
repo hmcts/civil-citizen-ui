@@ -14,6 +14,7 @@ const paths = {
     decide_whether_to_proceed : '//a[.=\'Decide whether to proceed\']',
     free_mediation:'//a[.=\'Free telephone mediation\']',
     details_in_case_of_a_hearing : '//a[.="Give us details in case there\'s a hearing"]',
+    request_a_county_court_judgement : '//a[.=\'Request a County Court Judgment\']',
   },
 };
 
@@ -92,14 +93,40 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyRepaymentPlanAccepted();
     await this.verifyDashboardLoaded();
     I.click(paths.links.how_to_formalise_repayment);
-    await responseToDefence.verifyHowToFormaliseARepayment();
+    await responseToDefence.verifyHowToFormaliseARepayment(true);
     await this.verifyDashboardLoaded();
     I.click(paths.links.sign_a_settlements_agreement);
     await responseToDefence.verifySignTheSettlementAgreement('admitAll');
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
     responseToDefence.verifyCheckYourAnswers('admitAll','I reject this repayment plan', true);
-    responseToDefence.verifyConfirmationScreen(claimNumber);
+    responseToDefence.verifyConfirmationScreen(claimNumber, true);
+  }
+
+  async ResponseToDefenceStepsRejectPaymentPlanAndProposeNewPlanByPayBySetDate(caseReference, claimNumber){
+
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForAcceptance(caseReference);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.verifyHowTheyWantToPayAcceptRepaymentPlan();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.propose_an_alternative_repayment_plan);
+    await responseToDefence.verifyHowDoYouWantTheDefendantToPay('by set date');
+    await responseToDefence.verifyWhenDoYouWantTheDefendantToPayPayByDate();
+    await responseToDefence.verifyRepaymentPlanAccepted();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.how_to_formalise_repayment);
+    await responseToDefence.verifyHowToFormaliseARepayment(false);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.request_a_county_court_judgement);
+    await responseToDefence.verifyHasTheDefendantPaidSomeOfTheAmountOwed();
+    await responseToDefence.verifyJudgementAmount();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswers('admitAll','I reject this repayment plan', false);
+    responseToDefence.verifyConfirmationScreen(claimNumber, false);
   }
 
   async verifyDashboardLoaded() {

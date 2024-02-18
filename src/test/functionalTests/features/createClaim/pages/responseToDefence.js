@@ -165,7 +165,7 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifyHowToFormaliseARepayment() {
+  verifyHowToFormaliseARepayment(settlementAgreementFlag) {
     I.waitForText('which may make it more difficult for them to borrow money to repay you.', 60);
     I.see('Choose how to formalise repayment', 'h1');
     I.see('Sign a settlement agreement');
@@ -175,7 +175,11 @@ class ReponseToDefence {
     I.see('Request a CCJ');
     I.see('You can ask the court to make a formal order binding the defendant to the repayment plan.');
     I.see('This adds the defendant to the CCJ register,');
-    I.click(paths.options.sign_a_settlements_agreement);
+    if (settlementAgreementFlag) {
+      I.click(paths.options.sign_a_settlements_agreement);
+    } else {
+      I.click(paths.options.request_a_ccj);
+    }
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -221,8 +225,12 @@ class ReponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
-  verifyConfirmationScreen(claimNumber) {
-    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+  verifyConfirmationScreen(claimNumber, settlementAgreedFlag) {
+    if (settlementAgreedFlag === true) {
+      I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    } else if (settlementAgreedFlag === false) {
+      I.waitForText('County Court Judgment requested', 60, 'h1');
+    }
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
@@ -534,13 +542,33 @@ class ReponseToDefence {
     I.waitForText('Year',60);
     I.see('When do you want the defendant to pay?', 'h1');
     I.see('The court will review your suggestion and may reject it if it\'s sooner than the defendant can afford to repay the money.');
-    I.see('For example, 16 3 2024');
     I.see('Day');
     I.see('Month');
 
     I.fillField(paths.fields.day, '1');
     I.fillField(paths.fields.month, new Date().getMonth());
     I.fillField(paths.fields.year, new Date().getFullYear()+1);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyHasTheDefendantPaidSomeOfTheAmountOwed() {
+    I.waitForText('No',60);
+    I.see('Has the defendant paid some of the amount owed?', 'h1');
+    I.see('Yes');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyJudgementAmount() {
+    I.waitForText('£1635.00',60);
+    I.see('Judgment amount', 'h1');
+    I.see('The judgment will order the defendant to pay £1635.00, including your claim fee and any interest, as shown in this table:');
+    I.see('Amount');
+    I.see('Claim amount');
+    I.see('£1520');
+    I.see('Claim fee amount');
+    I.see('£115');
+    I.see('Total');
     I.click(paths.buttons.continue);
   }
 
