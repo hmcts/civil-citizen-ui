@@ -2,16 +2,16 @@ import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+  MediationTypeOfDocumentSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 
 const documentsForDocumentsReferred = 'documentsForDocumentsReferred';
 const fileUpload = 'fileUpload';
 const MEDIATION_UPLOAD_DOCUMENTS_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
 
-export const buildDocumentsReferredSection = (section: TypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsForm> = null): ClaimSummarySection[] => {
+export const buildDocumentsReferredSection = (section: MediationTypeOfDocumentSection = null, index = 0, form: GenericForm<UploadDocumentsForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${documentsForDocumentsReferred}[${documentsForDocumentsReferred}][${index}]`;
   const invalidDateErrors = {
     invalidDayError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateDay]`, documentsForDocumentsReferred),

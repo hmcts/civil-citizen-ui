@@ -2,7 +2,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {CCJRequest} from './claimantResponse/ccj/ccjRequest';
 import {RejectionReason} from 'form/models/claimantResponse/rejectionReason';
-import { CourtProposedDate, CourtProposedDateOptions } from 'form/models/claimantResponse/courtProposedDate';
+import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {SignSettlmentAgreement} from 'common/form/models/claimantResponse/signSettlementAgreement';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {Mediation} from 'models/mediation/mediation';
@@ -10,10 +10,11 @@ import {DirectionQuestionnaire} from './directionsQuestionnaire/directionQuestio
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'common/form/models/yesNo';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import { RepaymentDecisionType } from './claimantResponse/RepaymentDecisionType';
+import {RepaymentDecisionType} from './claimantResponse/RepaymentDecisionType';
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -30,6 +31,7 @@ export class ClaimantResponse {
   courtProposedPlan?: CourtProposedPlan;
   courtDecision?: RepaymentDecisionType;
   mediation?: Mediation;
+  mediationCarm?: MediationCarm;
   directionQuestionnaire?: DirectionQuestionnaire;
   defendantResponseViewed?: boolean;
   suggestedPaymentIntention?: PaymentIntention;
@@ -95,6 +97,19 @@ export class ClaimantResponse {
       || this.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN;
   }
 
+  get canWeUseFromClaimantResponse(): YesNoUpperCase {
+    if (this.mediation?.canWeUse?.option) {
+      return YesNoUpperCase.YES;
+    } else {
+      if (this.mediation?.mediationDisagreement?.option) {
+        return YesNoUpperCase.NO;
+      } else if (this.mediation?.companyTelephoneNumber) {
+        return YesNoUpperCase.YES;
+      }
+    }
+    return YesNoUpperCase.NO;
+  }
+
   isCCJRepaymentPlanConfirmationPageAllowed(): boolean {
     return (this.isClaimantAcceptsCourtDecision || this.isCourtDecisionInFavourOfClaimant) && this.isCCJRequested;
   }
@@ -104,7 +119,15 @@ export class ClaimantResponse {
   }
 
   hasClaimantAgreedToMediation(): boolean {
-    return this.mediation?.canWeUse?.option === YesNo.YES || !!this.mediation.canWeUse.mediationPhoneNumber;
+    return (this.mediation?.canWeUse?.option === YesNo.YES || !!this.mediation?.canWeUse?.mediationPhoneNumber)
+    || (this.mediation?.companyTelephoneNumber?.option === YesNo.NO)
+    || (this.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation !== undefined);
+  }
+
+  get isRejectionReasonCompleted(): boolean {
+    return (this.hasPartPaymentBeenAccepted?.option === YesNo.NO
+        || this.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO)
+      && !!this.rejectionReason?.text;
   }
 
   get isClaimantRejectedCourtDecision(): boolean {

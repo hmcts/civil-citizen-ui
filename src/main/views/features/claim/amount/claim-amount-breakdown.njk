@@ -7,7 +7,7 @@
 {% from "../../../macro/claim-amount.njk" import claimAmount %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE', t) }}
 {% endblock %}
 
 {% set length = form.model.claimAmountRows.length %}

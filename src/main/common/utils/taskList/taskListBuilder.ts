@@ -24,7 +24,6 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
-import {RejectAllOfClaimType} from 'common/form/models/rejectAllOfClaimType';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
@@ -96,13 +95,13 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
     }
 
     if (caseData.isFullDefence()) {
-      if (caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID) {
+      if (caseData.hasConfirmedAlreadyPaid()) {
         tasks.push(tellUsHowMuchYouHavePaidTask);
         if (caseData.rejectAllOfClaim?.howMuchHaveYouPaid?.amount < caseData.totalClaimAmount) {
           const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
           tasks.push(whyDisagreeWithAmountClaimedTask);
         }
-      } else if (caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE) {
+      } else if (caseData.isRejectAllOfClaimDispute()) {
         tasks.push(tellUsWhyDisagreeWithClaimTask);
       }
     }
@@ -123,8 +122,8 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
 
   if (caseData.isSmallClaimsTrackDQ && (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData))) {
     if(carmApplicable) {
-      tasks.push(getTelephoneMediationTask(caseData, claimId, lang));
-      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang));
+      tasks.push(getTelephoneMediationTask(caseData, claimId, lang, false));
+      tasks.push(getAvailabilityForMediationTask(caseData, claimId, lang, false));
     } else {
       tasks.push(getFreeTelephoneMediationTask(caseData, claimId, lang));
     }

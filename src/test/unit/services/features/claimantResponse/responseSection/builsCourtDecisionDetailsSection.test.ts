@@ -14,14 +14,14 @@ describe('Check Answers Page :Court Decision Section', () => {
     let claim: Claim;
     beforeEach(() => {
       claim = new Claim();
-
+      claim.claimantResponse = new ClaimantResponse();
     });
 
     it('should show the check your answers for pay by set date for part admit', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date() } };
-      claim.claimantResponse = { courtDecision: RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT } as ClaimantResponse;
+      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
@@ -56,7 +56,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = { paymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date() } };
-      claim.claimantResponse = { courtDecision: RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT } as ClaimantResponse;
+      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
@@ -92,7 +92,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date() } };
-      claim.claimantResponse = { courtDecision: RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT } as ClaimantResponse;
+      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
@@ -127,7 +127,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = { paymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date() } };
-      claim.claimantResponse = { courtDecision: RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT } as ClaimantResponse;
+      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
