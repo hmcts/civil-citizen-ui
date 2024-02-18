@@ -24,7 +24,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
       : null;
   };
   const getJudgmentRequestSection = () => {
-    return claim.isRequestACCJ()
+    return claim.claimantResponse?.isCCJRequested
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
@@ -83,6 +83,7 @@ function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
     || claim.hasClaimantIntentToProceedResponse()
     || claim.hasClaimantRejectedDefendantPaid()
     || claim.hasClaimantRejectedPartAdmitPayment()
+    || claim.hasClaimantRejectedDefendantResponse()
   );
 }
 

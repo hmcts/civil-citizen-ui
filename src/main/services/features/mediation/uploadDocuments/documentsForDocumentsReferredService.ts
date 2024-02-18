@@ -1,11 +1,9 @@
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
-
 import {GenericForm} from 'form/models/genericForm';
 import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
-
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+  MediationTypeOfDocumentSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {
   buildDocumentsReferredSection,
@@ -14,7 +12,7 @@ import {
 export const getDocumentsForDocumentsReferred = (uploadDocuments: UploadDocuments, form: GenericForm<UploadDocumentsForm>): ClaimSummaryContent[][] => {
   const sectionContent = [];
 
-  const documentsReferred = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+  const documentsReferred = uploadDocuments.typeOfDocuments.find((typeOfDocument) => typeOfDocument.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT && typeOfDocument.checked === true);
 
   if(documentsReferred){
     sectionContent.push(documentsForDocumentsReferred(form));
@@ -27,8 +25,8 @@ const documentsForDocumentsReferred = (form: GenericForm<UploadDocumentsForm>): 
   const sectionContent = [];
 
   if (form && form.model.documentsForDocumentsReferred.length != 0) {
-    form.model.documentsForDocumentsReferred?.forEach(function (documentsForDisclosure: TypeOfDocumentSection, index: number) {
-      sectionContent.push([buildDocumentsReferredSection(documentsForDisclosure, index, form)]);
+    form.model.documentsForDocumentsReferred?.forEach(function (documentsForDocumentsReferred: MediationTypeOfDocumentSection, index: number) {
+      sectionContent.push([buildDocumentsReferredSection(documentsForDocumentsReferred, index, form)]);
     });
   } else {
     sectionContent.push([buildDocumentsReferredSection()]);

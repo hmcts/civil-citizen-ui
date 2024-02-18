@@ -48,9 +48,9 @@ export const buildViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySec
   return sectionContent;
 };
 
-export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySection[][] => {
+export const buildFinaliseTrialArrangements = (claim: Claim, lng: string): ClaimSummarySection[][] => {
   const sectionContent = [];
-  sectionContent.push(getFinaliseTrialArrangements(claim));
+  sectionContent.push(getFinaliseTrialArrangements(claim, lng));
   return sectionContent;
 };
 

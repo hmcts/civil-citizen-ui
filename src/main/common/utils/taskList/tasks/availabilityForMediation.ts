@@ -9,13 +9,16 @@ import {
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
-const hasAvailabilityMediationFinished = (caseData: Claim): boolean => {
-  return caseData.mediation?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediation.hasAvailabilityMediationFinished;
+const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boolean): boolean => {
+  if (claimantResponse) {
+    return caseData.claimantResponse?.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediationCarm.hasAvailabilityMediationFinished;
+  }
+  return caseData.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediationCarm.hasAvailabilityMediationFinished;
 };
 
-export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
-  const availabilityMediationStatus = hasAvailabilityMediationFinished(caseData);
-  const url = caseData.isBusiness() ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
+export const getAvailabilityForMediationTask = (caseData: Claim, claimId: string, lang: string, claimantResponse: boolean): Task => {
+  const availabilityMediationStatus = hasAvailabilityMediationFinished(caseData, claimantResponse);
+  const url = (claimantResponse && caseData.isClaimantBusiness()) || (!claimantResponse && caseData.isBusiness()) ? constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL) :
     constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL);
   return {
     description: t('COMMON.AVAILABILITY_FOR_MEDIATION', {lng: getLng(lang)}),
