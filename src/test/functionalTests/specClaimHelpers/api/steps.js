@@ -57,6 +57,10 @@ module.exports = {
     console.log('End of performCaseHearingFeeUnpaid()');
   },
 
+  waitForFinishedBusinessProcess: async () => {
+    await waitForFinishedBusinessProcess(caseId);
+  },
+
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
     eventName = 'EVIDENCE_UPLOAD_APPLICANT';
@@ -69,6 +73,7 @@ module.exports = {
     }
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performEvidenceUpload()');
   },
@@ -79,6 +84,7 @@ module.exports = {
     const payload = createATrialArrangement.createATrialArrangement();
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performTrialArrangements()');
   },
@@ -90,6 +96,7 @@ module.exports = {
     const payload = createAnAssistedOrder.createAnAssistedOrder(document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of performAnAssistedOrder()');
   },
@@ -100,6 +107,7 @@ module.exports = {
     const payload = caseProgressionToHearingInitiated.createCaseProgressionToHearingInitiated(hearingDate);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performCaseProgressedToHearingInitiated()');
   },
@@ -111,6 +119,7 @@ module.exports = {
     const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
     console.log('End of performCaseProgressedToSDO()');
   },
@@ -277,6 +286,7 @@ module.exports = {
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
+    await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(expectedState);
     console.log('End of viewAndRespondToDefence()');
   },

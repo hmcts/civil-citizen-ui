@@ -90,6 +90,7 @@ export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
 export const TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/telephone-mediation`;
 export const AVAILABILITY_FOR_MEDIATION = `${BASE_CASE_RESPONSE_URL}/availability-for-mediation`;
+export const MAKE_CLAIM = '/make-claim';
 export const MEDIATION_DATES_CONFIRMATION_URL = `${MEDIATION_URL}/dates-confirmation`;
 export const MEDIATION_EMAIL_CONFIRMATION_URL = `${MEDIATION_URL}/email-confirmation`;
 export const MEDIATION_PHONE_CONFIRMATION_URL = `${MEDIATION_URL}/phone-confirmation`;
@@ -282,5 +283,5 @@ export const GENERIC_HELP_FEES_URL = 'https://www.gov.uk/get-help-with-court-fee
 export const START_MEDIATION_UPLOAD_FILES = `${MEDIATION_URL}/start-upload-documents`;
 export const MEDIATION_TYPE_OF_DOCUMENTS = `${MEDIATION_URL}/type-of-documents`;
 export const MEDIATION_UPLOAD_DOCUMENTS = `${MEDIATION_URL}/upload-documents`;
-
 export const MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND = `${MEDIATION_URL}/check-and-send`;
+export const MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = `${MEDIATION_URL}/confirmation`;

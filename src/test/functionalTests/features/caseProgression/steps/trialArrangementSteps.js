@@ -36,13 +36,15 @@ class TrialArrangementSteps {
     trialDuration.nextAction('Continue');
     checkYourAnswers.verifyPageContent();
     checkYourAnswers.nextAction('Submit');
+  }
+
+  verifyTrialArrangementsMade() {
     trialArrangementConfirmation.checkPageFullyLoaded();
     trialArrangementConfirmation.verifyPageContent();
     trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
     latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangement Tile appears.
     latestUpdateTab.nextAction('[href=\'#notices-orders\']');
     noticesAndOrders.verifyLatestUpdatePageContent();
-
   }
 
   verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {

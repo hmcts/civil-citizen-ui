@@ -1,4 +1,4 @@
-import { Claim } from 'common/models/claim';
+import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {CAN_WE_USE_COMPANY_URL, CAN_WE_USE_URL, CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from 'routes/urls';
@@ -6,6 +6,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {YesNoUpperCase} from 'form/models/yesNo';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -14,7 +15,8 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = claim.contactNumberFromClaimantResponse;
   const contactName = claim.contactNameFromClaimantResponse;
-  const canWeUse = claim.canWeUseFromClaimantResponse;
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  const canWeUse = claimantResponse?.canWeUseFromClaimantResponse;
 
   let freeTelephoneMediationSection: SummarySection = null;
 
