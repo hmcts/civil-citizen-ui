@@ -20,7 +20,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Create LipvLip claim using API @test', async ({api}) => {
+Scenario('Create LipvLip claim using API', async ({api}) => {
   //this is the existing DefendantResponse API call used by CP team. It is RejectAll and DisputeAll
   await api.performCitizenResponse(config.defendantCitizenUser, caseID, claimType);
 });
