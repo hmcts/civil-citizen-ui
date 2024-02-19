@@ -27,6 +27,13 @@ exports.config = {
       windowSize: '1280x960',
       timeout: 30000,
       waitForAction: 500,
+      video: true,
+      trace: true,
+      contextOptions : {
+        recordVideo:{
+          dir:'failed-videos',
+        },
+      },
       waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
