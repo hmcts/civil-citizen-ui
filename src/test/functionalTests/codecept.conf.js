@@ -26,8 +26,15 @@ exports.config = {
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,
-      waitForAction: 1000,
-      waitForNavigation: 'networkidle0',
+      waitForAction: 500,
+      video: true,
+      trace: true,
+      contextOptions : {
+        recordVideo:{
+          dir:'failed-videos',
+        },
+      },
+      waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
     },
