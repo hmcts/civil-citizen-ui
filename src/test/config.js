@@ -5,6 +5,7 @@ const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -16,18 +17,6 @@ module.exports = {
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   WaitForText: 60,
-  helpers: {
-    Playwright: {
-      url: testUrl,
-      show: false,
-      browser: 'chromium',
-      waitForTimeout: 20000,
-      timeout: 20000,
-      waitForAction: 1000,
-      waitForNavigation: 'networkidle0',
-      ignoreHTTPSErrors: true,
-    },
-  },
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',
@@ -51,7 +40,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    email: defendantCitizenUserEmail,
     type: 'defendant',
   },
   defendantLRCitizenUser:{

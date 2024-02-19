@@ -65,9 +65,9 @@ const partyIndividual: Party = {
   partyPhone: phone,
   emailAddress: email,
   partyDetails: {
-    individualTitle: title,
-    individualFirstName: firstName,
-    individualLastName: lastName,
+    title: title,
+    firstName: firstName,
+    lastName: lastName,
     ...commonParty,
   },
 };
@@ -77,9 +77,9 @@ const partySoleTrader: Party = {
   partyPhone: phone,
   emailAddress: email,
   partyDetails: {
-    individualTitle: title,
-    individualFirstName: firstName,
-    individualLastName: lastName,
+    title: title,
+    firstName: firstName,
+    lastName: lastName,
     soleTraderTradingAs: soleTraderTradingAs,
     ...commonParty,
   },

@@ -55,7 +55,7 @@ export const buildSummaryForPayByInstalments = (claim: Claim, claimId: string, l
 };
 
 export const buildSettlementAgreementSection = (claim: Claim, claimId: string, lng: string): SummarySection => {
-  const isSignSettlement = claim.isSignASettlementAgreement();
+  const isSignSettlement = claim.claimantResponse?.isSignASettlementAgreement;
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
   if (claim.hasCourtAcceptedClaimantsPlan()) {
