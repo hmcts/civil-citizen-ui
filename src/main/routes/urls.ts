@@ -287,3 +287,4 @@ export const START_MEDIATION_UPLOAD_FILES = `${MEDIATION_URL}/start-upload-docum
 export const MEDIATION_TYPE_OF_DOCUMENTS = `${MEDIATION_URL}/type-of-documents`;
 export const MEDIATION_UPLOAD_DOCUMENTS = `${MEDIATION_URL}/upload-documents`;
 export const MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND = `${MEDIATION_URL}/check-and-send`;
+export const MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = `${MEDIATION_URL}/confirmation`;
