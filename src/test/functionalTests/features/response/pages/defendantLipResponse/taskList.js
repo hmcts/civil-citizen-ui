@@ -11,7 +11,7 @@ const content = {
 
 class TaskListPage {
   verifyResponsePageContent() {
-    I.waitForText(responsePageHeading, content.heading[language]);
+    I.waitForText(content.heading[language], config.WaitForTimeout);
   }
 }
 

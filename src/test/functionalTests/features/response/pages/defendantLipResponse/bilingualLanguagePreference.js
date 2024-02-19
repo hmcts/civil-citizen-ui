@@ -22,7 +22,7 @@ const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau',
-  }
+  },
 };
 
 class BilingualLanguagePreference {

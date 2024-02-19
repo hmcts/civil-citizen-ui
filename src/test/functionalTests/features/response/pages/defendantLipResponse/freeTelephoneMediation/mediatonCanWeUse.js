@@ -11,9 +11,9 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const content = {
   heading: {

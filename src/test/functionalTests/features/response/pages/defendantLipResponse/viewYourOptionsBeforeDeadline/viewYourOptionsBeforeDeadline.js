@@ -47,7 +47,6 @@ const extendedYear = targetDate.getFullYear();
 const extendedMonthPastError = targetDate.getMonth()- 1 ;
 const extendedMonthFutureError = targetDate.getMonth() + 2 ;
 
-
 class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptions(claimRef, deadlineOption) {

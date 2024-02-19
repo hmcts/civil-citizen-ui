@@ -26,7 +26,7 @@ const inputs = {
 class Explanation {
   async enterExplanation() {
     await I.waitForElement(fields.reason, config.WaitForText);
-    await I.see(content.heading[language])
+    await I.see(content.heading[language]);
     await I.fillField(fields.reason, inputs.reason[language]);
     await I.click(buttons.saveAndContinue);
   }

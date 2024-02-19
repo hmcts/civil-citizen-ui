@@ -30,7 +30,7 @@ const content = {
   },
   confirmationHeading: {
     en: 'You\'ve submitted your response',
-    cy: 'Rydych wedi cyflwyno eich ymateb'  
+    cy: 'Rydych wedi cyflwyno eich ymateb',  
   },
   confirmationSubheading: {
     en: 'What happens next',

@@ -408,7 +408,7 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
   }
 
-  async EnterHowMuchMoneyYouOwe(claimRef, amount, partAdmit) {
+  async EnterHowMuchMoneyYouOwe(claimRef, amount) {
     await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
   }
 

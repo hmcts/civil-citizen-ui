@@ -2,7 +2,6 @@ const I = actor();
 const config = require('../../../../../../config');
 const { language } = require('../../../../../sharedData');
 
-
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',

@@ -53,7 +53,7 @@ class SupportRequired {
     await I.click(fields.person1HearingLoop);
     await I.click(fields.person1SignLanguage);
     await I.fillField(fields.person1SignLanguageText, inputs.person1SignLanguage[language]);
-    await I.click(buttons.addPerson[language])
+    await I.click(buttons.addPerson[language]);
     await I.selectOption(fields.person2Dropdown, 'John Doe');
     await I.click(fields.person2DisabledAccess);
     await I.click(fields.person2OtherSupport);

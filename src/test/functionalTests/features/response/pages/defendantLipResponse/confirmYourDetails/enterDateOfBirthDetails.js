@@ -23,12 +23,12 @@ const buttons = {
 };
 
 class DateOfBirthDetailsPage {
-  async enterDateOfBirth (claimRef)  {
+  async enterDateOfBirth ()  {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.day, '11');
     await I.fillField(fields.month, '11');
     await I.fillField(fields.year, '1987');
-    await I.click(content.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

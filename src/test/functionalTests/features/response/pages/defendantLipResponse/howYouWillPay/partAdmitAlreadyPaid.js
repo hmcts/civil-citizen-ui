@@ -16,7 +16,6 @@ const content = {
   },
 };
 
-
 class PartAdmitAlreadyPaid {
   async selectAlreadyPaid(option) {
     await I.waitForText(content.heading[language], config.WaitForText);

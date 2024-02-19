@@ -32,7 +32,7 @@ const content = {
     en: 'Do you have loans or credit card debts?',
     cy: 'A oes gennych fenthyciadau neu ddyledion cerdyn credyd?',
   },
-}
+};
 
 const inputs = {
   debtItem1: {
