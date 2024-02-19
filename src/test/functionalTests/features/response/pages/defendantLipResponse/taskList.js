@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../config');
-const {language} = require('../../../../sharedData')
+const {language} = require('../../../../sharedData');
 
 const content = {
   heading: {
