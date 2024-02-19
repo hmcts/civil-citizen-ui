@@ -5,7 +5,7 @@ const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHe
 
 Feature('Smoke Test');
 
-Before(async ({api}) => {
+Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 

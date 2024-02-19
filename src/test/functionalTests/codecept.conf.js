@@ -1,5 +1,4 @@
 const testConfig = require('../config.js');
-const {createAccount, deleteAccount} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
