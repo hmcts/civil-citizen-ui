@@ -28,7 +28,7 @@ const dropdownOptions = {
   },
   jointAccount1: {
     en: 'Yes',
-    cy: 'le',
+    cy: 'Ie',
   },
 };
 

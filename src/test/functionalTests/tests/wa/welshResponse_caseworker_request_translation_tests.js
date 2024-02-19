@@ -10,9 +10,9 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const partAdmit = 'partial-admission';
 
-let claimRef = '1708356489857044';
+let claimRef = '1708363009420816';
 let caseData;
-let claimNumber = "292MC593";
+let claimNumber = "292MC599";
 let securityCode;
 
 Feature('Response with PartAdmit - Small Claims');
