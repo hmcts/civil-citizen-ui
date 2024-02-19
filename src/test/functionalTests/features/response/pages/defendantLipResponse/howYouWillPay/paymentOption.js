@@ -41,7 +41,7 @@ class PaymentOptionPage {
         break;
       }
     }
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue);
   }
 }
 
