@@ -4,6 +4,7 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 
@@ -15,6 +16,7 @@ let securityCode;
 Feature('Extended Response Time');
 
 Before(async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -34,4 +36,5 @@ Scenario('No response submitted, date agreed upon request time  @citizenUI @nigh
 
 AfterSuite(async () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
