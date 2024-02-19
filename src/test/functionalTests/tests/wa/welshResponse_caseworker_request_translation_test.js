@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @regression @nightly', async () => {
+Scenario('Welsh Response with PartAdmit Then Caseworker Request Transational - SetDate @citizenUI @partAdmit @regression @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
