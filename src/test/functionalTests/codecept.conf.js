@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const testConfig = require('../config.js');
 const {createAccount, deleteAccount} = require('./specClaimHelpers/api/idamHelper');
 
@@ -14,7 +16,7 @@ exports.config = {
   },
 
   async teardownAll() {
-   // await deleteAccount(defendantCitizenUserEmail);
+    //await deleteAccount(defendantCitizenUserEmail);
   },
 
   output: process.env.REPORT_DIR || 'test-results/functional',
