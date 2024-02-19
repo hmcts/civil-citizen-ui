@@ -11,10 +11,10 @@ import {
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
+  MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
@@ -111,7 +111,7 @@ describe('upload document service For Mediation', () => {
 
   it('should remove item documentsForDocumentsReferred', async () => {
     //Given
-    const uploadDocumentsForm = new UploadDocumentsForm([],[new TypeOfDocumentSection('01','01','2024'), new TypeOfDocumentSection('01','01','2024')]);
+    const uploadDocumentsForm = new UploadDocumentsForm([],[new MediationTypeOfDocumentSection('01','01','2024'), new MediationTypeOfDocumentSection('01','01','2024')]);
     //when
     removeItem(uploadDocumentsForm, 'documentsForDocumentsReferred');
     //then

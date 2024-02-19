@@ -3,6 +3,7 @@ const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -11,6 +12,7 @@ Feature('Case progression - Latest Update Trial Arrangements journey - Fast Trac
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
@@ -18,12 +20,13 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
     await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
 //covered in cp_upload_evidence_small_claims_tests
-Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
+Scenario('Fast Track Other Party Trial Arrangements Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
@@ -31,4 +34,5 @@ Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
