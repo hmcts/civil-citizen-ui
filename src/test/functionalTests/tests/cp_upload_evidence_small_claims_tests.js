@@ -3,6 +3,7 @@ const CaseProgressionSteps = require('../features/caseProgression/steps/caseProg
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -12,6 +13,7 @@ Feature('Case progression journey - Defendant & Claimant Response with RejectAll
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
@@ -36,4 +38,5 @@ Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progr
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
