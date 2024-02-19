@@ -1,5 +1,6 @@
 const I= actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -8,11 +9,16 @@ const fields ={
 const buttons = {
   continue: '#main-content button.govuk-button',
 };
+const content = {
+  heading: {
+    en: 'Have you paid the claimant the amount you admit you owe?',
+    cy: 'A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?',
+  },
+};
 
 class PartAdmitAlreadyPaid {
-
   async selectAlreadyPaid(option) {
-    await I.waitForText('Have you paid the claimant the amount you admit you owe?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     if(option == 'yes'){
       await I.click(fields.yesButton);
     }else{

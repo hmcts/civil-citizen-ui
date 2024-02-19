@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   mortgage: 'Mortgage',
@@ -23,13 +24,30 @@ const fields ={
   otherExpensesPaymentSchedule: 'input[id="model[other][transactionSources][0][schedule]-4"]',
 };
 const buttons = {
-  saveAndContinue: 'Save and continue',
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
+const content = {
+  heading: {
+    en: 'What are your regular expenses?',
+    cy: 'Beth yw eich costau rheolaidd?',
+  },
+};
+
+const inputs = {
+  otherExpenseSource: {
+    en: 'Fuel',
+    cy: 'Tanwydd',
+  },
 };
 
 class MonthlyExpenses {
 
   async selectMortgage(mortgageAmount) {
-    await I.waitForText('What are your regular expenses?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.checkOption(fields.mortgage);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
     await I.click(fields.mortgagePaymentScheduleMonthly);
@@ -61,13 +79,13 @@ class MonthlyExpenses {
 
   async selectOtherExpenses(otherExpenses) {
     await I.checkOption(fields.otherExpenses);
-    await I.fillField(fields.otherExpensesSource, 'Fuel');
+    await I.fillField(fields.otherExpensesSource, inputs.otherExpenseSource[language]);
     await I.fillField(fields.otherExpensesPayment, otherExpenses);
     await I.click(fields.otherExpensesPaymentSchedule);
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

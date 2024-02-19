@@ -8,6 +8,7 @@ import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { getSummarySections } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {Party} from 'models/party';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import { ChooseHowToProceed } from 'common/form/models/claimantResponse/chooseHowToProceed';
 
 describe('Check Answers Page :Settlement Agreement Section', () => {
 
@@ -22,7 +23,8 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date() } };
-      claim.claimantResponse = { chooseHowToProceed: { option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT } } as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
@@ -35,7 +37,8 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = { paymentIntention: { paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date() } };
-      claim.claimantResponse = { chooseHowToProceed: { option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT } } as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);   
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
@@ -49,7 +52,8 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = { paymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date() } };
-      claim.claimantResponse = { chooseHowToProceed: { option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT } } as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);   
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
@@ -62,7 +66,8 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = { paymentIntention: { paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date() } };
-      claim.claimantResponse = { chooseHowToProceed: { option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT } } as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');

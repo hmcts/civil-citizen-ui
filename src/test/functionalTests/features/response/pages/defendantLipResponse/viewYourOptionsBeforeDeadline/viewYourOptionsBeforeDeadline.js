@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   yesIWantMoretime: 'input[id="option"]',
@@ -15,6 +16,29 @@ const buttons = {
   saveAndContinue:'#main-content button.govuk-button',
 };
 
+const content = {
+  heading1: {
+    en: 'Requesting extra time',
+    cy: 'Gwneud cais am ragor o amser',
+  },
+  subheading1: {
+    en: 'How much extra time can you request?',
+    cy: 'Faint o amser ychwanegol y gallwch wneud cais amdano?',
+  },
+  heading2: {
+    en: 'Response deadline',
+    cy: 'Terfyn amser ar gyfer ymateb',
+  },
+  subheading2: {
+    en: 'Current response deadline:',
+    cy: 'Terfyn amser cyfredol ar gyfer ymateb:',
+  },
+  moreTimeQuestion: {
+    en: 'Do you want to request more time to respond?',
+    cy: 'Ydych chi eisiau gwneud cais am ragor o amser i ymateb?',
+  },
+};
+
 var targetDate = new Date();
 targetDate.setDate(targetDate.getDate() + 40);
 const extendedDay = targetDate.getDate();
@@ -27,12 +51,12 @@ class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptions(claimRef, deadlineOption) {
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
-    await I.waitForText('Requesting extra time',config.WaitForText);
-    await I.see('How much extra time can you request?','h3');
+    await I.waitForText(content.heading1[language],config.WaitForText);
+    await I.see(content.subheading1[language],'h3');
     await I.click(buttons.continue);
-    await I.see('Response deadline');
-    await I.see('Current response deadline:');
-    await I.see('Do you want to request more time to respond?');
+    await I.see(content.heading2[language]);
+    await I.see(content.subheading2[language]);
+    await I.see(content.moreTimeQuestion[language]);
     switch(deadlineOption){
       case 'yesIWantMoretime':{
         await I.click(fields.yesIWantMoretime);

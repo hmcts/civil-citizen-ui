@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -11,10 +12,17 @@ const buttons = {
   continue: 'button.govuk-button',
 };
 
+const content = {
+  heading: {
+    en: 'Do you have a job?',
+    cy: 'A oes gennych swydd?',
+  },
+};
+
 class EmploymentDetails {
 
   async clickYesButton() {
-    await I.waitForText('Do you have a job?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.checkOption(fields.employment);
     await I.checkOption(fields.selfEmployment);
@@ -22,7 +30,7 @@ class EmploymentDetails {
   }
 
   async clickNoButton() {
-    await I.see('Do you have a job?', 'h1');
+    await I.see(content.heading[language], 'h1');
     await I.click(fields.noButton);
     await I.click(buttons.continue);
   }

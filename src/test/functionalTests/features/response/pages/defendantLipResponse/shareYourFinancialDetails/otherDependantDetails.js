@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -8,23 +9,37 @@ const fields ={
   otherDetails: 'textarea[id="details"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  saveAndContinue: 'button.govuk-button',
+};
+
+const content = {
+  heading: {
+    en: 'Do you support anyone else financially?',
+    cy: 'A ydych yn cefnogi rhywun arall yn ariannol?',
+  },
+};
+
+const inputs = {
+  details: {
+    en: 'Parents',
+    cy: 'Rhieni',
+  },
 };
 
 class OtherDependantDetails {
 
   async clickYesButton() {
-    await I.waitForText('Do you support anyone else financially?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.numberOfPeople, '2');
-    await I.fillField(fields.otherDetails, 'Parents');
-    await I.click(buttons.continue);
+    await I.fillField(fields.otherDetails, inputs.details[language]);
+    await I.click(buttons.saveAndContinue);
   }
 
   async clickNoButton() {
-    await I.see('Do you support anyone else financially?', 'h1');
+    await I.see(content.heading[language], 'h1');
     await I.click(fields.noButton);
-    await I.click(buttons.continue);
+    await I.click(buttons.saveAndContinue);
   }
 }
 

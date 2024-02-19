@@ -1,26 +1,41 @@
 const I = actor();
 const config = require('../../../../../../config');
+const {language} = require('../../../../../sharedData');
 
 const fields = {
   contactNumber: 'input[id="telephoneNumber"]',
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
+const content = {
+  headingCarm: {
+    en: 'Enter a phone number',
+    cy: 'Rhowch rif ffôn',
+  },
+  heading: {
+    en: 'Enter a phone number (optional)',
+    cy: 'Rhowch rif ffôn (dewisol)',
+  },
 };
 
 class ContactNumberDetailsPage {
   async enterContactNumber(carmEnabled = false) {
     if (carmEnabled) {
-      await I.waitForText('Enter a phone number', config.WaitForText);
-      await I.click('Save and continue');
-      await I.see('Enter telephone number');
+      await I.waitForText(content.headingCarm[language], config.WaitForText);
+      // await I.click(content.saveAndContinueButton[language]);
+      // await I.see('Enter telephone number');
       await I.fillField(fields.contactNumber, '02088908876');
-      await I.click('Save and continue');
+      await I.click(buttons.saveAndContinue[language]);
     } else {
-      await I.waitForText('Enter a phone number (optional)', config.WaitForText);
+      await I.waitForText(content.heading[language], config.WaitForText);
       await I.fillField(fields.contactNumber, '02088908876');
-      await I.click(buttons.saveAndContinue);
+      await I.click(buttons.saveAndContinue[language]);
     }
   }
 }

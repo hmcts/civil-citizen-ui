@@ -1,9 +1,17 @@
 const I = actor();
 const config = require('../../../../../config');
+const {language} = require('../../../../sharedData');
+
+const content = {
+  heading: {
+    en: 'Respond to a money claim',
+    cy: 'Ymateb i hawliad ariannol',
+  },
+};
 
 class TaskListPage {
   verifyResponsePageContent() {
-    I.waitForText('Respond to a money claim', config.WaitForText);
+    I.waitForText(content.heading[language], config.WaitForTimeout);
   }
 }
 

@@ -22,6 +22,8 @@ import {
   getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import { ClaimantResponse } from 'common/models/claimantResponse';
+import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
+import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -78,7 +80,16 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
+export function buildClaimantResponseMediationSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
+  if (carmApplicable) {
+    const tasks: Task[] = [];
+    tasks.push(getTelephoneMediationTask(claim, claimId, lang, true));
+    tasks.push(getAvailabilityForMediationTask(claim, claimId, lang, true));
+    return { title: t('COMMON.MEDIATION', { lng: lang }), tasks };
+  }
+}
+
+export function buildYourResponseSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
   const tasks: Task[] = [];
   const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
   const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
@@ -92,7 +103,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   if (isSettleTheClaim) {
     tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
   }
-  if (isFreePhoneMediation) {
+  if (isFreePhoneMediation && !carmApplicable) {
     tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
   }
   return { title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', { lng: lang }), tasks };

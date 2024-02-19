@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const { language } = require('../../../../../sharedData');
 
 const fields ={
   incomeFromJob: 'Income from your job',
@@ -14,13 +15,30 @@ const fields ={
   otherIncomePaymentSchedule: 'input[id="model[other][transactionSources][0][schedule]-4"]',
 };
 const buttons = {
-  saveAndContinue: 'Save and continue',
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
+const content = {
+  heading: {
+    en: 'What regular income do you receive?',
+    cy: 'Pa incwm rheolaidd ydych chi’n ei gael?',
+  },
+};
+
+const inputs = {
+  otherIncomeSource: {
+    en: 'Rent',
+    cy: 'Rhent',
+  },
 };
 
 class MonthlyIncome {
 
   async selectIncomeFromJob(incomeAmount) {
-    await I.waitForText('What regular income do you receive?', config.WaitForText);
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.checkOption(fields.incomeFromJob);
     await I.fillField(fields.incomeFromJobPayment, incomeAmount);
     await I.click(fields.incomeFromJobPaymentSchedule);
@@ -34,13 +52,13 @@ class MonthlyIncome {
 
   async selectOtherIncome(otherIncomeAmount) {
     await I.checkOption(fields.otherIncome);
-    await I.fillField(fields.otherIncomeSource, 'Rent');
+    await I.fillField(fields.otherIncomeSource, inputs.otherIncomeSource[language]);
     await I.fillField(fields.otherIncomePayment, otherIncomeAmount);
     await I.click(fields.otherIncomePaymentSchedule);
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

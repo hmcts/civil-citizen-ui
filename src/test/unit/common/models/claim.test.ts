@@ -103,45 +103,6 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     expect(result).toBeFalsy();
   });
 });
-describe('Claim isClaimantResponseSupportRequiredYes', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-});
-
-describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
-  });
-});
 
 describe('Claim isInterestFromASpecificDate', () => {
   const claim = new Claim();
@@ -1372,48 +1333,6 @@ describe('Documents', () => {
     });
   });
 
-  describe('isSupportRequiredYes', () => {
-    const claim = new Claim();
-    it('should return false with empty claim', () => {
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty directionQuestionnaire', () => {
-      //Given
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty hearing', () => {
-      //Given
-      claim.directionQuestionnaire.hearing = new Hearing();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with "no" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with "yes" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(true);
-    });
-  });
-
   describe('isSupportRequiredDetailsAvailable', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -2107,10 +2026,8 @@ describe('Documents', () => {
     });
 
     it('should return false if no claimantResponse object', () => {
-      //Given
-      claim.claimantResponse = undefined;
       //When
-      const result = claim.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
     });
@@ -2119,7 +2036,7 @@ describe('Documents', () => {
       //Given
       claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
       //When
-      const result = claim.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
     });
@@ -2133,7 +2050,7 @@ describe('Documents', () => {
         text: 'test',
       };
       //When
-      const result = claim.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(true);
     });
@@ -2147,7 +2064,7 @@ describe('Documents', () => {
         text: 'test',
       };
       //When
-      const result = claim.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(true);
     });
@@ -2161,9 +2078,29 @@ describe('Documents', () => {
         text: undefined,
       };
       //When
-      const result = claim.isRejectionReasonCompleted();
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
       //Then
       expect(result).toEqual(false);
+    });
+  });
+
+  describe('hasClaimantAcceptedToSettleClaim', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false when not accepted', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
     });
   });
 });

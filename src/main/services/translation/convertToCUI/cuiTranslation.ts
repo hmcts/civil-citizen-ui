@@ -26,6 +26,7 @@ import { InterestEndDateType, SameRateInterestType } from 'common/form/models/cl
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {toCUIMediationCarm} from 'services/translation/convertToCUI/convertToCUIMediationCarm';
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
@@ -44,6 +45,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondent1 = toCUIPartyRespondent(ccdClaim.respondent1,ccdClaim.respondent1LiPResponse);
   claim.respondent1.responseType = ccdClaim.respondent1ClaimResponseTypeForSpec;
   claim.mediation = toCUIMediation(ccdClaim.respondent1LiPResponse?.respondent1MediationLiPResponse);
+  claim.mediationCarm = toCUIMediationCarm(ccdClaim.respondent1LiPResponseCarm);
   claim.statementOfMeans = toCUIStatementOfMeans(ccdClaim);
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.claimantBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.claimantBilingualLanguagePreference);
@@ -56,7 +58,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.caseRole = ccdClaim.caseRole;
   claim.interest = claim.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.respondentPaymentDeadline = ccdClaim.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid ? ccdClaim.respondToClaimAdmitPartLRspec.whenWillThisAmountBePaid : undefined;
-
+  claim.res1MediationDocumentsReferred = ccdClaim.res1MediationDocumentsReferred;
+  claim.res1MediationNonAttendanceDocs = ccdClaim.res1MediationNonAttendanceDocs;
   if (claim.isFullAdmission()) {
     translateFullAdmission(claim, ccdClaim, claimantResponse);
   } else if (claim.isPartialAdmission()) {
@@ -119,7 +122,7 @@ function translateFullAdmission(claim: Claim, ccdClaim: CCDClaim, claimantRespon
 function translatePartialAdmission(claim: Claim, ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
   claim.partialAdmission = toCUIPartialAdmission(ccdClaim);
   claimantResponse.fullAdmitSetDateAcceptPayment = toCUIGenericYesNo(ccdClaim.applicant1AcceptPartAdmitPaymentPlanSpec);
-  claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
+  claimantResponse.hasPartAdmittedBeenAccepted = toCUIGenericYesNo(ccdClaim.applicant1AcceptAdmitAmountPaidSpec);
 }
 
 function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
