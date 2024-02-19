@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Negative Scenarios for Defendant Response @kiyron');
+Feature('Negative Scenarios for Defendant Response');
 
 Before(async ({api}) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
