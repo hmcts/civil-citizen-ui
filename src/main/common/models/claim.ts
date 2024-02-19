@@ -77,6 +77,7 @@ import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPla
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {BusinessProcess} from 'models/businessProcess';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -150,6 +151,7 @@ export class Claim {
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
+  businessProcess?: BusinessProcess;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -797,7 +799,7 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
 
   hasMediationSuccessful() {
@@ -809,7 +811,7 @@ export class Claim {
   }
 
   hasDefaultJudgmentSubmitted() {
-    return !!this.defaultJudgmentDocuments;
+    return !!this.defaultJudgmentDocuments || this.businessProcess?.camundaEvent === 'DEFAULT_JUDGEMENT_SPEC';
   }
 
   hasClaimantRequestedCCJ() {

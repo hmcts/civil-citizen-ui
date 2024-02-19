@@ -473,7 +473,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId, claim));
-  } else if (claim.hasClaimTakenOffline()) {
+  } else if (claim.hasClaimTakenOffline() && claim.isSystemGeneratedCaseDocumentsAvailable()) {
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
   } else if (claim.hasMediationSuccessful()) {
     sectionContent.push(generateMediationSuccessfulLatestUpdate(claim, lng));
