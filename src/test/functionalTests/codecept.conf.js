@@ -21,9 +21,8 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
       browser: 'chromium',
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      show: true,
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,

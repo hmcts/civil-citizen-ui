@@ -1,9 +1,7 @@
-class SharedData {
-  language = 'en';
+export const sharedData = {
+    language: 'en'
+};
 
-  updateLanguage(language) {
-    this.language = language;
-  }
-}
-
-module.exports = new SharedData();
+export const updateLanguage = (language) => {
+    sharedData.language = language;
+}   
