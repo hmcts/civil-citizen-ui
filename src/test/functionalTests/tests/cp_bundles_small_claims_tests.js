@@ -20,10 +20,11 @@ Before(async ({api}) => {
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     await api.performBundleGeneration(config.hearingCenterAdminWithRegionId1, claimRef);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Case progression journey - Small Claims - Verify Bundles tab', () => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', async () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
