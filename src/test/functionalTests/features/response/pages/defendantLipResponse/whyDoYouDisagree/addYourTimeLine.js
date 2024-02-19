@@ -42,7 +42,7 @@ class AddYourTimeLine {
   }
 
   async clickContinue(){
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 
