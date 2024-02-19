@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const {language} = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   contactNumber: 'input[id="telephoneNumber"]',
@@ -26,7 +26,8 @@ const content = {
 
 class ContactNumberDetailsPage {
   async enterContactNumber(carmEnabled = false) {
-    if (carmEnabled) {
+    const { language } = sharedData;
+    if (carmEnabled) { 
       await I.waitForText(content.headingCarm[language], config.WaitForText);
       // await I.click(content.saveAndContinueButton[language]);
       // await I.see('Enter telephone number');

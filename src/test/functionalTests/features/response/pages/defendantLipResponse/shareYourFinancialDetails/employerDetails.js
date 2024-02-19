@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   employerName: 'input[id="rows[0][employerName]"]',
@@ -30,6 +30,7 @@ const inputs = {
 class EmployerDetails {
 
   async enterEmployerDetails() {
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.employerName, 'ABC Ltd');
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);

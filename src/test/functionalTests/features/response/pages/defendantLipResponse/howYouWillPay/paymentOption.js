@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   responseAdmitAllImmediate: 'input[id="paymentType"]',
@@ -22,7 +22,7 @@ const buttons = {
 class PaymentOptionPage {
   async enterPaymentOption(claimRef, responseType, paymentType) {
     await I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     switch (paymentType){
       case 'immediate':{
         await I.click(fields.responseAdmitAllImmediate);

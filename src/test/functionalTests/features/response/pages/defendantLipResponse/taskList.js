@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../config');
-const {language} = require('../../../../sharedData');
+const { sharedData } = require('../../../../sharedData');
 
 const content = {
   heading: {
@@ -11,8 +11,7 @@ const content = {
 
 class TaskListPage {
   verifyResponsePageContent() {
-    console.log(language);
-    I.waitForText(content.heading[language], config.WaitForTimeout);
+    I.waitForText(content.heading[sharedData.language], config.WaitForTimeout);
   }
 }
 

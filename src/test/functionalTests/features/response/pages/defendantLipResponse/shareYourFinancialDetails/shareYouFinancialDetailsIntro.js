@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const buttons = {
   continue: 'button.govuk-button',
@@ -24,6 +24,7 @@ const content = {
 class ShareYouFinancialDetailsIntro {
 
   async open(claimRef) {
+    const { language } = sharedData; 
     await I.amOnPage('/case/' + claimRef + '/response/statement-of-means/intro');
     await I.waitForText(content.descriptionText1[language], config.WaitForText);
     await I.see(content.descriptionText2[language]);

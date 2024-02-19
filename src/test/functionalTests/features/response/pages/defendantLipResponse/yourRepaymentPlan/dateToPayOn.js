@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   day: 'input[id="day"]',
@@ -27,7 +27,7 @@ const monthError = currentDate.getMonth() - 1000;
 
 class DateToPayOn {
   async enterDateToPayOn () {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, year.toString());

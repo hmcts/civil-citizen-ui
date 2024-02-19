@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -28,6 +28,7 @@ const inputs = {
 class SelfEmploymentTaxDetails {
 
   async clickYesButton() {
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.amountYouOwe, '2000');

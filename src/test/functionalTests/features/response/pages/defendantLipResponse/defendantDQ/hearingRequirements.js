@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const {language} = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -24,6 +24,7 @@ const buttons = {
 class HearingRequirements {
 
   async selectHearingRequirements(claimRef) {
+    const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);

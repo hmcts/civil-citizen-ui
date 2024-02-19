@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   amount: 'input[id="amount"]',
@@ -27,6 +27,7 @@ const buttons = {
 class HowMuchDoYouOwe {
 
   async enterHowMuchMoneyDoYouOwe(claimRef, amount) {
+    const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-do-you-owe');
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.hintText[language]);
