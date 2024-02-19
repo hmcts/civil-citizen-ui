@@ -14,7 +14,7 @@ exports.config = {
   },
 
   async teardownAll() {
-    await deleteAccount(defendantCitizenUserEmail);
+   // await deleteAccount(defendantCitizenUserEmail);
   },
 
   output: process.env.REPORT_DIR || 'test-results/functional',

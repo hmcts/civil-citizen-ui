@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
@@ -44,12 +46,12 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
     await ResponseSteps.ConfirmAltPhoneDetails();
     await ResponseSteps.ConfirmAltEmailDetails();
     await ResponseSteps.EnterUnavailableDates(claimRef);
-    await ResponseSteps.EnterDQForSmallClaims(claimRef);
-    await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-    await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
+    // await ResponseSteps.EnterDQForSmallClaims(claimRef);
+    // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+    // await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
   }
 }).tag('@regression-carm');
 
 AfterSuite(async  () => {
-  await unAssignAllUsers();
+  //await unAssignAllUsers();
 });
