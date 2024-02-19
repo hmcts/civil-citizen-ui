@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const {language} = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -29,6 +29,7 @@ const content = {
 class MediationCanWeUse {
 
   async selectOptionForMediation() {
+    const { language } = sharedData;
     // await I.see('Confirm your telephone number', 'h1');
     // await I.see('Can the mediation service use');
     // await I.click(fields.yesButton);

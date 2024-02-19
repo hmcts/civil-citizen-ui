@@ -1,6 +1,6 @@
 const I= actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -18,7 +18,7 @@ const content = {
 
 class PartAdmitAlreadyPaid {
   async selectAlreadyPaid(option) {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     if(option == 'yes'){
       await I.click(fields.yesButton);
     }else{

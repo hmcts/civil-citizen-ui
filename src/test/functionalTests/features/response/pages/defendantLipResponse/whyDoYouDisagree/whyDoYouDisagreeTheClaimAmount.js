@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   text: 'textarea[id="text"]',
@@ -34,6 +34,7 @@ const inputs = {
 
 class WhyDoYouDisagreeTheClaimAmount {
   async enterReason (claimRef, responseType) {
+    const { language } = sharedData; 
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/why-do-you-disagree');
     }else{

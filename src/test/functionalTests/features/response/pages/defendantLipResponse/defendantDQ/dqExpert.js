@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   continueWithExpert: 'input[id="expertYes"]',
@@ -17,7 +17,7 @@ const content = {
 class DqExpert {
 
   async chooseExpert() {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     await I.click(fields.continueWithExpert);
   }
 }

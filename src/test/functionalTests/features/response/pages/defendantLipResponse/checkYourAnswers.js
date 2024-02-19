@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../config');
-const { language } = require('../../../../sharedData');
+const { sharedData } = require('../../../../sharedData');
 
 const fields = {
   cyaSigned: 'input[id="signed"]',
@@ -40,6 +40,7 @@ const content = {
 
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='', claimType) {
+    const {language} = sharedData; 
     await I.click(links.checkAndSubmit[language]);
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears

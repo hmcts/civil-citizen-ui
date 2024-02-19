@@ -1,6 +1,6 @@
 const I= actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   day: 'input[id="day"]',
@@ -24,6 +24,7 @@ const buttons = {
 
 class DateOfBirthDetailsPage {
   async enterDateOfBirth ()  {
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.day, '11');
     await I.fillField(fields.month, '11');

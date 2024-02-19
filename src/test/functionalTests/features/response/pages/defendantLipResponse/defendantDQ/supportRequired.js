@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="model[option]"]',
@@ -47,6 +47,7 @@ const inputs = {
 class SupportRequired {
 
   async selectOptionForSupportRequired() {
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.selectOption(fields.person1Dropdown, 'WitnessFirstName WitnessLastName');

@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   incomeFromJob: 'Income from your job',
@@ -38,7 +38,7 @@ const inputs = {
 class MonthlyIncome {
 
   async selectIncomeFromJob(incomeAmount) {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     await I.checkOption(fields.incomeFromJob);
     await I.fillField(fields.incomeFromJobPayment, incomeAmount);
     await I.click(fields.incomeFromJobPaymentSchedule);
@@ -52,13 +52,13 @@ class MonthlyIncome {
 
   async selectOtherIncome(otherIncomeAmount) {
     await I.checkOption(fields.otherIncome);
-    await I.fillField(fields.otherIncomeSource, inputs.otherIncomeSource[language]);
+    await I.fillField(fields.otherIncomeSource, inputs.otherIncomeSource[sharedData.language]);
     await I.fillField(fields.otherIncomePayment, otherIncomeAmount);
     await I.click(fields.otherIncomePaymentSchedule);
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[sharedData.language]);
   }
 }
 

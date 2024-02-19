@@ -9,9 +9,9 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const partAdmit = 'partial-admission';
 
-let claimRef;
+let claimRef = '1708356489857044';
 let caseData;
-let claimNumber;
+let claimNumber = "292MC593";
 let securityCode;
 
 Feature('Response with PartAdmit - Small Claims');
@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Welsh Response with PartAdmit Then Caseworker Request Transational - SetDate @citizenUI @partAdmit @regression @nightly', async () => {
+Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - SetDate @citizenUI @partAdmit @regression @nightly @kiyron', async () => {
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,7 +45,7 @@ Scenario('Welsh Response with PartAdmit Then Caseworker Request Transational - S
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-});
+}).retry(0);
 
 AfterSuite(async () => {
   await unAssignAllUsers();

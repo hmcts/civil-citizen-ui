@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   firstSelection: '[id="evidenceItem[0][type]"]',
@@ -38,6 +38,7 @@ const inputs = {
 class ListYourEvidence {
 
   async selectEvidenceFromDropDown() {
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.selectOption(fields.firstSelection, dropdowns.firstSelection[language]);
     await I.fillField(fields.firstEvidenceItem, inputs.firstEvidenceItem[language]);

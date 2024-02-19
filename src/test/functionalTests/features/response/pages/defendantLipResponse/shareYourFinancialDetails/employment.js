@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -22,7 +22,7 @@ const content = {
 class EmploymentDetails {
 
   async clickYesButton() {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.checkOption(fields.employment);
     await I.checkOption(fields.selfEmployment);
@@ -30,7 +30,7 @@ class EmploymentDetails {
   }
 
   async clickNoButton() {
-    await I.see(content.heading[language], 'h1');
+    await I.see(content.heading[sharedData.language], 'h1');
     await I.click(fields.noButton);
     await I.click(buttons.continue);
   }

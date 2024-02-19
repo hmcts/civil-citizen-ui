@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields = {
   addressLine1: 'input[id="primaryAddress[addressLine1]"]',
@@ -42,6 +42,7 @@ const buttons = {
 
 class NameAndAddressDetailsPage {
   async enterNameAndAddressDetails () {
+    const { language } = sharedData; 
     await I.click(content.confirmYourDetailsLink[language]);
     await I.waitForElement(fields.addressLine1, config.WaitForText);
     await I.fillField(fields.addressLine1, 'Test AddressLine1');

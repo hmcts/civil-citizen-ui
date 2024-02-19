@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { language } = require('../../../../../sharedData');
+const { sharedData } = require('../../../../../sharedData');
 
 const fields ={
   mortgage: 'Mortgage',
@@ -33,7 +33,7 @@ const content = {
 class PriorityDebtsDetails {
 
   async selectMortgage(mortgageAmount) {
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
     await I.checkOption(fields.mortgage);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
     await I.click(fields.mortgagePaymentScheduleMonthly);
@@ -58,7 +58,7 @@ class PriorityDebtsDetails {
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[sharedData.language]);
   }
 }
 
