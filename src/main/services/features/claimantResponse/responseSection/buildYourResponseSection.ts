@@ -24,6 +24,7 @@ import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'com
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {DateTime} from 'luxon';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -109,7 +110,8 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
 };
 
 export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const option = claim.hasClaimantConfirmedDefendantPaid()
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  const option = claimantResponse.hasClaimantConfirmedDefendantPaid
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 

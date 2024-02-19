@@ -11,10 +11,12 @@ import {
 import { Task } from 'common/models/taskList/task';
 import { TaskStatus } from 'common/models/taskList/TaskStatus';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string, carmApplicable: boolean) {
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
   if(canShowWhatToDoNextSection(claim)) {
     taskGroups.push(buildWhatToDoNextSection(claim, claimId, lang));
@@ -24,9 +26,9 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
   }
 
   if (carmApplicable &&
-    (claim.hasClaimantIntentToProceedResponse() || claim.hasClaimantRejectedDefendantResponse() || claim.hasClaimantRejectedDefendantPaid()
-      || claim.hasClaimantRejectedDefendantAdmittedAmount()
-      || claim.hasClaimantRejectedPartAdmitPayment())) {
+    (claim.hasClaimantIntentToProceedResponse() || claimantResponse.hasClaimantRejectedDefendantResponse || claimantResponse.hasClaimantRejectedDefendantPaid
+      || claimantResponse.hasClaimantRejectedDefendantAdmittedAmount
+      || claimantResponse.hasClaimantRejectedPartAdmitPayment)) {
     taskGroups.push(buildClaimantResponseMediationSection(claim, claimId, lang, carmApplicable));
   }
 

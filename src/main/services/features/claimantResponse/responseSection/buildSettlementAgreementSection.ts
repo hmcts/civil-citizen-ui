@@ -22,6 +22,7 @@ import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import { ClaimantResponse } from 'common/models/claimantResponse';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
@@ -75,9 +76,10 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
 };
 
 export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
-  const paymentOption = claim.getHasDefendantPaid();
+  const paymentOption = claimantResponse.getHasDefendantPaid;
 
   const judgmentRequestSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
@@ -86,12 +88,12 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
         paymentOption === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, ccjPaidAmountHref, changeLabel(lng)),
     ],
   });
-  if (claim.getDefendantPaidAmount()) {
+  if (claimantResponse.getDefendantPaidAmount) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
       '£' + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
   }
 
-  if (claim.getHasDefendantPaid) {
+  if (claimantResponse.getHasDefendantPaid) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), '£' + judgmentSummaryDetails.total));
   }
   return judgmentRequestSection;

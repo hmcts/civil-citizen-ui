@@ -12,6 +12,7 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -39,7 +40,8 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
-    const claimedAmount: number = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    const claimedAmount: number = claimantResponse.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     const paidAmount = new GenericForm(new PaidAmount(req.body.option, (Number(req.body.amount)), claimedAmount));
     let redirectURL: string = CCJ_PAID_AMOUNT_SUMMARY_URL;
     if (req.url.includes(urlFromTaskList)) {

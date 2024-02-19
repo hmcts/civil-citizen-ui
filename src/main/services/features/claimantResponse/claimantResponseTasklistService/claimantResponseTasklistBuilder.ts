@@ -69,7 +69,7 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.hasClaimantRejectedDefendantResponse() && claim.isDefendantAgreedForMediation())  {
+  if (claimantResponse.hasClaimantRejectedDefendantResponse && claim.isDefendantAgreedForMediation())  {
     tasks.push(freeTelephoneMediationTask);
   }
 
@@ -92,9 +92,10 @@ export function buildClaimantResponseMediationSection(claim: Claim, claimId: str
 export function buildYourResponseSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
   const tasks: Task[] = [];
   const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
-  const isSettleTheClaim = (isPartialPaid && claim.hasClaimantConfirmedDefendantPaid()) || isFullPaid;
-  const isFreePhoneMediation = claim.isDefendantAgreedForMediation() && ((isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse());
+  const isSettleTheClaim = (isPartialPaid && claimantResponse.hasClaimantConfirmedDefendantPaid) || isFullPaid;
+  const isFreePhoneMediation = claim.isDefendantAgreedForMediation() && ((isPartialPaid && (claimantResponse.hasClaimantRejectedDefendantPaid || claimantResponse.hasClaimantRejectedPartAdmitPayment)) || claimantResponse.hasClaimantRejectedDefendantResponse);
 
   if (!isFullPaid) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
@@ -118,11 +119,12 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
 
 export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   if (isPartialAdmissionNotAccepted(claim) ||
     isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
     isFullDefenceClaimantNotSettleTheClaim(claim) ||
-    claim.hasClaimantRejectedDefendantPaid() ||
-    claim.hasClaimantRejectedPartAdmitPayment()) {
+    claimantResponse.hasClaimantRejectedDefendantPaid ||
+    claimantResponse.hasClaimantRejectedPartAdmitPayment) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
@@ -167,7 +169,8 @@ function isPartialAdmissionNotAccepted(claim: Claim) : boolean {
 }
 
 function isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim: Claim) : boolean {
-  return claim.isPartialAdmissionPaid() && ((claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment()));
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  return claim.isPartialAdmissionPaid() && ((claimantResponse.hasClaimantRejectedDefendantPaid || claimantResponse.hasClaimantRejectedPartAdmitPayment));
 }
 
 function isFullDefenceClaimantNotSettleTheClaim(claim: Claim) : boolean {

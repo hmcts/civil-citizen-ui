@@ -78,12 +78,13 @@ export const saveStatementOfTruth = async (claimId: string, claimantStatementOfT
 };
 
 function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   return (
-    claim.hasClaimantRejectedDefendantAdmittedAmount()
+    claimantResponse.hasClaimantRejectedDefendantAdmittedAmount
     || claim.hasClaimantIntentToProceedResponse()
-    || claim.hasClaimantRejectedDefendantPaid()
-    || claim.hasClaimantRejectedPartAdmitPayment()
-    || claim.hasClaimantRejectedDefendantResponse()
+    || claimantResponse.hasClaimantRejectedDefendantPaid
+    || claimantResponse.hasClaimantRejectedPartAdmitPayment
+    || claimantResponse.hasClaimantRejectedDefendantResponse
   );
 }
 

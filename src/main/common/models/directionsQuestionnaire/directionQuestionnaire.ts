@@ -39,6 +39,11 @@ export class DirectionQuestionnaire {
     this.confirmYourDetailsEvidence = confirmYourDetailsEvidence;
   }
 
+  get hasExpertDetails(): boolean {
+    return this.experts?.expertDetailsList?.items?.length
+      && this.experts?.expertEvidence?.option === YesNo.YES;
+  }
+
   get expertReportDetailsAvailable(): boolean {
     return this.experts?.expertReportDetails?.option === YesNo.YES;
   }

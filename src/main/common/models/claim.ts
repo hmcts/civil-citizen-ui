@@ -73,8 +73,6 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
-import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
-import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
@@ -354,18 +352,6 @@ export class Claim {
     return this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.NO;
   }
 
-  hasClaimantConfirmedDefendantPaid(): boolean {
-    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.YES;
-  }
-
-  hasClaimantRejectedDefendantPaid(): boolean {
-    return this.claimantResponse?.hasDefendantPaidYou?.option === YesNo.NO;
-  }
-
-  hasClaimantRejectedPartAdmitPayment(): boolean {
-    return this.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.NO;
-  }
-
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
@@ -642,46 +628,6 @@ export class Claim {
     return this.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST;
   }
 
-  getDefendantPaidAmount(): number | undefined {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.amount;
-  }
-
-  getHasDefendantPaid() : YesNo {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.option;
-  }
-
-  getCCJTotalAmount() : number {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.totalAmount;
-  }
-
-  getCCJPaymentOption() : PaymentOptionType {
-    return this.claimantResponse?.ccjRequest?.ccjPaymentOption?.type;
-  }
-
-  getCCJPaymentDate() : Date {
-    return this.claimantResponse?.ccjRequest?.defendantPaymentDate?.date;
-  }
-
-  getCCJRepaymentPlan() : RepaymentPlanInstalments {
-    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments;
-  }
-
-  getCCJRepaymentPlanAmount() : number {
-    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.amount;
-  }
-
-  getCCJRepaymentPlanFrequency() : TransactionSchedule {
-    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.paymentFrequency;
-  }
-
-  getCCJRepaymentPlanDate() : Date {
-    return this.claimantResponse?.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date;
-  }
-
-  hasDefendantPaid(): boolean {
-    return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
-  }
-
   isCCJComplete() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
   }
@@ -700,11 +646,6 @@ export class Claim {
 
   getPaymentIntention(): PaymentIntention {
     return this.isPartialAdmission() ? this.partialAdmission?.paymentIntention : this.fullAdmission?.paymentIntention;
-  }
-
-  hasExpertDetails(): boolean {
-    return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
-      && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
   }
 
   private getName(party: Party): string {
@@ -879,26 +820,6 @@ export class Claim {
 
   isDraftClaim(): boolean {
     return !!this.draftClaimCreatedAt;
-  }
-
-  hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
-    return this?.claimantResponse?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
-  }
-
-  hasClaimantRejectedDefendantAdmittedAmount() {
-    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
-  }
-
-  hasClaimantAcceptedDefendantAdmittedAmount() {
-    return this?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
-  }
-
-  hasClaimantRejectedDefendantResponse() {
-    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
-  }
-
-  hasClaimantAcceptedDefendantResponse() {
-    return this?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.YES;
   }
 
   hasDefendantCompletedPaymentIntention() {

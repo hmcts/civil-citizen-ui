@@ -1412,25 +1412,25 @@ describe('Documents', () => {
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
       claim.directionQuestionnaire.experts.expertDetailsList = new ExpertDetailsList([new ExpertDetails('John', 'Smith')]);
       //Then
-      expect(claim.hasExpertDetails()).toBeTruthy();
+      expect(claim.directionQuestionnaire.hasExpertDetails).toBeTruthy();
     });
     it('should return false when expert evidence is yes but expert details list is empty', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.YES);
       //Then
-      expect(claim.hasExpertDetails()).toBeFalsy();
+      expect(claim.directionQuestionnaire.hasExpertDetails).toBeFalsy();
     });
     it('should return false when expert evidence is no', () => {
       //Given
       claim.directionQuestionnaire.experts.expertEvidence = new GenericYesNo(YesNo.NO);
       //Then
-      expect(claim.hasExpertDetails()).toBeFalsy();
+      expect(claim.directionQuestionnaire.hasExpertDetails).toBeFalsy();
     });
     it('should return false when claim is empty', () => {
       //Given
       claim = new Claim();
       //Then
-      expect(claim.hasExpertDetails()).toBeFalsy();
+      expect(claim.directionQuestionnaire.hasExpertDetails).toBeFalsy();
     });
   });
 

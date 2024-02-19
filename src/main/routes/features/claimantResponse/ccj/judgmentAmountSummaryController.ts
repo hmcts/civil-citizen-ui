@@ -9,13 +9,15 @@ import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
 function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
   const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
-  const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  const claimAmountAccepted: number = claimantResponse.hasClaimantAcceptedDefendantAdmittedAmount ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claimAmountAccepted.toFixed(2),
     claimFee: claimFee.toFixed(2),

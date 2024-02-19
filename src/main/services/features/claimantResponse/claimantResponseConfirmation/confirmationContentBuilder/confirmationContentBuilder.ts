@@ -101,8 +101,9 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 }
 
 function hasClaimantRejectedDefendantResponse(claim: Claim): boolean {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const isFullDefenceWithClaimantRejected =
-    claim.isFullDefence() && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedDefendantResponse());
+    claim.isFullDefence() && (claimantResponse.hasClaimantRejectedDefendantPaid || claimantResponse.hasClaimantRejectedDefendantResponse);
 
   const claimantResponseStatus = [
     ClaimResponseStatus.PA_NOT_PAID_NOT_ACCEPTED,

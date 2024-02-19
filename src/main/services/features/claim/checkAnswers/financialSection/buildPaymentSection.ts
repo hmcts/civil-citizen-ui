@@ -11,13 +11,15 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
 export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const lng = getLng(lang);
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
-  const paymentOption = claim.getHasDefendantPaid();
+  const paymentOption = claimantResponse.getHasDefendantPaid;
   const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION.${paymentOption.toUpperCase()}` : '';
   const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const paymentDetailsSection = summarySection({
@@ -28,42 +30,42 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
     ],
   });
 
-  if(claim.getDefendantPaidAmount()) {
+  if(claimantResponse.getDefendantPaidAmount) {
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
-      currencyFormatWithNoTrailingZeros(claim.getDefendantPaidAmount())));
+      currencyFormatWithNoTrailingZeros(claimantResponse.getDefendantPaidAmount)));
   }
 
-  if(claim.getHasDefendantPaid()) {
-    const amountToBePaid = ((claim.getDefendantPaidAmount()) ?
-      claim.getCCJTotalAmount() - claim.getDefendantPaidAmount() :
-      claim.getCCJTotalAmount());
+  if(claimantResponse.getHasDefendantPaid) {
+    const amountToBePaid = ((claimantResponse.getDefendantPaidAmount) ?
+      claimantResponse.getCCJTotalAmount - claimantResponse.getDefendantPaidAmount :
+      claimantResponse.getCCJTotalAmount);
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}),
       currencyFormatWithNoTrailingZeros(amountToBePaid)));
   }
 
-  if(claim.getCCJPaymentOption()) {
-    const ccjPaymentOption = new GenericForm(new CcjPaymentOption(claim.getCCJPaymentOption()));
+  if(claimantResponse.getCCJPaymentOption) {
+    const ccjPaymentOption = new GenericForm(new CcjPaymentOption(claimantResponse.getCCJPaymentOption));
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HOW_TO_PAY', {lng}),
-      formatOptionType(claim.getCCJPaymentOption(), lng)));
+      formatOptionType(claimantResponse.getCCJPaymentOption, lng)));
 
-    if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate() && claim.getCCJPaymentDate()) {
+    if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate() && claimantResponse.getCCJPaymentDate) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY', {lng}),
-        formatDateToFullDate(claim.getCCJPaymentDate(), lng)));
+        formatDateToFullDate(claimantResponse.getCCJPaymentDate, lng)));
     }
 
-    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.getCCJRepaymentPlan()) {
+    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claimantResponse.getCCJRepaymentPlan) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_INSTALMENTS_OF', {lng}),
-        currencyFormatWithNoTrailingZeros(claim.getCCJRepaymentPlanAmount())));
+        currencyFormatWithNoTrailingZeros(claimantResponse.getCCJRepaymentPlanAmount)));
     }
 
-    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.getCCJRepaymentPlanDate()) {
+    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claimantResponse.getCCJRepaymentPlanDate) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_FIRST_PAYMENT_DATE', {lng}),
-        formatDateToFullDate(claim.getCCJRepaymentPlanDate(), lng)));
+        formatDateToFullDate(claimantResponse.getCCJRepaymentPlanDate, lng)));
     }
 
-    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claim.getCCJRepaymentPlan()) {
+    if (ccjPaymentOption.model.isCcjPaymentOptionInstalments() && claimantResponse.getCCJRepaymentPlan) {
       paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_INSTALMENTS_PAYMENT_FREQUENCY', {lng}),
-        formatPaymentFrequency(claim.getCCJRepaymentPlanFrequency(), lng)));
+        formatPaymentFrequency(claimantResponse.getCCJRepaymentPlanFrequency, lng)));
     }
   }
 

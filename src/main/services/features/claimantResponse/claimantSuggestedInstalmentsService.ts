@@ -1,5 +1,6 @@
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import { AppRequest } from 'common/models/AppRequest';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 import {Request} from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 
@@ -9,9 +10,10 @@ const logger = Logger.getLogger('claimantSuggestedInstalmentsService');
 export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     const claimantSuggestedInstalments = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
     const firstRepaymentDate = new Date(claimantSuggestedInstalments?.firstRepaymentDate);
-    const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+    const claimAmountAccepted : number = claimantResponse.hasClaimantAcceptedDefendantAdmittedAmount ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return claimantSuggestedInstalments ? new RepaymentPlanForm(
       claimAmountAccepted,
       claimantSuggestedInstalments.paymentAmount,
@@ -29,7 +31,8 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
 export const getClaimantSuggestedInstalmentsForm = async (req: Request): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
-    const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    const claimAmountAccepted : number = claimantResponse.hasClaimantAcceptedDefendantAdmittedAmount ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return new RepaymentPlanForm(
       claimAmountAccepted,
       req.body.paymentAmount,

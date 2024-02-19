@@ -7,6 +7,7 @@ import {
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {Task} from 'models/taskList/task';
+import {ClaimantResponse} from 'common/models/claimantResponse';
 
 export function getHaveYouBeenPaidTask(claim: Claim, claimId: string, lang: string): Task {
   const haveYouBeenPaidTask = {
@@ -24,6 +25,7 @@ export function getHaveYouBeenPaidTask(claim: Claim, claimId: string, lang: stri
 }
 
 export function getSettleTheClaimForTask(claim: Claim, claimId: string, lang: string): Task {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const text = claim.isFullDefence() && claim.hasPaidInFull() ? 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE' : 'CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.SETTLE_CLAIM_FOR';
   const settleTheClaimForTask = {
     description: t(text, {
@@ -33,9 +35,9 @@ export function getSettleTheClaimForTask(claim: Claim, claimId: string, lang: st
     url: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_CLAIM_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.claimantResponse?.hasPartPaymentBeenAccepted?.option
-    || claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option
-    || (claim.hasClaimantRejectedPartAdmitPayment() && claim.claimantResponse?.rejectionReason?.text)) {
+  if (claimantResponse.hasPartPaymentBeenAccepted?.option
+    || claimantResponse.hasFullDefenceStatesPaidClaimSettled?.option
+    || (claimantResponse.hasClaimantRejectedPartAdmitPayment && claimantResponse.rejectionReason?.text)) {
     settleTheClaimForTask.status = TaskStatus.COMPLETE;
   }
   return settleTheClaimForTask;

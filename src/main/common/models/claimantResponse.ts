@@ -15,6 +15,8 @@ import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statemen
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {RepaymentDecisionType} from './claimantResponse/RepaymentDecisionType';
 import {MediationCarm} from 'models/mediation/mediationCarm';
+import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import { RepaymentPlanInstalments } from './claimantResponse/ccj/repaymentPlanInstalments';
 
 export class ClaimantResponse {
   hasDefendantPaidYou?: GenericYesNo;
@@ -38,6 +40,78 @@ export class ClaimantResponse {
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;
+
+  get getDefendantPaidAmount(): number | undefined {
+    return this.ccjRequest?.paidAmount?.amount;
+  }
+
+  get getHasDefendantPaid() : YesNo {
+    return this.ccjRequest?.paidAmount?.option;
+  }
+
+  get getCCJTotalAmount() : number {
+    return this.ccjRequest?.paidAmount?.totalAmount;
+  }
+
+  get getCCJPaymentOption() : PaymentOptionType {
+    return this.ccjRequest?.ccjPaymentOption?.type;
+  }
+
+  get getCCJPaymentDate() : Date {
+    return this.ccjRequest?.defendantPaymentDate?.date;
+  }
+
+  get getCCJRepaymentPlan() : RepaymentPlanInstalments {
+    return this.ccjRequest?.repaymentPlanInstalments;
+  }
+
+  get getCCJRepaymentPlanAmount() : number {
+    return this.ccjRequest?.repaymentPlanInstalments?.amount;
+  }
+
+  get getCCJRepaymentPlanFrequency() : TransactionSchedule {
+    return this.ccjRequest?.repaymentPlanInstalments?.paymentFrequency;
+  }
+
+  get getCCJRepaymentPlanDate() : Date {
+    return this.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date;
+  }
+
+  get hasDefendantPaid(): boolean {
+    return this.ccjRequest?.paidAmount?.option === YesNo.YES;
+  }
+
+  get hasClaimantConfirmedDefendantPaid(): boolean {
+    return this.hasDefendantPaidYou?.option === YesNo.YES;
+  }
+
+  get hasClaimantRejectedDefendantPaid(): boolean {
+    return this.hasDefendantPaidYou?.option === YesNo.NO;
+  }
+
+  get hasClaimantRejectedPartAdmitPayment(): boolean {
+    return this.hasPartPaymentBeenAccepted?.option === YesNo.NO;
+  }
+
+  get hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() {
+    return this?.hasPartPaymentBeenAccepted?.option === YesNo.YES;
+  }
+
+  get hasClaimantRejectedDefendantAdmittedAmount() {
+    return this?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
+  }
+
+  get hasClaimantAcceptedDefendantAdmittedAmount() {
+    return this?.hasPartAdmittedBeenAccepted?.option === YesNo.YES;
+  }
+
+  get hasClaimantRejectedDefendantResponse() {
+    return this?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO;
+  }
+
+  get hasClaimantAcceptedDefendantResponse() {
+    return this?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.YES;
+  }
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;

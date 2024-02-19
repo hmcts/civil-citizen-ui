@@ -16,6 +16,7 @@ import {
 import {Task} from 'models/taskList/task';
 import {YesNo} from 'common/form/models/yesNo';
 import {hasClaimantResponseContactPersonAndCompanyPhone} from 'common/utils/taskList/tasks/taskListHelpers';
+import { ClaimantResponse } from 'common/models/claimantResponse';
 
 export function getAcceptOrRejectDefendantAdmittedTask(claim: Claim, claimId: string, lang: string): Task {
   const accceptOrRejectDefendantAdmittedTask = {
@@ -146,6 +147,7 @@ export function getProposeAlternativeRepaymentTask(claim: Claim, claimId: string
 }
 
 export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: string): Task {
+  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const countyCourtJudgmentTask = {
     description: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.REQUEST_COUNTY_COURT_JUDGMENT', {
       lng: lang,
@@ -153,7 +155,7 @@ export function getCountyCourtJudgmentTask(claim: Claim, claimId: string, lang: 
     url: constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  if (claim.getHasDefendantPaid()) {
+  if (claimantResponse.getHasDefendantPaid) {
     countyCourtJudgmentTask.status = TaskStatus.COMPLETE;
   }
   return countyCourtJudgmentTask;
