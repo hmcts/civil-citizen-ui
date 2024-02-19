@@ -51,8 +51,8 @@ export const getNotificationById = async (claimId: string): Promise<DashboardNot
   }
 };
 
-export const getDashboardById = async (claimId: string): Promise<Dashboard> => {
-  const dashboard = await civilServiceClient.retrieveDashboard(claimId);
+export const getDashboardById = async (claimId: string, caseRole: string,req: AppRequest): Promise<Dashboard> => {
+  const dashboard = await civilServiceClient.retrieveDashboard(claimId,caseRole,req);
   if (dashboard) {
     return dashboard;
   } else {

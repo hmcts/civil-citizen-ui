@@ -1,11 +1,11 @@
 import {app} from '../../app';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardContentType} from 'models/dashboardContentType';
 import {plainToInstance} from 'class-transformer';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
@@ -27,9 +27,9 @@ export const getDashboardContentTypeFromCache = async (caseRole:ClaimantOrDefend
     if(data) {
       const jsonData = JSON.parse(data);
       if (dashboardContentType == DashboardContentType.DASHBOARD) {
-        const dashboardItems= plainToInstance(DashboardTaskList, jsonData as object[]);
-        const dashboard =new Dashboard();
-        dashboard.items = dashboardItems;
+        const dashboard = new Dashboard();
+        dashboard.items=[];
+        dashboard.items = plainToInstance(DashboardTaskList, jsonData as object[]);
         return dashboard;
       } else {
         const notificationItems = plainToInstance(DashboardNotification, jsonData as object[]);

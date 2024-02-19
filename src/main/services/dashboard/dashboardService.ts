@@ -8,16 +8,17 @@ import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {getDashboardById, getNotificationById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
 
-export const getDashboardForm = async (claim: Claim,claimId: string):Promise<Dashboard> => {
+export const getDashboardForm = async (claim: Claim,claimId: string,req: AppRequest):Promise<Dashboard> => {
   try {
     const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
     let dashboard: Dashboard = await getDashboardFromCache(caseRole, claimId);
     if (!dashboard) {
-      dashboard = await getDashboardById(claimId);
+      dashboard = await getDashboardById(claimId,caseRole,req);
       await saveDashboardToCache(dashboard, caseRole, claimId);
     }
     return dashboard;

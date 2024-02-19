@@ -1,9 +1,11 @@
 export class DashboardTask {
-  TaskNameEn: string;
-  TaskNameCy: string;
+
+  taskNameEn: string;
+  taskNameCy: string;
   status: string;
   hintTextEn:string;
   hintTextCy:string;
   url:string;
+
 }
 

@@ -20,7 +20,7 @@ import {
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_FEES_PAYMENT_URL,
-  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL, CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -44,6 +44,10 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
+import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -431,16 +435,38 @@ export class CivilServiceClient {
     return dashboardNotificationList;
   }
 
-  async retrieveDashboard(claimId: string): Promise<Dashboard>  {
-    const jsonTaskList={items:[
-      {categoryEn:'Task Title',
-        categoryCy:'Task Title Welsh',
-        task:[{TaskNameEn:'Description',TaskNameCy:'Description Welsh',hintTextEn:'help',hintTextCy:'help welsh',status:'DONE'},
-          {TaskNameEn:'Description 2',TaskNameCy:'Description Welsh2',hintTextEn:'help 2',hintTextCy:'help welsh 2',status:'DONE'},
-        ],
-      }],
-    };
-    const dashboard = Object.assign(new Dashboard(), jsonTaskList);
+  async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
+    const config = this.getConfig(req);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'claimant'), config);
+
+    const taskList: DashboardTaskList[] = Object.assign([new DashboardTaskList()], response.data);
+
+    const groupedTasks = taskList.reduce((group, task) => {
+      const key = `${task.categoryEn}-${task.categoryCy}`;
+      const civilServiceDashboardTask = plainToInstance(CivilServiceDashboardTask,task);
+      const dashboardTask = new DashboardTask();
+      dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
+      dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
+      dashboardTask.status = DashboardTaskStatus[civilServiceDashboardTask.currentStatus];
+      dashboardTask.hintTextEn = civilServiceDashboardTask.hintTextEn;
+      dashboardTask.hintTextCy = civilServiceDashboardTask.hintTextCy;
+      dashboardTask.url = civilServiceDashboardTask.url;
+      if (!group[key]) {
+        group[key] = new DashboardTaskList();
+        group[key].categoryEn = civilServiceDashboardTask.categoryEn;
+        group[key].categoryCy = civilServiceDashboardTask.categoryCy;
+        group[key].tasks = [];
+        group[key].tasks.push(dashboardTask);
+      } else {
+        group[key].tasks.push(dashboardTask);
+      }
+      return group;
+    }, {} as Record<string, DashboardTaskList>);
+
+    const groupedTasksList = Object.values(groupedTasks);
+
+    const dashboard = new Dashboard();
+    dashboard.items=groupedTasksList;
     return dashboard;
   }
 }

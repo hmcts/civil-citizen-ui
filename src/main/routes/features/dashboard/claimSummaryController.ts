@@ -39,7 +39,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
       const dashboardNotifications = await getNotifications(claimId, claim);
-      const dashboardTaskList = await getDashboardForm(claim, claimId);
+      const dashboardTaskList = await getDashboardForm(claim, claimId,req as AppRequest);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
       // RELEASE 1
