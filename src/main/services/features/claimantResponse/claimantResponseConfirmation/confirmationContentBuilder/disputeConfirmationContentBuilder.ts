@@ -5,8 +5,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getClaimantResponseStatus = (claim: Claim, statement: string, lang: string) => {
   const claimNumber = claim.legacyCaseReference;
-  // TODO: update this date as submission date When submission implemented on check-and-send page
-  const responseSubmitDate = formatDateToFullDate(new Date(), lang);
+  const responseSubmitDate = formatDateToFullDate(claim?.applicant1ResponseDate, lang);
 
   const htmlContent = `<span class='govuk-!-font-size-27'>${t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER', { lng: lang })}</span>
   <br><strong>${claimNumber}</strong><br>
