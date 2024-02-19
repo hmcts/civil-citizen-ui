@@ -10,30 +10,30 @@ const fields ={
 const content = {
   heading: {
     en: 'List your evidence',
-    cy: 'Rhestru eich tystiolaeth'
-  }
-} 
+    cy: 'Rhestru eich tystiolaeth',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const dropdowns = {
   firstSelection: {
     en: 'Contracts and agreements',
-    cy: 'Contractau a chytundebau'
+    cy: 'Contractau a chytundebau',
   },
-}
+};
 
 const inputs = {
   firstEvidenceItem: {
     en: 'TestEvidence',
-    cy: 'Tystiolaeth Prawf'
-  }
-}
+    cy: 'Tystiolaeth Prawf',
+  },
+};
 
 class ListYourEvidence {
 

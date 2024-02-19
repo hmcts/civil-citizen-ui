@@ -26,23 +26,23 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   heading: {
     en: 'What are your regular expenses?',
-    cy: 'Beth yw eich costau rheolaidd?'
-  }
-}
+    cy: 'Beth yw eich costau rheolaidd?',
+  },
+};
 
 const inputs = {
   otherExpenseSource: {
     en: 'Fuel',
-    cy: 'Tanwydd'
-  }
-}
+    cy: 'Tanwydd',
+  },
+};
 
 class MonthlyExpenses {
 

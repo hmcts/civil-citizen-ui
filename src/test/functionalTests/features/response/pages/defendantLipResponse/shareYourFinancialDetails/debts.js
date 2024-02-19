@@ -23,31 +23,31 @@ const buttons = {
   },
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   heading: {
     en: 'Do you have loans or credit card debts?',
-    cy: 'A oes gennych fenthyciadau neu ddyledion cerdyn credyd?'
-  }
+    cy: 'A oes gennych fenthyciadau neu ddyledion cerdyn credyd?',
+  },
 }
 
 const inputs = {
   debtItem1: {
     en: 'HSBC Credit card',
-    cy: 'Cerdyn credyd HSBC'
+    cy: 'Cerdyn credyd HSBC',
   },
   debtItem2: {
     en: 'Motor vehicle loan',
-    cy: 'Benthyciad cerbyd modur'
+    cy: 'Benthyciad cerbyd modur',
   },
   debtItem3: {
     en: 'Student loan',
-    cy: 'Benthyciad myfyriwr'
-  }
-}
+    cy: 'Benthyciad myfyriwr',
+  },
+};
 
 class Debts {
 

@@ -13,23 +13,23 @@ const buttons = {
   addAnotherAccount: 'Add another account',
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
+    cy: 'Cadw a Pharhau',
   },
 };
 
 const content = {
   heading: {
     en: 'Add your timeline of events',
-    cy: 'Ychwanegu eich amserlen digwyddiadau'
-  }
-}
+    cy: 'Ychwanegu eich amserlen digwyddiadau',
+  },
+};
 
 const inputs = {
   description1: {
     en: 'TestTimeLine',
-    cy: 'Amserlen Prawf'
-  }
-}
+    cy: 'Amserlen Prawf',
+  },
+};
 
 class AddYourTimeLine {
   async addTimeLineOfEvents() {

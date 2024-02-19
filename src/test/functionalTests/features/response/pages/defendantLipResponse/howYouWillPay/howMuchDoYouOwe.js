@@ -9,20 +9,20 @@ const fields ={
 const content = {
   heading: {
     en: 'How much money do you admit you owe?',
-    cy: 'Faint o arian ydych chi\'n cyfaddef sy\'n ddyledus gennych?'
+    cy: 'Faint o arian ydych chi\'n cyfaddef sy\'n ddyledus gennych?',
   },
   hintText: {
     en: 'This includes the claim fee and any interest.',
-    cy: 'Mae hyn yn cynnwys ffi\'r hawliad ac unrhyw log.'
-  }
-}
+    cy: 'Mae hyn yn cynnwys ffi\'r hawliad ac unrhyw log.',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class HowMuchDoYouOwe {
 

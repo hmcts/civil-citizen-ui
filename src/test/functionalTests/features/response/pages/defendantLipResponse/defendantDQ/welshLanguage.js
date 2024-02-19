@@ -10,28 +10,28 @@ const fields ={
 const content = {
   heading: {
     en: 'Welsh language',
-    cy: 'Yr iaith Gymraeg'
+    cy: 'Yr iaith Gymraeg',
   },
   descriptionText: {
     en: 'Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.',
-    cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.'
+    cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
   },
   speakLanguageQuestion: {
     en: 'What languages will you, your experts and your witnesses speak at the hearing?',
-    cy: 'Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?'
+    cy: 'Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?',
   },
   documentsLanguageQuestion: {
     en: 'What languages will the documents be provided in?',
-    cy: 'Ym mha iaith y darperir y dogfennau?'
-  }
-}
+    cy: 'Ym mha iaith y darperir y dogfennau?',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 class WelshLanguage {
 
   async selectLanguageOption() {

@@ -14,16 +14,16 @@ const fields ={
 const content = {
   heading: {
     en: 'Have you already got a report written by an expert?',
-    cy: 'A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?'
-  }
-}
+    cy: 'A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
+    cy: 'Cadw a Pharhau',
   },
-}
+};
 
 class ExpertReportDetails {
 

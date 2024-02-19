@@ -219,7 +219,7 @@ class ResponseSteps {
   }
 
   async AddYourTimeLineEvents() {
-    await addYourTimeLine.addTimeLineOfEvents(language);
+    await addYourTimeLine.addTimeLineOfEvents();
   }
 
   async AddYourTimeLineEventsError() {
@@ -300,16 +300,16 @@ class ResponseSteps {
 
   async EnterBankAccountDetails() {
     await bankAccountDetails.enterBankAccountDetails();
-    await bankAccountDetails.clickContinue(language);
+    await bankAccountDetails.clickContinue();
   }
 
   async SelectDisabilityDetails(disability, severeDisability) {
     if (disability == 'yes') {
       await disabilityDetails.clickYesButton();
       if (severeDisability == 'yes') {
-        await severeDisabilityDetails.clickYesButton(language);
+        await severeDisabilityDetails.clickYesButton();
       } else {
-        await severeDisabilityDetails.clickNoButton(language);
+        await severeDisabilityDetails.clickNoButton();
       }
     } else {
       await disabilityDetails.clickNoButton();

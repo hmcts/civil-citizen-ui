@@ -19,25 +19,25 @@ const buttons = {
 const content = {
   heading1: {
     en: 'Requesting extra time',
-    cy: 'Gwneud cais am ragor o amser'
+    cy: 'Gwneud cais am ragor o amser',
   },
   subheading1: {
     en: 'How much extra time can you request?',
-    cy: 'Faint o amser ychwanegol y gallwch wneud cais amdano?'
+    cy: 'Faint o amser ychwanegol y gallwch wneud cais amdano?',
   },
   heading2: {
     en: 'Response deadline',
-    cy: 'Terfyn amser ar gyfer ymateb'
+    cy: 'Terfyn amser ar gyfer ymateb',
   },
   subheading2: {
     en: 'Current response deadline:',
-    cy: 'Terfyn amser cyfredol ar gyfer ymateb:'
+    cy: 'Terfyn amser cyfredol ar gyfer ymateb:',
   },
   moreTimeQuestion: {
     en: 'Do you want to request more time to respond?',
-    cy: 'Ydych chi eisiau gwneud cais am ragor o amser i ymateb?'
-  }
-}
+    cy: 'Ydych chi eisiau gwneud cais am ragor o amser i ymateb?',
+  },
+};
 
 var targetDate = new Date();
 targetDate.setDate(targetDate.getDate() + 40);

@@ -14,8 +14,8 @@ const content = {
   heading: {
     en: 'Does your partner receive a pension?',
     cy: 'A yw eich partner yn cael pensiwn?',
-  }
-}
+  },
+};
 
 class PartnerPensionDetails {
 

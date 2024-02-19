@@ -16,9 +16,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Do any children live with you?',
-    cy: 'A oes unrhyw blant yn byw gyda chi?'
-  }
-}
+    cy: 'A oes unrhyw blant yn byw gyda chi?',
+  },
+};
 
 class DependantDetails {
 

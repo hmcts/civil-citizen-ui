@@ -11,17 +11,16 @@ const fields ={
 const content = {
   heading: {
     en: 'Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?',
-    cy: 'A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?'
-  }
-}
+    cy: 'A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
-
+    cy: 'Cadw a Pharhau',
+  },
+};
 class CantAttendHearing {
 
   async selectYesForCantAttendHearing() {

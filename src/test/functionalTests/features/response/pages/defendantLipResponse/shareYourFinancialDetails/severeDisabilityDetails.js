@@ -13,9 +13,9 @@ const buttons = {
 const content = { 
   heading: {
     en: 'Are you severely disabled?',
-    cy: 'Ydych chi\'n anabl iawn?'
-  }
-}
+    cy: 'Ydych chi\'n anabl iawn?',
+  },
+};
 
 class SevereDisabilityDetails {
 

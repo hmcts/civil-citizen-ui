@@ -13,27 +13,27 @@ const fields ={
 const content = {
   heading: {
     en: 'Confirm your details',
-    cy: 'Cadarnhewch eich manylion'
+    cy: 'Cadarnhewch eich manylion',
   },
   descriptionText: {
     en: 'Give details of the person that will be giving evidence.',
-    cy: 'Rhowch fanylion yr unigolyn a fydd yn rhoi tystiolaeth.'
-  }
-}
+    cy: 'Rhowch fanylion yr unigolyn a fydd yn rhoi tystiolaeth.',
+  },
+};
 
 const inputs = {
   jobTitle: {
     en: 'Test',
-    cy: 'Prawf'
-  }
-}
+    cy: 'Prawf',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class ConfirmYourDetails {
 

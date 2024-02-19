@@ -13,9 +13,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Are you disabled?',
-    cy: 'A oes gennych anabledd?'
-  }
-}
+    cy: 'A oes gennych anabledd?',
+  },
+};
 
 class DisabilityDetails {
 

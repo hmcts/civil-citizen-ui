@@ -19,16 +19,16 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   heading: {
     en: 'Debts you\'re behind on',
-    cy: 'Dyledion rydych ar ei hôl hi yn eu talu'
-  }
-}
+    cy: 'Dyledion rydych ar ei hôl hi yn eu talu',
+  },
+};
 
 class PriorityDebtsDetails {
 

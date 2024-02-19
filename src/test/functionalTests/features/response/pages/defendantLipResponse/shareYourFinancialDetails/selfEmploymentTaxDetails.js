@@ -15,17 +15,16 @@ const buttons = {
 const content = {
   heading: {
     en: 'Are you behind on tax payments?',
-    cy: 'A ydych yn hwyr yn gwneud taliadau treth?'
+    cy: 'A ydych yn hwyr yn gwneud taliadau treth?',
   },
-}
+};
 
 const inputs = {
   reason: {
     en: 'Last year pending',
-    cy: 'Yn aros o\'r llynedd'
-  }
-}
-
+    cy: 'Yn aros o\'r llynedd',
+  },
+};
 class SelfEmploymentTaxDetails {
 
   async clickYesButton() {

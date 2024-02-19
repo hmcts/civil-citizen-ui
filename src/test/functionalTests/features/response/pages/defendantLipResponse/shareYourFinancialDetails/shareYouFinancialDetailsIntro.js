@@ -9,17 +9,17 @@ const buttons = {
 const content = {
   descriptionText1: {
     en: 'We\'ll ask you for the details then we\'ll send them to',
-    cy: 'Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at'
+    cy: 'Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at',
   },
   descriptionText2: {
     en: 'If they reject your proposal, the court will make a new plan using your financial details.',
-    cy: 'Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.'
+    cy: 'Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.',
   },
   descriptionText3: {
     en: 'They can reject your proposal if they believe you can pay sooner.',
-    cy: 'Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.'
-  }
-}
+    cy: 'Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.',
+  },
+};
 
 class ShareYouFinancialDetailsIntro {
 

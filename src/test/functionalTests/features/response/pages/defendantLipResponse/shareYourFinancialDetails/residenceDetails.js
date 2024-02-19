@@ -16,9 +16,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Where do you live?',
-    cy: 'Ble ydych chi\'n byw?'
-  }
-}
+    cy: 'Ble ydych chi\'n byw?',
+  },
+};
 
 class ResidenceDetails {
 

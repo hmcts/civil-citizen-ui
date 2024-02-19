@@ -9,16 +9,16 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
+    cy: 'Cadw a Pharhau',
   },
 };
 
 const content = {
   heading: {
     en: 'Is your partner severely disabled?',
-    cy: 'A oes gan eich partner anabledd difrifol?'
-  }
-}
+    cy: 'A oes gan eich partner anabledd difrifol?',
+  },
+};
 
 class SeverePartnerDisabilityDetails {
 

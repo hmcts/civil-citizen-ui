@@ -11,9 +11,9 @@ const fields = {
 const content = {
   heading: {
     en: 'What date will you pay on?',
-    cy: 'Ar ba ddyddiad byddwch yn talu'
-  }
-}
+    cy: 'Ar ba ddyddiad byddwch yn talu',
+  },
+};
 
 const buttons = {
   saveAndContinue: 'button.govuk-button',

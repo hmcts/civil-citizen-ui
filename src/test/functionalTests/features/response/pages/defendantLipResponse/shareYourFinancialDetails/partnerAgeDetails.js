@@ -13,9 +13,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Is your partner aged 18 or over?',
-    cy: 'A yw eich partner yn 18 oed neu\'n hŷn?'
-  }
-}
+    cy: 'A yw eich partner yn 18 oed neu\'n hŷn?',
+  },
+};
 
 class PartnerAgeDetails {
 

@@ -15,23 +15,23 @@ const fields ={
 const content = {
   heading: {
     en: 'Do you have other witnesses?',
-    cy: 'A oes gennych chi dystion eraill?'
+    cy: 'A oes gennych chi dystion eraill?',
   },
-}
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const inputs = {
   firstWitessDetails: {
     en: 'Test Witness Details',
-    cy: 'Manylion Tyst Prawf'
-  }
-}
+    cy: 'Manylion Tyst Prawf',
+  },
+};
 
 class DefendantWitnesses {
 

@@ -18,31 +18,31 @@ const fields ={
 const content = {
   heading: {
     en: 'Do you, your experts or witnesses need support to attend a hearing',
-    cy: 'Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?'
-  }
-}
+    cy: 'Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?',
+  },
+};
 
 const buttons = {
   addPerson: {
     en: 'Add another person',
-    cy: 'Ychwanegu unigolyn arall'
+    cy: 'Ychwanegu unigolyn arall',
   },
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const inputs = {
   person1SignLanguage: {
     en: 'Spanish',
-    cy: 'Sbaeneg'
+    cy: 'Sbaeneg',
   }, 
   person2OtherSupport: {
     en: 'No support required',
-    cy: 'Dim cymorth sydd ei angen'
-  }
-}
+    cy: 'Dim cymorth sydd ei angen',
+  },
+};
 
 class SupportRequired {
 

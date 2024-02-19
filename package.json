@@ -22,7 +22,6 @@
     "sonar-scan": "sonar-scanner",
     "test:smoke": "MOCHAWESOME_REPORTFILENAME=smokeTests yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
     "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 4 --grep @regression --reporter mocha-multi --verbose",
-    "test:test": "MOCHAWESOME_REPORTFILENAME=test yarn test:functional:codeceptjs run-workers --suites 4 --grep @kiyron --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @nightly --reporter mocha-multi --verbose",

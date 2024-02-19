@@ -15,9 +15,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Do you have a job?',
-    cy: 'A oes gennych swydd?'
-  }
-}
+    cy: 'A oes gennych swydd?',
+  },
+};
 
 class EmploymentDetails {
 

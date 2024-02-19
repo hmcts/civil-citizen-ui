@@ -12,9 +12,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Have you paid the claimant the amount you admit you owe?',
-    cy: 'A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?'
-  }
-}
+    cy: 'A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?',
+  },
+};
 
 
 class PartAdmitAlreadyPaid {

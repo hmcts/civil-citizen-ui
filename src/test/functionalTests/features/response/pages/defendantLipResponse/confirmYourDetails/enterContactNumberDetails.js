@@ -9,20 +9,20 @@ const fields = {
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   headingCarm: {
     en: 'Enter a phone number',
-    cy: 'Rhowch rif ffôn'
+    cy: 'Rhowch rif ffôn',
   },
   heading: {
     en: 'Enter a phone number (optional)',
-    cy: 'Rhowch rif ffôn (dewisol)'
+    cy: 'Rhowch rif ffôn (dewisol)',
   },
-}
+};
 
 class ContactNumberDetailsPage {
   async enterContactNumber(carmEnabled = false) {

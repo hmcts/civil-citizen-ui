@@ -9,23 +9,23 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
+    cy: 'Cadw a Pharhau',
   },
 };
 
 const content = {
   heading: {
     en: 'Who employs you?',
-    cy: 'Pwy sy’n eich cyflogi'
-  }
-}
+    cy: 'Pwy sy’n eich cyflogi',
+  },
+};
 
 const inputs = {
   jobTitle: {
     en: 'Builder',
-    cy: 'Adeiladwr'
-  }
-}
+    cy: 'Adeiladwr',
+  },
+};
 
 class EmployerDetails {
 

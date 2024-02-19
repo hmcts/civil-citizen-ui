@@ -10,9 +10,9 @@ const fields ={
 const content = {
   heading: {
     en: 'Using an expert',
-    cy: 'Defnyddio arbenigwr'
-  }
-}
+    cy: 'Defnyddio arbenigwr',
+  },
+};
 
 class DqExpert {
 

@@ -18,13 +18,13 @@ const buttons = {
 const content = {
   heading: {
     en: 'Enter a phone number',
-    cy: 'Rhowch rif ffôn'
+    cy: 'Rhowch rif ffôn',
   },
   descriptionText: {
     en: 'Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.',
-    cy: 'Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi. Ni fyddwn yn rhoi\'r rhif i rywun arall.'
-  }
-}
+    cy: 'Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi. Ni fyddwn yn rhoi\'r rhif i rywun arall.',
+  },
+};
 
 class MediationCanWeUse {
 

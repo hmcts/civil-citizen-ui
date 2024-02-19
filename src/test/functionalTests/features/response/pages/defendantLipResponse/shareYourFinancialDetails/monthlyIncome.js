@@ -17,23 +17,23 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   heading: {
     en: 'What regular income do you receive?',
-    cy: 'Pa incwm rheolaidd ydych chi’n ei gael?'
-  }
-}
+    cy: 'Pa incwm rheolaidd ydych chi’n ei gael?',
+  },
+};
 
 const inputs = {
   otherIncomeSource: {
     en: 'Rent',
-    cy: 'Rhent'
-  }
-}
+    cy: 'Rhent',
+  },
+};
 
 class MonthlyIncome {
 

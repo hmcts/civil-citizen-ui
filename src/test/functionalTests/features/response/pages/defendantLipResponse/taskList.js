@@ -5,9 +5,9 @@ const {language} = require('../../../../sharedData')
 const content = {
   heading: {
     en: 'Respond to a money claim',
-    cy: 'Ymateb i hawliad ariannol'
-  }
-}
+    cy: 'Ymateb i hawliad ariannol',
+  },
+};
 
 class TaskListPage {
   verifyResponsePageContent() {

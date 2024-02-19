@@ -13,16 +13,16 @@ const buttons = {
 const content = {
   heading: {
     en: 'What are you self-employed as?',
-    cy: 'Mewn pa fodd ydych chi’n hunangyflogedig?'
-  }
+    cy: 'Mewn pa fodd ydych chi’n hunangyflogedig?',
+  },
 };
 
 const inputs = {
   jobTitle: {
     en: 'Builder',
-    cy: 'Adeiladwr'
-  }
-}
+    cy: 'Adeiladwr',
+  },
+};
 
 class SelfEmploymentDetails {
 

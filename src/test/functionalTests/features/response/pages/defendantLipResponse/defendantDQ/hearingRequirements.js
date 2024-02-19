@@ -10,16 +10,16 @@ const fields ={
 const content = {
   heading: {
     en: 'Determination without Hearing Questions',
-    cy: 'Cwestiynau Penderfynu heb Wrandawiad'
-  }
-}
+    cy: 'Cwestiynau Penderfynu heb Wrandawiad',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class HearingRequirements {
 

@@ -13,9 +13,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'Do you live with a partner?',
-    cy: 'Ydych chi\'n byw gyda phartner?'
-  }
-}
+    cy: 'Ydych chi\'n byw gyda phartner?',
+  },
+};
 
 class PartnerDetails {
 

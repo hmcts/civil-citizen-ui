@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const {language} = require('../../../../sharedData');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   addressLine1: 'input[id="primaryAddress[addressLine1]"]',
@@ -29,19 +29,19 @@ const fields = {
 const content = {
   confirmYourDetailsLink: {
     en: 'Confirm your details',
-    cy: 'Cadarnhau eich manylion'
+    cy: 'Cadarnhau eich manylion',
   },
 };
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class NameAndAddressDetailsPage {
-  async enterNameAndAddressDetails (claimRef) {
+  async enterNameAndAddressDetails () {
     await I.click(content.confirmYourDetailsLink[language]);
     await I.waitForElement(fields.addressLine1, config.WaitForText);
     await I.fillField(fields.addressLine1, 'Test AddressLine1');

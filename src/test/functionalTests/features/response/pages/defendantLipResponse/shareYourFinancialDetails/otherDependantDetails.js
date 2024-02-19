@@ -15,16 +15,16 @@ const buttons = {
 const content = {
   heading: {
     en: 'Do you support anyone else financially?',
-    cy: 'A ydych yn cefnogi rhywun arall yn ariannol?'
-  }
-}
+    cy: 'A ydych yn cefnogi rhywun arall yn ariannol?',
+  },
+};
 
 const inputs = {
   details: {
     en: 'Parents',
-    cy: 'Rhieni'
-  }
-}
+    cy: 'Rhieni',
+  },
+};
 
 class OtherDependantDetails {
 

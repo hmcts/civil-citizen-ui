@@ -22,15 +22,15 @@ const content = {
   hintText2: {
     en: 'This includes the claim fee and any interest.', 
     cy:'Mae hyn yn cynnwys ffi\'r hawliad.',
-  }
-}
+  },
+};
 
 const inputs = {
   whyYouDisagree: {
     en: 'Test reason',
-    cy: 'Rheswm Prawf'
-  }
-}
+    cy: 'Rheswm Prawf',
+  },
+};
 
 class WhyDoYouDisagreeTheClaimAmount {
   async enterReason (claimRef, responseType) {

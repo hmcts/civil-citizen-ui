@@ -1,6 +1,6 @@
 const I= actor();
 const config = require('../../../../../../config');
-const {language} = require('../../../../sharedData');
+const { language } = require('../../../../../sharedData');
 
 const fields = {
   day: 'input[id="day"]',
@@ -11,16 +11,16 @@ const fields = {
 const content = {
   heading: {
     en: 'Enter your date of birth',
-    cy: 'Rhowch eich dyddiad geni'
+    cy: 'Rhowch eich dyddiad geni',
   },
 };
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class DateOfBirthDetailsPage {
   async enterDateOfBirth (claimRef)  {

@@ -16,9 +16,9 @@ const buttons = {
 const content = {
   heading: {
     en: 'How do you respond to the claim?',
-    cy: 'Sut ydych chi\'n ymateb i\'r hawliad?'
-  }
-}
+    cy: 'Sut ydych chi\'n ymateb i\'r hawliad?',
+  },
+};
 
 class ResponseTypePage {
   async enterResponseToClaim(claimRef, responseType){

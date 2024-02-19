@@ -11,16 +11,16 @@ const fields = {
 const content = {
   heading: {
     en: 'Free telephone mediation',
-    cy: 'Gwasanaeth cyfryngu dros y ffôn am ddim'
-  }
-}
+    cy: 'Gwasanaeth cyfryngu dros y ffôn am ddim',
+  },
+};
 
 const buttons = {
   continue: {
     en: 'Continue',
-    cy: 'Parhau'
-  }
-}
+    cy: 'Parhau',
+  },
+};
 
 class FreeTelephoneMediation {
 

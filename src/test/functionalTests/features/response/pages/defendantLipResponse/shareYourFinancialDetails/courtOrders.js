@@ -12,16 +12,16 @@ const fields ={
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
   heading: {
     en: 'Are you paying money as a result of any court orders?',
-    cy: 'A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?'
-  }
-}
+    cy: 'A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?',
+  },
+};
 
 class CourtOrders {
 

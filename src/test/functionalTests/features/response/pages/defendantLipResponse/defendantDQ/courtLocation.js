@@ -12,27 +12,27 @@ const fields ={
 const content = {
   heading: {
     en: 'Do you want to ask for the hearing to be held at a specific court?',
-    cy: 'Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?'
+    cy: 'Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?',
   },
   descriptionText: {
     en: 'You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing.',
-    cy: 'Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau\'r wythnos yn bell o\'ch cartref. Bydd y llys yn ystyried amgylchiadau\'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.'
-  }
-}
+    cy: 'Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau\'r wythnos yn bell o\'ch cartref. Bydd y llys yn ystyried amgylchiadau\'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const inputs = {
   courtLocationReason: {
     en: 'Nearest court',
-    cy: 'Llys agosaf'
-  }
-}
+    cy: 'Llys agosaf',
+  },
+};
 
 class CourtLocation {
   async selectPreferredCourtLocation() {

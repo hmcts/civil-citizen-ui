@@ -17,30 +17,30 @@ const fields = {
 const content = {
   heading: {
     en: 'List your bank and savings accounts',
-    cy: 'Rhestrwch eich cyfrifon banc a chyfrifon cynilo'
+    cy: 'Rhestrwch eich cyfrifon banc a chyfrifon cynilo',
   },
-}
+};
 
 const dropdownOptions = {
   accounts1:  {
     en: 'Current account',
-    cy: 'Cyfrif cyfredol'
+    cy: 'Cyfrif cyfredol',
   },
   jointAccount1: {
     en: 'Yes',
-    cy: 'le'
-  }
-}
+    cy: 'le',
+  },
+};
 
 const buttons = {
   addAnotherAccount: {
     en: 'Add another account',
-    cy: 'Ychwanegu cyfrif arall'
+    cy: 'Ychwanegu cyfrif arall',
   },
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 class BankAccountsDetails {

@@ -1,9 +1,9 @@
 class SharedData {
-    language = 'en'
+  language = 'en';
 
-    updateLanguage(language) {
-        this.language = language;
-    }
+  updateLanguage(language) {
+    this.language = language;
+  }
 }
 
 module.exports = new SharedData();

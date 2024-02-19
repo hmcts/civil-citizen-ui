@@ -12,16 +12,16 @@ const buttons = {
 const content = {
   heading: {
     en: 'Briefly explain why you can\'t pay immediately',
-    cy: 'Esboniwch yn fras pam na allwch dalu ar unwaith'
-  }
-}
+    cy: 'Esboniwch yn fras pam na allwch dalu ar unwaith',
+  },
+};
 
 const inputs = {
   reason: {
     en: 'Test reason',
-    cy: 'Rheswm Prawf'
-  }
-}
+    cy: 'Rheswm Prawf',
+  },
+};
 
 class Explanation {
   async enterExplanation() {

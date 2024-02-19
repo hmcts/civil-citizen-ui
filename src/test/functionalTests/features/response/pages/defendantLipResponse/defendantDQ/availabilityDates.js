@@ -19,24 +19,24 @@ const fields ={
 const content ={
   heading: {
     en: 'Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing',
-    cy: 'Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu\'ch tystion fynd i wrandawiad'
+    cy: 'Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu\'ch tystion fynd i wrandawiad',
   },
   mediationHeading: {
     en: 'Add a single date or longer period of time that you cannot attend meditation',
-    cy: ''
-  }
-}
+    cy: '',
+  },
+};
 
 const buttons = {
   addAnotherDate: {
     en: 'Add another date or period of time',
-    cy: 'Ychwanegu dyddiad neu gyfnod arall o amser'
+    cy: 'Ychwanegu dyddiad neu gyfnod arall o amser',
   },
   saveAndButton: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
 const month = newDate.getMonth();

@@ -12,21 +12,21 @@ const fields = {
 const buttons = {
   submit: {
     en: 'Submit Response',
-    cy: 'Cyflwyno\'r ymateb'
-  }
+    cy: 'Cyflwyno\'r ymateb',
+  },
 };
 
 const links = {
   checkAndSubmit: {
     en: 'Check and submit your response', 
-    cy: 'Gwirio a chyflwyno eich ymateb'
-  }
-}
+    cy: 'Gwirio a chyflwyno eich ymateb',
+  },
+};
 
 const content = {
   heading: {
     en: 'Check your answers',
-    cy: 'Gwiriwch eich atebion'
+    cy: 'Gwiriwch eich atebion',
   },
   confirmationHeading: {
     en: 'You\'ve submitted your response',
@@ -34,9 +34,9 @@ const content = {
   },
   confirmationSubheading: {
     en: 'What happens next',
-    cy: 'Beth sy\'n digwydd nesaf'
-  }
-}
+    cy: 'Beth sy\'n digwydd nesaf',
+  },
+};
 
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='', claimType) {

@@ -10,16 +10,16 @@ const fields ={
 const content = {
   heading: {
     en: 'Do you want to give evidence yourself?',
-    cy: 'A ydych eisiau rhoi tystiolaeth eich hun?'
-  }
-}
+    cy: 'A ydych eisiau rhoi tystiolaeth eich hun?',
+  },
+};
 
 const buttons = {
   saveAndContinue: {
     en: 'Save and continue',
-    cy: 'Cadw a Pharhau'
-  }
-}
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 class GiveEvidenceYourself {
 
