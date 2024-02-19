@@ -6,7 +6,6 @@ const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
-const defendantCitizenUserEmail = process.env.DEFENDANT_USER;
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -29,7 +28,7 @@ module.exports = {
     dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-  },
+ },
   s2s: {
     microservice: 'civil_service',
     secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64',
@@ -41,7 +40,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: defendantCitizenUserEmail,
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
