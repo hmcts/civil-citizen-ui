@@ -20,15 +20,17 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
     await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Fast Track Other Party Trial Arrangements Journey.', () => {
+//covered in cp_upload_evidence_small_claims_tests
+Scenario('Fast Track Other Party Trial Arrangements Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
-}).tag('@regression');
+});
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

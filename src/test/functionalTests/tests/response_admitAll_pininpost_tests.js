@@ -31,7 +31,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smoketest @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nightly', async ({api}) => {
   await DashboardSteps.DashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -43,7 +43,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @smo
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
-});
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();

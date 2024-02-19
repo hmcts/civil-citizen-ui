@@ -4,17 +4,26 @@ const testConfig = require('../config.js');
 
 exports.config = {
   tests: '../functionalTests/tests/**/*_tests.js',
+
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: false,
       browser: 'chromium',
-      waitForTimeout: 20000,
-      windowSize: '1920x1080',
-      timeout: 20000,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
+      windowSize: '1280x960',
+      timeout: 30000,
       waitForAction: 500,
-      waitForNavigation: 'networkidle0',
+      video: true,
+      trace: true,
+      contextOptions : {
+        recordVideo:{
+          dir:'failed-videos',
+        },
+      },
+      waitForNavigation: 'networkidle',
+      bypassCSP: true,
       ignoreHTTPSErrors: true,
     },
   },

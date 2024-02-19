@@ -17,18 +17,6 @@ module.exports = {
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   WaitForText: 60,
-  helpers: {
-    Playwright: {
-      url: testUrl,
-      show: false,
-      browser: 'chromium',
-      waitForTimeout: 20000,
-      timeout: 20000,
-      waitForAction: 1000,
-      waitForNavigation: 'networkidle0',
-      ignoreHTTPSErrors: true,
-    },
-  },
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',
@@ -52,7 +40,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{

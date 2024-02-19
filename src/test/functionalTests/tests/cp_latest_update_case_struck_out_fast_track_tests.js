@@ -18,15 +18,16 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
     await api.performCaseHearingFeeUnpaid(config.hearingCenterAdminWithRegionId1, claimRef);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Fast Track case is struck out due to hearing fee not being paid', () => {
+Scenario('Fast Track case is struck out due to hearing fee not being paid', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

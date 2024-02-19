@@ -18,15 +18,16 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', () => {
+Scenario('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();

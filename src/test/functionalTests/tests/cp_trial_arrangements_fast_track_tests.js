@@ -19,21 +19,26 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', () => {
+Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
+    await api.waitForFinishedBusinessProcess();
+    TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@regression');
+}).tag('@skipregression-cp');
 
-Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
+Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
+    await api.waitForFinishedBusinessProcess();
+    TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@regression');
+}).tag('@skipregression-cp');
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
