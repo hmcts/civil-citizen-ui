@@ -47,3 +47,5 @@ class MediationCanWeUse {
     await I.click(buttons.saveAndContinue[language]);
   }
 }
+
+module.exports = MediationCanWeUse;
