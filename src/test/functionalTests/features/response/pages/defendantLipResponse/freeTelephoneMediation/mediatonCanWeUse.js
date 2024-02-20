@@ -16,13 +16,21 @@ const buttons = {
 };
 
 const content = {
-  heading: {
+  heading1: {
     en: 'Enter a phone number',
     cy: 'Rhowch rif ffôn',
   },
-  descriptionText: {
+  descriptionText1: {
     en: 'Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.',
     cy: 'Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi. Ni fyddwn yn rhoi\'r rhif i rywun arall.',
+  },
+  heading2: {
+    en: 'Confirm your telephone number',
+    cy: 'Cadarnhewch eich rhif ffôn',
+  },
+  descriptionText2: {
+    en: 'Can the mediation service use',
+    cy: 'A all y gwasanaeth cyfryngu ddefnyddio’r rhif',
   },
 };
 
@@ -30,14 +38,12 @@ class MediationCanWeUse {
 
   async selectOptionForMediation() {
     const language = sharedData.language;
-    // await I.see('Confirm your telephone number', 'h1');
-    // await I.see('Can the mediation service use');
+    // await I.see(content.heading2[language], 'h1');
+    // await I.see(content.descriptionText2[language]);
     // await I.click(fields.yesButton);
-    await I.waitForText(content.heading[language], config.WaitForText);
-    await I.see(content.descriptionText[language]);
+    await I.waitForText(content.heading1[language], config.WaitForText);
+    await I.see(content.descriptionText1[language]);
     await I.fillField(fields.phoneNumberID, '02088908876');
     await I.click(buttons.saveAndContinue[language]);
   }
 }
-
-module.exports = MediationCanWeUse;
