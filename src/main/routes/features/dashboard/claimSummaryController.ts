@@ -38,7 +38,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
-      const dashboardNotifications = await getNotifications(claimId, claim);
+      const dashboardNotifications = await getNotifications(claimId, claim,req as AppRequest);
       const dashboardTaskList = await getDashboardForm(claim, claimId,req as AppRequest);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {

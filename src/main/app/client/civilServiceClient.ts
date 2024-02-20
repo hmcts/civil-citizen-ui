@@ -20,7 +20,7 @@ import {
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_FEES_PAYMENT_URL,
-  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL, CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL, CIVIL_SERVICE_DASHBOARD_TASKLIST_URL, CIVIL_SERVICE_NOTIFICATION_LIST_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -48,6 +48,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -424,14 +425,15 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveNotification(claimId: string): Promise<DashboardNotificationList>  {
-    const jsonNotificationList= {items :[
-      {titleEn:'English Title 1',titleCy:'Welsh Title 1',descriptionEn:'English Description 1',descriptionCy:'Welsh Description 1'},
-      {titleEn:'English Title 2',titleCy:'Welsh Title 2',descriptionEn:'English Description 2',descriptionCy:'Welsh Description 2'},
-      {titleEn:'English Title 3',titleCy:'Welsh Title 3',descriptionEn:'English Description 3',descriptionCy:'Welsh Description 3'},
-    ],
-    };
-    const dashboardNotificationList = Object.assign(new DashboardNotificationList(), jsonNotificationList);
+  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+    const config = this.getConfig(req);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'defendant'), config);
+
+    const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], response.data);
+    const dashboardNotificationItems  = plainToInstance(DashboardNotification,notificationList);
+    const dashboardNotificationList = new  DashboardNotificationList();
+    dashboardNotificationList.items=dashboardNotificationItems;
+
     return dashboardNotificationList;
   }
 

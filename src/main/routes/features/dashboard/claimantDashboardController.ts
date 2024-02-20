@@ -13,7 +13,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getClaimById(claimId, req, true);
-    const dashboardNotifications = await getNotifications(claimId, caseData);
+    const dashboardNotifications = await getNotifications(claimId, caseData,req);
     const dashboard = await getDashboardForm(caseData,claimId,req);
     res.render(claimantDashboardViewPath, {claim:caseData, claimId, dashboardTaskList:dashboard, dashboardNotifications,lang});
   } catch (error) {

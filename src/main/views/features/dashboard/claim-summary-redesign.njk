@@ -27,10 +27,10 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-            {% for notifications in dashboardNotifications.items.items %}
+            {% for notification in dashboardNotifications.items.items %}
                 {{ govukNotificationBanner({
-                   titleText:notifications.titleEn,
-                   html: notifications.descriptionEn
+                   titleText: notification.titleEn if lang=="en" else notification.titleCy,
+                   html: notification.descriptionEn if lang=="en" else notification.descriptionCy
                  })  }}
             {% endfor %}
             {% for taskList in dashboardTaskList.items.items %}
