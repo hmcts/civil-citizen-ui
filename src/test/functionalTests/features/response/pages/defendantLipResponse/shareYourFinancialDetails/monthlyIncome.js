@@ -21,7 +21,7 @@ const buttons = {
 const checkboxes = {
   incomeFromJob: {
     en: 'Income from your job',
-    cy: 'Incwm o’ch swydd'
+    cy: 'Incwm o’ch swydd',
   },
   childBenefit: {
     en: 'Child Benefit',
@@ -29,9 +29,9 @@ const checkboxes = {
   },
   otherIncome: {
     en: 'Other',
-    cy: 'Arall'
-  }
-}
+    cy: 'Arall',
+  },
+};
 
 const content = {
   heading: {

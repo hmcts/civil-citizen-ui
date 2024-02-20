@@ -4,7 +4,6 @@ const LoginSteps = require('../../features/home/steps/login');
 const DashboardSteps = require('../../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
-const { language } = require('../../sharedData');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
