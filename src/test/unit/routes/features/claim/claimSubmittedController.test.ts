@@ -19,9 +19,6 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const claimFeeHasChanged = checkIfClaimFeeHasChanged as jest.Mock;
 
 describe('Claim - Claim Submitted', () => {
