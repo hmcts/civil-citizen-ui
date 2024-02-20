@@ -4,15 +4,14 @@ const LoginSteps = require('../../features/home/steps/login');
 const DashboardSteps = require('../../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
 const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
-const { language } = require('../../sharedData');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const partAdmit = 'partial-admission';
 
-let claimRef = '1708363009420816';
+let claimRef;
 let caseData;
-let claimNumber = "292MC599";
+let claimNumber;
 let securityCode;
 
 Feature('Response with PartAdmit - Small Claims');

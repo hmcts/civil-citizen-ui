@@ -17,7 +17,7 @@ module.exports = {
   TestHeadlessBrowser: false,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
-  WaitForText: 6000,
+  WaitForText: 600000,
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',

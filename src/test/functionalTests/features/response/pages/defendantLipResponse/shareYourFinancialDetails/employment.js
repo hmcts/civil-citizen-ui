@@ -5,11 +5,21 @@ const sharedData = require('../../../../../sharedData');
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
-  employment: 'Employed',
-  selfEmployment: 'Self-employed',
 };
+
 const buttons = {
   continue: 'button.govuk-button',
+};
+
+const checkBoxes = {
+  employed: {
+    en: 'Employed',
+    cy: 'Cyflogedig',
+  },
+  selfEmployed: {
+    en: 'Self-employed',
+    cy: 'Hunangyflogedig',
+  },
 };
 
 const content = {
@@ -22,10 +32,11 @@ const content = {
 class EmploymentDetails {
 
   async clickYesButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.checkOption(fields.employment);
-    await I.checkOption(fields.selfEmployment);
+    await I.checkOption(checkBoxes.employed[language]);
+    await I.checkOption(checkBoxes.selfEmployed[language]);
     await I.click(buttons.continue);
   }
 

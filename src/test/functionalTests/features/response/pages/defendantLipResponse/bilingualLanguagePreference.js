@@ -28,7 +28,7 @@ const buttons = {
 class BilingualLanguagePreference {
 
   async verifyContent(languageOption = 'en') {
-    const language = sharedData.language
+    const language = sharedData.language;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     I.click(fields[languageOption]);
