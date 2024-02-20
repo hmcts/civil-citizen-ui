@@ -26,7 +26,7 @@ export const getRespondSettlementAgreementText = (claim: Claim, req: Request): o
 function getTextForPayByDate(claim: Claim, lang: string){
   return {
     agreementText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_BY_SET_DATE', {
-      lang: lang,
+      lng: lang,
       defendant: claim.getDefendantFullName(),
       amount: getAmount(claim),
       paymentDate: formatDateToFullDate(claim.getPaymentIntention().paymentDate, lang),
@@ -38,7 +38,7 @@ function getTextForPayByDate(claim: Claim, lang: string){
 function getTextForPayByInstallments(claim: Claim, lang: string){
   return {
     agreementText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN', {
-      lang: lang,
+      lng: lang,
       defendant: claim.getDefendantFullName(),
       amount: getAmount(claim),
       paymentAmount: getPaymentAmount(claim),
