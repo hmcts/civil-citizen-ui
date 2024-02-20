@@ -4,17 +4,20 @@ import {
   CLAIM_FEE_BREAKUP,
   CLAIM_FEE_CHANGE_URL,
 } from '../../urls';
-import {getClaimById} from 'modules/utilityService';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {AppRequest} from 'models/AppRequest';
 import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 
     if(!claim.isEmpty()) {
