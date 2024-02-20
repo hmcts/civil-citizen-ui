@@ -24,7 +24,7 @@ civil-service:
   java:
     releaseNameOverride: ${SERVICE_NAME}-java
     imagePullPolicy: Always
-    ingressHost: ${SERVICE_NAME}.preview.platform.hmcts.net
+    ingressHost: civil-cui-civil-service-staging.aat.platform.hmcts.net
     devcpuRequests: 500m
     devmemoryRequests: 2048Mi
     devmemoryLimits: 4096Mi
@@ -137,6 +137,7 @@ aac-manage-case-assignment:
   enabled: true
   java:
     imagePullPolicy: Always
+    ingresshost: civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
     image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
     environment:
@@ -267,27 +268,6 @@ ccd:
         ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
         RELEASE_REVISION: "{{ .Release.Revision }}"
 
-  am-role-assignment-service:
-    java:
-      ingressHost: civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net
-      releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
-      secrets:
-        LD_SDK_KEY:
-          secretRef: role-assignment-service-LD-SDK-KEY
-          key: key
-          disabled: true
-        ROLE_ASSIGNMENT_DB_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
-      environment:
-        RELEASE_REVISION: "{{ .Release.Revision }}"
-        ROLE_ASSIGNMENT_DB_PASSWORD: "{{ .Values.postgresql.auth.postgresPassword}}"
-        ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
-      keyVaults:
-        am:
-          secrets:
-            - role-assignment-service-LD-SDK-KEY
   ccd-definition-store-api:
     java:
       ingressHost: civil-cui-definition-store-staging.aat.platform.hmcts.net
