@@ -33,6 +33,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly', async ({api}) => {
+  console.log('Response with AdmitAll claimRef --> ' + claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -48,6 +49,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly
 }).tag('@regression-cui-r1');
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @nightly', async ({api}) => {
+  console.log('Response with AdmitAll claimRef --> ' + claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
