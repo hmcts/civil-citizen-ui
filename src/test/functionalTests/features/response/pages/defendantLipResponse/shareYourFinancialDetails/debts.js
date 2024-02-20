@@ -69,6 +69,7 @@ class Debts {
   }
 
   async clickNoButton() {
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(buttons.saveAndContinue[language]);

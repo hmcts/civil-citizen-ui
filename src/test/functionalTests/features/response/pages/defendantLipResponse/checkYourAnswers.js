@@ -96,6 +96,7 @@ class CheckYourAnswersPage {
   }
 
   async fillStatementOfTruthAndSubmit() {
+    const language = sharedData.language;
     I.waitForText('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.fillField(fields.signedName, 'TestTest');
