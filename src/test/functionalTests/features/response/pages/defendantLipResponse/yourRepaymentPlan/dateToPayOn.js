@@ -1,18 +1,10 @@
 const I = actor();
 const config = require('../../../../../../config');
-const sharedData = require('../../../../../sharedData');
 
 const fields = {
   day: 'input[id="day"]',
   month: 'input[id="month"]',
   year: 'input[id="year"]',
-};
-
-const content = {
-  heading: {
-    en: 'What date will you pay on?',
-    cy: 'Ar ba ddyddiad byddwch yn talu',
-  },
 };
 
 const buttons = {
@@ -27,7 +19,7 @@ const monthError = currentDate.getMonth() - 1000;
 
 class DateToPayOn {
   async enterDateToPayOn () {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForText('What date will you pay on?', config.WaitForText);
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, year.toString());

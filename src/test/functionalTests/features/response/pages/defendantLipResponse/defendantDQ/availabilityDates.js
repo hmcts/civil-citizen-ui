@@ -1,6 +1,5 @@
 const I = actor();
 const config = require('../../../../../../config');
-const sharedData = require('../../../../../sharedData');
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
@@ -16,28 +15,6 @@ const fields ={
   longerPeriodEndYear: 'input[id="items[1][endYear]"]',
 };
 
-const content ={
-  heading: {
-    en: 'Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing',
-    cy: 'Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu\'ch tystion fynd i wrandawiad',
-  },
-  mediationHeading: {
-    en: 'Add a single date or longer period of time that you cannot attend meditation',
-    cy: '',
-  },
-};
-
-const buttons = {
-  addAnotherDate: {
-    en: 'Add another date or period of time',
-    cy: 'Ychwanegu dyddiad neu gyfnod arall o amser',
-  },
-  saveAndButton: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
-
 const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
 const month = newDate.getMonth();
 const year = newDate.getFullYear();
@@ -45,11 +22,10 @@ class AvailabilityDates {
 
   async enterUnavailableDates(meditation = false) {
 
-    const language = sharedData.language; 
     if (meditation){
-      await I.waitForText(content.heading[language], config.WaitForText);
+      await I.waitForText('Add a single date or longer period of time that you cannot attend meditation', config.WaitForText);
     } else {
-      await I.waitForText(content.mediationHeading[language], config.WaitForText);
+      await I.waitForText('Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing', config.WaitForText);
     }
 
     await I.click(fields.singleDate);
@@ -59,7 +35,7 @@ class AvailabilityDates {
     await I.fillField(fields.singleDateMonth, month);
     await I.fillField(fields.singleDateYear, year);
 
-    await I.click(buttons.addAnotherDate[language]);
+    await I.click('Add another date or period of time');
     await I.click(fields.longerPeriod);
     await I.waitForElement(fields.longerPeriodStartDay, config.WaitForText);
     await I.fillField(fields.longerPeriodStartDay, '15');
@@ -70,7 +46,7 @@ class AvailabilityDates {
     await I.fillField(fields.longerPeriodEndMonth, month);
     await I.fillField(fields.longerPeriodEndYear, year);
 
-    await I.click(buttons.saveAndButton[language]);
+    await I.click('Save and continue');
   }
 }
 

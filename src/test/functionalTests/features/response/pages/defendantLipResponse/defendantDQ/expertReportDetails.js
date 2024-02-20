@@ -1,6 +1,5 @@
 const I = actor();
 const config = require('../../../../../../config');
-const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -11,30 +10,16 @@ const fields ={
   firstExpertReportYear: 'input[id="reportDetails[0][year]"]',
 };
 
-const content = {
-  heading: {
-    en: 'Have you already got a report written by an expert?',
-    cy: 'A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?',
-  },
-};
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
-
 class ExpertReportDetails {
 
-  async enterExpertReportDetails() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+  async enterExpertReportDetails(expertName, day, month, year) {
+    await I.waitForText('Have you already got a report written by an expert?', config.WaitForText);
     await I.click(fields.yesButton);
-    await I.fillField(fields.firstExpertsName,  'TestExpert1');
-    await I.fillField(fields.firstExpertReportDay, '20');
-    await I.fillField(fields.firstExpertReportMonth, '10');
-    await I.fillField(fields.firstExpertReportYear, '2022');
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.fillField(fields.firstExpertsName, expertName);
+    await I.fillField(fields.firstExpertReportDay, day);
+    await I.fillField(fields.firstExpertReportMonth, month);
+    await I.fillField(fields.firstExpertReportYear, year);
+    await I.click('Save and continue');
   }
 }
 

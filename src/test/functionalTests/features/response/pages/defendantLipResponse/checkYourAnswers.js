@@ -1,6 +1,5 @@
 const I = actor();
 const config = require('../../../../../config');
-const sharedData = require('../../../../sharedData');
 
 const fields = {
   cyaSigned: 'input[id="signed"]',
@@ -10,45 +9,19 @@ const fields = {
 };
 
 const buttons = {
-  submit: {
-    en: 'Submit Response',
-    cy: 'Cyflwyno\'r ymateb',
-  },
-};
-
-const links = {
-  checkAndSubmit: {
-    en: 'Check and submit your response', 
-    cy: 'Gwirio a chyflwyno eich ymateb',
-  },
-};
-
-const content = {
-  heading: {
-    en: 'Check your answers',
-    cy: 'Gwiriwch eich atebion',
-  },
-  confirmationHeading: {
-    en: 'You\'ve submitted your response',
-    cy: 'Rydych wedi cyflwyno eich ymateb',  
-  },
-  confirmationSubheading: {
-    en: 'What happens next',
-    cy: 'Beth sy\'n digwydd nesaf',
-  },
+  submit: 'Submit Response',
 };
 
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='', claimType) {
-    const language = sharedData.language; 
-    await I.click(links.checkAndSubmit[language]);
+    await I.click('Check and submit your response');
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
     if(url.includes('pcq')){
       await I.amOnPage('/case/'+claimRef+'/response/task-list');
       await I.click('Check and submit your response');
     }
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForText('Check your answers', config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
     if(claimType == 'FastTrack'){
@@ -62,10 +35,10 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
 
-    await I.click(buttons.submit[language]);
+    await I.click(buttons.submit);
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
-    await I.waitForText(content.confirmationHeading[language],config.WaitForText);
-    await I.see(content.confirmationSubheading[language]);
+    await I.waitForText('You\'ve submitted your response',config.WaitForText);
+    await I.see('What happens next');
   }
 
   async verifyMediationDetailsInCYA(claimRef) {
@@ -105,8 +78,8 @@ class CheckYourAnswersPage {
     I.checkOption(fields.directionsQuestionnaireSigned);
     if (['preview', 'demo'  ].includes(config.runningEnv)) {
       I.click(buttons.submit);
-      I.waitForText(content.confirmationHeading[language],config.WaitForText);
-      I.see(content.confirmationSubheading[language]);
+      I.waitForText('You\'ve submitted your response',config.WaitForText);
+      I.see('What happens next');
     }
   }
 

@@ -1,33 +1,18 @@
 const I = actor();
 const config = require('../../../../../../config');
-const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
 };
 
-const content = {
-  heading: {
-    en: 'Determination without Hearing Questions',
-    cy: 'Cwestiynau Penderfynu heb Wrandawiad',
-  },
-};
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
-
 class HearingRequirements {
 
   async selectHearingRequirements(claimRef) {
     await I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForText('Determination without Hearing Questions', config.WaitForText);
     await I.click(fields.yesButton);
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click('Save and continue');
   }
 }
 

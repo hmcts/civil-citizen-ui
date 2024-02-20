@@ -1,34 +1,26 @@
 const I = actor();
 const config = require('../../../../../../config');
-const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="partnerDisability"]',
   noButton: 'input[id="partnerDisability-2"]',
 };
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
-};
-
-const content = {
-  heading: {
-    en: 'Is your partner disabled?',
-    cy: 'A oes gan eich partner anabledd?',
-  },
+  continue: 'button.govuk-button',
 };
 
 class PartnerDisabilityDetails {
 
   async clickYesButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForText('Is your partner disabled?', config.WaitForText);
     await I.click(fields.yesButton);
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.continue);
   }
 
   async clickNoButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForText('Is your partner disabled?', config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.saveAndContinue);
+    await I.click(buttons.continue);
   }
 }
 
