@@ -14,6 +14,7 @@ export interface ClaimUpdate {
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   respondent1LiPResponseCarm?: CcdMediationCarm;
+  applicant1LiPResponseCarm?: CcdMediationCarm;
   issueDate?: Date;
   respondent1ResponseDeadline?: Date;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;

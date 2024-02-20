@@ -15,6 +15,8 @@ import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDat
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {toCCDDQHearingSupport} from '../response/convertToCCDHearingSupport';
+import { YesNo } from 'common/form/models/yesNo';
+import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -31,6 +33,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
     applicant1ClaimMediationSpecRequiredLip: toCCDClaimantMediation(claim.claimantResponse?.mediation),
     applicant1LiPResponse: toCCDClaimantLiPResponse(claim.claimantResponse),
+    applicant1LiPResponseCarm: toCCDMediationCarm(claim.claimantResponse.mediationCarm),
     applicant1DQLanguage: toCCDWelshLanguageRequirements(claim.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements),
     applicant1DQVulnerabilityQuestions: toCCDVulnerability(claim.claimantResponse?.directionQuestionnaire?.vulnerabilityQuestions),
     applicant1DQRequestedCourt: toCCDSpecificCourtLocations(claim.claimantResponse?.directionQuestionnaire?.hearing?.specificCourtLocation),
@@ -46,6 +49,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
     applicant1FullDefenceConfirmAmountPaidSpec: (claim.isFullDefence()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
     applicant1ProceedWithClaim : toCCDYesNo(claim.getIntentionToProceed()),
+    applicant1SettleClaim : toCCDYesNo(claim.hasClaimantNotSettled() ? YesNo.NO : YesNo.YES), // if method is true, claimant has NOT settled
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount,
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),

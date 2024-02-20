@@ -30,7 +30,6 @@ import {toCUIMediationCarm} from 'services/translation/convertToCUI/convertToCUI
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
-import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
@@ -85,6 +84,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.courtProposedDate.decision = CourtProposedDateOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedDateOptions];
   claim.claimantResponse.mediation = toCUIClaimantMediation(ccdClaim.applicant1ClaimMediationSpecRequiredLip);
   claim.claimantResponse.courtDecision = ccdClaim.applicant1LiPResponse?.claimantCourtDecision;
+  claim.claimantResponse.mediationCarm = toCUIMediationCarm(ccdClaim.applicant1LiPResponseCarm);
   return claim;
 };
 
@@ -126,12 +126,7 @@ function translatePartialAdmission(claim: Claim, ccdClaim: CCDClaim, claimantRes
 
 function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResponse): void {
   claimantResponse.intentionToProceed = toCUIGenericYesNo(ccdClaim.applicant1ProceedWithClaim);
-
-  if (ccdClaim?.defenceRouteRequired === CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED
-    && (ccdClaim?.totalClaimAmount*100 === ccdClaim?.respondToClaim?.howMuchWasPaid)
-  ) {
-    claimantResponse.hasFullDefenceStatesPaidClaimSettled = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
-  }
+  claimantResponse.hasFullDefenceStatesPaidClaimSettled = toCUIGenericYesNo(ccdClaim.applicant1PartAdmitIntentionToSettleClaimSpec);
 }
 
 function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {

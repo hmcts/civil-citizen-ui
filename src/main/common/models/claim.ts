@@ -121,6 +121,7 @@ export class Claim {
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   respondent1LiPResponseCarm?: CcdMediationCarm;
+  applicant1LiPResponseCarm?: CcdMediationCarm;
   caseProgressionHearing?: CaseProgressionHearing;
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
