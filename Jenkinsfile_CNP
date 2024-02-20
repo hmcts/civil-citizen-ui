@@ -53,9 +53,9 @@ def setUrls(suffix){
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   if("${suffix}" == 'aat') {
     env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-${suffix}.service.core-compute-aat.internal"
-    env.URL="https://manage-case.aat.platform.hmcts.net"
+    env.URL="https://civil-cui-xui-staging.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="http://civil-service-aat.service.core-compute-aat.internal"
+    env.CIVIL_SERVICE_URL="http://civil-cui-civil-service-staging.aat.platform.hmcts.net"
 
   } else {
     env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
@@ -147,6 +147,12 @@ withPipeline(type, product, component) {
   before('smoketest:aat') {
     sh """
       eval \$(./bin/variables/load-staging-environment-variables.sh)
+      ./bin/add-roles.sh
+      ./bin/pull-latest-camunda-files.sh ${camundaBranch}
+      ./bin/pull-latest-dmn-files.sh ${dmnBranch}
+      ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
+      ./bin/pull-latest-ccd-files.sh ${ccdBranch}
+      ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
     """
     setUrls("aat");
   }
