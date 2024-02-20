@@ -90,6 +90,7 @@ export class CivilServiceClient {
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
+      throw new Error('Error when getting claims for claimant');
     }
   }
 
@@ -103,24 +104,25 @@ export class CivilServiceClient {
       return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting claims for defendant');
     }
   }
 
   async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
     const config = this.getConfig(req);
     let claims: CivilClaimResponse[] = [];
-    await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
-      .then(response => {
-        claims = response.data.cases.map((claim: CivilClaimResponse) => {
-          //TODO Maybe we need to convert also CCD to CUI
-          const caseData = Object.assign(new Claim(), claim.case_data);
-          return new CivilClaimResponse(claim.id, caseData);
-        });
-      }).catch(error => {
-        logger.error(error.message);
+    try {
+      const response = await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config);
+      claims = response.data.cases.map((claim: CivilClaimResponse) => {
+        //TODO Maybe we need to convert also CCD to CUI
+        const caseData = Object.assign(new Claim(), claim.case_data);
+        return new CivilClaimResponse(claim.id, caseData);
       });
-    return claims;
+      return claims;
+    } catch (err) {
+      logger.error(err);
+      throw new Error('Error when retrieving by defendant id');
+    }
   }
 
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
@@ -136,28 +138,29 @@ export class CivilServiceClient {
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
+      throw new Error('Error when retrieving claim details');
     }
   }
 
   async getFeeRanges(req: AppRequest): Promise<FeeRanges> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
+      const response = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting fee ranges');
     }
   }
 
   async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
+      const response = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting hearing amount');
     }
   }
 
@@ -174,7 +177,7 @@ export class CivilServiceClient {
       return claimFeeResponse;
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting claim fee data');
     }
   }
 
@@ -190,7 +193,7 @@ export class CivilServiceClient {
 
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when verifying pin');
     }
   }
 
@@ -202,10 +205,9 @@ export class CivilServiceClient {
         return null;
       }
       return response.data as string;
-
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when verifying OCMC pin');
     }
   }
 
@@ -213,7 +215,7 @@ export class CivilServiceClient {
     try {
       const formData = new FormData();
       formData.append('file', new Blob([file.buffer]) , file.originalname);
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
+      const response= await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
         {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
@@ -227,7 +229,7 @@ export class CivilServiceClient {
       }
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when uploading document');
     }
   }
 
@@ -243,7 +245,7 @@ export class CivilServiceClient {
 
     } catch (err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw err;
+      throw new Error('Error when retrieving document');
     }
   }
 
@@ -312,39 +314,39 @@ export class CivilServiceClient {
       caseDataUpdate: updatedClaim,
     };
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
+      const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error(`Error when submitting event ${event}`);
     }
   }
 
   async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
+      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, {
         responseDate: extendedDeadline,
         plusDays: plusDays,
       }, config);
       return response.data as Date;
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when calculating extended response deadline');
     }
   }
 
   async getCourtLocations(req: AppRequest): Promise<CourtLocation[]> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
+      const response = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
       return plainToInstance(CourtLocation, response.data as object[]);
     } catch (error: unknown) {
       logger.error(error);
-      throw error;
+      throw new Error('Error when getting court location');
     }
   }
 
@@ -354,67 +356,66 @@ export class CivilServiceClient {
         {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
     } catch (error: unknown) {
       logger.error(error);
-      throw error;
+      throw new Error('Error when assigning defendant to claim');
     }
   }
 
   async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
+      const response = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
       if(response.data)
         return new Date(response.data.toString());
     } catch (error: unknown) {
       logger.error(error);
-      throw error;
+      throw new Error('Error when getting agreed deadline response date');
     }
   }
 
   async getUserCaseRoles(claimId: string, req: AppRequest) {
     try {
       const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', claimId)}`));
-      const response: AxiosResponse<object> = await this.client.get(userCaseRolesUrl.toString()
+      const response = await this.client.get(userCaseRolesUrl.toString()
         , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
       return responseRoles
         .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
         .at(0);
-
     } catch (err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw err;
+      throw new Error('Error when getting user case roles');
     }
   }
 
   async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
     const config = this.getConfig(req);
     try{
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
+      const response = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw err;
+      throw new Error('Error when getting calculated decision on claimant proposed repayment plan');
     }
   }
   async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
+      const response = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting fee payment redirect information');
     }
   }
 
   async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      const response = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);
-      throw err;
+      throw new Error('Error when getting fee payment status');
     }
   }
 }
