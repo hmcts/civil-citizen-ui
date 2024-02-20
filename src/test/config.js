@@ -1,12 +1,11 @@
 
 const PropertiesVolume = require('./secretsConfig');
 
-const defaultPassword = process.env.CITIZEN_PASSWORD || 'Password12!';
-const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD || 'Password12!';
-const judgeDefaultPassword = process.env.JUDGE_PASSWORD || 'Hmcts1234';
+const defaultPassword = process.env.CITIZEN_PASSWORD;
+const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
+const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
-// const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-3007.preview.platform.hmcts.net';
-const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
+const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -14,10 +13,10 @@ if (!process.env.TEST_PASSWORD) {
 module.exports = {
   TestUrl: testUrl,
   env: process.env.ENVIRONMENT_NAME || 'local',
-  TestHeadlessBrowser: false,
+  TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
-  WaitForText: 600000,
+  WaitForText: 60,
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',
@@ -29,18 +28,10 @@ module.exports = {
     dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-
-    // manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3037.preview.platform.hmcts.net',
-    // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3037.preview.platform.hmcts.net',
-    // dmStore: process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
-    // idamApi: process.env.IDAM_API_URL || 'https://idam-api.aat.platform.hmcts.net',
-    // civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3037-civil-service.preview.platform.hmcts.net',
   },
   s2s: {
     microservice: 'civil_service',
-    secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64', //demo
-    // secret: process.env.S2S_SECRET || 'BTZQFPGY4TUMAFGL', //preview or aat
+    secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64',
   },
   applicantSolicitorUser: {
     password: defaultPassword,
@@ -49,7 +40,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`,
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
