@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="debtsRadio"]',
@@ -52,7 +52,7 @@ const inputs = {
 class Debts {
 
   async clickYesButton() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.debtItem1, inputs.debtItem1[language]),

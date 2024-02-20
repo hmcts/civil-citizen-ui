@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesIWantMoretime: 'input[id="option"]',
@@ -50,7 +50,7 @@ const extendedMonthFutureError = targetDate.getMonth() + 2 ;
 class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptions(claimRef, deadlineOption) {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
     await I.waitForText(content.heading1[language],config.WaitForText);
     await I.see(content.subheading1[language],'h3');

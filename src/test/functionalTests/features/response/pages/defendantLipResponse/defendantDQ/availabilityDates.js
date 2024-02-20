@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
@@ -45,7 +45,7 @@ class AvailabilityDates {
 
   async enterUnavailableDates(meditation = false) {
 
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     if (meditation){
       await I.waitForText(content.heading[language], config.WaitForText);
     } else {

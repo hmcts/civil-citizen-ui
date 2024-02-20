@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields = {
   ownHome: 'input[id="residenceType"]',

@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields = {
   accounts1: 'accounts[0][typeOfAccount]',
@@ -28,7 +28,7 @@ const dropdownOptions = {
   },
   jointAccount1: {
     en: 'Yes',
-    cy: 'le',
+    cy: 'Ie',
   },
 };
 
@@ -45,7 +45,7 @@ const buttons = {
 
 class BankAccountsDetails {
   async enterBankAccountDetails() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.selectOption(fields.accounts1, dropdownOptions.accounts1[language]);
     await I.selectOption(fields.jointAccount1, dropdownOptions.jointAccount1[language]);

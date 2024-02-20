@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   speakLanguage: 'input[id="speakLanguage"]',
@@ -35,7 +35,7 @@ const buttons = {
 class WelshLanguage {
 
   async selectLanguageOption() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.see(content.speakLanguageQuestion[language]);
