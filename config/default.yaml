@@ -13,7 +13,7 @@ services:
     sdk:
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:9002/login'
+    authorizationURL: 'http://localhost:9002/o/authorize'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'

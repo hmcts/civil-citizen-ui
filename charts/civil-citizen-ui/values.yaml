@@ -53,7 +53,7 @@ nodejs:
           alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
-    IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
+    IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/authorize
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
     IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
