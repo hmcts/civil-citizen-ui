@@ -21,6 +21,7 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
 
 civil-service:
+  enabled: true
   java:
     releaseNameOverride: ${SERVICE_NAME}-java
     imagePullPolicy: Always
@@ -199,6 +200,7 @@ xui-webapp:
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
 
 ccd:
+  enabled: true
   ccd:
     adminWeb:
       enabled: false
