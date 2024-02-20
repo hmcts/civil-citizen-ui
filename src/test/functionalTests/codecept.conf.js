@@ -22,7 +22,7 @@ exports.config = {
     Playwright: {
       url: testConfig.TestUrl,
       browser: 'chromium',
-      show: true,
+      process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,
