@@ -1,5 +1,5 @@
 export class DashboardTask {
-
+  id: number;
   taskNameEn: string;
   taskNameCy: string;
   status: string;

@@ -1,4 +1,5 @@
 export class CivilServiceDashboardTask {
+  id: number;
   categoryEn: string;
   categoryCy: string;
   taskNameEn: string;

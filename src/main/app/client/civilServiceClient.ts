@@ -445,6 +445,7 @@ export class CivilServiceClient {
       const key = `${task.categoryEn}-${task.categoryCy}`;
       const civilServiceDashboardTask = plainToInstance(CivilServiceDashboardTask,task);
       const dashboardTask = new DashboardTask();
+      dashboardTask.id = civilServiceDashboardTask.id;
       dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
       dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
       dashboardTask.status = DashboardTaskStatus[civilServiceDashboardTask.currentStatus];
