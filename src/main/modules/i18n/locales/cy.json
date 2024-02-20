@@ -34,8 +34,8 @@
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
-    "TELEPHONE_MEDIATION": "Telephone mediation",
-    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
+    "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
     "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
@@ -438,7 +438,7 @@
       "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
     },
     "TELEPHONE_FOR_MEDIATION": {
-      "PAGE_TITLE": "Telephone mediation",
+      "PAGE_TITLE": "Cyfryngu dros y ffôn",
       "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
       "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
       "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
@@ -1965,7 +1965,7 @@
       "DEFAULT_JUDGMENT_MSG1": "Mae {{claimantName}} wedi gofyn am CCJ yn eich erbyn oherwydd bod y dyddiad cau ar gyfer eich ymateb wedi mynd heibio.",
       "DEFAULT_JUDGMENT_MSG2": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru gyda chynnydd yr hawliad hwn - bydd unrhyw ddiweddariadau pellach yn dod drwy'r post.",
       "DEFAULT_JUDGMENT_MSG3": "Os yw'ch dyddiad cau wedi mynd heibio, ond nad yw'r CCJ wedi'i gyhoeddi, gallwch chi ymateb o hyd. Cysylltwch â ni am fwy o wybodaeth:",
-      "EMAIL": "Email :",
+      "EMAIL": "E-bost :",
       "EMAIL_ID": "contactocmc@justice.gov.uk",
       "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
       "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Derbyniodd {{claimantName}} eich addefiad o £{{amount}}.",
@@ -2230,11 +2230,11 @@
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
+      "PAGE_TEXT": "Darparwch enw’r unigolyn rydych wedi’i enwebu i ni gysylltu â nhw"
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+      "PAGE_TEXT": "A all y tîm cyfryngu ddefnyddio {{ defendantEmail }} i gysylltu â chi am eich apwyntiad cyfryngu?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
@@ -3551,7 +3551,7 @@
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
-    "VALID_CONTACT_PERSON": "Enter contact person",
+    "VALID_CONTACT_PERSON": "Nodwch unigolyn cyswllt",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_NUMBER_EVIDENCE": "Rhowch rif ffôn, fel 01632 960 001, 07700 900 982, neu +44 808 157 0192",
