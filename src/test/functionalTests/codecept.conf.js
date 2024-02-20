@@ -3,8 +3,14 @@ const testConfig = require('../config.js');
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 exports.config = {
-  tests: '../functionalTests/tests/**/*_tests.js',
+  bootstrap: async function () {
+    console.log('bootstrap CodeceptJS worker ID:', process.pid);
+  },
 
+  teardown: function () {
+    console.log('teardown CodeceptJS worker ID:', process.pid);
+  },
+  tests: '../functionalTests/tests/**/*_tests.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
