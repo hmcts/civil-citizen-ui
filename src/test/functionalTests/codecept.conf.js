@@ -1,15 +1,17 @@
 const testConfig = require('../config.js');
+const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
+const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 exports.config = {
-  bootstrap: async function () {
-    console.log('bootstrap CodeceptJS worker ID:', process.pid);
+
+  async teardown() {
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await deleteAllIdamTestUsers();
+    await unAssignAllUsers();
   },
 
-  teardown: function () {
-    console.log('teardown CodeceptJS worker ID:', process.pid);
-  },
   tests: '../functionalTests/tests/**/*_tests.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {

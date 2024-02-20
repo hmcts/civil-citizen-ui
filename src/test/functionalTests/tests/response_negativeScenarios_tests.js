@@ -2,8 +2,7 @@ const config = require('../../config');
 
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 const yesIWantMoretime = 'yesIWantMoretime';
@@ -29,7 +28,6 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
@@ -77,9 +75,4 @@ Scenario('Personal detail error screen @nightly', async () => {
 //todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
 
-});
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });

@@ -2,8 +2,7 @@ const config = require('../../config');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -42,8 +41,3 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', a
   await ResponseSteps.EnterDQForFastTrack(claimRef, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
 }).tag('@regression-cui-r1');
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});

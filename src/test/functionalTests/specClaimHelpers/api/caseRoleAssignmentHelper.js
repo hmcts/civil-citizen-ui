@@ -1,4 +1,4 @@
-const {assignCaseToDefendant} = require('./testingSupport');
+const {assignCaseToDefendant, unAssignUserFromCases} = require('./testingSupport');
 
 let userCaseMappings = {};
 
@@ -8,20 +8,20 @@ const addUserCaseMapping = (caseId, user) => {
 };
 
 const assignCaseRoleToUser = async (caseId, role, user) => {
-  console.log('assignCaseRoleToUser-> : ' + caseId);
+  console.log('assignCaseRoleToUser : ',  caseId);
   await assignCaseToDefendant(caseId, role, user);
   addUserCaseMapping(caseId, user);
 };
 
 const unAssignAllUsers = async () => {
   console.log('Removing case role allocations...');
-/*  for (const userRole of Object.values(userCaseMappings)) {
+  for (const userRole of Object.values(userCaseMappings)) {
     await unAssignUserFromCases(userRole.map(({caseId}) => {
       console.log('CaseId in unAssignUserFromCases : ' + caseId);
       caseId;
     }), userRole[0].user);
   }
-  userCaseMappings = {};*/
+  userCaseMappings = {};
 };
 
 module.exports = {
