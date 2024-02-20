@@ -3,6 +3,7 @@ const CaseProgressionSteps = require('../features/caseProgression/steps/caseProg
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -12,6 +13,7 @@ Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
@@ -19,12 +21,13 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
 //covered in cp_upload_evidence_small_claims_tests
-Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', () => {
+Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
@@ -32,4 +35,5 @@ Scenario('Case progression journey - Fast Track - Verify uploaded documents by L
 
 AfterSuite(async  () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });

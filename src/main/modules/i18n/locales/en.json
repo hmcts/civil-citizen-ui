@@ -1,6 +1,9 @@
 {
   "COMMON": {
     "UPLOAD_FILE": "Upload file",
+    "VIEW_DOCUMENTS": "View documents",
+    "DOCUMENTS_UPLOADED": "Documents uploaded",
+    "CASE_REFERENCE_NUMBER": "Your case reference number",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
@@ -365,6 +368,12 @@
   },
   "PAGES": {
     "MEDIATION": {
+      "CONFIRMATION_PAGE": {
+        "PAGE_TITLE": "Mediation upload documents confirmation",
+        "TEXT_BEFORE": "You can",
+        "LINK_TEXT": "upload more documents",
+        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+      },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
 
@@ -402,7 +411,7 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
         "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -1638,7 +1647,7 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a Help With Fees reference number related a different claim or to any application fees.It will be invalid as you cannot use the same Help with Fees reference number twice.",
+      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a Help With Fees reference number related a different claim or to any application fees. It will be invalid as you cannot use the same Help with Fees reference number twice.",
       "PARAGRAPH1_3": "If you do not have a Help with Fees reference number for this claim, you should make a Help with Fees application which will provide you with a reference number.",
       "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
       "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is form N1.",
@@ -2140,7 +2149,7 @@
       "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Warning</span> </br> You cannot withdraw a document once you have submitted it.",
       "CHECK_YOUR_ANSWERS_WARNING_SHORT": "You cannot withdraw a document once you have submitted it.",
       "CHECK_YOUR_ANSWERS_CONFIRMATION": "Confirmation",
-      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.",
+      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
       "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
       "COSTS": "Costs",
