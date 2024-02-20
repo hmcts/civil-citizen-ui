@@ -12,7 +12,7 @@ const fields ={
   person1SignLanguageText: 'input[id="model[items][0][signLanguageInterpreter][content]"]',
   person2DisabledAccess: 'input[id="declared-1-disabledAccess"]',
   person2OtherSupport: 'input[id="declared-1-otherSupport"]',
-  person2OtherSupportText: 'input[id="model[items][1][otherSupport][content]"]',
+  person2OtherSupportText: 'textarea[id="model[items][1][otherSupport][content]"]',
 };
 
 const content = {
