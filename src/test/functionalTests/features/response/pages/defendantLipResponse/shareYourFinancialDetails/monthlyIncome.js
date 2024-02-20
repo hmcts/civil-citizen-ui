@@ -3,10 +3,13 @@ const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
 
 const fields ={
+  incomeFromJob: 'Income from your job',
   incomeFromJobPayment: 'input[id="model[job][transactionSource][amount]"]',
   incomeFromJobPaymentSchedule: 'input[id="model[job][transactionSource][schedule]-4"]',
+  childBenefit: 'Child Benefit',
   childBenefitPayment: 'input[id="model[childBenefit][transactionSource][amount]"]',
   childBenefitSchedule: 'input[id="model[childBenefit][transactionSource][schedule]"]',
+  otherIncome: 'Other',
   otherIncomeSource: 'input[id="model[other][transactionSources][0][name]"]',
   otherIncomePayment: 'input[id="model[other][transactionSources][0][amount]"]',
   otherIncomePaymentSchedule: 'input[id="model[other][transactionSources][0][schedule]-4"]',
@@ -17,21 +20,6 @@ const buttons = {
     cy: 'Cadw a Pharhau',
   },
 };
-
-const checkboxes = {
-  incomeFromJob: {
-    en: 'Income from your job',
-    cy: 'Incwm o’ch swydd'
-  },
-  childBenefit: {
-    en: 'Child Benefit',
-    cy: 'Budd-dal Plant',
-  },
-  otherIncome: {
-    en: 'Other',
-    cy: 'Arall'
-  }
-}
 
 const content = {
   heading: {
@@ -50,23 +38,21 @@ const inputs = {
 class MonthlyIncome {
 
   async selectIncomeFromJob(incomeAmount) {
-    const language = sharedData.language;
-    await I.waitForText(content.heading[language], config.WaitForText);
-    await I.checkOption(checkboxes.incomeFromJob[language]);
+    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.checkOption(fields.incomeFromJob);
     await I.fillField(fields.incomeFromJobPayment, incomeAmount);
     await I.click(fields.incomeFromJobPaymentSchedule);
   }
 
   async selectChildBenefit(childBenefitAmount) {
-    await I.checkOption(checkboxes.childBenefit[sharedData.language]);
+    await I.checkOption(fields.childBenefit);
     await I.fillField(fields.childBenefitPayment, childBenefitAmount);
     await I.click(fields.childBenefitSchedule);
   }
 
   async selectOtherIncome(otherIncomeAmount) {
-    const language = sharedData.language;
-    await I.checkOption(checkboxes.otherIncome[language]);
-    await I.fillField(fields.otherIncomeSource, inputs.otherIncomeSource[language]);
+    await I.checkOption(fields.otherIncome);
+    await I.fillField(fields.otherIncomeSource, inputs.otherIncomeSource[sharedData.language]);
     await I.fillField(fields.otherIncomePayment, otherIncomeAmount);
     await I.click(fields.otherIncomePaymentSchedule);
   }
