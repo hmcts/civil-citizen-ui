@@ -1,22 +1,10 @@
 const testConfig = require('../config.js');
-const {createAccount, deleteAccount} = require('./specClaimHelpers/api/idamHelper');
-
-const defendantCitizenUserEmail = `defendantcitizen-${Math.random().toString(36).slice(2, 7).toLowerCase()}@gmail.com`;
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 exports.config = {
   tests: '../functionalTests/tests/**/*_tests.js',
-
-  async bootstrapAll() {
-    process.env.DEFENDANT_USER = defendantCitizenUserEmail;
-    await createAccount(defendantCitizenUserEmail, testConfig.defendantCitizenUser.password);
-  },
-
-  async teardownAll() {
-    await deleteAccount(defendantCitizenUserEmail);
-  },
 
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
