@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   yesButton: 'input[id="partnerSevereDisability"]',
@@ -23,14 +23,14 @@ const content = {
 class SeverePartnerDisabilityDetails {
 
   async clickYesButton() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(buttons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    const { language } = sharedData; 
+    const language = sharedData.language;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(buttons.saveAndContinue[language]);

@@ -1,12 +1,16 @@
-const sharedData = {
-    language: 'en'
-};
+class SharedData {
+    #language = 'en'
 
-const updateLanguage = (language) => {
-    sharedData.language = language;
-};   
+    set language(language) {
+        if(language in ['en', 'cy'] === false) {
+            throw new Error('Language chosen must either be \'en\' or \'cy\'');
+        }
+        this.#language = language;
+    };   
 
-module.exports = {
-    sharedData,
-    updateLanguage,
-};
+    get language()  {
+        return this.#language;
+    }
+}
+
+module.exports = new SharedData();

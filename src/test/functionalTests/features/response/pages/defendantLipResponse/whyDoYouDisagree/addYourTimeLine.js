@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields = {
   date1Day: '[id="day"]',
@@ -33,7 +33,7 @@ const inputs = {
 
 class AddYourTimeLine {
   async addTimeLineOfEvents() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.date1Day, 12);
     await I.fillField(fields.date1Month, 12);

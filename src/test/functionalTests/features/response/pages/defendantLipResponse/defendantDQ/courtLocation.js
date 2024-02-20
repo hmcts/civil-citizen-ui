@@ -1,5 +1,5 @@
 const config =  require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 const I = actor();
 
 const fields ={
@@ -36,7 +36,7 @@ const inputs = {
 
 class CourtLocation {
   async selectPreferredCourtLocation() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.click(fields.yesButton);

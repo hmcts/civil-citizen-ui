@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   reason: 'textarea[id="text"]',
@@ -25,7 +25,7 @@ const inputs = {
 
 class Explanation {
   async enterExplanation() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForElement(fields.reason, config.WaitForText);
     await I.see(content.heading[language]);
     await I.fillField(fields.reason, inputs.reason[language]);

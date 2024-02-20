@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
-const { sharedData } = require('../../../../../sharedData');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   firstName : 'input[id="firstName"]',
@@ -38,7 +38,7 @@ const buttons = {
 class ConfirmYourDetails {
 
   async enterYourDetails() {
-    const { language } = sharedData; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.fillField(fields.firstName, 'John');
