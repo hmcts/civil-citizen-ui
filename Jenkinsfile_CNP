@@ -52,7 +52,7 @@ def setUrls(suffix){
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   if("${suffix}" == 'aat') {
-    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-${suffix}.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "https://civil-cui-data-store-staging.aat.platform.hmcts.net"
     env.URL="https://civil-cui-xui-staging.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
     env.CIVIL_SERVICE_URL="https://civil-cui-civil-service-staging.aat.platform.hmcts.net"
