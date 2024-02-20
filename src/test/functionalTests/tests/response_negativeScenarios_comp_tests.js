@@ -23,6 +23,7 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
