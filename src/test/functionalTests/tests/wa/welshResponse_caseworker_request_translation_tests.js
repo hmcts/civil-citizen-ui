@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - SetDate @citizenUI @partAdmit @regression @nightly @kiyron', async () => {
+Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - SetDate @citizenUI @partAdmit @nightly @kiyron', async () => {
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,7 +45,7 @@ Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - Se
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-}).retry(0);
+}).tag('@regression-cui-r1');
 
 AfterSuite(async () => {
   await unAssignAllUsers();
