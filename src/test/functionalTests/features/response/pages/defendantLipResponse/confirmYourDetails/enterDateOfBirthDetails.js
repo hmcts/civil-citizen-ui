@@ -24,7 +24,7 @@ const buttons = {
 
 class DateOfBirthDetailsPage {
   async enterDateOfBirth ()  {
-    const { language } = sharedData.language; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.day, '11');
     await I.fillField(fields.month, '11');
