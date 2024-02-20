@@ -8,8 +8,8 @@ exports.config = {
 
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
-    await deleteAllIdamTestUsers();
     await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
   },
 
   tests: '../functionalTests/tests/**/*_tests.js',
