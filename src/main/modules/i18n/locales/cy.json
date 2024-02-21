@@ -416,7 +416,7 @@
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
-      "PAGE_TEXT": "Please provide an alternative number"
+      "PAGE_TEXT": "Nodwch rif ffôn amgen"
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
@@ -431,7 +431,7 @@
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
-      "PAGE_TEXT": "Please provide an alternative email address"
+      "PAGE_TEXT": "Nodwch gyfeiriad e-bost amgen"
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
@@ -2226,7 +2226,7 @@
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+      "PAGE_TEXT_DEFENDANT": "Ai {{ defendantContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
