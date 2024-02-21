@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
+  ASSIGN_CLAIM_URL,
   CASE_TIMELINE_DOCUMENTS_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
@@ -30,14 +31,14 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
 
       const bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, claim.respondent1PinToPostLRspec?.accessCode);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      
+
       if (cookie?.claimId && originalText === YesNo.YES) {
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
         const privacyPolicyUrl = `${ocmcBaseUrl}/privacy-policy`;
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData, timelinePdfUrl, privacyPolicyUrl, claimId,
+          claim, totalAmount, interestData, timelinePdfUrl, privacyPolicyUrl,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
@@ -47,4 +48,9 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
     }
   });
 
+firstContactClaimSummaryController.post(FIRST_CONTACT_CLAIM_SUMMARY_URL,
+  async (req: Request, res: Response) => {
+    const claimId = req.cookies.firstContact?.claimId;
+    res.redirect(ASSIGN_CLAIM_URL + '?id=' + claimId);
+  });
 export default firstContactClaimSummaryController;
