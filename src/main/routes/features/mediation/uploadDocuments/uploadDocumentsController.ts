@@ -19,7 +19,7 @@ import {
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {TypeOfMediationDocuments, UploadDocuments,} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
