@@ -91,8 +91,8 @@ export class CivilServiceClient {
       const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
-      logger.error(err);
-      throw new Error('Error when getting claims for claimant');
+      logger.error('Error when getting claims for claimant');
+      throw err;
     }
   }
 
@@ -105,8 +105,8 @@ export class CivilServiceClient {
       const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
       return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
-      logger.error(err);
-      throw new Error('Error when getting claims for defendant');
+      logger.error('Error when getting claims for defendant');
+      throw err;
     }
   }
 
@@ -122,8 +122,8 @@ export class CivilServiceClient {
       });
       return claims;
     } catch (err) {
-      logger.error(err);
-      throw new Error('Error when retrieving by defendant id');
+      logger.error('Error when retrieving by defendant id');
+      throw err;
     }
   }
 
@@ -139,8 +139,8 @@ export class CivilServiceClient {
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when retrieving claim details');
+      logger.error('Error when retrieving claim details');
+      throw err;
     }
   }
 
@@ -150,8 +150,8 @@ export class CivilServiceClient {
       const response = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when getting fee ranges');
+      logger.error('Error when getting fee ranges');
+      throw err;
     }
   }
 
@@ -161,8 +161,8 @@ export class CivilServiceClient {
       const response = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when getting hearing amount');
+      logger.error('Error when getting hearing amount');
+      throw err;
     }
   }
 
@@ -177,8 +177,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when getting claim fee data');
+      logger.error('Error when getting claim fee data');
+      throw err;
     }
   }
 
@@ -193,8 +193,8 @@ export class CivilServiceClient {
       return convertCaseToClaim(caseDetails);
 
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when verifying pin');
+      logger.error('Error when verifying pin');
+      throw err;
     }
   }
 
@@ -207,8 +207,8 @@ export class CivilServiceClient {
       }
       return response.data as string;
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when verifying OCMC pin');
+      logger.error('Error when verifying OCMC pin');
+      throw err;
     }
   }
 
@@ -229,8 +229,8 @@ export class CivilServiceClient {
         return response.data as CaseDocument;
       }
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when uploading document');
+      logger.error('Error when uploading document');
+      throw err;
     }
   }
 
@@ -245,8 +245,8 @@ export class CivilServiceClient {
         response.data as Buffer);
 
     } catch (err) {
-      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw new Error('Error when retrieving document');
+      logger.error('Error when retrieving document');
+      throw err;
     }
   }
 
@@ -321,8 +321,8 @@ export class CivilServiceClient {
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error(`Error when submitting event ${event}`);
+      logger.error(`Error when submitting event ${event}`);
+      throw err;
     }
   }
 
@@ -335,8 +335,8 @@ export class CivilServiceClient {
       }, config);
       return response.data as Date;
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when calculating extended response deadline');
+      logger.error('Error when calculating extended response deadline');
+      throw err;
     }
   }
 
@@ -345,9 +345,9 @@ export class CivilServiceClient {
     try {
       const response = await this.client.get(CIVIL_SERVICE_COURT_LOCATIONS, config);
       return plainToInstance(CourtLocation, response.data as object[]);
-    } catch (error: unknown) {
-      logger.error(error);
-      throw new Error('Error when getting court location');
+    } catch (err: unknown) {
+      logger.error('Error when getting court location');
+      throw err;
     }
   }
 
@@ -355,9 +355,9 @@ export class CivilServiceClient {
     try{
       await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
         {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
-    } catch (error: unknown) {
-      logger.error(error);
-      throw new Error('Error when assigning defendant to claim');
+    } catch (err: unknown) {
+      logger.error('Error when assigning defendant to claim');
+      throw err;
     }
   }
 
@@ -367,9 +367,9 @@ export class CivilServiceClient {
       const response = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
       if(response.data)
         return new Date(response.data.toString());
-    } catch (error: unknown) {
-      logger.error(error);
-      throw new Error('Error when getting agreed deadline response date');
+    } catch (err: unknown) {
+      logger.error('Error when getting agreed deadline response date');
+      throw err;
     }
   }
 
@@ -383,8 +383,8 @@ export class CivilServiceClient {
         .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
         .at(0);
     } catch (err) {
-      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw new Error('Error when getting user case roles');
+      logger.error('Error when getting user case roles');
+      throw err;
     }
   }
 
@@ -394,8 +394,8 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
-      logger.error(`Error occurred: ${err.message}, http Code: ${err.code}`);
-      throw new Error('Error when getting calculated decision on claimant proposed repayment plan');
+      logger.error('Error when getting calculated decision on claimant proposed repayment plan');
+      throw err;
     }
   }
   async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
@@ -404,8 +404,8 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when getting fee payment redirect information');
+      logger.error('Error when getting fee payment redirect information');
+      throw err;
     }
   }
 
@@ -415,8 +415,8 @@ export class CivilServiceClient {
       const response = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
-      logger.error(err);
-      throw new Error('Error when getting fee payment status');
+      logger.error('Error when getting fee payment status');
+      throw err;
     }
   }
 }
