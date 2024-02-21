@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit - Small Claims');
+Feature('Welsh Response with PartAdmit - Small Claims');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
