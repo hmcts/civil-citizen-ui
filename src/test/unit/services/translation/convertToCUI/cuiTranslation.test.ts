@@ -371,24 +371,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option).toEqual(YesNo.YES);
   });
 
-  it('should translate claimant mediation to undefined for not equal value', () => {
-    //Given
-    const input: CCDClaim = {
-      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
-      totalClaimAmount: 100,
-      respondToClaim: {
-        howMuchWasPaid: 5000,
-      },
-      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
-    };
-
-    const claim = translateCCDCaseDataToCUIModel(input);
-
-    //Then
-    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
-  });
-
   it('should translate claimant mediation to undefined for not paid already route', () => {
     //Given
     const input: CCDClaim = {

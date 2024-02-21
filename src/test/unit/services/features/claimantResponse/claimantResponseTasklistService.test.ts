@@ -334,6 +334,7 @@ describe('outstanding Claimant Response Tasks', () => {
     claim.hasClaimantConfirmedDefendantPaid.mockReturnValue(false);
     claim.isFullAdmission.mockReturnValue(false);
     claim.isDefendantAgreedForMediation.mockReturnValue(true);
+    claim.hasClaimantNotSettled = () => true;
 
     // when
     const taskLists: TaskList[] = getClaimantResponseTaskLists(

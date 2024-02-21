@@ -403,6 +403,7 @@ describe('Claimant Response Confirmation service', () => {
       },
     };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.claimantResponse.intentionToProceed = {option: 'yes'};
     claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
     const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
       amount: 120,
