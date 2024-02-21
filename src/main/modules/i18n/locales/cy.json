@@ -1454,7 +1454,7 @@
         "CLAIMANT_REJECT_OFFER": "Mae’r hawlydd wedi gwrthod eich cynnig. Rydych wedi gwrthod yr hawliad.",
         "CLAIMANT_REJECT_PARTIAL_ADMISSION": "Mae {{ claimantName }} wedi gwrthod eich addefiad o £{{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "Gofynnodd {{ claimantName }}  am Ddyfarniad Llys Sirol yn eich erbyn ar {{ccjRequestedDate}}.",
-        "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich.",
+        "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich erbyn.",
         "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
         "MORE_DETAILS_REQUIRED": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
         "MEDIATION_UNSUCCESSFUL": "Nid oedd y cyfryngu yn llwyddiannus.",
