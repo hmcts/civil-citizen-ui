@@ -802,7 +802,7 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
 
   hasMediationSuccessful() {
