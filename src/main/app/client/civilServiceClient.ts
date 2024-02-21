@@ -427,7 +427,7 @@ export class CivilServiceClient {
 
   async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'defendant'), config);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
 
     const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], response.data);
     const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
@@ -439,7 +439,7 @@ export class CivilServiceClient {
 
   async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'claimant'), config);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
 
     const taskList: DashboardTaskList[] = Object.assign([new DashboardTaskList()], response.data);
 
