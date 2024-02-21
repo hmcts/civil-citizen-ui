@@ -1,8 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -59,7 +58,3 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   }
 }).tag('@regression-carm');
 
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
