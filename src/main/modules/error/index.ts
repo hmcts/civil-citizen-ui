@@ -14,10 +14,11 @@ export class ErrorHandler {
 
     // error handler
     app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-      logger.error(`${err.stack || err}`);
+      const errorMessage = err.message || 'Internal Server Error';
+      logger.error(`${err.stack || errorMessage}`);
 
       // set locals, only providing error in development
-      res.locals.message = err.message;
+      res.locals.message = errorMessage;
       res.locals.error = env === 'development' ? err : {};
       res.status((err as HTTPError)?.status || 500);
       res.render('error', {error: res.locals.error});
