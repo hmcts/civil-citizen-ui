@@ -3,8 +3,7 @@ const config = require('../../config');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
@@ -44,8 +43,3 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nig
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
 }).tag('@regression-cui-r1');
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
