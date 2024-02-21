@@ -407,10 +407,10 @@ export class CivilServiceClient {
     }
   }
 
-  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentStatus(claimId: string, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', claimId).replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error(err);
