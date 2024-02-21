@@ -81,13 +81,14 @@ civil-service:
       PAYMENTS_CALLBACK_URL: https://${SERVICE_FQDN}/service-request-update
       TESTING_SUPPORT_ENABLED: true
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
-      CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
-      CMC_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
+      CMC_DB_USERNAME: ${POSTGRES_USER}
+      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       STITCHING_API_ENABLED: false
       SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}.platform.hmcts.net/service-request-update
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}.platform.hmcts.net/service-request-update-claim-issued
