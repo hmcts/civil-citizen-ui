@@ -1427,6 +1427,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "HWF_NO_REMISSION": "Your Help with Fees application has been rejected.",
+        "HWF_UPDATED_REF_NUMBER": "We've reviewed your Help with Fees application.",
         "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
         "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu.",
         "MEDIATION_UNSUCCESSFUL":"Nid oedd y cyfryngu yn llwyddiannus.",
