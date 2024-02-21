@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   mortgagePayment: 'input[id="model[mortgage][transactionSource][amount]"]',
@@ -16,12 +17,6 @@ const fields ={
   otherExpensesSource: 'input[id="model[other][transactionSources][0][name]"]',
   otherExpensesPayment: 'input[id="model[other][transactionSources][0][amount]"]',
   otherExpensesPaymentSchedule: 'input[id="model[other][transactionSources][0][schedule]-4"]',
-};
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
 };
 
 const content = {
@@ -108,7 +103,7 @@ class MonthlyExpenses {
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click(cButtons.saveAndContinue[sharedData.language]);
   }
 }
 

@@ -1,18 +1,12 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
   phoneNumberID: 'input[id="mediationPhoneNumber"]',
-};
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
 };
 
 const content = {
@@ -44,7 +38,7 @@ class MediationCanWeUse {
     await I.waitForText(content.heading1[language], config.WaitForText);
     await I.see(content.descriptionText1[language]);
     await I.fillField(fields.phoneNumberID, '02088908876');
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -6,6 +6,7 @@ const fields ={
   yesButton: '#option',
   noButton: '#option-2',
 };
+
 const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
