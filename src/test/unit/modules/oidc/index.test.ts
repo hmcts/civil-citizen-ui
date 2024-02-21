@@ -18,7 +18,7 @@ const mockGetUserDetails = getUserDetails as jest.Mock;
 
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const idamServiceUrl: string = config.get('services.idam.authorizationURL');
-const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
+const signOutUrl = idamServiceUrl.replace('/o/authorize', '/o/endSession');
 const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd', familyName:'masslover', givenName:'tatiana', roles:['citizen']};
 
 jest.mock('../../../../main/app/auth/user/oidc');
