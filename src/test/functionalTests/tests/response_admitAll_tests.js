@@ -4,6 +4,7 @@ const ResponseSteps = require('../features/response/steps/lipDefendantResponseSt
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
 const bySetDate = 'bySetDate';
@@ -18,6 +19,7 @@ let securityCode;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -61,4 +63,5 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @nightl
 
 AfterSuite(async () => {
   await unAssignAllUsers();
+  await deleteAccount(config.defendantCitizenUser.email);
 });
