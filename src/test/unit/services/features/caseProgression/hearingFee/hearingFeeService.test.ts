@@ -23,7 +23,7 @@ describe('hearing Fee service', () => {
     await triggerNotifyEvent(mockClaimId, null, testClaim.case_data);
     //Then
     expect(spyTriggerEvent).toHaveBeenCalled();
-    expect(spyTriggerEvent).toHaveBeenCalledWith('APPLY_HELP_WITH_HEARING_FEE', mockClaimId, {'hearingHelpFeesReferenceNumber': '12345678901'}, null);
+    expect(spyTriggerEvent).toHaveBeenCalledWith('APPLY_HELP_WITH_HEARING_FEE', mockClaimId, { 'hearingHelpFeesReferenceNumber': '12345678901', 'hwfFeeType':  'HEARING' }, null);
   });
 
   it('should trigger notify event with no respondent data', async () => {
