@@ -2,8 +2,7 @@ const config = require('../../config');
 const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -35,8 +34,3 @@ Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progr
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 }).tag('@regression-cp');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});

@@ -9,6 +9,9 @@ const assignClaimController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('assignClaimController');
+
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   const claimId = <string>req.query?.id;
   try{
@@ -17,6 +20,8 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
       await deleteDraftClaimFromStore(claimId);
       res.clearCookie('firstContact');
     }
+  } catch (error: unknown) {
+    logger.error(error);
   } finally {
     res.redirect(DASHBOARD_URL);
   }
