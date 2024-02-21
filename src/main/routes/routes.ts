@@ -275,6 +275,9 @@ import claimIssuePaymentSuccessfulController
 import claimIssuePaymentUnsuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
 import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
+import mediationDocumentUploadCheckAnswerController
+  from 'routes/features/mediation/uploadDocuments/checkAnswersController';
+import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
 
 export default [
   homeController,
@@ -518,4 +521,6 @@ export default [
   claimIssuePaymentSuccessfulController,
   claimIssuePaymentUnsuccessfulController,
   mediationUploadDocumentsController,
+  mediationDocumentUploadCheckAnswerController,
+  mediationConfirmationController,
 ];

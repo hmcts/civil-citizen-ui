@@ -79,6 +79,8 @@ import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments'
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
+import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
 
 export class CivilClaimResponse {
@@ -110,6 +112,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
   respondent1?: CCDParty;
+  hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
   fullAdmission?: FullAdmission;
   paymentOption?: PaymentOptionType;
@@ -281,6 +284,8 @@ export interface CCDClaim extends ClaimUpdate {
   mediationUploadDocuments?: UploadDocuments;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
+  res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
+  res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
 }
 
 export interface ClaimFeeData {
