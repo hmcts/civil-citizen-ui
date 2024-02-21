@@ -67,7 +67,7 @@ class AvailabilityDates {
     await I.fillField(fields.longerPeriodEndMonth, month);
     await I.fillField(fields.longerPeriodEndYear, year);
 
-    await I.click(cButtons.saveAndButton[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 
