@@ -244,6 +244,8 @@ ccd:
       enabled: false
     userProfileImporter:
       enabled: false
+    elastic:
+      enabled: true
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
@@ -363,6 +365,7 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
+  
 
 camunda-bpm:
   enabled: true
