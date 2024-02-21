@@ -1,10 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import config from 'config';
-import {
-  FIRST_CONTACT_PIN_URL,
-  FIRST_CONTACT_ACCESS_DENIED_URL,
-  FIRST_CONTACT_CLAIM_SUMMARY_URL,
-} from '../../../urls';
+import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL, FIRST_CONTACT_PIN_URL,} from '../../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {PinType} from 'models/firstContact/pin';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -50,8 +46,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: Request, res: Response, ne
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
         await saveDraftClaim(claim.id, claim, true);
         cookie.claimId = claim.id;
-        const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
-        cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = ciphertext;
+        cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
         res.cookie('firstContact', cookie);
         res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
       }

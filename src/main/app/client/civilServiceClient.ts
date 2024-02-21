@@ -12,6 +12,8 @@ import {
   CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT,
@@ -19,13 +21,11 @@ import {
   CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
-  CIVIL_SERVICE_FEES_PAYMENT_URL,
-  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import { DashboardClaimantItem, DashboardDefendantItem } from 'models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
@@ -41,7 +41,9 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {
+  ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD,
+} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -173,8 +175,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
-      const claimFeeResponse: ClaimFeeData = response.data;
-      return claimFeeResponse;
+      return response.data;
     } catch (err: unknown) {
       logger.error(err);
       throw new Error('Error when getting claim fee data');
