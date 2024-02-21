@@ -1,9 +1,12 @@
-export class DashboardTask {
+export class CivilServiceDashboardTask {
   id: number;
+  categoryEn: string;
+  categoryCy: string;
   taskNameEn: string;
   taskNameCy: string;
-  status: string;
+  currentStatus: number;
   hintTextEn: string;
   hintTextCy: string;
   url: string;
 }
+

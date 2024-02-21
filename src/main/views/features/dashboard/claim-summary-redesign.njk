@@ -9,11 +9,11 @@
 
 {% block content %}
 
+
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% set claimantName = claim.getClaimantFullName() %}
       {% set defendantName = claim.getDefendantFullName() %}
-
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
@@ -27,27 +27,27 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-            {% for notifications in dashboardNotifications.items.items %}
+            {% for notification in dashboardNotifications.items.items %}
                 {{ govukNotificationBanner({
-                   titleText:notifications.titleEn,
-                   html: notifications.descriptionEn
+                   titleText: notification.titleCy if lng=="cy" else notification.titleEn,
+                   html: notification.descriptionCy if lng=="cy" else notification.descriptionEn
                  })  }}
             {% endfor %}
             {% for taskList in dashboardTaskList.items.items %}
               <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
                 <h2 class="app-task-list__section">
-                  {{ t(taskList.categoryEn) }}
+                   {% if lng=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
                 </h2>
                 <ol class="app-task-list app-task-list__items">
-                  {% for task in taskList.task %}
+                  {% for task in taskList.tasks %}
                     <li class="app-task-list__item">
                       <div class="row">
                         <div class="column">
                             <span class="app-task-list__task-name">
                               {% if task.url != '#' %}
-                                <a class="govuk-link" rel="noopener noreferrer" href={{ task.url }}>{{ t(task.TaskNameEn) }}</a>
+                                <a class="govuk-link" rel="noopener noreferrer" href={{ task.url }}> {% if lng=="cy"%} {{ task.taskNameCy }} {% else %} {{ task.taskNameEn }} {% endif %}</a>
                               {% else %}
-                                <a>{{ t(task.TaskNameEn) }}</a>
+                                <a>{{ task.taskNameEn }}</a>
                               {% endif %}
                             </span>
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                         {% if task.hintTextEn %}
                           <br/>
-                          <span class="govuk-body-s"> {{ task.hintTextEn }} </span>
+                          <span class="govuk-body-s"> {% if lng=="cy"%} {{ task.hintTextCy }} {% else %} {{ task.hintTextEn }} {% endif %} </span>
                         {% endif %}
                       </div>
                     </li>
