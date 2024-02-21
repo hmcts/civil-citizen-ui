@@ -81,7 +81,7 @@ import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse'
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
-import {CCDHelpWithFeesDetails} from "models/ccdResponse/ccdHelpWithFeesDetails";
+import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 
 export class CivilClaimResponse {
   id: string;
