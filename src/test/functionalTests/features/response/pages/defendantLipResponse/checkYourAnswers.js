@@ -1,19 +1,13 @@
 const I = actor();
 const config = require('../../../../../config');
 const sharedData = require('../../../../sharedData');
+const cButtons = require('../../../common/cButtons');
 
 const fields = {
   cyaSigned: 'input[id="signed"]',
   directionsQuestionnaireSigned: '#directionsQuestionnaireSigned',
   signedName: 'input[id="signerName"]',
   signedRole: 'input[id="signerRole"]',
-};
-
-const buttons = {
-  submit: {
-    en: 'Submit Response',
-    cy: 'Cyflwyno\'r ymateb',
-  },
 };
 
 const links = {
@@ -62,7 +56,7 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
 
-    await I.click(buttons.submit[language]);
+    await I.click(cButtons.submit[language]);
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForText(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
@@ -105,7 +99,7 @@ class CheckYourAnswersPage {
     I.checkOption(fields.cyaSigned);
     I.checkOption(fields.directionsQuestionnaireSigned);
     if (['preview', 'demo'  ].includes(config.runningEnv)) {
-      I.click(buttons.submit);
+      I.click(cButtons.submit[language]);
       I.waitForText(content.confirmationHeading[language],config.WaitForText);
       I.see(content.confirmationSubheading[language]);
     }

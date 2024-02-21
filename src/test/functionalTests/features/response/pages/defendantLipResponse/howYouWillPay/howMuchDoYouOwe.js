@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   amount: 'input[id="amount"]',
@@ -17,13 +18,6 @@ const content = {
   },
 };
 
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
-
 class HowMuchDoYouOwe {
 
   async enterHowMuchMoneyDoYouOwe(claimRef, amount) {
@@ -32,7 +26,7 @@ class HowMuchDoYouOwe {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.hintText[language]);
     await I.fillField(fields.amount, amount);
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async enterHowMuchMoneyDoYouOweError(claimRef) {

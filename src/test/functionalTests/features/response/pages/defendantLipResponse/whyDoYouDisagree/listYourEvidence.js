@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   firstSelection: '[id="evidenceItem[0][type]"]',
@@ -11,13 +12,6 @@ const content = {
   heading: {
     en: 'List your evidence',
     cy: 'Rhestru eich tystiolaeth',
-  },
-};
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
   },
 };
 
@@ -42,7 +36,7 @@ class ListYourEvidence {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.selectOption(fields.firstSelection, dropdowns.firstSelection[language]);
     await I.fillField(fields.firstEvidenceItem, inputs.firstEvidenceItem[language]);
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

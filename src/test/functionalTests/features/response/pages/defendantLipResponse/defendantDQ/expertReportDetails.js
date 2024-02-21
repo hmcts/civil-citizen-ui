@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -18,23 +19,17 @@ const content = {
   },
 };
 
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
-
 class ExpertReportDetails {
 
   async enterExpertReportDetails() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language;
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.firstExpertsName,  'TestExpert1');
     await I.fillField(fields.firstExpertReportDay, '20');
     await I.fillField(fields.firstExpertReportMonth, '10');
     await I.fillField(fields.firstExpertReportYear, '2022');
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

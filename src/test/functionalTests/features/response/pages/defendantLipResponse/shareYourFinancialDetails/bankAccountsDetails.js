@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   accounts1: 'accounts[0][typeOfAccount]',
@@ -37,10 +38,6 @@ const buttons = {
     en: 'Add another account',
     cy: 'Ychwanegu cyfrif arall',
   },
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
 };
 
 class BankAccountsDetails {
@@ -60,8 +57,7 @@ class BankAccountsDetails {
   }
 
   async clickContinue(){
-    const { language } = sharedData; 
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[sharedData.language]);
   }
 }
 
