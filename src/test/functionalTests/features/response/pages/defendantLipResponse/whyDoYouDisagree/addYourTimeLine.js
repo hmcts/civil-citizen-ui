@@ -10,9 +10,9 @@ const fields = {
   description1: '[id="rows[0][description]"]',
 };
 
-const buttons = {
-  addAnotherAccount: 'Add another account',
-};
+// const buttons = {
+//   addAnotherAccount: 'Add another account',
+// };
 
 const content = {
   heading: {
