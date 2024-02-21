@@ -22,7 +22,6 @@ class CaseProgressionSteps {
   initiateUploadEvidenceJourney(claimRef, claimType) {
 
     console.log('The value of the Claim Reference : '+claimRef);
-    latestUpdateTab.open(claimRef , claimType);
     latestUpdateTab.nextAction('Upload documents');
     uploadYourDocumentsIntroduction.verifyPageContent();
     uploadYourDocumentsIntroduction.nextAction('Start now');
