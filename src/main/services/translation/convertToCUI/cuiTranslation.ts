@@ -60,6 +60,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondentPaymentDeadline = ccdClaim.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid ? ccdClaim.respondToClaimAdmitPartLRspec.whenWillThisAmountBePaid : undefined;
   claim.res1MediationDocumentsReferred = ccdClaim.res1MediationDocumentsReferred;
   claim.res1MediationNonAttendanceDocs = ccdClaim.res1MediationNonAttendanceDocs;
+  claim.claimIssuedHwfDetails = ccdClaim.claimIssuedHwfDetails;
   if (claim.isFullAdmission()) {
     translateFullAdmission(claim, ccdClaim, claimantResponse);
   } else if (claim.isPartialAdmission()) {

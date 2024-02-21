@@ -78,6 +78,7 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import {CCDHelpWithFeesDetails} from "models/ccdResponse/ccdHelpWithFeesDetails";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -153,6 +154,7 @@ export class Claim {
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
