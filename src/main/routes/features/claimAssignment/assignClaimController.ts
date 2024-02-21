@@ -5,14 +5,14 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('defendantRoleAssignmentService');
+
 const assignClaimController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('assignClaimController');
-
-assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
+assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res, next) => {
   const claimId = <string>req.query?.id;
   try{
     if (claimId) {
@@ -20,8 +20,8 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
       await deleteDraftClaimFromStore(claimId);
       res.clearCookie('firstContact');
     }
-  } catch (error: unknown) {
-    logger.error(error);
+  } catch (err) {
+    logger.error(`Error Message: ${err.message}, http Code: ${err.code}`);
   } finally {
     res.redirect(DASHBOARD_URL);
   }
