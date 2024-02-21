@@ -1,5 +1,4 @@
 export enum DashboardTaskStatus {
-
   'ACTION_NEEDED',
   'COMPLETE',
   'INCOMPLETE',
@@ -8,4 +7,3 @@ export enum DashboardTaskStatus {
   'NOT_AVAILABLE_YET',
   'IN_PROGRESS',
 }
-

@@ -42,8 +42,8 @@ export const getRedisStoreForSession = () => {
   });
 };
 
-export const getNotificationById = async (claimId: string, caseRole: string,req: AppRequest): Promise<DashboardNotificationList> => {
-  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId,caseRole,req);
+export const getNotificationById = async (claimId: string, caseRole: string, req: AppRequest): Promise<DashboardNotificationList> => {
+  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     return dashboardNotifications;
   } else {
@@ -51,8 +51,8 @@ export const getNotificationById = async (claimId: string, caseRole: string,req:
   }
 };
 
-export const getDashboardById = async (claimId: string, caseRole: string,req: AppRequest): Promise<Dashboard> => {
-  const dashboard = await civilServiceClient.retrieveDashboard(claimId,caseRole,req);
+export const getDashboardById = async (claimId: string, caseRole: string, req: AppRequest): Promise<Dashboard> => {
+  const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     return dashboard;
   } else {

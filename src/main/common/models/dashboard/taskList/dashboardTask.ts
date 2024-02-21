@@ -3,9 +3,7 @@ export class DashboardTask {
   taskNameEn: string;
   taskNameCy: string;
   status: string;
-  hintTextEn:string;
-  hintTextCy:string;
-  url:string;
-
+  hintTextEn: string;
+  hintTextCy: string;
+  url: string;
 }
-

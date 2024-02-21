@@ -11,11 +11,11 @@ const claimantDashboardController = Router();
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getClaimById(claimId, req, true);
-    const dashboardNotifications = await getNotifications(claimId, caseData,req);
-    const dashboard = await getDashboardForm(caseData,claimId,req);
-    res.render(claimantDashboardViewPath, {claim:caseData, claimId, dashboardTaskList:dashboard, dashboardNotifications,lang});
+    const dashboardNotifications = await getNotifications(claimId, caseData, req);
+    const dashboard = await getDashboardForm(caseData, claimId, req);
+    res.render(claimantDashboardViewPath, {claim:caseData, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
   } catch (error) {
     next(error);
   }

@@ -13,12 +13,12 @@ import {AppRequest} from 'models/AppRequest';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
 
-export const getDashboardForm = async (claim: Claim,claimId: string,req: AppRequest):Promise<Dashboard> => {
+export const getDashboardForm = async (claim: Claim, claimId: string, req: AppRequest): Promise<Dashboard> => {
   try {
     const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
     let dashboard: Dashboard = await getDashboardFromCache(caseRole, claimId);
     if (!dashboard) {
-      dashboard = await getDashboardById(claimId,caseRole,req);
+      dashboard = await getDashboardById(claimId, caseRole, req);
       await saveDashboardToCache(dashboard, caseRole, claimId);
     }
     return dashboard;
@@ -28,14 +28,14 @@ export const getDashboardForm = async (claim: Claim,claimId: string,req: AppRequ
   }
 };
 
-export const getNotifications = async (claimId: string, claim: Claim,req: AppRequest):Promise<DashboardNotificationList> => {
+export const getNotifications = async (claimId: string, claim: Claim, req: AppRequest): Promise<DashboardNotificationList> => {
   try {
     const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
     let dashboardNotificationsList: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
 
     if (!dashboardNotificationsList){
-      dashboardNotificationsList = await getNotificationById(claimId,caseRole,req);
-      await saveNotificationToCache(dashboardNotificationsList,caseRole, claimId);
+      dashboardNotificationsList = await getNotificationById(claimId, caseRole, req);
+      await saveNotificationToCache(dashboardNotificationsList, caseRole, claimId);
     }
     return dashboardNotificationsList;
   } catch (error) {

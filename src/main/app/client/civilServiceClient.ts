@@ -430,9 +430,9 @@ export class CivilServiceClient {
     const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'defendant'), config);
 
     const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], response.data);
-    const dashboardNotificationItems  = plainToInstance(DashboardNotification,notificationList);
-    const dashboardNotificationList = new  DashboardNotificationList();
-    dashboardNotificationList.items=dashboardNotificationItems;
+    const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
+    const dashboardNotificationList= new  DashboardNotificationList();
+    dashboardNotificationList.items = dashboardNotificationItems;
 
     return dashboardNotificationList;
   }
@@ -445,7 +445,7 @@ export class CivilServiceClient {
 
     const groupedTasks = taskList.reduce((group, task) => {
       const key = `${task.categoryEn}-${task.categoryCy}`;
-      const civilServiceDashboardTask = plainToInstance(CivilServiceDashboardTask,task);
+      const civilServiceDashboardTask= plainToInstance(CivilServiceDashboardTask, task);
       const dashboardTask = new DashboardTask();
       dashboardTask.id = civilServiceDashboardTask.id;
       dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
@@ -466,10 +466,10 @@ export class CivilServiceClient {
       return group;
     }, {} as Record<string, DashboardTaskList>);
 
-    const groupedTasksList = Object.values(groupedTasks);
+    const groupedTasksList= Object.values(groupedTasks);
 
     const dashboard = new Dashboard();
-    dashboard.items=groupedTasksList;
+    dashboard.items = groupedTasksList;
     return dashboard;
   }
 }

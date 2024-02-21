@@ -5,9 +5,8 @@ export class CivilServiceDashboardTask {
   taskNameEn: string;
   taskNameCy: string;
   currentStatus: number;
-  hintTextEn:string;
-  hintTextCy:string;
-  url:string;
-
+  hintTextEn: string;
+  hintTextCy: string;
+  url: string;
 }
 

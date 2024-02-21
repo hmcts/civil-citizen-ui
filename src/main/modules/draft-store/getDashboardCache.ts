@@ -26,15 +26,15 @@ export const getDashboardContentTypeFromCache = async (caseRole:ClaimantOrDefend
     const data = await app.locals.draftStoreClient.get(caseRole+dashboardContentType+redisKey);
     if(data) {
       const jsonData = JSON.parse(data);
-      if (dashboardContentType == DashboardContentType.DASHBOARD) {
+      if (dashboardContentType === DashboardContentType.DASHBOARD) {
         const dashboard = new Dashboard();
-        dashboard.items=[];
-        dashboard.items = plainToInstance(DashboardTaskList, jsonData as object[]);
+        dashboard.items = [];
+        dashboard.items = plainToInstance(DashboardTaskList, jsonData as DashboardNotification[]);
         return dashboard;
       } else {
-        const notificationItems = plainToInstance(DashboardNotification, jsonData as object[]);
+        const notificationItems = plainToInstance(DashboardNotification, jsonData as DashboardNotification[]);
         const dashboardNotificationList = new DashboardNotificationList();
-        dashboardNotificationList.items=notificationItems;
+        dashboardNotificationList.items = notificationItems;
         return dashboardNotificationList;
       }
     }
