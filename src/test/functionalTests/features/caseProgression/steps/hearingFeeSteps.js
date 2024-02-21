@@ -3,7 +3,7 @@ const ApplyHelpFeeSelection = require('../pages/hearingFee/applyHelpFeeSelection
 const ApplyHelpFees = require ('../pages/hearingFee/applyHelpWithFees');
 const ApplyHelpWithFeesStart = require ('../pages/hearingFee/applyHelpWithFeesStart');
 const ApplyHelpWithFeesReferenceNumber = require ('../pages/hearingFee/applyHelpWithFeesReferenceNumber');
-const PaymentSuccessful = require ('../pages/hearingFee/paymentSuccessful')
+const PaymentSuccessful = require ('../pages/hearingFee/paymentSuccessful');
 const GovPay = require ('../../common/govPay');
 
 const I = actor(); // eslint-disable-line no-unused-vars
@@ -34,7 +34,7 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.nextAction('Yes');
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
-// add confirmation page
+    // add confirmation page
   }
 
   payHearingFeeJourney(claimRef, feeAmount, dueDate) {

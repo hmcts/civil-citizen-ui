@@ -8,7 +8,7 @@ class GovPay {
     I.fillField('//*[@id="card-no"]', '4444333322221111');
     I.fillField('//*[@id="expiry-month"]', '12');
     I.fillField('//*[@id="expiry-year"]', '32');
-    I.fillField('//*[@id="cardholder-name"]', 'John Doe')
+    I.fillField('//*[@id="cardholder-name"]', 'John Doe');
     I.fillField('//*[@id="cvc"]', '000');
     I.fillField('//*[@id="address-line-1"]', 'Street 1');
     I.fillField('//*[@id="address-city"]', 'London');
