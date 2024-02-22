@@ -311,7 +311,7 @@ export class CivilServiceClient {
       event: event,
       caseDataUpdate: updatedClaim,
     };
-    console.log('THIS IS THE DATA ===========' + data.toString());
+    console.log('THIS IS THE DATA ===========', JSON.stringify(data, null, 2));
     try {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
