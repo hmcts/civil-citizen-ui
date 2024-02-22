@@ -20,12 +20,15 @@ import {
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_FEES_PAYMENT_URL,
-  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL, CIVIL_SERVICE_DASHBOARD_TASKLIST_URL, CIVIL_SERVICE_NOTIFICATION_LIST_URL,
+  CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
+  CIVIL_SERVICE_NOTIFICATION_LIST_URL,
+  CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import { DashboardClaimantItem, DashboardDefendantItem } from 'models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem} from 'models/dashboard/dashboardItem';
 import {ClaimUpdate, EventDto} from 'models/events/eventDto';
 import {CaseEvent} from 'models/events/caseEvent';
 import {CourtLocation} from 'models/courts/courtLocations';
@@ -47,8 +50,8 @@ import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
-import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {TaskStatusColor} from 'models/dashboard/taskList/DashboardTaskStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -427,7 +430,7 @@ export class CivilServiceClient {
 
   async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'defendant'), config);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
 
     const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], response.data);
     const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
@@ -439,7 +442,7 @@ export class CivilServiceClient {
 
   async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', '123').replace(':role-type', 'claimant'), config);
+    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
 
     const taskList: DashboardTaskList[] = Object.assign([new DashboardTaskList()], response.data);
 
@@ -450,7 +453,9 @@ export class CivilServiceClient {
       dashboardTask.id = civilServiceDashboardTask.id;
       dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
       dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
-      dashboardTask.status = DashboardTaskStatus[civilServiceDashboardTask.currentStatus];
+      dashboardTask.statusEn = civilServiceDashboardTask.currentStatusEn;
+      dashboardTask.statusCy = civilServiceDashboardTask.currentStatusCy;
+      dashboardTask.statusColour = TaskStatusColor[civilServiceDashboardTask.currentStatusEn];
       dashboardTask.hintTextEn = civilServiceDashboardTask.hintTextEn;
       dashboardTask.hintTextCy = civilServiceDashboardTask.hintTextCy;
       dashboardTask.url = civilServiceDashboardTask.url;
@@ -471,5 +476,18 @@ export class CivilServiceClient {
     const dashboard = new Dashboard();
     dashboard.items = groupedTasksList;
     return dashboard;
+  }
+
+  async createDashboard(req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      const redisKey = req?.session?.user?.id;
+      const scenarioRef = 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required';
+      const response = await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
+      logger.error(response.status);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
   }
 }

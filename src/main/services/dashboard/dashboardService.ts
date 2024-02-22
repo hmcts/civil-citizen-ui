@@ -3,7 +3,6 @@ import {
   getNotificationFromCache,
   saveDashboardToCache, saveNotificationToCache,
 } from 'modules/draft-store/getDashboardCache';
-import {Claim} from 'models/claim';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
@@ -13,9 +12,8 @@ import {AppRequest} from 'models/AppRequest';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dashboardCache');
 
-export const getDashboardForm = async (claim: Claim, claimId: string, req: AppRequest): Promise<Dashboard> => {
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claimId: string, req: AppRequest): Promise<Dashboard> => {
   try {
-    const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
     let dashboard: Dashboard = await getDashboardFromCache(caseRole, claimId);
     if (!dashboard) {
       dashboard = await getDashboardById(claimId, caseRole, req);
@@ -28,9 +26,8 @@ export const getDashboardForm = async (claim: Claim, claimId: string, req: AppRe
   }
 };
 
-export const getNotifications = async (claimId: string, claim: Claim, req: AppRequest): Promise<DashboardNotificationList> => {
+export const getNotifications = async (claimId: string, caseRole: ClaimantOrDefendant, req: AppRequest): Promise<DashboardNotificationList> => {
   try {
-    const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
     let dashboardNotificationsList: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
 
     if (!dashboardNotificationsList){

@@ -44,16 +44,12 @@
                       <div class="row">
                         <div class="column">
                             <span class="app-task-list__task-name">
-                              {% if task.url != '#' %}
-                                <a class="govuk-link" rel="noopener noreferrer" href={{ task.url }}> {% if lng=="cy"%} {{ task.taskNameCy }} {% else %} {{ task.taskNameEn }} {% endif %}</a>
-                              {% else %}
-                                <a>{{ task.taskNameEn }}</a>
-                              {% endif %}
+                              {% if lng=="cy"%} {{ task.taskNameCy | safe}} {% else %} {{ task.taskNameEn | safe}} {% endif %}
                             </span>
                         </div>
                         <div class="column">
-                          <strong class="govuk-tag app-task-list__tag {{ task.statusColor}}">
-                            {{ t('PAGES.TASK_LIST.' + task.status) }}
+                          <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
+                            {% if lng=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
                           </strong>
                         </div>
                         {% if task.hintTextEn %}

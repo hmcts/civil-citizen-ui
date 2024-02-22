@@ -23,6 +23,7 @@ import {getBundlesContent} from 'services/features/caseProgression/bundles/bundl
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {ClaimantOrDefendant} from 'models/partyType';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 
@@ -38,8 +39,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
-      const dashboardNotifications = await getNotifications(claimId, claim, req as AppRequest);
-      const dashboardTaskList = await getDashboardForm(claim, claimId, req as AppRequest);
+      const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+      const dashboardNotifications = await getNotifications(claimId, caseRole, req as AppRequest);
+      const dashboardTaskList = await getDashboardForm(caseRole, claimId, req as AppRequest);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
       // RELEASE 1
