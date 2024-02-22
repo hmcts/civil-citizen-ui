@@ -19,7 +19,7 @@ export interface AppSession extends Session {
   previousUrl: string;
   claimId: string;
   taskLists: TaskList[];
-  assignClaimId: string;
+  assignClaimURL: string;
   claimIssueTasklist: boolean;
 }
 
