@@ -29,7 +29,7 @@ Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async (
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@skipregression-cp');
+}).tag('@regression-cp');
 
 Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -37,4 +37,4 @@ Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@skipregression-cp');
+}).tag('@regression-cp');
