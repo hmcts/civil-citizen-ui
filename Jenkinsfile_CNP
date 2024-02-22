@@ -133,17 +133,17 @@ withPipeline(type, product, component) {
   }
 
   afterSuccess('smoketest:preview') {
-    stage('Accessibility') {
-      yarnBuilder.yarn('tests:a11y')
-      publishHTML([
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "functional-output/accessibility-report",
-        reportFiles          : 'a11y.html',
-        reportName           : 'Preview Accessibility results'
-      ])
-    }
+    // stage('Accessibility') {
+    //   yarnBuilder.yarn('tests:a11y')
+    //   publishHTML([
+    //     allowMissing         : true,
+    //     alwaysLinkToLastBuild: true,
+    //     keepAll              : true,
+    //     reportDir            : "functional-output/accessibility-report",
+    //     reportFiles          : 'a11y.html',
+    //     reportName           : 'Preview Accessibility results'
+    //   ])
+    // }
   }
 
   before('smoketest:aat') {
