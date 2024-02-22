@@ -51,7 +51,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
-import {TaskStatusColor} from 'models/dashboard/taskList/DashboardTaskStatus';
+import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
