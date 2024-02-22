@@ -4,7 +4,7 @@ import CivilClaimResponseMock from '../../../utils/mocks/civilClaimResponseMock.
 import nock from 'nock';
 import {CaseRole} from 'form/models/caseRoles';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
-import config from "config";
+import config from 'config';
 
 const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
