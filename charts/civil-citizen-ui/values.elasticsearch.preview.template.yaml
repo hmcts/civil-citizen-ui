@@ -21,7 +21,7 @@ ccd:
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
-    image: hmctspublic.azurecr.io/imported/elasticsearch/elasticsearch
+    image: hmctspublic.azurecr.io/imported/elastic/elasticsearch
     imageTag: "7.17.1"
     initResources:
       limits:
