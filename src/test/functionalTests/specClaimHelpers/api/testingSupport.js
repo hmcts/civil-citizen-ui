@@ -9,8 +9,8 @@ const MAX_RETRIES = 50;
 const RETRY_TIMEOUT_MS = 10000;
 
 module.exports = {
-  waitForFinishedBusinessProcess: async caseId => {
-    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+  waitForFinishedBusinessProcess: async (caseId, user = '') => {
+    const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
 
     await retry(() => {
       return restHelper.request(
