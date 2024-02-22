@@ -12,7 +12,7 @@ const assignClaimController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res, next) => {
+assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   const claimId = <string>req.query?.id;
   try{
     if (claimId) {
