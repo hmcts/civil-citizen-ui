@@ -6,7 +6,7 @@
 
 [![codecov](https://codecov.io/gh/hmcts/civil-citizen-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/civil-citizen-ui)
 
-## Getting Started
+## Getting Start
 
 ### Prerequisites
 
