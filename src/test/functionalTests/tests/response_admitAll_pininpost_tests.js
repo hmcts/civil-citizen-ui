@@ -3,7 +3,7 @@ const config = require('../../config');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
@@ -17,6 +17,7 @@ let securityCode;
 Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, 'pinInPost');
   console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -42,7 +43,3 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nig
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
 }).tag('@regression-cui-r1');
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-});
