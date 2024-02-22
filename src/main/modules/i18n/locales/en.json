@@ -1428,6 +1428,7 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "HWF_NO_REMISSION": "Your Help with Fees application has been rejected.",
         "HWF_PARTIAL_REMISSION": "We've reviewed your Help with Fees application.",
+        "HWF_UPDATED_REF_NUMBER": "We've reviewed your Help with Fees application.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation.",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful.",
