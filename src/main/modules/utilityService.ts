@@ -15,7 +15,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 /**
  * Gets the claim from draft store and if not existing then gets it from ccd.
- * @param claimId, req
+ * @param claimId, req, useRedisKey
  * @returns claim
  */
 export const getClaimById = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
@@ -42,8 +42,8 @@ export const getRedisStoreForSession = () => {
   });
 };
 
-export const getNotificationById = async (claimId: string): Promise<DashboardNotificationList> => {
-  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId);
+export const getNotificationById = async (claimId: string, caseRole: string, req: AppRequest): Promise<DashboardNotificationList> => {
+  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     return dashboardNotifications;
   } else {
@@ -51,8 +51,8 @@ export const getNotificationById = async (claimId: string): Promise<DashboardNot
   }
 };
 
-export const getDashboardById = async (claimId: string): Promise<Dashboard> => {
-  const dashboard = await civilServiceClient.retrieveDashboard(claimId);
+export const getDashboardById = async (claimId: string, caseRole: string, req: AppRequest): Promise<Dashboard> => {
+  const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     return dashboard;
   } else {

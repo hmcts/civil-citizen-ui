@@ -737,4 +737,157 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
   });
+
+  describe('getDashboard', () => {
+    const mockNotificationInfo = [
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'titleEn': 'title_en',
+        'titleCy': 'title_cy',
+        'descriptionEn': 'description_en',
+        'descriptionCy': 'description_cy',
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+      },
+    ];
+    const mockExpectedDashboardInfo=
+      [{
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        tasks: [{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+          'status': 'ACTION_NEEDED',
+          'taskNameEn': 'task_name_en',
+          'hintTextEn': 'hint_text_en',
+          'taskNameCy': 'task_name_cy',
+          'hintTextCy': 'hint_text_cy',
+          'url': '',
+        }, {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'status': 'ACTION_NEEDED',
+          'taskNameEn': 'task_name_en',
+          'hintTextEn': 'hint_text_en',
+          'taskNameCy': 'task_name_cy',
+          'hintTextCy': 'hint_text_cy',
+          'url': '',
+        }],
+      },{
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        tasks:[{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+          'status': 'ACTION_NEEDED',
+          'taskNameEn': 'task_name_en2',
+          'hintTextEn': 'hint_text_en2',
+          'taskNameCy': 'task_name_cy2',
+          'hintTextCy': 'hint_text_cy2',
+          'url': '',
+        },
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+          'status': 'ACTION_NEEDED',
+          'taskNameEn': 'task_name_en2',
+          'hintTextEn': 'hint_text_en2',
+          'taskNameCy': 'task_name_cy2',
+          'hintTextCy': 'hint_text_cy2',
+          'url': '',
+        }],
+      }];
+    const mockDashboardInfo =[
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'reference': '123',
+        'currentStatus': 0,
+        'nextStatus': 1,
+        'taskNameEn': 'task_name_en',
+        'hintTextEn': 'hint_text_en',
+        'taskNameCy': 'task_name_cy',
+        'hintTextCy': 'hint_text_cy',
+        'updatedBy': 'Test',
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+        'url': '',
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'reference': '123',
+        'currentStatus': 0,
+        'nextStatus': 1,
+        'taskNameEn': 'task_name_en',
+        'hintTextEn': 'hint_text_en',
+        'taskNameCy': 'task_name_cy',
+        'hintTextCy': 'hint_text_cy',
+        'updatedBy': 'Test',
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+        'url': '',
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+        'reference': '123',
+        'currentStatus': 0,
+        'nextStatus': 1,
+        'taskNameEn': 'task_name_en2',
+        'hintTextEn': 'hint_text_en2',
+        'taskNameCy': 'task_name_cy2',
+        'hintTextCy': 'hint_text_cy2',
+        'updatedBy': 'Test2',
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+        'url': '',
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+        'reference': '123',
+        'currentStatus': 0,
+        'nextStatus': 1,
+        'taskNameEn': 'task_name_en2',
+        'hintTextEn': 'hint_text_en2',
+        'taskNameCy': 'task_name_cy2',
+        'hintTextCy': 'hint_text_cy2',
+        'updatedBy': 'Test2',
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+        'url': '',
+      },
+    ];
+    it('should get notification List', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockNotificationInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const notificationResponse = await civilServiceClient.retrieveNotification('123','claimant', appReq);
+
+      //Then
+      expect(notificationResponse.items).toEqual(mockNotificationInfo);
+    });
+
+    it('should get dashboard Task List', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockDashboardInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const taskListResponse = await civilServiceClient.retrieveDashboard('123','claimant' , appReq);
+
+      //Then
+      expect(taskListResponse.items).toEqual(mockExpectedDashboardInfo);
+    });
+  });
 });
