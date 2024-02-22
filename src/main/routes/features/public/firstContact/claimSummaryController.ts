@@ -30,7 +30,8 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
 
       const bytes  = CryptoJS.AES.decrypt(cookie?.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ, claim.respondent1PinToPostLRspec?.accessCode);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      
+      console.log('****************From claim summary controller***************');
+      console.log(cookie?.claimId);
       if (cookie?.claimId && originalText === YesNo.YES) {
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
