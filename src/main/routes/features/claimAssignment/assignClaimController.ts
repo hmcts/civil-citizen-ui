@@ -16,7 +16,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   console.log('*******assign defendant*****************');
   console.log(claimId);
   try{
-    if (claimId) {
+    if (claimId || claimId != 'undefined') {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
       deleteDraftClaimFromStore(claimId);
       res.clearCookie('firstContact');
