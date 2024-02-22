@@ -23,7 +23,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
 
     if(paymentStatus.status === success) {
-      claim.issueDate = new Date();
       return PAY_CLAIM_FEE_SUCCESSFUL_URL;
     }
 
