@@ -17,8 +17,9 @@ nodejs:
         - name: launch-darkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
   environment:
-    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
-    IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
+    OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
+    IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
+    CIVIL_SERVICE_URL: http://${SERVICE_NAME}-java
 
 civil-service:
   enabled: true
@@ -51,6 +52,8 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
+          - name: cmc-db-password-v11
+            alias: CMC_DB_PASSWORD
           - name: gov-notify-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
@@ -78,9 +81,31 @@ civil-service:
           - name: hmc-servicebus-shared-access-key-tf
             alias: HMC_HEARINGS_TOPIC_ACCESS_KEY
     environment:
-      PAYMENTS_CALLBACK_URL: https://${SERVICE_FQDN}/service-request-update
+      IDAM_CLIENT_ID: civil-service
+      IDAM_CLIENT_REDIRECT_URI: https://civil-orchestrator-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
+      IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
+      SPRING_SECURITY_ENABLED: true
+      CMC_DB_PORT: 5432
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/jwks
+      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
       TESTING_SUPPORT_ENABLED: true
+      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SPRING_CLOUD_BOOTSTRAP_ENABLED: true
+      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       CMC_DB_HOST: ${SERVICE_NAME}-postgresql
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       CMC_DB_USERNAME: ${POSTGRES_USER}
@@ -89,14 +114,12 @@ civil-service:
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      STITCHING_API_ENABLED: false
-      SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}.platform.hmcts.net/service-request-update
-      SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}.platform.hmcts.net/service-request-update-claim-issued
-      ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
-      RELEASE_REVISION: "{{ .Release.Revision }}"
       POLLING_EVENT_EMITTER_ENABLED: false
-      HMC_HEARINGS_SUBSCRIPTION_ENABLED: false
-      CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
+      STITCHING_API_ENABLED: false
+      DOCUMENT_MANAGEMENT_SECURED: true
+      RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
+      CUI_URL_RESPOND_TO_CLAIM: https://civil-citizen-ui-staging.aat.platform.hmcts.net/first-contact/start
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
@@ -221,6 +244,8 @@ ccd:
       enabled: false
     userProfileImporter:
       enabled: false
+    elastic:
+      enabled: true
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
@@ -270,6 +295,9 @@ ccd:
         CCD_MULTIPARTY_EVENTS: DEFENDANT_RESPONSE,ACKNOWLEDGE_CLAIM,CLAIMANT_RESPONSE
         ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
         RELEASE_REVISION: "{{ .Release.Revision }}"
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
 
   ccd-definition-store-api:
     java:
@@ -285,7 +313,59 @@ ccd:
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         RELEASE_REVISION: "{{ .Release.Revision }}"
         DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 35
+        ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
+        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
       disableKeyVaults: true
+  elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
+    imageTag: "7.17.1"
+    initResources:
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
+  logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash
+    imageTag: "latest"
+    extraEnvs:
+      - name: DATA_STORE_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DATA_STORE_USER
+        value: ${POSTGRES_USER}
+      - name: DATA_STORE_PASS
+        value: ${POSTGRES_PASSWORD}
+      - name: DB_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: DB_PWD
+        value: ${POSTGRES_PASSWORD}
+      - name: ES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1024Mi"
+      limits:
+        cpu: "2500m"
+        memory: "1024Mi"
+    configTpl:
+      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.user: ${POSTGRES_USER}
+      db.pwd: ${POSTGRES_PASSWORD}
+      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
+    livenessProbe:
+      initialDelaySeconds: 90
+  
 
 camunda-bpm:
   enabled: true
