@@ -207,7 +207,7 @@ module.exports = {
 
     await apiRequest.setupTokens(user);
     let payload = data.CREATE_LIP_CLAIM(user, userId);
-    const caseId = await apiRequest.startEventForLiPCitizen(payload);
+    caseId = await apiRequest.startEventForLiPCitizen(payload);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -313,7 +313,7 @@ module.exports = {
     eventName = responsePayload['event'];
     caseData = responsePayload['caseData'];
     await apiRequest.setupTokens(user);
-    await waitForFinishedBusinessProcess(caseId);
+    await waitForFinishedBusinessProcess(caseId, user);
     await assertSubmittedSpecEvent(expectedState);
     console.log('End of viewAndRespondToDefence()');
   },
@@ -526,5 +526,7 @@ const assignSpecCase = async (caseId, type) => {
   } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
+    await assignCaseRoleToUser(caseId, 'CLAIMANT', config.claimantCitizenUser);
+    await addUserCaseMapping(caseId, config.claimantCitizenUser);
   }
 };
