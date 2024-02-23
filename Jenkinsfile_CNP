@@ -76,7 +76,6 @@ def checkForFullDeployLabel(branch_name) {
 
 withPipeline(type, product, component) {
   pipelineConf = config
-  pipelineConf.securityScan = false
   disableLegacyDeployment()
   enableAksStagingDeployment()
   enableSlackNotifications('#civil_notifications')
