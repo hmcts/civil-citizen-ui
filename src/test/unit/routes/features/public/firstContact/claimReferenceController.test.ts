@@ -6,6 +6,8 @@ import {
   FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import { t } from 'i18next';
+import { Session } from 'express-session';
+import { AppSession } from 'common/models/AppRequest';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -24,7 +26,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
     });
 
     it('should render with set cookie value', async () => {
-      app.request['cookies'] = {'firstContact': {claimReference: validClaimNumberV1}};
+      app.request['session'] = { 'firstContact': { claimReference: validClaimNumberV1 } } as unknown as Session;;
       await request(app).get(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
@@ -32,7 +34,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
     });
 
     it('should render with not cookie value', async () => {
-      app.request['cookies'] = {'firstContact': {foo: 'blah'}};
+      app.request['session'] = { 'firstContact': { foo: 'blah' } } as unknown as Session;
       await request(app).get(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
@@ -53,7 +55,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
-        expect(app.request.cookies.firstContact.claimReference).toBe(validClaimNumberV1);
+        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
       });
     });
 

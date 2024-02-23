@@ -11,6 +11,7 @@ import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetail
 import {YesNo} from '../../../../common/form/models/yesNo';
 import config from 'config';
 import { AppRequest } from 'common/models/AppRequest';
+import { getFirstContactData } from 'services/firstcontact/firstcontactService';
 
 const CryptoJS = require('crypto-js');
 
@@ -21,19 +22,17 @@ const firstContactClaimSummaryController = Router();
 firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      // const cookie = req.cookies['firstContact'];
-      const sessionData = req.session;
-      const claimId = sessionData.firstContact?.claimId;
+      const firstContact = getFirstContactData(req.session);
+      const claimId = firstContact?.claimId;
       const claim: Claim = await getClaimById(claimId, req);
 
-      if (!claim.respondent1PinToPostLRspec?.accessCode || !sessionData.firstContact?.pin) {
+      if (!claim.respondent1PinToPostLRspec?.accessCode || !firstContact?.pin) {
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
       }
 
-      const bytes = CryptoJS.AES.decrypt(sessionData.firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
+      const bytes = CryptoJS.AES.decrypt(firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      console.log('****************From claim summary controller***************');
-      console.log(claimId);
+
       if (claimId && originalText === YesNo.YES) {
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);

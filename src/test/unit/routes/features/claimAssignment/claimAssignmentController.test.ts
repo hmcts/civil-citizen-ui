@@ -6,6 +6,7 @@ import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
+import { Session } from 'express-session';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -44,7 +45,7 @@ describe('claim assignment controller', ()=>{
       const error = new Error('Test error');
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockRejectedValueOnce(error);
-      app.request.cookies = { firstContact: { 'claimId': 123 } };
+      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
       await request(app).get('/assignclaim')
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -55,7 +56,7 @@ describe('claim assignment controller', ()=>{
      
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce({} as Claim);
-      app.request.cookies = { firstContact: { 'claimId': 123 } };
+      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
       await request(app).get('/assignclaim')
         .expect((res) => {
           expect(res.status).toBe(302);

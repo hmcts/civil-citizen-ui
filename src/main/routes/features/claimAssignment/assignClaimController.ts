@@ -4,6 +4,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import { getFirstContactData } from 'services/firstcontact/firstcontactService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantRoleAssignmentService');
@@ -12,15 +13,15 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
-  const sessionData = req.session;
-  const claimId = sessionData.firstContact?.claimId;
+  const firstContact = getFirstContactData(req.session);
+  const claimId = firstContact?.claimId;
   console.log('*******assign defendant*****************');
   console.log(claimId);
   try{
     if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
       deleteDraftClaimFromStore(claimId);
-      res.clearCookie('firstContact');
+      req.session.firstContact = {};
     }
   } catch (error) {
     logger.error(`Error Message: ${error.message}, http Code: ${error.code}`);
