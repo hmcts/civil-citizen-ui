@@ -3,6 +3,7 @@ const restHelper = require('./restHelper');
 const NodeCache = require('node-cache');
 //Idam access token expires for every 8 hrs
 const idamTokenCache = new NodeCache({stdTTL: 25200, checkperiod: 1800});
+const idamUsersCreated = new Set();
 
 const loginEndpoint = config.idamStub.enabled ? 'oauth2/token' : 'loginUser';
 const idamUrl = config.idamStub.enabled ? config.idamStub.url : config.url.idamApi;
@@ -30,16 +31,22 @@ async function accessToken(user) {
   }
 }
 
+async function addIdamUserToBeDeletedList(userEmail) {
+  console.log('Adding user {} to the to be deleted list', userEmail);
+  idamUsersCreated.add(userEmail);
+}
+
 async function createAccount(email, password) {
   try {
     let body = {'email': email, 'password': password, 'forename': 'forename', 'surname': 'surname', 'roles': [{'code': 'citizen'}]};
     await restHelper.request(`${idamUrl}/testing-support/accounts/`, {'Content-Type': 'application/json'}, body);
-    
+
+    addIdamUserToBeDeletedList(email);
     console.log('Account created: ', email);
 
   } catch (error) {
     console.error('Error creating account:', error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -49,12 +56,17 @@ async function deleteAccount(email) {
     await restHelper.request(`${idamUrl}/testing-support/accounts/${email}`, {'Content-Type': 'application/json'}, undefined, method);
 
     console.log('Account deleted: ' + email);
-
-    config.defendantCitizenUser.email = `citizen.${new Date().getTime()}.${Math.random()}.user@gmail.com`;
-    
   } catch (error) {
     console.error('Error deleting account:', error);
-    throw error; 
+    throw error;
+  }
+}
+
+async function deleteAllIdamTestUsers() {
+  console.log('Deleting all the idam users', idamUsersCreated);
+  for (const idamUserEmail of idamUsersCreated) {
+    console.log('Delete idamUserEmail...', idamUserEmail);
+    await deleteAccount(idamUserEmail);
   }
 }
 
@@ -72,4 +84,5 @@ module.exports = {
   userId,
   createAccount,
   deleteAccount,
+  deleteAllIdamTestUsers,
 };

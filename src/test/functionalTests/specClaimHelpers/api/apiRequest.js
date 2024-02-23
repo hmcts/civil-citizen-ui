@@ -66,15 +66,27 @@ module.exports = {
   startEventForCitizen: async (eventName, caseId, payload) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
-    console.log('The value of the userId from the startEventForCitizen() : '+userId);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
     url += `/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
-      .then(response => response.json());
-    tokens.ccdEvent = response.token;
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    const data = await response.json();
+    if (data?.token) {
+      tokens.ccdEvent = data.token;
+    }
+  },
+
+  startEventForLiPCitizen: async (payload) => {
+    let url = getCivilServiceUrl();
+    const userId = await idamHelper.userId(tokens.userAuth);
+    url += `/cases/draft/citizen/${userId}/event`;
+
+    const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    const data = await response.json();
+    console.log('***************** case id *****************' + data.id);
+    return data.id;
   },
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {

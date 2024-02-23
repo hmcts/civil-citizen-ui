@@ -136,6 +136,9 @@
       "TITLE": "Cookies on Money Claims",
       "VIEW_COOKIES": "View cookies"
     },
+    "CREATE_DRAFT": {
+      "PAGE_TITLE": "Create draft claim"
+    },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Evidence",
       "ROW_TYPE": "Type"
@@ -3229,7 +3232,8 @@
     "COOKIES_URL": "Cookies",
     "HELP_USING_GOV_URL": "Help using GOV.UK",
     "PRIVACY_POLICY_URL": "Privacy Policy",
-    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
+    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions",
+    "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
