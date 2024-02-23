@@ -136,6 +136,9 @@
       "TITLE": "Cwcis ar y gwasanaeth Hawliadau am Arian",
       "VIEW_COOKIES": "Gweld cwcis"
     },
+    "CREATE_DRAFT": {
+      "PAGE_TITLE": "Create draft claim"
+    },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
       "ROW_TYPE": "Type"
@@ -3223,7 +3226,8 @@
     "COOKIES_URL": "Cwcis",
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
-    "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau"
+    "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau",
+    "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court's proposed repayment plan",
