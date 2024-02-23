@@ -2,7 +2,7 @@ const config = require('../../config');
 
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 const yesIWantMoretime = 'yesIWantMoretime';
@@ -20,6 +20,7 @@ let securityCode;
 Feature('Negative Scenarios for Defendant Response');
 
 Before(async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -74,8 +75,4 @@ Scenario('Personal detail error screen @nightly', async () => {
 //todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
 
-});
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
 });
