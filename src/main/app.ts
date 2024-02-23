@@ -1,10 +1,12 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
-
 import express from 'express';
-import {Helmet} from 'modules/helmet';
 import * as path from 'path';
+import session from 'express-session';
+import 'express-async-errors';
+
+import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
 import {AppInsights} from 'modules/appinsights';
@@ -17,7 +19,6 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
-import session from 'express-session';
 import {
   BASE_CLAIM_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
