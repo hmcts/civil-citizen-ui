@@ -922,6 +922,12 @@ export class Claim {
     return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
   }
 
+  hasClaimantNotSettled(): boolean {
+    return this.hasClaimantIntentToProceedResponse() || this.hasClaimantRejectedDefendantResponse() || this.hasClaimantRejectedDefendantPaid()
+      || this.hasClaimantRejectedDefendantAdmittedAmount()
+      || this.hasClaimantRejectedPartAdmitPayment();
+  }
+
   getPaymentDate() {
     if (this.isPAPaymentOptionByDate()) {
       return this.partialAdmission.paymentIntention.paymentDate;
