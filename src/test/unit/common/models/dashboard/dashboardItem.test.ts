@@ -190,6 +190,7 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.MORE_INFORMATION_REQUIRED');
+    });
 
     it('should return translated status for claim CLAIMANT_HWF_NO_REMISSION', () => {
       //Given
