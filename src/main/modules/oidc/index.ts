@@ -10,6 +10,7 @@ import {
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
   MAKE_CLAIM,
+  TESTING_SUPPORT_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
@@ -43,6 +44,10 @@ const buildAssignClaimUrlWithId = (req: AppRequest, app: Application): string =>
   app.locals.assignClaimURL = undefined;
   req.session.assignClaimURL = undefined;
   return `${ASSIGN_CLAIM_URL}`;
+};
+
+export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(TESTING_SUPPORT_URL);
 };
 
 export class OidcMiddleware {
@@ -104,7 +109,7 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
