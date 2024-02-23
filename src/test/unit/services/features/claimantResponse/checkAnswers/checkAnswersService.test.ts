@@ -37,6 +37,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
       },
       undefined,
       null,
+      null,
       undefined,
       {
         'title': 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE',
@@ -204,6 +205,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedReject() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -240,6 +242,7 @@ function generateExpectedResultForPartAdmitAndPaidAccept() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -275,6 +278,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
         },
       },
       undefined,
+      null,
       null,
       undefined,
       {
@@ -460,6 +464,7 @@ function generateExpectedResultForPartAdmitAndPaymentAccept() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -495,6 +500,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
         },
       },
       undefined,
+      null,
       null,
       undefined,
       {
@@ -710,8 +716,8 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -722,7 +728,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -735,8 +741,8 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -747,7 +753,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -764,8 +770,8 @@ describe('Check Answers service', () => {
       claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -776,7 +782,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -790,8 +796,8 @@ describe('Check Answers service', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -802,7 +808,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -821,13 +827,13 @@ describe('Check Answers service', () => {
     it('should check answers for part admit pay immediately for yes option', () => {
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
       const result = getSummarySections('12345', claim, 'en');
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
     });
   });
 
@@ -902,7 +908,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
 
     });
   });
