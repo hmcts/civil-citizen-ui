@@ -3,7 +3,7 @@ const CaseProgressionSteps = require('../features/caseProgression/steps/caseProg
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -12,6 +12,7 @@ Feature('Case progression journey - Upload Evidence - Defendant & Claimant Respo
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
@@ -37,6 +38,3 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
   }
 }).tag('@regression-cp');
 
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-});

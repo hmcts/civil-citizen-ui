@@ -79,6 +79,24 @@ describe('Respond To Settlement Agreement', () => {
       });
     });
 
+    it('should return respond to settlement agreement page for pay by set date', async () => {
+      const mockClaim = getMockClaim();
+      mockClaim.partialAdmission = new PartialAdmission();
+      mockClaim.partialAdmission.paymentIntention = new PaymentIntention();
+      mockClaim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
+      mockClaim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+
+      await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_BY_SET_DATE',
+          {defendant: '', amount: '200', paymentDate: formatDateToFullDate(date)},
+        ));
+      });
+    });
+
     it('should return status 500 when error thrown', async () => {
       await request(app)
         .get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)

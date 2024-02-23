@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
+const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -17,6 +17,7 @@ Feature('CARM - LiP Defendant Journey - Small claims track - Company');
 
 Before(async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType, carmEnabled, 'Company');
     console.log('claimRef has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -57,6 +58,3 @@ Scenario('LiP Defendant Response with Reject all claim', async () => {
   }
 }).tag('@regression-carm');
 
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-});
