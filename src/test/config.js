@@ -35,7 +35,7 @@ module.exports = {
   },
   applicantSolicitorUser: {
     password: defaultPassword,
-    email: 'civilmoneyclaimsdemo@gmail.com',
+    email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
   },
   defendantCitizenUser: {
