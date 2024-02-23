@@ -17,7 +17,8 @@ class PaymentSuccessful {
   }
 
   verifyBannerDetails() {
-    I.see('Your payment was successful', 'h1');
+    I.see('Your payment was', 'h1');
+    I.see('successful', 'h1');
     I.see('Your payment reference number is', 'span');
   }
 
