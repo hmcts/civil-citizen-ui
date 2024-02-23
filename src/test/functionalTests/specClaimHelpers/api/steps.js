@@ -30,6 +30,8 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const {submitEvent} = require('./apiRequest');
+const idamHelper = require('./idamHelper');
+const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -37,6 +39,7 @@ const data = {
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
+  CREATE_LIP_CLAIM: (user, userId) => createLipClaim(user, userId),
 };
 
 let caseId, eventName;
@@ -191,6 +194,30 @@ module.exports = {
       });
       console.log('submitted date update to after carm date');
     }
+    return caseId;
+  },
+
+  createLiPClaim: async (user) => {
+    console.log(' Creating LIP claim');
+
+    const currentDate = new Date();
+
+    let userAuth = await idamHelper.accessToken(user);
+    let userId = await idamHelper.userId(userAuth);
+
+    await apiRequest.setupTokens(user);
+    let payload = data.CREATE_LIP_CLAIM(user, userId);
+    const caseId = await apiRequest.startEventForLiPCitizen(payload);
+    let newPayload = {
+      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
+      caseDataUpdate: {
+        issueDate: currentDate,
+        respondent1ResponseDeadline: currentDate,
+      },
+    };
+    await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForFinishedBusinessProcess(caseId, user);
+    await assignSpecCase(caseId, null);
     return caseId;
   },
 
