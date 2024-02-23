@@ -47,9 +47,7 @@ describe('Claim - Claim Submitted', () => {
       };
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve, reject) => resolve(caseData)),
-        );
+        .mockResolvedValueOnce(caseData);
       //when-then
       await request(app)
         .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
@@ -68,9 +66,7 @@ describe('Claim - Claim Submitted', () => {
       };
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve, reject) => resolve(caseData)),
-        );
+        .mockResolvedValueOnce(caseData);
       //when-then
       await request(app)
         .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
@@ -89,9 +85,7 @@ describe('Claim - Claim Submitted', () => {
       };
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve, reject) => resolve(caseData)),
-        );
+        .mockResolvedValueOnce(caseData);
       const text = 'Your claim will be issued once your Help With Fees application has been confirmed.';
       //when-then
       await request(app)
