@@ -26,7 +26,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
     });
 
     it('should render with set cookie value', async () => {
-      app.request['session'] = { 'firstContact': { claimReference: validClaimNumberV1 } } as unknown as Session;;
+      app.request['session'] = { 'firstContact': { claimReference: validClaimNumberV1 } } as unknown as Session;
       await request(app).get(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
