@@ -181,6 +181,7 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
     });
 
+
     it('should return translated status for claim MORE_INFORMATION_REQUIRED', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
@@ -189,6 +190,46 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.MORE_INFORMATION_REQUIRED');
+
+    it('should return translated status for claim CLAIMANT_HWF_NO_REMISSION', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_NO_REMISSION';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_NO_REMISSION');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_PARTIAL_REMISSION', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_PARTIAL_REMISSION';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_PARTIAL_REMISSION');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_UPDATED_REF_NUMBER', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_UPDATED_REF_NUMBER';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_UPDATED_REF_NUMBER');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_INVALID_REF_NUMBER', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_INVALID_REF_NUMBER';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_INVALID_REF_NUMBER');
+
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
