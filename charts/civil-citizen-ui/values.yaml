@@ -19,6 +19,9 @@ elastic:
 civil-wa:
   enabled: false
 
+aac-manage-case-assignment:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net

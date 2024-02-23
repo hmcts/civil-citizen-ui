@@ -219,6 +219,7 @@ import hearingDurationController from 'routes/features/caseProgression/trialArra
 import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import documentViewController from 'routes/features/document/documentViewController';
 import feeChangeController from './features/claim/feeChangeController';
+import createDraftClaimController from './features/claim/createDraftClaim';
 import trialArrangementsConfirmationController
   from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
 import claimantResponseCheckAnswersController from './features/claimantResponse/claimantResponseCheckAnswersController';
@@ -274,6 +275,9 @@ import claimIssuePaymentSuccessfulController
 import claimIssuePaymentUnsuccessfulController
   from 'routes/features/claim/payment/claimFeePaymentUnsuccessfulController';
 import mediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
+import mediationDocumentUploadCheckAnswerController
+  from 'routes/features/mediation/uploadDocuments/checkAnswersController';
+import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
 
 export default [
   homeController,
@@ -510,11 +514,13 @@ export default [
   alternativeTelephoneMediationController,
   paymentSuccessfulController,
   alternativeContactPersonMediationController,
+  createDraftClaimController,
   startMediationUploadDocumentsController,
   mediationTypeOfDocumentsController,
   claimFeePaymentConfirmationController,
   claimIssuePaymentSuccessfulController,
   claimIssuePaymentUnsuccessfulController,
   mediationUploadDocumentsController,
-
+  mediationDocumentUploadCheckAnswerController,
+  mediationConfirmationController,
 ];

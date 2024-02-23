@@ -1,8 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -31,26 +30,23 @@ Before(async ({api}) => {
 });
 
 Scenario('LiP Defendant Response with Part Admit', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
-  await ResponseSteps.EnterTelephoneMediationDetails();
-  await ResponseSteps.ConfirmAltPhoneDetails();
-  await ResponseSteps.ConfirmAltEmailDetails();
-  await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
-}).tag('@carm');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+    await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+    await ResponseSteps.AddYourTimeLineEvents();
+    await ResponseSteps.EnterYourEvidenceDetails();
+    await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
+    await ResponseSteps.EnterTelephoneMediationDetails();
+    await ResponseSteps.ConfirmAltPhoneDetails();
+    await ResponseSteps.ConfirmAltEmailDetails();
+    await ResponseSteps.EnterUnavailableDates(claimRef);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+    await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
+  }
+}).tag('@regression-carm');
