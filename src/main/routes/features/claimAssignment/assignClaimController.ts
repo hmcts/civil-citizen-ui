@@ -12,11 +12,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
-  const claimId = req.cookies?.firstContact?.claimId;
+  const sessionData = req.session;
+  const claimId = sessionData.firstContact?.claimId;
   console.log('*******assign defendant*****************');
   console.log(claimId);
   try{
-    if (claimId || claimId != 'undefined') {
+    if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
       deleteDraftClaimFromStore(claimId);
       res.clearCookie('firstContact');

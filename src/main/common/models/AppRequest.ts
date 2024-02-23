@@ -21,6 +21,7 @@ export interface AppSession extends Session {
   taskLists: TaskList[];
   assignClaimURL: string;
   claimIssueTasklist: boolean;
+  firstContact: { claimId?: string, claimReference?: string, pin?: string };
 }
 
 export interface UserDetails {
