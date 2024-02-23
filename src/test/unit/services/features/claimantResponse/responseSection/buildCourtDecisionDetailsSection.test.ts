@@ -25,8 +25,8 @@ describe('Check Answers Page :Court Decision Section', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[6].summaryList.rows.length).toEqual(3);
-      expect(result.sections[6].summaryList.rows[0]).toEqual({
+      expect(result.sections[7].summaryList.rows.length).toEqual(3);
+      expect(result.sections[7].summaryList.rows[0]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
@@ -34,7 +34,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
-      expect(result.sections[6].summaryList.rows[1]).toEqual({
+      expect(result.sections[7].summaryList.rows[1]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
@@ -42,7 +42,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL',
         },
       });
-      expect(result.sections[6].summaryList.rows[2]).toEqual({
+      expect(result.sections[7].summaryList.rows[2]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
@@ -61,8 +61,8 @@ describe('Check Answers Page :Court Decision Section', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[6].summaryList.rows.length).toEqual(3);
-      expect(result.sections[6].summaryList.rows[0]).toEqual({
+      expect(result.sections[7].summaryList.rows.length).toEqual(3);
+      expect(result.sections[7].summaryList.rows[0]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
@@ -70,7 +70,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
-      expect(result.sections[6].summaryList.rows[1]).toEqual({
+      expect(result.sections[7].summaryList.rows[1]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
@@ -78,7 +78,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.REPAYMENT_IN_FULL',
         },
       });
-      expect(result.sections[6].summaryList.rows[2]).toEqual({
+      expect(result.sections[7].summaryList.rows[2]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
@@ -96,8 +96,8 @@ describe('Check Answers Page :Court Decision Section', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[6].summaryList.rows.length).toEqual(3);
-      expect(result.sections[6].summaryList.rows[0]).toEqual({
+      expect(result.sections[7].summaryList.rows.length).toEqual(3);
+      expect(result.sections[7].summaryList.rows[0]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
@@ -105,7 +105,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
-      expect(result.sections[6].summaryList.rows[1]).toEqual({
+      expect(result.sections[7].summaryList.rows[1]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
@@ -113,7 +113,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS',
         },
       });
-      expect(result.sections[6].summaryList.rows[2]).toEqual({
+      expect(result.sections[7].summaryList.rows[2]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
@@ -132,8 +132,8 @@ describe('Check Answers Page :Court Decision Section', () => {
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[6].summaryList.rows.length).toEqual(3);
-      expect(result.sections[6].summaryList.rows[0]).toEqual({
+      expect(result.sections[7].summaryList.rows.length).toEqual(3);
+      expect(result.sections[7].summaryList.rows[0]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW',
         },
@@ -141,7 +141,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.COURT_REJECTED_YOUR_REPAYMENT_PLAN',
         },
       });
-      expect(result.sections[6].summaryList.rows[1]).toEqual({
+      expect(result.sections[7].summaryList.rows[1]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN',
         },
@@ -149,7 +149,7 @@ describe('Check Answers Page :Court Decision Section', () => {
           html: 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS',
         },
       });
-      expect(result.sections[6].summaryList.rows[2]).toEqual({
+      expect(result.sections[7].summaryList.rows[2]).toEqual({
         key: {
           text: 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA',
         },
