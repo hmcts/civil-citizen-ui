@@ -1,8 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../features/home/steps/login');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -51,8 +50,3 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
     await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
   }
 }).tag('@regression-carm');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});

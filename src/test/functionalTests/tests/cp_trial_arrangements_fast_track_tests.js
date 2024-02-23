@@ -2,8 +2,7 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -24,13 +23,14 @@ Before(async ({api}) => {
   }
 });
 
+//Bug CIV-12591
 Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@skipregression-cp');
+}).tag('@regression-cp');
 
 Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -38,9 +38,4 @@ Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@skipregression-cp');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+}).tag('@regression-cp');
