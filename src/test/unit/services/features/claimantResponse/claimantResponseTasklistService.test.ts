@@ -22,6 +22,7 @@ import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {CaseState} from 'form/models/claimDetails';
 import {PartialAdmission} from 'models/partialAdmission';
+import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistBuilder');
 
