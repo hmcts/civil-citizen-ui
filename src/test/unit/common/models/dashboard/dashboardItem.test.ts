@@ -181,7 +181,6 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
     });
 
-
     it('should return translated status for claim MORE_INFORMATION_REQUIRED', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
