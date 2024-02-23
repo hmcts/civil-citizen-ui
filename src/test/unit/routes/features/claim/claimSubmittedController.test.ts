@@ -3,12 +3,12 @@ import {CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {getClaimById} from 'modules/utilityService';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {Claim} from 'models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
 import {YesNo} from 'form/models/yesNo';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const {app} = require('../../../../../main/app');
 
@@ -16,7 +16,6 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claim/amount/checkClaimFee');
 jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
 
@@ -32,7 +31,7 @@ describe('Claim - Claim Submitted', () => {
   beforeAll(() => {
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
     app.locals.draftStoreClient = mockCivilClaim;
   });
 
@@ -46,7 +45,9 @@ describe('Claim - Claim Submitted', () => {
       caseData.claimDetails.helpWithFees = {
         'option': YesNo.NO,
       };
-      (getClaimById as jest.Mock).mockReturnValue(caseData);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(caseData);
       //when-then
       await request(app)
         .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
@@ -60,13 +61,12 @@ describe('Claim - Claim Submitted', () => {
     it('should return claim submitted page and HWF number not submitted ' +
       ': Pay Fee button set with Pay  fee Breakup Url', async () => {
       //given
-      claimFeeHasChanged.mockImplementation(() => {
-        return false;
-      });
       caseData.claimDetails.helpWithFees = {
         'option': YesNo.NO,
       };
-      (getClaimById as jest.Mock).mockReturnValue(caseData);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(caseData);
       //when-then
       await request(app)
         .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
@@ -83,6 +83,9 @@ describe('Claim - Claim Submitted', () => {
       caseData.claimDetails.helpWithFees = {
         'option': YesNo.YES,
       };
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(caseData);
       const text = 'Your claim will be issued once your Help With Fees application has been confirmed.';
       //when-then
       await request(app)
@@ -96,7 +99,10 @@ describe('Claim - Claim Submitted', () => {
 
     it('should return 500 status code when error occurs', async () => {
       //given
-      app.locals.draftStoreClient = mockRedisFailure;
+      const error = new Error('Test error');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
       //when-then
       await request(app)
         .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
