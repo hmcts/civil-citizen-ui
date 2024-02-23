@@ -15,8 +15,6 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   const firstContact = getFirstContactData(req.session);
   const claimId = firstContact?.claimId;
-  console.log('*******assign defendant*****************');
-  console.log(claimId);
   try{
     if (claimId) {
       await civilServiceClient.assignDefendantToClaim(claimId, req);
