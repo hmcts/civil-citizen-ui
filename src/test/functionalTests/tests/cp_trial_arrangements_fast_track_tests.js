@@ -23,6 +23,7 @@ Before(async ({api}) => {
   }
 });
 
+//Bug CIV-12591
 Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
