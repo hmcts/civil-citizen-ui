@@ -2,9 +2,9 @@ import { IsDate, Validate, ValidateIf } from 'class-validator';
 import { DateConverter } from 'common/utils/dateConverter';
 import { addDaysToDate } from 'common/utils/dateUtils';
 import { DateNotBeforeReferenceDate } from '../../../validators/dateNotBeforeReferenceDate';
-import { BasePaymentDate } from '../fullAdmission/basePaymentDate';
+import { BaseDate } from '../fullAdmission/baseDate';
 
-export class DefendantPaymentDate extends BasePaymentDate {
+export class DefendantPaymentDate extends BaseDate {
 
   calculateFirstPaymentDate = addDaysToDate(new Date(), 30);
 
