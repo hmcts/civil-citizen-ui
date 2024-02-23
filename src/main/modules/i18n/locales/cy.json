@@ -1436,7 +1436,7 @@
         "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
         "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu.",
         "MEDIATION_UNSUCCESSFUL":"Nid oedd y cyfryngu yn llwyddiannus.",
-        "MORE_INFORMATION_REQUIRED": "We need more information",
+        "HWF_MORE_INFORMATION_NEEDED": "We need more information.",
         "NO_RESPONSE_ON_TIME": "Aros i'r diffynnydd ymateb.",
         "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",

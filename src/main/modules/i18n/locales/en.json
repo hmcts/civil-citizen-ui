@@ -1436,7 +1436,7 @@
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation.",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful.",
-        "MORE_INFORMATION_REQUIRED": "We need more information",
+        "HWF_MORE_INFORMATION_NEEDED": "We need more information.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
