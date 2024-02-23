@@ -545,7 +545,5 @@ const assignSpecCase = async (caseId, type) => {
   } else {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
-    // await assignCaseRoleToUser(caseId, 'CLAIMANT', config.claimantCitizenUser);
-    // await addUserCaseMapping(caseId, config.claimantCitizenUser);
   }
 };
