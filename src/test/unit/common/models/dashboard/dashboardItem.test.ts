@@ -181,10 +181,10 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
     });
 
-    it('should return translated status for claim MORE_INFORMATION_REQUIRED', () => {
+    it('should return translated status for claim HWF_MORE_INFORMATION_NEEDED', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
-      dashboardClaim.status ='MORE_INFORMATION_REQUIRED';
+      dashboardClaim.status ='HWF_MORE_INFORMATION_NEEDED';
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
