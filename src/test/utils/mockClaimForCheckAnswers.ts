@@ -93,9 +93,9 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
@@ -123,9 +123,9 @@ export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim 
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -145,9 +145,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1 = {
@@ -158,9 +158,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -175,14 +175,15 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
   const claim = new Claim();
   claim.applicant1 = {
     partyPhone: {phone: CONTACT_NUMBER},
+    emailAddress: {emailAddress: EMAIL_ADDRESS},
     dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       contactPerson: contactPerson,
     },
   };
@@ -219,9 +220,9 @@ export const createClaimWithIndividualDetails = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -236,9 +237,9 @@ export const createClaimWithIndividualDetailsWithCcdPhoneExist = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER, ccdPhoneExist: true},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -253,9 +254,9 @@ export const createClaimWithIndividualDetailsWithPartyPhoneNotExist = (): Claim 
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -271,9 +272,9 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
     partyPhone: {phone: CONTACT_NUMBER},
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -1079,6 +1080,56 @@ export const createClaimWithMediationSectionWithOption = (option: YesNo, isCompa
   }
   if (claim.mediationCarm.hasUnavailabilityNextThreeMonths.option === option) {
     claim.mediationCarm.unavailableDatesForMediation = {
+      items: [
+        {
+          date: new Date('2024-01-01T00:00:00.000Z'),
+          from: new Date('2024-01-01T00:00:00.000Z'),
+          until: new Date('2024-01-02T00:00:00.000Z'),
+          unavailableDateType: UnavailableDateType.SINGLE_DATE,
+        },
+      ],
+    };
+  }
+  return claim as Claim;
+};
+export const createClaimWithMediationSectionWithOptionClaimantResponse = (option: YesNo, isCompany = false): Claim => {
+  const claim = createClaimWithBasicApplicantDetails('contactTest');
+
+  claim.applicant1.emailAddress.emailAddress = 'em@ail.com';
+
+  claim.applicant1AdditionalLipPartyDetails = {contactPerson: 'oldContact'};
+
+  claim.claimantResponse = new ClaimantResponse();
+
+  claim.claimantResponse.intentionToProceed = new GenericYesNo();
+  claim.claimantResponse.intentionToProceed.option = YesNo.YES;
+  isCompany? claim.applicant1.type = PartyType.COMPANY: claim.applicant1.type = PartyType.INDIVIDUAL;
+
+  claim.claimantResponse.mediationCarm = new MediationCarm();
+  claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = true;
+  claim.claimantResponse.mediationCarm.hasTelephoneMeditationAccessed = true;
+  claim.claimantResponse.mediationCarm.isMediationEmailCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.isMediationContactNameCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
+
+  if (claim.claimantResponse.mediationCarm.isMediationEmailCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationEmail =  {
+      alternativeEmailAddress: 'test@test.com',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.isMediationPhoneCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationTelephone= {
+      alternativeTelephone: '123',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.isMediationContactNameCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationContactPerson =  {
+      alternativeContactPerson: 'test',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option === option) {
+    claim.claimantResponse.mediationCarm.unavailableDatesForMediation = {
       items: [
         {
           date: new Date('2024-01-01T00:00:00.000Z'),

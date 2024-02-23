@@ -2,8 +2,7 @@ const config = require('../../config');
 const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -22,16 +21,13 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Case progression journey - Small Claims - Verify uploaded documents by LR in the Documents tab', () => {
+//covered in cp_upload_evidence_small_claims_tests
+Scenario('Case progression journey - Small Claims - Verify uploaded documents by LR in the Documents tab', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
-}).tag('@regression');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
 });

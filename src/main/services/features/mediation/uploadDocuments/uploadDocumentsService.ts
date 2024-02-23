@@ -3,9 +3,6 @@ import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/upload
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Request} from 'express';
 import {
-  TypeOfDocumentSection,
-} from 'models/caseProgression/uploadDocumentsUserForm';
-import {
   MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
@@ -44,14 +41,14 @@ export const saveUploadDocument = async (claimId: string, value: any, uploadDocu
 };
 
 export const getUploadDocumentsForm = (req: Request): UploadDocumentsForm => {
-  const documentsForYourStatement: TypeOfDocumentYourNameSection[] = getFormSection<TypeOfDocumentSection>(req.body.documentsForYourStatement, bindRequestYourNameSectionObj);
-  const documentsForDocumentsReferred: TypeOfDocumentSection[] = getFormSection<TypeOfDocumentSection>(req.body.documentsForDocumentsReferred, bindRequestToTypeOfDocumentSectionObj);
+  const documentsForYourStatement: TypeOfDocumentYourNameSection[] = getFormSection<TypeOfDocumentYourNameSection>(req.body.documentsForYourStatement, bindRequestYourNameSectionObj);
+  const documentsForDocumentsReferred: MediationTypeOfDocumentSection[] = getFormSection<MediationTypeOfDocumentSection>(req.body.documentsForDocumentsReferred, bindRequestToTypeOfDocumentSectionObj);
 
   return new UploadDocumentsForm(documentsForYourStatement, documentsForDocumentsReferred);
 };
 
 export const addAnother = (uploadDocuments: UploadDocumentsForm, type: TypeOfMediationDocuments ) => {
-  const typeOfDocumentSection = new TypeOfDocumentSection('','','');
+  const typeOfDocumentSection = new MediationTypeOfDocumentSection('','','');
   const typeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection('','','');
   if(type === TypeOfMediationDocuments.YOUR_STATEMENT){
     uploadDocuments.documentsForYourStatement.push(typeOfDocumentYourNameSection);
@@ -78,8 +75,8 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
-const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new MediationTypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+const bindRequestToTypeOfDocumentSectionObj = (request: any): MediationTypeOfDocumentSection => {
+  const formObj: MediationTypeOfDocumentSection = new MediationTypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
@@ -89,9 +86,9 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
 
 const bindRequestYourNameSectionObj = (request: any): TypeOfDocumentYourNameSection => {
   const formObj: TypeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.yourName = request['yourName'].trim();
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
   }
-  return formObj;
+  return formObj as TypeOfDocumentYourNameSection;
 };

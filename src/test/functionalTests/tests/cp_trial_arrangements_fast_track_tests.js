@@ -2,8 +2,7 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -19,23 +18,24 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', () => {
+//Bug CIV-12591
+Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
+    await api.waitForFinishedBusinessProcess();
+    TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
-Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', () => {
+Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
+    await api.waitForFinishedBusinessProcess();
+    TrialArrangementSteps.verifyTrialArrangementsMade();
   }
-}).tag('@regression');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+}).tag('@regression-cp');

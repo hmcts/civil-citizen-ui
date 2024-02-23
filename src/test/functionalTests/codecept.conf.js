@@ -1,20 +1,37 @@
 const testConfig = require('../config.js');
+const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
+const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 exports.config = {
+
+  async teardown() {
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
+  },
+
   tests: '../functionalTests/tests/**/*_tests.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: false,
       browser: 'chromium',
-      waitForTimeout: 20000,
-      windowSize: '1920x1080',
-      timeout: 20000,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
+      windowSize: '1280x960',
+      timeout: 30000,
       waitForAction: 500,
-      waitForNavigation: 'networkidle0',
+      video: true,
+      trace: true,
+      contextOptions : {
+        recordVideo:{
+          dir:'failed-videos',
+        },
+      },
+      waitForNavigation: 'networkidle',
+      bypassCSP: true,
       ignoreHTTPSErrors: true,
     },
   },

@@ -273,4 +273,22 @@ describe('PageSectionBuilder tests', ()=> {
     //Then
     expect(buttonWithCancelLinkResult).toEqual([buttonWithCancelLinkExpected]);
   });
+
+  it('should add Warning', ()=> {
+    //Given
+    const addWarningResultExpected = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+    //When
+    const addWarningResult = new PageSectionBuilder()
+      .addWarning('text', 'variables')
+      .build();
+
+    //Then
+    expect(addWarningResult).toEqual([addWarningResultExpected]);
+  });
 });

@@ -61,8 +61,8 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
   } else if (caseData.respondent1?.type === PartyType.INDIVIDUAL && !caseData.isClaimantIntentionPending()) {
     const mySelfItem = [
       {
-        value: caseData.respondent1.partyDetails?.individualFirstName + ' ' + caseData.respondent1.partyDetails?.individualLastName,
-        text: caseData.respondent1.partyDetails?.individualFirstName + ' ' + caseData.respondent1.partyDetails?.individualLastName,
+        value: caseData.respondent1.partyDetails?.firstName + ' ' + caseData.respondent1.partyDetails?.lastName,
+        text: caseData.respondent1.partyDetails?.firstName + ' ' + caseData.respondent1.partyDetails?.lastName,
       },
     ];
     nameList = nameList.concat(mySelfItem);

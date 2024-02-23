@@ -9,6 +9,7 @@
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,7 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle()}}
+  {{setPageTitle(t)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({
@@ -48,8 +49,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{ cookieBanner(t) }}
 {% endblock %}
 
-{% block footer %}
+{% block footer %} 
+{% if developmentMode != 'production' %}
 {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: urls.COOKIES_URL,
+          text: t("FOOTER.COOKIES_URL")
+        },
+        {
+          href: PrivacyPolicyUrl,
+          text: t("FOOTER.PRIVACY_POLICY_URL")
+        },
+        {
+          href: "https://www.gov.uk/help",
+          text: t("FOOTER.HELP_USING_GOV_URL")
+        },
+        {
+          href: ContactUsUrl,
+          text: t("FOOTER.CONTACT_US_URL")
+        },
+        {
+          href: AccessibilityStatementUrl,
+          text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
+        },
+        {
+          href: TermsAndConditionsUrl,
+          text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
+        },
+        {
+          href: TestingSupportUrl,
+          text: t("FOOTER.TESTING_SUPPORT")
+        }
+      ]
+    }
+  }) }} {% else %} {{ govukFooter({
     meta: {
       items: [
         {
@@ -78,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       ]
     }
-  }) }}
+  }) }} {% endif %}
 {% endblock %}
 {% block bodyEnd %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
