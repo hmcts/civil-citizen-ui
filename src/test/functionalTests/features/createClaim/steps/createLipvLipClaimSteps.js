@@ -105,15 +105,16 @@ class CreateClaimSteps {
     await createClaim.verifyCheckYourAnswers(claimInterestFlag);
     const caseReference = await createClaim.verifyClaimSubmitted();
     console.log('The created Case Reference : ', caseReference);
-    I.wait(4); //Just to make sure that the backend processed have completed fully
+    return caseReference;
+  }
+
+  async payClaimFee() {
     await I.click(paths.links.pay_claim_fee);
     await createClaim.verifyAndInputPayYourClaimFee();
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();
     await createClaim.signOut();
-    //await I.wait(10); //Just to make sure that the backend processed have completed fully
-    return caseReference;
   }
 
   async verifyDashboardLoaded() {

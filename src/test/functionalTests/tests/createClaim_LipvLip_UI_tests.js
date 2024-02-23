@@ -8,6 +8,7 @@ const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const rejectAll = 'rejectAll';
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 Feature('Create Lip v Lip claim');
 
@@ -16,13 +17,17 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
 });
 
 Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By Claimant', async ({api}) => {
-
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
     let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(true);
     claimRef = claimRef.replace(/-/g, '');
     console.log('The value of the claim reference : ' + claimRef);
+    await api.setCaseId(claimRef);
+    await api.waitForFinishedBusinessProcess();
+    await CreateLipvLipClaimSteps.payClaimFee();
+    await api.waitForFinishedBusinessProcess();
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     let claimNumber = await caseData.legacyCaseReference;
     let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
@@ -47,18 +52,24 @@ Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By 
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.SignOut();
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
+    await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression');
+}).tag('@regression-r2');
 
 Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
     let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(false);
     claimRef = claimRef.replace(/-/g, '');
     console.log('The value of the claim reference : ' + claimRef);
+    await api.waitForFinishedBusinessProcess();
+    await CreateLipvLipClaimSteps.payClaimFee();
+    await api.waitForFinishedBusinessProcess();
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     let claimNumber = await caseData.legacyCaseReference;
     let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
@@ -79,7 +90,9 @@ Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', as
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
     await ResponseSteps.SignOut();
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
+    await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression');
+}).tag('@regression-r2');
