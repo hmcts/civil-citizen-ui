@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -38,7 +38,7 @@ defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (r
     const partyType: PartyType = claim.respondent1?.type;
     const claimId = req.params.id;
 
-    const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const defendantYourselfEvidence = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     defendantYourselfEvidence.validateSync();
 
     const saveDQAndRedirect = async (redirectUrl: string) => {
