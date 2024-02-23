@@ -27,7 +27,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, '545', hearingFeeDueDate);
   }
-}).tag('@regression');
+}).tag('@regression-cp');
 
 Scenario('Pay the Hearing Fee Journey - Fast Track', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
