@@ -21,7 +21,7 @@ describe('Submit claim to ccd', () => {
     const draftStoreServiceMock = jest
       .spyOn(draftStoreService, 'getCaseDataFromStore')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim),
+        new Promise((resolve) => resolve(claim),
         ),
       );
 
@@ -31,7 +31,7 @@ describe('Submit claim to ccd', () => {
     const CivilServiceClientServiceMock = jest
       .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim),
+        new Promise((resolve) => resolve(claim),
         ),
       );
 
