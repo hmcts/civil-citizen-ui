@@ -6,7 +6,7 @@ import {
 } from '../../../urls';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -37,7 +37,7 @@ expertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, 
 expertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const defendantExpertEvidence = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     defendantExpertEvidence.validateSync();
 
     if (defendantExpertEvidence.hasErrors()) {
