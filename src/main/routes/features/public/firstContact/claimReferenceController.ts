@@ -15,7 +15,6 @@ claimReferenceController.get(FIRST_CONTACT_CLAIM_REFERENCE_URL, (req: Request, r
   res.render(claimReferenceViewPath, { form: new GenericForm(new ClaimReference(req.body.claimReferenceValue)) });
 });
 
-
 claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Request, res: Response) => {
   const firstContactClaimReference = new ClaimReference(req.body.claimReferenceValue);
   const form = new GenericForm(firstContactClaimReference);
