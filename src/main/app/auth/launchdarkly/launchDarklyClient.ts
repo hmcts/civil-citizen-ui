@@ -38,7 +38,9 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+  // flag is disabled so we can wun our regression pack against old dashboard
+  // return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+  return false;
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
