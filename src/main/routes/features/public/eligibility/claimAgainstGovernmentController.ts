@@ -1,14 +1,14 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {
   ELIGIBILITY_DEFENDANT_AGE_URL,
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 
 const claimAgainstGovernmentController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
@@ -24,7 +24,7 @@ claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req
   renderView(genericYesNoForm, res);
 });
 
-claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, async (req, res) => {
+claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (async (req, res) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
   await genericYesNoForm.validate();
 
@@ -38,6 +38,6 @@ claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, asy
       ? res.redirect(ELIGIBILITY_DEFENDANT_AGE_URL)
       : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.GOVERNMENT_DEPARTMENT));
   }
-});
+}) as RequestHandler);
 
 export default claimAgainstGovernmentController;

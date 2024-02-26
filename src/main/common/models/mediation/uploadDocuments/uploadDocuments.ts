@@ -33,7 +33,7 @@ export class UploadDocuments {
     return this.typeOfDocuments.sort((a, b) => a.id - b.id);
   }
 
-  mapUploadDocumentsFromTypeOfDocumentsForm(typeOfDocumentsForm: TypeOfDocumentsForm): UploadDocuments {
+  mapUploadDocumentsFromTypeOfDocumentsForm(typeOfDocumentsForm: TypeOfDocumentsForm): this {
     //just object that has been checked
     const arrayOfTypeOfDocumentsForm = typeOfDocumentsForm.typeOfDocuments;
     const checkedObject = arrayOfTypeOfDocumentsForm.filter(item => item.checked === true);

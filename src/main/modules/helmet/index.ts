@@ -1,7 +1,6 @@
 import {AppRequest} from 'common/models/AppRequest';
 import * as express from 'express';
-import helmet from 'helmet';
-import {HelmetOptions} from 'helmet';
+import {HelmetOptions,default as helmet} from 'helmet';
 import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
