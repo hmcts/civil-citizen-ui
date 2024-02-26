@@ -285,7 +285,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse : {
         claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
@@ -300,12 +299,12 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse: {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
     };
+
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
@@ -322,7 +321,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
-    //Then
     expect(claim.interest.totalInterest.amount).toEqual(1000);
     expect(claim.interest.totalInterest.reason).toEqual('break down interest');
   });
