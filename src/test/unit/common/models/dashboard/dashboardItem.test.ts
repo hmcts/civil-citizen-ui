@@ -50,7 +50,7 @@ describe('Dashboard Items', ()=> {
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
       //When
-      const item = toDraftClaimDashboardItem(claim);
+      const item = toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).not.toBeUndefined();
     });
@@ -59,14 +59,14 @@ describe('Dashboard Items', ()=> {
       //Given
       const claim = new Claim();
       //When
-      const item = await toDraftClaimDashboardItem(claim);
+      const item = await toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).toBeUndefined();
     });
 
     it('should return undefined when claim is undefined', async () => {
       //When
-      const item = await toDraftClaimDashboardItem(undefined);
+      const item = await toDraftClaimDashboardItem(undefined, true);
       //Then
       expect(item).toBeUndefined();
     });
