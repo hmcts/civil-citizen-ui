@@ -1,13 +1,13 @@
-const createLipClaim = (user, userId) => {
+const createLipClaim = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
     caseDataUpdate: {
       applicant1: {
         companyName: undefined,
         individualDateOfBirth: '1995-08-28',
-        individualFirstName: 'ff',
-        individualLastName: 'ff',
-        individualTitle: 'mr',
+        individualFirstName: 'Jane',
+        individualLastName: 'Doe',
+        individualTitle: 'Miss',
         organisationName: undefined,
         partyEmail: user.email,
         partyPhone: undefined,
@@ -28,18 +28,18 @@ const createLipClaim = (user, userId) => {
       respondent1: {
         companyName: undefined,
         individualDateOfBirth: null,
-        individualFirstName: 'ff',
-        individualLastName: 'ff',
-        individualTitle: 'mr',
+        individualFirstName: 'John',
+        individualLastName: 'Doe',
+        individualTitle: 'Sir',
         organisationName: undefined,
         partyEmail: user.email,
         partyPhone: '07800000000',
         primaryAddress: {
-          AddressLine1: '123',
-          AddressLine2: 'Claim Road',
-          AddressLine3: '',
-          PostCode: 'L7 2PZ',
-          PostTown: 'Liverpool',
+          AddressLine1:'TestAddressLine1',
+          AddressLine2:'TestAddressLine2',
+          AddressLine3:'TestAddressLine3',
+          PostCode:'IG61JD',
+          PostTown:'TestCity',
         },
         soleTraderDateOfBirth: null,
         soleTraderFirstName: undefined,
@@ -52,12 +52,12 @@ const createLipClaim = (user, userId) => {
       respondToClaim: undefined,
       detailsOfWhyDoesYouDisputeTheClaim: undefined,
       applicant1Represented: 'No',
-      totalClaimAmount: 9000,
+      totalClaimAmount: totalClaimAmount,
       claimAmountBreakup: [
         {
           id: '0',
           value: {
-            claimAmount: '900000',
+            claimAmount: totalClaimAmount,
             claimReason: 'Injury',
           },
         },
