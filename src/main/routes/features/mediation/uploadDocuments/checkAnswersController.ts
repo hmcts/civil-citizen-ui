@@ -9,7 +9,7 @@ import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
-import {documentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {getMediationSummarySection} from 'services/features/mediation/uploadDocuments/buildYourStatementSummaryRows';
 import {getUploadDocuments} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
@@ -39,7 +39,7 @@ export const getBottomElements = (): ClaimSummarySection[] => {
     .build();
 };
 
-function renderView(uploadDocuments: UploadDocuments, res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, lang: string) {
+function renderView(uploadDocuments: UploadDocuments, res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, lang: string) {
   const topPageContents = getTopElements(claim, claimId);
 
   const summarySections = getMediationSummarySection(uploadDocuments, claimId, lang);
@@ -56,7 +56,7 @@ mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHEC
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);
-    const form = new GenericForm(new documentUploadSubmissionForm());
+    const form = new GenericForm(new DocumentUploadSubmissionForm());
     renderView(uploadDocuments, res, form, claim, claimId, lang);
   } catch (error) {
     next(error);
@@ -67,7 +67,7 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = new GenericForm(new documentUploadSubmissionForm(req.body.signed));
+    const form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);
