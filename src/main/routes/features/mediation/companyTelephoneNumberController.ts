@@ -10,9 +10,8 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const companyTelephoneNumberController = Router();

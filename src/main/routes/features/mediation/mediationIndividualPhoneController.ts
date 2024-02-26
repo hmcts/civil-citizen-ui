@@ -5,11 +5,10 @@ import {Mediation} from 'common/models/mediation/mediation';
 import {Claim} from 'common/models/claim';
 import {YesNo} from 'common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
 import {CAN_WE_USE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';

@@ -42,12 +42,10 @@ function renderPage(res: Response, req: Request, partyDetails: GenericForm<Party
 const redirect = (respondent: Party, req: Request, res: Response) => {
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else if (respondent?.partyPhone && respondent?.partyPhone?.ccdPhoneExist) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
   } else {
-    if (respondent?.partyPhone && respondent?.partyPhone?.ccdPhoneExist) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
-    } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
-    }
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
   }
 };
 
