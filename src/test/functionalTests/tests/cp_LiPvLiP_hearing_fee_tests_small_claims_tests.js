@@ -2,6 +2,7 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const HearingFeeSteps = require('../features/caseProgression/steps/hearingFeeSteps');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
@@ -14,6 +15,7 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
     hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, 'JUDICIAL_REFERRAL');
