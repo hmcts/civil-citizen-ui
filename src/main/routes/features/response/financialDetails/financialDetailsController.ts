@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
   CITIZEN_CONTACT_THEM_URL,
@@ -27,7 +27,7 @@ function renderView(res: Response, claim: Claim, claimantDetailsUrl: string): vo
 
 financialDetailsController
   .get(
-    FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+    FINANCIAL_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
       try {
         const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
@@ -35,8 +35,8 @@ financialDetailsController
       } catch (error) {
         next(error);
       }
-    })
-  .post(FINANCIAL_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+    }) as RequestHandler)
+  .post(FINANCIAL_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
@@ -57,6 +57,6 @@ financialDetailsController
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default financialDetailsController;

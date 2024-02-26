@@ -41,6 +41,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -113,7 +114,6 @@ export class CivilServiceClient {
     await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => {
-          //TODO Maybe we need to convert also CCD to CUI
           const caseData = Object.assign(new Claim(), claim.case_data);
           return new CivilClaimResponse(claim.id, caseData);
         });
@@ -150,11 +150,11 @@ export class CivilServiceClient {
     }
   }
 
-  async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
+  async getHearingAmount(amount: number, req: AppRequest): Promise<HearingFee> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
-      return response.data;
+      return response.data as unknown as HearingFee;
     } catch (err: unknown) {
       logger.error(err);
       throw err;

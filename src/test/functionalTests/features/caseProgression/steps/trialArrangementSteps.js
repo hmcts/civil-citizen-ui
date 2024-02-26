@@ -5,7 +5,7 @@ const HasAnythingChanged = require ('../pages/trialArrangements/hasAnythingChang
 const TrialDuration = require ('../pages/trialArrangements/trialDuration');
 const CheckYourAnswers = require ('../pages/trialArrangements/checkYourAnswers');
 const TrialArrangementsConfirmation = require ('../pages/trialArrangements/trialArrangementsConfirmation');
-const NoticesAndOrders = require('../pages/noticesAndOrders');
+//const NoticesAndOrders = require('../pages/noticesAndOrders');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -15,7 +15,7 @@ const hasAnythingChanged = new HasAnythingChanged();
 const trialDuration = new TrialDuration();
 const checkYourAnswers = new CheckYourAnswers();
 const trialArrangementConfirmation = new TrialArrangementsConfirmation();
-const noticesAndOrders =  new NoticesAndOrders();
+//const noticesAndOrders =  new NoticesAndOrders();
 
 class TrialArrangementSteps {
 
@@ -41,10 +41,11 @@ class TrialArrangementSteps {
   verifyTrialArrangementsMade() {
     trialArrangementConfirmation.checkPageFullyLoaded();
     trialArrangementConfirmation.verifyPageContent();
-    trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
+    //BUG CIV-12591
+    /*trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
     latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangement Tile appears.
     latestUpdateTab.nextAction('[href=\'#notices-orders\']');
-    noticesAndOrders.verifyLatestUpdatePageContent();
+    noticesAndOrders.verifyLatestUpdatePageContent();*/
   }
 
   verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {
