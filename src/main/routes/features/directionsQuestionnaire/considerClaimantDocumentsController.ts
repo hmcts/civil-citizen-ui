@@ -1,15 +1,15 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
+import {GenericForm} from 'form/models/genericForm';
 import {
   ConsiderClaimantDocuments,
-} from '../../../common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+} from 'models/directionsQuestionnaire/hearing/considerClaimantDocuments';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {YesNo} from '../../../common/form/models/yesNo';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -22,7 +22,7 @@ function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: Response)
   res.render(considerClaimantDocumentsViewPath, {form});
 }
 
-considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
+considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const considerClaimantDocuments = directionQuestionnaire.hearing?.considerClaimantDocuments ?
@@ -32,9 +32,9 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asyn
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {
+considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
@@ -50,6 +50,6 @@ considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asy
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default considerClaimantDocumentsController;

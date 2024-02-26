@@ -1,10 +1,10 @@
-import {Response, Router} from 'express';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {CookiesModel} from '../../../common/form/models/cookies';
+import {RequestHandler, Response, Router} from 'express';
+import {AppRequest} from 'models/AppRequest';
+import {CookiesModel} from 'form/models/cookies';
 import {
   COOKIES_URL,
   DASHBOARD_URL,
-} from '../../../routes/urls';
+} from 'routes/urls';
 
 const cookiesController = Router();
 const cookiesViewPath = 'features/public/cookies/cookies-view';
@@ -19,7 +19,7 @@ cookiesController.get(COOKIES_URL, (req: AppRequest, res: Response) => {
   res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences});
 });
 
-cookiesController.post(COOKIES_URL, async (req: AppRequest<CookiesModel>, res: Response) => {
+cookiesController.post(COOKIES_URL, (async (req: AppRequest<CookiesModel>, res: Response) => {
   const cookie = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : {};
   cookie.analytics = req.body.analytics;
   cookie.apm = req.body.apm;
@@ -28,6 +28,6 @@ cookiesController.post(COOKIES_URL, async (req: AppRequest<CookiesModel>, res: R
     cookiePreferences: cookie,
     redirectUrl: DASHBOARD_URL,
   });
-});
+}) as RequestHandler);
 
 export default cookiesController;

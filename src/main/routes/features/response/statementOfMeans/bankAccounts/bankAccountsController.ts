@@ -1,13 +1,13 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL, CITIZEN_DISABILITY_URL,
-} from '../../../../../routes/urls';
-import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
-import {BankAccountTypes} from '../../../../../common/form/models/bankAndSavings/bankAccountTypes';
-import {BankAccountService} from '../../../../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
+} from 'routes/urls';
+import {BankAccounts} from 'form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'form/models/bankAndSavings/bankAccount';
+import {BankAccountTypes} from 'form/models/bankAndSavings/bankAccountTypes';
+import {BankAccountService} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -19,12 +19,12 @@ function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: B
   res.render(citizenBankAccountsViewPath, {form, bankAccountDropDownItems});
 }
 
-bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
+bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, (async (req, res) => {
   const bankAccounts = await bankAccountService.getBankAccounts(generateRedisKey(<AppRequest>req));
   renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
-});
+}) as RequestHandler);
 
-bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
+bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, (async (req, res) => {
   const claimId = req.params.id;
   const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
     new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));
@@ -37,6 +37,6 @@ bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, async (req, res) => {
     await bankAccountService.saveBankAccounts(generateRedisKey(<AppRequest>req), bankAccounts);
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
   }
-});
+}) as RequestHandler);
 
 export default bankAccountsController;
