@@ -232,6 +232,16 @@ describe('Dashboard Items', ()=> {
 
     });
 
+    it('should return translated status for claim CLAIMANT_HWF_FEE_PAYMENT_OUTCOME', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_FEE_PAYMENT_OUTCOME';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_FEE_PAYMENT_OUTCOME');
+    });
+
     it('should return the translated string without parameters when params is provided but empty', () => {
       // Given
       const translationKey = 'PAGES.DASHBOARD.STATUS.CLAIMANT_CONFIRMED_PAYMENT';
