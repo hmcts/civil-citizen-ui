@@ -1,13 +1,13 @@
-import {NextFunction, Response, Router} from 'express';
-import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
-import {PaymentOption} from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {PaymentOption} from 'form/models/admission/paymentOption/paymentOption';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../services/features/response/admission/paymentOptionService';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+} from 'services/features/response/admission/paymentOptionService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ResponseType} from 'form/models/responseType';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -26,16 +26,16 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
   }
 }
 
-paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
+paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, (async (req, res, next: NextFunction) => {
   try {
     const paymentOption = await getPaymentOptionForm(generateRedisKey(<AppRequest>req), ResponseType.FULL_ADMISSION);
     renderView(new GenericForm(paymentOption), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
+paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, (async (req, res, next: NextFunction) => {
   const paymentOption = new PaymentOption(req.body.paymentType);
   const form = new GenericForm(paymentOption);
   try {
@@ -49,6 +49,6 @@ paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default paymentOptionController;

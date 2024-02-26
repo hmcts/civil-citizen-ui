@@ -1,20 +1,20 @@
-import {SummarySection, summarySection} from '../../../../common/models/summaryList/summarySections';
-import {summaryRow} from '../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   BREATHING_SPACE_RESPITE_END_DATE_URL,
   BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL,
   BREATHING_SPACE_RESPITE_START_DATE_URL,
   BREATHING_SPACE_RESPITE_TYPE_URL,
-} from '../../../../routes/urls';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {BreathingSpace} from 'models/breathingSpace';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {DebtRespiteOptionType} from 'models/breathingSpace/debtRespiteOptionType';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
-export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string | unknown): SummarySection => {
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber;
   const debtRespiteStartDate = (breathingSpace?.debtRespiteStartDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):'';
