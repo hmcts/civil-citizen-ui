@@ -30,7 +30,7 @@ function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType) {
   }
 }
 
-export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId: any) => {
+export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId: string) => {
   const claim : Claim = await getClaimById(claimId, req, true);
   if (claim.respondent1.type === 'ORGANISATION' || claim.respondent1.type === 'COMPANY') {
     return CLAIMANT_RESPONSE_TASK_LIST_URL;
