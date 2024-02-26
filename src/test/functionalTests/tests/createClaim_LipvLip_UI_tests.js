@@ -67,6 +67,7 @@ Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', as
     let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(false);
     claimRef = claimRef.replace(/-/g, '');
     console.log('The value of the claim reference : ' + claimRef);
+    await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
     await CreateLipvLipClaimSteps.payClaimFee();
     await api.waitForFinishedBusinessProcess();
