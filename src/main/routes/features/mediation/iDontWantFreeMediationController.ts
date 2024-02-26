@@ -1,14 +1,13 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Mediation} from '../../../common/models/mediation/mediation';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NoMediationReason} from 'form/models/mediation/noMediationReason';
+import {GenericForm} from 'form/models/genericForm';
+import {Mediation} from 'models/mediation/mediation';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
-import {NoMediationReasonOptions} from '../../../common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReasonOptions} from 'form/models/mediation/noMediationReasonOptions';
 import {Claim} from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const iDontWantFreeMediationViewPath = 'features/mediation/i-dont-want-free-mediation';
@@ -18,7 +17,7 @@ function renderView(form: GenericForm<NoMediationReason>, redirectUrl: string, r
   res.render(iDontWantFreeMediationViewPath, {form, redirectUrl, NoMediationReasonOptions: NoMediationReasonOptions});
 }
 
-iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res, next: NextFunction) => {
+iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -28,10 +27,10 @@ iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, r
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -50,6 +49,6 @@ iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default iDontWantFreeMediationController;

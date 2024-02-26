@@ -9,15 +9,15 @@ import {
 import {Transaction} from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
+const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string ) => {
   if (transaction?.declared && transaction?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
   }
 };
 
-export const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourMonthlyExpensessHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
 
   if (claim.statementOfMeans?.regularExpenses) {

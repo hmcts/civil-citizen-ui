@@ -1,5 +1,5 @@
-import {Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {Request, RequestHandler, Response, Router} from 'express';
+import {GenericForm} from 'form/models/genericForm';
 import {
   FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
@@ -15,7 +15,8 @@ claimReferenceController.get(FIRST_CONTACT_CLAIM_REFERENCE_URL, (req: Request, r
   res.render(claimReferenceViewPath, { form: new GenericForm(new ClaimReference(req.body.claimReferenceValue)) });
 });
 
-claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, async (req: Request, res: Response) => {
+
+claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Request, res: Response) => {
   const firstContactClaimReference = new ClaimReference(req.body.claimReferenceValue);
   const form = new GenericForm(firstContactClaimReference);
   await form.validate();
@@ -25,6 +26,6 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, async (req: Req
     req.session = saveFirstContactData(req.session as AppSession, { claimReference: req.body.claimReferenceValue });
     res.redirect(FIRST_CONTACT_PIN_URL);
   }
-});
+}) as RequestHandler);
 
 export default claimReferenceController;

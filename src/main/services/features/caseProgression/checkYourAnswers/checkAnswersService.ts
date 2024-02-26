@@ -36,7 +36,7 @@ import {CaseEvent} from 'models/events/caseEvent';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string | unknown): DocumentUploadSections => {
+export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
 
   return {
     witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),

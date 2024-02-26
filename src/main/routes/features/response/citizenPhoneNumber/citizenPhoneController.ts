@@ -1,12 +1,12 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CitizenTelephoneNumber,
-} from '../../../../common/form/models/citizenTelephoneNumber';
-import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantOrDefendant} from '../../../../common/models/partyType';
-import {getTelephone, saveTelephone} from '../../../../services/features/claim/yourDetails/phoneService';
+} from 'form/models/citizenTelephoneNumber';
+import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
@@ -18,7 +18,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, ca
   res.render(citizenPhoneViewPath, {form, carmEnabled: carmEnabled});
 }
 
-citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: NextFunction) => {
+citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, (async (req, res, next: NextFunction) => {
   try {
     const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -28,9 +28,9 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: Next
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
@@ -48,6 +48,6 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default citizenPhoneController;

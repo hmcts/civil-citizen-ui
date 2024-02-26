@@ -1,18 +1,18 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {DQ_EXPERT_GUIDANCE_URL, DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'form/models/genericForm';
 import {
   ExpertReportDetails,
-} from '../../../../common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
-} from '../../../../services/features/directionsQuestionnaire/expertReportDetailsService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'services/features/directionsQuestionnaire/expertReportDetailsService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'form/models/yesNo';
 import {
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -24,15 +24,15 @@ function renderView(form: GenericForm<ExpertReportDetails>, res: Response): void
   res.render('features/directionsQuestionnaire/experts/expert-report-details', {form, today: new Date()});
 }
 
-expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
+expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {
   try {
     renderView(new GenericForm(await getExpertReportDetails(generateRedisKey(<AppRequest>req))), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
+expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const reportDetails = req.body.option === YesNo.YES ? req.body.reportDetails : undefined;
@@ -54,6 +54,6 @@ expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default expertReportDetailsController;
