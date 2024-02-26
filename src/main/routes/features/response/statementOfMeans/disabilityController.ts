@@ -1,9 +1,9 @@
-import {NextFunction, Response, Router} from 'express';
-import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
-import {DisabilityService} from '../../../../services/features/response/statementOfMeans/disabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from 'routes/urls';
+import {DisabilityService} from 'services/features/response/statementOfMeans/disabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -15,16 +15,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenDisabilityViewPath, {form});
 }
 
-disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: NextFunction) => {
+disabilityController.get(CITIZEN_DISABILITY_URL, (async (req, res, next: NextFunction) => {
   try {
     renderView(await disabilityService.getDisability(generateRedisKey(<AppRequest>req)), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     const form = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
@@ -41,6 +41,6 @@ disabilityController.post(CITIZEN_DISABILITY_URL,
         next(error);
       }
     }
-  });
+  }) as RequestHandler);
 
 export default disabilityController;

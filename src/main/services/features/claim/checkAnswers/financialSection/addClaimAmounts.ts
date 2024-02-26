@@ -7,9 +7,9 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {CLAIM_AMOUNT_URL} from 'routes/urls';
 import {ClaimAmountBreakup} from 'form/models/claimDetails';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-export const addClaimAmounts = (claim: Claim, claimAmountSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addClaimAmounts = (claim: Claim, claimAmountSection: SummarySection, claimId: string, lang: string ) => {
   if (claim.claimAmountBreakup) {
     const claimAmounts: ClaimAmountBreakup[] = claim.claimAmountBreakup;
     for (let i = 0; i < claimAmounts.length; i++) {

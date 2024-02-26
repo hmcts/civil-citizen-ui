@@ -1,15 +1,15 @@
-import {NextFunction, Response, Router} from 'express';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/companyTelephoneNumber';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {GenericForm} from 'form/models/genericForm';
+import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 import {CAN_WE_USE_COMPANY_URL, CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL} from '../../urls';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
-} from '../../../services/features/response/mediation/companyTelephoneNumberService';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+} from 'services/features/response/mediation/companyTelephoneNumberService';
+import {YesNo} from 'form/models/yesNo';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -21,7 +21,7 @@ function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: Response, co
   res.render('features/mediation/company-telephone-number', {form, contactPerson});
 }
 
-companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, next: NextFunction) => {
+companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, (async (req, res, next: NextFunction) => {
   try {
     const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(generateRedisKey(<AppRequest>req));
     const form = new GenericForm(telephoneNumberData);
@@ -29,9 +29,9 @@ companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, next: NextFunction) => {
+companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, (async (req, res, next: NextFunction) => {
   const {
     option,
     mediationContactPerson,
@@ -61,6 +61,6 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default companyTelephoneNumberController;

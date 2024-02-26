@@ -6,7 +6,7 @@ import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {CLAIM_EVIDENCE_URL} from '../../../../../routes/urls';
 import {EvidenceItem} from '../../../../../common/form/models/evidence/evidenceItem';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const addEvidence = (claim: Claim, claimSection: SummarySection, claimId: string, lng: string) => {
   if (claim.claimDetails?.evidence) {

@@ -12,7 +12,7 @@ import {
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
@@ -48,7 +48,7 @@ const getCanWeUse = (claim: Claim) => {
   }
 };
 
-export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
   const contactNumber = getContactNumber(claim);
