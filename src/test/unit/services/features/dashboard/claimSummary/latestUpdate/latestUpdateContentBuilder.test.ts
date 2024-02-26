@@ -418,7 +418,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
         claim.partAdmitPaidValuePounds = 500;
@@ -443,7 +443,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
@@ -467,7 +467,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
         const claimId = claim.id;

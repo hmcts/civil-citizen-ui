@@ -59,7 +59,7 @@ describe('Get Court Decision test', ()=> {
       .post('/cases/11/courtDecision')
       .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT);
 
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
 
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
@@ -84,7 +84,7 @@ describe('Get Court Decision test', ()=> {
       .post('/cases/11/courtDecision')
       .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT);
 
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
@@ -97,7 +97,7 @@ describe('Get Court Decision test', ()=> {
       .post('/cases/11/courtDecision')
       .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
 
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
     //Then
@@ -113,7 +113,7 @@ describe('Get Court Decision test', ()=> {
       type: PartyType.COMPANY,
     };
 
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
 
     //When
     const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');

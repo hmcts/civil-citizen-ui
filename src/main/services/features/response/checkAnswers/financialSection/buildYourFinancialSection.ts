@@ -16,7 +16,7 @@ import {addLoansOrCreditCardDebts} from './answers/addLoansOrCreditCardDebts';
 import {addMonthlyExpenses} from './answers/addMonthlyExpenses';
 import {addMonthlyIncome} from './answers/addMonthlyIncome';
 
-export const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let yourFinancialSection: SummarySection = null;
 
   yourFinancialSection = summarySection({
