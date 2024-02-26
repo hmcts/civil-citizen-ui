@@ -2229,8 +2229,7 @@
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
-      "PAGE_TEXT_DEFENDANT": "Ai {{ defendantContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
+      "PAGE_TEXT": "Ai {{ defendantContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
@@ -2238,7 +2237,6 @@
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ partyEmail }} to contact you about your mediation appointment?"
       "PAGE_TEXT": "A all y tîm cyfryngu ddefnyddio {{ defendantEmail }} i gysylltu â chi am eich apwyntiad cyfryngu?"
     },
     "MEDIATION_DISAGREEMENT": {
