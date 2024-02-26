@@ -103,7 +103,7 @@ export class Claim {
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
-  interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
+  interest?: Interest;
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
@@ -920,6 +920,12 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  hasClaimantNotSettled(): boolean {
+    return this.hasClaimantIntentToProceedResponse() || this.hasClaimantRejectedDefendantResponse() || this.hasClaimantRejectedDefendantPaid()
+      || this.hasClaimantRejectedDefendantAdmittedAmount()
+      || this.hasClaimantRejectedPartAdmitPayment();
   }
 
   getPaymentDate() {

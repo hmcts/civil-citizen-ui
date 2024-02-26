@@ -31,7 +31,7 @@ export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: 
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', { fullName, amount, paymentDate, lng }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng as string)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE', { fullName, amount, paymentDate, lng }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${paymentDate}`),
     ],
   });
@@ -48,7 +48,7 @@ export const buildSummaryForPayByInstalments = (claim: Claim, claimId: string, l
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lng, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng as string)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS', { lng, fullName, amount, instalmentAmount, instalmentDate, frequency }), constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL), changeLabel(lng)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA', { lng }), `${isClaimantPlanAccepted?formatDateToFullDate(getFinalPaymentDateForClaimantPlan(claim),lng):formatDateToFullDate(getFinalPaymentDate(claim), lng)}`),
     ],
   });
@@ -88,7 +88,7 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
   });
   if (claim.getDefendantPaidAmount()) {
     judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
-      '£' + (judgmentSummaryDetails.alreadyPaidAmount).toFixed(2).toString()));
+      '£' + (judgmentSummaryDetails.alreadyPaidAmount)));
   }
 
   if (claim.getHasDefendantPaid) {

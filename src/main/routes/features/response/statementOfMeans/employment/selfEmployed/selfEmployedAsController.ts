@@ -1,15 +1,15 @@
-import {NextFunction, Response, Router} from 'express';
-import {SelfEmployedAsForm} from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {SelfEmployedAsForm} from 'form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
-} from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {
   CITIZEN_SELF_EMPLOYED_URL,
   ON_TAX_PAYMENTS_URL,
-} from '../../../../../urls';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -20,17 +20,17 @@ function renderView(form: GenericForm<SelfEmployedAsForm>, res: Response): void 
   res.render(selfEmployedAsViewPath, {form});
 }
 
-selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: NextFunction) => {
+selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, (async (req, res, next: NextFunction) => {
   try {
     const form = await getSelfEmployedAsForm(generateRedisKey(<AppRequest>req));
     renderView(form, res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
       const form: GenericForm<SelfEmployedAsForm> = new GenericForm(new SelfEmployedAsForm(req.body.jobTitle, annualTurnover));
@@ -44,6 +44,6 @@ selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default selfEmployedAsController;

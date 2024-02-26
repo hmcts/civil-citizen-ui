@@ -1,14 +1,14 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {
   WhyUnavailableForHearing,
-} from '../../../../common/models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
+} from 'models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
@@ -23,7 +23,7 @@ function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, 
   res.render(whyUnavailableForHearingViewPath, {form, days});
 }
 
-whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, async (req: Request, res: Response, next: NextFunction) => {
+whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const whyUnavailableForHearing = directionQuestionnaire.hearing?.whyUnavailableForHearing ?
@@ -33,9 +33,9 @@ whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, async (re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, async (req: Request, res: Response, next: NextFunction) => {
+whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const whyUnavailableForHearing = new GenericForm(new WhyUnavailableForHearing(req.body.reason));
@@ -50,6 +50,6 @@ whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, async (r
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default whyUnavailableForHearingController;

@@ -319,6 +319,7 @@ ccd:
       disableKeyVaults: true
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
+    image: hmctspublic.azurecr.io/imported/elastic/elasticsearch
     imageTag: "7.17.1"
     initResources:
       limits:
