@@ -5,11 +5,14 @@ import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeB
 import { CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 describe('on GET', () => {
-  const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
   const app = express();
   app.use(express.json());
   app.use((req, res, next) => {
@@ -32,7 +35,7 @@ describe('on GET', () => {
       }};
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
-    mockGetCaseDataFromDraftStore.mockResolvedValueOnce(mockClaimData);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
     //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {

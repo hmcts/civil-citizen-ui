@@ -7,13 +7,14 @@ import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {getClaimById} from 'modules/utilityService';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claim =  await getCaseDataFromStore(generateRedisKey(req));
+    const claim = await getClaimById(req.params.id, req, true);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
     const interestAmount = calculateInterestToDate(claim);
