@@ -32,7 +32,7 @@ class MediationCanWeUse {
 
   async selectOptionForMediation() {
     const language = sharedData.language;
-    await I.see(content.heading2[language], 'h1');
+    await I.see(content.heading2[language], config.WaitForText);
     await I.see(content.descriptionText2[language]);
     await I.click(fields.yesButton);
     // await I.waitForText(content.heading1[language], config.WaitForText);
