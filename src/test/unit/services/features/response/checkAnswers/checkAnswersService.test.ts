@@ -155,7 +155,7 @@ describe('Check Answers service', () => {
       //Given
 
       const claim = createClaimWithMediationSectionWithOption(YesNo.YES);
-      const mediationSectionExpected = buildMediationSection(claim, CLAIM_ID, 'en');
+      const mediationSectionExpected = buildMediationSection(claim, CLAIM_ID, 'en', false);
       const summarySections = getSummarySections(CLAIM_ID, claim, 'en', true);
       //Then
       expect(summarySections.sections[0].summaryList.rows.length).toBe(6);
