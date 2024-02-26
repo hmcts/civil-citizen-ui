@@ -2237,7 +2237,7 @@
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "A all y tîm cyfryngu ddefnyddio {{ defendantEmail }} i gysylltu â chi am eich apwyntiad cyfryngu?"
+      "PAGE_TEXT": "A all y tîm cyfryngu ddefnyddio {{ partyEmail }} i gysylltu â chi am eich apwyntiad cyfryngu?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
