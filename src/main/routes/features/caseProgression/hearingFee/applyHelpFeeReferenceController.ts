@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
   DASHBOARD_CLAIMANT_URL, GENERIC_HELP_FEES_URL, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
@@ -22,7 +22,7 @@ const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/appl
 const applyHelpFeeReferenceController: Router = Router();
 const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
-async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string) {
   const redisClaimId = generateRedisKey(<AppRequest>req);
   const claim: Claim = await getCaseDataFromStore(redisClaimId);
   if (!form.hasErrors()) {
@@ -52,7 +52,7 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
 
 }) as RequestHandler);
 
-applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:any, res, next) => {
+applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:AppRequest | Request, res, next) => {
   try{
     const claimId = req.params.id;
     const redisClaimId = generateRedisKey(<AppRequest>req);

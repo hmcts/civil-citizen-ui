@@ -66,7 +66,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 
   const getMediationSection = (carmApplicable = false) => {
     const mediationSection =  carmApplicable ?
-      buildMediationSection(claim, claimId, lang) : buildFreeTelephoneMediationSection(claim, claimId, lang);
+      buildMediationSection(claim, claimId, lang, false) : buildFreeTelephoneMediationSection(claim, claimId, lang);
 
     return claim.isFullDefence()
     || claim.isPartialAdmission()
