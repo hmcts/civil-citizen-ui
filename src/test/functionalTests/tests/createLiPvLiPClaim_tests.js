@@ -13,7 +13,7 @@ let claimNumber;
 Feature('Create LipvLip claim using API');
 
 Before(async ({api}) => {
-  caseID = await api.createLiPClaim(config.claimantCitizenUser);
+  caseID = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, caseID);
   claimNumber = await caseData.legacyCaseReference;
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

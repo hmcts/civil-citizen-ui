@@ -41,7 +41,7 @@ module.exports = {
   claimantCitizenUser: {
     password: defaultPassword,
     email: 'civilmoneyclaimsdemo@gmail.com',
-    type: 'defendant',
+    type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
