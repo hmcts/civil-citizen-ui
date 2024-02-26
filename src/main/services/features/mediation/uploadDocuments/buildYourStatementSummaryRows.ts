@@ -61,7 +61,7 @@ const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: s
     };
     const documentElement = {
       title: documentUploaded(lang),
-      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)
+      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
     };
 
     let sectionTitle = t(title, {lng: getLng(lang)});
@@ -92,7 +92,7 @@ const getMediationYourNameSummaryRows = (title: string, nameStatement: string, d
     };
     const documentElement = {
       title: documentUploaded(lang),
-      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)
+      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
     };
 
     let sectionTitle = t(title, {lng: getLng(lang)});
