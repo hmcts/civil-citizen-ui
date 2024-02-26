@@ -9,7 +9,7 @@ import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from 'common/form/models/yesNo';
@@ -35,7 +35,7 @@ cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_U
 cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const form = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {

@@ -22,7 +22,7 @@ const MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE = 'PAGES.MEDIATION_CONTACT_PERS
 const renderView = (form: GenericForm<GenericYesNoCarmContactPersonConfirmation>, res: Response, req: Request, defendantContactPerson: string): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT_DEFENDANT`, { lng: lang, defendantContactPerson: defendantContactPerson });
+  const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyContactPerson: partyContactPerson });
   res.render(contactNameMediationConfirmationViewPath, { form, pageTitle, pageText });
 };
 
