@@ -26,7 +26,7 @@ describe('Documents uploaded controller', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim)),
+        new Promise((resolve) => resolve(claim)),
       );
     await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', '1645882162449409'))
       .expect((res) => {
@@ -40,7 +40,7 @@ describe('Documents uploaded controller', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim)),
+        new Promise((resolve) => resolve(claim)),
       );
     app.locals.draftStoreClient = mockCivilClaim;
     const mockClaimId = '1645882162449409';
