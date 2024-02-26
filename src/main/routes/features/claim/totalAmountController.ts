@@ -1,11 +1,11 @@
 import config from 'config';
-import {NextFunction, Response, Router} from 'express';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {AppRequest} from 'models/AppRequest';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {convertToPoundsFilter} from '../../../common/utils/currencyFormat';
-import {calculateInterestToDate} from '../../../common/utils/interestUtils';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
@@ -18,7 +18,7 @@ function renderView(form: object, res: Response): void {
   res.render(totalAmountViewPath, {form});
 }
 
-totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const claim = await getCaseDataFromStore(userId);
@@ -49,14 +49,14 @@ totalAmountController.get(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-totalAmountController.post(CLAIM_TOTAL_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+totalAmountController.post(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     res.redirect(CLAIMANT_TASK_LIST_URL);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default totalAmountController;
