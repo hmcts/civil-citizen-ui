@@ -19,10 +19,10 @@ const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
 const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_PHONE_CONFIRMATION.';
 
-const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, defendantPhone: string): void => {
+const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, partyPhone: string): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang, defendantPhone: defendantPhone});
+  const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang, partyPhone: partyPhone});
   res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText});
 };
 

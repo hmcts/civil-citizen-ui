@@ -1,4 +1,4 @@
-import {Router, Response} from 'express';
+import {Router, Response, RequestHandler} from 'express';
 import {GenericForm} from 'common/form/models/genericForm';
 import {SupportRequiredList} from 'common/models/directionsQuestionnaire/supportRequired';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -24,7 +24,7 @@ function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res
   res.render(unavailableDatesForHearingViewPath, { form });
 }
 
-unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
+unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, (async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const unavailableDatesForHearing = directionQuestionnaire.hearing?.unavailableDatesForHearing ?? new UnavailableDates();
@@ -33,9 +33,9 @@ unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, async (req, res, next) => {
+unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const unavailableDatesForHearing = getUnavailableDatesForm(req.body);
@@ -55,6 +55,6 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default unavailableDatesForHearingController;

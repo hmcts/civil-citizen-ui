@@ -1,18 +1,18 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_EVIDENCE_URL,
   CITIZEN_TIMELINE_URL,
   CASE_TIMELINE_DOCUMENTS_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form//models/genericForm';
-import {DefendantTimeline} from '../../../../common/form//models/timeLineOfEvents/defendantTimeline';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
-} from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {generateRedisKey, getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
+} from 'services/features/response/timelineOfEvents/defendantTimelineService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {AppRequest} from 'common/models/AppRequest';
 
 const defendantTimelineController = Router();
@@ -25,7 +25,7 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
 }
 
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const theirTimeline = claim.timelineOfEvents;
@@ -35,9 +35,9 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
-defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: NextFunction) => {
+defendantTimelineController.post(CITIZEN_TIMELINE_URL, (async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -53,6 +53,6 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: Ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default defendantTimelineController;
