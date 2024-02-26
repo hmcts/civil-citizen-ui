@@ -1429,6 +1429,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
+        "HWF_FEE_PAYMENT_OUTCOME": "The hearing fee has been paid.",
         "HWF_INVALID_REF_NUMBER": "You gave us an invalid Help with Fees number.",
         "HWF_MORE_INFORMATION_NEEDED": "We need more information.",
         "HWF_NO_REMISSION": "Your Help with Fees application has been rejected.",
