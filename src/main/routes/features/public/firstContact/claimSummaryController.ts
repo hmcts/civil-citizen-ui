@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CASE_TIMELINE_DOCUMENTS_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
