@@ -8,9 +8,9 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourDependantsHref = CITIZEN_DEPENDANTS_URL.replace(':id', claimId);
   const dependants = claim.statementOfMeans?.dependants?.declared ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   const numberOfChildren = claim.statementOfMeans?.dependants?.numberOfChildren;

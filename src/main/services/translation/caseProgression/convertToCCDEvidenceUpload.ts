@@ -67,26 +67,26 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
 
   if(evidenceList)
   {
-    for(let i = 0; i < evidenceList.length; i++) {
+    for(const element of evidenceList) {
 
-      if (evidenceList[i].documentType !== evidenceType || !evidenceList[i].caseDocument) {
+      if (element.documentType !== evidenceType || !element.caseDocument) {
         continue;
       }
 
       let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
       id = null;
 
-      switch (evidenceList[i].documentType) {
+      switch (element.documentType) {
         case EvidenceUploadWitness.WITNESS_STATEMENT:
         case EvidenceUploadWitness.WITNESS_SUMMARY:
         case EvidenceUploadWitness.NOTICE_OF_INTENTION:
-          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceWitness;
+          evidenceItem = element.caseDocument as UploadEvidenceWitness;
           break;
         case EvidenceUploadExpert.EXPERT_REPORT:
         case EvidenceUploadExpert.STATEMENT:
         case EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS:
         case EvidenceUploadExpert.ANSWERS_FOR_EXPERTS:
-          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceExpert;
+          evidenceItem = element.caseDocument as UploadEvidenceExpert;
           break;
         case EvidenceUploadWitness.DOCUMENTS_REFERRED:
         case EvidenceUploadDisclosure.DISCLOSURE_LIST:
@@ -96,10 +96,10 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         case EvidenceUploadTrial.AUTHORITIES:
         case EvidenceUploadTrial.COSTS:
         case EvidenceUploadTrial.DOCUMENTARY:
-          evidenceItem = evidenceList[i].caseDocument as UploadEvidenceDocumentType;
+          evidenceItem = element.caseDocument as UploadEvidenceDocumentType;
           break;
       }
-      id = evidenceList[i].uuid == null ? uuidv4() : evidenceList[i].uuid ;
+      id = element.uuid == null ? uuidv4() : element.uuid ;
 
       ccdEvidenceList.push({id: id, value: evidenceItem});
     }

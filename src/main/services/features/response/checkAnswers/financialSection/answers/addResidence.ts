@@ -8,16 +8,16 @@ import {
 } from '../../../../../../routes/urls';
 import {ResidenceType} from '../../../../../../common/form/models/statementOfMeans/residence/residenceType';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
   const residence = claim.statementOfMeans?.residence;
   const residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence?.housingDetails : residence?.type;
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), translateResidenceType(residenceType, lang), yourResidenceTypeHref, changeLabel(lang)));
 };
 
-const translateResidenceType = (residence: string, lng: string | unknown): string => {
+const translateResidenceType = (residence: string, lng: string ): string => {
   switch (residence) {
     case 'COUNCIL_OR_HOUSING_ASSN_HOME':
       return t('PAGES.RESIDENCE.ASSOCIATION_HOME', {lng: getLng(lng)});
