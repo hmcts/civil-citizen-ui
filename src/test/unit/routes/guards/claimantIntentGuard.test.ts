@@ -20,7 +20,7 @@ describe('claimantIntentGuard', () => {
     const claim: Partial<Claim> = {
       isClaimantIntentionPending: jest.fn().mockReturnValue(true),
     };
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
     await claimantIntentGuard(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
     expect(res.redirect).not.toHaveBeenCalled();
@@ -29,7 +29,7 @@ describe('claimantIntentGuard', () => {
     const claim: Partial<Claim> = {
       isClaimantIntentionPending: jest.fn().mockReturnValue(false),
     };
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
     req.originalUrl = CLAIMANT_RESPONSE_CONFIRMATION_URL;
     await claimantIntentGuard(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
@@ -39,7 +39,7 @@ describe('claimantIntentGuard', () => {
     const claim = {
       isClaimantIntentionPending: jest.fn().mockReturnValue(false),
     };
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as any);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     const redirectUrl = constructResponseUrlWithIdParams(
       req.params.id,
       DASHBOARD_CLAIMANT_URL,

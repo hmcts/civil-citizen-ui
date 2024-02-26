@@ -13,6 +13,8 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {PaidAmount} from 'common/models/claimantResponse/ccj/paidAmount';
 import {YesNo} from 'common/form/models/yesNo';
 import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
+import {createClaimWithMediationSectionWithOptionClaimantResponse} from '../../../../utils/mockClaimForCheckAnswers';
+import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -66,7 +68,15 @@ describe('Check Answers service', () => {
     it('should check answers for defendant paid some of the money', () => {
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(result.sections).toHaveLength(7);
+      expect(result.sections).toHaveLength(8);
+    });
+
+    it('should contain mediation section when carm applicable', () => {
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO);
+      const result = getSummarySections('12345', claim, 'en', 70, true);
+      const mediationSectionExpected = buildMediationSection(claim, '12345', 'en', true);
+      expect(result.sections).toHaveLength(8);
+      expect(result.sections[2]).toStrictEqual(mediationSectionExpected);
     });
 
     it('should check answers for defendant didn`t paid any amount', () => {
@@ -80,7 +90,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse.chooseHowToProceed = undefined;
       claim.claimantResponse.ccjRequest = undefined;
       const result = getSummarySections('12345', claim, 'en', 70);
-      expect(result.sections).toHaveLength(7);
+      expect(result.sections).toHaveLength(8);
     });
   });
 });
@@ -172,6 +182,7 @@ function generateExpectedResultForDefendantPaidNone() {
       null,
       null,
       undefined,
+      null,
     ],
   };
 
