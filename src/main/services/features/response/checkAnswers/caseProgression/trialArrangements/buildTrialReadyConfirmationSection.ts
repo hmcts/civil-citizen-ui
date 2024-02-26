@@ -13,9 +13,9 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {CaseRole} from 'form/models/caseRoles';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let trialReadySummarySections: SummarySection = null;
   const trialArrangements = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression.claimantTrialArrangements : claim.caseProgression.defendantTrialArrangements;
 

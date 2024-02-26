@@ -8,9 +8,9 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNoUpperCase, YesNo} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addCarer = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addCarer = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourCareCreditsHref = CITIZEN_CARER_URL.replace(':id', claimId);
   const carerCredit = claim.statementOfMeans?.carer?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CARER_CREDIT_DO_YOU_CLAIM', { lng: getLng(lang) }), t(`COMMON.${carerCredit}`, {lng: getLng(lang)}), yourCareCreditsHref, changeLabel(lang)));
