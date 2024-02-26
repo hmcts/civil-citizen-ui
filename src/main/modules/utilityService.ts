@@ -9,6 +9,7 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {replaceValues} from 'services/dashboard/dashboardInterpolationService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -43,18 +44,28 @@ export const getRedisStoreForSession = () => {
   });
 };
 
-export const getNotificationById = async (claimId: string, caseRole: string, req: AppRequest): Promise<DashboardNotificationList> => {
+export const getNotificationById = async (claimId: string, claim: Claim, caseRole: string, req: AppRequest): Promise<DashboardNotificationList> => {
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
+    dashboardNotifications.items.forEach((notification) => {
+      notification.descriptionEn = replaceValues(notification.descriptionEn, claim);
+      notification.descriptionCy = replaceValues(notification.descriptionCy, claim);
+    });
     return dashboardNotifications;
   } else {
     throw new Error('Notifications not found...');
   }
 };
 
-export const getDashboardById = async (claimId: string, caseRole: string, req: AppRequest): Promise<Dashboard> => {
+export const getDashboardById = async (claimId: string, claim:Claim, caseRole: string, req: AppRequest): Promise<Dashboard> => {
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
+    dashboard.items.forEach((taskList) => {
+      taskList.tasks.forEach((task) => {
+        task.taskNameEn = replaceValues(task.taskNameEn, claim);
+        task.taskNameCy = replaceValues(task.taskNameCy, claim);
+      });
+    });
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');

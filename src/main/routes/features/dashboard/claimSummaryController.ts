@@ -40,8 +40,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (isReleaseTwoEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-      const dashboardNotifications = await getNotifications(claimId, caseRole, req as AppRequest);
-      const dashboardTaskList = await getDashboardForm(caseRole, claimId, req as AppRequest);
+      const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
+      const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
       // RELEASE 1
