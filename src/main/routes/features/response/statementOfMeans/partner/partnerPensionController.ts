@@ -1,10 +1,10 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_DISABILITY_URL, CITIZEN_PARTNER_PENSION_URL} from '../../../../urls';
-import {PartnerPensionService} from '../../../../../services/features/response/statementOfMeans/partner/partnerPensionService';
-import {DisabilityService} from '../../../../../services/features/response/statementOfMeans/disabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {PartnerPensionService} from 'services/features/response/statementOfMeans/partner/partnerPensionService';
+import {DisabilityService} from 'services/features/response/statementOfMeans/disabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -17,16 +17,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenPartnerPensionViewPath, {form});
 }
 
-partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: NextFunction) => {
+partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, (async (req, res, next: NextFunction) => {
   try {
     const partnerPension = await partnerPensionService.getPartnerPension(generateRedisKey(<AppRequest>req));
     renderView(partnerPension, res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: NextFunction) => {
+partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, (async (req, res, next: NextFunction) => {
   try {
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -43,6 +43,6 @@ partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default partnerPensionController;

@@ -28,7 +28,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
   const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   const hearingDurationTrialArrangementsUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
-  const caseInfoContents = getCaseInfoContents(claimId, claim, lang);
+  const caseInfoContents = getCaseInfoContents(claimId, claim);
   const summarySections = getSummarySections(claimId, claim, lang);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
   res.render(checkAnswersViewPath, {caseInfoContents, summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl, cancelUrl});

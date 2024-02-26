@@ -1,13 +1,13 @@
-import {Response, Router} from 'express';
-import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {SentExpertReports} from '../../../../common/models/directionsQuestionnaire/experts/sentExpertReports';
+import {RequestHandler, Response, Router} from 'express';
+import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {SentExpertReports} from 'models/directionsQuestionnaire/experts/sentExpertReports';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
   res.render(expertReportsViewPath, {form});
 }
 
-sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) => {
+sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const sentExpertReports = directionQuestionnaire.experts?.sentExpertReports ? directionQuestionnaire.experts.sentExpertReports : new SentExpertReports();
@@ -28,9 +28,9 @@ sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, nex
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-sentExpertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) => {
+sentExpertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(new SentExpertReports(req.body.sentExpertReportsOptions));
@@ -44,6 +44,6 @@ sentExpertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default sentExpertReportsController;
