@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {AppRequest} from 'common/models/AppRequest';
@@ -30,7 +30,7 @@ sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
 sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    const form = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {
