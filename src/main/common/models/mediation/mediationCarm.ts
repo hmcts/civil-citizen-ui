@@ -1,25 +1,27 @@
-import {GenericYesNo} from 'form/models/genericYesNo';
 import {AlternativeEmailAddress} from 'form/models/mediation/AlternativeEmailAddress';
 import {UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
 import {AlternativeTelephone} from 'form/models/mediation/AlternativeTelephone';
 import {AlternativeContactPerson} from 'form/models/mediation/alternativeContactPerson';
+import {GenericYesNoCarm} from 'form/models/genericYesNoCarm';
+import {GenericYesNoCarmContactPersonConfirmation} from 'form/models/genericYesNoCarmContactPersonConfirmation';
+import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
 
 export class MediationCarm {
-  isMediationContactNameCorrect?: GenericYesNo;
+  isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation;
   alternativeMediationContactPerson?: AlternativeContactPerson;
-  isMediationEmailCorrect?: GenericYesNo;
+  isMediationEmailCorrect?: GenericYesNoCarmEmailConfirmation;
   alternativeMediationEmail?: AlternativeEmailAddress;
-  isMediationPhoneCorrect?: GenericYesNo;
+  isMediationPhoneCorrect?: GenericYesNoCarm;
   alternativeMediationTelephone?: AlternativeTelephone;
-  hasUnavailabilityNextThreeMonths?: GenericYesNo;
+  hasUnavailabilityNextThreeMonths?: GenericYesNoCarm;
   unavailableDatesForMediation?: UnavailableDatesMediation;
   hasTelephoneMeditationAccessed?: boolean;
   hasAvailabilityMediationFinished?: boolean;
 
-  constructor(isMediationContactNameCorrect?: GenericYesNo, alternativeMediationContactPerson?: AlternativeContactPerson,
-    isMediationEmailCorrect?: GenericYesNo, alternativeMediationEmail?: AlternativeEmailAddress,
-    isMediationPhoneCorrect?: GenericYesNo, alternativeMediationTelephone?: AlternativeTelephone,
-    hasUnavailabilityNextThreeMonths?: GenericYesNo, unavailableDatesForMediation?: UnavailableDatesMediation,
+  constructor(isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation, alternativeMediationContactPerson?: AlternativeContactPerson,
+    isMediationEmailCorrect?: GenericYesNoCarmEmailConfirmation, alternativeMediationEmail?: AlternativeEmailAddress,
+    isMediationPhoneCorrect?: GenericYesNoCarm, alternativeMediationTelephone?: AlternativeTelephone,
+    hasUnavailabilityNextThreeMonths?: GenericYesNoCarm, unavailableDatesForMediation?: UnavailableDatesMediation,
     hasTelephoneMeditationAccessed?: boolean, hasAvailabilityMediationFinished?: boolean) {
     this.isMediationContactNameCorrect = isMediationContactNameCorrect;
     this.alternativeMediationContactPerson = alternativeMediationContactPerson;
