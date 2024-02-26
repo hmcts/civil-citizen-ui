@@ -1,5 +1,5 @@
 import {
-  registerDecorator, ValidationArguments,
+  registerDecorator,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -7,7 +7,7 @@ import {
 
 @ValidatorConstraint({ name: 'fileSizeValidator', async: false })
 export class FileSizeValidator implements ValidatorConstraintInterface {
-  validate(size: number, args: ValidationArguments) {
+  validate(size: number) {
     if (!size) {
       return true;
     }

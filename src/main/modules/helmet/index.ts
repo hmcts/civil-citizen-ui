@@ -91,7 +91,7 @@ export class Helmet {
             self,
             googleAnalyticsDomain,
             "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-            (req: AppRequest, _res) => `'nonce-${req.cookies.nonceValue}'`,
+            (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
