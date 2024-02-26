@@ -6,7 +6,7 @@ import {toNumberOrString} from 'common/utils/numberConverter';
 import {ValidationArgs} from 'common/form/models/genericForm';
 
 const generateErrorMessage = (messageName: string): string => {
-  return messageName ? messageName : 'ERRORS.VALID_DATE_START_NOT_AFTER_TODAY';
+  return messageName || 'ERRORS.VALID_DATE_START_NOT_AFTER_TODAY';
 };
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {

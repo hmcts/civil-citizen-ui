@@ -1,6 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Party} from '../../../../common/models/party';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Party} from 'models/party';
+import {PartyDetails} from 'form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
