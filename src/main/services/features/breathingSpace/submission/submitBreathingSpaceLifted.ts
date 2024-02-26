@@ -11,11 +11,11 @@ const logger = Logger.getLogger('partialAdmissionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const submitBreathingSpaceLifted = async (req: AppRequest): Promise<any> => {
+export const submitBreathingSpaceLifted = async (req: AppRequest) => {
   try {
     const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     const breathingSpaceResponse = translateBreathingSpaceToCCD(breathingSpace);
-    return await civilServiceClient.submitBreathingSpaceLiftedEvent(req.params.id, breathingSpaceResponse, req);
+    await civilServiceClient.submitBreathingSpaceLiftedEvent(req.params.id, breathingSpaceResponse, req);
   } catch (err) {
     logger.error(err);
     throw err;

@@ -41,9 +41,8 @@ import {CaseRole} from 'form/models/caseRoles';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {
-  ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD,
-} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
+import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -155,7 +154,7 @@ export class CivilServiceClient {
     }
   }
 
-  async getHearingAmount(amount: number, req: AppRequest): Promise<any> {
+  async getHearingAmount(amount: number, req: AppRequest): Promise<HearingFee> {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
