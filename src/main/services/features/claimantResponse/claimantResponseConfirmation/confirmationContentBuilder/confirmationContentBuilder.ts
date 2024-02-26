@@ -9,8 +9,8 @@ import {
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
 import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
 import {
   getMediationCarmNextSteps,
@@ -145,9 +145,7 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY
-    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE
-    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS);
+  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {
