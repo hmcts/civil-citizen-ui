@@ -21,7 +21,7 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
 
   let yourDetailsHref = CLAIMANT_COMPANY_DETAILS_URL;
   switch (claim.applicant1?.type) {
