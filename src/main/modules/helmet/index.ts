@@ -1,7 +1,6 @@
 import {AppRequest} from 'common/models/AppRequest';
 import * as express from 'express';
-import helmet from 'helmet';
-import {HelmetOptions} from 'helmet';
+import {HelmetOptions,default as helmet} from 'helmet';
 import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
@@ -91,7 +90,7 @@ export class Helmet {
             self,
             googleAnalyticsDomain,
             "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-            (req: AppRequest, _res) => `'nonce-${req.cookies.nonceValue}'`,
+            (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,

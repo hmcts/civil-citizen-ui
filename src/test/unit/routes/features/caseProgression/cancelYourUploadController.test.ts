@@ -50,7 +50,7 @@ describe('Cancel document upload - On GET', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockReturnValue(
-        new Promise((resolve, reject) => resolve(claim)),
+        new Promise((resolve) => resolve(claim)),
       );
     //When
     await testSession
