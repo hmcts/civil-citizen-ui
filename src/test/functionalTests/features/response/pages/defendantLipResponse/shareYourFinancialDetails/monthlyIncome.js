@@ -29,9 +29,9 @@ const checkboxes = {
   },
   otherIncome: {
     en: 'Other',
-    cy: 'Arall'
-  }
-}
+    cy: 'Arall',
+  },
+};
 
 const content = {
   heading: {
