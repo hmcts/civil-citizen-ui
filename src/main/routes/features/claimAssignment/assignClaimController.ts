@@ -23,7 +23,6 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     }
   } catch (error) {
     logger.error(`Error Message: ${error.message}, http Code: ${error.code}`);
-    }
   } finally {
     res.redirect(DASHBOARD_URL);
   }
