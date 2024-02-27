@@ -13,11 +13,11 @@ import {
   MEDIATION_NEXT_3_MONTHS_URL,
   MEDIATION_PHONE_CONFIRMATION_URL, MEDIATION_UNAVAILABLE_SELECT_DATES_URL,
 } from 'routes/urls';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo } from 'form/models/yesNo';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-export const buildMediationSection = (claim: Claim, claimId: string, lang: string | unknown, isClaimantResponse: boolean): SummarySection => {
+export const buildMediationSection = (claim: Claim, claimId: string, lang: string , isClaimantResponse: boolean): SummarySection => {
   let mediationSection: SummarySection = null;
   if(isClaimantResponse ? !claim.claimantResponse.mediationCarm : !claim.mediationCarm) {
     return mediationSection;

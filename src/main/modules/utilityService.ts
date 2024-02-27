@@ -4,7 +4,6 @@ import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/dr
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
-
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {Dashboard} from 'models/dashboard/dashboard';

@@ -21,18 +21,16 @@ const getRepaymentPlanForm = (claim: Claim, isPartialAdmission?: boolean) => {
   try {
     const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
 
-    if (isPartialAdmission) {
-      if (claim.partialAdmission?.paymentIntention?.repaymentPlan) {
-        const repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
-        const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);
-        return getForm(totalClaimAmount,repaymentPlan,firstRepaymentDate);
-      }
+    if (isPartialAdmission && claim.partialAdmission?.paymentIntention?.repaymentPlan) {
+      const repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
+      const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);
+      return getForm(totalClaimAmount, repaymentPlan, firstRepaymentDate);
     }
 
     if (claim.fullAdmission?.paymentIntention?.repaymentPlan) {
       const repaymentPlan = claim.fullAdmission.paymentIntention.repaymentPlan;
       const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);
-      return getForm(totalClaimAmount,repaymentPlan,firstRepaymentDate);
+      return getForm(totalClaimAmount, repaymentPlan, firstRepaymentDate);
     }
 
     return new RepaymentPlanForm(totalClaimAmount);
@@ -74,10 +72,9 @@ const getClaim = async (claimId: string, isPartialAdmission?: boolean): Promise<
     if (!claim.partialAdmission.paymentIntention.repaymentPlan) {
       claim.partialAdmission.paymentIntention.repaymentPlan = repaymentPlan;
     }
-  } else {
-    if (!claim.fullAdmission.paymentIntention.repaymentPlan) {
-      claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
-    }
+  } else if (!claim.fullAdmission.paymentIntention.repaymentPlan) {
+    claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
+
   }
   return claim;
 };

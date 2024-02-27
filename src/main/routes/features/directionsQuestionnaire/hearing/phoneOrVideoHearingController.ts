@@ -1,14 +1,14 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {PhoneOrVideoHearing} from '../../../../common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {DQ_PHONE_OR_VIDEO_HEARING_URL, VULNERABILITY_URL} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {PhoneOrVideoHearing} from 'models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 import {
   getGenericOption,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -21,16 +21,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(phoneOrVideoHearingViewPath, {form});
 }
 
-phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: NextFunction) => {
+phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, (async (req, res, next: NextFunction) => {
   try {
     const phoneOrVideoHearing = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: Request, res: Response, next: NextFunction) => {
+phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
@@ -46,6 +46,6 @@ phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: Re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default phoneOrVideoHearingController;
