@@ -12,7 +12,7 @@ import {
 } from '../../../../../routes/urls';
 import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 const getRejectAllOfClaimOptionKey = (claim: Claim) => {
   const page = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.';
@@ -26,7 +26,7 @@ const getRejectAllOfClaimOptionKey = (claim: Claim) => {
   }
 };
 
-export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
   const yourResponseToClaimHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const yourPaymentAdmittedToClaimantHref = constructResponseUrlWithIdParams(claimId, CITIZEN_ALREADY_PAID_URL);
   const rejectAllClaimUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REJECT_ALL_CLAIM_URL);
