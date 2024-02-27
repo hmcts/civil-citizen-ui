@@ -171,6 +171,16 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
 
+    it('should return translated status for claim CLAIM_SUBMIT_HFW', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='CLAIM_SUBMIT_HFW';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_SUBMIT_HFW');
+    });
+
     it('should return translated status for claim CLAIMANT_REJECTED_PAYMENT_PLAN', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
