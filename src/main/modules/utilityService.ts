@@ -9,7 +9,7 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {replaceValues} from 'services/dashboard/dashboardInterpolationService';
+import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -48,8 +48,8 @@ export const getNotificationById = async (claimId: string, claim: Claim, caseRol
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceValues(notification.descriptionEn, claim);
-      notification.descriptionCy = replaceValues(notification.descriptionCy, claim);
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim);
     });
     return dashboardNotifications;
   } else {
@@ -62,8 +62,10 @@ export const getDashboardById = async (claimId: string, claim:Claim, caseRole: s
   if (dashboard) {
     dashboard.items.forEach((taskList) => {
       taskList.tasks.forEach((task) => {
-        task.taskNameEn = replaceValues(task.taskNameEn, claim);
-        task.taskNameCy = replaceValues(task.taskNameCy, claim);
+        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim);
+        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim);
+        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim);
+        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim);
       });
     });
     return dashboard;
