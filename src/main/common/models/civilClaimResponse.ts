@@ -250,6 +250,7 @@ export interface CCDClaim extends ClaimUpdate {
   finalOrderDocumentCollection?: FinalOrderDocumentCollection[];
   caseRole?: CaseRole;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
+  applicant1SettleClaim?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
   respondent1AdditionalLipPartyDetails?: CCDAdditionalPartyDetails;
   applicant1AdditionalLipPartyDetails?:CCDAdditionalPartyDetails;
@@ -283,6 +284,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingFeePaymentDetails?: PaymentDetails;
   mediationUploadDocuments?: UploadDocuments;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
+  applicant1LiPResponseCarm?: CcdMediationCarm;
   applicant1ClaimMediationSpecRequiredLip?: CCDClaimantMediationLip;
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
