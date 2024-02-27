@@ -2,8 +2,7 @@ const config = require('../../../config');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../../features/home/steps/login');
 const DashboardSteps = require('../../features/dashboard/steps/dashboard');
-const {unAssignAllUsers} = require('../../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
