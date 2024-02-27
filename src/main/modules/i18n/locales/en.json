@@ -1915,7 +1915,8 @@
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
       "REFERENCE_NUMBER": "Help with fees reference number",
       "TITLE": "Do you have a Help With Fees reference number?",
-      "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
+      "ONLY_ONE": "You'll only have one if you applied for Help With Fees.",
+      "REFERENCE_NUMBER_NONE": "None"
     },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",

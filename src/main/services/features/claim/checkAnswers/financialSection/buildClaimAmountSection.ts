@@ -52,7 +52,7 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     }
   }
   if (claim.claimDetails?.helpWithFees) {
-    const hwfReferenceNumber = (claim.claimDetails?.helpWithFees.option === YesNo.YES) ? claim.claimDetails.helpWithFees.referenceNumber : 'None';
+    const hwfReferenceNumber = (claim.claimDetails?.helpWithFees.option === YesNo.YES) ? claim.claimDetails.helpWithFees.referenceNumber : t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER_NONE', {lng});
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), hwfReferenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
   }
   return claimAmountSection;
