@@ -38,9 +38,14 @@ module.exports = {
     email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
   },
-  claimantCitizenUser: {
+  claimantEmailsVerificationCitizenUser: {
     password: defaultPassword,
     email: 'civilmoneyclaimsdemo@gmail.com',
+    type: 'claimant',
+  },
+  claimantCitizenUser: {
+    password: defaultPassword,
+    email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
