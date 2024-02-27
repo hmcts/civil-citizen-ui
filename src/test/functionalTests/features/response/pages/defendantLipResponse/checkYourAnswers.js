@@ -46,7 +46,7 @@ class CheckYourAnswersPage {
     //Check if PCQ page appears
     if(url.includes('pcq')){
       await I.amOnPage('/case/'+claimRef+'/response/task-list');
-      await I.click('Check and submit your response');
+      await I.click(links.checkAndSubmit[language]);
     }
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
@@ -96,6 +96,7 @@ class CheckYourAnswersPage {
   }
 
   async fillStatementOfTruthAndSubmit() {
+    const language = sharedData.language; 
     I.waitForText('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.fillField(fields.signedName, 'TestTest');
