@@ -215,8 +215,6 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
 
 export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boolean): DashboardClaimantItem | undefined => {
   if (claim?.isDraftClaim()) {
-    return undefined;
-  
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
     draftClaim.draft = true;
@@ -231,9 +229,8 @@ export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boo
     } else {
       draftClaim.url = BASE_ELIGIBILITY_URL;
     }
+    return draftClaim;
   } else {
     return undefined;
   }
-
-  return draftClaim;
 };
