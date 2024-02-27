@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CASE_TIMELINE_DOCUMENTS_URL, CLAIM_DETAILS_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
@@ -9,7 +9,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 
 const claimDetailsController = Router();
 
-claimDetailsController.get(CLAIM_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim: Claim = await getClaimById(req.params.id, req, true);
     const interestData = getInterestDetails(claim);
@@ -22,6 +22,6 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: Request, res: Response
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimDetailsController;

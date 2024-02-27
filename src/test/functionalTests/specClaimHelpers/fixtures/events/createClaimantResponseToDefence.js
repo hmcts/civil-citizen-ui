@@ -177,4 +177,72 @@ module.exports = {
     };
     return claimantResponseData;
   },
+
+  createClaimantLipIntendsToProceedResponse: () => {
+    const claimantResponseData = {
+      event: 'CLAIMANT_RESPONSE_CUI',
+      caseDataUpdate: {
+        applicant1LiPResponse: {
+          applicant1DQExtraDetails: {
+            wantPhoneOrVideoHearing: 'No',
+            whyPhoneOrVideoHearing: '',
+            giveEvidenceYourSelf: 'No',
+            triedToSettle: 'No',
+            determinationWithoutHearingReason: '',
+            requestExtra4weeks: 'No',
+            considerClaimantDocuments: 'No',
+            considerClaimantDocumentsDetails: '',
+            applicant1DQLiPExpert: {
+              expertCanStillExamineDetails: '',
+            },
+          },
+          applicant1DQHearingSupportLip: {
+            supportRequirementLip: 'No',
+          },
+        },
+        applicant1DQLanguage: {
+          court: 'ENGLISH',
+          documents: 'ENGLISH',
+        },
+        applicant1DQVulnerabilityQuestions: {
+          vulnerabilityAdjustmentsRequired: 'No',
+        },
+        applicant1DQRequestedCourt: {
+          requestHearingAtSpecificCourt: 'Yes',
+          otherPartyPreferredSite: '',
+          responseCourtCode: '',
+          reasonForHearingAtSpecificCourt: 'test',
+          responseCourtLocations: [],
+          caseLocation: {
+            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+          },
+        },
+        applicant1DQWitnesses: {
+          witnessesToAppear: 'No',
+          details: [
+            {
+              value: {
+                name: '',
+                firstName: '',
+                lastName: '',
+                emailAddress: '',
+                phoneNumber: '',
+                reasonForWitness: '',
+              },
+            },
+          ],
+        },
+        applicant1DQExperts: {
+          expertRequired: 'No',
+        },
+        applicant1DQHearingSupport: {
+          supportRequirements: 'No',
+        },
+        applicant1ProceedWithClaim: 'Yes',
+      },
+    }
+    ;
+    return claimantResponseData;
+  },
 };

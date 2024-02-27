@@ -36,7 +36,7 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
     return CLAIMANT_RESPONSE_TASK_LIST_URL;
   }
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
-  const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, <AppRequest>req, claimantProposedPlan);
+  const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, req, claimantProposedPlan);
   await saveClaimantResponse(generateRedisKey(req), courtDecision, 'courtDecision');
   return getRedirectionUrl(claim, courtDecision);
 };

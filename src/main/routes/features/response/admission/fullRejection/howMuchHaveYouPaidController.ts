@@ -1,15 +1,15 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../urls';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
-import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/howMuchHaveYouPaid';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
-import {ResponseType} from '../../../../../common/form/models/responseType';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
+import {ResponseType} from 'form/models/responseType';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -21,7 +21,7 @@ let totalClaimAmount: number;
 
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: Request, res: Response, next: NextFunction) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, (async (req: Request, res: Response, next: NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), ResponseType.FULL_DEFENCE);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
@@ -35,9 +35,9 @@ howMuchHaveYouPaidController
       } catch (error) {
         next(error);
       }
-    })
+    }) as RequestHandler)
   .post(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res, next: NextFunction) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, (async (req, res, next: NextFunction) => {
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       const paid = toNumberOrUndefined(req.body.amount);
@@ -62,6 +62,6 @@ howMuchHaveYouPaidController
           next(error);
         }
       }
-    });
+    }) as RequestHandler);
 
 export default howMuchHaveYouPaidController;
