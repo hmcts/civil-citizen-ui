@@ -8,7 +8,6 @@ export class UploadYourDocumentsSectionBuilder extends PageSectionBuilder {
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
-        //TODO: (href) in the future we should add in here the document url (it is in development)
         href: href,
         isStartButton: true,
       },
