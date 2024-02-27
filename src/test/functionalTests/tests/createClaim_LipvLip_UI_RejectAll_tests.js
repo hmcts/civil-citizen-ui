@@ -16,6 +16,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
 
 Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
