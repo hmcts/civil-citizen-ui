@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   yesButton: 'input[id="option"]',
@@ -15,20 +16,13 @@ const content = {
   },
 };
 
-const buttons = {
-  continue: {
-    en: 'Continue',
-    cy: 'Parhau',
-  },
-};
-
 class FreeTelephoneMediation {
 
   async selectMediation(claimRef) {
     const language = sharedData.language; 
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
     await I.waitForText(content.heading[language], config.WaitForText);
-    await I.click(buttons.continue[language]);
+    await I.click(cButtons.continue[language]);
   }
 
   async selectNoMediation(claimRef){

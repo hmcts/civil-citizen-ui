@@ -1,16 +1,11 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   employerName: 'input[id="rows[0][employerName]"]',
   jobTitle: 'input[id="rows[0][jobTitle]"]',
-};
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
 };
 
 const content = {
@@ -34,7 +29,7 @@ class EmployerDetails {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.employerName, 'ABC Ltd');
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -1,10 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-
-const buttons = {
-  continue: 'button.govuk-button',
-};
+const cButtons = require('../../../../common/cButtons');
 
 const content = {
   descriptionText1: {
@@ -32,7 +29,7 @@ class ShareYouFinancialDetailsIntro {
   }
 
   async clickContinue() {
-    await I.click(buttons.continue);
+    await I.click(cButtons.continue[sharedData.language]);
   }
 }
 

@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="debtsRadio"]',
@@ -20,10 +21,6 @@ const buttons = {
   addDebt: { 
     en: 'Add a debt', 
     cy: 'Ychwanegu dyled',
-  },
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
   },
 };
 
@@ -65,14 +62,14 @@ class Debts {
     await I.fillField(fields.debtItem3, inputs.debtItem3[language]),
     await I.fillField(fields.debtOwned3, '8000'),
     await I.fillField(fields.monthlyPayments3, '400'),
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
     const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -1,14 +1,11 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
-};
-
-const buttons = {
-  continue: 'button.govuk-button',
 };
 
 const checkBoxes = {
@@ -37,7 +34,7 @@ class EmploymentDetails {
     await I.click(fields.yesButton);
     await I.checkOption(checkBoxes.employed[language]);
     await I.checkOption(checkBoxes.selfEmployed[language]);
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {

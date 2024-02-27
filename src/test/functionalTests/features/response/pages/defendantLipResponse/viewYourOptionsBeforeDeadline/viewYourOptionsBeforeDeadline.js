@@ -11,6 +11,7 @@ const fields ={
   month: 'input[id="month"]',
   year: 'input[id="year"]',
 };
+
 const buttons = {
   continue: 'a.govuk-button',
   saveAndContinue:'#main-content button.govuk-button',
@@ -74,7 +75,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click('Save and continue');
         await I.see('New response deadline','h1');
         await I.click('Continue');
-        return;
+        break;
       }
       case 'requestRefused':{
         await I.click(fields.requestRefused);

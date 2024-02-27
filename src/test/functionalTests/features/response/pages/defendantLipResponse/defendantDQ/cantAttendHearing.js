@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -13,19 +14,13 @@ const content = {
     cy: 'A oes yna unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu eich tystion fynychu gwrandawiad?',
   },
 };
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
 class CantAttendHearing {
 
   async selectYesForCantAttendHearing() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language;
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 
