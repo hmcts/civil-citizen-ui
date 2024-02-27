@@ -38,9 +38,10 @@ class EmploymentDetails {
   }
 
   async clickNoButton() {
-    await I.see(content.heading[sharedData.language], 'h1');
+    const language = sharedData.language;
+    await I.see(content.heading[language], 'h1');
     await I.click(fields.noButton);
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

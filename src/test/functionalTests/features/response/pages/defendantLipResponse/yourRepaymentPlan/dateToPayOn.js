@@ -34,8 +34,9 @@ class DateToPayOn {
   }
 
   async enterDateToPayOnError () {
+    const language = sharedData.language;
     await I.waitForText('What date will you pay on?', config.WaitForText);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
     //empty fields
     await I.see('There was a problem');
     await I.see('Enter a valid day');
@@ -45,7 +46,7 @@ class DateToPayOn {
     await I.fillField(fields.day, dayError.toString());
     await I.fillField(fields.month, monthError.toString());
     await I.fillField(fields.year, '20');
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
     await I.see('There was a problem');
     await I.see('Enter a valid day');
     await I.see('Enter a valid month');
