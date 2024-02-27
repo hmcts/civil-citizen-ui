@@ -8,7 +8,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
   {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}

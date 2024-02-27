@@ -1,5 +1,5 @@
 module.exports = {
-  createAnAssistedOrder: () => {
+  createAnAssistedOrder: (document) => {
     const assistedOrderData = {
       event: 'GENERATE_DIRECTIONS_ORDER',
       caseDataUpdate: {
@@ -168,11 +168,14 @@ module.exports = {
         finalOrderDocumentCollection: null,
         finalOrderDocument: {
           documentLink: {
-            document_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559',
-            document_binary_url: 'http://dm-store-aat.service.core-compute-aat.internal/documents/99422851-29d8-489b-9cf6-f5210bf05559/binary',
-            document_filename: 'Order_2023-10-09.pdf',
-            document_hash: 'c77a9f85a8052782a386afddf6451e815b0e503fb3d0ff2c7d8092458c4262ce',
+            document_url: document.document_url,
+            document_binary_url: document.document_binary_url,
+            document_filename: document.document_filename,
           },
+          documentName: 'test document',
+          documentSize: 1234,
+          createdDatetime: '2023-02-06T13:11:52.466Z',
+          createdBy: 'CIVIL',
         },
         smallClaimsMethodInPerson: {
           value: { code: '192280'},

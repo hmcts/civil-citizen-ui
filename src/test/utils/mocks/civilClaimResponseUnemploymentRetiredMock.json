@@ -36,9 +36,9 @@
         "phone": "(0)207 127 0000"
       },
       "partyDetails": {
-        "individualTitle": "Mr.",
-        "individualFirstName": "Jan",
-        "individualLastName": "Clark",
+        "title": "Mr.",
+        "firstName": "Jan",
+        "lastName": "Clark",
         "primaryAddress": {
           "postCode": "RG4 7AA",
           "city": "Reading",

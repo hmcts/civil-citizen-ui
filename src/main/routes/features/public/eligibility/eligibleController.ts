@@ -3,7 +3,7 @@ import {
   ELIGIBILITY_HWF_ELIGIBLE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
-  CLAIMANT_TASK_LIST_URL,
+  CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
 } from 'routes/urls';
 import {getYouCanUseContent} from 'services/features/eligibility/eligibleService';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -18,7 +18,7 @@ eligibleController.get([ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_R
     res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
   }
   const youCanUseContent = getYouCanUseContent(req.url, getLng(lang));
-  const claimTaskListUrl = CLAIMANT_TASK_LIST_URL;
+  const claimTaskListUrl = CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL;
   res.render(youCanUseViewPath, {youCanUseContent, claimTaskListUrl});
 });
 

@@ -4,7 +4,7 @@ data "azurerm_key_vault" "civil_vault" {
 }
 
 locals {
-  civil_secrets = ["citizen-ui-idam-secret", "ordnance-survey-api-key", "civil-citizen-ui-token-key"]
+  civil_secrets = ["citizen-ui-idam-secret", "ordnance-survey-api-key", "civil-citizen-ui-token-key","launch-darkly-sdk-key","launch-darkly-sdk-key-non-prod"]
 }
 
 data "azurerm_key_vault_secret" "civil_secrets" {

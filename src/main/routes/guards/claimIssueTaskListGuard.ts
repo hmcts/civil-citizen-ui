@@ -9,7 +9,7 @@ export const claimIssueTaskListGuard = (async (req: Request, res: Response, next
     const appReq: AppRequest = <AppRequest>req;
     const userId = appReq.session?.user?.id;
     const caseData: Claim = await getCaseDataFromStore(userId, true);
-    const excludeUrlList = ['/confirmation', '/fee', '/fee-change', '/pay-fees'].some(endpoint => req.originalUrl.endsWith(endpoint));
+    const excludeUrlList = ['/confirmation', '/fee', '/fee-change', '/pay-fees'].some(endpoint => req.originalUrl.includes(endpoint));
     if (!caseData?.isDraftClaim()
       && !req.cookies['eligibilityCompleted']
       && !excludeUrlList) {

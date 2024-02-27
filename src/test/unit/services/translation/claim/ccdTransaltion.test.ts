@@ -4,9 +4,12 @@ import {PartyType} from 'models/partyType';
 import {req} from '../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
+import {translateDraftClaimToCCD, translateDraftClaimToCCDR2} from 'services/translation/claim/ccdTranslation';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
@@ -57,4 +60,27 @@ describe('translate draft claim to ccd version', () => {
     expect(ccdClaim.helpWithFees?.helpWithFeesReferenceNumber).toBe('1111');
   });
 
+  it('should translateDraftClaimToCCDR2', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimantBilingualLanguagePreference=ClaimBilingualLanguagePreference.ENGLISH;
+    //When
+    const ccdClaim = translateDraftClaimToCCDR2(claim, req as AppRequest);
+    //Then
+    expect(ccdClaim.claimantBilingualLanguagePreference).toBe(CCDLanguage.ENGLISH);
+  });
+
+  it('should contain fee type details in ccd translations', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.helpWithFees = {
+      referenceNumber: '123',
+    };
+    //When
+    const ccdClaim = translateDraftClaimToCCDR2(claim, req as AppRequest);
+    //Then
+    expect(ccdClaim.hwfFeeType).toEqual(FeeType.CLAIMISSUED);
+  });
 });

@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CLAIMANT_TASK_LIST_URL, CLAIM_RESOLVING_DISPUTE_URL} from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {saveResolvingDispute} from 'services/features/claim/resolvingDisputeService';
@@ -6,9 +6,9 @@ import {saveResolvingDispute} from 'services/features/claim/resolvingDisputeServ
 const resolvingThisDisputeController = Router();
 const resolvingThisDisputePath = 'features/claim/resolving-this-dispute';
 
-resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, async (req: Request, res: Response) => {
+resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, (async (req: Request, res: Response) => {
   res.render(resolvingThisDisputePath);
-});
+}) as RequestHandler);
 
 resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
   const userId = req.session?.user?.id;

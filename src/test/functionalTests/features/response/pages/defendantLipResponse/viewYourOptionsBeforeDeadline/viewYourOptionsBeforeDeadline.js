@@ -12,7 +12,7 @@ const fields ={
 };
 const buttons = {
   continue: 'a.govuk-button',
-  saveAndContinue:'button.govuk-button',
+  saveAndContinue:'#main-content button.govuk-button',
 };
 
 var targetDate = new Date();

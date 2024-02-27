@@ -32,6 +32,17 @@ const saveBilingualLangPreference = async (claimId: string, form: GenericYesNo) 
   }
 };
 
+const saveClaimantBilingualLangPreference = async (userId: string, form: GenericYesNo) => {
+  try {
+    const claim = await getCaseDataFromStore(userId);
+    claim.claimantBilingualLanguagePreference = form.option === ClaimBilingualLanguagePreference.ENGLISH ? ClaimBilingualLanguagePreference.ENGLISH : ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    await saveDraftClaim(userId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 const getClaim = async (claimId: string): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
   if (!claim.claimBilingualLanguagePreference) {
@@ -43,4 +54,5 @@ const getClaim = async (claimId: string): Promise<Claim> => {
 export {
   getBilingualLangPreference,
   saveBilingualLangPreference,
+  saveClaimantBilingualLangPreference,
 };

@@ -48,9 +48,9 @@ export const buildViewFinalGeneralOrderContent = (claim: Claim): ClaimSummarySec
   return sectionContent;
 };
 
-export const buildFinaliseTrialArrangements = (claim: Claim): ClaimSummarySection[][] => {
+export const buildFinaliseTrialArrangements = (claim: Claim, lng: string): ClaimSummarySection[][] => {
   const sectionContent = [];
-  sectionContent.push(getFinaliseTrialArrangements(claim));
+  sectionContent.push(getFinaliseTrialArrangements(claim, lng));
   return sectionContent;
 };
 
@@ -60,9 +60,9 @@ export const buildViewBundleSection = (claim: Claim): ClaimSummarySection[][] =>
   return sectionContent;
 };
 
-export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lang: string, isClaimant: boolean): ClaimSummarySection[][] => {
+export const buildClaimDismissedHearingDueDateUpdateContent = (claim: Claim, lang: string): ClaimSummarySection[][] => {
   const sectionContent = [];
-  sectionContent.push(getClaimDismissedHearingDueDateUploadContent(claim, lang, isClaimant));
+  sectionContent.push(getClaimDismissedHearingDueDateUploadContent(claim, lang));
   return sectionContent;
 };
 

@@ -1,9 +1,8 @@
-const config =  require('../../config');
-const ResponseSteps  =  require('../features/response/steps/lipDefendantResponseSteps');
+const config = require('../../config');
+const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const LoginSteps =  require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-
+const LoginSteps = require('../features/home/steps/login');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -15,24 +14,20 @@ let securityCode;
 Feature('Response with RejectAll');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-    console.log('claim number', claimNumber);
-    console.log('Security code', securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  }else{
-    claimRef = await api.createSpecifiedClaimLRvLR(config.applicantSolicitorUser);
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
-    await LoginSteps.EnterUserCredentials(config.defendantLRCitizenUser.email, config.defendantLRCitizenUser.password);
-  }
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  console.log('claimRef has been created Successfully    <===>  ', claimRef);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+  console.log('claim number', claimNumber);
+  console.log('Security code', securityCode);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regression @nightly', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,16 +40,14 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @regress
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
-  }
-});
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
+  await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
+}).tag('@regression-cui-r1');
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regression @nightly', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -66,16 +59,10 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @regressi
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-    // await api.enterBreathingSpace(config.applicantSolicitorUser);
-    // await api.liftBreathingSpace(config.applicantSolicitorUser);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
-    await api.mediationUnsuccessful(config.caseWorker);
-    await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-  }
-});
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-});
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
+  await api.mediationUnsuccessful(config.caseWorker);
+  await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
+}).tag('@regression-cui-r1');

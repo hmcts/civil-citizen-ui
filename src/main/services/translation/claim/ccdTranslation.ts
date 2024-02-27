@@ -20,9 +20,13 @@ import {toCCDRespondentLiPResponse} from '../response/convertToCCDRespondentLiPR
 import {toCCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {toCCDTimelineEvent} from 'models/ccdResponse/ccdTimeLine';
 import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpWithFees';
+import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
+import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
+import { FeeType } from 'common/form/models/helpWithFees/feeType';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
+
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
     defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
@@ -44,17 +48,22 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestClaimUntil: claim.interest?.interestEndDate,
     claimantUserDetails: getClaimantIdamDetails(req.session?.user),
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
+    respondent1LiPResponseCarm: toCCDMediationCarm(claim.mediationCarm),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
     helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
+    hwfFeeType: claim.claimDetails?.helpWithFees?.referenceNumber ? FeeType.CLAIMISSUED : undefined,
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
+    res1MediationDocumentsReferred: [],
+    res1MediationNonAttendanceDocs: [],
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
   const ccdClaim = translateDraftClaimToCCD(claim, req);
   ccdClaim.timelineOfEvents = toCCDTimelineEvent(claim.claimDetails?.timeline);
   ccdClaim.claimFee = toCCDClaimFee(claim.claimFee);
+  ccdClaim.claimantBilingualLanguagePreference = toCCDLanguage(claim.claimantBilingualLanguagePreference);
   return ccdClaim;
 };

@@ -7,7 +7,7 @@ const fields ={
   disputeAllCounterClaim: 'input[id="option-3"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  continue: '#main-content button.govuk-button',
 };
 
 class RejectAllOfClaim {

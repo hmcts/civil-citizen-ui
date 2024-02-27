@@ -8,7 +8,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  saveAndContinue: '#main-content button.govuk-button',
 };
 
 class PaymentOptionPage {

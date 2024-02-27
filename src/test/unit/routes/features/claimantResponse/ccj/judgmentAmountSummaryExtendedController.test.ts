@@ -7,11 +7,14 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/common/utils/dateUtils');
+
+jest.spyOn(draftStoreService,'saveDraftClaim');
 
 describe('Judgment Amount Summary Extended', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -46,7 +46,7 @@ export const getFutureMonthDate = (numberOfMonths: number): Date => {
   return monthFromNow;
 };
 
-export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
+export const formatDateToFullDate = (date: Date, lang?: string): string => {
   const dateTime = convertDateToLuxonDate(date);
   const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
@@ -134,4 +134,8 @@ export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
   return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);
+}
+
+export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
+  return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }

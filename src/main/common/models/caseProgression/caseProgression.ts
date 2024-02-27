@@ -4,6 +4,7 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {Hearing} from 'models/caseProgression/hearing';
 
 export class CaseProgression{
@@ -18,5 +19,6 @@ export class CaseProgression{
   defendantDocuments?: UploadDocumentsUserForm;
   claimantDocuments?: UploadDocumentsUserForm;
   hearingFeeHelpSelection?: GenericYesNo;
+  helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
   hearing?: Hearing;
 }

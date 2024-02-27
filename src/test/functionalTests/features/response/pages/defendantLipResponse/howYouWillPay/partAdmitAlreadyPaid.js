@@ -6,7 +6,7 @@ const fields ={
   noButton: 'input[id="option-2"]',
 };
 const buttons = {
-  continue: 'button.govuk-button',
+  continue: '#main-content button.govuk-button',
 };
 
 class PartAdmitAlreadyPaid {

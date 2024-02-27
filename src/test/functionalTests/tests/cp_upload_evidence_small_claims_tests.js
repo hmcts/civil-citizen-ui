@@ -1,31 +1,36 @@
 const config = require('../../config');
-const UploadEvidenceSteps = require('../features/caseProgression/steps/caseProgressionSteps');
+const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
+const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 let claimRef;
 
-Feature('Case progression journey - Small Claims -Defendant & Claimant Response with RejectAll');
+Feature('Case progression journey - Defendant & Claimant Response with RejectAll - Small Claims');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef);
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+    await api.waitForFinishedBusinessProcess();
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete', () => {
+Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete',  async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    UploadEvidenceSteps.initiateUploadEvidenceJourney(claimRef, claimType);
+    CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, true);
+    //Lip initiates docs
+    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
+    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+    //Lip verifies solicitor docs
+    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
-}).tag('@regression');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-});
+}).tag('@regression-cp');

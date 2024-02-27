@@ -15,6 +15,7 @@ import {ResponseType} from 'common/form/models/responseType';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {YesNo} from 'common/form/models/yesNo';
 import {Party} from 'models/party';
+import { ChooseHowToProceed } from 'common/form/models/claimantResponse/chooseHowToProceed';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -35,6 +36,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
         },
       },
       undefined,
+      null,
       null,
       undefined,
       {
@@ -203,6 +205,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedReject() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -239,6 +242,7 @@ function generateExpectedResultForPartAdmitAndPaidAccept() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -274,6 +278,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
         },
       },
       undefined,
+      null,
       null,
       undefined,
       {
@@ -459,6 +464,7 @@ function generateExpectedResultForPartAdmitAndPaymentAccept() {
       },
       undefined,
       null,
+      null,
       undefined,
       null,
       null,
@@ -494,6 +500,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
         },
       },
       undefined,
+      null,
       null,
       undefined,
       {
@@ -703,14 +710,14 @@ describe('Check Answers service', () => {
           paymentDate: new Date(),
         },
       };
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = new Party();
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -721,7 +728,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -729,13 +736,13 @@ describe('Check Answers service', () => {
 
     it('should show the check your answers for pay by set date for full admit', () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -746,7 +753,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -759,12 +766,12 @@ describe('Check Answers service', () => {
           paymentDate: new Date(),
         },
       };
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
-      const expectedPaymentDate = formatDateToFullDate(new Date());
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -775,7 +782,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -783,13 +790,14 @@ describe('Check Answers service', () => {
 
     it('should show the check your answers for pay by set date for full admit', () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()}};
-      claim.claimantResponse = {chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}} as ClaimantResponse;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
       const result = getSummarySections('12345', claim, 'en');
 
-      expect(result.sections[3].summaryList.rows.length).toEqual(2);
-      expect(result.sections[3].summaryList.rows[0]).toEqual({
+      expect(result.sections[4].summaryList.rows.length).toEqual(2);
+      expect(result.sections[4].summaryList.rows[0]).toEqual({
         'actions': {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
@@ -800,7 +808,7 @@ describe('Check Answers service', () => {
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
         'value': {'html': 'PAGES.CHECK_YOUR_ANSWER.WILL_REPAY_IN_INSTALLMENTS'},
       });
-      expect(result.sections[3].summaryList.rows[1]).toEqual({
+      expect(result.sections[4].summaryList.rows[1]).toEqual({
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.COMPLETION_DATE_CYA'},
         'value': {'html': expectedPaymentDate},
       });
@@ -812,19 +820,20 @@ describe('Check Answers service', () => {
     beforeEach(() => {
       claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+      claim.claimantResponse = new ClaimantResponse();
       claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}};
     });
 
     it('should check answers for part admit pay immediately for yes option', () => {
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
       const result = getSummarySections('12345', claim, 'en');
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
     });
 
     it('should check answers for part admit pay immediately for no option', () => {
-      claim.claimantResponse = {hasPartAdmittedBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
     });
   });
 
@@ -832,19 +841,21 @@ describe('Check Answers service', () => {
     let claim: Claim;
     beforeEach(() => {
       claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
       claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for full defence intention to proceed', () => {
       const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedAccept();
-      claim.claimantResponse = {intentionToProceed: {option: YesNo.YES}} as ClaimantResponse;
+      claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
     it('should check answers for full defence reject intention to proceed', () => {
       const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedReject();
-      claim.claimantResponse = {intentionToProceed: {option: YesNo.NO}} as ClaimantResponse;
+      claim.claimantResponse.intentionToProceed = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
@@ -854,20 +865,22 @@ describe('Check Answers service', () => {
     let claim: Claim;
     beforeEach(() => {
       claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = {alreadyPaid: {option: YesNo.YES}};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for part admit and paid accept', () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaidAccept();
-      claim.claimantResponse = {hasDefendantPaidYou: {option: YesNo.YES}} as ClaimantResponse;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
     it('should check answers for part admit and paid reject', () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaidReject();
-      claim.claimantResponse = {hasDefendantPaidYou: {option: YesNo.NO}} as ClaimantResponse;
+      claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
@@ -877,23 +890,25 @@ describe('Check Answers service', () => {
     let claim: Claim;
     beforeEach(() => {
       claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
       claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
       claim.partialAdmission = {alreadyPaid: {option: YesNo.YES}};
+      claim.totalClaimAmount = 1500;
     });
 
     it('should check answers for part admit and payment accept', () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaymentAccept();
-      claim.claimantResponse = {hasPartPaymentBeenAccepted: {option: YesNo.YES}} as ClaimantResponse;
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
     it('should check answers for part admit and payment reject', () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaymentReject();
-      claim.claimantResponse = {hasPartPaymentBeenAccepted: {option: YesNo.NO}} as ClaimantResponse;
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.NO};
       const result = getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
-      expect(7).toEqual(result.sections.length);
+      expect(8).toEqual(result.sections.length);
 
     });
   });
