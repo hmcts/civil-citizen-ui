@@ -64,6 +64,10 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
   },
 
+  setCaseId: async (id) => {
+    caseId = id;
+  },
+
   performEvidenceUpload: async (user, caseId, claimType) => {
     console.log('This is inside performEvidenceUpload() : ' + caseId);
     eventName = 'EVIDENCE_UPLOAD_APPLICANT';
@@ -146,7 +150,7 @@ module.exports = {
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, defendantType) => {
-    console.log(' Creating specified claim');
+    console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
@@ -272,6 +276,7 @@ module.exports = {
   },
 
   retrieveCaseData: async (user, caseId) => {
+    await apiRequest.setupTokens(user);
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
   },
@@ -379,6 +384,11 @@ module.exports = {
 
   cleanUp: async () => {
     await unAssignAllUsers();
+  },
+
+  assignToLipDefendant: async (caseId) => {
+    await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
 };
 
