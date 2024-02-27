@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
@@ -32,6 +31,10 @@ const buttons = {
   addAnotherDate: {
     en: 'Add another date or period of time',
     cy: 'Ychwanegu dyddiad neu gyfnod arall o amser',
+  },
+  saveAndButton: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
   },
 };
 
@@ -67,7 +70,7 @@ class AvailabilityDates {
     await I.fillField(fields.longerPeriodEndMonth, month);
     await I.fillField(fields.longerPeriodEndYear, year);
 
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndButton[language]);
   }
 }
 

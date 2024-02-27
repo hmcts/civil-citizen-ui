@@ -1,10 +1,16 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   contactNumber: 'input[id="telephoneNumber"]',
+};
+
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
 };
 
 const content = {
@@ -26,11 +32,11 @@ class ContactNumberDetailsPage {
       // await I.click(content.saveAndContinueButton[language]);
       // await I.see('Enter telephone number');
       await I.fillField(fields.contactNumber, '02088908876');
-      await I.click(cButtons.saveAndContinue[language]);
+      await I.click(buttons.saveAndContinue[language]);
     } else {
       await I.waitForText(content.heading[language], config.WaitForText);
       await I.fillField(fields.contactNumber, '02088908876');
-      await I.click(cButtons.saveAndContinue[language]);
+      await I.click(buttons.saveAndContinue[language]);
     }
   }
 }

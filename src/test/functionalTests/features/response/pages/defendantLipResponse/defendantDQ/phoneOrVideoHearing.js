@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -20,6 +19,13 @@ const content = {
   },
 };
 
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
 const inputs = {
   details: {
     en: 'Test details',
@@ -35,7 +41,7 @@ class PhoneOrVideoHearing {
     await I.see(content.descriptionText[language]);
     await I.click(fields.yesButton);
     await I.fillField(fields.details, inputs.details[language]);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

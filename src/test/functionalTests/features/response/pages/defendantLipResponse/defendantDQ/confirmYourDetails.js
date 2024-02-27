@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   firstName : 'input[id="firstName"]',
@@ -29,6 +28,13 @@ const inputs = {
   },
 };
 
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
 class ConfirmYourDetails {
 
   async enterYourDetails() {
@@ -40,7 +46,7 @@ class ConfirmYourDetails {
     await I.fillField(fields.email, 'test@test.com');
     await I.fillField(fields.telephone, '09797979797');
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 
