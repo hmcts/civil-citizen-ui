@@ -18,7 +18,7 @@ const content = {
 class GiveEvidenceYourself {
 
   async selectGiveEvidenceYourself() {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(cButtons.saveAndContinue[language]);

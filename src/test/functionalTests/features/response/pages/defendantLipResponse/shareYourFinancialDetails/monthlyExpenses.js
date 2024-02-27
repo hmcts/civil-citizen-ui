@@ -63,7 +63,7 @@ const inputs = {
 class MonthlyExpenses {
 
   async selectMortgage(mortgageAmount) {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.checkOption(checkboxes.mortgage[language]);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
@@ -95,7 +95,7 @@ class MonthlyExpenses {
   }
 
   async selectOtherExpenses(otherExpenses) {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.checkOption(checkboxes.otherExpenses[language]);
     await I.fillField(fields.otherExpensesSource, inputs.otherExpenseSource[language]);
     await I.fillField(fields.otherExpensesPayment, otherExpenses);

@@ -34,7 +34,7 @@ const inputs = {
 
 class WhyDoYouDisagreeTheClaimAmount {
   async enterReason (claimRef, responseType) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/why-do-you-disagree');
     }else{

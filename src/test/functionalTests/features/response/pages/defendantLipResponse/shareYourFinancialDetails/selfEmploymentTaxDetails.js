@@ -26,7 +26,7 @@ const inputs = {
 class SelfEmploymentTaxDetails {
 
   async clickYesButton() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.amountYouOwe, '2000');
@@ -35,7 +35,7 @@ class SelfEmploymentTaxDetails {
   }
 
   async clickNoButton() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);

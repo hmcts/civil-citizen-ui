@@ -32,7 +32,7 @@ const inputs = {
 class ListYourEvidence {
 
   async selectEvidenceFromDropDown() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.selectOption(fields.firstSelection, dropdowns.firstSelection[language]);
     await I.fillField(fields.firstEvidenceItem, inputs.firstEvidenceItem[language]);

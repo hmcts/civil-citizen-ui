@@ -18,7 +18,7 @@ const content = {
 class HearingRequirements {
 
   async selectHearingRequirements(claimRef) {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);

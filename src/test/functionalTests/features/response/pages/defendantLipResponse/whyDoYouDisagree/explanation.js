@@ -25,7 +25,7 @@ const inputs = {
 
 class Explanation {
   async enterExplanation() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForElement(fields.reason, config.WaitForText);
     await I.see(content.heading[language]);
     await I.fillField(fields.reason, inputs.reason[language]);

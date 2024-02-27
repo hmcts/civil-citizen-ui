@@ -42,7 +42,7 @@ class AvailabilityDates {
 
   async enterUnavailableDates(meditation = false) {
 
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     if (meditation){
       await I.waitForText(content.heading[language], config.WaitForText);
     } else {

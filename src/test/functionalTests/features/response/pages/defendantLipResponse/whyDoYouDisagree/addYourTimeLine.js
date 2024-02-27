@@ -30,7 +30,7 @@ const inputs = {
 
 class AddYourTimeLine {
   async addTimeLineOfEvents() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.date1Day, 12);
     await I.fillField(fields.date1Month, 12);

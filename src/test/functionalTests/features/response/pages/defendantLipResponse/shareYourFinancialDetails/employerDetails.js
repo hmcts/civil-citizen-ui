@@ -25,7 +25,7 @@ const inputs = {
 class EmployerDetails {
 
   async enterEmployerDetails() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.employerName, 'ABC Ltd');
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);

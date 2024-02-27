@@ -25,7 +25,7 @@ const monthError = currentDate.getMonth() - 1000;
 
 class DateToPayOn {
   async enterDateToPayOn () {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
@@ -34,7 +34,7 @@ class DateToPayOn {
   }
 
   async enterDateToPayOnError () {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.waitForText('What date will you pay on?', config.WaitForText);
     await I.click(cButtons.saveAndContinue[language]);
     //empty fields
