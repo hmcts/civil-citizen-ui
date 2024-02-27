@@ -46,8 +46,3 @@ Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - Se
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 }).tag('@regression-cui-r1');
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
