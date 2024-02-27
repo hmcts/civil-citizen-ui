@@ -307,23 +307,31 @@ export class CivilServiceClient {
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
-    const config = this.getConfig(req);
-    const userId = req.session?.user?.id;
-    const data: EventDto = {
-      event: event,
-      caseDataUpdate: updatedClaim,
-    };
-    try {
-      const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
-        .replace(':submitterId', userId)
-        .replace(':caseId', claimId), data, config);// nosonar
-      const claimResponse = response.data as CivilClaimResponse;
-      return convertCaseToClaim(claimResponse);
-    } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event}`);
-      throw err;
+  const config = this.getConfig(req);
+  const userId = req.session?.user?.id;
+  const data: EventDto = {
+    event: event,
+    caseDataUpdate: updatedClaim,
+  };
+  const printKeyAndValue = (objVal: any) => {
+    for (const key of Object.keys(objVal)){
+      console.debug(key);
+      console.debug(objVal[key]);
     }
+  };
+  printKeyAndValue(data);
+  
+  try {
+    const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
+      .replace(':submitterId', userId)
+      .replace(':caseId', claimId), data, config);// nosonar
+    const claimResponse = response.data as CivilClaimResponse;
+    return convertCaseToClaim(claimResponse);
+  } catch (err: unknown) {
+    logger.error(`Error when submitting event ${event}`);
+    throw err;
   }
+ }
 
   async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
