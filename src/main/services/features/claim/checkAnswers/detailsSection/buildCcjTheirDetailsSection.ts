@@ -10,7 +10,7 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT', {lng}),
