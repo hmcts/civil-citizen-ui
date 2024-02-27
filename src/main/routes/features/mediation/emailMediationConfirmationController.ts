@@ -24,8 +24,8 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyEmail: partyEmail });
   const variation = {
-    yes: 'COMMON.VARIATION_2.YES',
-    no: 'COMMON.VARIATION_2.NO',
+    yes: 'COMMON.VARIATION_4.YES',
+    no: 'COMMON.VARIATION_4.NO',
   };
   res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText, variation });
 };

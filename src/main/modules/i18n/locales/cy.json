@@ -438,7 +438,7 @@
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
-      "PAGE_TEXT": "Can the mediator use {{ partyPhone }} to call you for your mediation appointment?"
+      "PAGE_TEXT": "A all y cyfryngwr ddefnyddio {{ partyPhone }} i’ch ffonio ar gyfer eich apwyntiad cyfryngu?"
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Cyfryngu dros y ffôn",
