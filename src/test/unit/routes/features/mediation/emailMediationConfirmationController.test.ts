@@ -4,7 +4,6 @@ import nock from 'nock';
 import config from 'config';
 import {
   MEDIATION_ALTERNATIVE_EMAIL_URL,
-  MEDIATION_DISAGREEMENT_URL,
   MEDIATION_EMAIL_CONFIRMATION_URL,
   MEDIATION_NEXT_3_MONTHS_URL,
 } from 'routes/urls';
@@ -117,7 +116,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
 
     it('should return error on incorrect input', async () => {
       await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
+        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -131,7 +130,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
+        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(500);
