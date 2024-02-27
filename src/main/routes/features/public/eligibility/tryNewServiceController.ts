@@ -13,10 +13,10 @@ tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: App
     const ocmcBaseUrl = config.get<string>('services.cmc.url');
     return res.redirect(`${ocmcBaseUrl}${BASE_ELIGIBILITY_URL}`);
   }
- 
+
   if(req.cookies['eligibilityCompleted'] && userId) {
     return res.redirect(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
-  } 
+  }
 
   res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_CLAIM_VALUE_URL});
 }) as RequestHandler);
