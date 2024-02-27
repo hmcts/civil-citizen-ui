@@ -27,6 +27,7 @@ const setDashboardValues = (claim: Claim): Map<string, string> => {
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
+  valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
 
   valuesMap.set('{daysToRespond}', daysToRespond);
 
