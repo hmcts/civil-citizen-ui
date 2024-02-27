@@ -1,10 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import config from 'config';
-import {
-  FIRST_CONTACT_PIN_URL,
-  FIRST_CONTACT_ACCESS_DENIED_URL,
-  FIRST_CONTACT_CLAIM_SUMMARY_URL,
-} from 'routes/urls';
+import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL, FIRST_CONTACT_PIN_URL} from '../../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {PinType} from 'models/firstContact/pin';
 import {CivilServiceClient} from 'client/civilServiceClient';
