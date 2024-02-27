@@ -1,6 +1,7 @@
 const I = actor();
 const EligibilityCheck = require('../pages/eligibilityCheck');
-const CreateClaim = require('../pages/createClaim');
+const CreateClaim = require('./../pages/createClaim');
+const { language, userPartyType } = require('./../../common/constants');
 
 const eligibilityCheck = new EligibilityCheck();
 const createClaim = new CreateClaim();
@@ -59,53 +60,91 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityHWFReference();
   }
 
-  async CreateClaimCreation(claimInterestFlag) {
-    await createClaim.verifyLanguage();
-    await createClaim.verifyDashboard();
-    I.click(paths.links.resolving_this_dispute);
-    await createClaim.verifyTryToResolveTheDispute();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.confirming_your_claim);
-    await createClaim.verifyCompletingYourClaim();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.your_details);
-    await createClaim.verifyAboutYouAndThisClaimForClaimant();
-    await createClaim.verifyEnterYourDetails();
-    await createClaim.inputEnterYourDetails(true);
-    await createClaim.verifyDateOfBirth();
-    await createClaim.inputDateOfBirth();
-    await createClaim.verifyAndInputPhoneNumber();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.their_details);
-    await createClaim.verifyAboutYouAndThisClaimForDefendant();
-    await createClaim.verifyEnterDefendantsDetails();
-    await createClaim.inputEnterYourDetails(false);
-    await createClaim.verifyTheirEmailAddress();
-    await createClaim.verifyTheirPhoneNumber();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_amount);
-    await createClaim.verifyClaimAmount();
-    await createClaim.inputClaimAmount();
-    await createClaim.verifyAndInputDoYouWantToClaimInterest(claimInterestFlag);
-    if (claimInterestFlag === true) {
-      await createClaim.verifyAndInputHowDoYouWantToClaimInterest();
-      await createClaim.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
-      await createClaim.verifyAndInputWhenWillYouClaimInterestFrom();
-    }
-    await createClaim.verifyAndInputHelpWithFees();
-    await createClaim.verifyClaimAmountSummary(claimInterestFlag);
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_details);
-    await createClaim.verifyAndInputClaimDetails();
-    await createClaim.inputClaimDetailsTimeline();
-    await createClaim.inputEvidenceList();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.check_and_submit_your_claim);
-    await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
-    await createClaim.verifyCheckYourAnswers(claimInterestFlag);
+  async CreateClaimCreation(addInterest, claimantPartyType = userPartyType.INDIVIDUAL, defendantPartyType = userPartyType.INDIVIDUAL, selectedLanguage = language.ENGLISH) {
+    await createClaim.verifyAndChooseLanguage(selectedLanguage);
+    await createClaim.verifyTaskListPage(selectedLanguage);
+    await this.resolvingThisDispute(selectedLanguage);
+    await this.prepareYourClaim(claimantPartyType, defendantPartyType, addInterest, selectedLanguage);
+    await this.Submit(addInterest, selectedLanguage);
     const caseReference = await createClaim.verifyClaimSubmitted();
     console.log('The created Case Reference : ', caseReference);
     return caseReference;
+  }
+
+  async resolvingThisDispute(selectedLang) {
+    I.click(paths.links.resolving_this_dispute);
+    await createClaim.verifyTryToResolveTheDispute(selectedLang);
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  async prepareYourClaim(claimantPartyType, defendantPartyType, addInterest = false, selectedLang) {
+    await this.confirmYourDetails(selectedLang);
+    await this.yourDetails(selectedLang, claimantPartyType);
+    await this.theirDetails(selectedLang, defendantPartyType);
+    await this.claimAmount(addInterest, selectedLang);
+    await this.claimDetails(selectedLang);
+    await this.Submit(addInterest, selectedLang);
+  }
+
+  async completeYourClaim(selectedLang) {
+    I.click(paths.links.confirming_your_claim);
+    await createClaim.verifyCompletingYourClaim(selectedLang);
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  //Claimant Details
+  async yourDetails(selectedLang, claimantPartyType) {
+    const isAddingClaimantDetails = true;
+    I.click(paths.links.your_details);
+    await createClaim.verifyAboutYouAndThisClaimForClaimant(selectedLang, claimantPartyType);
+    await createClaim.verifyEnterYourDetails(selectedLang, claimantPartyType);
+    await createClaim.inputEnterYourDetails(isAddingClaimantDetails, selectedLang, claimantPartyType);
+    await createClaim.verifyDateOfBirth(selectedLang, claimantPartyType);
+    await createClaim.inputDateOfBirth(selectedLang, claimantPartyType);
+    await createClaim.verifyAndInputPhoneNumber(selectedLang, claimantPartyType);
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  //Defendant Details
+  async theirDetails(selectedLang, defendantPartyType) {
+    const isAddingClaimantDetails = false;
+    I.click(paths.links.their_details);
+    await createClaim.verifyAboutYouAndThisClaimForDefendant(selectedLang, defendantPartyType);
+    await createClaim.verifyEnterDefendantsDetails(selectedLang, defendantPartyType));
+    await createClaim.inputEnterYourDetails(isAddingClaimantDetails, selectedLang, defendantPartyType);
+    await createClaim.verifyTheirEmailAddress(selectedLang, defendantPartyType));
+    await createClaim.verifyTheirPhoneNumber(selectedLang, defendantPartyType));
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  async claimAmount(addInterest, selectedLang) {
+    I.click(paths.links.claim_amount);
+    await createClaim.verifyContentOnClaimAmountScreen(selectedLang);
+    await createClaim.inputClaimAmount();
+    await createClaim.verifyAndInputDoYouWantToClaimInterest(addInterest, selectedLang);
+    if (addInterest === true) {
+      await createClaim.verifyAndInputHowDoYouWantToClaimInterest(selectedLang);
+      await createClaim.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim(selectedLang);
+      await createClaim.verifyAndInputWhenWillYouClaimInterestFrom(selectedLang);
+    }
+    await createClaim.verifyAndInputHelpWithFees(selectedLang);
+    await createClaim.verifyClaimAmountSummary(addInterest, selectedLang);
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  async claimDetails(selectedLang) {
+    I.click(paths.links.claim_details);
+    await createClaim.verifyAndInputClaimDetails(selectedLang);
+    await createClaim.verifyClaimDetailsTimeline(selectedLang);
+    await createClaim.inputClaimDetailsTimeline();
+    await createClaim.inputEvidenceList(selectedLang);
+    await this.waitForTaskListPage(selectedLang);
+  }
+
+  async Submit(addInterest, selectedLang) {
+    I.click(paths.links.check_and_submit_your_claim);
+    await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
+    await createClaim.verifyCheckYourAnswers(addInterest, selectedLang);
   }
 
   async payClaimFee() {
@@ -117,9 +156,11 @@ class CreateClaimSteps {
     await createClaim.signOut();
   }
 
-  async verifyDashboardLoaded() {
+  async waitForTaskListPage(selectedLang = language.ENGLISH) {
     I.waitForText('Submit', 3);
-    I.see('Application complete', 'h2');
+    if (selectedLang == language.ENGLISH) {
+      I.see('Application complete', 'h2');
+    }
   }
 }
 
