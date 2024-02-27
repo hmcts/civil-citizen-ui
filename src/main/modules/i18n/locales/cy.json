@@ -1145,6 +1145,12 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
         }
       },
+      "MEDIATION": {
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "A mediation appointment will now be arranged by the Small Claims Mediation Service. We will email you the date of your mediation appointment within the next 28 days.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "If a settlement is agreed at mediation, you will not need to go to court.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "If you do not attend your mediation appointment, you may be subject to penalties. You may be ordered to pay costs, or the Judge may automatically rule in the defendant's favour."
+      },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
       },
@@ -1424,6 +1430,7 @@
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIM_ENDED": "Bu ichi stopio’r hawliad hwn.",
+        "CLAIM_SUBMIT_HWF": "Rydym yn gwirio eich cais am Help i Dalu Ffioedd.",
         "CLAIMANT_REJECTED_PAYMENT_PLAN": "Mae angen ichi anfon manylion ariannol y diffynnydd i’r llys.",
         "CLAIMANT_REQUESTED_CCJ": "Bu ichi ofyn am Ddyfarniad Llys Sirol yn erbyn {{ defendantName }}.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
