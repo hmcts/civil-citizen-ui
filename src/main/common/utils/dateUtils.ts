@@ -46,7 +46,7 @@ export const getFutureMonthDate = (numberOfMonths: number): Date => {
   return monthFromNow;
 };
 
-export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
+export const formatDateToFullDate = (date: Date, lang?: string): string => {
   const dateTime = convertDateToLuxonDate(date);
   const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});

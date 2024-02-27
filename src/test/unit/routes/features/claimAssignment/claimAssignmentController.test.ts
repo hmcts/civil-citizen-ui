@@ -4,6 +4,7 @@ import config from 'config';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -35,6 +36,17 @@ describe('claim assignment controller', ()=>{
       request(app).post(ASSIGN_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.get('location')).toBe(DASHBOARD_URL);
+        });
+    });
+    it('on error should redirect to dashboard', async () => {
+      const error = new Error('Test error');
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
+
+      await request(app).get(ASSIGN_CLAIM_URL+'?id=123')
+        .expect((res) => {
+          expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DASHBOARD_URL);
         });
     });
