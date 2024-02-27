@@ -13,6 +13,7 @@ import {
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
+import {YesNo} from "form/models/yesNo";
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -51,7 +52,8 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     }
   }
   if (claim.claimDetails?.helpWithFees) {
-    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), claim.claimDetails.helpWithFees.referenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
+    const hwfReferenceNumber = (claim.claimDetails?.helpWithFees.option === YesNo.YES) ? claim.claimDetails.helpWithFees.referenceNumber : 'None';
+    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), hwfReferenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
   }
   return claimAmountSection;
 };
