@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="declared"]',
@@ -8,9 +9,6 @@ const fields ={
   under11: 'input[id="under11"]',
   between11and15: 'input[id="between11and15"]',
   between16and19: 'input[id="between16and19"]',
-};
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
 };
 
 const content = {
@@ -23,18 +21,20 @@ const content = {
 class DependantDetails {
 
   async clickYesButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language;
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.under11, '1');
     await I.fillField(fields.between11and15, '1');
     await I.fillField(fields.between16and19, '0');
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language;
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

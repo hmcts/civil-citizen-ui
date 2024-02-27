@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -16,13 +17,6 @@ const content = {
   heading: {
     en: 'Do you have other witnesses?',
     cy: 'A oes gennych chi dystion eraill?',
-  },
-};
-
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
   },
 };
 
@@ -44,7 +38,7 @@ class DefendantWitnesses {
     await I.fillField(fields.firstWitnessEmail, 'witness@witness.com');
     await I.fillField(fields.firstWitnessTelephone, '09797979797');
     await I.fillField(fields.firstWitessDetails, inputs.firstWitessDetails[language]);
-    await I.click(buttons.saveAndContinue[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

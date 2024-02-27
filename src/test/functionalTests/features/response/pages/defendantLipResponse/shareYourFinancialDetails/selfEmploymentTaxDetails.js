@@ -1,15 +1,13 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
   noButton: 'input[id="option-2"]',
   amountYouOwe: 'input[id="amountYouOwe"]',
   reason: 'textarea[id="reason"]',
-};
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
 };
 
 const content = {
@@ -33,13 +31,14 @@ class SelfEmploymentTaxDetails {
     await I.click(fields.yesButton);
     await I.fillField(fields.amountYouOwe, '2000');
     await I.fillField(fields.reason, inputs.reason[language]);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language; 
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   mortgagePayment: 'input[id="model[mortgage][transactionSource][amount]"]',
@@ -11,12 +12,6 @@ const fields ={
   gasPaymentScheduleWeekly: 'input[id="model[gas][transactionSource][schedule]"]',
   electricityPayment: 'input[id="model[electricity][transactionSource][amount]"]',
   electricityPaymentScheduleFortnightly: 'input[id="model[electricity][transactionSource][schedule]-2"]',
-};
-const buttons = {
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
 };
 
 const checkboxes = {
@@ -74,7 +69,7 @@ class PriorityDebtsDetails {
   }
 
   async clickContinue() {
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click(cButtons.saveAndContinue[sharedData.language]);
   }
 }
 

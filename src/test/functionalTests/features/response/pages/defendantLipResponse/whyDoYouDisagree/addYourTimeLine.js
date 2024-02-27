@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   date1Day: '[id="day"]',
@@ -9,13 +10,9 @@ const fields = {
   description1: '[id="rows[0][description]"]',
 };
 
-const buttons = {
-  addAnotherAccount: 'Add another account',
-  saveAndContinue: {
-    en: 'Save and continue',
-    cy: 'Cadw a Pharhau',
-  },
-};
+// const buttons = {
+//   addAnotherAccount: 'Add another account',
+// };
 
 const content = {
   heading: {
@@ -43,7 +40,7 @@ class AddYourTimeLine {
   }
 
   async clickContinue(){
-    await I.click(buttons.saveAndContinue[sharedData.language]);
+    await I.click(cButtons.saveAndContinue[sharedData.language]);
   }
 }
 

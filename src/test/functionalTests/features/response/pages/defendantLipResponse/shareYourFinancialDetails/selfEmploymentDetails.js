@@ -1,13 +1,11 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   jobTitle: 'input[id="jobTitle"]',
   annualTurnover: 'input[id="annualTurnover"]',
-};
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
 };
 
 const content = {
@@ -31,7 +29,7 @@ class SelfEmploymentDetails {
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);
     await I.fillField(fields.annualTurnover, '40000');
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

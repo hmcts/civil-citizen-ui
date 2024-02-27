@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   day: 'input[id="day"]',
@@ -15,9 +16,6 @@ const content = {
   },
 };
 
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
-};
 const currentDate = new Date();
 const day = currentDate.getDate();
 const month = currentDate.getMonth() + 1;
@@ -27,11 +25,12 @@ const monthError = currentDate.getMonth() - 1000;
 
 class DateToPayOn {
   async enterDateToPayOn () {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    const language = sharedData.language;
+    await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, year.toString());
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async enterDateToPayOnError () {
