@@ -29,7 +29,7 @@ const content = {
 class EmploymentDetails {
 
   async clickYesButton() {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.checkOption(checkBoxes.employed[language]);
@@ -38,7 +38,7 @@ class EmploymentDetails {
   }
 
   async clickNoButton() {
-    const language = sharedData.language;
+    const { language } = sharedData;
     await I.see(content.heading[language], 'h1');
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);

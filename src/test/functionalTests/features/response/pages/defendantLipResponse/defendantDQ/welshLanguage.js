@@ -30,7 +30,7 @@ const content = {
 class WelshLanguage {
 
   async selectLanguageOption() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.see(content.speakLanguageQuestion[language]);

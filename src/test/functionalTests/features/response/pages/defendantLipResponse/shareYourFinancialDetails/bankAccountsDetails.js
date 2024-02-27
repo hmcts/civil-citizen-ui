@@ -42,7 +42,7 @@ const buttons = {
 
 class BankAccountsDetails {
   async enterBankAccountDetails() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.selectOption(fields.accounts1, dropdownOptions.accounts1[language]);
     await I.selectOption(fields.jointAccount1, dropdownOptions.jointAccount1[language]);

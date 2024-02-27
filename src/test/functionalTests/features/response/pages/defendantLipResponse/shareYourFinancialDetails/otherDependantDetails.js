@@ -27,7 +27,7 @@ const inputs = {
 class OtherDependantDetails {
 
   async clickYesButton() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.numberOfPeople, '2');
@@ -36,7 +36,7 @@ class OtherDependantDetails {
   }
 
   async clickNoButton() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.see(content.heading[language], 'h1');
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue);

@@ -19,7 +19,7 @@ const content = {
 class FreeTelephoneMediation {
 
   async selectMediation(claimRef) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(cButtons.continue[language]);

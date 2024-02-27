@@ -32,7 +32,7 @@ const inputs = {
 class ConfirmYourDetails {
 
   async enterYourDetails() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.fillField(fields.firstName, 'John');

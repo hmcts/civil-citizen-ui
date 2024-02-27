@@ -44,7 +44,7 @@ const inputs = {
 class SupportRequired {
 
   async selectOptionForSupportRequired() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.selectOption(fields.person1Dropdown, 'WitnessFirstName WitnessLastName');

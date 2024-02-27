@@ -30,7 +30,7 @@ const inputs = {
 class DefendantWitnesses {
 
   async enterDefendantWitnesses() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.firstWitnessFirstName, 'WitnessFirstName');

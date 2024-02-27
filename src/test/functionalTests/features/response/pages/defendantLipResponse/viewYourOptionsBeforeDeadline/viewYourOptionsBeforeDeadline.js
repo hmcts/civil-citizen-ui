@@ -51,7 +51,7 @@ const extendedMonthFutureError = targetDate.getMonth() + 2 ;
 class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptions(claimRef, deadlineOption) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
     await I.waitForText(content.heading1[language],config.WaitForText);
     await I.see(content.subheading1[language],'h3');

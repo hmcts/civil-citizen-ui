@@ -21,7 +21,7 @@ const content = {
 class ResidenceDetails {
 
   async selectResidenceType(residenceType) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     switch (residenceType){
       case 'ownHome':{

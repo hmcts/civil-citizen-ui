@@ -21,7 +21,7 @@ const content = {
 class CourtOrders {
 
   async clickYesButton(claimref) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.claimNumber, claimref);
@@ -30,7 +30,7 @@ class CourtOrders {
     await I.click(cButtons.saveAndContinue[language]);
   }
   async clickNoButton() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);

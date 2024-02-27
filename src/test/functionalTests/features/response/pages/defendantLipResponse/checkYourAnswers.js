@@ -34,7 +34,7 @@ const content = {
 
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='', claimType) {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.click(links.checkAndSubmit[language]);
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
@@ -90,7 +90,7 @@ class CheckYourAnswersPage {
   }
 
   async fillStatementOfTruthAndSubmit() {
-    const language = sharedData.language;
+    const { language } = sharedData;
     I.waitForText('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.fillField(fields.signedName, 'TestTest');

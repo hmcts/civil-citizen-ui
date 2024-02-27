@@ -30,7 +30,7 @@ const inputs = {
 
 class CourtLocation {
   async selectPreferredCourtLocation() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.click(fields.yesButton);

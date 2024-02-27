@@ -25,7 +25,7 @@ const inputs = {
 class SelfEmploymentDetails {
 
   async enterSelfEmployerDetails() {
-    const language = sharedData.language; 
+    const { language } = sharedData; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.fillField(fields.jobTitle, inputs.jobTitle[language]);
     await I.fillField(fields.annualTurnover, '40000');
