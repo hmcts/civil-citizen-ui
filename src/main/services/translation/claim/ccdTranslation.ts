@@ -58,6 +58,8 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     applicant1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.applicant1),
     res1MediationDocumentsReferred: [],
     res1MediationNonAttendanceDocs: [],
+    app1MediationDocumentsReferred: [],
+    app1MediationNonAttendanceDocs: [],
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
