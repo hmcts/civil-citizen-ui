@@ -11,7 +11,6 @@ const fields ={
   month: 'input[id="month"]',
   year: 'input[id="year"]',
 };
-
 const buttons = {
   continue: 'a.govuk-button',
   saveAndContinue:'#main-content button.govuk-button',

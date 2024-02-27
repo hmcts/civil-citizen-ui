@@ -1,6 +1,5 @@
 const config =  require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 const I = actor();
 
 const fields ={
@@ -21,6 +20,13 @@ const content = {
   },
 };
 
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
+
 const inputs = {
   courtLocationReason: {
     en: 'Nearest court',
@@ -36,7 +42,7 @@ class CourtLocation {
     await I.click(fields.yesButton);
     await I.selectOption(fields.courtLocation, config.defendantSelectedCourt);
     await I.fillField(fields.courtLocationReason, inputs.courtLocationReason[language]);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

@@ -32,7 +32,7 @@ const content = {
 class EmploymentDetails {
 
   async clickYesButton() {
-    const language = sharedData.language;
+    const language = sharedData.language
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.checkOption(checkBoxes.employed[language]);

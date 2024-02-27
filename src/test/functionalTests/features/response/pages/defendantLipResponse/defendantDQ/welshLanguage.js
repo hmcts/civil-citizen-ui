@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   speakLanguage: 'input[id="speakLanguage"]',
@@ -27,17 +26,23 @@ const content = {
   },
 };
 
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
 class WelshLanguage {
 
   async selectLanguageOption() {
-    const language = sharedData.language; 
+    const language = sharedData.language; 
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.see(content.speakLanguageQuestion[language]);
     await I.click(fields.speakLanguage);
     await I.see(content.documentsLanguageQuestion[language]);
     await I.click(fields.documentLanguage);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

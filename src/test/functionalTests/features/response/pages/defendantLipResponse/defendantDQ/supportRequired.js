@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="model[option]"]',
@@ -13,7 +12,7 @@ const fields ={
   person1SignLanguageText: 'input[id="model[items][0][signLanguageInterpreter][content]"]',
   person2DisabledAccess: 'input[id="declared-1-disabledAccess"]',
   person2OtherSupport: 'input[id="declared-1-otherSupport"]',
-  person2OtherSupportText: 'textarea[id="model[items][1][otherSupport][content]"]',
+  person2OtherSupportText: 'input[id="model[items][1][otherSupport][content]"]',
 };
 
 const content = {
@@ -27,6 +26,10 @@ const buttons = {
   addPerson: {
     en: 'Add another person',
     cy: 'Ychwanegu unigolyn arall',
+  },
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
   },
 };
 
@@ -56,7 +59,7 @@ class SupportRequired {
     await I.click(fields.person2DisabledAccess);
     await I.click(fields.person2OtherSupport);
     await I.fillField(fields.person2OtherSupportText, inputs.person2OtherSupport[language]);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(buttons.saveAndContinue[language]);
   }
 }
 

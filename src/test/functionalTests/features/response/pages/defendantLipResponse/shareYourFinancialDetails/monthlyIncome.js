@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   incomeFromJobPayment: 'input[id="model[job][transactionSource][amount]"]',
@@ -12,11 +11,17 @@ const fields ={
   otherIncomePayment: 'input[id="model[other][transactionSources][0][amount]"]',
   otherIncomePaymentSchedule: 'input[id="model[other][transactionSources][0][schedule]-4"]',
 };
+const buttons = {
+  saveAndContinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+};
 
 const checkboxes = {
   incomeFromJob: {
     en: 'Income from your job',
-    cy: 'Incwm o’ch swydd',
+    cy: 'Incwm o’ch swydd'
   },
   childBenefit: {
     en: 'Child Benefit',
@@ -24,9 +29,9 @@ const checkboxes = {
   },
   otherIncome: {
     en: 'Other',
-    cy: 'Arall',
-  },
-};
+    cy: 'Arall'
+  }
+}
 
 const content = {
   heading: {
@@ -67,7 +72,7 @@ class MonthlyIncome {
   }
 
   async clickContinue() {
-    await I.click(cButtons.saveAndContinue[sharedData.language]);
+    await I.click(buttons.saveAndContinue[sharedData.language]);
   }
 }
 
