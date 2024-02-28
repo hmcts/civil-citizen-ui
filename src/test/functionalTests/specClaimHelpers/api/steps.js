@@ -222,6 +222,7 @@ module.exports = {
 
     let payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
     caseId = await apiRequest.startEventForLiPCitizen(payload);
+    await waitForFinishedBusinessProcess(caseId, user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
