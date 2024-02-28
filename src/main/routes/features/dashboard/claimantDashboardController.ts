@@ -13,23 +13,23 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   try {
     const claimId =  req.params.id;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    let caseData: Claim;
+    let claim: Claim;
     let caseRole: ClaimantOrDefendant;
     let dashboardId;
     if(claimId == 'draft') {
       caseRole = ClaimantOrDefendant.CLAIMANT;
       const userId = (<AppRequest>req)?.session?.user?.id.toString();
-      caseData = await getClaimById(userId, req);
+      claim = await getClaimById(userId, req);
       dashboardId = userId;
     } else {
-      caseData = await getClaimById(claimId, req, true);
-      caseRole = caseData.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+      claim = await getClaimById(claimId, req, true);
+      caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       dashboardId = claimId;
     }
 
-    const dashboardNotifications = await getNotifications(dashboardId, caseRole, req);
-    const dashboard = await getDashboardForm(caseRole, dashboardId, req);
-    res.render(claimantDashboardViewPath, {claim:caseData, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
+    const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
+    const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
+    res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
   } catch (error) {
     next(error);
   }

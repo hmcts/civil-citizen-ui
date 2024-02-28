@@ -182,7 +182,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 12345;
         //When
-        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', ClaimantOrDefendant.DEFENDANT, appReq);
+        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq);
 
         //Then
         expect(claimantNotifications.items).toEqual(mockNotificationInfo);
@@ -206,7 +206,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         //When
-        const claimantDashboard = await getDashboardForm(ClaimantOrDefendant.DEFENDANT, '1234567890',appReq);
+        const claimantDashboard = await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq);
 
         //Then
         expect(claimantDashboard.items).toEqual(mockExpectedDashboardInfo);
