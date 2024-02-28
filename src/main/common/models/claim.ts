@@ -76,7 +76,7 @@ import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
-import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 
 export class Claim {
@@ -879,7 +879,7 @@ export class Claim {
   }
 
   isClaimant() {
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }
 
   isDraftClaim(): boolean {

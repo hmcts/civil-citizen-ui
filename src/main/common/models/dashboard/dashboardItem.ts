@@ -3,7 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {BASE_ELIGIBILITY_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -213,7 +213,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
-export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
+export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boolean): DashboardClaimantItem | undefined => {
   if (claim?.isDraftClaim()) {
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
@@ -223,7 +223,12 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
-    draftClaim.url = BASE_ELIGIBILITY_URL;
+
+    if(isReleaseTwoEnabled){
+      draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
+    } else {
+      draftClaim.url = BASE_ELIGIBILITY_URL;
+    }
     return draftClaim;
   } else {
     return undefined;

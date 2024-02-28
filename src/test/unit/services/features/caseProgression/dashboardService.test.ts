@@ -13,6 +13,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {plainToInstance} from 'class-transformer';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {ClaimantOrDefendant} from 'models/partyType';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -181,7 +182,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 12345;
         //When
-        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim,appReq);
+        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq);
 
         //Then
         expect(claimantNotifications.items).toEqual(mockNotificationInfo);
@@ -205,7 +206,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         //When
-        const claimantDashboard = await getDashboardForm(claim,'1234567890',appReq);
+        const claimantDashboard = await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq);
 
         //Then
         expect(claimantDashboard.items).toEqual(mockExpectedDashboardInfo);

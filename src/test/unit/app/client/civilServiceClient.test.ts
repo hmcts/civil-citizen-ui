@@ -4,7 +4,7 @@ import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
@@ -761,7 +761,9 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Hearing Welsh',
         tasks: [{
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-          'status': 'ACTION_NEEDED',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
           'taskNameEn': 'task_name_en',
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
@@ -769,7 +771,9 @@ describe('Civil Service Client', () => {
           'url': '',
         }, {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-          'status': 'ACTION_NEEDED',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
           'taskNameEn': 'task_name_en',
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
@@ -781,7 +785,9 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Claim Welsh',
         tasks:[{
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
-          'status': 'ACTION_NEEDED',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
           'taskNameEn': 'task_name_en2',
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
@@ -790,7 +796,9 @@ describe('Civil Service Client', () => {
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-          'status': 'ACTION_NEEDED',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
           'taskNameEn': 'task_name_en2',
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
@@ -802,8 +810,8 @@ describe('Civil Service Client', () => {
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
         'reference': '123',
-        'currentStatus': 0,
-        'nextStatus': 1,
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
         'taskNameEn': 'task_name_en',
         'hintTextEn': 'hint_text_en',
         'taskNameCy': 'task_name_cy',
@@ -818,8 +826,8 @@ describe('Civil Service Client', () => {
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
         'reference': '123',
-        'currentStatus': 0,
-        'nextStatus': 1,
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
         'taskNameEn': 'task_name_en',
         'hintTextEn': 'hint_text_en',
         'taskNameCy': 'task_name_cy',
@@ -834,8 +842,8 @@ describe('Civil Service Client', () => {
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
         'reference': '123',
-        'currentStatus': 0,
-        'nextStatus': 1,
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
         'taskNameEn': 'task_name_en2',
         'hintTextEn': 'hint_text_en2',
         'taskNameCy': 'task_name_cy2',
@@ -850,8 +858,8 @@ describe('Civil Service Client', () => {
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
         'reference': '123',
-        'currentStatus': 0,
-        'nextStatus': 1,
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
         'taskNameEn': 'task_name_en2',
         'hintTextEn': 'hint_text_en2',
         'taskNameCy': 'task_name_cy2',
@@ -888,6 +896,34 @@ describe('Civil Service Client', () => {
 
       //Then
       expect(taskListResponse.items).toEqual(mockExpectedDashboardInfo);
+    });
+  });
+
+  describe('postScenario', () => {
+
+    it('should call civil service api to start scenario for dashboard', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      await civilServiceClient.createDashboard(appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL
+        .replace(':scenarioRef', 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required')
+        .replace(':redisKey', '1'));
+    });
+    it('should throw error when there is an error calling civil service to start scenario for dashboard', async () => {
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.createDashboard(appReq)).rejects.toThrow('error');
     });
   });
 });

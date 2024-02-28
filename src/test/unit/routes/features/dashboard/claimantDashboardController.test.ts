@@ -15,9 +15,14 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
+import * as UtilityService from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(),
+}));
 
 describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -30,6 +35,15 @@ describe('claimant Dashboard Controller', () => {
   });
 
   describe('on GET', () => {
+    it('should return claimant dashboard page when only draft', async () => {
+
+      jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain('Mr. Jan Clark v Version 1');
+      });
+    });
     it('should return claimant dashboard page with claimant and fast Track', async () => {
 
       const claim = new Claim();

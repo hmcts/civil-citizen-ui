@@ -23,6 +23,7 @@ import {
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -50,8 +51,8 @@ import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
-import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -453,7 +454,9 @@ export class CivilServiceClient {
       dashboardTask.id = civilServiceDashboardTask.id;
       dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
       dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
-      dashboardTask.status = DashboardTaskStatus[civilServiceDashboardTask.currentStatus];
+      dashboardTask.statusEn = civilServiceDashboardTask.currentStatusEn.toString();
+      dashboardTask.statusCy = civilServiceDashboardTask.currentStatusCy;
+      dashboardTask.statusColour = TaskStatusColor[civilServiceDashboardTask.currentStatusEn];
       dashboardTask.hintTextEn = civilServiceDashboardTask.hintTextEn;
       dashboardTask.hintTextCy = civilServiceDashboardTask.hintTextCy;
       dashboardTask.url = civilServiceDashboardTask.url;
@@ -474,5 +477,18 @@ export class CivilServiceClient {
     const dashboard = new Dashboard();
     dashboard.items = groupedTasksList;
     return dashboard;
+  }
+
+  async createDashboard(req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      const redisKey = req?.session?.user?.id;
+      const scenarioRef = 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required';
+      const response = await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
+      logger.error(response.status);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
   }
 }
