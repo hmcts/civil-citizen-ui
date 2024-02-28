@@ -512,6 +512,10 @@ class ResponseSteps {
     I.click('Save and continue');
   }
 
+  async SignOut() {
+    I.click('Sign out');
+  }
+
   async EnterUnavailableDates() {
     await nextThreeMonthsDate.enterNextThreeMonthsDate();
     await availabilityDates.enterUnavailableDates(true);
