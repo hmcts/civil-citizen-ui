@@ -44,9 +44,9 @@ class AvailabilityDates {
 
     const { language } = sharedData; 
     if (meditation){
-      await I.waitForText(content.heading[language], config.WaitForText);
-    } else {
       await I.waitForText(content.mediationHeading[language], config.WaitForText);
+    } else {
+      await I.waitForText(content.heading[language], config.WaitForText);
     }
 
     await I.click(fields.singleDate);
