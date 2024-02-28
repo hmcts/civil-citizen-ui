@@ -14,17 +14,17 @@ let claimNumber;
 Feature('Create LipvLip claim using API');
 
 Before(async ({api}) => {
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  caseID = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  // await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  caseID = await api.createLiPClaim(config.claimantEmailsVerificationCitizenUser, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, caseID);
   claimNumber = await caseData.legacyCaseReference;
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Create LipvLip claim using API', async ({api}) => {
-  //this is the existing DefendantResponse API call used by CP team. It is RejectAll and DisputeAll
-  await api.performCitizenResponse(config.defendantCitizenUser, caseID, claimType);
+Scenario('Create LipvLip claim and defendant response as FullAdmit @test', async ({api}) => {
+  await api.performCitizenResponse(config.defendantCitizenUser, caseID, claimType, 'FA_PAY_IMMEDIATELY_INDIVIDUAL');
 });
 
 AfterSuite(async () => {
