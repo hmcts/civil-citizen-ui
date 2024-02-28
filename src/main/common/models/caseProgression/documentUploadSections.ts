@@ -1,6 +1,6 @@
 import {SummarySections} from 'models/summaryList/summarySections';
 
-export interface documentUploadSections {
+export interface DocumentUploadSections {
   witnessEvidenceSection: SummarySections,
   disclosureEvidenceSection: SummarySections,
   expertEvidenceSection: SummarySections,

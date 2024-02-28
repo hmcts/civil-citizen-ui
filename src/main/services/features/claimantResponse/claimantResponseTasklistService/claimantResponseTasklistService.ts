@@ -23,7 +23,7 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
     taskGroups.push(buildYourResponseSection(claim, claimId, lang, carmApplicable));
   }
 
-  if (carmApplicable && claim.hasClaimantNotSettled) {
+  if (carmApplicable && claim.hasClaimantNotSettled()) {
     taskGroups.push(buildClaimantResponseMediationSection(claim, claimId, lang, carmApplicable));
   }
 

@@ -1,13 +1,13 @@
 import {
   registerDecorator,
-  ValidationArguments, ValidationOptions,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'isAllowedMimeType', async: false })
 export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments) {
+  validate(value: any) {
     const allowedMimeTypes: string[] = [
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word docx
       'application/msword', // Word doc

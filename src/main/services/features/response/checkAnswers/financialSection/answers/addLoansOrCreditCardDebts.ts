@@ -10,9 +10,9 @@ import {DebtItems} from '../../../../../../common/form/models/statementOfMeans/d
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase,YesNo} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourLoansOrCreditCardsDebtsHref = CITIZEN_DEBTS_URL.replace(':id', claimId);
 
   if (claim.statementOfMeans?.debts?.debtsItems) {
