@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {addDaysToDate} from 'common/utils/dateUtils';
 
 describe('dashboardInterpolationService', () => {
-  const textToReplaceDynamic = 'You have {daysToRespond} days left.';
+  const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
 
   it('should replace placeholders with values when found', () => {
