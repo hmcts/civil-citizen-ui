@@ -1,12 +1,12 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {RESPONSE_TASK_LIST_URL, REQUEST_MORE_TIME_URL} from '../../urls';
-import {generateRedisKey, getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Claim} from '../../../common/models/claim';
-import {AdditionalTime, AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
-import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
+import {AdditionalTime, AdditionalTimeOptions} from 'form/models/additionalTime';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
+import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 
 const requestMoreTimeController = Router();
@@ -23,7 +23,7 @@ function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Cla
 }
 
 requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -31,10 +31,10 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -52,6 +52,6 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default requestMoreTimeController;

@@ -6,6 +6,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseConfirmationGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const claimantResponseConfirmationController = Router();
 
@@ -14,7 +15,8 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     await deleteDraftClaimFromStore(generateRedisKey(req));
     const claim = await getClaimById(req.params.id, req, true);
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang));
+    const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable);
     res.render('features/claimantResponse/claimant-response-confirmation', {
       claimantResponseConfirmationContent,
     });

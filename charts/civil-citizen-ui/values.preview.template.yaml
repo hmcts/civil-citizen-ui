@@ -59,7 +59,7 @@ civil-service:
             alias: docmosis.tornado.key
           - name: cmc-db-password-v11
             alias: CMC_DB_PASSWORD
-          - name: gov-notify-api-key
+          - name: gov-notify-pretends-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
