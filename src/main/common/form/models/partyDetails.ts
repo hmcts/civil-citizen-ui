@@ -1,6 +1,7 @@
-import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
+import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {Address} from 'form/models/address';
 import {GenericForm} from 'form/models/genericForm';
+import {FullNameValidator} from 'form/validators/fullNameValidator';
 
 export class PartyDetails {
 
@@ -16,7 +17,8 @@ export class PartyDetails {
   @IsDefined({message: 'ERRORS.ENTER_LAST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
-    lastName?: string;
+  @Validate(FullNameValidator, ['title','firstName'], {message: 'ERRORS.FULL_NAME_TOO_LONG'})
+  lastName?: string;
   @ValidateIf(o => o.soleTraderTradingAs !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     soleTraderTradingAs?: string;
