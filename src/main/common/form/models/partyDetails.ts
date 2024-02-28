@@ -18,7 +18,7 @@ export class PartyDetails {
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
   @Validate(FullNameValidator, ['title','firstName'], {message: 'ERRORS.FULL_NAME_TOO_LONG'})
-  lastName?: string;
+    lastName?: string;
   @ValidateIf(o => o.soleTraderTradingAs !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     soleTraderTradingAs?: string;
