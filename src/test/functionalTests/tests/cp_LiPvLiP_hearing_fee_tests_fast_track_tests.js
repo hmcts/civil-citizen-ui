@@ -13,6 +13,7 @@ Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
     hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

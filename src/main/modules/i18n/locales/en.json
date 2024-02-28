@@ -1145,6 +1145,12 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         }
       },
+      "MEDIATION": {
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "A mediation appointment will now be arranged by the Small Claims Mediation Service. We will email you the date of your mediation appointment within the next 28 days.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "If a settlement is agreed at mediation, you will not need to go to court.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "If you do not attend your mediation appointment, you may be subject to penalties. You may be ordered to pay costs, or the Judge may automatically rule in the defendant's favour."
+      },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
       },
@@ -3577,6 +3583,8 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_EMAIL_CONFIRMATION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_CONTACT_PERSON_CONFIRMATION": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
