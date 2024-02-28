@@ -454,7 +454,7 @@ export class CivilServiceClient {
       dashboardTask.id = civilServiceDashboardTask.id;
       dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
       dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
-      dashboardTask.statusEn = civilServiceDashboardTask.currentStatusEn;
+      dashboardTask.statusEn = civilServiceDashboardTask.currentStatusEn.toString();
       dashboardTask.statusCy = civilServiceDashboardTask.currentStatusCy;
       dashboardTask.statusColour = TaskStatusColor[civilServiceDashboardTask.currentStatusEn];
       dashboardTask.hintTextEn = civilServiceDashboardTask.hintTextEn;
