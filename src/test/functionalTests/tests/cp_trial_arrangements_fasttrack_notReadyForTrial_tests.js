@@ -2,12 +2,12 @@ const config = require('../../config');
 const LoginSteps = require('../features/home/steps/login');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../features/caseProgression/steps/trialArrangementSteps');
-const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression - Trial Arrangements journey - Fast Track');
+Feature('Case progression - Trial Arrangements journey - Fast Track - not ready for Trial Journey');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -32,10 +32,3 @@ Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async (
   }
 }).tag('@regression-cp');
 
-Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
-    await api.waitForFinishedBusinessProcess();
-    TrialArrangementSteps.verifyTrialArrangementsMade();
-  }
-}).tag('@regression-cp');

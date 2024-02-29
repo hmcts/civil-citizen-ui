@@ -78,6 +78,10 @@ def checkForFullDeployLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
+def checkForEnableEmailNotifications(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
+}
+
 withPipeline(type, product, component) {
   pipelineConf = config
   disableLegacyDeployment()
@@ -124,6 +128,9 @@ withPipeline(type, product, component) {
 
   afterAlways('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+    if (checkForEnableEmailNotifications(env.BRANCH_NAME)) {
+      error "The 'pr-values:enableNotifyEmails' label is active on the PR. The build will be interrupted to avoid wasting build time needlessly."
+    }
   }
 
 
@@ -158,7 +165,7 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
       ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-      ./bin/import-ccd-definition.sh "-e *GAspec.json,*-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
     """
     setUrls("aat");
   }
