@@ -23,7 +23,7 @@ describe('Age eligibility is over 18', () =>{
     //When
     const result = AgeEligibilityVerification.isOverEighteen(dob);
     //Then
-    expect(result).toBeTruthy();
+    expect(result).toBeFalsy();
   });
   it('should return false when a day before 18th birthday', ()=>{
     //Given

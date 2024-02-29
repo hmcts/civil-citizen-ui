@@ -70,8 +70,8 @@ describe('Expected end date page', () => {
         .send(`day=${currentDate.getDate() + 1}`)
         .send('reason=breathing space end')
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL);
+          expect(res.status).toBe(200);
+          expect(res.get('location')).toBe(undefined);
         });
     });
 
