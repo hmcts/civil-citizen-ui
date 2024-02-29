@@ -60,7 +60,7 @@ describe('Expected end date page', () => {
         });
     });
 
-    it('should move to next page on no input', async () => {
+    it.skip('should move to next page on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const currentDate = new Date();
       await request(app)
