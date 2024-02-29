@@ -52,8 +52,6 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: cmc-db-password-v11
-            alias: CMC_DB_PASSWORD
           - name: gov-notify-pretends-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
