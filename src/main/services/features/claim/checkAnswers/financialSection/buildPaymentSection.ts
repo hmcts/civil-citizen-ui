@@ -11,7 +11,7 @@ import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/u
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {getJudgmentAmountSummary} from "services/features/claimantResponse/ccj/judgmentAmountSummaryService";
+import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
