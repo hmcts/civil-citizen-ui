@@ -7,7 +7,7 @@ import {DocumentType} from 'models/document/documentType';
 import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {getDisplayedTimeline} from 'services/features/claim/yourDetails/timelineService';
+import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 
 const claimDetailsController = Router();
 
@@ -15,9 +15,9 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
   try {
     const claim: Claim = await getClaimById(req.params.id, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const timelineRows = getDisplayedTimeline(claim, getLng(lang));
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
+    const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
     const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
     res.render('features/response/claimDetails/claim-details', {

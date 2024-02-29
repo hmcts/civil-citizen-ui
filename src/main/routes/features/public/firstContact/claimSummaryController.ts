@@ -10,8 +10,8 @@ import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {YesNo} from 'form/models/yesNo';
 import config from 'config';
-import {getDisplayedTimeline} from 'services/features/claim/yourDetails/timelineService';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 
 const CryptoJS = require('crypto-js');
 
@@ -35,9 +35,9 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
       if (cookie?.claimId && originalText === YesNo.YES) {
-        const timelineRows = getDisplayedTimeline(claim, getLng(lang));
         const interestData = getInterestDetails(claim);
         const totalAmount = getTotalAmountWithInterestAndFees(claim);
+        const timelineRows = getClaimTimeline(claim, getLng(lang));
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
         const privacyPolicyUrl = `${ocmcBaseUrl}/privacy-policy`;
         res.render('features/public/firstContact/claim-summary', {
