@@ -23,11 +23,11 @@ import {
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
-const documentUploaded = (lang: string | unknown): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
+const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
 
-export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string | unknown): SummarySections => {
+export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
   const witnessEvidenceSection = {} as SummarySections;
   witnessEvidenceSection.sections = [] as SummarySection[];
   const witnessSummarySection = {} as SummarySection;
@@ -64,7 +64,7 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
   return witnessEvidenceSection;
 };
 
-export const getExpertSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string | unknown): SummarySections => {
+export const getExpertSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
   const expertEvidenceSection = {} as SummarySections;
   expertEvidenceSection.sections = [] as SummarySection[];
   const expertSummarySection = {} as SummarySection;
@@ -98,7 +98,7 @@ export const getExpertSummarySection = (uploadedDocuments: UploadDocumentsUserFo
   return expertEvidenceSection;
 };
 
-export const getDisclosureSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string | unknown): SummarySections => {
+export const getDisclosureSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
   const disclosureEvidenceSection = {} as SummarySections;
   disclosureEvidenceSection.sections = [] as SummarySection[];
   const disclosureSummarySection = {} as SummarySection;
@@ -122,7 +122,7 @@ export const getDisclosureSummarySection = (uploadedDocuments: UploadDocumentsUs
   return disclosureEvidenceSection;
 };
 
-export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserForm, isSmallClaims: boolean, claimId: string, lang: string | unknown): SummarySections => {
+export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserForm, isSmallClaims: boolean, claimId: string, lang: string ): SummarySections => {
   const trialEvidenceSection = {} as SummarySections;
   trialEvidenceSection.sections = [] as SummarySection[];
   const trialSummarySection = {} as SummarySection;
@@ -174,7 +174,7 @@ export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserFor
   return trialEvidenceSection;
 };
 
-const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: WitnessSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: WitnessSection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
   let index = 1;
   for(const document of documents) {
@@ -201,7 +201,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
   }
 };
 
-const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: string, documents: ExpertSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: string, documents: ExpertSection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
   let index = 1;
   for(const document of documents) {
@@ -230,7 +230,7 @@ const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: str
 
 };
 
-const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSection[], summaryList: SummaryList, claimId: string, lang: string) => {
 
   let index = 1;
   for(const document of documents) {
@@ -253,7 +253,7 @@ const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSect
   }
 };
 
-const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToInTheStatementSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToInTheStatementSection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
   let index = 1;
   for(const document of documents) {
@@ -277,7 +277,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
   }
 };
 
-const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
   let index = 1;
   for(const document of documents){
@@ -298,7 +298,7 @@ const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summ
   }
 };
 
-const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, isQuestion: boolean, documents: ExpertSection[], summaryList: SummaryList, claimId: string, lang: string | unknown) => {
+const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, isQuestion: boolean, documents: ExpertSection[], summaryList: SummaryList, claimId: string, lang: string) => {
 
   let index = 1;
   for(const document of documents){

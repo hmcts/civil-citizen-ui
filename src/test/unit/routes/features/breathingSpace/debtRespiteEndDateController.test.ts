@@ -5,11 +5,12 @@ import {app} from '../../../../../main/app';
 import {
   BREATHING_SPACE_RESPITE_END_DATE_URL,
   BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import { NextFunction, Request, Response } from 'express';
+import {isLeapYear} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
@@ -62,12 +63,15 @@ describe('Expected end date page', () => {
 
     it('should move to next page on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      const currentDate = new Date();
+      const leapYear = isLeapYear(currentDate.getFullYear());
+
       await request(app)
         .post(BREATHING_SPACE_RESPITE_END_DATE_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
-        .send('reason=')
+        .send(`year=${currentDate.getFullYear()}`)
+        .send(`month=${currentDate.getMonth() + 1}`)
+        .send(`day=${leapYear? currentDate.getDate() : currentDate.getDate() + 1}`)
+        .send('reason=breathing space end')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL);

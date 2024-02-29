@@ -39,7 +39,7 @@ const data = {
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
-  CREATE_LIP_CLAIM: (user, userId) => createLipClaim(user, userId),
+  CREATE_LIP_CLAIM: (user, userId, totalClaimAmount) => createLipClaim(user, userId, totalClaimAmount),
 };
 
 let caseId, eventName;
@@ -62,6 +62,10 @@ module.exports = {
 
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  setCaseId: async (id) => {
+    caseId = id;
   },
 
   performEvidenceUpload: async (user, caseId, claimType) => {
@@ -146,7 +150,7 @@ module.exports = {
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, defendantType) => {
-    console.log(' Creating specified claim');
+    console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
     caseData = {};
@@ -197,17 +201,28 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user) => {
+  createLiPClaim: async (user, claimType) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
+    let totalClaimAmount;
+
+    if (claimType === 'FastTrack') {
+      console.log('FastTrack claim...');
+      totalClaimAmount = '15000';
+    } else {
+      console.log('SmallClaim...');
+      totalClaimAmount = '1500';
+    }
 
     let userAuth = await idamHelper.accessToken(user);
     let userId = await idamHelper.userId(userAuth);
 
     await apiRequest.setupTokens(user);
-    let payload = data.CREATE_LIP_CLAIM(user, userId);
-    const caseId = await apiRequest.startEventForLiPCitizen(payload);
+
+    let payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
+    caseId = await apiRequest.startEventForLiPCitizen(payload);
+    await waitForFinishedBusinessProcess(caseId, user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -262,6 +277,7 @@ module.exports = {
   },
 
   retrieveCaseData: async (user, caseId) => {
+    await apiRequest.setupTokens(user);
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
   },
@@ -318,6 +334,15 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
+  claimantLipRespondToDefence: async (user, caseId) => {
+    eventName = 'CLAIMANT_RESPONSE_CUI';
+    let payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId, user);
+    console.log('End of claimantLipRespondToDefence()');
+  },
+
   enterBreathingSpace: async (user) => {
     const enterBreathingSpacePayload = breathingSpace.enterBreathingSpacePayload();
     eventName = enterBreathingSpacePayload['event'];
@@ -360,6 +385,11 @@ module.exports = {
 
   cleanUp: async () => {
     await unAssignAllUsers();
+  },
+
+  assignToLipDefendant: async (caseId) => {
+    await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
 };
 

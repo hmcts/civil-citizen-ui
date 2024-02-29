@@ -1,7 +1,7 @@
-const config = require('../../../config');
-const LoginSteps = require('../../features/home/steps/login');
-const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
+const config = require('./../../config');
+const LoginSteps = require('./../features/home/steps/login');
+const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';

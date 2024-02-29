@@ -45,6 +45,10 @@ def secrets = [
     secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
     secret('civil-judge-password', 'JUDGE_PASSWORD'),
     secret('system-update-user-password', 'SYSTEM_USER_PASSWORD')
+  ],
+  'civil-cui-${env}': [
+    secret('playwright-service-url', 'PLAYWRIGHT_SERVICE_URL'),
+    secret('playwright-token', 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN'),
   ]
 ]
 
@@ -72,6 +76,10 @@ def branchesToSync = ['demo', 'perftest']
 
 def checkForFullDeployLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
+}
+
+def checkForEnableEmailNotifications(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
 }
 
 withPipeline(type, product, component) {
@@ -120,6 +128,9 @@ withPipeline(type, product, component) {
 
   afterAlways('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
+    if (checkForEnableEmailNotifications(env.BRANCH_NAME)) {
+      error "The 'pr-values:enableNotifyEmails' label is active on the PR. The build will be interrupted to avoid wasting build time needlessly."
+    }
   }
 
 
@@ -154,7 +165,7 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
       ./bin/pull-latest-ccd-files.sh ${ccdBranch}
-      ./bin/import-ccd-definition.sh "-e *GAspec.json,*-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
     """
     setUrls("aat");
   }
