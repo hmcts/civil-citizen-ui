@@ -35,6 +35,19 @@ exports.config = {
       bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: 30000,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testConfig.TestUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
     },
   },
   include: {

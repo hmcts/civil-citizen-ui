@@ -50,6 +50,5 @@ Scenario('Create Claim - Rejected All By Defendant and Disputed By Claimant', as
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
-    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
