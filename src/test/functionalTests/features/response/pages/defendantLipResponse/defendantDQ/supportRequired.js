@@ -23,12 +23,12 @@ const content = {
   },
 };
 
-const buttons = {
-  addPerson: {
-    en: 'Add another person',
-    cy: 'Ychwanegu unigolyn arall',
-  },
-};
+// const buttons = {
+//   addPerson: {
+//     en: 'Add another person',
+//     cy: 'Ychwanegu unigolyn arall',
+//   },
+// };
 
 const inputs = {
   person1SignLanguage: {
