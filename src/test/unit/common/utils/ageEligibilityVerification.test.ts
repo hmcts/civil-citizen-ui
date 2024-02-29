@@ -37,7 +37,16 @@ describe('Age eligibility is over 18', () =>{
 
 function calculateDobForAge(age: number, day?: number) {
   const currentDate = new Date();
-  const dobYear = currentDate.getFullYear() - age;
+  const year = currentDate.getFullYear();
+  const dobYear = year - age;
+
+  if (isLeapYear(year)){
+    return new Date(dobYear, currentDate.getMonth(), day? day : currentDate.getDate() - 1);
+  }
+
   return new Date(dobYear,  currentDate.getMonth(), day? day : currentDate.getDate());
 }
 
+function isLeapYear(year: number) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+}
