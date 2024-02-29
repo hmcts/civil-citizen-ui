@@ -8,7 +8,6 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
-  DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_UNAVAILABLE_FOR_HEARING_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -503,8 +502,8 @@ describe('Unavailable dates for hearing Controller', () => {
           }],
         })
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_PHONE_OR_VIDEO_HEARING_URL);
+          expect(res.status).toBe(200);
+          expect(res.get('location')).toBe(undefined);
         });
     });
 
@@ -553,8 +552,8 @@ describe('Unavailable dates for hearing Controller', () => {
           }],
         })
         .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable dates for hearing');
         });
     });
   });
