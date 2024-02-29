@@ -1,4 +1,5 @@
-import {AgeEligibilityVerification} from '../../../../main/common/utils/ageEligibilityVerification';
+import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
+import {isLeapYear} from '../../../utils/dateUtils';
 
 describe('Age eligibility is over 18', () =>{
   it('should return true when age is over 18', ()=> {
@@ -45,8 +46,4 @@ function calculateDobForAge(age: number, day?: number) {
   }
 
   return new Date(dobYear,  currentDate.getMonth(), day? day : currentDate.getDate());
-}
-
-function isLeapYear(year: number) {
-  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
