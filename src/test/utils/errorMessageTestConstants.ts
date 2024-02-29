@@ -69,6 +69,7 @@ export const enum TestMessages {
   MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Mediation contact person confirmation',
   MEDIATION_EMAIL_CONFIRMATION = 'Mediation email confirmation',
   MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
+  MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE = 'Upload your documents',
   MEDIATION_UNAVAILABILITY_DATES = 'Unavailability dates for mediation',
   MEDIATION_ALTERNATIVE_EMAIL_ADDRESS = 'Alternative email address',
   MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_CONFIRMATION = 'Unavailability for mediation',
@@ -122,6 +123,7 @@ export const enum TestMessages {
   VALID_DEFENDANT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
   VALID_ENTER_A_DATE_BEFORE = 'Please enter a date of birth before',
   VALID_ENTER_TYPE_OF_DOCUMENT = 'You must enter type of document',
+  VALID_ENTER_NAME = 'You must enter your name',
   VALID_ENTER_WITNESS_NAME = 'You must enter name of witness',
   VALID_ENTER_EXPERT_NAMES = 'You must enter the name of at least one expert',
   VALID_ENTER_EXPERT_NAME = 'Enter the expert’s name',
@@ -175,6 +177,7 @@ export const enum TestMessages {
   VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR = 'Date of document must include a year',
   VALID_DATE_NOT_FUTURE = 'Date of document must be today or in the past',
   ENTER_CONTACT_PERSON = 'Enter contact person',
-  FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters'
-
+  FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters',
+  MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = 'Mediation upload documents confirmation',
+  MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers'
 }

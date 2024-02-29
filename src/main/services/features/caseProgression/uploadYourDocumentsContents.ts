@@ -8,7 +8,8 @@ import {t} from 'i18next';
 const UPLOAD_YOUR_DOCUMENTS = 'PAGES.UPLOAD_YOUR_DOCUMENTS';
 
 export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) => {
-  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(`${UPLOAD_YOUR_DOCUMENTS}.AFTER_THE_DEADLINE`)}
+  const afterTheDeadline=t(`${UPLOAD_YOUR_DOCUMENTS}.AFTER_THE_DEADLINE`);
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${afterTheDeadline}
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${t(MAKE_APPLICATION_TO_COURT)}>${t(`${UPLOAD_YOUR_DOCUMENTS}.APPLY_TO_THE_COURT`)}</a>
         ${t(`${UPLOAD_YOUR_DOCUMENTS}.IF_YOU_WANT_ANY`)}
     </p><br>`;
@@ -30,6 +31,6 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     .addTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_YOUR')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.BEFORE_YOU_UPLOAD_THE')
     .addParagraph('PAGES.UPLOAD_DOCUMENTS.FORMAT')
-    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', constructResponseUrlWithIdParams(claimId,TYPES_OF_DOCUMENTS_URL), false, constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL))
+    .addButtonWithCancelLink('PAGES.UPLOAD_YOUR_DOCUMENTS.START_NOW', constructResponseUrlWithIdParams(claimId,TYPES_OF_DOCUMENTS_URL), true, constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL))
     .build();
 };

@@ -12,7 +12,7 @@ const fields ={
 };
 const buttons = {
   continue: 'a.govuk-button',
-  saveAndContinue:'button.govuk-button',
+  saveAndContinue:'#main-content button.govuk-button',
 };
 
 var targetDate = new Date();
@@ -49,7 +49,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click('Save and continue');
         await I.see('New response deadline','h1');
         await I.click('Continue');
-        break;
+        return;
       }
       case 'requestRefused':{
         await I.click(fields.requestRefused);

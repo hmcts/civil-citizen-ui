@@ -1,9 +1,14 @@
 {
   "COMMON": {
+    "UPLOAD_FILE": "Upload file",
+    "VIEW_DOCUMENTS": "View documents",
+    "DOCUMENTS_UPLOADED": "Documents uploaded",
+    "CASE_REFERENCE_NUMBER": "Your case reference number",
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
     "UNAVAILABLE_DATES": "Dates unavailable",
+    "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -31,6 +36,7 @@
     "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
     "TELEPHONE_MEDIATION": "Telephone mediation",
     "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Give details",
     "GO_TO_HOMEPAGE": "Go to homepage",
     "JOB_TITLE": "Job title",
@@ -60,9 +66,11 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
+      "BACK_TO_CASE_DETAILS": "Back to case details",
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -78,7 +86,8 @@
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
     },
     "MICRO_TEXT": {
-      "HEARING_FEE": "Hearing fee"
+      "HEARING_FEE": "Hearing fee",
+      "CLAIM_FEE": "Claim fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -126,6 +135,9 @@
       "REJECT_BUTTON": "Reject additional cookies",
       "TITLE": "Cookies on Money Claims",
       "VIEW_COOKIES": "View cookies"
+    },
+    "CREATE_DRAFT": {
+      "PAGE_TITLE": "Create draft claim"
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Evidence",
@@ -259,6 +271,8 @@
       "TITLE": "Statement of truth",
       "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
     },
+    "PAGE_TITLE_PART1": "Your money claims account",
+    "PAGE_TITLE_PART2": "Money Claims",
     "TIMELINE": {
       "EXAMPLE_EVENT": "For example, you might have signed a contract",
       "WHAT_HAPPENED": "What happened"
@@ -356,6 +370,53 @@
     }
   },
   "PAGES": {
+    "MEDIATION": {
+      "CONFIRMATION_PAGE": {
+        "PAGE_TITLE": "Mediation upload documents confirmation",
+        "TEXT_BEFORE": "You can",
+        "LINK_TEXT": "upload more documents",
+        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+      },
+      "UPLOAD_DOCUMENTS": {
+        "SECTION_TITLE": "Mediation non-attendance",
+
+        "TITLE": {
+          "YOUR_STATEMENT": "Your statement",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
+        },
+        "YOUR_NAME": {
+          "YOUR_STATEMENT": "Your name",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Type of document"
+        },
+        "DATE_INPUT": {
+          "YOUR_STATEMENT" : "Date statement was written",
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
+        }
+      },
+      "TYPE_OF_DOCUMENTS": {
+        "CHECKBOX_TITLE": "Mediation non-attendance",
+        "CHECKBOX_HINT": "Select all that apply",
+        "YOUR_STATEMENT": "Your statement",
+        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
+      },
+      "START_PAGE": {
+        "PAGE_TITLE": "Upload your documents",
+        "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
+        "IF_YOU_WERE_UNABLE": "If you were unable to attend mediation due to exceptional circumstances, you can explain why with supporting evidence, such as a doctor’s note or photographs of relevant documents. This is sometimes known as filing a representation. If the judge accepts your reasons for non-attendance, you will not be issued with a penalty.",
+        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example, ‘version 2’.",
+        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+
+        "DEADLINES_FOR_UPLOADING_TITLE": "Deadlines for uploading documents",
+        "YOU_HAVE_UNTIL": "You have until 14 days before your hearing to submit documents.",
+        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+
+        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
+        "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+      }
+    },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
       "PAGE_TEXT": "Please provide an alternative number"
@@ -377,7 +438,7 @@
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
-      "PAGE_TEXT": "Can the mediator use {{ defendantPhone }} to call you for your mediation appointment?"
+      "PAGE_TEXT": "Can the mediator use {{ partyPhone }} to call you for your mediation appointment?"
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Telephone mediation",
@@ -456,12 +517,12 @@
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
       "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh and English', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
       "ENGLISH": "English",
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh and English"
+      "WELSH_AND_ENGLISH": "Welsh"
     },
     "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
       "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
@@ -485,10 +546,11 @@
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
       "PAGE_TITLE": "County Court Judgment confirmation",
-      "PROCESS_YOUR_REQUEST": "We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.",
+      "PROCESS_YOUR_REQUEST": "We’ll process your request and send a copy of the judgment to you and to {{ defendantName }}. We aim to process this request as soon as possible.",
+      "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
       "TITLE": "County Court Judgment requested",
-      "UPDATES": "Your online account will not be updated with the progress of this claim - any further updates will be by post.",
+      "UPDATES": "Your online account will not be updated with the progress of this claim and any further updates will be by post.",
       "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
     },
     "CCJ_DEFENDANT_DOB": {
@@ -921,7 +983,8 @@
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "The documents listed below have been uploaded since the trial bundle was created.",
         "UPLOADED_AFTER_DOCUMENT_NAME": "Document name",
         "UPLOADED_AFTER_DOCUMENT": "Document",
-        "UPLOADED_AFTER_UPLOADED_DOCUMENTS": "'s uploaded documents"
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Claimant's uploaded documents",
+        "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Defendant's uploaded documents"
       },
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
@@ -1011,8 +1074,7 @@
         "IF_YOU_WANT_JUDGE": "If you want a judge to make a repayment plan, you must still request a judgment for the court’s proposed plan in the next screen",
         "NO_I_WANT_JUDGE": "No - I want a judge to make a new repayment plan",
         "PAGE_TITLE": "The defendant can’t pay by your proposed date",
-        "TITLE": "The defendant can’t pay by your proposed date",
-        "YES": "Yes"
+        "TITLE": "The defendant can’t pay by your proposed date"
       },
       "COURT_PROPOSED_PLAN": {
         "BASED_ON": "Based on the financial details provided by the defendant, we don’t believe they would be able to make these repayments.",
@@ -1048,7 +1110,10 @@
         "PAYMENT_BY": "They must make sure you have the money by {{ paymentDate }}. Any cheques or transfers should be clear in your account.",
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
-      "RC_DISPUTE": {
+      "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
+        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+      },
+     "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
         "CLAIM_ENDED": "The claim has now ended. We've emailed {{ defendantName }} to tell them."
       },
@@ -1080,6 +1145,12 @@
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
         }
       },
+      "MEDIATION": {
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "A mediation appointment will now be arranged by the Small Claims Mediation Service. We will email you the date of your mediation appointment within the next 28 days.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "If a settlement is agreed at mediation, you will not need to go to court.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "If you do not attend your mediation appointment, you may be subject to penalties. You may be ordered to pay costs, or the Judge may automatically rule in the defendant's favour."
+      },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
       },
@@ -1099,8 +1170,8 @@
       }
     },
     "CLAIMANT_RESPONSE_PAYMENT_OPTION": {
-      "PAGE_TITLE": "How do you want the defandant to pay?",
-      "TITLE": "How do you want the defandant to pay?"
+      "PAGE_TITLE": "How do you want the defendant to pay?",
+      "TITLE": "How do you want the defendant to pay?"
     },
     "CLAIMANT_RESPONSE_PROCEED": {
       "PAGE_TITLE": "Do you want to proceed with claim?",
@@ -1216,6 +1287,13 @@
       "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+    },
+    "CONFIRM_YOUR_DETAILS_EVIDENCE": {
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "GIVE_DETAILS": "Give details of the person that will be giving evidence.",
+      "PAGE_TITLE": "Confirm your details evidence",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "TITLE": "Confirm your details"
     },
     "CONSIDER_CLAIMANT_DOCUMENTS": {
       "GIVE_DETAILS": "Give details of the documents",
@@ -1348,16 +1426,18 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
-        "CLAIM_ENDED": "This claim has ended",
-        "CLAIMANT_REQUESTED_CCJ": "County Court Judgment (CCJ) requested",
+        "CLAIM_ENDED": "You stopped this claim",
+        "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
+        "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case",
-        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",    
+        "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
@@ -1576,10 +1656,11 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
+      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a Help With Fees reference number related a different claim or to any application fees. It will be invalid as you cannot use the same Help with Fees reference number twice.",
+      "PARAGRAPH1_3": "If you do not have a Help with Fees reference number for this claim, you should make a Help with Fees application which will provide you with a reference number.",
       "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
-      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
+      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is form N1.",
+      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number (For example HWF-C2D-45E). Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
       "PLEASE_NOTE": "Please Note:",
       "THIS_CLAIM": "THIS CLAIM",
       "TITLE": "Apply For Help With Fees"
@@ -2077,7 +2158,7 @@
       "CHECK_YOUR_ANSWERS_WARNING_FULL": "<span class=\"govuk-!-font-weight-bold\">Warning</span> </br> You cannot withdraw a document once you have submitted it.",
       "CHECK_YOUR_ANSWERS_WARNING_SHORT": "You cannot withdraw a document once you have submitted it.",
       "CHECK_YOUR_ANSWERS_CONFIRMATION": "Confirmation",
-      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them.",
+      "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
       "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
       "COSTS": "Costs",
@@ -2154,7 +2235,7 @@
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT_DEFENDANT": "Is {{ defendantContactPerson }} the person who will be attending the mediation appointment?"
+      "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
@@ -2162,7 +2243,7 @@
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ defendantEmail }} to contact you about your mediation appointment?"
+      "PAGE_TEXT": "Can the mediation team use {{ partyEmail }} to contact you about your mediation appointment?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
@@ -2334,6 +2415,30 @@
       "PAGE_TITLE": "Partner with severe disability",
       "TITLE": "Is your partner severely disabled?"
     },
+    "PAYMENT_CONFIRMATION": {
+      "SUCCESSFUL": {
+        "PAGE_TITLE": "Your payment was ",
+        "PAGE_TITLE2": "successful",
+        "PAYMENT_IS": "Your payment reference number is",
+        "PAYMENT_SUMMARY": "Payment summary",
+        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
+        "PAYMENT_FOR": "Payment for",
+        "TOTAL_AMOUNT": "Total amount"
+      },
+      "UNSUCCESSFUL": {
+        "CALL_US_ON": "Or, call us on ",
+        "CLAIM_NUMBER": "Claim number: {{ claimId }}",
+        "CLAIMANT_V_DEFENDANT": "{{ claimantName }} v {{ defendantName }}",
+        "FIND_OUT_CHARGES": "Find out about call charges:",
+        "GO_BACK": "Go back and ",
+        "TRY_PAYMENT_AGAIN": "try the payment again",
+        "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
+        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "PAGE_TITLE": "Claim fee payment unsuccessful",
+        "OPEN_TIMES": "Opening times:",
+        "TITLE": "Your payment was unsuccessful"
+      }
+    },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "PAGE_TITLE_FOR_PART_ADMIT": "Part Admit - Payment option",
@@ -2442,7 +2547,7 @@
     },
     "REPAYMENT_PLAN_SUMMARY": {
       "CLAIMANTS_REPAYMENT_PLAN": "The claimant’s repayment plan",
-      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay {{amount}} by {{paymentDate}}",
+      "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay £{{amount}} by {{paymentDate}}",
       "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
       "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days",
       "REPAYMENT_PLAN": "The repayment plan",
@@ -3059,7 +3164,6 @@
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
       "START_NOW": "Start now"
     },
-
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
       "TITLE": "Finalise your trial arrangements",
@@ -3128,7 +3232,8 @@
     "COOKIES_URL": "Cookies",
     "HELP_USING_GOV_URL": "Help using GOV.UK",
     "PRIVACY_POLICY_URL": "Privacy Policy",
-    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions"
+    "TERMS_AND_CONDITIONS_URL": "Terms and Conditions",
+    "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
@@ -3196,9 +3301,13 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
+    "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
+    "ENTER_YOUR_FIRST_NAME": "Enter your first name",
+    "ENTER_YOUR_LAST_NAME": "Enter your last name",
+    "ENTER_YOUR_JOB_TITLE": "Enter your job title",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "EXPENSES_ENTER_OTHER_SOURCE": "Enter other expense source",
     "EXPENSES_AMOUNT": {
@@ -3389,6 +3498,7 @@
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
@@ -3454,6 +3564,7 @@
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
+    "VALID_PHONE_NUMBER_EVIDENCE": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
@@ -3472,12 +3583,15 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_EMAIL_CONFIRMATION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_CONTACT_PERSON_CONFIRMATION": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
+    "VALID_ENTER_YOUR_NAME": "You must enter your name",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
     "VALID_ENTER_EXPERT_NAME": "Enter the expert’s name",
     "VALID_ENTER_EXPERT_NAMES": "You must enter the name of at least one expert",
@@ -3500,6 +3614,7 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
-    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need"
+    "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
   }
 }

@@ -45,6 +45,6 @@ describe('translate Claimant PayBySetDate to CCD model', () => {
     //When
     const output = toCCDClaimantPayBySetDate(paymentDate);
     //Then
-    expect(output.paymentSetDate).toBeNull();
+    expect(output).toBeUndefined();
   });
 });

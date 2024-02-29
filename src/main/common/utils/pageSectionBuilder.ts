@@ -3,6 +3,18 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 export class PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
+  addStartButton(title: string, href: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: true,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,
@@ -142,6 +154,18 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+
+  addWarning(text: string, variables?: any) {
+    const warningSection = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(warningSection);
     return this;
   }
 

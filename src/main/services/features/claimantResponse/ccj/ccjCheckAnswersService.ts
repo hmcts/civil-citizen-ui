@@ -13,7 +13,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string ): SummarySections => {
 
   return {
     sections: [
@@ -23,7 +23,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummarySections => {
   return buildSummarySections(claim, claimId, lang);
 };
 

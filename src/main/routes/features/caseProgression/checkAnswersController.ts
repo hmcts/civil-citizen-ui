@@ -10,15 +10,15 @@ import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
-import {documentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
-import {documentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 
-function renderView(res: Response, form: GenericForm<documentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
+function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
   const topPageContents = getTopElements(claim);
-  let summarySections: documentUploadSections;
+  let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if(isClaimant) {
@@ -40,7 +40,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
     req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(claimId);
-    const form = new GenericForm(new documentUploadSubmissionForm());
+    const form = new GenericForm(new DocumentUploadSubmissionForm());
     renderView(res, form, claim, claimId, claim.isClaimant(), lang);
   } catch (error) {
     next(error);
@@ -51,7 +51,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = new GenericForm(new documentUploadSubmissionForm(req.body.signed));
+    const form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getCaseDataFromStore(claimId);
     await form.validate();
 

@@ -23,7 +23,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, parentField = '', field: string, dayValue: string, monthValue: string, yearValue: string, index = 0) {
+  addDateArray(title: string, invalidDateErrors: Record<string, string>, hint: string, category: string, field: string, dayValue: string, monthValue: string, yearValue: string, index = 0, parentField = '') {
     const section = ({
       type: ClaimSummaryType.DATE_ARRAY,
       data: {
@@ -66,11 +66,13 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addRemoveSectionButton(showRemoveButton = false) {
+  addRemoveSectionButton(showRemoveButton = false, category?: string, index = 0) {
     if (showRemoveButton) {
       const titleSection = ({
-        type: ClaimSummaryType.BUTTON,
+        type: ClaimSummaryType.REMOVE_BUTTON,
         data: {
+          category: category,
+          index: index,
           classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
         },
       });

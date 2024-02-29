@@ -11,10 +11,11 @@ import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantRes
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
-import {toCCDClaimantSuggestedPayByDate, toCCDClaimantSuggestedPayByInstalments}
+import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate, toCCDClaimantPaymentOption}
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
-import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
+import {toCCDDQHearingSupport} from '../response/convertToCCDHearingSupport';
+import { YesNo } from 'common/form/models/yesNo';
+import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -31,23 +32,26 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
     applicant1ClaimMediationSpecRequiredLip: toCCDClaimantMediation(claim.claimantResponse?.mediation),
     applicant1LiPResponse: toCCDClaimantLiPResponse(claim.claimantResponse),
+    applicant1LiPResponseCarm: toCCDMediationCarm(claim.claimantResponse?.mediationCarm),
     applicant1DQLanguage: toCCDWelshLanguageRequirements(claim.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements),
     applicant1DQVulnerabilityQuestions: toCCDVulnerability(claim.claimantResponse?.directionQuestionnaire?.vulnerabilityQuestions),
     applicant1DQRequestedCourt: toCCDSpecificCourtLocations(claim.claimantResponse?.directionQuestionnaire?.hearing?.specificCourtLocation),
     applicant1DQWitnesses: toCCDWitnesses(claim.claimantResponse?.directionQuestionnaire?.witnesses),
     applicant1DQSmallClaimHearing: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.claimantResponse?.directionQuestionnaire?.hearing) : undefined,
     applicant1DQExperts: toCCDExpert(claim),
+    applicant1DQHearingSupport: toCCDDQHearingSupport(claim.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList),
     applicant1ClaimExpertSpecRequired: toCCDYesNo(claim.claimantResponse?.directionQuestionnaire?.experts?.permissionForExpert?.option),
     applicant1AcceptFullAdmitPaymentPlanSpec: (claim.isFullAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
     applicant1AcceptPartAdmitPaymentPlanSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option) : undefined,
-    applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
-    applicant1PartAdmitConfirmAmountPaidSpec: (claim.isPartialAdmission()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
+    applicant1PartAdmitConfirmAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option),
     applicant1PartAdmitIntentionToSettleClaimSpec: isClaimantWantToSettleTheClaim(claim),
+    applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
     applicant1FullDefenceConfirmAmountPaidSpec: (claim.isFullDefence()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
-    applicant1ProceedWithClaim : toCCDYesNo(claim.claimantResponse?.intentionToProceed?.option),
-    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount.toString(),
+    applicant1ProceedWithClaim : toCCDYesNo(claim.getIntentionToProceed()),
+    applicant1SettleClaim : toCCDYesNo(claim.hasClaimantNotSettled() ? YesNo.NO : YesNo.YES), // if method is true, claimant has NOT settled
+    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount,
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
-    applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByInstalments(claim.claimantResponse) ? (claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.firstRepaymentDate) : undefined,
-    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate((claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate)?.date) : undefined,
+    applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
+    applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate) : undefined,
   };
 };

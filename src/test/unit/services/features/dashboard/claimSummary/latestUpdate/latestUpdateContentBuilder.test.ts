@@ -1,7 +1,7 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from 'models/claim';
 import {
-  buildResponseToClaimSection,
+  buildResponseToClaimSection, buildResponseToClaimSectionForClaimant,
 } from 'services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
@@ -61,9 +61,9 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     responseType: responseType,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: 'Mr.',
-      individualFirstName: 'TestName',
-      individualLastName: 'TestLastName',
+      title: 'Mr.',
+      firstName: 'TestName',
+      lastName: 'TestLastName',
     },
   };
   claim.fullAdmission = new FullAdmission();
@@ -418,7 +418,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
         claim.partAdmitPaidValuePounds = 500;
@@ -443,7 +443,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
@@ -467,7 +467,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
         const claimId = claim.id;
@@ -924,5 +924,16 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.THE_COURT_WILL_REVIEW_THE_CASE');
     });
   });
-
+  describe('test buildResponseToClaimSectionForClaimant ', () => {
+    it('test Response to claim link ', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.BY_SET_DATE);
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      // When
+      const responseToClaimSection = buildResponseToClaimSectionForClaimant(claim, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(1);
+      expect(responseToClaimSection[0].data.text).toBe('COMMON.BUTTONS.RESPOND_TO_CLAIM');
+    });
+  });
 });

@@ -3,5 +3,5 @@ export interface CCDPayBySetDate {
 }
 
 export interface CCDClaimantPayBySetDate {
-  paymentSetDate?: Date;
+  paymentSetDate?: string;
 }

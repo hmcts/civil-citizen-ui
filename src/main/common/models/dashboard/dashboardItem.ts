@@ -3,7 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -41,12 +41,12 @@ export abstract class DashboardItem {
     return this.ocmc ? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
   }
 
-  getStatus(lang: string | unknown): string {
+  getStatus(lang: string ): string {
     const dashboardStatus = this.getDashboardStatus(lang);
     const currentStatus = dashboardStatus[this.status];
     return currentStatus? translate(currentStatus?.translationKey, currentStatus?.parameter, lang): '';
   }
-  abstract getDashboardStatus(lang: string | unknown): DashboardStatus;
+  abstract getDashboardStatus(lang: string): DashboardStatus;
 }
 
 export class DashboardClaimantItem extends DashboardItem {
@@ -56,7 +56,7 @@ export class DashboardClaimantItem extends DashboardItem {
 
   }
 
-  getDashboardStatus(lang: string | unknown): DashboardStatus {
+  getDashboardStatus(lang: string ): DashboardStatus {
     const paramDefendantName = {key: 'defendantName', value: this.defendantName};
 
     return {
@@ -67,11 +67,16 @@ export class DashboardClaimantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.REQUESTED_MORE_TIME_TO_RESPOND',
         parameter: [paramDefendantName],
       },
-      REQUESTED_COUNTRY_COURT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      REQUESTED_COUNTRY_COURT_JUDGEMENT: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
+        parameter: [paramDefendantName],
+      },
       ADMIT_PAY_BY_SET_DATE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       ADMIT_PAY_INSTALLMENTS : { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ADMIT_PAY_IMMEDIATELY_CLAIMANT'},
       CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_ENDED' },
+      CLAIMANT_ACCEPTED_PARTIAL_ADMISSION:{translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ACCEPTED_PARTIAL_ADMISSION'},
+      CLAIMANT_REJECTED_PAYMENT_PLAN:{translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN'},
       DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       DEFENDANT_PART_ADMIT_PAID: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
@@ -105,7 +110,7 @@ export class DashboardDefendantItem extends DashboardItem {
     this.url = '/dashboard/:claimId/defendant';
   }
 
-  getDashboardStatus(lang: string | unknown): DashboardStatus {
+  getDashboardStatus(lang: string ): DashboardStatus {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
     const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate, lang)};
@@ -196,7 +201,7 @@ export class DashboardDefendantItem extends DashboardItem {
   }
 }
 
-export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string | unknown) => {
+export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string ) => {
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
@@ -209,17 +214,18 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
 };
 
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
-  if (!claim || !claim?.isDraftClaim()) {
+  if (claim?.isDraftClaim()) {
+    const draftClaim = new DashboardClaimantItem();
+    draftClaim.claimId = 'draft';
+    draftClaim.draft = true;
+    draftClaim.ocmc = false;
+    draftClaim.status = 'NO_STATUS';
+    draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
+    draftClaim.claimantName = claim.getClaimantFullName();
+    draftClaim.defendantName = claim.getDefendantFullName();
+    draftClaim.url = BASE_ELIGIBILITY_URL;
+    return draftClaim;
+  } else {
     return undefined;
   }
-  const draftClaim = new DashboardClaimantItem();
-  draftClaim.claimId = 'draft';
-  draftClaim.draft = true;
-  draftClaim.ocmc = false;
-  draftClaim.status = 'NO_STATUS';
-  draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
-  draftClaim.claimantName = claim.getClaimantFullName();
-  draftClaim.defendantName = claim.getDefendantFullName();
-  draftClaim.url = CLAIMANT_TASK_LIST_URL;
-  return draftClaim;
 };

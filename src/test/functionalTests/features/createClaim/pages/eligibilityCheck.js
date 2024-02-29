@@ -243,11 +243,23 @@ class EligibilityCheck {
   async eligibilityApplyForHWF(){
     await I.seeInCurrentUrl('/eligibility/apply-for-help-with-fees');
     await I.waitForText('Apply For Help With Fees');
-    await I.see('If you have already applied for Help with Fees in respect of THIS CLAIM, you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.');
-    await I.see('Apply For Help With Fees (opens in a new window)');
-    await I.see('If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.');
-    await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');
-    await I.see('When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.');
+    await I.see('If you have already applied for Help with Fees in respect of THIS CLAIM,');
+    await I.see('you may already have a reference number.');
+    await I.see('If so, you can save and continue and enter it when asked.');
+    await I.see('Do not use a Help With Fees reference number related a different claim or to any application fees.');
+    await I.see('It will be invalid as you cannot use the same Help with Fees reference number twice.');
+    await I.see('If you do not have a Help with Fees reference number for this claim,');
+    await I.see('you should make a Help with Fees application which will provide you with a reference number.');
+    await I.seeElement('//a[@href=\'https://www.gov.uk/get-help-with-court-fees\']');
+    await I.see('If you need to use the paper Help with Fees application rather than the online version,');
+    await I.see('you will not be able to use Online Civil Money Claims to issue your claim.');
+    await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form.');
+    await I.see('Please note that this is form N1.');
+    await I.see('When you have completed your Help with Fees application,');
+    await I.see('you will be given a reference number (For example HWF-C2D-45E).');
+    await I.see('Please note the number and keep it safe.');
+    await I.see('You will need it later in the claim process.');
+    await I.see('Then return to this page and click the Save and continue box below so that you can start the claim.');
     await I.click('Save and continue');
   }
 
@@ -278,7 +290,6 @@ class EligibilityCheck {
     await I.see('Based on your answers you can make a money claim using this service.');
     await I.see('You will have to pay court fees unless you are eligible for Help with Fees. Find out more about Help with Fees (opens in a new window) .');
     await I.click('Continue');
-    await I.waitForText('Sign in or create an account');
   }
 
   async eligibilityCantUseThisServiceAddress(){
