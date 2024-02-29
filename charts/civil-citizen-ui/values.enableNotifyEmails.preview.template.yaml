@@ -1,7 +1,6 @@
 civil-service:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/service:pr-4010'
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
