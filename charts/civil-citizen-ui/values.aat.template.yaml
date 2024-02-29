@@ -52,8 +52,12 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: cmc-db-password-v11
+          - name: cmc-db-password-v15
             alias: CMC_DB_PASSWORD
+          - name: cmc-db-username-v15
+            alias: CMC_DB_USERNAME
+          - name: cmc-db-host-v15
+            alias: CMC_DB_HOST
           - name: gov-notify-pretends-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
@@ -366,7 +370,7 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-  
+
 
 camunda-bpm:
   enabled: true
