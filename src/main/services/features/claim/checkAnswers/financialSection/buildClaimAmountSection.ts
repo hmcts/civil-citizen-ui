@@ -26,7 +26,7 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     ],
   });
   addClaimAmounts(claim, claimAmountSection, lang);
-  if (claim?.claimInterest) {
+  if (claim.claimInterest) {
     const claimInterest = (claim.claimInterest === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST', {lng}), t(`COMMON.VARIATION.${claimInterest}`, {lng}),  CLAIM_INTEREST_URL, changeLabel(lang)));
   }
