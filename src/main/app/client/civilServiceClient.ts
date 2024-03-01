@@ -320,7 +320,7 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       const claimResponse = response.data as CivilClaimResponse;
-      console.log('response...', JSON.stringify(claimResponse))
+      console.log('response...', JSON.stringify(claimResponse));
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(`Error when submitting event ${event}`);
