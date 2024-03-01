@@ -1,6 +1,5 @@
 const config = require('../../config');
 
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
@@ -32,7 +31,3 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-});
