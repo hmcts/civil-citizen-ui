@@ -14,7 +14,7 @@ let claimNumber;
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instalments @test', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instalments', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
