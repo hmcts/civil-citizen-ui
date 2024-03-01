@@ -34,8 +34,8 @@
     "EMPLOYMENT_DETAILS": "Manylion cyflogaeth",
     "EMPLOYMENT_TYPE": "Math o swydd",
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
-    "TELEPHONE_MEDIATION": "Telephone mediation",
-    "AVAILABILITY_FOR_MEDIATION": "Availability for mediation",
+    "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
+    "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
     "MEDIATION": "Mediation",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
@@ -419,7 +419,7 @@
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
-      "PAGE_TEXT": "Please provide an alternative number"
+      "PAGE_TEXT": "Nodwch rif ffôn amgen"
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
@@ -434,29 +434,29 @@
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
-      "PAGE_TEXT": "Please provide an alternative email address"
+      "PAGE_TEXT": "Nodwch gyfeiriad e-bost amgen"
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
-      "PAGE_TEXT": "Can the mediator use {{ partyPhone }} to call you for your mediation appointment?"
+      "PAGE_TEXT": "A all y cyfryngwr ddefnyddio {{ partyPhone }} i’ch ffonio ar gyfer eich apwyntiad cyfryngu?"
     },
     "TELEPHONE_FOR_MEDIATION": {
-      "PAGE_TITLE": "Telephone mediation",
-      "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
-      "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
-      "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
-      "MEDIATION_WILL_LAST": "Mediation will last no longer than one hour and will take place by telephone.",
-      "WHAT_HAPPENS": "What happens at mediation?",
-      "WE_WILL_ARRANGE": "We will arrange a phone call with a mediator from the Small Claims Mediation Service. The mediator will:",
-      "BULLET_LIST_ITEM1": "listen to each side separately – you will not talk directly to the other side",
-      "BULLET_LIST_ITEM2": "ask you to consider what the other side says",
-      "BULLET_LIST_ITEM3": "help you reach an agreement, if possible",
-      "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
-      "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
-      "AFTER_THE_PHONE_CALL":"After the phone call",
-      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
-      "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
-      "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
+      "PAGE_TITLE": "Cyfryngu dros y ffôn",
+      "IF_THE_CLAIMANT_DISAGREES": "Os yw’r hawlydd yn anghytuno â’ch ymateb, rhaid i chi gymryd rhan mewn cyfryngu.",
+      "A_TELEPHONE_MEDIATION_APPOINTMENT": "Bydd apwyntiad cyfryngu dros y ffôn yn cael ei drefnu yn rhad ac am ddim.",
+      "AN_IMPARTIAL_MEDIATOR": "Bydd cyfryngwr diduedd yn siarad â’r ddau barti i weld a oes modd dod i gytundeb cyn i’r achos fynd gerbron y llys. Byddwch yn cael cyfle i esbonio’n fanylach eich rhesymau dros wrthod yr hawliad.",
+      "MEDIATION_WILL_LAST": "Ni fydd cyfryngu yn para mwy na awr a bydd yn digwydd dros y ffôn.",
+      "WHAT_HAPPENS": "Beth fydd yn digwydd mewn sesiwn cyfryngu?",
+      "WE_WILL_ARRANGE": "Byddwn yn trefnu galwad ffôn gyda chyfryngwr o'r Gwasanaeth Cyfryngu Hawliadau Bychain. Bydd y cyfryngwr yn:",
+      "BULLET_LIST_ITEM1": "gwrando ar y ddwy ochr ar wahân - ni fyddwch yn siarad â’r ochr arall yn uniongyrchol",
+      "BULLET_LIST_ITEM2": "gofyn i chi ystyried yr hyn mae’r ochr arall yn ei ddweud",
+      "BULLET_LIST_ITEM3": "eich helpu i ddod i gytundeb, os yw’n bosib",
+      "WHAT_HAPPENS_IF": "Beth fydd yn digwydd os na fyddwch yn mynychu eich apwyntiad cyfryngu?",
+      "IF_YOU_DO_NOT_ATTEND": "Os na fyddwch yn mynychu eich apwyntiad cyfryngu, efallai bydd y barnwr yn rhoi cosb ar waith yn eich erbyn. Gallai hyn gynnwys y barnwr yn gwneud penderfyniad o blaid y parti arall yn awtomatig, neu’n eich gorfodi i dalu rhai o gostau’r parti arall neu’r costau i gyd.",
+      "AFTER_THE_PHONE_CALL": "Ar ôl yr alwad ffôn",
+      "IF_MEDIATION_IS_SUCCESSFUL": "Os bydd y cyfryngu yn llwyddiannus, ni fydd rhaid i chi fynd i’r llys. Byddwch yn dod i gytundeb dros y ffôn, a byddwn yn anfon hwn atoch drwy e-bost. Ni fydd rhaid i chi lofnodi unrhyw beth, ond mae’r cytundeb yn eich rhwymo i lynu at y cytundeb.",
+      "IF_EITHER_PARTY": "Os bydd naill barti neu’r llall yn torri telerau’r cytundeb,  gall y parti arall fynd yn ôl i’r llys i ofyn am ddyfarniad neu wrandawiad.",
+      "IF_YOU_DO_NOT_REACH": "Os na fyddwch yn dod i gytundeb yn y cyfryngu, efallai bydd rhaid i chi fynychu gwrandawiad llys. Ni ddylid cyfeirio at unrhyw drafodaethau o’r sesiwn cyfryngu pan fyddwch yn y gwrandawiad."
     },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
@@ -1975,7 +1975,7 @@
       "DEFAULT_JUDGMENT_MSG1": "Mae {{claimantName}} wedi gofyn am CCJ yn eich erbyn oherwydd bod y dyddiad cau ar gyfer eich ymateb wedi mynd heibio.",
       "DEFAULT_JUDGMENT_MSG2": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru gyda chynnydd yr hawliad hwn - bydd unrhyw ddiweddariadau pellach yn dod drwy'r post.",
       "DEFAULT_JUDGMENT_MSG3": "Os yw'ch dyddiad cau wedi mynd heibio, ond nad yw'r CCJ wedi'i gyhoeddi, gallwch chi ymateb o hyd. Cysylltwch â ni am fwy o wybodaeth:",
-      "EMAIL": "Email :",
+      "EMAIL": "E-bost :",
       "EMAIL_ID": "contactocmc@justice.gov.uk",
       "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
       "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Derbyniodd {{claimantName}} eich addefiad o £{{amount}}.",
@@ -2236,15 +2236,15 @@
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
+      "PAGE_TEXT": "Ai {{ partyContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
       "PAGE_TITLE": "Mediation contact person confirmation",
-      "PAGE_TEXT": "Please provide the name of your nominated person to contact"
+      "PAGE_TEXT": "Darparwch enw’r unigolyn rydych wedi’i enwebu i ni gysylltu â nhw"
     },
     "MEDIATION_EMAIL_CONFIRMATION": {
       "PAGE_TITLE": "Mediation email confirmation",
-      "PAGE_TEXT": "Can the mediation team use {{ partyEmail }} to contact you about your mediation appointment?"
+      "PAGE_TEXT": "A all y tîm cyfryngu ddefnyddio {{ partyEmail }} i gysylltu â chi am eich apwyntiad cyfryngu?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
@@ -3562,7 +3562,7 @@
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
-    "VALID_CONTACT_PERSON": "Enter contact person",
+    "VALID_CONTACT_PERSON": "Nodwch unigolyn cyswllt",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_NUMBER_EVIDENCE": "Rhowch rif ffôn, fel 01632 960 001, 07700 900 982, neu +44 808 157 0192",
@@ -3584,6 +3584,8 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_CARM_EMAIL_CONFIRMATION": "Dewisiwch opsiwn: ydy neu nac ydy",
+    "VALID_YES_NO_OPTION_CARM_CONTACT_PERSON_CONFIRMATION": "Dewisiwch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",
