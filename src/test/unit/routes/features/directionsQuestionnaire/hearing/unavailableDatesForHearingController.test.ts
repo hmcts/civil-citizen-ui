@@ -491,7 +491,6 @@ describe('Unavailable dates for hearing Controller', () => {
 
     it('should redirect phone or video hearing page if all information provided and unavailable dates are less than 30 days', async () => {
       const is29Feb = isTwentyNineLeapYear(today);
-      
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
