@@ -2,8 +2,10 @@ export const getNextYearValue = (): number => {
   return new Date().getFullYear() + 1;
 };
 
-export const isLeapYear = (year: number) => {
-  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+export const isTwentyNineLeapYear = (date: Date) => {
+  const year = date.getFullYear();
+  const isLeapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  return isLeapYear && date.getMonth() === 1 && date.getDate() === 29;
 };
 
 export const FIXED_DATE = new Date(2023, 3, 26);
