@@ -314,10 +314,13 @@ export class CivilServiceClient {
       caseDataUpdate: updatedClaim,
     };
     try {
+      console.log('submitting the event ...', JSON.stringify(data));
+      console.log('submitting the event  for claim ...', JSON.stringify(claimId));
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       const claimResponse = response.data as CivilClaimResponse;
+      console.log('response...', JSON.stringify(claimResponse))
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(`Error when submitting event ${event}`);
