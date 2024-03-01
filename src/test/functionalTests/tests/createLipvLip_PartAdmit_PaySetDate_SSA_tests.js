@@ -55,5 +55,6 @@ Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By 
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
