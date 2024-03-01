@@ -1916,7 +1916,7 @@
       "REFERENCE_NUMBER": "Cyfeirnod Help i Dalu Ffioedd",
       "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd.",
-      "REFERENCE_NUMBER_NONE": "None"
+      "REFERENCE_NUMBER_NONE": "Dim"
     },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
