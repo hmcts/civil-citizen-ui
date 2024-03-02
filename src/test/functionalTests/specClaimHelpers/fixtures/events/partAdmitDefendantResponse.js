@@ -1,5 +1,5 @@
 module.exports = {
-  partAdmitAlreadyPaid: () => {
+  partAdmitAmountPaidWithIndividual: () => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
@@ -185,7 +185,7 @@ module.exports = {
     };
   },
 
-  partAdmitPayImmediately: () => {
+  partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual: () => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
@@ -372,7 +372,7 @@ module.exports = {
     };
   },
 
-  partAdmitPayBySetDate: () => {
+  partAdmitWithPartPaymentOnSpecificDateWithIndividual: () => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
