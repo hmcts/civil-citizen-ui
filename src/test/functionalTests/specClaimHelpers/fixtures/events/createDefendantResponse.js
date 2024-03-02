@@ -1,8 +1,8 @@
 const config = require('../../../../config');
 
-const admitAllDefendantResponse = require('../fixtures/events/admitAllDefendantResponse.js');
-const partAdmitDefendantResponse = require('../fixtures/events/partAdmitDefendantResponse.js');
-const rejectAllDefendantResponse = require('../fixtures/events/rejectAllDefendantResponse.js');
+const admitAllDefendantResponse = require('./admitAllDefendantResponse.js');
+const partAdmitDefendantResponse = require('./partAdmitDefendantResponse.js');
+const rejectAllDefendantResponse = require('./rejectAllDefendantResponse.js');
 
 module.exports = {
   createDefendantResponse: (totalClaimAmount, responseType) => {
