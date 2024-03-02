@@ -24,7 +24,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FA_PAY_BY_SET_DATE_INDIVIDUAL');
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDate(claimRef, claimNumber);

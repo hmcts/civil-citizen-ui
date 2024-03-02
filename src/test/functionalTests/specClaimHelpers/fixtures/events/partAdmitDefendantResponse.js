@@ -1,5 +1,3 @@
-const config = require('../../../../config');
-
 module.exports = {
   partAdmitAlreadyPaid: () => {
     return {
@@ -374,8 +372,7 @@ module.exports = {
     };
   },
 
-  //CCJ with fixed costs
-  partAdmitPayImmediately: () => {
+  partAdmitPayBySetDate: () => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
@@ -609,7 +606,6 @@ module.exports = {
     };
   },
 
-  //CCJ Without fixed costs
   partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts: () => {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',

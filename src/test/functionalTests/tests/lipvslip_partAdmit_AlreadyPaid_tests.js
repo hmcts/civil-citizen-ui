@@ -13,6 +13,8 @@ let securityCode;
 
 Feature('Response with PartAdmit-AlreadyPaid - Small Claims');
 
+const claimType = 'SmallClaims';
+
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -30,4 +32,6 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
+  await api.waitForFinishedBusinessProcess();
 }).tag('@regression-r2');

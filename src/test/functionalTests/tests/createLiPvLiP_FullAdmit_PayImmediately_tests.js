@@ -23,7 +23,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FA_PAY_IMMEDIATELY_INDIVIDUAL');
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');

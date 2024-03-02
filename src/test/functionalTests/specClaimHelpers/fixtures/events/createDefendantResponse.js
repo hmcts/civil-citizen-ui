@@ -1,6 +1,8 @@
+const config = require('../../../../config');
+
 module.exports = {
   createDefendantResponse: (totalClaimAmount, responseType) => {
-    if (responseType === 'FD_DISPUTE_ALL_INDIVIDUAL') {
+    if (responseType === config.defenceType.rejectAllDisputeAllWithIndividual) {
       return {
         event: 'DEFENDANT_RESPONSE_CUI',
         caseDataUpdate: {
@@ -86,7 +88,7 @@ module.exports = {
         },
       };
     }
-    if (responseType === 'FA_PAY_IMMEDIATELY_INDIVIDUAL') {
+    if (responseType === config.defenceType.admitAllPayImmediateWithIndividual) {
       return {
         event: 'DEFENDANT_RESPONSE_CUI',
         caseDataUpdate: {
@@ -149,7 +151,7 @@ module.exports = {
         },
       };
     }
-    if (responseType === 'FA_PAY_BY_SET_DATE_INDIVIDUAL') {
+    if (responseType === config.defenceType.admitAllPayBySetDateWithIndividual) {
       return {
         event: 'DEFENDANT_RESPONSE_CUI',
         caseDataUpdate: {
@@ -323,7 +325,7 @@ module.exports = {
         },
       };
     }
-    if (responseType === 'FA_PAY_BY_INSTALMENTS_INDIVIDUAL'){
+    if (responseType === config.defenceType.admitAllPayByInstallmentWithIndividual){
       return {
         event: 'DEFENDANT_RESPONSE_CUI',
         caseDataUpdate: {
