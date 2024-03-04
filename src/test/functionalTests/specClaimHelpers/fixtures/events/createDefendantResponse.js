@@ -1,10 +1,10 @@
 const config = require('../../../../config');
 
 const admitAllDefendantResponse = require('./admitAllDefendantResponse.js');
-const partAdmitSmallClaims = require('./partAdmitSmallClaims.js');
-const partAdmitFastTrack = require('./partAdmitFastTrack.js');
-const rejectAllSmallClaims = require('./rejectAllSmallClaims.js');
-const rejectAllFastTrack = require('./rejectAllSmallClaims.js');
+const partAdmitSmallClaims = require('./partAdmitSmallClaimsDefendantResponse');
+const partAdmitFastTrack = require('./partAdmitFastTrackDefendantResponse');
+const rejectAllSmallClaims = require('./rejectAllSmallClaimsDefendantResponse');
+const rejectAllFastTrack = require('./rejectAllFastTrackDefendantResponse');
 
 module.exports = {
   createDefendantResponse: (totalClaimAmount, responseType, claimType) => {
