@@ -4,18 +4,18 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../common/cButtons');
 
 const fields ={
-  yesButton: 'input[id="partnerPension"]',
-  noButton: 'input[id="partnerPension-2"]',
+  yesButton: 'input[id="partnerSevereDisability"]',
+  noButton: 'input[id="partnerSevereDisability-2"]',
 };
 
 const content = {
   heading: {
-    en: 'Does your partner receive a pension?',
-    cy: 'A yw eich partner yn cael pensiwn?',
+    en: 'Is your partner severely disabled?',
+    cy: 'A oes gan eich partner anabledd difrifol?',
   },
 };
 
-class PartnerPensionDetails {
+class SeverePartnerDisabilityDetails {
 
   async clickYesButton() {
     const { language } = sharedData; 
@@ -25,11 +25,11 @@ class PartnerPensionDetails {
   }
 
   async clickNoButton() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForText(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);
   }
 }
 
-module.exports = PartnerPensionDetails;
+module.exports = SeverePartnerDisabilityDetails;
