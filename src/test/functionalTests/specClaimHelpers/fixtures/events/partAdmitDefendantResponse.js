@@ -606,7 +606,7 @@ module.exports = {
     };
   },
 
-  partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts: () => {
+  partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual: () => {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {

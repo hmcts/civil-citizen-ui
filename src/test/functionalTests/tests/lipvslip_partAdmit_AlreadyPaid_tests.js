@@ -23,15 +23,12 @@ Before(async ({api}) => {
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-    console.log('claim number', claimNumber);
-    console.log('Security code', securityCode);
-    await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async ({api}) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-r2');
