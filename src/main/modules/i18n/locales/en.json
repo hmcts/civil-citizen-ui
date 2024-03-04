@@ -1914,9 +1914,9 @@
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
       "REFERENCE_NUMBER": "Help with fees reference number",
+      "REFERENCE_NUMBER_NONE": "None",
       "TITLE": "Do you have a Help With Fees reference number?",
-      "ONLY_ONE": "You'll only have one if you applied for Help With Fees.",
-      "REFERENCE_NUMBER_NONE": "None"
+      "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
     },
     "INTEREST_CLAIM_OPTIONS": {
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
