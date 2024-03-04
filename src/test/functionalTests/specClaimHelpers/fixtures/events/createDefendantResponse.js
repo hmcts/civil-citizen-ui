@@ -23,21 +23,21 @@ module.exports = {
         }
       case config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual:
         if (claimType === 'FastTrack') {
-          return partAdmitFastTrack.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitFastTrack.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual(totalClaimAmount);
         } else {
-          return partAdmitSmallClaims.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitSmallClaims.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual(totalClaimAmount);
         }
       case config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual:
         if (claimType === 'FastTrack') {
-          return partAdmitFastTrack.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitFastTrack.partAdmitWithPartPaymentOnSpecificDateWithIndividual(totalClaimAmount);
         } else {
-          return partAdmitSmallClaims.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitSmallClaims.partAdmitWithPartPaymentOnSpecificDateWithIndividual(totalClaimAmount);
         }
       case config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual:
         if (claimType === 'FastTrack') {
-          return partAdmitFastTrack.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitFastTrack.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual(totalClaimAmount);
         } else {
-          return partAdmitSmallClaims.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+          return partAdmitSmallClaims.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual(totalClaimAmount);
         }
       case config.defenceType.rejectAllDisputeAllWithIndividual:
         if (claimType === 'FastTrack') {
