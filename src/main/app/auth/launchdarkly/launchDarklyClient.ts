@@ -42,7 +42,9 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   // return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
   return false;
 }
-
+export async function isDashboardServiceEnabled(): Promise<boolean> {
+  return await getFlagValue('dashboard-service') as boolean;
+}
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
 }
