@@ -1,11 +1,12 @@
 import {MEDIATION_UPLOAD_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   addAnother,
   getUploadDocuments,
-  getUploadDocumentsForm, removeItem,
+  getUploadDocumentsForm,
+  removeItem,
   saveUploadDocument,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {GenericForm} from 'form/models/genericForm';
@@ -13,13 +14,13 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 
 import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {
-  TypeOfMediationDocuments,
-  UploadDocuments,
-} from 'models/mediation/uploadDocuments/uploadDocuments';
+  MediationTypeOfDocumentSection,
+  TypeOfDocumentYourNameSection,
+  UploadDocumentsForm,
+} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import {CaseDocument} from 'models/document/caseDocument';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
@@ -30,7 +31,6 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'typeOfDocuments';
-//const MEDIATION_UPLOAD_DOCUMENT_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
 
 const multer = require('multer');
 const fileSize = Infinity;
@@ -75,8 +75,7 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
         && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
         && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = document;
+      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
   }
 }
@@ -87,7 +86,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
   if(!form ){
     const typeOfDocuments =  uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments || [];
     const documentsForDocumentsReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments || [];
-    form = new GenericForm(new UploadDocumentsForm(typeOfDocuments, documentsForDocumentsReferred));
+    form = new GenericForm(new UploadDocumentsForm(typeOfDocuments as TypeOfDocumentYourNameSection[], documentsForDocumentsReferred as MediationTypeOfDocumentSection[]));
   }
   const yourStatementContent = getYourStatementContent(uploadDocuments, form);
   const documentsReferredContent = getDocumentsForDocumentsReferred(uploadDocuments, form);
@@ -145,11 +144,14 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
       renderView(form, uploadDocuments, res, claimId, claim);
     } else {
       // set upload documents with new data
-      const documentsForYourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
-      documentsForYourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
-
+      const yourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
+      if(yourStatement){
+        yourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
+      }
       const documentsForReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
-      documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
+      if(documentsForReferred){
+        documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
+      }
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND));
     }

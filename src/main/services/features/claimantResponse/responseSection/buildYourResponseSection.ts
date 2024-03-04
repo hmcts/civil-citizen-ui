@@ -13,7 +13,7 @@ import {
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {
   RESPONSEFORDEFENDANTREPAYMENTPLAN,
   RESPONSEFORNOTPAIDPAYIMMEDIATELY,
@@ -130,7 +130,10 @@ export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: s
 
 export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
-  const option = claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount()
+  const claimantOption = claim.isFullDefence() ?
+    claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option : claim.claimantResponse?.hasPartPaymentBeenAccepted?.option;
+
+  const option = claimantOption === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -179,11 +182,11 @@ export const buildYourResponseSection = (claim: Claim, claimId: string, lng: str
     yourResponse.summaryList.rows.push(getDoYouAgreeDefendantPaid(claim, claimId, lng));
   }
 
-  if (claimantResponse.hasPartPaymentBeenAccepted?.option) {
+  if (claimantResponse.hasPartPaymentBeenAccepted?.option || claimantResponse.hasFullDefenceStatesPaidClaimSettled?.option) {
     yourResponse.summaryList.rows.push(getDoYouWantToSettlePaid(claim, claimId, lng));
   }
 
-  if (claim.isRejectionReasonCompleted()) {
+  if (claimantResponse.isRejectionReasonCompleted) {
     yourResponse.summaryList.rows.push(getReasonForRejecting(claim, claimId, lng));
   }
 

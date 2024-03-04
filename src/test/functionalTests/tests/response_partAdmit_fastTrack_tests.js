@@ -2,8 +2,7 @@ const config = require('../../config');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -24,11 +23,12 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @regression', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -40,9 +40,4 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly @re
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForFastTrack(claimRef, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
-});
-
-AfterSuite(async () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+}).tag('@regression-cui-r1');

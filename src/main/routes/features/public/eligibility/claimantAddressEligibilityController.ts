@@ -1,12 +1,12 @@
-import {Request, Response, Router} from 'express';
+import {Request, RequestHandler, Response, Router} from 'express';
 import {
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_ADDRESS_URL, ELIGIBILITY_TENANCY_DEPOSIT_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 
 const claimantAddressEligibilityController = Router();
 const claimantEligibilityViewPath = 'features/public/eligibility/claimant-address-eligibility';
@@ -22,7 +22,7 @@ claimantAddressEligibilityController.get(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req:
   renderView(genericYesNoForm, res);
 });
 
-claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, async (req: Request, res: Response) => {
+claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (async (req: Request, res: Response) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
   await genericYesNoForm.validate();
 
@@ -36,6 +36,6 @@ claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, asyn
       ? res.redirect(ELIGIBILITY_TENANCY_DEPOSIT_URL)
       : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS));
   }
-});
+}) as RequestHandler);
 
 export default claimantAddressEligibilityController;

@@ -22,7 +22,6 @@ class CaseProgressionSteps {
   initiateUploadEvidenceJourney(claimRef, claimType) {
 
     console.log('The value of the Claim Reference : '+claimRef);
-    latestUpdateTab.open(claimRef , claimType);
     latestUpdateTab.nextAction('Upload documents');
     uploadYourDocumentsIntroduction.verifyPageContent();
     uploadYourDocumentsIntroduction.nextAction('Start now');
@@ -49,8 +48,8 @@ class CaseProgressionSteps {
     latestUpdateTab.nextAction('View hearing notice');
   }
 
-  verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType)  {
-    latestUpdateTab.open(claimRef, claimType,false);
+  verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, hearingInitiated = false)  {
+    latestUpdateTab.open(claimRef, claimType, hearingInitiated);
   }
 
   verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType)  {

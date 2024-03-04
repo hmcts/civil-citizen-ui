@@ -61,9 +61,9 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
     responseType: responseType,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: 'Mr.',
-      individualFirstName: 'TestName',
-      individualLastName: 'TestLastName',
+      title: 'Mr.',
+      firstName: 'TestName',
+      lastName: 'TestLastName',
     },
   };
   claim.fullAdmission = new FullAdmission();
@@ -418,7 +418,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'Yes';
         claim.partAdmitPaidValuePounds = 500;
@@ -443,7 +443,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'Yes';
         claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
@@ -467,7 +467,7 @@ describe('Latest Update Content Builder', () => {
           alreadyPaid: {
             option: 'yes',
           },
-        } as any;
+        } as PartialAdmission;
         claim.applicant1PartAdmitConfirmAmountPaidSpec = 'No';
         claim.partAdmitPaidValuePounds = 500;
         const claimId = claim.id;

@@ -14,6 +14,7 @@ import {
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {t} from 'i18next';
+import {isTwentyNineLeapYear} from '../../../../../utils/dateUtils';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -488,6 +489,8 @@ describe('Unavailable dates for hearing Controller', () => {
     });
 
     it('should redirect phone or video hearing page if all information provided and unavailable dates are less than 30 days', async () => {
+      const is29Feb = isTwentyNineLeapYear(today);
+
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -495,7 +498,7 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
-                day: today.getDate(),
+                day: is29Feb? today.getDate() - 1  : today.getDate(),
                 month: today.getMonth() + 1,
                 year: today.getFullYear() + 1,
               },
@@ -538,6 +541,8 @@ describe('Unavailable dates for hearing Controller', () => {
 
     it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
+      const is29Feb = isTwentyNineLeapYear(today);
+
       await request(app)
         .post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .send({
@@ -545,9 +550,9 @@ describe('Unavailable dates for hearing Controller', () => {
             type: UnavailableDateType.SINGLE_DATE,
             single: {
               start: {
-                day: 7,
-                month: 2,
-                year: 2024,
+                day: is29Feb? today.getDate() - 1  : today.getDate(),
+                month: today.getMonth() + 1,
+                year: today.getFullYear() + 1,
               },
             },
           }],

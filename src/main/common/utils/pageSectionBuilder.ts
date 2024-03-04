@@ -8,7 +8,6 @@ export class PageSectionBuilder {
       type: ClaimSummaryType.BUTTON,
       data: {
         text: title,
-        //TODO: (href) in the future we should add in here the document url (it is in development)
         href: href,
         isStartButton: true,
       },
@@ -155,6 +154,18 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+
+  addWarning(text: string, variables?: any) {
+    const warningSection = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: text,
+        variables: variables,
+      },
+    });
+    this._claimSummarySections.push(warningSection);
     return this;
   }
 

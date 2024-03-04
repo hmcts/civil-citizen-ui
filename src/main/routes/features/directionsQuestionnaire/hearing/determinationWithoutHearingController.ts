@@ -1,19 +1,19 @@
-import {Response, Router} from 'express';
+import {RequestHandler, Response, Router} from 'express';
 import {
   DETERMINATION_WITHOUT_HEARING_URL,
   DQ_EXPERT_SMALL_CLAIMS_URL,
 } from '../../../urls';
 import {
   DeterminationWithoutHearing,
-} from '../../../../common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+} from 'models/directionsQuestionnaire/hearing/determinationWithoutHearing';
+import {GenericForm} from 'form/models/genericForm';
 
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -27,7 +27,7 @@ function renderView(form: GenericForm<DeterminationWithoutHearing>, res: Respons
 }
 
 determinationWithoutHearingController
-  .get(DETERMINATION_WITHOUT_HEARING_URL, async (req, res, next) => {
+  .get(DETERMINATION_WITHOUT_HEARING_URL, (async (req, res, next) => {
     try {
       const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
       const determinationWithoutHearing = directionQuestionnaire?.hearing?.determinationWithoutHearing ?
@@ -37,10 +37,10 @@ determinationWithoutHearingController
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 determinationWithoutHearingController
-  .post(DETERMINATION_WITHOUT_HEARING_URL, async (req, res, next) => {
+  .post(DETERMINATION_WITHOUT_HEARING_URL, (async (req, res, next) => {
     try {
       const claimId = req.params.id;
       const reasonForHearing = req.body.option === YesNo.NO ? req.body.reasonForHearing : undefined;
@@ -56,6 +56,6 @@ determinationWithoutHearingController
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default determinationWithoutHearingController;

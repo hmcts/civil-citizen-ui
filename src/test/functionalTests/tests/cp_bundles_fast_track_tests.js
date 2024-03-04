@@ -2,8 +2,7 @@ const config = require('../../config');
 const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../features/home/steps/login');
-const {unAssignAllUsers} = require('./../specClaimHelpers/api/caseRoleAssignmentHelper');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
@@ -16,22 +15,18 @@ Before(async ({api}) => {
     const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FD_DISPUTE_ALL_INDIVIDUAL');
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     await api.performBundleGeneration(config.hearingCenterAdminWithRegionId1, claimRef);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Case progression journey - Fast Track - Verify Bundles tab', () => {
+Scenario('Case progression journey - Fast Track - Verify Bundles tab', async () => {
   if (['demo'].includes(config.runningEnv)) {
     CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
-}).tag('@regression');
-
-AfterSuite(async  () => {
-  await unAssignAllUsers();
-  await deleteAccount(config.defendantCitizenUser.email);
-});
+}).tag('@regression-cp');

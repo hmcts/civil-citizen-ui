@@ -4,7 +4,7 @@ const BilingualLanguagePreference = require('../pages/defendantLipResponse/bilin
 const NameAndAddressDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterNameAndAddressDetails');
 const DateOfBirthDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterDateOfBirthDetails');
 const ContactNumberDetailsPage = require('../pages/defendantLipResponse/confirmYourDetails/enterContactNumberDetails');
-const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/respondType');
+const RespondTypePage = require('../pages/defendantLipResponse/chooseAResponse/responseType');
 const PaymentOptionPage = require('../pages/defendantLipResponse/howYouWillPay/paymentOption');
 const CheckYourAnswersPage = require('../pages/defendantLipResponse/checkYourAnswers');
 const ConfirmationPage = require('../pages/defendantLipResponse/confirmation');
@@ -18,6 +18,7 @@ const PartnerDetails = require('../pages/defendantLipResponse/shareYourFinancial
 const PartnerAgeDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerAgeDetails');
 const PartnerPensionDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerPensionDetails');
 const PartnerDisabilityDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/partnerDisabilityDetails');
+const SeverePartnerDisabilityDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/severePartnerDisabilityDetails');
 const DependantDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/dependantDetails');
 const OtherDependantDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/otherDependantDetails');
 const EmploymentDetails = require('../pages/defendantLipResponse/shareYourFinancialDetails/employment');
@@ -106,6 +107,7 @@ const selectPartnerDetails = new PartnerDetails();
 const selectPartnerAge = new PartnerAgeDetails();
 const selectPartnerPension = new PartnerPensionDetails();
 const selectPartnerDisability = new PartnerDisabilityDetails();
+const selectSeverePartnerDisability = new SeverePartnerDisabilityDetails();
 const selectDependantDetails = new DependantDetails();
 const selectOtherDependantsDetails = new OtherDependantDetails();
 const selectEmploymentDetails = new EmploymentDetails();
@@ -150,14 +152,13 @@ const sentExpertReports = new SentExpertReports();
 const sharedExpert = new SharedExpert();
 const expertDetails = new ExpertDetails();
 const assignCaseToLip = new AssignCaseToLip();
-
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode){
     await assignCaseToLip.open(claimNumber, securityCode);
   }
-  async RespondToClaim(claimRef){
+  async RespondToClaim(claimRef, languageOption = 'en'){
     await defendantLatestUpdate.open(claimRef);
-    await bilingualLanguagePreference.verifyContent();
+    await bilingualLanguagePreference.verifyContent(languageOption);
   }
 
   async RespondToClaimError(claimRef){
@@ -276,7 +277,8 @@ class ResponseSteps {
     await this.SelectPartnerDetails('yes');
     await this.SelectPartnerAge('yes');
     await this.SelectPartnerPension('yes');
-    await this.SelectPartnerDisability('no');
+    await this.SelectPartnerDisability('yes');
+    await this.SelectSeverePartnerDisability('yes');
     await this.SelectDependantDetails('yes');
     await this.SelectOtherDependantDetails('yes');
     await this.SelectEmploymentDetails('yes');
@@ -291,6 +293,12 @@ class ResponseSteps {
     await this.EnterExplanation();
   }
 
+  async EnterFinancialDetailsErrors(claimRef) {
+    await this.ShareYourFinancialDetailsIntro(claimRef);
+    await this.EnterBankAccountDetailsError();
+    await this.EnterBankAccountDetails();
+  }
+
   async ShareYourFinancialDetailsIntro(claimRef) {
     await shareYourFinancialDetailsIntro.open(claimRef);
     await shareYourFinancialDetailsIntro.clickContinue();
@@ -298,6 +306,11 @@ class ResponseSteps {
 
   async EnterBankAccountDetails() {
     await bankAccountDetails.enterBankAccountDetails();
+    await bankAccountDetails.clickContinue();
+  }
+
+  async EnterBankAccountDetailsError() {
+    await bankAccountDetails.enterBankAccountDetailsError();
     await bankAccountDetails.clickContinue();
   }
 
@@ -347,6 +360,14 @@ class ResponseSteps {
       await selectPartnerDisability.clickYesButton();
     } else {
       await selectPartnerDisability.clickNoButton();
+    }
+  }
+
+  async SelectSeverePartnerDisability(severePartnerDisability) {
+    if (severePartnerDisability == 'yes') {
+      await selectSeverePartnerDisability.clickYesButton();
+    } else {
+      await selectSeverePartnerDisability.clickNoButton();
     }
   }
 
@@ -512,6 +533,10 @@ class ResponseSteps {
     I.click('Save and continue');
   }
 
+  async SignOut() {
+    I.click('Sign out');
+  }
+
   async EnterUnavailableDates() {
     await nextThreeMonthsDate.enterNextThreeMonthsDate();
     await availabilityDates.enterUnavailableDates(true);
@@ -528,7 +553,7 @@ class ResponseSteps {
   async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
-    await this.EnterExpertReportDetails('TestExpert1', '20', '10', '2022');
+    await this.EnterExpertReportDetails();
     await this.SelectGiveEvidenceYourself();
     if(!isIndividual) await this.EnterYourDetails();
     await this.EnterDefedantWitnesses();
@@ -569,12 +594,12 @@ class ResponseSteps {
     await dqExpert.chooseExpert();
   }
 
-  async EnterExpertReportDetails(expertName, day, month, year) {
-    await expertReportDetails.enterExpertReportDetails(expertName, day, month, year);
+  async EnterExpertReportDetails() {
+    await expertReportDetails.enterExpertReportDetails();
   }
 
   async SelectGiveEvidenceYourself() {
-    await giveEvidenceYourself.SelectGiveEvidenceYourself();
+    await giveEvidenceYourself.selectGiveEvidenceYourself();
   }
 
   async EnterYourDetails() {

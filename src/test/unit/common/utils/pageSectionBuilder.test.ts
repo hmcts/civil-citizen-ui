@@ -110,8 +110,8 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should addLink with just text', ()=> {
     //Given
-    const textAfterUnd: any = undefined;
-    const textBeforeUnd: any = undefined;
+    const textAfterUnd: string = undefined;
+    const textBeforeUnd: string = undefined;
     const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -134,8 +134,8 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should open the link in external window with just text', () => {
     //Given
-    const textAfterUnd: any = undefined;
-    const textBeforeUnd: any = undefined;
+    const textAfterUnd: string = undefined;
+    const textBeforeUnd: string = undefined;
     const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -272,5 +272,23 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(buttonWithCancelLinkResult).toEqual([buttonWithCancelLinkExpected]);
+  });
+
+  it('should add Warning', ()=> {
+    //Given
+    const addWarningResultExpected = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+    //When
+    const addWarningResult = new PageSectionBuilder()
+      .addWarning('text', 'variables')
+      .build();
+
+    //Then
+    expect(addWarningResult).toEqual([addWarningResultExpected]);
   });
 });
