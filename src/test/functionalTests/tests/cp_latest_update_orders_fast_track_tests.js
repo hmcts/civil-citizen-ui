@@ -13,7 +13,7 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FD_DISPUTE_ALL_INDIVIDUAL');
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
