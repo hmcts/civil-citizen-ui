@@ -320,7 +320,7 @@ export class CivilServiceClient {
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event}  `);
+      logger.error(`Error when submitting event ${event}`);
       throw err;
     }
   }
