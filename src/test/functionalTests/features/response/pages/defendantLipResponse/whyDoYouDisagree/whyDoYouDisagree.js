@@ -1,12 +1,10 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   text: 'textarea[id="text"]',
-};
-
-const buttons = {
-  saveAndContinue: 'button.govuk-button',
 };
 
 class WhyDoYouDisagree {
@@ -19,7 +17,7 @@ class WhyDoYouDisagree {
     await I.see('Don\'t give us a detailed timeline - we\'ll ask for that separately.');
     await I.see('Your response will be sent to ');
     await I.fillField(fields.text, 'Test reason');
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[sharedData.language]);
   }
 }
 
