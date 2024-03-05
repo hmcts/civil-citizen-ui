@@ -15,7 +15,7 @@ Before(async ({api}) => {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
@@ -34,7 +34,7 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
     await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
-    
+
   }
 }).tag('@regression-cp');
 
