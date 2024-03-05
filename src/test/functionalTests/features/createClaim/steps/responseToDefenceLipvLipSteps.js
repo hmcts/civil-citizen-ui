@@ -97,6 +97,21 @@ class ResponseToDefenceLipVLipSteps {
     responseToDefence.verifyConfirmationScreenForFullAdmitCCJ(claimNumber);
   }
 
+  async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(caseReference, claimNumber)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForRejectAllDisputeAll();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.decide_whether_to_proceed);
+    await responseToDefence.inputNoToProceedWithTheClaim();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersRejectAllNoToProceed();
+    responseToDefence.verifyConfirmationScreenForRejectAllNoToProceed(claimNumber);
+  }
+
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 3);
     I.see('Your response', 'h1');

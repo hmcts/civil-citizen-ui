@@ -294,6 +294,13 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
+  verifyCheckYourAnswersRejectAllNoToProceed() {
+    I.waitForText('Do you want to proceed with the claim?',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.click(paths.buttons.submit_response);
+  }
+
   async verifyDefendantsResponseForRejection() {
     I.waitForText('Full response',60,'h3');
     I.see('The defendant’s response','h1');
@@ -311,9 +318,27 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  async verifyDefendantsResponseForRejectAllDisputeAll() {
+    I.waitForText('Full response',60,'h3');
+    I.see('The defendant’s response','h1');
+    I.see('Sir John Doe has rejected the claim.');
+    I.see('Their defence','h3');
+    I.see('Why they disagree with the claim?','h3');
+    I.see('Testreason');
+    I.seeElement(paths.links.full_response_pdf_link);
+    I.click(paths.links.full_response_pdf_link);
+    I.click(paths.buttons.continue);
+  }
+
   async inputProceedWithTheClaim() {
     I.waitForText('Do you want to proceed with claim?',60, 'h1');
     I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async inputNoToProceedWithTheClaim() {
+    I.waitForText('Do you want to proceed with claim?',60, 'h1');
+    I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -486,6 +511,16 @@ class ResponseToDefence {
     I.waitForText('You\'ve rejected their response', 60, 'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
+  }
+
+  verifyConfirmationScreenForRejectAllNoToProceed(claimNumber) {
+    I.waitForText('You didn\'t proceed with the claim', 60,'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('The claim has now ended. We\'ve emailed Sir John Doe to tell them.');
+    I.see('Email');
+    I.see('Telephone');
   }
 
   async verifyAcceptOrRejectRepaymentPlan(){
