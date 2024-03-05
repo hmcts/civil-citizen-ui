@@ -15,7 +15,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By Claimant', async ({api}) => {
+Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By Claimant(Sign settlement Agreement)', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
