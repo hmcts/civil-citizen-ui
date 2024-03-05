@@ -171,6 +171,16 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
 
+    it('should return translated status for claim CLAIM_SUBMIT_HWF', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='CLAIM_SUBMIT_HWF';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_SUBMIT_HWF');
+    });
+
     it('should return translated status for claim CLAIMANT_REJECTED_PAYMENT_PLAN', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
@@ -179,6 +189,67 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
+    });
+
+    it('should return translated status for claim HWF_MORE_INFORMATION_NEEDED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='HWF_MORE_INFORMATION_NEEDED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_MORE_INFORMATION_NEEDED');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_NO_REMISSION', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_NO_REMISSION';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_NO_REMISSION');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_PARTIAL_REMISSION', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_PARTIAL_REMISSION';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_PARTIAL_REMISSION');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_UPDATED_REF_NUMBER', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_UPDATED_REF_NUMBER';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_UPDATED_REF_NUMBER');
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_INVALID_REF_NUMBER', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_INVALID_REF_NUMBER';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_INVALID_REF_NUMBER');
+
+    });
+
+    it('should return translated status for claim CLAIMANT_HWF_FEE_PAYMENT_OUTCOME', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'CLAIMANT_HWF_FEE_PAYMENT_OUTCOME';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_FEE_PAYMENT_OUTCOME');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
