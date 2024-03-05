@@ -279,6 +279,7 @@ import mediationUploadDocumentsController from 'routes/features/mediation/upload
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
+import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 
 export default [
   homeController,
@@ -525,4 +526,5 @@ export default [
   mediationUploadDocumentsController,
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
+  notificationRedirectController,
 ];

@@ -5,7 +5,7 @@ import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
-  CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
@@ -916,6 +916,7 @@ describe('Civil Service Client', () => {
         .replace(':scenarioRef', 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required')
         .replace(':redisKey', '1'));
     });
+
     it('should throw error when there is an error calling civil service to start scenario for dashboard', async () => {
       const mockPost = jest.fn().mockImplementation(() => {
         throw new Error('error');
@@ -924,6 +925,33 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.createDashboard(appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('putScenario', () => {
+
+    it('should call dashboard-notifications endpoint for recording notification', async () => {
+      //Given
+      const mockPut = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      await civilServiceClient.recordClick('123', appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPut.mock.calls[0][0]).toEqual(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '123'));
+    });
+
+    it('should throw error when there is an error calling civil service to record click', async () => {
+      const mockPut = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.recordClick('123', appReq)).rejects.toThrow('error');
     });
   });
 });
