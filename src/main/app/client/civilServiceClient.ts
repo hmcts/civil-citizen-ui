@@ -431,52 +431,41 @@ export class CivilServiceClient {
 
   async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
 
-    const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], response.data);
-    const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
-    const dashboardNotificationList= new  DashboardNotificationList();
-    dashboardNotificationList.items = dashboardNotificationItems;
-
-    return dashboardNotificationList;
+    return new DashboardNotificationList(dashboardNotificationItems);
   }
 
   async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-
-    const taskList: DashboardTaskList[] = Object.assign([new DashboardTaskList()], response.data);
+    const response = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const taskList = plainToInstance(CivilServiceDashboardTask, response.data as CivilServiceDashboardTask[]);
 
     const groupedTasks = taskList.reduce((group, task) => {
       const key = `${task.categoryEn}-${task.categoryCy}`;
-      const civilServiceDashboardTask= plainToInstance(CivilServiceDashboardTask, task);
-      const dashboardTask = new DashboardTask();
-      dashboardTask.id = civilServiceDashboardTask.id;
-      dashboardTask.taskNameEn = civilServiceDashboardTask.taskNameEn;
-      dashboardTask.taskNameCy = civilServiceDashboardTask.taskNameCy;
-      dashboardTask.statusEn = civilServiceDashboardTask.currentStatusEn.toString();
-      dashboardTask.statusCy = civilServiceDashboardTask.currentStatusCy;
-      dashboardTask.statusColour = TaskStatusColor[civilServiceDashboardTask.currentStatusEn];
-      dashboardTask.hintTextEn = civilServiceDashboardTask.hintTextEn;
-      dashboardTask.hintTextCy = civilServiceDashboardTask.hintTextCy;
-      dashboardTask.url = civilServiceDashboardTask.url;
+      const dashboardTask = new DashboardTask(
+        task.id,
+        task.taskNameEn,
+        task.taskNameCy,
+        task.currentStatusEn.toString(),
+        task.currentStatusCy,
+        TaskStatusColor[task.currentStatusEn],
+        task.hintTextEn,
+        task.hintTextCy,
+      );
+
       if (!group[key]) {
-        group[key] = new DashboardTaskList();
-        group[key].categoryEn = civilServiceDashboardTask.categoryEn;
-        group[key].categoryCy = civilServiceDashboardTask.categoryCy;
-        group[key].tasks = [];
-        group[key].tasks.push(dashboardTask);
-      } else {
-        group[key].tasks.push(dashboardTask);
+        group[key] = new DashboardTaskList(task.categoryEn, task.categoryCy);
       }
+      group[key].tasks.push(dashboardTask);
+
       return group;
     }, {} as Record<string, DashboardTaskList>);
 
     const groupedTasksList= Object.values(groupedTasks);
 
-    const dashboard = new Dashboard();
-    dashboard.items = groupedTasksList;
-    return dashboard;
+    return new Dashboard(groupedTasksList);
   }
 
   async createDashboard(req: AppRequest): Promise<void> {

@@ -14,6 +14,8 @@ import {plainToInstance} from 'class-transformer';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -56,7 +58,7 @@ describe('dashboardService', () => {
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
         },
-      ];
+      ] as DashboardNotification[];
       const mockExpectedDashboardInfo=
         [{
           'categoryEn': 'Hearing',
@@ -68,7 +70,6 @@ describe('dashboardService', () => {
             'hintTextEn': 'hint_text_en',
             'taskNameCy': 'task_name_cy',
             'hintTextCy': 'hint_text_cy',
-            'url': '',
           }, {
             'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
             'status': 'ACTION_NEEDED',
@@ -76,101 +77,83 @@ describe('dashboardService', () => {
             'hintTextEn': 'hint_text_en',
             'taskNameCy': 'task_name_cy',
             'hintTextCy': 'hint_text_cy',
-            'url': '',
           }],
         },{
           'categoryEn': 'Claim',
           'categoryCy': 'Claim Welsh',
           tasks:[{
             'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
-            'status': 'ACTION_NEEDED',
+            'statusEn': 'ACTION_NEEDED',
+            'statusCy': 'ACTION_NEEDED',
+            'statusColour': 'govuk-red',
             'taskNameEn': 'task_name_en2',
             'hintTextEn': 'hint_text_en2',
             'taskNameCy': 'task_name_cy2',
             'hintTextCy': 'hint_text_cy2',
-            'url': '',
           },
           {
             'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-            'status': 'ACTION_NEEDED',
+            'statusEn': 'ACTION_NEEDED',
+            'statusCy': 'ACTION_NEEDED',
+            'statusColour': 'govuk-red',
             'taskNameEn': 'task_name_en2',
             'hintTextEn': 'hint_text_en2',
             'taskNameCy': 'task_name_cy2',
             'hintTextCy': 'hint_text_cy2',
-            'url': '',
-          }],
-        }];
+          }] as DashboardTask[],
+        }] as DashboardTaskList[];
       const mockDashboardInfo =[
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-          'reference': '123',
-          'currentStatus': 0,
-          'nextStatus': 1,
+          'currentStatusEn': 'Action needed',
+          'currentStatusCy': 'Action needed',
           'taskNameEn': 'task_name_en',
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
           'hintTextCy': 'hint_text_cy',
-          'updatedBy': 'Test',
           'categoryEn': 'Hearing',
           'categoryCy': 'Hearing Welsh',
-          'role': 'claimant',
-          'taskOrder': 10,
-          'url': '',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-          'reference': '123',
-          'currentStatus': 0,
-          'nextStatus': 1,
+          'currentStatusEn': 'Action needed',
+          'currentStatusCy': 'Action needed',
           'taskNameEn': 'task_name_en',
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
           'hintTextCy': 'hint_text_cy',
-          'updatedBy': 'Test',
           'categoryEn': 'Hearing',
           'categoryCy': 'Hearing Welsh',
-          'role': 'claimant',
-          'taskOrder': 10,
-          'url': '',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
-          'reference': '123',
-          'currentStatus': 0,
-          'nextStatus': 1,
+          'currentStatusEn': 'Action needed',
+          'currentStatusCy': 'Action needed',
           'taskNameEn': 'task_name_en2',
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
           'hintTextCy': 'hint_text_cy2',
-          'updatedBy': 'Test2',
           'categoryEn': 'Claim',
           'categoryCy': 'Claim Welsh',
-          'role': 'claimant',
-          'taskOrder': 10,
-          'url': '',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-          'reference': '123',
-          'currentStatus': 0,
-          'nextStatus': 1,
+          'currentStatusEn': 'Action needed',
+          'currentStatusCy': 'Action needed',
           'taskNameEn': 'task_name_en2',
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
           'hintTextCy': 'hint_text_cy2',
-          'updatedBy': 'Test2',
           'categoryEn': 'Claim',
           'categoryCy': 'Claim Welsh',
-          'role': 'claimant',
-          'taskOrder': 10,
-          'url': '',
         },
-      ];
+      ] as CivilServiceDashboardTask[];
+
       it('Notifications', async () => {
         //Given
         const mockGet = jest.fn().mockResolvedValue({data: mockNotificationInfo});
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-        const notificationList: DashboardNotification[] = Object.assign([new DashboardNotification()], mockNotificationInfo);
+        const notificationList: DashboardNotification[] = mockNotificationInfo;
         const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
         const dashboardNotificationList= new  DashboardNotificationList();
         dashboardNotificationList.items = dashboardNotificationItems;
@@ -194,9 +177,7 @@ describe('dashboardService', () => {
         const mockGet = jest.fn().mockResolvedValue({data: mockDashboardInfo});
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
-        const dashboardTaskList: DashboardTaskList[] = Object.assign([new DashboardTaskList()], mockExpectedDashboardInfo);
-        const dashboard = new Dashboard();
-        dashboard.items= plainToInstance(DashboardTaskList, dashboardTaskList);
+        const dashboard = new Dashboard(mockExpectedDashboardInfo);
 
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
