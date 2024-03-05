@@ -13,7 +13,7 @@ let claimNumber;
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instalments', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instalments - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -23,7 +23,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FA_PAY_BY_INSTALMENTS_INDIVIDUAL');
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayByInstallmentWithIndividual);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
