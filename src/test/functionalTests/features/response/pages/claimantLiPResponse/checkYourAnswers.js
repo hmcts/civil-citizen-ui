@@ -7,13 +7,6 @@ const fields = {
   directionsQuestionnaireSigned: '#directionsQuestionnaireSigned',
 };
 
-const links = {
-  checkAndSubmit: {
-    en: 'Check and submit your response',
-    cy: 'Gwirio a chyflwyno eich ymateb',
-  },
-};
-
 const content = {
   heading: {
     en: 'Check your answers',
@@ -47,6 +40,22 @@ class CheckYourAnswersPage {
     I.see('Dates unavailable');
   }
 
+  async verifyClaimantMediationDetailsInCYA(claimRef) {
+    await I.click('Check and submit your response');
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('pcq')){
+      I.amOnPage('/case/'+claimRef+'/response/task-list');
+      I.click('Check and submit your response');
+    }
+    I.waitForText('Check your answers', config.WaitForText);
+    I.see('Availability for mediation');
+    I.see('Can the mediator use ');
+    I.see('Can the mediation team use ');
+    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+    I.see('Dates unavailable');
+  }
+
   async verifyEditedEmailDetails() {
     const { language } = sharedData;
     I.click('Check and submit your response');
@@ -60,6 +69,14 @@ class CheckYourAnswersPage {
   async clickEmailChangeLink() {
     await I.click('a[href*="email-confirmation"]');
     await I.waitForText('Can the mediation team use', config.WaitForText);
+  }
+
+  async submitClaimantResponse() {
+    I.checkOption(fields.directionsQuestionnaireSigned);
+    const { language } = sharedData;
+    I.click(cButtons.submit[language]);
+    I.waitForText('You\'ve rejected their response',config.WaitForText);
+    I.see(content.confirmationSubheading[language]);
   }
 }
 

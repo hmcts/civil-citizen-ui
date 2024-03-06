@@ -161,7 +161,6 @@ class ResponseSteps {
     await bilingualLanguagePreference.verifyContent(languageOption);
   }
 
-
   async RespondToClaimError(claimRef){
     await defendantLatestUpdate.open(claimRef);
     await bilingualLanguagePreference.verifyContentError();

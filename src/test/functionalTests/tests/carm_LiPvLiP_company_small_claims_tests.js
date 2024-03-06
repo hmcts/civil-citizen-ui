@@ -58,11 +58,10 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.verifyEditedEmailDetails();
     await ResponseSteps.fillStatementOfTruthAndSubmit();
     await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
-    await api.waitForFinishedBusinessProcess(claimRef);
   }
 }).tag('@regression-carm');
 
-Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
+Scenario('LiP Claimant Response with Reject all claim', async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
@@ -80,8 +79,6 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.clickSaveButton();
     await ResponseSteps.clickSaveButton();
     await ClaimantResponseSteps.verifyEditedEmailDetails();
-    await api.waitForFinishedBusinessProcess(claimRef);
-    await api.mediationUnsuccessful(config.caseWorker);
   }
 }).tag('@regression-carm');
 

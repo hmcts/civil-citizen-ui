@@ -8,7 +8,6 @@ const viewDefendantResponse = new ViewDefendantResponse();
 const yourResponse = new YourResponse();
 const checkYourAnswers = new CheckYourAnswers();
 
-
 class ClaimantResponseSteps {
   async RespondToClaimAsClaimant(claimRef) {
     await claimantUpdate.respondToClaim(claimRef);
@@ -22,8 +21,16 @@ class ClaimantResponseSteps {
     await yourResponse.isDefendantPaid(isPaid);
   }
 
+  async acceptOrRejectDefendantResponse(isPaid) {
+    await yourResponse.acceptOrRejectDefendantResponse(isPaid);
+  }
+
   async verifyMediationDetailsInCYA(claimRef) {
     await checkYourAnswers.verifyMediationDetailsInCYA(claimRef);
+  }
+
+  async verifyClaimantMediationDetailsInCYA(claimRef) {
+    await checkYourAnswers.verifyClaimantMediationDetailsInCYA(claimRef);
   }
 
   async clickEmailChangeLink() {
@@ -32,6 +39,10 @@ class ClaimantResponseSteps {
 
   async verifyEditedEmailDetails() {
     await checkYourAnswers.verifyEditedEmailDetails();
+  }
+
+  async submitClaimantResponse() {
+    await checkYourAnswers.submitClaimantResponse();
   }
 }
 

@@ -14,7 +14,7 @@ class ConfirmationPage {
         break;
       }
       case 'PartAdmitAndPayImmediately': {
-        I.see('If Test Inc rejects your offer');
+        I.see('If Miss Jane Doe rejects your offer');
         break;
       }
     }
