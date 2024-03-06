@@ -5,9 +5,9 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType;
 
-Feature('Response with RejectAll-AlreadyPaid - Small Claims & Fast Track');
+Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track');
 
-Scenario('Response with RejectAll-AlreadyPaid Small claims @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -18,7 +18,7 @@ Scenario('Response with RejectAll-AlreadyPaid Small claims @citizenUI @rejectAll
   }
 }).tag('@regression-r2');
 
-Scenario('Response with RejectAll-AlreadyPaid Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
