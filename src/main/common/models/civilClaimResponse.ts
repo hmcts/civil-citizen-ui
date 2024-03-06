@@ -82,6 +82,7 @@ import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/conv
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
+import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 
 export class CivilClaimResponse {
   id: string;
@@ -290,6 +291,7 @@ export interface CCDClaim extends ClaimUpdate {
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
 }
 
 export interface ClaimFeeData {
