@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   yesButton: 'input[id="option"]',
@@ -7,12 +9,20 @@ const fields = {
   disagreeOption4: 'input[id="disagreeMediationOption-4"]',
 };
 
+const content = {
+  heading: {
+    en: 'Free telephone mediation',
+    cy: 'Gwasanaeth cyfryngu dros y ffôn am ddim',
+  },
+};
+
 class FreeTelephoneMediation {
 
   async selectMediation(claimRef) {
+    const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    await I.waitForText('Free telephone mediation', config.WaitForText);
-    await I.click('Continue');
+    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.click(cButtons.continue[language]);
   }
 
   async selectNoMediation(claimRef){

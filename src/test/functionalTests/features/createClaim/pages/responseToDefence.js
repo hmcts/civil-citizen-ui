@@ -17,15 +17,19 @@ const paths = {
   },
   options: {
     sign_a_settlements_agreement: '#option',
+    ccj: '#option-2',
     confirm_and_sign : '#signed',
     yes: '#option',
     no: '//input[@value=\'no\']',
     english_language : '#speakLanguage',
     document_language : '#documentsLanguage',
   },
+  textBoxes: {
+    amountAlreadyPaidCCJ: '#amount',
+  },
 };
 
-class ReponseToDefence {
+class ResponseToDefence {
 
   async open(caseReference) {
     I.amOnPage(`/case/${caseReference}/claimant-response/task-list`);
@@ -40,7 +44,29 @@ class ReponseToDefence {
     I.see('Choose what to do next', 'h2');
   }
 
-  async verifyDefendantsResponse(claimReference) {
+  async verifyDefendantsResponseFullAdmitPayBySetDate() {
+    I.waitForText('Sir John Doe admits they owe all the money you’ve claimed.',60);
+    I.see('The defendant’s response','h1');
+    I.see('This is the total amount you’ll be paid,');
+    I.see('including the claim fee and interest if applicable.');
+    I.see('They’ve offered to pay you this by');
+    I.see('Why they can’t pay the full amount now?');
+    I.see('test');
+    I.click(paths.links.see_their_financial_details);
+    I.see('Bank and savings accounts');
+    I.see('Type of account');
+    I.see('Savings account');
+    I.see('Balance');
+    I.see('£4,000');
+    I.see('Joint account');
+    I.see('No');
+    I.see('Where are they living?');
+    I.see('Private rental');
+    I.see('Children');
+    I.click(paths.buttons.continue);
+  }
+
+  async verifyDefendantsResponseForPartAdmit(claimReference) {
     I.waitForText('Why they can’t pay the full amount now?',60,'h2');
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe admits they owe you £500.');
@@ -157,7 +183,17 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifyHowToFormaliseARepayment() {
+  verifyRepaymentPlanForFullAdmitPayBySetDate() {
+    I.waitForText('No - I\'ll suggest my own',60);
+    I.see('How they want to pay?', 'h1');
+    I.see('Sir John Doe has offered to pay you in full by');
+    I.see('Do you accept the repayment plan?');
+    I.see('Yes');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  verifyHowToFormaliseARepayment(formaliseType) {
     I.waitForText('which may make it more difficult for them to borrow money to repay you.', 60);
     I.see('Choose how to formalise repayment', 'h1');
     I.see('Sign a settlement agreement');
@@ -167,7 +203,11 @@ class ReponseToDefence {
     I.see('Request a CCJ');
     I.see('You can ask the court to make a formal order binding the defendant to the repayment plan.');
     I.see('This adds the defendant to the CCJ register,');
-    I.click(paths.options.sign_a_settlements_agreement);
+    if(formaliseType  ===  'CCJ'){
+      I.click(paths.options.ccj);
+    }else{
+      I.click(paths.options.sign_a_settlements_agreement);
+    }
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -194,7 +234,26 @@ class ReponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifyCheckYourAnswers() {
+  verifyCCJ() {
+    I.waitForText('Has the defendant paid some of the amount owed?', 60);
+    I.see('Yes');
+    I.see('No');
+    I.click(paths.options.yes);
+    I.fillField(paths.textBoxes.amountAlreadyPaidCCJ, '100');
+    I.click(paths.buttons.save_and_continue);
+    I.waitForText('The judgment will order the defendant to pay');
+    I.see('Judgment amount', 'h1');
+    I.see('including your claim fee and any interest, as shown in this table:');
+    I.see('Amount');
+    I.see('Claim amount');
+    I.see('Claim fee amount');
+    I.see('Subtotal');
+    I.see('Minus amount already paid');
+    I.see('Total');
+    I.click(paths.buttons.continue);
+  }
+
+  verifyCheckYourAnswersForPartAdmitSettlementAgreement() {
     I.waitForText('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -207,10 +266,32 @@ class ReponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
-  verifyConfirmationScreen(claimNumber) {
+  verifyCheckYourAnswersForFullAdmitCCJ() {
+    I.waitForText('Issue a County Court Judgment (CCJ)',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I accept this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.click(paths.buttons.submit_response);
+  }
+
+  verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {
     I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
+  }
+
+  verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {
+    I.waitForText('County Court Judgment requested', 60,'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('You\'ve requested a County Court Judgment against the defendant.');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('Email');
+    I.see('Telephone');
   }
 
   async verifyDefendantsResponseForRejection() {
@@ -406,6 +487,21 @@ class ReponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
+
+  async verifyAcceptOrRejectRepaymentPlan(){
+    I.waitForText('Welsh and English',60);
+    I.see('Welsh language', 'h1');
+    I.see('Welsh is an official language of Wales.');
+    I.see('You can use Welsh in court hearings.');
+    I.see('Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?');
+    I.see('What languages will the documents be provided in?');
+    I.see('English');
+    I.see('Welsh');
+    I.click(paths.options.english_language);
+    I.click(paths.options.document_language);
+    I.click(paths.buttons.save_and_continue);
+  }
 }
 
-module.exports = ReponseToDefence;
+module.exports = ResponseToDefence;
