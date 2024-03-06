@@ -295,8 +295,11 @@ class CreateClaim {
     I.waitForContent('A different rate', 60);
     I.see('What annual rate of interest do you want to claim?', 'h1');
     I.see('You can claim 8% per year unless you know that a different rate applies.:');
-    I.click(paths.options.date_that_you_submit_claim);
+    I.click(paths.options.same_interest_rate_type);
     this.clickNextAction(paths.buttons.save_and_continue);
+    I.waitForContent('When are you claiming interest from', 60);
+    I.waitForElement(paths.options.date_that_you_submit_claim);
+    I.click(paths.options.date_that_you_submit_claim);
   }
 
   async verifyAndInputWhenWillYouClaimInterestFrom() {
