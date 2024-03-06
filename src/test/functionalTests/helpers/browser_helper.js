@@ -55,7 +55,7 @@ module.exports = class BrowserHelpers extends Helper {
         const context = await helper._getContext();
         return await context.waitForVisible(`//*[contains(text(), ${content})]`, 60);
       } else {
-        return await helper.waitForVisible(locator, waitTimeout);
+        return await helper.waitForVisible(content, waitTimeout);
       }
     } catch (error) {
       return undefined;
