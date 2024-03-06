@@ -18,6 +18,7 @@ const paths = {
     pay_claim_fee : 'Pay claim fee',
   },
 };
+
 class CreateClaimSteps {
 
   async EligibilityCheckSteps() {
@@ -120,6 +121,54 @@ class CreateClaimSteps {
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 3);
     I.see('Application complete', 'h2');
+  }
+
+  async createClaimDraftViaTestingSupport() {
+    await I.waitForVisible('#navigation', 60);
+    await I.amOnPage('/testing-support/create-draft-claim');
+    await I.click('Create Draft Claim');
+    await I.amOnPage('/claim/task-list');
+    await I.waitForContent('Prepare your claim', 60);
+  }
+
+  async addSoleTraderClaimant() {
+    await I.amOnPage('/claim/claimant-party-type-selection');
+    await createClaim.fillSoleTraderClaimantDetails();
+  }
+
+  async addSoleTraderDefendant() {
+    await I.amOnPage('/claim/defendant-party-type-selection');
+    await createClaim.fillSoleTraderDefendantDetails();
+  }
+
+  async addOrgClaimant() {  
+    await I.amOnPage('/claim/claimant-party-type-selection');
+    await createClaim.fillOrgClaimantDetails();
+  }
+
+  async addOrgDefendant() {
+    await I.amOnPage('/claim/defendant-party-type-selection');
+    await createClaim.fillOrgDefendantDetails();
+  }
+
+  async addCompanyClaimant() {
+    await I.amOnPage('/claim/claimant-party-type-selection');
+    await createClaim.fillCompanyClaimantDetails();
+  }
+
+  async addCompanyDefendant() {
+    await I.amOnPage('/claim/defendant-party-type-selection');
+    await createClaim.fillCompanyDefendantDetails();
+  }
+
+  async updateClaimAmount(totalAmount, claimInterestFlag, standardInterest, selectHWF) {
+    await I.amOnPage('/claim/amount');
+    await createClaim.addClaimAmount(totalAmount, claimInterestFlag, standardInterest, selectHWF);
+  }
+
+  async checkAndSubmit(selectedHWF, claimantPartyType = 'Individual') {
+    await I.amOnPage('/claim/task-list');
+    await createClaim.checkAndSubmit(selectedHWF, claimantPartyType);
   }
 }
 
