@@ -26,6 +26,19 @@ const paths = {
   },
   textBoxes: {
     amountAlreadyPaidCCJ: '#amount',
+    details: '#details',
+    item0FirstName: 'input[id="items[0][firstName]"]',
+    item0LastName: 'input[id="items[0][lastName]"]',
+    item0Email: 'input[id="items[0][emailAddress]"]',
+    item0Phone: 'input[id="items[0][phoneNumber]"]',
+    item0FieldOfExpertise: 'input[id="items[0][fieldOfExpertise]"]',
+    item0WhyNeedExpert: 'textarea[id="items[0][whyNeedExpert]"]',
+    item0EstimatedCost: 'input[id="items[0][estimatedCost]"]',
+    item0WitnessFirstName: 'input[id="witnessItems[0][firstName]"]',
+    item0WitnessLastName: 'input[id="witnessItems[0][lastName]"]',
+    item0WitnessEmail: 'input[id="witnessItems[0][email]"]',
+    item0WitnessPhone: 'input[id="witnessItems[0][telephone]"]',
+    item0WitnessDetails: 'textarea[id="witnessItems[0][details]"]',
   },
 };
 
@@ -301,6 +314,18 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  verifyCheckYourAnswersRejectAllYesToProceed() {
+    I.waitForText('Do you want to proceed with the claim?',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Hearing requirements', 'h2');
+    I.see('Have you tried to settle this claim before going to court?');
+    I.see('Do you want an extra 4 weeks to try to settle the claim?');
+    I.see('Are there any documents the claimant has that you want the court to consider?');
+    I.see('What languages will the documents be provided in?');
+    I.click(paths.buttons.submit_response);
+  }
+
   async verifyDefendantsResponseForRejection() {
     I.waitForText('Full response',60,'h3');
     I.see('The defendant’s response','h1');
@@ -324,7 +349,6 @@ class ResponseToDefence {
     I.see('Sir John Doe has rejected the claim.');
     I.see('Their defence','h3');
     I.see('Why they disagree with the claim?','h3');
-    I.see('Testreason');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
@@ -481,6 +505,90 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
+  async verifyTriedToSettle(){
+    I.waitForText('consider another form of dispute resolution, such as mediation');
+    I.see('Have you tried to settle this claim before going to court?', 'h1');
+    I.see('Both parties must take certain steps before going to court. These steps are:');
+    I.see('discuss the claim and negotiate with each other');
+    I.see('try to reach an agreement about the claim');
+    I.see('consider another form of dispute resolution, such as mediation');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyRequestExtra4Weeks(){
+    I.waitForText('This will not change the response deadline');
+    I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
+    I.see('You can use this time to try to settle the claim without going to a hearing.');
+    I.see('Settling without going to a hearing may avoid costs including fees.');
+    I.see('even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyConsiderClaimantDocuments(){
+    I.waitForText('Are there any documents the other party has that you want the court to consider?');
+    I.click(paths.options.yes);
+    I.fillField(paths.textBoxes.details, 'test');
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyExpertEvidence(){
+    I.waitForText('An expert is not a legal representative.');
+    I.see('Do you want to use expert evidence?', 'h1');
+    I.see('Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.');
+    I.see('It will only be allowed if the court cannot make a decision without the expert.');
+    I.see('Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifySentExpertReports(){
+    I.waitForText('Have you already sent expert reports to other parties?');
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifySharedExpert(){
+    I.waitForText('They will prepare a report for the court on behalf of two or more of the parties, including the other party.');
+    I.see('Do you want to share an expert with the other party?', 'h1');
+    I.see('If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.');
+    I.see('This is known as a ’single joint expert’');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyEnterExpertDetails(){
+    I.waitForText('Estimated cost (optional)');
+    I.see('Enter the expert’s details', 'h1');
+    I.fillField(paths.textBoxes.item0FirstName, 'TestFirstName');
+    I.fillField(paths.textBoxes.item0LastName, 'TestLastName');
+    I.fillField(paths.textBoxes.item0Email, 'test@test.com');
+    I.fillField(paths.textBoxes.item0Phone, '09898989898');
+    I.fillField(paths.textBoxes.item0FieldOfExpertise, 'test');
+    I.fillField(paths.textBoxes.item0WhyNeedExpert, 'testest');
+    I.fillField(paths.textBoxes.item0EstimatedCost, '100');
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyGiveEvidenceYourself(){
+    I.waitForText('Do you want to give evidence yourself?');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyOtherWitnesses(){
+    I.waitForText('This is someone who can confirm your version of events.');
+    I.see('Do you have other witnesses?', 'h1');
+    I.click(paths.options.yes);
+    I.waitForText('Tell us what they witnessed');
+    I.fillField(paths.textBoxes.item0WitnessFirstName, 'WitnessFName');
+    I.fillField(paths.textBoxes.item0WitnessLastName, 'WitnessLName');
+    I.fillField(paths.textBoxes.item0WitnessEmail, 'test@test.com');
+    I.fillField(paths.textBoxes.item0WitnessDetails, 'testtest');
+    I.click(paths.buttons.save_and_continue);
+  }
+
   async verifyCheckYourAnswersForMediationHearingExpertsAndLanguage() {
     I.waitForText('What languages will the documents be provided in?',60);
     I.see('Check your answers', 'h1');
@@ -519,6 +627,16 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim has now ended. We\'ve emailed Sir John Doe to tell them.');
+    I.see('Email');
+    I.see('Telephone');
+  }
+
+  verifyConfirmationScreenForRejectAllYesToProceed(claimNumber) {
+    I.waitForText('You\'ve rejected their response', 60,'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     I.see('Email');
     I.see('Telephone');
   }

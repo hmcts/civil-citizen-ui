@@ -59,17 +59,7 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyChoseNoFreeMediation();
     await responseToDefence.verifyChoseNoFreeMediationReasons();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.details_in_case_of_a_hearing);
-    await responseToDefence.verifyDeterminationWithoutHearingQuestions();
-    await responseToDefence.verifyUsingAnExpertQuestion();
-    await responseToDefence.verifyDoYouWantToGiveEvidenceYourself();
-    await responseToDefence.verifyDoYouHaveOtherWitness();
-    await responseToDefence.verifyAnyDatesInTheNext12Months();
-    await responseToDefence.verifyDoYouWantToAskForATelephone();
-    await responseToDefence.verifyAreYourExpertsVulnerable();
-    await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
-    await responseToDefence.verifyHearingAtSpecificCourt();
-    await responseToDefence.verifyWelshLanguage();
+    await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
     await responseToDefence.verifyCheckYourAnswersForMediationHearingExpertsAndLanguage();
@@ -112,9 +102,59 @@ class ResponseToDefenceLipVLipSteps {
     responseToDefence.verifyConfirmationScreenForRejectAllNoToProceed(claimNumber);
   }
 
+  async ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(caseReference, claimNumber)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForRejectAllDisputeAll();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.decide_whether_to_proceed);
+    await responseToDefence.inputProceedWithTheClaim();
+    await this.verifyDashboardLoaded();
+    await this.verifyDQForFastTrack();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersRejectAllYesToProceed();
+    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+  }
+
   async verifyDashboardLoaded() {
     I.waitForText('Submit', 3);
     I.see('Your response', 'h1');
+  }
+
+  async verifyDQForSmallClaims(){
+    I.click(paths.links.details_in_case_of_a_hearing);
+    await responseToDefence.verifyDeterminationWithoutHearingQuestions();
+    await responseToDefence.verifyUsingAnExpertQuestion();
+    await responseToDefence.verifyDoYouWantToGiveEvidenceYourself();
+    await responseToDefence.verifyDoYouHaveOtherWitness();
+    await responseToDefence.verifyAnyDatesInTheNext12Months();
+    await responseToDefence.verifyDoYouWantToAskForATelephone();
+    await responseToDefence.verifyAreYourExpertsVulnerable();
+    await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
+    await responseToDefence.verifyHearingAtSpecificCourt();
+    await responseToDefence.verifyWelshLanguage();
+  }
+
+  async verifyDQForFastTrack(){
+    I.click(paths.links.details_in_case_of_a_hearing);
+    await responseToDefence.verifyTriedToSettle();
+    await responseToDefence.verifyRequestExtra4Weeks();
+    await responseToDefence.verifyConsiderClaimantDocuments();
+    await responseToDefence.verifyExpertEvidence();
+    await responseToDefence.verifySentExpertReports();
+    await responseToDefence.verifySharedExpert();
+    await responseToDefence.verifyEnterExpertDetails();
+    await responseToDefence.verifyGiveEvidenceYourself();
+    await responseToDefence.verifyOtherWitnesses();
+    await responseToDefence.verifyAnyDatesInTheNext12Months();
+    await responseToDefence.verifyDoYouWantToAskForATelephone();
+    await responseToDefence.verifyAreYourExpertsVulnerable();
+    await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
+    await responseToDefence.verifyHearingAtSpecificCourt();
+    await responseToDefence.verifyWelshLanguage();
   }
 
 }
