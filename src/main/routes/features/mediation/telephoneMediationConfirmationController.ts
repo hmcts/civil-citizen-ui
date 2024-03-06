@@ -51,6 +51,7 @@ emailMediationConfirmationController.get(MEDIATION_PHONE_CONFIRMATION_URL, (asyn
 emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    // bla bla
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
