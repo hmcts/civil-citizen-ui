@@ -158,7 +158,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
-    nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D&nojscript=true');
+    nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
 
     app.use((req:AppRequest, res, next) => {
       res.locals.pagePath = req.path;
