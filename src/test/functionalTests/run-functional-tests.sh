@@ -3,4 +3,4 @@ set -ex
 
 echo "Running Functional tests on ${ENVIRONMENT} env"
 
-yarn test:carm
+yarn test:cui-regression
