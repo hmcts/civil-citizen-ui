@@ -27,7 +27,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll 
   }
 }).tag('@regression-r2');
 
-Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api @test', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     // await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
