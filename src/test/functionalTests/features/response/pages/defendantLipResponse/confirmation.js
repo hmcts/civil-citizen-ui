@@ -7,14 +7,14 @@ class ConfirmationPage {
     switch (claimType) {
       case 'RejectsAndLessThanClaimAmount': {
         I.see('You told us you\'ve paid the £500 you believe you owe. ' +
-          'We\'ve sent Test Inc this response.');
-        I.see('If Test Inc accepts your response');
+          'We\'ve sent Test Company Claimant this response.');
+        I.see('If Test Company Claimant accepts your response');
         I.see('The claim will be settled');
-        I.see('If Test Inc rejects your response');
+        I.see('If Test Company Claimant rejects your response');
         break;
       }
       case 'PartAdmitAndPayImmediately': {
-        I.see('If Test Inc rejects your offer');
+        I.see('If Miss Jane Doe rejects your offer');
         break;
       }
     }
