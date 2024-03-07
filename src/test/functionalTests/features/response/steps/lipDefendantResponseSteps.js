@@ -174,13 +174,17 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (!carmEnabled) {
+      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    }
   }
 
   async EnterCompDetails(carmEnabled) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (!carmEnabled) {
+      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    }
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -511,7 +515,6 @@ class ResponseSteps {
 
   async EnterTelephoneMediationDetails() {
     await telephoneMediation.selectMediation();
-    await taskListPage.verifyResponsePageContent();
   }
 
   async ConfirmEmailDetails() {
@@ -540,7 +543,6 @@ class ResponseSteps {
   async EnterUnavailableDates() {
     await nextThreeMonthsDate.enterNextThreeMonthsDate();
     await availabilityDates.enterUnavailableDates(true);
-    await taskListPage.verifyResponsePageContent();
   }
 
   async ConfirmContactPerson() {

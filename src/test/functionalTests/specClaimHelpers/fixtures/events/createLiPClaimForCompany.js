@@ -1,14 +1,9 @@
-const createLipClaim = (user, userId, totalClaimAmount) => {
+const createLiPClaimForCompany = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
     caseDataUpdate: {
       applicant1: {
-        companyName: undefined,
-        individualDateOfBirth: '1995-08-28',
-        individualFirstName: 'Jane',
-        individualLastName: 'Doe',
-        individualTitle: 'Miss',
-        organisationName: undefined,
+        companyName: 'Test Company Claimant',
         partyEmail: user.email,
         partyPhone: '07446777177',
         primaryAddress: {
@@ -18,20 +13,10 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           PostCode: 'S12eu',
           PostTown: 'sheffield',
         },
-        soleTraderDateOfBirth: null,
-        soleTraderFirstName: undefined,
-        soleTraderLastName: undefined,
-        soleTraderTitle: undefined,
-        soleTraderTradingAs: undefined,
-        type: 'INDIVIDUAL',
+        type: 'COMPANY',
       },
       respondent1: {
-        companyName: undefined,
-        individualDateOfBirth: null,
-        individualFirstName: 'John',
-        individualLastName: 'Doe',
-        individualTitle: 'Sir',
-        organisationName: undefined,
+        companyName: 'Test Company Defendant',
         partyEmail: user.email,
         partyPhone: '07800000000',
         primaryAddress: {
@@ -41,12 +26,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           PostCode:'IG61JD',
           PostTown:'TestCity',
         },
-        soleTraderDateOfBirth: null,
-        soleTraderFirstName: undefined,
-        soleTraderLastName: undefined,
-        soleTraderTitle: undefined,
-        soleTraderTradingAs: undefined,
-        type: 'INDIVIDUAL',
+        type: 'COMPANY',
       },
       defenceRouteRequired: undefined,
       respondToClaim: undefined,
@@ -156,4 +136,4 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
   return eventDto;
 };
 
-module.exports = createLipClaim;
+module.exports = createLiPClaimForCompany;
