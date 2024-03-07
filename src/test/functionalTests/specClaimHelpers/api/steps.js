@@ -32,6 +32,7 @@ const caseProgressionToHearingInitiated = require('../fixtures/events/createCase
 const {submitEvent} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
+const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -40,6 +41,8 @@ const data = {
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
   CREATE_LIP_CLAIM: (user, userId, totalClaimAmount) => createLipClaim(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_FOR_COMPANY: (user, userId, totalClaimAmount) => createLiPClaimForCompany(user, userId, totalClaimAmount),
+
 };
 
 let caseId, eventName;
@@ -62,6 +65,10 @@ module.exports = {
 
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  setCaseId: async (id) => {
+    caseId = id;
   },
 
   performEvidenceUpload: async (user, caseId, claimType) => {
@@ -127,17 +134,18 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims') => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
-    let eventName = 'DEFENDANT_RESPONSE_CUI';
+    let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
-      payload = defendantResponse.createDefendantResponse('15000');
+      totalClaimAmount = '15000';
     } else {
       console.log('SmallClaim...');
-      payload = defendantResponse.createDefendantResponse('1500');
+      totalClaimAmount = '1500';
     }
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -145,18 +153,19 @@ module.exports = {
     console.log('End of performCitizenResponse()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, defendantType) => {
-    console.log(' Creating specified claim');
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
+    console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
+
     caseId = null;
     caseData = {};
     let createClaimSpecData;
     if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
-    } else if (claimType === 'SmallClaims' && defendantType){
+    } else if (claimType === 'SmallClaims' && partyType){
       console.log('Creating small claims with defendant type...');
-      createClaimSpecData = data.CREATE_SPEC_CLAIM_SMALLTRACK(defendantType);
+      createClaimSpecData = data.CREATE_SPEC_CLAIM_SMALLTRACK(partyType);
     } else {
       console.log('Creating small claims...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM(multipartyScenario);
@@ -197,11 +206,12 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType) => {
+  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual') => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
     let totalClaimAmount;
+    let payload;
 
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
@@ -216,8 +226,13 @@ module.exports = {
 
     await apiRequest.setupTokens(user);
 
-    let payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
+    if (partyType === 'Company') {
+      payload = data.CREATE_LIP_CLAIM_FOR_COMPANY(user, userId, totalClaimAmount);
+    } else {
+      payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
+    }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
+    await waitForFinishedBusinessProcess(caseId, user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -228,6 +243,15 @@ module.exports = {
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForFinishedBusinessProcess(caseId, user);
     await assignSpecCase(caseId, null);
+
+    if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
+      await addData(caseId, config.systemUpdate, (caseData) => {
+        const submittedDate = new Date(2024, 4, 3);
+        return {...caseData, submittedDate: submittedDate};
+      });
+      console.log('submitted date update to after carm date');
+    }
     return caseId;
   },
 
@@ -272,6 +296,7 @@ module.exports = {
   },
 
   retrieveCaseData: async (user, caseId) => {
+    await apiRequest.setupTokens(user);
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
   },
@@ -379,6 +404,11 @@ module.exports = {
 
   cleanUp: async () => {
     await unAssignAllUsers();
+  },
+
+  assignToLipDefendant: async (caseId) => {
+    await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
+    await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
 };
 

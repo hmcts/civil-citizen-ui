@@ -38,9 +38,14 @@ module.exports = {
     email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
   },
-  claimantCitizenUser: {
+  claimantEmailsVerificationCitizenUser: {
     password: defaultPassword,
     email: 'civilmoneyclaimsdemo@gmail.com',
+    type: 'claimant',
+  },
+  claimantCitizenUser: {
+    password: defaultPassword,
+    email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
@@ -111,6 +116,15 @@ module.exports = {
     rejectAll: 'REJECT_ALL',
     rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
     rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
+    rejectAllDisputeAllWithIndividual: 'REJECT_ALL_DISPUTE_ALL_INDIVIDUAL',
+    rejectAllAlreadyPaidWithIndividual: 'REJECT_ALL_ALREADY_PAID_INDIVIDUAL',
+    admitAllPayImmediateWithIndividual: 'FULLADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
+    admitAllPayBySetDateWithIndividual: 'FULLADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
+    admitAllPayByInstallmentWithIndividual: 'FULLADMIT_PAY_BY_INSTALMENTS_INDIVIDUAL',
+    partAdmitAmountPaidWithIndividual: 'PART_ADMIT_ALREADY_PAID_INDIVIDUAL',
+    partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual: 'PART_ADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
+    partAdmitWithPartPaymentOnSpecificDateWithIndividual: 'PART_ADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
+    partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual: 'PART_ADMIT_PAY_BY_INSTALLMENTS_INDIVIDUAL',
   },
   sdoSelectionType: {
     judgementSumSelectedYesAssignToSmallClaimsYes: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_YES',

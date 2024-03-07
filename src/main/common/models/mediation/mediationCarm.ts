@@ -1,13 +1,15 @@
-import {GenericYesNo} from 'form/models/genericYesNo';
 import {AlternativeEmailAddress} from 'form/models/mediation/AlternativeEmailAddress';
 import {UnavailableDatesMediation} from 'models/mediation/unavailableDatesMediation';
 import {AlternativeTelephone} from 'form/models/mediation/AlternativeTelephone';
 import {AlternativeContactPerson} from 'form/models/mediation/alternativeContactPerson';
+import {GenericYesNoCarmContactPersonConfirmation} from 'form/models/genericYesNoCarmContactPersonConfirmation';
+import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class MediationCarm {
-  isMediationContactNameCorrect?: GenericYesNo;
+  isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation;
   alternativeMediationContactPerson?: AlternativeContactPerson;
-  isMediationEmailCorrect?: GenericYesNo;
+  isMediationEmailCorrect?: GenericYesNoCarmEmailConfirmation;
   alternativeMediationEmail?: AlternativeEmailAddress;
   isMediationPhoneCorrect?: GenericYesNo;
   alternativeMediationTelephone?: AlternativeTelephone;
@@ -16,8 +18,8 @@ export class MediationCarm {
   hasTelephoneMeditationAccessed?: boolean;
   hasAvailabilityMediationFinished?: boolean;
 
-  constructor(isMediationContactNameCorrect?: GenericYesNo, alternativeMediationContactPerson?: AlternativeContactPerson,
-    isMediationEmailCorrect?: GenericYesNo, alternativeMediationEmail?: AlternativeEmailAddress,
+  constructor(isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation, alternativeMediationContactPerson?: AlternativeContactPerson,
+    isMediationEmailCorrect?: GenericYesNoCarmEmailConfirmation, alternativeMediationEmail?: AlternativeEmailAddress,
     isMediationPhoneCorrect?: GenericYesNo, alternativeMediationTelephone?: AlternativeTelephone,
     hasUnavailabilityNextThreeMonths?: GenericYesNo, unavailableDatesForMediation?: UnavailableDatesMediation,
     hasTelephoneMeditationAccessed?: boolean, hasAvailabilityMediationFinished?: boolean) {

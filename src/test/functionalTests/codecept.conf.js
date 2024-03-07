@@ -3,6 +3,7 @@ const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHel
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 exports.config = {
 
@@ -12,7 +13,7 @@ exports.config = {
     await deleteAllIdamTestUsers();
   },
 
-  tests: '../functionalTests/tests/**/*_tests.js',
+  tests: '../functionalTests/tests/**/*.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
@@ -33,6 +34,23 @@ exports.config = {
       waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
+      retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: 30000,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testConfig.TestUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
+    },
+    BrowserHelpers: {
+      require: './helpers/browser_helper.js',
     },
   },
   include: {
