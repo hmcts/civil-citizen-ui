@@ -1,43 +1,41 @@
-import {
-  getDashboardFromCache,
-  getNotificationFromCache,
-  saveDashboardToCache, saveNotificationToCache,
-} from 'modules/draft-store/getDashboardCache';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {getDashboardById, getNotificationById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
+import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dashboardCache');
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest): Promise<Dashboard> => {
-  try {
-    let dashboard: Dashboard = await getDashboardFromCache(caseRole, claimId);
-    if (!dashboard) {
-      dashboard = await getDashboardById(claimId, claim, caseRole, req);
-      await saveDashboardToCache(dashboard, caseRole, claimId);
-    }
+  const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
+  if (dashboard) {
+    dashboard.items.forEach((taskList) => {
+      taskList.tasks.forEach((task) => {
+        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim);
+        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim);
+        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim);
+        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim);
+      });
+    });
     return dashboard;
-  } catch (error) {
-    logger.error(error);
-    throw error;
+  } else {
+    throw new Error('Dashboard not found...');
   }
 };
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest): Promise<DashboardNotificationList> => {
-  try {
-    let dashboardNotificationsList: DashboardNotificationList = await getNotificationFromCache(caseRole, claimId);
-
-    if (!dashboardNotificationsList){
-      dashboardNotificationsList = await getNotificationById(claimId, claim, caseRole, req);
-      await saveNotificationToCache(dashboardNotificationsList, caseRole, claimId);
-    }
-    return dashboardNotificationsList;
-  } catch (error) {
-    logger.error(error);
-    throw error;
+  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  if (dashboardNotifications) {
+    dashboardNotifications.items.forEach((notification) => {
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim);
+    });
+    return dashboardNotifications;
+  } else {
+    throw new Error('Notifications not found...');
   }
 };

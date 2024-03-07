@@ -768,7 +768,6 @@ describe('Civil Service Client', () => {
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
           'hintTextCy': 'hint_text_cy',
-          'url': '',
         }, {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
           'statusCy': 'Action needed in Welsh',
@@ -778,7 +777,6 @@ describe('Civil Service Client', () => {
           'hintTextEn': 'hint_text_en',
           'taskNameCy': 'task_name_cy',
           'hintTextCy': 'hint_text_cy',
-          'url': '',
         }],
       },{
         'categoryEn': 'Claim',
@@ -792,7 +790,6 @@ describe('Civil Service Client', () => {
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
           'hintTextCy': 'hint_text_cy2',
-          'url': '',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
@@ -803,7 +800,6 @@ describe('Civil Service Client', () => {
           'hintTextEn': 'hint_text_en2',
           'taskNameCy': 'task_name_cy2',
           'hintTextCy': 'hint_text_cy2',
-          'url': '',
         }],
       }];
     const mockDashboardInfo =[
@@ -821,7 +817,6 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Hearing Welsh',
         'role': 'claimant',
         'taskOrder': 10,
-        'url': '',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -837,7 +832,6 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Hearing Welsh',
         'role': 'claimant',
         'taskOrder': 10,
-        'url': '',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
@@ -853,7 +847,6 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Claim Welsh',
         'role': 'claimant',
         'taskOrder': 10,
-        'url': '',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
@@ -869,7 +862,6 @@ describe('Civil Service Client', () => {
         'categoryCy': 'Claim Welsh',
         'role': 'claimant',
         'taskOrder': 10,
-        'url': '',
       },
     ];
     it('should get notification List', async () => {
