@@ -73,6 +73,8 @@ nodejs:
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
     GOVPAY_URL: https://card.payments.service.gov.uk
     CARM_DATE: '01 May 2024'
+    ENFORCEJUDGMENT_URL: https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment
+    CIVILMONEYCLAIMS_TELEPHONE: '0300 123 7050'
 
   autoscaling:
     enabled: true
