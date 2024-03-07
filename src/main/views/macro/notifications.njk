@@ -1,0 +1,16 @@
+{% from "../features/dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% macro notifications(dashboardNotifications, t) %}
+  {% for notification in dashboardNotifications %}
+    {% set html %}
+      {% for item in notification.content %}
+        {{ itemContent(item, t) }}
+      {% endfor %}
+    {% endset %}
+    {{ govukNotificationBanner({
+      titleText: notification.title,
+      html: html
+    }) }}
+  {% endfor %}
+{% endmacro %}
