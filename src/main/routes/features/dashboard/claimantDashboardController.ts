@@ -5,7 +5,6 @@ import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -17,9 +16,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     let claim: Claim;
     let caseRole: ClaimantOrDefendant;
     let dashboardId;
-    let dashboardNotifications;
-    let dashboard;
-    const isDashboardService = await isDashboardServiceEnabled();
+
     if(claimId == 'draft') {
       caseRole = ClaimantOrDefendant.CLAIMANT;
       const userId = (<AppRequest>req)?.session?.user?.id.toString();
@@ -30,12 +27,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       dashboardId = claimId;
     }
-    if (isDashboardService) {
-      dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
-      dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
-    }else{
-      //TODO master content
-    }
+    const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
+    const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
     res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
   } catch (error) {
     next(error);
