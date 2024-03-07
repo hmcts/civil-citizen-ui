@@ -23,7 +23,7 @@ import {
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
-  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -472,7 +472,7 @@ export class CivilServiceClient {
       return group;
     }, {} as Record<string, DashboardTaskList>);
 
-    const groupedTasksList= Object.values(groupedTasks);
+    const groupedTasksList= Object.values(groupedTasks) as DashboardTaskList[];
 
     const dashboard = new Dashboard();
     dashboard.items = groupedTasksList;
@@ -484,8 +484,17 @@ export class CivilServiceClient {
     try {
       const redisKey = req?.session?.user?.id;
       const scenarioRef = 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required';
-      const response = await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
-      logger.error(response.status);
+      await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async recordClick(id: string, req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      await this.client.put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', id), null, config);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
