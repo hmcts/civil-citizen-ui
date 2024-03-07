@@ -1,11 +1,11 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
-import {CLAIM_FEE_BREAKUP, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import config from 'config';
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim): string => {
+export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, notificationId?: number): string => {
 
-  const valuesMap = setDashboardValues(claim);
+  const valuesMap = setDashboardValues(claim, notificationId);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -13,7 +13,7 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim): Map<string, string> => {
+const setDashboardValues = (claim: Claim, notificationId?: number): Map<string, string> => {
   const valuesMap: Map<string, string> = new Map<string, string>();
   const claimId = claim.id;
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString()  :'';
@@ -37,6 +37,16 @@ const setDashboardValues = (claim: Claim): Map<string, string> => {
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
+
+  //Example of how to record click + open a document (target="_blank" will need adding in database <a> element)
+  //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
+  if(notificationId){
+    //TODO: Example case for draft claim - can be removed once a real view document is added.
+    valuesMap.set('{VIEW_DOCUMENT_DRAFT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_DOCUMENT_DRAFT')
+      .replace(':notificationId', notificationId.toString()));
+  }
 
   return valuesMap;
 };

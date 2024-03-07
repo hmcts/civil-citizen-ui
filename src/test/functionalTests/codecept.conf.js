@@ -13,7 +13,7 @@ exports.config = {
     await deleteAllIdamTestUsers();
   },
 
-  tests: '../functionalTests/tests/**/*_tests.js',
+  tests: '../functionalTests/tests/**/*.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
@@ -48,6 +48,9 @@ exports.config = {
           })}`,
         },
       },
+    },
+    BrowserHelpers: {
+      require: './helpers/browser_helper.js',
     },
   },
   include: {
