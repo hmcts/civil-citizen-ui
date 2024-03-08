@@ -1,7 +1,7 @@
 import {
   MEDIATION_TYPE_OF_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS,
-  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
