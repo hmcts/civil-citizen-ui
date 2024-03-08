@@ -432,7 +432,27 @@ export class CivilServiceClient {
   async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
     const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-    const dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+
+    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+
+      const session = req?.session;
+      const actionUser = notification?.notificationAction?.createdBy;
+      const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
+      const sessionStart = new Date(session.issuedAt * 1000);
+      const actionPerformed = notification?.notificationAction?.actionPerformed;
+      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+      const timeToLive = notification.timeToLive;
+
+      return !(actionUser == sessionUser && actionPerformed == 'Click'
+            && (timeToLive == 'Click'
+                || (timeToLive == 'Session'
+                  && sessionStart > actionPerformedTime
+                )
+            )
+      );
+
+    });
 
     return new DashboardNotificationList(dashboardNotificationItems);
   }

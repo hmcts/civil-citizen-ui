@@ -21,6 +21,7 @@ export interface AppSession extends Session {
   taskLists: TaskList[];
   assignClaimId: string;
   claimIssueTasklist: boolean;
+  issuedAt: number;
 }
 
 export interface UserDetails {
