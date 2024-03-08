@@ -38,6 +38,8 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
+  // flag is disabled so we can run our regression pack against old dashboard
+  // return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
   return true;
 }
 
