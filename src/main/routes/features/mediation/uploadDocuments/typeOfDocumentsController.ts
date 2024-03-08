@@ -44,7 +44,7 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     claimId: caseNumberPrettify(claimId),
     partyInformation: partyInformation(claim),
-    backButtonUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
+    backLinkUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
   });
 }
 

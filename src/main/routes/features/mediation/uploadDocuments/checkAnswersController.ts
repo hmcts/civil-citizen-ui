@@ -50,7 +50,7 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
     topPageContents,
     summarySections,
     bottomPageContents,
-    backButtonUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS),
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS),
   });
 }
 

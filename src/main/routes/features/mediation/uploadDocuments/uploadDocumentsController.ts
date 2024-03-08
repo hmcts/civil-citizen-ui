@@ -105,7 +105,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
-    backButtonUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
   });
 }
 
