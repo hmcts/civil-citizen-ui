@@ -6,7 +6,7 @@ module.exports = {
         'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
         'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -16,7 +16,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -50,7 +50,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'detailsOfWhyDoesYouDisputeTheClaim': 'Don\'t give us a detailed timeline - we\'ll ask f',
         'specClaimResponseTimelineList': 'MANUAL',
@@ -83,18 +83,18 @@ module.exports = {
           'howMuchWasPaid': null,
         },
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'WELSH',
@@ -108,10 +108,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -141,14 +141,14 @@ module.exports = {
     };
   },
 
-  rejectAllAlreadypaidWithIndividual: (totalClaimAmount) => {
+  rejectAllAlreadypaidNotFullWithIndividual: (totalClaimAmount) => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
         'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
         'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -158,7 +158,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -203,32 +203,32 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'defenceRouteRequired': 'HAS_PAID_THE_AMOUNT_CLAIMED',
         'respondToClaim': {
-          'howMuchWasPaid': 1500000,
+          'howMuchWasPaid': 1000000,
           'howWasThisAmountPaid': 'OTHER',
           'whenWasThisAmountPaid': '2020-02-01T00:00:00.000Z',
           'howWasThisAmountPaidOther': 'asdfa',
         },
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
@@ -244,7 +244,166 @@ module.exports = {
           'responseCourtCode': '',
           'reasonForHearingAtSpecificCourt': 'dsaf',
           'responseCourtLocations': [
-            
+
+          ],
+          'caseLocation': {
+            'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            'baseLocation': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+          },
+        },
+        'respondent1DQWitnesses': {
+          'witnessesToAppear': 'Yes',
+          'details': [
+            {
+              'value': {
+                'name': 'witness',
+                'firstName': 'witness',
+                'lastName': 'one',
+                'emailAddress': 't@g.com',
+                'phoneNumber': '',
+                'reasonForWitness': 'dfasf',
+              },
+            },
+            {
+              'value': {
+                'name': 'witness',
+                'firstName': 'witness',
+                'lastName': 'two',
+                'emailAddress': '',
+                'phoneNumber': '',
+                'reasonForWitness': 'dsaf',
+              },
+            },
+          ],
+        },
+        'respondent1DQHearingFastClaim': {
+          'hearingLengthHours': '3',
+          'hearingLengthDays': '1',
+          'unavailableDatesRequired': 'No',
+        },
+        'respondent1DQExperts': {
+          'expertRequired': 'Yes',
+          'details': [
+            {
+              'value': {
+                'name': 'expertname twothree',
+                'firstName': 'expertname',
+                'lastName': 'twothree',
+                'phoneNumber': '',
+                'emailAddress': 't@g.com',
+                'whyRequired': 'Tell us why you need this expert',
+                'fieldOfExpertise': 'cases',
+                'estimatedCost': 13400,
+              },
+            },
+          ],
+          'expertReportsSent': 'YES',
+          'jointExpertSuitable': 'Yes',
+        },
+      },
+    };
+  },
+
+  rejectAllAlreadypaidInFullWithIndividual: (totalClaimAmount) => {
+    return {
+      'event': 'DEFENDANT_RESPONSE_CUI',
+      'caseDataUpdate': {
+        'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
+        'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
+        'respondToClaimAdmitPartLRspec': {
+
+        },
+        'responseClaimMediationSpecRequired': 'No',
+        'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
+        'totalClaimAmount': totalClaimAmount,
+        'respondent1': {
+          'individualDateOfBirth': '1990-02-02',
+          'individualFirstName': 'John',
+          'individualLastName': 'Doe',
+          'individualTitle': 'Sir',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
+          'partyPhone': '07800000000',
+          'primaryAddress': {
+            'AddressLine1': 'TestAddressLine1',
+            'AddressLine2': 'TestAddressLine2',
+            'AddressLine3': 'TestAddressLine3',
+            'PostCode': 'IG61JD',
+            'PostTown': 'TestCity',
+          },
+          'soleTraderDateOfBirth': null,
+          'type': 'INDIVIDUAL',
+        },
+        'respondent1LiPResponse': {
+          'respondent1DQExtraDetails': {
+            'wantPhoneOrVideoHearing': 'No',
+            'whyPhoneOrVideoHearing': '',
+            'giveEvidenceYourSelf': 'Yes',
+            'triedToSettle': 'Yes',
+            'determinationWithoutHearingReason': '',
+            'requestExtra4weeks': 'No',
+            'considerClaimantDocuments': 'No',
+            'considerClaimantDocumentsDetails': '',
+            'respondent1DQLiPExpert': {
+              'expertCanStillExamineDetails': '',
+            },
+          },
+          'respondent1DQHearingSupportLip': {
+            'supportRequirementLip': 'Yes',
+            'requirementsLip': [
+              {
+                'value': {
+                  'name': 'witness two',
+                  'requirements': [
+                    'DISABLED_ACCESS',
+                  ],
+                  'signLanguageRequired': '',
+                  'languageToBeInterpreted': '',
+                  'otherSupport': '',
+                },
+              },
+            ],
+          },
+          'respondent1ResponseLanguage': 'ENGLISH',
+        },
+        'respondent1LiPFinancialDetails': {
+
+        },
+        'defenceRouteRequired': 'HAS_PAID_THE_AMOUNT_CLAIMED',
+        'respondToClaim': {
+          'howMuchWasPaid': totalClaimAmount + '00',
+          'howWasThisAmountPaid': 'OTHER',
+          'whenWasThisAmountPaid': '2020-02-01T00:00:00.000Z',
+          'howWasThisAmountPaidOther': 'asdfa',
+        },
+        'respondent1DQHomeDetails': {
+
+        },
+        'respondent1PartnerAndDependent': {
+          'howManyChildrenByAgeGroup': {
+
+          },
+        },
+        'specDefendant1SelfEmploymentDetails': {
+
+        },
+        'respondToClaimAdmitPartUnemployedLRspec': {
+
+        },
+        'respondent1DQLanguage': {
+          'court': 'ENGLISH',
+          'documents': 'WELSH',
+        },
+        'respondent1DQVulnerabilityQuestions': {
+          'vulnerabilityAdjustmentsRequired': 'Yes',
+          'vulnerabilityAdjustments': 'dasfaf',
+        },
+        'respondent1DQRequestedCourt': {
+          'requestHearingAtSpecificCourt': 'Yes',
+          'otherPartyPreferredSite': '',
+          'responseCourtCode': '',
+          'reasonForHearingAtSpecificCourt': 'dsaf',
+          'responseCourtLocations': [
+
           ],
           'caseLocation': {
             'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
