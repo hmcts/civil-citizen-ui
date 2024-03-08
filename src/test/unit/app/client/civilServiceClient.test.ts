@@ -31,7 +31,6 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
-import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
