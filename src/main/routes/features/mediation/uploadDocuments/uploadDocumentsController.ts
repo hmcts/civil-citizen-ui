@@ -1,4 +1,8 @@
-import {MEDIATION_UPLOAD_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND} from 'routes/urls';
+import {
+  MEDIATION_TYPE_OF_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND
+} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -100,7 +104,9 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
     paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
-    partyInformation: partyInformation(claim)});
+    partyInformation: partyInformation(claim),
+    backButtonUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
+  });
 }
 
 mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
