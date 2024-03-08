@@ -10,7 +10,7 @@ import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../.
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import { NextFunction, Request, Response } from 'express';
-import {isLeapYear} from '../../../../utils/dateUtils';
+import {isTwentyNineLeapYear} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/oidc');
@@ -64,7 +64,7 @@ describe('Expected end date page', () => {
     it('should move to next page on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const currentDate = new Date();
-      const leapYear = isLeapYear(currentDate.getFullYear());
+      const leapYear = isTwentyNineLeapYear(currentDate);
 
       await request(app)
         .post(BREATHING_SPACE_RESPITE_END_DATE_URL)
