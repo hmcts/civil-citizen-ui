@@ -1,9 +1,8 @@
 const config = require('../../config');
 
-const LoginSteps = require('../features/home/steps/login');
+const LoginSteps =  require('../features/home/steps/login');
 const DashboardSteps = require('../features/dashboard/steps/dashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 
 const claimType = 'SmallClaims';
@@ -12,9 +11,9 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant');
+Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -24,10 +23,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, 'FA_PAY_BY_SET_DATE_INDIVIDUAL');
-    await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDate(claimRef, claimNumber);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');

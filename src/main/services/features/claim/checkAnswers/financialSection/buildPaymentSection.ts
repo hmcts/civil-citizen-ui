@@ -7,10 +7,11 @@ import {CCJ_PAID_AMOUNT_URL} from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import {GenericForm} from 'form/models/genericForm';
-import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -20,6 +21,8 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
   const paymentOption = claim.getHasDefendantPaid();
   const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION.${paymentOption.toUpperCase()}` : '';
   const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
+  const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
+  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
   const paymentDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_TITLE', {lng}),
     summaryRows: [
@@ -30,15 +33,13 @@ export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: 
 
   if(claim.getDefendantPaidAmount()) {
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID', {lng}),
-      currencyFormatWithNoTrailingZeros(claim.getDefendantPaidAmount())));
+      judgmentSummaryDetails.alreadyPaidAmount.toString()));
   }
 
   if(claim.getHasDefendantPaid()) {
-    const amountToBePaid = ((claim.getDefendantPaidAmount()) ?
-      claim.getCCJTotalAmount() - claim.getDefendantPaidAmount() :
-      claim.getCCJTotalAmount());
+    const amountToBePaid = judgmentSummaryDetails.total;
     paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}),
-      currencyFormatWithNoTrailingZeros(amountToBePaid)));
+      amountToBePaid));
   }
 
   if(claim.getCCJPaymentOption()) {
