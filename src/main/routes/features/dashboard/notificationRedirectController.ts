@@ -32,11 +32,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
   switch(locationName) {
     //TODO: Example case for draft claim - remove once a real view document is added.
     case 'VIEW_DOCUMENT_DRAFT':
-      documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DRAFT_CLAIM_FORM);
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
-      break;
-    case 'VIEW_DOCUMENT_CLAIMANT':
-      documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DRAFT_CLAIM_FORM);
+      documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM);
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
       break;
   }
