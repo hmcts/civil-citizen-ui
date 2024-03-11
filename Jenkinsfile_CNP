@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "CIV-12962-Add-scheduler-for-full-admit-pay-immediately-no-payment"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "team2b"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
