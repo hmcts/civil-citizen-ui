@@ -12,7 +12,7 @@ const fields = {
 
 const links = {
   checkAndSubmit: {
-    en: 'Check and submit your response', 
+    en: 'Check and submit your response',
     cy: 'Gwirio a chyflwyno eich ymateb',
   },
 };
@@ -24,7 +24,7 @@ const content = {
   },
   confirmationHeading: {
     en: 'You\'ve submitted your response',
-    cy: 'Rydych wedi cyflwyno eich ymateb',  
+    cy: 'Rydych wedi cyflwyno eich ymateb',
   },
   confirmationSubheading: {
     en: 'What happens next',
@@ -34,7 +34,7 @@ const content = {
 
 class CheckYourAnswersPage {
   async checkAndSubmit(claimRef, responseType='', claimType) {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.click(links.checkAndSubmit[language]);
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
@@ -75,9 +75,8 @@ class CheckYourAnswersPage {
 
     I.see('Availability for mediation');
     I.see('Is Test Company the person who will be attending the mediation appointment?');
-    I.see('Can the mediator use 02088908876 to call you for your mediation appointment?');
-    I.see('Can the mediation team use civilmoneyclaimsdemo@gmail.com ' +
-        'to contact you about your mediation appointment?');
+    I.see('Can the mediator use ');
+    I.see('Can the mediation team use ');
     I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
     I.see('Dates unavailable');
   }

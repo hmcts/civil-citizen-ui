@@ -5,6 +5,7 @@ import {addDaysToDate} from 'common/utils/dateUtils';
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
+  const textToReplaceRedirect = '{VIEW_DOCUMENT_DRAFT}';
 
   it('should replace placeholders with values when found', () => {
 
@@ -20,6 +21,19 @@ describe('dashboardInterpolationService', () => {
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
     expect(textReplacedUrl).toEqual(textExpectedUrl);
+  });
+
+  it('should replace placeholders with redirect when notificationId is present', () => {
+
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const currentDate = new Date();
+    claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
+
+    const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, 456);
+    const textExpectedRedirect = '/notification/456/redirect/VIEW_DOCUMENT_DRAFT/123';
+
+    expect(textReplacedRedirect).toEqual(textExpectedRedirect);
   });
 
   it('should replace dynamic text with nothing when claim is empty', () => {

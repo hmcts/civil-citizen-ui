@@ -27,13 +27,13 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-            {% for notification in dashboardNotifications.items.items %}
+            {% for notification in dashboardNotifications.items %}
                 {{ govukNotificationBanner({
                    titleText: notification.titleCy if lng=="cy" else notification.titleEn,
                    html: notification.descriptionCy if lng=="cy" else notification.descriptionEn
                  })  }}
             {% endfor %}
-            {% for taskList in dashboardTaskList.items.items %}
+            {% for taskList in dashboardTaskList.items %}
               <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
                 <h2 class="app-task-list__section">
                    {% if lng=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
