@@ -31,7 +31,7 @@ module.exports = {
   },
   s2s: {
     microservice: 'civil_service',
-    secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64',
+    secret: process.env.S2S_SECRET || 'AABBCCDDEEFFGGHH',
   },
   applicantSolicitorUser: {
     password: defaultPassword,
@@ -117,7 +117,8 @@ module.exports = {
     rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
     rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
     rejectAllDisputeAllWithIndividual: 'REJECT_ALL_DISPUTE_ALL_INDIVIDUAL',
-    rejectAllAlreadyPaidWithIndividual: 'REJECT_ALL_ALREADY_PAID_INDIVIDUAL',
+    rejectAllAlreadyPaidNotFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_NOT_FULL_INDIVIDUAL',
+    rejectAllAlreadyPaidInFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_IN_FULL_INDIVIDUAL',
     admitAllPayImmediateWithIndividual: 'FULLADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
     admitAllPayBySetDateWithIndividual: 'FULLADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
     admitAllPayByInstallmentWithIndividual: 'FULLADMIT_PAY_BY_INSTALMENTS_INDIVIDUAL',

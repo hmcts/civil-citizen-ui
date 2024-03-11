@@ -1,6 +1,7 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import config from 'config';
 
 export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notificationId?: string): string => {
 
@@ -13,8 +14,11 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
 };
 
 const setDashboardValues = (claim: Claim, claimId: string, notificationId?: string): Map<string, string> => {
+
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString()  :'';
+  const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
+  const civilMoneyClaimsTelephone  = config.get<string>('services.civilMoneyClaims.telephone');
 
   valuesMap.set('{VIEW_CLAIM_URL}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', '#');
@@ -29,9 +33,10 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
-
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
+  valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
+  valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
 
   //Example of how to record click + open a document (target="_blank" will need adding in database <a> element)
   //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
