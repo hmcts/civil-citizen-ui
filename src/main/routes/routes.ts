@@ -70,7 +70,6 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
-import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -279,6 +278,7 @@ import mediationUploadDocumentsController from 'routes/features/mediation/upload
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
+import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 
 export default [
   homeController,
@@ -346,7 +346,6 @@ export default [
   howMuchHaveYouPaidFRController,
   claimSummaryController,
   claimantDashboardController,
-  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
@@ -525,4 +524,5 @@ export default [
   mediationUploadDocumentsController,
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
+  notificationRedirectController,
 ];

@@ -10,7 +10,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
         individualTitle: 'Miss',
         organisationName: undefined,
         partyEmail: user.email,
-        partyPhone: undefined,
+        partyPhone: '07446777177',
         primaryAddress: {
           AddressLine1: '123',
           AddressLine2: 'Fake Street',
@@ -124,7 +124,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           PostCode: undefined,
           PostTown: undefined,
         },
-        contactPerson: undefined,
+        contactPerson: 'Test Company',
       },
       applicant1AdditionalLipPartyDetails: {
         correspondenceAddress: {
@@ -134,7 +134,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           PostCode: 'L7 2pz',
           PostTown: 'Liverpool',
         },
-        contactPerson: undefined,
+        contactPerson: 'Test Company',
       },
       timelineOfEvents: [
         {
