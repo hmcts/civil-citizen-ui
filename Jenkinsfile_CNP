@@ -7,10 +7,10 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "team2b"
+def camundaBranch = "CIV-12800-Dashboard-NotificationPart-Remission-HwF-Granted"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "team2b"
+def ccdBranch = "CIV-12800-Part-Remission-HwF-Granted"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
