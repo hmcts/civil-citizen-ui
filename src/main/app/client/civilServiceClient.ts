@@ -444,9 +444,9 @@ export class CivilServiceClient {
       const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
       const timeToLive = notification.timeToLive;
 
-      return !(actionUser == sessionUser && actionPerformed == 'Click'
-            && (timeToLive == 'Click'
-                || (timeToLive == 'Session'
+      return !(actionUser === sessionUser && actionPerformed === 'Click'
+            && (timeToLive === 'Click'
+                || (timeToLive === 'Session'
                   && sessionStart > actionPerformedTime
                 )
             )
