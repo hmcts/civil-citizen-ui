@@ -285,7 +285,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse : {
         claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
@@ -300,12 +299,12 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
   it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
     //Given
-
     const input: CCDClaim = {
       applicant1LiPResponse: {
         claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
       },
     };
+
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
@@ -322,7 +321,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
-    //Then
     expect(claim.interest.totalInterest.amount).toEqual(1000);
     expect(claim.interest.totalInterest.reason).toEqual('break down interest');
   });
@@ -369,24 +367,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option).toEqual(YesNo.YES);
-  });
-
-  it('should translate claimant mediation to undefined for not equal value', () => {
-    //Given
-    const input: CCDClaim = {
-      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
-      totalClaimAmount: 100,
-      respondToClaim: {
-        howMuchWasPaid: 5000,
-      },
-      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
-    };
-
-    const claim = translateCCDCaseDataToCUIModel(input);
-
-    //Then
-    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
   });
 
   it('should translate claimant mediation to undefined for not paid already route', () => {

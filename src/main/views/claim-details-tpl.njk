@@ -43,14 +43,48 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 {% block bodyStart %}
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   {{ cookieBanner(t) }}
 {% endblock %}
 
-{% block footer %}
+{% block footer %} 
+{% if developmentMode != 'production' %}
 {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: urls.COOKIES_URL,
+          text: t("FOOTER.COOKIES_URL")
+        },
+        {
+          href: PrivacyPolicyUrl,
+          text: t("FOOTER.PRIVACY_POLICY_URL")
+        },
+        {
+          href: "https://www.gov.uk/help",
+          text: t("FOOTER.HELP_USING_GOV_URL")
+        },
+        {
+          href: ContactUsUrl,
+          text: t("FOOTER.CONTACT_US_URL")
+        },
+        {
+          href: AccessibilityStatementUrl,
+          text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
+        },
+        {
+          href: TermsAndConditionsUrl,
+          text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
+        },
+        {
+          href: TestingSupportUrl,
+          text: t("FOOTER.TESTING_SUPPORT")
+        }
+      ]
+    }
+  }) }} {% else %} {{ govukFooter({
     meta: {
       items: [
         {
@@ -79,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       ]
     }
-  }) }}
+  }) }} {% endif %}
 {% endblock %}
 {% block bodyEnd %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}

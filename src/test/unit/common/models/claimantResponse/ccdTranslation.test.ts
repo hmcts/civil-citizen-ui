@@ -4,6 +4,7 @@ import { YesNo } from 'common/form/models/yesNo';
 import { Party } from 'common/models/party';
 import { PartyType } from 'common/models/partyType';
 import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant 1 to ccd', () => {
@@ -57,7 +58,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 10,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -76,7 +77,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 10,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -94,7 +95,7 @@ describe('translate draft claim to ccd version', () => {
           type: PaymentOptionType.IMMEDIATELY,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -115,7 +116,7 @@ describe('translate draft claim to ccd version', () => {
           date: '2022-01-01',
         },
       },
-    } as any;
+    } as unknown as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -136,7 +137,7 @@ describe('translate draft claim to ccd version', () => {
           date: '2022-01-01',
         },
       },
-    } as any;
+    } as unknown as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -156,7 +157,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 10,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -176,7 +177,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 10,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -197,7 +198,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 100,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
@@ -218,7 +219,7 @@ describe('translate draft claim to ccd version', () => {
           amount: 100,
         },
       },
-    } as any;
+    } as ClaimantResponse;
 
     // when
     const ccdClaim = translateClaimantResponseDJToCCD(claim);

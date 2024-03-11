@@ -77,7 +77,9 @@ import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPla
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -103,7 +105,7 @@ export class Claim {
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
-  interest?: Interest; //TODO: Release 1: Some of the fields that have been refactored in Interest are used in Release 1, they must be included in the translator from CCD to work correctly (response/claim-details).
+  interest?: Interest;
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
@@ -122,6 +124,7 @@ export class Claim {
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
   respondent1LiPResponseCarm?: CcdMediationCarm;
+  applicant1LiPResponseCarm?: CcdMediationCarm;
   caseProgressionHearing?: CaseProgressionHearing;
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
@@ -151,8 +154,12 @@ export class Claim {
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
+  businessProcess?: BusinessProcess;
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
+  app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
+  app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -800,7 +807,7 @@ export class Claim {
   }
 
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.defaultJudgmentDocuments && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
   }
 
   hasMediationSuccessful() {
@@ -812,7 +819,7 @@ export class Claim {
   }
 
   hasDefaultJudgmentSubmitted() {
-    return !!this.defaultJudgmentDocuments;
+    return !!this.defaultJudgmentDocuments || this.businessProcess?.camundaEvent === 'DEFAULT_JUDGEMENT_SPEC';
   }
 
   hasClaimantRequestedCCJ() {
@@ -920,6 +927,12 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  hasClaimantNotSettled(): boolean {
+    return this.hasClaimantIntentToProceedResponse() || this.hasClaimantRejectedDefendantResponse() || this.hasClaimantRejectedDefendantPaid()
+      || this.hasClaimantRejectedDefendantAdmittedAmount()
+      || this.hasClaimantRejectedPartAdmitPayment();
   }
 
   getPaymentDate() {
