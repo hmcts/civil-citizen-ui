@@ -1,6 +1,7 @@
 import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import {Claim} from 'models/claim';
 import {addDaysToDate} from 'common/utils/dateUtils';
+import {DocumentType} from 'common/models/document/documentType';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -55,4 +56,28 @@ describe('dashboardInterpolationService', () => {
 
   });
 
+  it('should replace placeholders with redirect url for claimant dq', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123', value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+          document_filename: 'claimant_directions_questionnaire_form_000MC094.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+        },
+        documentName: 'claimant_directions_questionnaire_form_000MC005.pdf',
+        documentSize: 65663,
+        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
+        createdDatetime: new Date('2024-03-11T10:57:18'),
+      },
+    }];
+    const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_INFO}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim);
+    const textExpectedDynamic = '/case/1710172392502478/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
 });
