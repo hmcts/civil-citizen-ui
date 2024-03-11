@@ -76,7 +76,7 @@ import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
-import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
@@ -150,6 +150,8 @@ export class Claim {
   courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
   helpWithFeesRequested: string;
+  applicant1Represented?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
@@ -881,7 +883,7 @@ export class Claim {
   }
 
   isClaimant() {
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }
 
   isDraftClaim(): boolean {
@@ -927,6 +929,14 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
