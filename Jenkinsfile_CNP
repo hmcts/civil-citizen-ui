@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "CIV-12962-Add-scheduler-for-full-admit-pay-immediately-no-payment"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
