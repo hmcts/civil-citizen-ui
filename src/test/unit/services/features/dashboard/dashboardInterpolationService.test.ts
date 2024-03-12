@@ -73,7 +73,7 @@ describe('dashboardInterpolationService', () => {
         createdDatetime: new Date('2024-03-11T10:57:18'),
       },
     }];
-    const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_INFO}';
+    const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS}';
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';

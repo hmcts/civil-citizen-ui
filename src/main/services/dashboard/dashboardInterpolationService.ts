@@ -22,7 +22,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString()  :'';
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
   const civilMoneyClaimsTelephone  = config.get<string>('services.civilMoneyClaims.telephone');
-  const downloadClaimantDQLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId',getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,DocumentType.DIRECTIONS_QUESTIONNAIRE,DirectionQuestionnaireType.CLAIMANT));
 
   valuesMap.set('{VIEW_CLAIM_URL}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', '#');
@@ -35,7 +34,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_CLAIMANT_HEARING_INFO}', downloadClaimantDQLink);
+  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
@@ -55,3 +54,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
 
   return valuesMap;
 };
+
+function getClaimantDQDocumentId(claim:Claim) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+}
