@@ -3,7 +3,6 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  MEDIATION_DISAGREEMENT_URL,
   MEDIATION_CONTACT_PERSON_CONFIRMATION_URL,
   MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL,
   MEDIATION_PHONE_CONFIRMATION_URL,
@@ -110,7 +109,7 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
+        .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(500);

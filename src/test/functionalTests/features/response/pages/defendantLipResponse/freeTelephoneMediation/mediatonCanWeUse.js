@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -7,16 +9,36 @@ const fields ={
   phoneNumberID: 'input[id="mediationPhoneNumber"]',
 };
 
+const content = {
+  heading1: {
+    en: 'Enter a phone number',
+    cy: 'Rhowch rif ffôn',
+  },
+  descriptionText1: {
+    en: 'Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.',
+    cy: 'Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi. Ni fyddwn yn rhoi\'r rhif i rywun arall.',
+  },
+  heading2: {
+    en: 'Confirm your telephone number',
+    cy: 'Cadarnhewch eich rhif ffôn',
+  },
+  descriptionText2: {
+    en: 'Can the mediation service use',
+    cy: 'A all y gwasanaeth cyfryngu ddefnyddio’r rhif',
+  },
+};
+
 class MediationCanWeUse {
 
   async selectOptionForMediation() {
-    // await I.see('Confirm your telephone number', 'h1');
-    // await I.see('Can the mediation service use');
-    // await I.click(fields.yesButton);
-    await I.waitForText('Enter a phone number', config.WaitForText);
-    await I.see('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
-    await I.fillField(fields.phoneNumberID, '02088008800');
-    await I.click('Save and continue');
+    const { language } = sharedData;
+    await I.waitForText(content.heading2[language], config.WaitForText);
+    await I.see(content.descriptionText2[language]);
+    await I.click(fields.yesButton);
+    // await I.waitForText(content.heading1[language], config.WaitForText);
+    // await I.see(content.descriptionText1[language]);
+    // await I.fillField(fields.phoneNumberID, '02088908876');
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 
