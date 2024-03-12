@@ -26,7 +26,7 @@ Scenario('Create Claim - Part Admit By Defendant and Accepted Repayment Plan By 
     console.log('The value of the claim reference : ' + claimRef);
     await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
-    await CreateLipvLipClaimSteps.payClaimFee();
+    await CreateLipvLipClaimSteps.payClaimFee(1520, 115);
     await api.waitForFinishedBusinessProcess();
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     let claimNumber = await caseData.legacyCaseReference;
