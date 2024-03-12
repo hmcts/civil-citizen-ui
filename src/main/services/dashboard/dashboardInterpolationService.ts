@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
-import {CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import { CCJ_PAID_AMOUNT_URL, CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL } from 'routes/urls';
 import config from 'config';
 
 export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, notificationId?: string): string => {
@@ -37,7 +37,8 @@ const setDashboardValues = (claim: Claim, notificationId?: string): Map<string, 
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
-
+  valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
+  
   //Example of how to record click + open a document (target="_blank" will need adding in database <a> element)
   //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
   if(notificationId){
