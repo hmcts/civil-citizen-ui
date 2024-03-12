@@ -4,7 +4,7 @@ const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../features/home/steps/login');
 
-let caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=16000;
+let caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115;
 
 Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@regression-r2');
 
@@ -38,7 +38,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with standard 
     caseRef = await steps.checkAndSubmit(selectedHWF);
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    await steps.payClaimFee(1600, 115);
+    await steps.payClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
   }
 });
@@ -56,7 +56,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
     caseRef = await steps.checkAndSubmit(selectedHWF);
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    await steps.payClaimFee(1600, 115);
+    await steps.payClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
   }
 });

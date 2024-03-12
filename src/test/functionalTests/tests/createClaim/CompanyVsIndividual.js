@@ -4,7 +4,7 @@ const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../features/home/steps/login');
 
-let caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimantPartyType = 'Company';
+let caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
 
 Feature('Create Lip v Lip claim - Company vs Individual').tag('@regression-r2');
 
@@ -38,7 +38,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
     caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    await steps.payClaimFee(1600, 115);
+    await steps.payClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
   }
 });
@@ -56,7 +56,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    await steps.payClaimFee(1600, 115);
+    await steps.payClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
   }
 });
