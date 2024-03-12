@@ -6,9 +6,6 @@ import {Claim} from 'common/models/claim';
 import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
-import {Dashboard} from 'models/dashboard/dashboard';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -41,34 +38,4 @@ export const getRedisStoreForSession = () => {
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });
-};
-
-export const getNotificationById = async (claimId: string, claim: Claim, caseRole: string, req: AppRequest): Promise<DashboardNotificationList> => {
-  const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
-  if (dashboardNotifications) {
-    dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, notification.id);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, notification.id);
-    });
-    return dashboardNotifications;
-  } else {
-    throw new Error('Notifications not found...');
-  }
-};
-
-export const getDashboardById = async (claimId: string, claim:Claim, caseRole: string, req: AppRequest): Promise<Dashboard> => {
-  const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
-  if (dashboard) {
-    dashboard.items.forEach((taskList) => {
-      taskList.tasks.forEach((task) => {
-        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim);
-        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim);
-        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim);
-        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim);
-      });
-    });
-    return dashboard;
-  } else {
-    throw new Error('Dashboard not found...');
-  }
 };
