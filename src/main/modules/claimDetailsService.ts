@@ -4,7 +4,7 @@ import {ResponseType} from '../common/form/models/responseType';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
 
 export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
-  let interestToDate = 0
+  let interestToDate = 0;
   if (claim.hasInterest()) {
     interestToDate = calculateInterestToDate(claim);
   }
