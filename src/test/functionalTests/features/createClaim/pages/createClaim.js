@@ -530,13 +530,17 @@ class CreateClaim {
     I.click(paths.buttons.submit_claim);
   }
 
-  async verifyClaimSubmitted() {
+  async verifyClaimSubmitted(isHWFClaim = false) {
     I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
     I.see('Claim submitted', 'h1');
     I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
     I.see('What happens next', 'h2');
-    I.see('Your claim will not be issued and sent to the other parties until you have paid the claim fee.');
+    if (isHWFClaim) {
+      I.see('Your claim will be issued once your Help With Fees application has been confirmed. We\'ll email you within 5 days to confirm this.');
+    } else {
+      I.see('Your claim will not be issued and sent to the other parties until you have paid the claim fee.');
+    }
     I.see('If the defendant pays you');
     I.see('You need to sign in to your account to tell us you\'ve been paid.');
     I.seeElement('//a[contains(text(),\'What did you think of this service?\')]');
@@ -547,15 +551,17 @@ class CreateClaim {
     return claimReference;
   }
 
-  async verifyAndInputPayYourClaimFee() {
+  async verifyAndInputPayYourClaimFee(claimAmount, claimFee) {
     I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     I.see('Pay your claim fee', 'h1');
     I.see('Claim amount');
-    I.see('£1520');
+    I.see(claimAmount);
     I.see('Claim fee');
-    I.see('£1635');
+    I.see(claimFee);
+    I.see('Total claim amount');
+    I.see(claimAmount+claimFee);
     I.see('If you settle out of court we won\'t refund your claim fee.');
-    await I.click('continue to payment(£115)');
+    await I.click(`continue to payment(£${claimFee})`);
   }
 
   async verifyAndInputCardDetails() {
@@ -745,6 +751,8 @@ class CreateClaim {
     I.checkOption(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
     await I.waitForContent('Claim submitted', 60);
+    const caseReference = await this.verifyClaimSubmitted(selectedHWF);
+    return caseReference;
   }
 }
 
