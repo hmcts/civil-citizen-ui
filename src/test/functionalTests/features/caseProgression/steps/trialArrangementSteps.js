@@ -21,7 +21,7 @@ class TrialArrangementSteps {
 
   initiateTrialArrangementJourney(claimRef, claimType, readyForTrial, partyType) {
     console.log('The value of the Claim Reference : ' + claimRef);
-    let partiesOnTheCase
+    let partiesOnTheCase;
     if (partyType === 'LiPvLiP') {
       partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
       I.amOnPage('/case/' + claimRef + '/case-progression/finalise-trial-arrangements');

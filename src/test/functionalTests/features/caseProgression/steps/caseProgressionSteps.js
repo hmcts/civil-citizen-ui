@@ -21,7 +21,7 @@ class CaseProgressionSteps {
 
   initiateUploadEvidenceJourney(claimRef, claimType, partyType) {
     console.log('The value of the Claim Reference : '+claimRef);
-    let partiesOnTheCase
+    let partiesOnTheCase;
     if (partyType === 'LiPvLiP') {
       partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
       I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
