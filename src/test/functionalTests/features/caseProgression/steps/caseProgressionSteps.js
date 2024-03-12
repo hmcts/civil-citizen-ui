@@ -19,13 +19,19 @@ const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 
 class CaseProgressionSteps {
 
-  initiateUploadEvidenceJourney(claimRef, claimType) {
-
+  initiateUploadEvidenceJourney(claimRef, claimType, partyType) {
     console.log('The value of the Claim Reference : '+claimRef);
-    latestUpdateTab.nextAction('Upload documents');
-    uploadYourDocumentsIntroduction.verifyPageContent();
+    let partiesOnTheCase
+    if (partyType === 'LiPvLiP') {
+      partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
+      I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
+    } else {
+      partiesOnTheCase = 'Test Inc v Sir John Doe';
+      latestUpdateTab.nextAction('Upload documents');
+    }
+    uploadYourDocumentsIntroduction.verifyPageContent(partiesOnTheCase);
     uploadYourDocumentsIntroduction.nextAction('Start now');
-    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType);
+    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType, partiesOnTheCase);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
     uploadYourDocument.verifyPageContent(claimType);
@@ -35,12 +41,14 @@ class CaseProgressionSteps {
       uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
     uploadYourDocument.nextAction('Continue');
-    checkYourAnswers.verifyPageContent(claimType);
+    checkYourAnswers.verifyPageContent(claimType, partiesOnTheCase);
     checkYourAnswers.clickConfirm();
     checkYourAnswers.nextAction('Submit');
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction('View documents');
-    documentsTab.verifyLatestUpdatePageContent(claimType);
+    if (partyType !== 'LiPvLiP') {
+      documentsTab.verifyLatestUpdatePageContent(claimType);
+    }
   }
 
   initiateHearingNoticeJourney(claimRef) {

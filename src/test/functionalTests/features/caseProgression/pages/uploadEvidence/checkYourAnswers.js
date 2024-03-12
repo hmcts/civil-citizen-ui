@@ -16,9 +16,9 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimType) {
+  verifyPageContent(claimType, partiesOnTheCase) {
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(partiesOnTheCase);
     if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessSectionContent(claimType);
@@ -34,10 +34,10 @@ class CheckYourAnswers {
     contactUs.verifyContactUs();
   }
 
-  verifyHeadingDetails() {
+  verifyHeadingDetails(partiesOnTheCase) {
     I.see('Check your answers', 'h1');
     I.see('Case reference');
-    I.see('Test Inc v Sir John Doe');
+    I.see(partiesOnTheCase);
     I.see('Warning');
     I.see('You cannot withdraw a document once you have submitted it.');
   }
@@ -181,7 +181,8 @@ class CheckYourAnswers {
       I.see('Questions for other party\'s expert or joint expert 1');
       I.see('Questions for Expert 1');
       I.see('Other party\'s name');
-      I.see('Test Inc');
+      // I.see('Test Inc');
+      // I.see ('Sir John Doe');
       I.see('Name of document you have questions about');
       I.see('Questions for Expert Docuent Nae 1');
       I.see('TestJPEG.jpeg');

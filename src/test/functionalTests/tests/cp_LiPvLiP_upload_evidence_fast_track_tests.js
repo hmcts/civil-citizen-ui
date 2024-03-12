@@ -6,6 +6,7 @@ const TrialArrangementSteps = require('../features/caseProgression/steps/trialAr
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
+const partyType = 'LiPvLiP'
 let claimRef;
 
 Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track ');
@@ -27,8 +28,8 @@ Before(async ({api}) => {
 
 Scenario('Citizen Claimant perform evidence upload and trial arrangements',  async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
+    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
+    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes', partyType);
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();
   }
