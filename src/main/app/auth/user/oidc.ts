@@ -3,15 +3,15 @@ import config from 'config';
 import jwt_decode from 'jwt-decode';
 import {UserDetails} from '../../../common/models/AppRequest';
 
-const id: string = config.get('services.idam.clientID');
-const secret: string = config.get('services.idam.clientSecret');
-const tokenUrl: string = config.get('services.idam.tokenURL');
-
 export const getOidcResponse = async(
   callbackUrl: string,
   rawCode: string,
 ): Promise<OidcResponse> => {
+  const id: string = config.get('services.idam.clientID');
+  const secret: string = config.get('services.idam.clientSecret');
+  const tokenUrl: string = config.get('services.idam.tokenURL');
   const code = encodeURIComponent(rawCode);
+  
   const data = `client_id=${id}&client_secret=${secret}&grant_type=authorization_code&redirect_uri=${callbackUrl}&code=${code}`;
   const headers = { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' };
   const response: AxiosResponse<OidcResponse> = await Axios.post(tokenUrl, data, { headers });

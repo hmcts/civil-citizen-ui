@@ -58,8 +58,9 @@ appReq.session = {
   previousUrl: undefined,
   claimId: '12345',
   taskLists: undefined,
-  assignClaimId: undefined,
+  assignClaimURL: undefined,
   claimIssueTasklist: false,
+  firstContact: undefined,
   issuedAt: 150,
 };
 const ccdClaim : CCDClaim = {
