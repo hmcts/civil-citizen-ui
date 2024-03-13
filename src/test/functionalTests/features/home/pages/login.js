@@ -8,7 +8,7 @@ const fields = {
 
 const buttons = {
   submit: 'input.button',
-  hmctsSignIn: 'input[type="submit"]',
+  hmctsSignIn: 'Sign in',
   acceptCookies: 'button[id="cookie-accept-submit"]',
   hideMessage: 'button[name="hide-accepted"]',
 };
@@ -28,7 +28,7 @@ class LoginPage {
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
-    await I.click(buttons.submit);
+    await I.click(buttons.hmctsSignIn);
     await I.seeInCurrentUrl('/dashboard');
   }
 }
