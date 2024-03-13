@@ -192,7 +192,7 @@ class ResponseToDefenceLipVLipSteps {
   }
 
   async verifyDashboardLoaded() {
-    I.waitForText('Submit', 3);
+    I.waitForContent('Submit', 3);
     I.see('Your response', 'h1');
   }
 
