@@ -4,6 +4,7 @@
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
+{% from "./macro/back.njk" import back %}
 
 {% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
@@ -39,17 +40,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         },
         html: bannerText + languageToggle
       }) }}
+
+  {{ back(backLinkUrl, t,  false, true) }}
+
 {% endblock %}
+
 
 {% block bodyStart %}
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   {{ cookieBanner(t) }}
 {% endblock %}
 
-{% block footer %} 
+{% block footer %}
 {% if developmentMode != 'production' %}
 {{ govukFooter({
     meta: {

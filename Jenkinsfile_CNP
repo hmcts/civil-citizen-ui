@@ -89,7 +89,6 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#civil_notifications')
   enableSlackNotifications('#citizen-ui-techteam')
   syncBranchesWithMaster(branchesToSync)
-  disableCleanupOfHelmReleaseOnFailure()
 
   onPR {
     env.ENVIRONMENT = "preview"

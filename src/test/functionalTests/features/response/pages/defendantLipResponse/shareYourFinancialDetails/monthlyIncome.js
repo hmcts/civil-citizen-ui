@@ -46,7 +46,7 @@ class MonthlyIncome {
 
   async selectIncomeFromJob(incomeAmount) {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.checkOption(checkboxes.incomeFromJob[language]);
     await I.fillField(fields.incomeFromJobPayment, incomeAmount);
     await I.click(fields.incomeFromJobPaymentSchedule);

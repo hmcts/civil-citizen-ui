@@ -1,435 +1,62 @@
+const config = require('../../../../config');
+
+const admitAllDefendantResponse = require('./admitAllDefendantResponse.js');
+const partAdmitSmallClaims = require('./partAdmitSmallClaimsDefendantResponse');
+const partAdmitFastTrack = require('./partAdmitFastTrackDefendantResponse');
+const rejectAllSmallClaims = require('./rejectAllSmallClaimsDefendantResponse');
+const rejectAllFastTrack = require('./rejectAllFastTrackDefendantResponse');
+
 module.exports = {
-  createDefendantResponse: (totalClaimAmount, responseType) => {
-    if (responseType === 'FD_DISPUTE_ALL_INDIVIDUAL') {
-      return {
-        event: 'DEFENDANT_RESPONSE_CUI',
-        caseDataUpdate: {
-          respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-          defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
-          respondToClaimAdmitPartLRspec: {},
-          responseClaimMediationSpecRequired: 'No',
-          specAoSApplicantCorrespondenceAddressRequired: 'No',
-          totalClaimAmount: totalClaimAmount,
-          respondent1: {
-            individualDateOfBirth: '1987-11-01T00:00:00.000Z',
-            individualFirstName: 'John',
-            individualLastName: 'Doe',
-            individualTitle: 'Sir',
-            partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-            partyPhone: '07123456789',
-            primaryAddress: {
-              AddressLine1: 'TestAddressLine1',
-              AddressLine2: 'TestAddressLine2',
-              AddressLine3: 'TestAddressLine3',
-              PostCode: 'IG61JD',
-              PostTown: 'TestCity',
-            },
-            type: 'INDIVIDUAL',
-          },
-          respondent1LiPResponse: {
-            respondent1LiPFinancialDetails: {},
-            respondent1MediationLiPResponse: {
-              mediationDisagreementLiP: 'No',
-            },
-            respondent1DQExtraDetails: {
-              wantPhoneOrVideoHearing: 'No',
-              giveEvidenceYourSelf: 'No',
-              triedToSettle: 'No',
-              determinationWithoutHearingRequired: 'No',
-              determinationWithoutHearingReason: 'TestReason',
-              requestExtra4weeks: 'No',
-              considerClaimantDocuments: 'No',
-              respondent1DQLiPExpert: {
-                caseNeedsAnExpert: 'No',
-              },
-            },
-            respondent1DQHearingSupportLip: {
-              supportRequirementLip: 'No',
-            },
-            respondent1ResponseLanguage: 'ENGLISH',
-          },
-          detailsOfWhyDoesYouDisputeTheClaim: 'Testreason',
-          specClaimResponseTimelineList: 'MANUAL',
-          specResponseTimelineOfEvents: [],
-          specResponselistYourEvidenceList: [],
-          defenceRouteRequired: 'DISPUTES_THE_CLAIM',
-          respondToClaim: {
-            howMuchWasPaid: null,
-          },
-          respondent1DQHomeDetails: {},
-          respondent1PartnerAndDependent: {
-            howManyChildrenByAgeGroup: {},
-          },
-          specDefendant1SelfEmploymentDetails: {},
-          respondToClaimAdmitPartUnemployedLRspec: {},
-          respondent1DQLanguage: {
-            court: 'ENGLISH',
-            documents: 'ENGLISH',
-          },
-          respondent1DQVulnerabilityQuestions: {
-            vulnerabilityAdjustmentsRequired: 'No',
-          },
-          respondent1DQRequestedCourt: {
-            requestHearingAtSpecificCourt: 'No',
-          },
-          respondent1DQWitnesses: {
-            witnessesToAppear: 'No',
-          },
-          respondent1DQHearingFastClaim: {
-            hearingLengthHours: '3',
-            hearingLengthDays: '1',
-            unavailableDatesRequired: 'No',
-          },
-          respondent1DQExperts: {
-            expertRequired: 'No',
-          },
-        },
-      };
-    }
-    if (responseType === 'FA_PAY_IMMEDIATELY_INDIVIDUAL') {
-      return {
-        event: 'DEFENDANT_RESPONSE_CUI',
-        caseDataUpdate: {
-          respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
-          defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
-          respondToClaimAdmitPartLRspec: {
-            whenWillThisAmountBePaid: '2024-03-06T00:00:00.000Z',
-          },
-          responseClaimMediationSpecRequired: 'No',
-          specAoSApplicantCorrespondenceAddressRequired: 'No',
-          totalClaimAmount: totalClaimAmount,
-          respondent1: {
-            individualDateOfBirth: '1987-11-01T00:00:00.000Z',
-            individualFirstName: 'John',
-            individualLastName: 'Doe',
-            individualTitle: 'Sir',
-            partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-            partyPhone: '07123456789',
-            primaryAddress: {
-              AddressLine1: 'TestAddressLine1',
-              AddressLine2: 'TestAddressLine2',
-              AddressLine3: 'TestAddressLine3',
-              PostCode: 'IG61JD',
-              PostTown: 'TestCity',
-            },
-            type: 'INDIVIDUAL',
-          },
-          respondent1LiPResponse: {
-            respondent1DQExtraDetails: {
-              whyPhoneOrVideoHearing: '',
-              determinationWithoutHearingReason: '',
-              considerClaimantDocumentsDetails: '',
-              respondent1DQLiPExpert: {
-                expertCanStillExamineDetails: '',
-              },
-            },
-            respondent1DQHearingSupportLip: {},
-            respondent1ResponseLanguage: 'ENGLISH',
-          },
-          respondent1LiPFinancialDetails: {},
-          specClaimResponseTimelineList: 'MANUAL',
-          specResponseTimelineOfEvents: [],
-          respondent1DQHomeDetails: {},
-          respondent1PartnerAndDependent: {
-            howManyChildrenByAgeGroup: {},
-          },
-          specDefendant1SelfEmploymentDetails: {},
-          respondToClaimAdmitPartUnemployedLRspec: {},
-          respondent1DQLanguage: {},
-          respondent1DQVulnerabilityQuestions: {},
-          respondent1DQRequestedCourt: {
-            otherPartyPreferredSite: '',
-            responseCourtCode: '',
-            responseCourtLocations: [],
-            caseLocation: {},
-          },
-          respondent1DQWitnesses: {},
-          respondent1DQHearingSmallClaim: {},
-          respondent1DQExperts: {},
-        },
-      };
-    }
-    if (responseType === 'FA_PAY_BY_SET_DATE_INDIVIDUAL') {
-      return {
-        event: 'DEFENDANT_RESPONSE_CUI',
-        caseDataUpdate: {
-          respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
-          defenceAdmitPartPaymentTimeRouteRequired: 'BY_SET_DATE',
-          respondToClaimAdmitPartLRspec: {
-            whenWillThisAmountBePaid: '2025-10-01T00:00:00.000Z',
-          },
-          responseClaimMediationSpecRequired: 'No',
-          specAoSApplicantCorrespondenceAddressRequired: 'Yes',
-          totalClaimAmount: '1500',
-          respondent1: {
-            individualDateOfBirth: '1990-01-01',
-            individualFirstName: 'John',
-            individualLastName: 'Doe',
-            individualTitle: 'Sir',
-            partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-            partyPhone: '07800000000',
-            primaryAddress: {
-              AddressLine1: 'TestAddressLine1',
-              AddressLine2: 'TestAddressLine2',
-              AddressLine3: 'TestAddressLine3',
-              PostCode: 'IG61JD',
-              PostTown: 'TestCity',
-            },
-            soleTraderDateOfBirth: null,
-            type: 'INDIVIDUAL',
-          },
-          respondent1LiPResponse: {
-            respondent1DQExtraDetails: {
-              whyPhoneOrVideoHearing: '',
-              determinationWithoutHearingReason: '',
-              considerClaimantDocumentsDetails: '',
-              respondent1DQLiPExpert: {
-                expertCanStillExamineDetails: '',
-              },
-            },
-            respondent1DQHearingSupportLip: {},
-            respondent1ResponseLanguage: 'ENGLISH',
-          },
-          respondent1LiPFinancialDetails: {
-            partnerPensionLiP: 'No',
-            childrenEducationLiP: '1',
-          },
-          specClaimResponseTimelineList: 'MANUAL',
-          specResponseTimelineOfEvents: [],
-          respondent1BankAccountList: [
-            {
-              value: {
-                accountType: 'SAVINGS',
-                jointAccount: 'Yes',
-                balance: '4000',
-              },
-            },
-          ],
-          disabilityPremiumPayments: 'No',
-          respondent1DQHomeDetails: {
-            type: 'PRIVATE_RENTAL',
-            typeOtherDetails: '',
-          },
-          respondent1PartnerAndDependent: {
-            liveWithPartnerRequired: 'Yes',
-            partnerAgedOver: 'Yes',
-            haveAnyChildrenRequired: 'Yes',
-            howManyChildrenByAgeGroup: {
-              numberOfUnderEleven: '1',
-              numberOfElevenToFifteen: '1',
-              numberOfSixteenToNineteen: '1',
-            },
-            receiveDisabilityPayments: 'No',
-            supportedAnyoneFinancialRequired: 'Yes',
-            supportPeopleNumber: '2',
-            supportPeopleDetails: 'Parents',
-          },
-          defenceAdmitPartEmploymentTypeRequired: 'Yes',
-          respondToClaimAdmitPartEmploymentTypeLRspec: ['EMPLOYED'],
-          responseClaimAdmitPartEmployer: {
-            employerDetails: [
-              {
-                value: {
-                  employerName: 'ABC Ltd',
-                  jobTitle: 'Builder',
-                },
-              },
-            ],
-          },
-          specDefendant1SelfEmploymentDetails: {},
-          respondToClaimAdmitPartUnemployedLRspec: {},
-          respondent1CourtOrderPaymentOption: 'No',
-          respondent1CourtOrderDetails: [],
-          respondent1LoanCreditOption: 'Yes',
-          respondent1LoanCreditDetails: [
-            {
-              value: {
-                loanCardDebtDetail: 'HSBC Credit card',
-                totalOwed: '300000',
-                monthlyPayment: '30000',
-              },
-            },
-          ],
-          responseToClaimAdmitPartWhyNotPayLRspec: 'test',
-          respondent1DQCarerAllowanceCreditFullAdmission: 'Yes',
-          specDefendant1Debts: {
-            debtDetails: [
-              {
-                value: {
-                  debtType: 'MORTGAGE',
-                  paymentAmount: '20000',
-                  paymentFrequency: 'ONCE_ONE_MONTH',
-                },
-              },
-            ],
-          },
-          respondent1DQRecurringIncomeFA: [
-            {
-              value: {
-                type: 'JOB',
-                amount: '300000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-            {
-              value: {
-                type: 'INCOME_SUPPORT',
-                amount: '100000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-          ],
-          respondent1DQRecurringExpensesFA: [
-            {
-              value: {
-                type: 'RENT',
-                amount: '200000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-            {
-              value: {
-                type: 'COUNCIL_TAX',
-                amount: '20000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-            {
-              value: {
-                type: 'WATER',
-                amount: '2000',
-                frequency: 'ONCE_TWO_WEEKS',
-              },
-            },
-            {
-              value: {
-                type: 'TV',
-                amount: '4000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-          ],
-          respondent1DQLanguage: {},
-          respondent1DQVulnerabilityQuestions: {},
-          respondent1DQRequestedCourt: {
-            otherPartyPreferredSite: '',
-            responseCourtCode: '',
-            responseCourtLocations: [],
-            caseLocation: {},
-          },
-          respondent1DQWitnesses: {},
-          respondent1DQHearingSmallClaim: {},
-          respondent1DQExperts: {},
-        },
-      };
-    }
-    if (responseType === 'FA_PAY_BY_INSTALMENTS_INDIVIDUAL'){
-      return {
-        event: 'DEFENDANT_RESPONSE_CUI',
-        caseDataUpdate: {
-          respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
-          defenceAdmitPartPaymentTimeRouteRequired: 'SUGGESTION_OF_REPAYMENT_PLAN',
-          respondent1RepaymentPlan: {
-            paymentAmount: '10000',
-            repaymentFrequency: 'ONCE_ONE_MONTH',
-            firstRepaymentDate: '2025-10-01T00:00:00.000Z',
-          },
-          respondToClaimAdmitPartLRspec: {},
-          responseClaimMediationSpecRequired: 'No',
-          specAoSApplicantCorrespondenceAddressRequired: 'Yes',
-          totalClaimAmount: '1500',
-          respondent1: {
-            individualDateOfBirth: '1990-01-01',
-            individualFirstName: 'John',
-            individualLastName: 'Doe',
-            individualTitle: 'Sir',
-            partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-            partyPhone: '07800000000',
-            primaryAddress: {
-              AddressLine1: 'TestAddressLine1',
-              AddressLine2: 'TestAddressLine2',
-              AddressLine3: 'TestAddressLine3',
-              PostCode: 'IG61JD',
-              PostTown: 'TestCity',
-            },
-            soleTraderDateOfBirth: null,
-            type: 'INDIVIDUAL',
-          },
-          respondent1LiPResponse: {
-            respondent1DQExtraDetails: {
-              whyPhoneOrVideoHearing: '',
-              determinationWithoutHearingReason: '',
-              considerClaimantDocumentsDetails: '',
-              respondent1DQLiPExpert: {
-                expertCanStillExamineDetails: '',
-              },
-            },
-            respondent1DQHearingSupportLip: {},
-            respondent1ResponseLanguage: 'ENGLISH',
-          },
-          respondent1LiPFinancialDetails: {
-            partnerPensionLiP: 'No',
-          },
-          specClaimResponseTimelineList: 'MANUAL',
-          specResponseTimelineOfEvents: [],
-          disabilityPremiumPayments: 'No',
-          respondent1DQHomeDetails: {
-            type: 'ASSOCIATION_HOME',
-            typeOtherDetails: '',
-          },
-          respondent1PartnerAndDependent: {
-            liveWithPartnerRequired: 'Yes',
-            partnerAgedOver: 'Yes',
-            haveAnyChildrenRequired: 'No',
-            howManyChildrenByAgeGroup: {},
-            supportedAnyoneFinancialRequired: 'No',
-          },
-          defenceAdmitPartEmploymentTypeRequired: 'No',
-          specDefendant1SelfEmploymentDetails: {},
-          respondToClaimAdmitPartUnemployedLRspec: {
-            unemployedComplexTypeRequired: 'RETIRED',
-            lengthOfUnemployment: {
-              numberOfYearsInUnemployment: null,
-              numberOfMonthsInUnemployment: null,
-            },
-            otherUnemployment: '',
-          },
-          respondent1CourtOrderPaymentOption: 'No',
-          respondent1CourtOrderDetails: [],
-          respondent1LoanCreditOption: 'No',
-          responseToClaimAdmitPartWhyNotPayLRspec: 'test',
-          respondent1DQCarerAllowanceCreditFullAdmission: 'No',
-          respondent1DQRecurringIncomeFA: [
-            {
-              value: {
-                type: 'PENSION',
-                amount: '300000',
-                frequency: 'ONCE_ONE_MONTH',
-              },
-            },
-          ],
-          respondent1DQRecurringExpensesFA: [
-            {
-              value: {
-                type: 'RENT',
-                amount: '50000',
-                frequency: 'ONCE_ONE_WEEK',
-              },
-            },
-          ],
-          respondent1DQLanguage: {},
-          respondent1DQVulnerabilityQuestions: {},
-          respondent1DQRequestedCourt: {
-            otherPartyPreferredSite: '',
-            responseCourtCode: '',
-            responseCourtLocations: [],
-            caseLocation: {},
-          },
-          respondent1DQWitnesses: {},
-          respondent1DQHearingSmallClaim: {},
-          respondent1DQExperts: {},
-        },
-      };
+  createDefendantResponse: (totalClaimAmount, responseType, claimType) => {
+    switch (responseType) {
+      case config.defenceType.admitAllPayImmediateWithIndividual:
+        return admitAllDefendantResponse.admitAllPayImmediateWithIndividual(totalClaimAmount);
+      case config.defenceType.admitAllPayBySetDateWithIndividual:
+        return admitAllDefendantResponse.admitAllPayBySetDateWithIndividual(totalClaimAmount);
+      case config.defenceType.admitAllPayByInstallmentWithIndividual:
+        return admitAllDefendantResponse.admitAllPayByInstallmentWithIndividual(totalClaimAmount);
+      case config.defenceType.partAdmitAmountPaidWithIndividual:
+        if (claimType === 'FastTrack') {
+          return partAdmitFastTrack.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+        } else {
+          return partAdmitSmallClaims.partAdmitAmountPaidWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual:
+        if (claimType === 'FastTrack') {
+          return partAdmitFastTrack.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual(totalClaimAmount);
+        } else {
+          return partAdmitSmallClaims.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual:
+        if (claimType === 'FastTrack') {
+          return partAdmitFastTrack.partAdmitWithPartPaymentOnSpecificDateWithIndividual(totalClaimAmount);
+        } else {
+          return partAdmitSmallClaims.partAdmitWithPartPaymentOnSpecificDateWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual:
+        if (claimType === 'FastTrack') {
+          return partAdmitFastTrack.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual(totalClaimAmount);
+        } else {
+          return partAdmitSmallClaims.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.rejectAllDisputeAllWithIndividual:
+        if (claimType === 'FastTrack') {
+          return rejectAllFastTrack.rejectAllDisputeAllWithIndividual(totalClaimAmount);
+        } else {
+          return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual:
+        if (claimType === 'FastTrack') {
+          return rejectAllFastTrack.rejectAllAlreadypaidNotFullWithIndividual(totalClaimAmount);
+        } else {
+          return rejectAllSmallClaims.rejectAllAlreadypaidNotFullWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.rejectAllAlreadyPaidInFullWithIndividual:
+        if (claimType === 'FastTrack') {
+          return rejectAllFastTrack.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
+        } else {
+          return rejectAllSmallClaims.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
+        }
     }
   },
 };

@@ -4,10 +4,11 @@ import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL, FIRST_
 import {GenericForm} from 'form/models/genericForm';
 import {PinType} from 'models/firstContact/pin';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
+import { AppRequest, AppSession } from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
+import { getFirstContactData, saveFirstContactData } from 'services/firstcontact/firstcontactService';
 
 const CryptoJS = require('crypto-js');
 
@@ -30,7 +31,7 @@ pinController.get(FIRST_CONTACT_PIN_URL, (req: AppRequest<{pin:string}>, res: Re
 
 pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
+    const firstContact = getFirstContactData(req.session as AppSession);
     const pin = req.body.pin;
     const pinForm = new GenericForm(new PinType(pin));
     await pinForm.validate();
@@ -38,16 +39,15 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
       renderView(pinForm, !!req.body.pin, res);
     } else {
       const pin = pinForm.model.pin;
-      if (pin.length === 8) {
-        const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, cookie.claimReference);
+      if (pin.length === 8 && firstContact?.claimReference) {
+        const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, firstContact?.claimReference);
         console.log('RedirectUrl : ', redirectUrl);
         res.redirect(redirectUrl);
-      } else {
-        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, cookie.claimReference);
+      } else if (firstContact?.claimReference) {
+        const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, firstContact?.claimReference);
         await saveDraftClaim(claim.id, claim, true);
-        cookie.claimId = claim.id;
-        cookie.AdGfst2UUAB7szHPkzojWkbaaBHtEIXBETUQ = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
-        res.cookie('firstContact', cookie);
+        const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+        req.session = saveFirstContactData(req.session as AppSession, { claimId: claim.id, pin: ciphertext });
         res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
       }
     }
