@@ -58,11 +58,11 @@ describe('OIDC middleware', () => {
   });
   describe('assign claim to defendant', () => {
     it('should save claim id and redirect to sign in url when user is not logged in', async () => {
-      await request(app).get(ASSIGN_CLAIM_URL +'?id=1').expect((res) => {
+      await request(app).get(ASSIGN_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
-      expect(app.locals.assignClaimId).toBe('1');
+      expect(app.locals.assignClaimURL).toBe(ASSIGN_CLAIM_URL);
     });
     it('should redirect to assign claim url when claim id is set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
@@ -71,7 +71,7 @@ describe('OIDC middleware', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
         });
-      expect(app.locals.assignClaimId).toBeUndefined();
+      expect(app.locals.assignClaimURL).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claim is not set', async () => {
       mockGetUserDetails.mockImplementation(async () => userDetails);
