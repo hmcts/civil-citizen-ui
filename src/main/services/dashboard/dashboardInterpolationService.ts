@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
-import {CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CLAIM_FEE_BREAKUP, DASHBOARD_NOTIFICATION_REDIRECT, RESPONSE_TASK_LIST_URL, CCJ_PAID_AMOUNT_URL} from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
 
