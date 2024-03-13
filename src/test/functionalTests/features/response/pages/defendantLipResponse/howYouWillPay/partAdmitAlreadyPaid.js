@@ -18,7 +18,7 @@ const content = {
 
 class PartAdmitAlreadyPaid {
   async selectAlreadyPaid(option) {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     if(option == 'yes'){
       await I.click(fields.yesButton);
     }else{

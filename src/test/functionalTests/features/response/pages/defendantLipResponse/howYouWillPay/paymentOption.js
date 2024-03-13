@@ -22,7 +22,7 @@ const buttons = {
 class PaymentOptionPage {
   async enterPaymentOption(claimRef, responseType, paymentType) {
     await I.amOnPage('/case/'+claimRef+'/response/'+responseType+'/payment-option');
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     switch (paymentType){
       case 'immediate':{
         await I.click(fields.responseAdmitAllImmediate);
