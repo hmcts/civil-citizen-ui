@@ -350,14 +350,13 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
-    try{
-      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
-        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
-    } catch (err: unknown) {
-      logger.error('Error when assigning defendant to claim');
-      throw err;
-    }
+  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+      { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
+      .catch((err) => {
+        logger.error('Error when assigning defendant to claim');
+        throw err;
+      }); // nosonar
   }
 
   async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
