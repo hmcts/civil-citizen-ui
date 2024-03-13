@@ -41,7 +41,7 @@ class CaseProgressionSteps {
       uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
     uploadYourDocument.nextAction('Continue');
-    checkYourAnswers.verifyPageContent(claimType, partiesOnTheCase);
+    checkYourAnswers.verifyPageContent(claimType, partiesOnTheCase, partyType);
     checkYourAnswers.clickConfirm();
     checkYourAnswers.nextAction('Submit');
     uploadYourDocumentsConfirmation.verifyPageContent();

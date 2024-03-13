@@ -16,13 +16,13 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimType, partiesOnTheCase) {
+  verifyPageContent(claimType, partiesOnTheCase, partyType) {
     this.checkPageFullyLoaded();
     this.verifyHeadingDetails(partiesOnTheCase);
     if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessSectionContent(claimType);
-      this.verifyEvidenceSectionContent(claimType);
+      this.verifyEvidenceSectionContent(claimType, partyType);
       this.verifyTrialDocumentsSection();
       this.verifyConfirmationStatements();
     } else {
@@ -131,7 +131,7 @@ class CheckYourAnswers {
     }
   }
 
-  verifyEvidenceSectionContent(claimType) {
+  verifyEvidenceSectionContent(claimType, partyType) {
     I.see('Expert evidence', 'h1');
     I.see('Expert\'s report 1');
     I.see('Expert\'s name');
@@ -181,8 +181,11 @@ class CheckYourAnswers {
       I.see('Questions for other party\'s expert or joint expert 1');
       I.see('Questions for Expert 1');
       I.see('Other party\'s name');
-      // I.see('Test Inc');
-      // I.see ('Sir John Doe');
+      if (partyType === 'LiPvLiP') {
+        I.see ('Sir John Doe');
+      } else {
+        I.see('Test Inc');
+      }
       I.see('Name of document you have questions about');
       I.see('Questions for Expert Docuent Nae 1');
       I.see('TestJPEG.jpeg');
