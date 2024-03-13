@@ -247,6 +247,28 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
+  verifySignTheSettlementAgreementForFullAdmit() {
+    I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.see('Terms of the agreement', 'h1');
+    I.see('The agreement');
+    I.see('Sir John Doe will pay £1500, no later than');
+    I.see('Completion date');
+
+    I.see('This agreement settles the claim made by Miss Jane Doe against Sir John Doe.');
+    I.see('This includes all money owed in the claim, for example court fees, expenses or interest.');
+    I.see('Neither party can make any further claims relating to this case, other than to enforce it.');
+    I.see('Either party can view and download this agreement from their Money Claims account.');
+    I.see('Both parties should keep a copy of this agreement.');
+    I.see('If the agreement is broken','h2');
+    I.see('The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.');
+    I.see('Sign the agreement','h2');
+    I.see('Make sure this agreement includes everything you’ve agreed with Sir John Doe before signing.');
+    I.see('You won’t be able to change this later.');
+    I.uncheckOption(paths.options.confirm_and_sign);
+    I.checkOption(paths.options.confirm_and_sign);
+    I.click(paths.buttons.save_and_continue);
+  }
+
   verifyCCJ() {
     I.waitForText('Has the defendant paid some of the amount owed?', 60);
     I.see('Yes');
@@ -279,6 +301,17 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
+    I.waitForText('Sign a settlement agreement',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I accept this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.click(paths.buttons.submit_response);
+  }
+
   verifyCheckYourAnswersForFullAdmitCCJ() {
     I.waitForText('Issue a County Court Judgment (CCJ)',60);
     I.see('Check your answers', 'h1');
@@ -291,6 +324,12 @@ class ResponseToDefence {
   }
 
   verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {
+    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+  }
+
+  verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
     I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
