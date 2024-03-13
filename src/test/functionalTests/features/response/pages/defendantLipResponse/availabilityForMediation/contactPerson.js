@@ -15,14 +15,14 @@ class ContactPerson {
 
   async confirmContactPerson() {
     I.forceClick(fields.availabilityForMediationLink);
-    I.waitForText('Is Test Company the person who will be attending ' +
+    I.waitForContent('Is Test Company the person who will be attending ' +
         'the mediation appointment?', config.WaitForText);
     contactUs.verifyContactUs();
     I.click('Save and continue');
     I.see('Choose option: Yes or No');
     I.click(fields.noButton);
     I.click('Save and continue');
-    I.waitForText('Please provide the name of your nominated ' +
+    I.waitForContent('Please provide the name of your nominated ' +
         'person to contact', config.WaitForText);
     contactUs.verifyContactUs();
     I.fillField(fields.alternativeContactPerson, 'test 123');
