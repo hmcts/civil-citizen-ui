@@ -4,11 +4,11 @@ const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../features/home/steps/login');
 
-let claimInterestFlag, StandardInterest, selectedHWF, claimAmount=16000, claimantPartyType = 'Org';
+let caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
 Feature('Create Lip v Lip claim - Org vs Sole trader').tag('@regression-r2');
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf', async () => {
+Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = false;
@@ -18,11 +18,15 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
     await steps.createClaimDraftViaTestingSupport();
     await steps.addOrgClaimant();
     await steps.addSoleTraderDefendant();
-    await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    await api.setCaseId(caseRef);
+    await api.waitForFinishedBusinessProcess();
+    await steps.payClaimFee(9000, 455);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard interest - no hwf', async () => {
+Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard interest - no hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = true;
@@ -33,11 +37,15 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard intere
     await steps.addOrgClaimant();
     await steps.addSoleTraderDefendant();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-    await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    await api.setCaseId(caseRef);
+    await api.waitForFinishedBusinessProcess();
+    await steps.payClaimFee(claimAmount, claimFee);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - no hwf', async () => {
+Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - no hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = true;
@@ -48,11 +56,15 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     await steps.addOrgClaimant();
     await steps.addSoleTraderDefendant();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-    await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    await api.setCaseId(caseRef);
+    await api.waitForFinishedBusinessProcess();
+    await steps.payClaimFee(claimAmount, claimFee);
+    await api.waitForFinishedBusinessProcess();
   }
 });
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - with hwf', async () => {
+Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - with hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = true;
     claimInterestFlag = true;
@@ -63,6 +75,8 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     await steps.addOrgClaimant();
     await steps.addSoleTraderDefendant();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-    await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
+    await api.setCaseId(caseRef);
+    await api.waitForFinishedBusinessProcess();
   }
 });

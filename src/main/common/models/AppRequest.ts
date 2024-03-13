@@ -13,15 +13,23 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
   body: T;
 }
 
+export interface FirstContact {
+  claimId?: string;
+  claimReference?: string;
+  pin?: string;
+}
+
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
   previousUrl: string;
   claimId: string;
   taskLists: TaskList[];
-  assignClaimId: string;
+  assignClaimURL: string;
   claimIssueTasklist: boolean;
+  firstContact: FirstContact;
   issuedAt: number;
+
 }
 
 export interface UserDetails {
