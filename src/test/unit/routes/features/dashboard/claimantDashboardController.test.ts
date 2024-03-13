@@ -16,6 +16,7 @@ import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as UtilityService from 'modules/utilityService';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -38,6 +39,7 @@ describe('claimant Dashboard Controller', () => {
     it('should return claimant dashboard page when only draft', async () => {
 
       jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
@@ -63,7 +65,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -87,7 +89,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -112,6 +114,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
@@ -136,6 +139,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
@@ -146,6 +150,7 @@ describe('claimant Dashboard Controller', () => {
 
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       await request(app)
         .get(DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {

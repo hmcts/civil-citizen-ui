@@ -14,7 +14,8 @@ const claimantDashboardController = Router();
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId =  req.params.id;
-    if (isDashboardServiceEnabled()){
+    const isDashboardEnabled = await isDashboardServiceEnabled();
+    if (isDashboardEnabled){
       const lng = req.query.lang ? req.query.lang : req.cookies.lang;
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
@@ -34,7 +35,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
       res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
     } else {
-
       res.redirect(constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL));
     }
   } catch (error) {
