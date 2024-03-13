@@ -64,7 +64,7 @@ class MonthlyExpenses {
 
   async selectMortgage(mortgageAmount) {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.checkOption(checkboxes.mortgage[language]);
     await I.fillField(fields.mortgagePayment, mortgageAmount);
     await I.click(fields.mortgagePaymentScheduleMonthly);

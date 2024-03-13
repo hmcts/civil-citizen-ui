@@ -14,7 +14,7 @@ const fields ={
 class ExpertDetails {
 
   async EnterExpertDetails() {
-    await I.waitForText('Enter the expert’s details', config.WaitForText);
+    await I.waitForContent('Enter the expert’s details', config.WaitForText);
     await I.fillField(fields.firstName, 'Test ExpertFName');
     await I.fillField(fields.lastName, 'Test ExpertLName');
     await I.fillField(fields.emailAddress, 'test@test.com');
