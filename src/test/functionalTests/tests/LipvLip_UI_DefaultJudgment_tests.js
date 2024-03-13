@@ -13,6 +13,7 @@ Feature('Create Lip v Lip claim -  Default Judgment');
 Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
