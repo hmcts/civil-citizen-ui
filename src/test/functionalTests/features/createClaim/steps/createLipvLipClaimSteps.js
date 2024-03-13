@@ -109,9 +109,9 @@ class CreateClaimSteps {
     return caseReference;
   }
 
-  async payClaimFee() {
+  async payClaimFee(claimAmount, claimFee) {
     await I.click(paths.links.pay_claim_fee);
-    await createClaim.verifyAndInputPayYourClaimFee();
+    await createClaim.verifyAndInputPayYourClaimFee(claimAmount, claimFee);
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();
@@ -168,7 +168,10 @@ class CreateClaimSteps {
 
   async checkAndSubmit(selectedHWF, claimantPartyType = 'Individual') {
     await I.amOnPage('/claim/task-list');
-    await createClaim.checkAndSubmit(selectedHWF, claimantPartyType);
+    let caseRef = await createClaim.checkAndSubmit(selectedHWF, claimantPartyType);
+    caseRef = caseRef.replace(/-/g, '');
+    console.log('The value of the claim reference : ', caseRef);
+    return caseRef;
   }
 }
 
