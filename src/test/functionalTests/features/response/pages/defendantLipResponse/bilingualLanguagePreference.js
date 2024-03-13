@@ -23,7 +23,7 @@ class BilingualLanguagePreference {
 
   async verifyContent(languageOption = 'en') {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     I.click(fields[languageOption]);
     await I.click(cButtons.saveAndContinue[language]);
@@ -31,7 +31,7 @@ class BilingualLanguagePreference {
   }
 
   async verifyContentError() {
-    await I.waitForText('Language', config.WaitForText);
+    await I.waitForContent('Language', config.WaitForText);
     await I.see('You must choose which language to use to respond to this claim');
     await I.click('Save and continue');
     await I.see('There was a problem');

@@ -22,7 +22,7 @@ class ResidenceDetails {
 
   async selectResidenceType(residenceType) {
     const { language } = sharedData; 
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     switch (residenceType){
       case 'ownHome':{
         await I.click(fields.ownHome);

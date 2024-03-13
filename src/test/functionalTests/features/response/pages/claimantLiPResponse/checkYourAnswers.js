@@ -31,7 +31,7 @@ class CheckYourAnswersPage {
       I.amOnPage('/case/'+claimRef+'/response/task-list');
       I.click('Check and submit your response');
     }
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.see('Availability for mediation');
     I.see('Is Test Company the person who will be attending the mediation appointment?');
     I.see('Can the mediator use ');
@@ -48,7 +48,7 @@ class CheckYourAnswersPage {
       I.amOnPage('/case/'+claimRef+'/response/task-list');
       I.click('Check and submit your response');
     }
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.see('Availability for mediation');
     I.see('Can the mediator use ');
     I.see('Can the mediation team use ');
@@ -59,23 +59,23 @@ class CheckYourAnswersPage {
   async verifyEditedEmailDetails() {
     const { language } = sharedData;
     I.click('Check and submit your response');
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.see('test@gmail.com');
     I.click(cButtons.submit[language]);
-    I.waitForText('You\'ve rejected their response',config.WaitForText);
+    I.waitForContent('You\'ve rejected their response',config.WaitForText);
     I.see(content.confirmationSubheading[language]);
   }
 
   async clickEmailChangeLink() {
     await I.click('a[href*="email-confirmation"]');
-    await I.waitForText('Can the mediation team use', config.WaitForText);
+    await I.waitForContent('Can the mediation team use', config.WaitForText);
   }
 
   async submitClaimantResponse() {
     I.checkOption(fields.directionsQuestionnaireSigned);
     const { language } = sharedData;
     I.click(cButtons.submit[language]);
-    I.waitForText('You\'ve rejected their response',config.WaitForText);
+    I.waitForContent('You\'ve rejected their response',config.WaitForText);
     I.see(content.confirmationSubheading[language]);
   }
 }
