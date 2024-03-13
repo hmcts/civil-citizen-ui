@@ -7,7 +7,7 @@ class DashboardPage {
   }
 
   async verifyClaimNumberOnDashboard(claimNumber){
-    await I.waitForText('Claim number', config.WaitForText);
+    await I.waitForContent('Claim number', config.WaitForText);
     await I.see('Claimant name');
     await I.see('Claim amount');
     await I.see('Status');
@@ -15,7 +15,7 @@ class DashboardPage {
   }
 
   async verifyDashboardPageContent () {
-    await I.waitForText('Your money claims account', config.WaitForText);
+    await I.waitForContent('Your money claims account', config.WaitForText);
     await I.see('Claims made against you');
     await I.see('To view or progress your claim click on your claim number. Most recently created claims are listed first.');
     await I.see('Claim number');

@@ -30,7 +30,7 @@ const fields = {
 class EligibilityCheck {
   async open() {
     await I.amOnPage('/eligibility');
-    await I.waitForText('Try the new online service', config.WaitForText);
+    await I.waitForContent('Try the new online service', config.WaitForText);
     await I.see('We are building a new service. Different designs are being tested and changed based on feedback from users.');
     await I.see('You will be asked some questions to check you are eligible to use this service.');
     await I.see('Contact us for help');
@@ -38,7 +38,7 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimValueValidations() {
-    await I.waitForText('Total amount you\'re claiming');
+    await I.waitForContent('Total amount you\'re claiming');
     await I.see('If you\'re claiming interest, include that in the amount');
     await I.see('Over £25,000');
     await I.see('£25,000 or less');
@@ -54,7 +54,7 @@ class EligibilityCheck {
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-value');
 
-    await I.waitForText('Total amount you\'re claiming');
+    await I.waitForContent('Total amount you\'re claiming');
     await I.click(fields.dontKnowTheAmount);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-value-not-known');
@@ -66,14 +66,14 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimValue() {
-    await I.waitForText('Total amount you\'re claiming');
+    await I.waitForContent('Total amount you\'re claiming');
     await I.click(fields.lessthan25000);
     await I.click('Save and continue');
   }
 
   async eligibilitySingleDefendantValidations(){
     await I.seeInCurrentUrl('/eligibility/single-defendant');
-    await I.waitForText('Is this claim against more than one person or organisation?');
+    await I.waitForContent('Is this claim against more than one person or organisation?');
     await I.click(fields.singleDefendantYes);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=multiple-defendants');
@@ -86,14 +86,14 @@ class EligibilityCheck {
   }
 
   async eligibilitySingleDefendant() {
-    await I.waitForText('Is this claim against more than one person or organisation?');
+    await I.waitForContent('Is this claim against more than one person or organisation?');
     await I.click(fields.singleDefendantNo);
     await I.click('Save and continue');
   }
 
   async eligibilityDefendantAddressValidations(){
     await I.seeInCurrentUrl('/eligibility/defendant-address');
-    await I.waitForText('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
+    await I.waitForContent('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
     await I.click(fields.defendantAddressNo);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=defendant-address');
@@ -105,14 +105,14 @@ class EligibilityCheck {
   }
 
   async eligibilityDefendantAddress() {
-    await I.waitForText('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
+    await I.waitForContent('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
     await I.click(fields.defendantAddressYes);
     await I.click('Save and continue');
   }
 
   async eligibilityClaimTypeValidations(){
     await I.seeInCurrentUrl('/eligibility/claim-type');
-    await I.waitForText('Who are you making the claim for?');
+    await I.waitForContent('Who are you making the claim for?');
     await I.see('Just my self or my organisation');
     await I.see('More than one person or organisation');
     await I.see('A client - I\'m their solicitor');
@@ -125,7 +125,7 @@ class EligibilityCheck {
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-type');
 
-    await I.waitForText('Who are you making the claim for?');
+    await I.waitForContent('Who are you making the claim for?');
     await I.click(fields.claimTypeSolicitor);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-on-behalf');
@@ -137,14 +137,14 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimType() {
-    await I.waitForText('Who are you making the claim for?');
+    await I.waitForContent('Who are you making the claim for?');
     await I.click(fields.claimTypeMyOrg);
     await I.click('Save and continue');
   }
 
   async eligibilityClaimantAddressValidations(){
     await I.seeInCurrentUrl('/eligibility/claimant-address');
-    await I.waitForText('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in the UK?');
     await I.click(fields.claimantAddressNo);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claimant-address');
@@ -154,14 +154,14 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimantAddress() {
-    await I.waitForText('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in the UK?');
     await I.click(fields.claimantAddressYes);
     await I.click('Save and continue');
   }
 
   async eligibilityTenancyDepositValidations(){
     await I.seeInCurrentUrl('/eligibility/claim-is-for-tenancy-deposit');
-    await I.waitForText('Is your claim for a tenancy deposit?');
+    await I.waitForContent('Is your claim for a tenancy deposit?');
     await I.click(fields.tenancyDepositYes);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-is-for-tenancy-deposit');
@@ -172,14 +172,14 @@ class EligibilityCheck {
   }
 
   async eligibilityTenancyDeposit() {
-    await I.waitForText('Is your claim for a tenancy deposit?');
+    await I.waitForContent('Is your claim for a tenancy deposit?');
     await I.click(fields.tenancyDepositNo);
     await I.click('Save and continue');
   }
 
   async eligibilityGovtDeptValidations(){
     await I.seeInCurrentUrl('/eligibility/government-department');
-    await I.waitForText('Are you claiming against a government department?');
+    await I.waitForContent('Are you claiming against a government department?');
     await I.see('See list of government departments (opens in a new window).');
     await I.click(fields.govtDeptYes);
     await I.click('Save and continue');
@@ -192,14 +192,14 @@ class EligibilityCheck {
   }
 
   async eligibilityGovtDept() {
-    await I.waitForText('Are you claiming against a government department?');
+    await I.waitForContent('Are you claiming against a government department?');
     await I.click(fields.govtDeptNo);
     await I.click('Save and continue');
   }
 
   async eligibilityDefendantAgeValidations(){
     await I.seeInCurrentUrl('/eligibility/defendant-age');
-    await I.waitForText('Do you believe the person you’re claiming against is 18 or over?');
+    await I.waitForContent('Do you believe the person you’re claiming against is 18 or over?');
     await I.click(fields.defendantAgeLessThan18);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=under-18-defendant');
@@ -209,7 +209,7 @@ class EligibilityCheck {
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/defendant-age');
 
-    await I.waitForText('Do you believe the person you’re claiming against is 18 or over?');
+    await I.waitForContent('Do you believe the person you’re claiming against is 18 or over?');
     await I.click(fields.defendantAgeAgainstComp);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/over-18');
@@ -217,14 +217,14 @@ class EligibilityCheck {
   }
 
   async eligibilityDefendantAge() {
-    await I.waitForText('Do you believe the person you’re claiming against is 18 or over?');
+    await I.waitForContent('Do you believe the person you’re claiming against is 18 or over?');
     await I.click(fields.defendantAge18);
     await I.click('Save and continue');
   }
 
   async eligibilityClaimantAgeValidations(){
     await I.seeInCurrentUrl('/eligibility/over-18');
-    await I.waitForText('Are you 18 or over?');
+    await I.waitForContent('Are you 18 or over?');
     await I.click(fields.claimantAgeLessThan18);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=under-18');
@@ -235,14 +235,14 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimantAge() {
-    await I.waitForText('Are you 18 or over?');
+    await I.waitForContent('Are you 18 or over?');
     await I.click(fields.claimantAge18);
     await I.click('Save and continue');
   }
 
   async eligibilityApplyForHWF(){
     await I.seeInCurrentUrl('/eligibility/apply-for-help-with-fees');
-    await I.waitForText('Apply For Help With Fees');
+    await I.waitForContent('Apply For Help With Fees');
     await I.see('If you have already applied for Help with Fees in respect of THIS CLAIM,');
     await I.see('you may already have a reference number.');
     await I.see('If so, you can save and continue and enter it when asked.');
@@ -265,7 +265,7 @@ class EligibilityCheck {
 
   async eligibilityHWFReferenceValidations(){
     await I.seeInCurrentUrl('/eligibility/help-with-fees-reference');
-    await I.waitForText('Do you have a Help With Fees reference number?');
+    await I.waitForContent('Do you have a Help With Fees reference number?');
     await I.see('You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.');
     await I.click(fields.hwfReferenceYes);
     await I.click('Save and continue');
@@ -277,9 +277,9 @@ class EligibilityCheck {
   }
 
   async eligibilityHWFReference() {
-    await I.waitForText('Do you have a Help With Fees reference number?');
+    await I.waitForContent('Do you have a Help With Fees reference number?');
     await I.click(fields.hwfReferenceNo);
-    await I.waitForText('Decide whether to apply for Help with Fees');
+    await I.waitForContent('Decide whether to apply for Help with Fees');
     await I.see('Apply for Help with Fees (opens in a new window) and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
     await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');
     await I.see('Make a note of the Help with Fees number when you make an application.');
