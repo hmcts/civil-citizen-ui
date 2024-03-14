@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -11,17 +13,32 @@ const fields ={
   firstWitessDetails: 'textarea[id="witnessItems[0][details]"]',
 };
 
+const content = {
+  heading: {
+    en: 'Do you have other witnesses?',
+    cy: 'A oes gennych chi dystion eraill?',
+  },
+};
+
+const inputs = {
+  firstWitessDetails: {
+    en: 'Test Witness Details',
+    cy: 'Manylion Tyst Prawf',
+  },
+};
+
 class DefendantWitnesses {
 
   async enterDefendantWitnesses() {
-    await I.waitForText('Do you have other witnesses?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.fillField(fields.firstWitnessFirstName, 'WitnessFName');
-    await I.fillField(fields.firstWitnessLastName, 'WitnessLName');
-    await I.fillField(fields.firstWitnessEmail, 'test@test.com');
+    await I.fillField(fields.firstWitnessFirstName, 'WitnessFirstName');
+    await I.fillField(fields.firstWitnessLastName, 'WitnessLastName');
+    await I.fillField(fields.firstWitnessEmail, 'witness@witness.com');
     await I.fillField(fields.firstWitnessTelephone, '09797979797');
-    await I.fillField(fields.firstWitessDetails, 'TestWitnesses');
-    await I.click('Save and continue');
+    await I.fillField(fields.firstWitessDetails, inputs.firstWitessDetails[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -10,13 +10,14 @@ import {
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
   MAKE_CLAIM,
+  TESTING_SUPPORT_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
 } from 'routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
-  return req.originalUrl.startsWith(ASSIGN_CLAIM_URL) && req.query?.id !== undefined;
+  return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
 };
 
 const requestIsForClaimIssueTaskList = (req: Request): boolean => {
@@ -39,11 +40,14 @@ const isMakeClaimPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(MAKE_CLAIM);
 };
 
-const buildAssignClaimUrlWithId = (req: AppRequest, app: Application) : string => {
-  const claimId = req.session.assignClaimId;
-  app.locals.assignClaimId = undefined;
-  req.session.assignClaimId = undefined;
-  return `${ASSIGN_CLAIM_URL}?id=${claimId}`;
+const buildAssignClaimUrlWithId = (req: AppRequest, app: Application): string => {
+  app.locals.assignClaimURL = undefined;
+  req.session.assignClaimURL = undefined;
+  return `${ASSIGN_CLAIM_URL}`;
+};
+
+export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(TESTING_SUPPORT_URL);
 };
 
 export class OidcMiddleware {
@@ -64,7 +68,7 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
-        if (app.locals.assignClaimId || req.session.assignClaimId) {
+        if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
         }
@@ -105,11 +109,11 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {
-        app.locals.assignClaimId = appReq.session.assignClaimId = <string>req.query.id;
+        app.locals.assignClaimURL = appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
       }
       if (requestIsForClaimIssueTaskList(req) ) {
         app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;

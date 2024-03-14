@@ -1,12 +1,13 @@
-import {SummarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {CLAIM_EVIDENCE_URL} from '../../../../../routes/urls';
-import {EvidenceItem} from '../../../../../common/form/models/evidence/evidenceItem';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {CLAIM_EVIDENCE_URL} from 'routes/urls';
+import {EvidenceItem} from 'form/models/evidence/evidenceItem';
+import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const addEvidence = (claim: Claim, claimSection: SummarySection, claimId: string, lng: string) => {
   if (claim.claimDetails?.evidence) {
@@ -14,9 +15,10 @@ export const addEvidence = (claim: Claim, claimSection: SummarySection, claimId:
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', {lng}), '', CLAIM_EVIDENCE_URL, changeLabel(lng)),
     );
     const evidence: EvidenceItem[] = claim.claimDetails.evidence.evidenceItem;
-    for (let i = 0; i < evidence.length; i++) {
+    for (const element of evidence) {
       claimSection.summaryList.rows.push(
-        summaryRow(evidence[i].type, evidence[i].description, CLAIM_EVIDENCE_URL, changeLabel(lng)),
+        summaryRow(t(convertToEvidenceTypeToTranslationKey(element.type), {lng: getLng(lng)}),
+          element.description, CLAIM_EVIDENCE_URL, changeLabel(lng)),
       );
     }
   }

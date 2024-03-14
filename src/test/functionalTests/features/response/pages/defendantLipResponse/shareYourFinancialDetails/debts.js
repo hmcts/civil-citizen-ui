@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="debtsRadio"]',
@@ -16,32 +18,58 @@ const fields ={
 };
 
 const buttons = {
-  addDebt: 'Add a debt',
-  saveAndContinue: 'Save and continue',
+  addDebt: { 
+    en: 'Add a debt', 
+    cy: 'Ychwanegu dyled',
+  },
+};
+
+const content = {
+  heading: {
+    en: 'Do you have loans or credit card debts?',
+    cy: 'A oes gennych fenthyciadau neu ddyledion cerdyn credyd?',
+  },
+};
+
+const inputs = {
+  debtItem1: {
+    en: 'HSBC Credit card',
+    cy: 'Cerdyn credyd HSBC',
+  },
+  debtItem2: {
+    en: 'Motor vehicle loan',
+    cy: 'Benthyciad cerbyd modur',
+  },
+  debtItem3: {
+    en: 'Student loan',
+    cy: 'Benthyciad myfyriwr',
+  },
 };
 
 class Debts {
 
   async clickYesButton() {
-    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.fillField(fields.debtItem1, 'HSBC Credit card'),
+    await I.fillField(fields.debtItem1, inputs.debtItem1[language]),
     await I.fillField(fields.debtOwned1, '1200'),
     await I.fillField(fields.monthlyPayments1, '120'),
-    await I.fillField(fields.debtItem2, 'Motor vehicle loan'),
+    await I.fillField(fields.debtItem2,  inputs.debtItem2[language]),
     await I.fillField(fields.debtOwned2, '14000'),
     await I.fillField(fields.monthlyPayments2, '220'),
-    await I.click(buttons.addDebt),
-    await I.fillField(fields.debtItem3, 'Student loan'),
+    await I.click(buttons.addDebt[language]),
+    await I.fillField(fields.debtItem3, inputs.debtItem3[language]),
     await I.fillField(fields.debtOwned3, '8000'),
     await I.fillField(fields.monthlyPayments3, '400'),
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    await I.waitForText('Do you have loans or credit card debts?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

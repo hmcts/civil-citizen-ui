@@ -14,7 +14,7 @@ const buttons = {
 };
 
 const currentDate = new Date();
-const day = currentDate.getDay() + 1;
+const day = 1;
 const month = currentDate.getMonth() + 1;
 const year = currentDate.getFullYear() + 1;
 const yearError = currentDate.getFullYear() - 50;
@@ -24,7 +24,7 @@ const monthError = currentDate.getMonth() - 1000;
 class RepaymentPlan {
   async enterRepaymentPlan(claimRef) {
     await I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
-    await I.waitForText('Your repayment plan', config.WaitForText);
+    await I.waitForContent('Your repayment plan', config.WaitForText);
     await I.fillField(fields.paymentAmount,'100');
     await I.click(fields.rePaymentFrequency);
     await I.fillField(fields.day, day.toString());
@@ -35,7 +35,7 @@ class RepaymentPlan {
 
   async enterRepaymentPlanError(claimRef) {
     await I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
-    await I.waitForText('Your repayment plan', config.WaitForText);
+    await I.waitForContent('Your repayment plan', config.WaitForText);
     await I.click('Save and continue');
     await I.see('There was a problem');
     //empty inputs error

@@ -1,10 +1,10 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
-import {currencyFormatWithNoTrailingZeros} from '../../../../../common/utils/currencyFormat';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_EVIDENCE_URL,
@@ -14,16 +14,16 @@ import {
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   RESPONSE_YOUR_DEFENCE_URL,
-} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEvents/defendantTimeline';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {ResponseType} from '../../../../../common/form/models/responseType';
+} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
+import {YesNo} from 'form/models/yesNo';
+import {ResponseType} from 'form/models/responseType';
 import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evidenceType';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
+const addTimeline = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
   const timeline = claim.partialAdmission?.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
 
@@ -43,7 +43,7 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
   );
 };
 
-const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
+const addEvidence = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
   const evidenceItem = claim.evidence?.evidenceItem;
   const lng = getLng(lang);
@@ -66,10 +66,10 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
   const amount = claim.rejectAllOfClaim.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
   const totalClaimAmount = claim.totalClaimAmount ? claim.totalClaimAmount : 0;
-  return !!(amount < totalClaimAmount);
+  return (amount < totalClaimAmount);
 };
 
-const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
+const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string , yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
   const howMuchYouAdmitYouOweHref = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
@@ -90,7 +90,7 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   ]);
 };
 
-const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
+const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string , yourResponseDetailsSection: SummarySection) => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
   const rejectUrl = claim.isRejectAllOfClaimDispute() ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
   const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, rejectUrl);
@@ -105,7 +105,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
   if (isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), disagreeText, whyDoYouDisagreeUrl, changeLabel(lang)));
 };
 
-export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let yourResponseDetailsSection: SummarySection = null;
 
   yourResponseDetailsSection = summarySection({

@@ -4,7 +4,6 @@ import {
   MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
-import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   getMediationCarm,
   saveMediationCarm,
@@ -14,15 +13,16 @@ import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNoCarmContactPersonConfirmation} from 'form/models/genericYesNoCarmContactPersonConfirmation';
 
 const contactNameMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const contactNameMediationConfirmationController = Router();
 const MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE = 'PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.';
 
-const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, defendantContactPerson: string): void => {
+const renderView = (form: GenericForm<GenericYesNoCarmContactPersonConfirmation>, res: Response, req: Request, partyContactPerson: string): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT_DEFENDANT`, { lng: lang, defendantContactPerson: defendantContactPerson });
+  const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyContactPerson: partyContactPerson });
   res.render(contactNameMediationConfirmationViewPath, { form, pageTitle, pageText });
 };
 
@@ -41,7 +41,7 @@ contactNameMediationConfirmationController.get(MEDIATION_CONTACT_PERSON_CONFIRMA
     const isClaimantResponse = claim.isClaimantIntentionPending();
     const contactPerson = await getPartyContactPerson(redisKey, isClaimantResponse);
     const mediationCarm = await getMediationCarm(redisKey);
-    const form = new GenericForm(new GenericYesNo(mediationCarm.isMediationContactNameCorrect?.option));
+    const form = new GenericForm(new GenericYesNoCarmContactPersonConfirmation(mediationCarm.isMediationContactNameCorrect?.option));
     renderView(form, res,req, contactPerson);
   } catch (error) {
     next(error);
@@ -54,7 +54,7 @@ contactNameMediationConfirmationController.post(MEDIATION_CONTACT_PERSON_CONFIRM
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
-    const form = new GenericForm(new GenericYesNo(req.body.option));
+    const form = new GenericForm(new GenericYesNoCarmContactPersonConfirmation(req.body.option));
     await form.validate();
     if (form.hasErrors()) {
       const contactPerson = await getPartyContactPerson(redisKey, isClaimantResponse);

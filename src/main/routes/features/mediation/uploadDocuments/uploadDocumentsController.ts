@@ -1,11 +1,16 @@
-import {MEDIATION_UPLOAD_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND} from 'routes/urls';
+import {
+  MEDIATION_TYPE_OF_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
+} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {NextFunction, Request, Response, RequestHandler, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   addAnother,
   getUploadDocuments,
-  getUploadDocumentsForm, removeItem,
+  getUploadDocumentsForm,
+  removeItem,
   saveUploadDocument,
 } from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {GenericForm} from 'form/models/genericForm';
@@ -18,12 +23,8 @@ import {
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {
-  TypeOfMediationDocuments,
-  UploadDocuments,
-} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import {CaseDocument} from 'models/document/caseDocument';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
@@ -78,8 +79,7 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
         && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
         && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      const document: CaseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = document;
+      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
   }
 }
@@ -104,7 +104,9 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
     paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
-    partyInformation: partyInformation(claim)});
+    partyInformation: partyInformation(claim),
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
+  });
 }
 
 mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {

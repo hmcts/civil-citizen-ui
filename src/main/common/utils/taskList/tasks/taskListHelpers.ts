@@ -54,7 +54,6 @@ export const isFullAdmissionRepaymentPlanMissing = (caseData: Claim): boolean =>
 };
 
 export const isStatementOfMeansComplete = (caseData: Claim): boolean => {
-  // TODO: this should replicate statement of means guard logic CIV-2630
   return !!(caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
 };
 

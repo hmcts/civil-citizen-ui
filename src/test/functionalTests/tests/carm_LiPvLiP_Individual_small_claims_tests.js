@@ -1,7 +1,8 @@
-const config = require('../../../config');
-const LoginSteps = require('../../features/home/steps/login');
-const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const {createAccount} = require('./../../specClaimHelpers/api/idamHelper');
+const config = require('./../../config');
+const LoginSteps = require('./../features/home/steps/login');
+const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
+const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
+const ClaimantResponseSteps = require('../features/response/steps/lipClaimantResponseSteps');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -13,24 +14,25 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('CARM - LiP Defendant Journey - Small claims track - Individual');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual');
 
-Before(async ({api}) => {
+Before(async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType, carmEnabled, 'Individual');
-    console.log('claimRef has been created Successfully    <===>  '  , claimRef);
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  }
+});
+
+Scenario('LiP Defendant response with Part admit', async ({api}) => {
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled);
+    console.log('LIP vs LIP claim has been created Successfully    <===>  '  , claimRef);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber =  caseData.legacyCaseReference;
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  }
-});
-
-Scenario('LiP Defendant Response with Part Admit', async () => {
-  if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -48,5 +50,21 @@ Scenario('LiP Defendant Response with Part Admit', async () => {
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
+  }
+}).tag('@regression-carm');
+
+Scenario('LiP Claimant response with Part admit', async () => {
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
+    await ClaimantResponseSteps.verifyDefendantResponse();
+    await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
+    await ResponseSteps.EnterTelephoneMediationDetails();
+    await ResponseSteps.ConfirmAltPhoneDetails();
+    await ResponseSteps.ConfirmAltEmailDetails();
+    await ResponseSteps.EnterUnavailableDates(claimRef);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef);
+    await ClaimantResponseSteps.verifyClaimantMediationDetailsInCYA(claimRef);
+    await ClaimantResponseSteps.submitClaimantResponse();
   }
 }).tag('@regression-carm');

@@ -4,6 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {translateBreathingSpaceToCCD} from 'services/translation/breathingSpace/ccdTranslation';
 import {getBreathingSpace} from 'services/features/breathingSpace/breathingSpaceService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -11,7 +12,7 @@ const logger = Logger.getLogger('partialAdmissionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const submitBreathingSpace = async (req: AppRequest): Promise<any> => {
+export const submitBreathingSpace = async (req: AppRequest): Promise<Claim> => {
   try {
     const breathingSpace = await getBreathingSpace(generateRedisKey(req as unknown as AppRequest));
     const breathingSpaceResponse = translateBreathingSpaceToCCD(breathingSpace);

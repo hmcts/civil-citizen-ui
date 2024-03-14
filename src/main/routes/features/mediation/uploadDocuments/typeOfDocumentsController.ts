@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 
-import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS, START_MEDIATION_UPLOAD_FILES} from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -43,13 +43,15 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
     form: form,
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     claimId: caseNumberPrettify(claimId),
-    partyInformation: partyInformation(claim)});
+    partyInformation: partyInformation(claim),
+    backLinkUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
+  });
 }
 
 mediationTypeOfDocumentsController.get(MEDIATION_TYPE_OF_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);
     let form;

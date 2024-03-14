@@ -1,11 +1,12 @@
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
-
 import express from 'express';
-import {Helmet} from 'modules/helmet';
 import * as path from 'path';
-import {HTTPError} from './HttpError';
+import session from 'express-session';
+import 'express-async-errors';
+
+import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
 import {AppInsights} from 'modules/appinsights';
@@ -18,7 +19,6 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
-import session from 'express-session';
 import {
   BASE_CLAIM_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
@@ -33,6 +33,7 @@ import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
 import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {ErrorHandler} from 'modules/error';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -121,21 +122,6 @@ if (env !== 'test') {
 }
 
 app.use(routes);
+new ErrorHandler().enableFor(app);
 
 setupDev(app,developmentMode);
-// returning "not found" page for requests with paths not resolved by the router
-app.use((_req, res) => {
-  res.status(404);
-  res.render('not-found');
-});
-
-// error handler
-app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error(`${err.stack || err}`);
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = env === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error', {error: res.locals.error});
-});

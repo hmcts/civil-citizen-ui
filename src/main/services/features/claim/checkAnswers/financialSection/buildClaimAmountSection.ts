@@ -14,9 +14,9 @@ import {
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const claimAmountSection = summarySection({
     title: t('COMMON.CLAIM_AMOUNT', {lng}),
@@ -24,7 +24,7 @@ export const buildClaimAmountSection = (claim: Claim, claimId: string, lang: str
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN', {lng}), '', CLAIM_AMOUNT_URL, changeLabel(lang)),
     ],
   });
-  addClaimAmounts(claim, claimAmountSection, claimId, lang);
+  addClaimAmounts(claim, claimAmountSection, lang);
   if (claim?.claimInterest) {
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST', {lng}), claim.claimInterest, CLAIM_INTEREST_URL, changeLabel(lang)));
   }
