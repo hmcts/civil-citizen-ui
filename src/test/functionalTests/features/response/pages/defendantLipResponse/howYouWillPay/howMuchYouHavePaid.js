@@ -24,10 +24,10 @@ class HowMuchYouHavePaid {
   async enterPaymentDetails(claimRef, amount, responseType) {
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
-      await I.waitForText('How much have you paid the claimant?', config.WaitForText);
+      await I.waitForContent('How much have you paid the claimant?', config.WaitForText);
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
-      await I.waitForText('How much have you paid?', config.WaitForText);
+      await I.waitForContent('How much have you paid?', config.WaitForText);
     }
     await I.see('The total amount claimed is £');
     await I.see('How much have you paid?');
@@ -45,7 +45,7 @@ class HowMuchYouHavePaid {
   async enterPaymentDetailsError(claimRef, amount, responseType) {
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
-      await I.waitForText('How much have you paid the claimant?', config.WaitForText);
+      await I.waitForContent('How much have you paid the claimant?', config.WaitForText);
       await I.click(buttons.saveAndContinue);
       //empty fields
       await I.see('There was a problem');
@@ -65,7 +65,7 @@ class HowMuchYouHavePaid {
       await I.see('Enter a 4 digit year');
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
-      await I.waitForText('How much have you paid?', config.WaitForText);
+      await I.waitForContent('How much have you paid?', config.WaitForText);
       await I.click(buttons.saveAndContinue);
       //empty fields
       await I.see('There was a problem');
