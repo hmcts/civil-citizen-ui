@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
@@ -9,8 +10,8 @@ exports.config = {
 
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
-    await unAssignAllUsers();
-    await deleteAllIdamTestUsers();
+    // await unAssignAllUsers();
+    // await deleteAllIdamTestUsers();
   },
 
   tests: '../functionalTests/tests/**/*.js',
